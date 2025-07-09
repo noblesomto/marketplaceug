@@ -1,0 +1,484 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Rules\ReCaptcha;
+use Mail;
+use Hash;
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Shipping;
+use App\Mail\RegisterMail;
+use App\Mail\NotifyMail;
+
+class AccountController extends Controller
+{
+    public function login(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            return $this->showLoginForm();
+        }
+
+        return $this->handleLoginRequest($request);
+    }
+
+    protected function showLoginForm()
+    {
+        $title = "Login | " . config('global.site_name');
+        return view('frontend.account.login', compact('title'));
+    }
+
+    protected function handleLoginRequest(Request $request)
+    {
+        $request->validate($this->loginValidationRules());
+
+        $user = $this->getUserByEmail($request->email);
+        
+        if (!$this->isValidUser($user)) {
+            return $this->sendFailedLoginResponse($user);
+        }
+
+        if (!$this->isValidPassword($user, $request->password)) {
+            return redirect("/login")->with('error', 'Sorry, The password does not Match');
+        }
+
+        if ($this->shouldBypassOtp($user)) {
+            return $this->authenticateUser($request, $user);
+        }
+
+        return $this->processOtpLogin($request,$user);
+    }
+
+    protected function loginValidationRules()
+    {
+        return [
+            'email' => 'required|email',
+            'password' => 'required|min:4',
+        ];
+    }
+
+    protected function getUserByEmail($email)
+    {
+        return User::where('email', $email)->first();
+    }
+
+    protected function isValidUser($user)
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->disable_account === "yes") {
+            return false;
+        }
+
+        return $user->acc_status == 1;
+    }
+
+    protected function sendFailedLoginResponse($user)
+    {
+        if (!$user) {
+            return redirect()->back()->with('error', 'Sorry, The Email address does not exist');
+        }
+
+        if ($user->disable_account === "yes") {
+            return redirect()->back()->with('error', 'Sorry, This Account Has been Disabled and pending Deletion in 30 Days, Contact Admin');
+        }
+
+        if ($user->acc_status == 0) {
+            return redirect()->back()->with('error', 'Sorry, The Email address Not Verified');
+        }
+
+        return redirect()->back()->with('error', 'Invalid login attempt');
+    }
+
+    protected function isValidPassword($user, $password)
+    {
+        return Hash::check($password, $user->password);
+    }
+
+    protected function shouldBypassOtp($user)
+    {
+        $currentIp = $this->getIp();
+        return $user->last_login_ip && $user->last_login_ip === $currentIp;
+    }
+
+    protected function authenticateUser(Request $request, $user)
+    {
+        $request->session()->put('user_id', $user->user_id);
+        $request->session()->put('name', $user->name);
+
+        if ($request->session()->has('previous_url')) {
+            return redirect($request->session()->get('previous_url'));
+        }
+
+        return redirect()->action([UserController::class, 'index']);
+    }
+
+    protected function processOtpLogin(Request $request, $user)
+    {
+        $otp = rand(111111, 999999);
+        $currentIp = $this->getIp();
+        $request->session()->put('acc_id', $user->id);
+
+        $this->updateUserOtpDetails($user, $otp, $currentIp);
+
+        return $this->sendOtpEmail($user, $otp, $currentIp);
+    }
+
+    protected function updateUserOtpDetails($user, $otp, $ip)
+    {
+        DB::table('users')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'otp' => $otp,
+            ]);
+    }
+
+    protected function sendOtpEmail($user, $otp, $ip)
+    {
+        $details = [
+            'user_id' => $user->user_id,
+            'otp' => $otp,
+            'name' => $user->name,
+            'ip' => $ip,
+        ];
+
+        try {
+            Mail::to($user->email)->send(new NotifyMail($details));
+            return redirect("/authenticate")->with('success', 'Check your email for OTP to login');
+        } catch (Throwable $e) {
+            return redirect("/login")->with('error', 'Error! OTP could not be sent, please try again or contact admin');
+        }
+    }
+
+    public function authenticate(Request $request)
+    {
+        $title = "OTP Authentication | " . config('global.site_name');
+        
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'otp' => 'required|numeric|min:4',
+            ]);
+            
+            $user_id = $request->session()->get('acc_id');
+            if($user_id ==''){
+                return redirect("/login")->with('error','Sorry, Your Session has expired. Refresh');
+            }
+
+            $otp = $request->otp;
+
+            $login = User::where('otp', $otp)
+                        ->where('id', $user_id)
+                        ->first();
+            //dd($login);
+            if ($login) {
+                $request->session()->put('user_id', $login->user_id);
+                $request->session()->put('name', $login->name);
+                DB::table('users')
+                    ->where('user_id', $login->user_id)
+                    ->update([
+                        'last_login_ip' => $this->getIp(),
+                        'last_login_at' => now(),
+                    ]);
+                if ($request->session()->has('previous_url')) {
+                    $previous_url = $request->session()->get('previous_url');
+                    return redirect($previous_url);
+                } else {
+                    return redirect()->action([UserController::class, 'index']);
+                }
+            }else{
+                return redirect("/authenticate")->with('error','Opps! You have entered invalid OTP ');
+            }
+      
+            
+        }
+
+        if ($request->isMethod('GET')) {
+            return view('frontend.account.authenticate', compact('title'));
+        }
+    }
+
+
+    public function account_status(Request $request)
+    {   
+        $title = "Account Status  " . config('global.site_title');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+               
+        return view('frontend.account.account-status', compact('title','user'));
+    }
+
+
+    public function resend_otp(Request $request)
+    {
+         
+        $user_id = $request->session()->get('acc_id');
+        $login = User::where('id', $user_id)
+                        ->first();
+        //dd($login);
+        $otp = rand(111111,999999);
+        $email = $login->email;
+        $name = $login->first_name;
+
+        DB::table('users')
+            ->where('id', $user_id)
+            ->update([
+                'otp'=> $otp,
+            ]);
+
+        $details = [
+            'user_id' => $user_id,
+            'otp' => $otp,
+            'name' => $name,
+            'ip' => $this->getIp(),
+        ];
+
+        try {
+            Mail::to($email)->send(new NotifyMail($details));
+            return redirect("/authenticate")->with('status', ['text'=>'Check your email for OTP to login','type'=>'success']);
+        } catch (Throwable $e) {
+             return redirect("/")->with('status', ['text'=>'Error!, OTP could not be sent, please try again or contact admin','type'=>'danger']);
+        }
+      
+            
+    }
+
+    public function register(Request $request, $id = null)
+    {   
+        $title = "Create an Account | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        if ($request->isMethod('GET')) {
+            return view('frontend.account.register', compact('title','user'));
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $request->validate([
+                'acc_type' => 'required',
+                'address' => 'required',
+                'state' => 'required',
+                'name' => 'required',
+                'phone' => 'required|numeric|unique:users',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+                'g-recaptcha-response' => ['required', new ReCaptcha],
+            ]);
+            
+            $email = $request->input('email');
+            $token  = Str::random(40);
+
+            User::create([
+                'name'=> $request->input('name'),
+                'email'=> $request->input('email'),
+                'phone'=> $request->input('phone'),
+                'acc_type'=> $request->input('acc_type'),
+                'address'=> $request->input('address'),
+                'city'=> $request->input('city'),
+                'state'=> $request->input('state'),
+                'token'=> $token,
+                'acc_status'=> 0,
+                'password'=> Hash::make($request->input('password')),
+            ]);
+
+            $details = [
+                'user_id' => $email,
+                'token' => $token,
+                'name' =>  $request->input('name'),
+            ];
+            
+            try {
+                Mail::to($email)->send(new RegisterMail($details));
+                
+                return redirect("login")->with('success', 'Great, you have successfully registered, Please verify your email');
+
+            } catch (Throwable $e) {
+                
+                 return redirect("register")->with('error', 'Error!, Your account details could not be sent, please contact admin');
+            }    
+        }
+    }
+
+
+    public function verifyaccount($user_id, $token)
+    {       
+        $user = User::where('email', $user_id)->first();
+        $token2 = $user->token;
+        if($token == $token2){
+            $post = DB::table('users')
+            ->where('email', $user_id)
+            ->update([
+                'acc_status'=> 1,
+            ]);
+            return redirect("/login")->with('success','Your Email Is verified, Pease Login!');
+        }else{
+
+            return redirect("/login")->with('error','Error!, the token does not match');
+        }
+ 
+    }
+
+    
+
+    public function forgot_password(Request $request)
+    {
+        $title = "Forgot Password" . config('global.site_title');
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'email' => 'required|email',
+            ]);
+            
+            $email = $request->email;
+
+            $login = User::where('email', $email)
+                        ->first();
+            if ($login) {
+                $name = $login->first_name;
+                $user_id = $login->user_id;
+                $token = $login->token;
+
+
+                $details = [
+                    'user_id' => $user_id,
+                    'token' => $token,
+                    'name' => $name,
+                ];
+
+                try {
+                    Mail::to($email)->send(new PasswordMail($details));
+                    return redirect("login")->with('status',['text'=>'Please check your email for link to change password','type'=>'success']);
+
+                } catch (Throwable $e) {
+                
+                    return redirect("login")->with('status',['text'=>'Sorry!, This email does not exit on our system, please register ','type'=>'danger']);
+                }
+      
+            
+            }
+        }
+
+        if ($request->isMethod('GET')) {
+            return view('frontend.account.forgot-password', compact('title'));
+        }
+    }
+
+    public function reset_password(Request $request, $user_id, $token)
+    {    
+        $title = "Reset Password" . config('global.site_title');
+        $user = User::where('user_id', $user_id)->first();
+        $token2 = $user->token;
+
+        $post = [
+                'user_id' => $user_id,
+                'token' => $token,
+            ];
+
+        if ($request->isMethod('GET')) {
+
+            if($token == $token2){
+                return view('frontend.account.reset-password', compact('title','post'));
+            }else{
+                return redirect("login")->with('status',['text'=>'Sorry!, There was an error and token does not match, Please contact admin ','type'=>'danger']);
+            }
+        }
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'password' => 'required|min:6|confirmed',
+            ]);
+            
+            $user = DB::table('users')
+            ->where('user_id', $user_id)
+            ->update([
+                'password'=> Hash::make($request->input('password')),
+            ]);
+      
+            return redirect("login")->with('status',['text'=>'Your password was successfully updated, Please Login ','type'=>'success']);
+        }
+       
+    }
+
+     public function adminlogin(Request $request)
+    {
+        $title = "Admin Login - " . config('global.site_name');
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'username' => 'required',
+                'password' => 'required|min:4',
+            ]);
+            
+            $username = $request->username;
+            $password = $request->password;
+
+            $login = Admin::where('username', $username)
+               ->where('password', md5($password))
+               ->first();
+            if ($login) {
+                $admin_id = $login->admin_id;
+                $request->session()->put('admin_id', $admin_id);
+
+               return redirect()->action([AdminController::class, 'index']);
+            }
+      
+            return redirect("admin")->with('status',['text'=>'Sorry! you enter wrong credentials ','type'=>'danger']);
+        }
+
+        if ($request->isMethod('GET')) {
+            return view('frontend.account.admin', compact('title'));
+        }
+    }
+
+    public function shipper(Request $request)
+{
+    $title = "Shipper Login - " . config('global.site_name');
+
+    if ($request->isMethod('POST')) {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required|min:4',
+        ]);
+
+        $username = $request->username;
+        $password = $request->password;
+
+        $login = Shipping::where('username', $username)
+           ->first();
+        if ($login) {
+            if(Hash::check($password, $login->password)){
+                $request->session()->put('ship_id', $login->ship_id); // Using the login object's id
+
+                return redirect()->action([ShipperController::class, 'index']);
+            }else{
+                return redirect()->back()->with('error', 'Error!, Your credentials are not correct');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Error!, Your credentials are not correct');
+    }
+
+    if ($request->isMethod('GET')) {
+        return view('frontend.account.shipper', compact('title'));
+    }
+}
+
+     public function getIp(){
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            //ip from share internet
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            //ip pass from proxy
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
+}
