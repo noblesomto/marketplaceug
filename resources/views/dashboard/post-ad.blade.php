@@ -96,7 +96,7 @@
                         @endif
                         <label for="brand" class="block text-gray-700">Select Brand:</label>
                         <select id="brand" name="brand" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white" required>
-                            <option value="">Select Brand</option>
+                            <option value="">Select Options</option>
                         </select>
                     </div>
                     <!--
@@ -692,44 +692,10 @@
                 <span class="text-danger">{{ $errors->first('state') }}</span>
             @endif
             <select onchange="toggleLGA(this);" name="state" id="state" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                <option value="" selected="selected">- Select State -</option>
-                    <option value="Abia">Abia</option>
-                    <option value="Adamawa">Adamawa</option>
-                    <option value="AkwaIbom">AkwaIbom</option>
-                    <option value="Anambra">Anambra</option>
-                    <option value="Bauchi">Bauchi</option>
-                    <option value="Bayelsa">Bayelsa</option>
-                    <option value="Benue">Benue</option>
-                    <option value="Borno">Borno</option>
-                    <option value="Cross River">Cross River</option>
-                    <option value="Delta">Delta</option>
-                    <option value="Ebonyi">Ebonyi</option>
-                    <option value="Edo">Edo</option>
-                    <option value="Ekiti">Ekiti</option>
-                    <option value="Enugu">Enugu</option>
-                    <option value="FCT">FCT</option>
-                    <option value="Gombe">Gombe</option>
-                    <option value="Imo">Imo</option>
-                    <option value="Jigawa">Jigawa</option>
-                    <option value="Kaduna">Kaduna</option>
-                    <option value="Kano">Kano</option>
-                    <option value="Katsina">Katsina</option>
-                    <option value="Kebbi">Kebbi</option>
-                    <option value="Kogi">Kogi</option>
-                    <option value="Kwara">Kwara</option>
-                    <option value="Lagos">Lagos</option>
-                    <option value="Nasarawa">Nasarawa</option>
-                    <option value="Niger">Niger</option>
-                    <option value="Ogun">Ogun</option>
-                    <option value="Ondo">Ondo</option>
-                    <option value="Osun">Osun</option>
-                    <option value="Oyo">Oyo</option>
-                    <option value="Plateau">Plateau</option>
-                    <option value="Rivers">Rivers</option>
-                    <option value="Sokoto">Sokoto</option>
-                    <option value="Taraba">Taraba</option>
-                    <option value="Yobe">Yobe</option>
-                    <option value="Zamfara">Zamafara</option>
+                <option value="" selected="selected">-- Select State --</option>
+                        @foreach ($states as $state)
+                            <option value="{{ $state->name }}">{{ $state->name }}</option>
+                        @endforeach
             </select>
             </div>
             <div class="col-span-10 md:col-span-3">
@@ -809,14 +775,21 @@
 <script>
     document.getElementById('category').addEventListener('change', function () {
         var countryId = this.value;
-        
+        console.log(countryId);
+            if (countryId === "3") {
+                document.querySelector('label[for="brand"]').textContent = "Select Job Type:";
+
+            }else{
+                document.querySelector('label[for="brand"]').textContent = "Select Option:";
+            }
+
         //console.log(countryId);
         // Fetch states
         axios.get('/fetch-subcat/' + countryId)
             .then(function (response) {
                 var stateSelect = document.getElementById('subcategory');
                 stateSelect.innerHTML = '<option value="">Select Sub Category</option>'; // Reset state dropdown
-                document.getElementById('brand').innerHTML = '<option value="">Select Brand</option>'; // Reset city dropdown
+                document.getElementById('brand').innerHTML = '<option value="">Select Option</option>'; // Reset city dropdown
                  var divCar = document.getElementById("divCar");
                 var divPhone = document.getElementById("divPhone");
                 var shipment = document.getElementById("shipment");
@@ -850,7 +823,7 @@
         axios.get('/fetch-brand/' + stateId)
             .then(function (response) {
                 var citySelect = document.getElementById('brand');
-                citySelect.innerHTML = '<option value="">Select Brand</option>'; // Reset city dropdown
+                citySelect.innerHTML = '<option value="">Select Option</option>'; // Reset city dropdown
                 
                 response.data.forEach(function (brand) {
                     var option = document.createElement('option');

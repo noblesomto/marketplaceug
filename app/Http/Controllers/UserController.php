@@ -11,6 +11,7 @@ use App\Models\SubCategory;
 use App\Models\Brands;
 use App\Models\Advert;
 use App\Models\Models;
+use App\Models\State;
 use App\Models\AdvertImage;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
@@ -103,6 +104,7 @@ class UserController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
         $categories = Category::orderBy('category','asc')->get();
+        $states = State::all();
         $shippings = Shipping::where('status','Active')->orderBy('company','asc')->get();
         //dd($categories);
         if ($request->isMethod('POST')) {
@@ -244,7 +246,7 @@ class UserController extends Controller
         }
         
         if ($request->isMethod('GET')) {
-            return view('dashboard.post-ad', compact('title','categories','user','shippings'));
+            return view('dashboard.post-ad', compact('title','categories','user','shippings','states'));
         }
     }
 
