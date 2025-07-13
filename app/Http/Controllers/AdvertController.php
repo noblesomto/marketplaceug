@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\LocationController;
 use App\Models\Advert;
 use App\Models\AdvertImage;
 use App\Models\Brands;
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use App\Rules\ReCaptcha;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+
 
 
 class AdvertController extends Controller
@@ -279,6 +280,88 @@ class AdvertController extends Controller
         return view('frontend.buy-direct', $data);
     }
 
+
+    public function calculate_shipping(Request $request, $id)
+    {
+        try {
+            $data['ad'] = $ad = Advert::with('images', 'shippings')->findOrFail($id);
+            $user_id = $request->session()->get('user_id');
+            $data['user'] = $user = User::findOrFail($user_id);
+
+            $validated = $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'phone' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+            ]);
+
+            $sender_station = State::where('name', $ad->state)->firstOrFail();
+            $data['reciever_state'] = $reciever_station = State::findOrFail($request->state);
+            $data['reciever_city'] = GigLogistic::findOrFail($request->city);
+            $data['shipping_method'] = $request->ship_id;
+
+            //dd($reciever_station);
+
+            $details = [
+                'advert_id' => $id,
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'phone' => $validated['phone'],
+                'reciever_station' => $reciever_station->station_id,
+                'sender_station' => $sender_station->station_id,
+                'ad_title' => $ad->ad_title,
+                'ad_price' => $ad->price,
+                'ad_des' => $ad->description,
+            ];
+
+            $shippingResponse = app()->make(LocationController::class)->getAgilityShippingCost(new Request($details));
+            $responseData = $shippingResponse->getData();
+            //dd($shippingResponse);
+            if (!$responseData->status) {
+                return back()->with('error', $responseData->error ?? 'Failed to calculate shipping cost');
+            }
+
+            $commission = 0.05 * $ad->price;
+            $shipping_cost = $responseData->data->GrandTotal ?? 0;
+            $grand_total = $ad->price + $shipping_cost + $commission;
+
+            // Store data in session
+            $request->session()->put('shipping_data', [
+                'ad' => $ad,
+                'user' => $user,
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'phone' => $validated['phone'],
+                'shipping_cost' => $shipping_cost,
+                'grand_total' => $grand_total,
+                'commission' => $commission,
+                'reciever_state' => $reciever_station,
+                'reciever_city' => $data['reciever_city'],
+                'shipping_method' => $data['shipping_method']
+            ]);
+
+            // Correct redirect syntax
+            return redirect()->route('buy.direct.payment', ['id' => $ad->id]);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+public function buy_direct_payment(Request $request, $id)
+    {
+        $title = "Buy Directly" .' | '.config('global.site_title');
+        $data['ad'] = Advert::with('images','shippings')->where('id', $id)->first();
+        $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $data['user'] = $user = User::where('user_id', $user_id)->first();
+
+        //dd($data['ad']);
+
+
+        return view('frontend.buy-direct-payment', $data);
+    }
 
     public function report_advert(Request $request, $id)
     {

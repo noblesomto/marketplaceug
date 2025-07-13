@@ -41,6 +41,8 @@ Route::get('/subcat/{id}/{slug}', [AdvertController::class, 'sub_category']);
 Route::get('/brand/{id}/{slug}', [AdvertController::class, 'brand']);
 Route::any('/search', [AdvertController::class, 'search']);
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct']);
+Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping']);
+Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');
 Route::get('/seller/{id}', [AdvertController::class, 'seller']);
 Route::any('/report-ad/{id}', [AdvertController::class, 'report_advert'])->middleware('usersession');
 Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession');
@@ -48,6 +50,7 @@ Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('u
 // Get State and Locations
 Route::get('/states', [LocationController::class, 'index']);
 Route::get('/get-gig/{state_id}', [LocationController::class, 'getGIG']);
+Route::post('/shipping-cost', [LocationController::class, 'getAgilityShippingCost']);
 
 
 //Buy Direct Paystack
@@ -187,3 +190,4 @@ Route::get('/unread-messages-count', function () {
 
     return response()->json(['count' => $count]);
 });
+

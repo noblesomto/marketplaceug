@@ -21,23 +21,21 @@ class PaystackController extends Controller
 {
     public function initialize(Request $request)
     {
-        $advertId = $request->advert_id;
+
+        if (!session()->has('shipping_data')) {
+            return redirect()->back()->with('error', 'Shipping information is missing.');
+        }
+        $shipping = session('shipping_data');
         $user_id = $request->session()->get('user_id');
-
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone' => 'required',
-        ]);
-        //dd($request->input('total_price'));
-
+        $user = User::where('user_id', $user_id)->first();
+        $price = round($shipping['grand_total']);
         $response = Http::withToken(config('services.paystack.secretKey'))
             ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
-                'email' => $request->email,
-                'amount' => $request->total_price * 100, // kobo
+                'email' => $user->email,
+                'amount' => $price * 100, // kobo
                 'callback_url' => route('paystack.callback'),
                 'metadata' => [
-                    'advert_id' => $advertId,
+                    'advert_id' => $shipping['ad']->id,
                     'user_id' => $user_id,
                 ],
             ]);
@@ -47,22 +45,25 @@ class PaystackController extends Controller
         if ($data['status']) {
 
             $reference = $data['data']['reference'];
+
+
             $post = Payment::create([
-                'advert_id'=> $advertId,
-                'user_id'=> $user_id,
+                'advert_id'        => $shipping['ad']->id,
+                'user_id'          => $user_id,
                 'payment_reference'=> $reference,
-                'first_name'=> $request->input('first_name'),
-                'last_name'=> $request->input('last_name'),
-                'phone'=> $request->input('phone'),
-                'amount'=> $request->input('amount'),
-                'commission'=> $request->input('commission'),
-                'amount_paid'=> $request->input('total_price'),
-                'shipping_cost'=> $request->input('shipping_cost'),
-                'shipping_method'=> $request->input('shipping_method'),
-                'city'=> $request->input('city'),
-                'state'=> $request->input('state'),
-                'payment_status'=> "pending",
+                'first_name'       => $shipping['first_name'],
+                'last_name'        => $shipping['last_name'],
+                'phone'            => $shipping['phone'],
+                'amount'           => $shipping['ad']->price,
+                'commission'       => $shipping['commission'],
+                'amount_paid'      => $shipping['grand_total'],
+                'shipping_cost'    => $shipping['shipping_cost'],
+                'shipping_method'  => $shipping['shipping_method'],
+                'city'             => $shipping['reciever_city']->id ?? null,
+                'state'            => $shipping['reciever_state']->id ?? null,
+                'payment_status'   => 'pending',
             ]);
+
 
             return redirect($data['data']['authorization_url']);
         }

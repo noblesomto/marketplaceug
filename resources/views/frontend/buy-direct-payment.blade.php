@@ -23,163 +23,107 @@
                alt="{{ $ad->ad_title }}" 
                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
         </div>
-        <div class="grid grid-cols-4 gap-2">
+        <div class="">
           <!-- Additional thumbnails can go here -->
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ $ad->ad_title }}</h1>
+          <div class="flex items-center space-x-4 mb-1">
+              <span class="text-2xl font-bold text-primary">₦{{ number_format($ad->price, 0, '.', ',') }}</span>
+              <span class="text-gray-600">{{ $ad->price_type }}</span>
+            </div>
         </div>
       </div>
       
       <!-- Product Details -->
       <div class="md:w-1/2 px-6">
         <div class="mb-6">
-          <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ $ad->ad_title }}</h1>
+
           
           <!-- Price Information -->
-          <div class="mb-4">
-            <div class="flex items-center space-x-4 mb-1">
-              <span class="text-2xl font-bold text-primary">₦{{ number_format($ad->price, 0, '.', ',') }}</span>
-              <span class="text-gray-600">{{ $ad->price_type }}</span>
-            </div>
+          <div class="mt-6">
 
+            @php
+                $shipping = session('shipping_data');
+            @endphp
             @include('frontend.components.flash-message')
-
-            <!-- Purchase Form -->
-            <form method="POST" action="/calculate-shipping/{{ $ad->id }}" class="mt-6">
-                @csrf
 
             <h4 class="font-semibold">Delivery Details</h4>
 
-            <div class="my-3">
-                @if ($errors->has('first_name'))
-                    <span class="text-red-700 py-1">{{ $errors->first('first_name') }}</span>
-                @endif
-                <input type="text" name="first_name" id="first_name" placeholder="First Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400">
-            </div>
-            <div class="my-3">
-                @if ($errors->has('last_name'))
-                    <span class="text-red-700 py-1">{{ $errors->first('last_name') }}</span>
-                @endif
-                <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400">
-            </div>
-            <div class="my-3">
-                @if ($errors->has('phone'))
-                    <span class="text-red-700 py-1">{{ $errors->first('phone') }}</span>
-                @endif
-                <input type="text" name="phone" id="phone" placeholder="Phone Number" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required>
-            </div>
 
-            <div x-data="{ open: false, selected: null }" class="relative w-full max-w-md mx-auto">
-                <!-- Selected item -->
-                <div
-                    @click="open = !open"
-                    class="border border-gray-300 rounded-xl px-4 py-3 flex items-center justify-between bg-white shadow-sm cursor-pointer transition-all"
-                >
-                    <template x-if="selected">
-                        <div class="flex items-center space-x-3 w-full">
-                            <img :src="selected.logo" class="w-10 h-10 object-contain rounded-md" loading="lazy">
-                            <div class="w-full">
-                                <div class="flex justify-between items-center">
-                                    <div class="font-medium text-base text-gray-800" x-text="selected.company"></div>
-                                    <div class="text-sm text-gray-700 flex-shrink-0"><span x-text="selected.weight"></span> KG</div>
-                                </div>
-                                <div class="text-sm text-gray-500">Max <span x-text="selected.weight"></span> kg</div>
-                            </div>
-                        </div>
-                    </template>
-                    <template x-if="!selected">
-                        <span class="text-gray-400 text-sm">Select a shipping option</span>
-                    </template>
-                    <svg class="w-5 h-5 ml-3 text-gray-500 transition-transform duration-200"
-                        :class="open ? 'rotate-180' : ''"
-                        fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7" />
-                    </svg>
+            <div class="space-y-2 mt-2">
+                <div class="flex space-x-4">
+                    <span class="font-semibold">Name:</span>
+                    <span>{{ $shipping['first_name'] }} {{ $shipping['last_name'] }}</span>
                 </div>
 
-                <!-- Dropdown list -->
-                <div
-                    x-show="open"
-                    x-transition
-                    @click.away="open = false"
-                    class="absolute z-50 bg-white border border-gray-200 mt-2 w-full rounded-xl shadow-lg overflow-hidden max-h-80 overflow-y-auto"
-                    style="scroll-behavior: smooth;"
-                >
-                    @foreach($ad->shippings as $shipping)
-                        <div
-                            @click="
-                                selected = {
-                                    company: '{{ $shipping->company }}',
-                                    price: {{ $shipping->price }},
-                                    weight: {{ $shipping->weight }},
-                                    logo: '{{ asset('uploads/shipping/'.$shipping->logo) }}',
-                                    ship_id: {{ $shipping->id }},
-                                };
-                                open = false;
-                                document.getElementById('shipping_price').value = selected.price;
-                                document.getElementById('ship_id').value = selected.ship_id;
-                            "
-                            class="flex items-center gap-4 px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 transition-colors"
-                        >
-                            <img src="{{ asset('uploads/shipping/'.$shipping->logo) }}"
-                                 class="w-10 h-10 object-contain rounded-md" loading="lazy">
-                            <div>
-                                <div class="font-medium text-sm text-gray-800">{{ $shipping->company }}</div>
-                                <div class="text-xs text-gray-500">Max {{ $shipping->weight }} kg</div>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="flex space-x-4">
+                    <span class="font-semibold">Phone:</span>
+                    <span>{{ $shipping['phone'] }}</span>
                 </div>
 
-                <!-- Hidden inputs -->
-                <input type="hidden" name="shipping_price" id="shipping_price">
-                <input type="hidden" name="ship_id" id="ship_id">
+            </div>
+
+            <div class="space-y-3 mt-4">
+              <h4 class="font-semibold">Delivery/Pickup Location</h4>
+              <div class="flex space-x-4">
+                    <span>Address:</span>
+                    <span>{{ $shipping['reciever_city']->address }}</span>
+              </div>
+              <div class="flex space-x-4">
+                    <span>City:</span>
+                    <span>{{ $shipping['reciever_city']->city }}</span>
+              </div>
+              <div class="flex space-x-4">
+                    <span>State:</span>
+                    <span>{{ $shipping['reciever_state']->name }}</span>
+              </div>
+
+
             </div>
 
 
-            @php 
-              $commission = 0.05 * $ad->price;           
-            @endphp
-            
 
+
+            <div class="bg-gray-50 p-3 rounded-lg mt-6 space-y-3">
+                <div class="flex justify-between mb-1">
+                    <span class="text-gray-600">Item Price:</span>
+                    <span class="font-medium" >₦{{ number_format($shipping['ad']->price, 2, '.', ',') }}</span>
+                </div>
+                <div class="flex justify-between mb-1">
+                    <span class="text-gray-600">Shipping:</span>
+                    <span class="font-medium" >₦{{ number_format($shipping['shipping_cost'], 2, '.', ',') }}</span>
+                </div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-600">Buyer protection:</span>
+                <span class="font-medium">₦{{ number_format($shipping['commission'], 2, '.', ',') }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-800 font-semibold">Total Price:</span>
+                <span class="text-xl font-bold ">₦{{ number_format($shipping['grand_total'], 2, '.', ',') }}</span>
+              </div>
+            </div>
           </div>
 
-          
-          
+           <!-- Purchase Form -->
+            <form method="POST" action="{{ route('paystack.pay') }}" id="paystack" class="mt-6">
+                @csrf
 
-            <input type="hidden" name="email" value="{{ $user->email }}">
-            <input type="hidden" name="amount" value="{{ $ad->price }}">
-            <input type="hidden" name="advert_id" value="{{ $ad->id }}">
-            <input type="hidden" name="total_price" id="grand_total_input" >
-            <input type="hidden" name="shipping_cost" id="shipping_cost" >
-            <input type="hidden" name="commission" value="{{ $commission }}">
-            <input type="hidden" name="shipping_method" id="ship_method" >
 
-            <div class="">
-              <h4 class="font-semibold">Delivery/Pickup Location</h4>
+            <input type="hidden" name="email" value="{{ $shipping['user']->email }}">
+            <input type="hidden" name="amount" value="{{ $shipping['ad']->price }}">
+            <input type="hidden" name="advert_id" value="{{ $shipping['ad']->id }}">
+            <input type="hidden" name="total_price" value="{{ $shipping['grand_total'] }}" >
+            <input type="hidden" name="shipping_cost" value="{{ $shipping['shipping_cost'] }}" >
+            <input type="hidden" name="commission" value="{{ $shipping['commission'] }}">
+            <input type="hidden" name="shipping_method" value="{{ $shipping['shipping_method'] }}" >
+            <input type="hidden" name="city" value="{{ $shipping['reciever_city']->id }}">
+            <input type="hidden" name="state" value="{{ $shipping['reciever_state']->id }}">
 
-                  <div class="my-2">
-                    @if ($errors->has('state'))
-                        <span class="text-red-700 py-1">{{ $errors->first('state') }}</span>
-                    @endif
-                      <select name="state" id="state" class="w-full bg-white  px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required>
-                    <option value="" selected="selected">-- Select State --</option>
-                        @foreach ($states as $state)
-                            <option value="{{ $state->id }}">{{ $state->name }}</option>
-                        @endforeach
-                    </select>
-                  </div>
-                  <div class="my-2">
-                      <select name="city" id="city" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required>
-                    <option value="">-- Select City --</option>
-                    </select>
-                  </div>
-
-            </div>
             
             <button type="submit" class="w-full md:w-auto mt-4 flex items-center justify-center px-8 py-3 bg-primary hover:bg-primary-dark  font-medium rounded-lg shadow-md transition-colors duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
-              Proceed To Payment
+              Buy Now Securely
             </button>
           </form>
 
@@ -311,7 +255,6 @@
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-
 <script>
     document.getElementById('clickableDiv').addEventListener('click', function() {
         document.getElementById('modalBackdrop').classList.remove('hidden');
@@ -331,25 +274,4 @@
 </script>
 
 
-<script>
-        $('#state').on('change', function () {
-            let stateID = $(this).val();
 
-            if (stateID) {
-                $.ajax({
-                    url: '/get-gig/' + stateID,
-                    type: 'GET',
-                    success: function (data) {
-                        $('#city').empty().append('<option value="">-- Select City --</option>');
-                        $.each(data, function (key, city) {
-                            $('#city').append(
-                                `<option value="${city.id}">${city.city} - ${city.address}</option>`
-                            );
-                        });
-                    }
-                });
-            } else {
-                $('#city').empty().append('<option value="">-- Select City --</option>');
-            }
-        });
-    </script>

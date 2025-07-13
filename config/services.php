@@ -31,10 +31,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'paystack' => [
-    'publicKey' => env('PAYSTACK_PUBLIC_KEY'),
-    'secretKey' => env('PAYSTACK_SECRET_KEY'),
-    'paymentUrl' => env('PAYSTACK_PAYMENT_URL'),
-],
+        'publicKey' => env('PAYSTACK_PUBLIC_KEY'),
+        'secretKey' => env('PAYSTACK_SECRET_KEY'),
+        'paymentUrl' => env('PAYSTACK_PAYMENT_URL'),
+    ],
+    'agility' => [
+        'token' => env('AGILITY_API_TOKEN'),
+        'url' => env('AGILITY_API_URL', 'https://thirdpartynode.theagilitysystems.com/price'),
+    ],
 
 
 ];

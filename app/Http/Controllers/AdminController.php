@@ -230,7 +230,7 @@ class AdminController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
         
-        return view('backend.advert.adverts', compact('title', 'page_title','adverts'));
+        return view('backend.advert.sold-adverts', compact('title', 'page_title','adverts'));
     }
 
     public function advert_status($id, $status)
