@@ -159,11 +159,13 @@ class PaystackController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $email = $user->email;
+        $amount = (int) str_replace(',', '', $request->amount);
+        //dd($amount);
 
         $response = Http::withToken(config('services.paystack.secretKey'))
             ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
                 'email' => $email,
-                'amount' => $request->amount * 100, // kobo
+                'amount' => $amount * 100, // kobo
                 'callback_url' => route('boost.callback'),
                 'metadata' => [
                     'advert_id' => $advertId,
@@ -180,7 +182,8 @@ class PaystackController extends Controller
                 'advert_id'=> $advertId,
                 'user_id'=> $user_id,
                 'payment_reference'=> $reference,
-                'amount'=> $request->input('amount'),
+                'amount'=> $amount,
+                'boost_type'=> $request->input('boost_name'),
                 'duration'=> $request->input('duration'),
                 'boost_status'=> "pending",
                 'payment_status'=> "pending",
@@ -230,6 +233,47 @@ class PaystackController extends Controller
         }
 
        return redirect()->route('payment.failed')->with('error', 'Payment was no Successful.');
+    }
+
+    public function initialize_post_boost(Request $request)
+    {
+        $advertId = $request->advert_id;
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $email = $user->email;
+        $promotion = $request->session()->get('promotion');
+
+        $response = Http::withToken(config('services.paystack.secretKey'))
+            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
+                'email' => $email,
+                'amount' => $request->promotion * 100, // kobo
+                'callback_url' => route('boost.callback'),
+                'metadata' => [
+                    'advert_id' => $advertId,
+                    'user_id' => $user_id,
+                ],
+            ]);
+
+        $data = $response->json();
+
+        if ($data['status']) {
+
+            $reference = $data['data']['reference'];
+            $post = AdvertBoost::create([
+                'advert_id'=> $advertId,
+                'user_id'=> $user_id,
+                'payment_reference'=> $reference,
+                'amount'=> $request->input('promotion'),
+                'boost_type'=> $promotion,
+                'duration'=> "7",
+                'boost_status'=> "pending",
+                'payment_status'=> "pending",
+            ]);
+
+            return redirect($data['data']['authorization_url']);
+        }
+
+        return back()->with('error', 'Payment initialization failed.');
     }
 
 

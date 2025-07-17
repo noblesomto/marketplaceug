@@ -133,7 +133,7 @@ class AdminController extends Controller
     public function delete_brand($id,$cat) 
     {
 
-        $brand = Brands::where('brand_id', $id)->first();
+        $brand = Brands::where('id', $id)->first();
         $brand->delete();
 
         return redirect("admin/brand/".$cat)->with('status', ['text'=>'Brand was deleted','type'=>'success']);
@@ -383,7 +383,7 @@ class AdminController extends Controller
             ->where("payment_status", "paid")
             ->orderBy('created_at', 'desc')
             ->paginate(20);
-        
+        //dd($payments);
         return view('backend.payments', compact('title', 'page_title', 'payments'));
     }
 

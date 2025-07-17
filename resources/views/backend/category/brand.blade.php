@@ -36,7 +36,7 @@
                               @if($cat->sub_category=="Cars" || $cat->sub_category=="Phones and Tablets")
                               <a href="/admin/model/{{ $row->id }}" >View </a>
                               @endif
-                              <a href="/admin/delete-brand/{{ $row->brand_id }}/{{ $cat->subcat_id }}" onclick="return confirm('Are you sure you want to delete thie Brand?');" class="text-danger mx-2" title="Delete Brand" > <i class="fa fa-trash"></i> </a>
+                              <a href="/admin/delete-brand/{{ $row->id }}/{{ $cat->id }}" onclick="return confirm('Are you sure you want to delete thie Brand?');" class="text-danger mx-2" title="Delete Brand" > <i class="fa fa-trash"></i> </a>
                            </div>
                        </div>
                    </div>

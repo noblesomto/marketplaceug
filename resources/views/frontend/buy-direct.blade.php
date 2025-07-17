@@ -46,7 +46,7 @@
             <form method="POST" action="/calculate-shipping/{{ $ad->id }}" class="mt-6">
                 @csrf
 
-            <h4 class="font-semibold">Delivery Details</h4>
+            <h4 class="font-semibold">Shipping Information</h4>
 
             <div class="my-3">
                 @if ($errors->has('first_name'))
@@ -154,7 +154,7 @@
             <input type="hidden" name="shipping_method" id="ship_method" >
 
             <div class="">
-              <h4 class="font-semibold">Delivery/Pickup Location</h4>
+              <h4 class="font-semibold">Delivery / Pickup Location</h4>
 
                   <div class="my-2">
                     @if ($errors->has('state'))

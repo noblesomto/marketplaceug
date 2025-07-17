@@ -33,6 +33,7 @@
                 <th scope="col">Ad Owner</th>
                 <th scope="col">Ad Price</th>
                 <th scope="col">Location</th>
+                <th scope="col">Ship ID</th>
                 <th scope="col">Published Date</th>
                 <th scope="col">Sold Date</th>
                 <th scope="col">Action</th>
@@ -48,6 +49,7 @@
                 <td><a href="/admin/view-user/{{ $row->user->user_id }}">{{ $row->user->name }}</a> </td>
                 <td>₦{{ number_format($row->price, 2, '.', ',') }}</td>
                 <td>{{ $row->state }}</td>
+                <td>{{ $row->ship_code }}</td>
                 <td>{{ date('j F Y', strtotime($row->created_at)); }}</td>
                 <td>{{ date('j F Y', strtotime($row->sold_date)); }}</td>
                 @if( $row->ad_status == 1 )

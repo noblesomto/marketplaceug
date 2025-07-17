@@ -126,6 +126,7 @@ class UserController extends Controller
                 'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20000',
             ];
 
+
             if($subcat=="31361"){
                 $rules['mileage'] = 'required|numeric';
                 $rules['condition'] = 'required';
@@ -241,8 +242,12 @@ class UserController extends Controller
             $phone->save();
         }
         
-
+        if ($request->has('promotion')) {
+            $request->session()->put('promotion', $request->promotion);
+            return redirect('/user/post-boost-ad/' . $advert->id);
+        }
         return redirect('/user/post-ad')->with('success', 'Your Advert Has successfully been Posted');
+
         }
         
         if ($request->isMethod('GET')) {
@@ -803,6 +808,21 @@ class UserController extends Controller
                         ->firstOrFail();
 
         return view('dashboard.boost-ad', compact('title','user','advert','count_ads', 'price'));
+    }
+
+    public function post_boost_ad(Request $request, $id)
+    {
+        $title = "Boost Ad | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $promotion = $request->session()->get('promotion');
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        $advert = Advert::with(['images', 'car', 'phone'])
+                        ->where('id', $id)
+                        ->where('user_id', $user_id)
+                        ->firstOrFail();
+
+        return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion'));
     }
 
     public function boosted_ad(Request $request, $id)

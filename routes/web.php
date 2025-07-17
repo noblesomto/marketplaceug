@@ -83,6 +83,7 @@ Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->mi
 Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->middleware('usersession');
 Route::any('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->middleware('usersession');
 Route::any('/user/post-ad', [UserController::class, 'post_ad'])->middleware('usersession');
+Route::any('/user/post-boost-ad/{id}', [UserController::class, 'post_boost_ad'])->middleware('usersession');
 Route::get('/user/edit-ad/{id}', [UserController::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
 Route::post('/user/edit-ad/{id}', [UserController::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
 Route::any('/user/boost-ad/{id}', [UserController::class, 'boost_ad'])->middleware('usersession');
@@ -115,6 +116,7 @@ Route::any('/user/chat-buyer/{user}/{id}', [UserController::class, 'chat_buyer']
 Route::get('/chat-seller/{user}/{id}', [UserController::class, 'chat_seller']);
 
 //Paystack User Boost Add
+Route::post('post-boost/pay', [PaystackController::class, 'initialize_post_boost'])->name('boost.pay')->middleware('usersession');
 Route::post('boost/pay', [PaystackController::class, 'initialize_boost'])->name('boost.pay')->middleware('usersession');
 Route::get('/boost/callback', [PaystackController::class, 'callback_boost'])->name('boost.callback')->middleware('usersession');
 Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');

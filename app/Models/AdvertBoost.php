@@ -17,7 +17,8 @@ class AdvertBoost extends Model
         'amount',
         'duration',
         'payment_status',
-        'boost_status'
+        'boost_status',
+        'boost_type'
     ];
 
     public function boost()

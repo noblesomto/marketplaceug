@@ -37,11 +37,13 @@
                 <th scope="col">Payment Date</th>
                 <th scope="col">Payment Status</th>
                 <th scope="col">Action</th>
+                <th scope="col">Ship ID</th>
                 <th scope="col">Shipping Status</th>
                 <th scope="col">Update Status</th>
               </tr>
             </thead>
             <tbody>
+              @if($payments !='')
             @foreach ( $payments as $row )
               <tr>
                 <td> <img width="60px" src="{{  asset('uploads/images/'.$row->advert->firstImage->image) }}" class="img-responsive" alt="Image"></td>
@@ -61,6 +63,7 @@
                 @else
                 <td><a class="text-primary" href="/admin/confirm-payment/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Payment?');">Comfirm Payment</a></td>
                 @endif
+                <td>{{ $row->ship_code }}</td>
                 @if($row->shipping_status=="delivered")
                 <td><span class="text-success text-capitalize">{{ $row->shipping_status }}</span> </td>
                 @else
@@ -75,7 +78,14 @@
                 </td>
               </tr>
             @endforeach
-              
+              @else
+
+              <tr>
+                <td colspan="12">
+                  No Records available
+                </td>
+              </tr>
+              @endif
             </tbody>
           </table>
           </div>
