@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserManageAdverts;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdvertController;
@@ -11,6 +12,13 @@ use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\Admin\ManageAdverts;
+use App\Http\Controllers\Admin\ManageBoost;
+use App\Http\Controllers\Admin\ManageCategories;
+use App\Http\Controllers\Admin\ManageShipping;
+use App\Http\Controllers\Admin\ManageUsers;
+use App\Http\Controllers\Admin\ManageAdvertising;
+use App\Http\Controllers\Admin\ManagePayments;
 
 Route::get('/', [PageController::class, 'index']);
 Route::any('/page', [PageController::class, 'page']);
@@ -82,18 +90,20 @@ Route::any('/user/payment', [UserController::class, 'payments'])->middleware('us
 Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->middleware('usersession');
 Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->middleware('usersession');
 Route::any('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->middleware('usersession');
-Route::any('/user/post-ad', [UserController::class, 'post_ad'])->middleware('usersession');
-Route::any('/user/post-boost-ad/{id}', [UserController::class, 'post_boost_ad'])->middleware('usersession');
-Route::get('/user/edit-ad/{id}', [UserController::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
-Route::post('/user/edit-ad/{id}', [UserController::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
-Route::any('/user/boost-ad/{id}', [UserController::class, 'boost_ad'])->middleware('usersession');
-Route::any('/user/boosted-ad/{id}', [UserController::class, 'boosted_ad'])->middleware('usersession');
 Route::any('/user/category', [UserController::class, 'category'])->middleware('usersession');
 Route::any('/user/orders', [UserController::class, 'orders'])->middleware('usersession');
 Route::any('/user/messages', [UserController::class, 'messages'])->middleware('usersession');
 Route::any('/user/add-wishlist/{id}', [UserController::class, 'add_wishlist'])->middleware('usersession');
 Route::any('/user/favourites', [UserController::class, 'favourites'])->middleware('usersession');
 Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->middleware('usersession');
+
+//User Manage Ads
+Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');
+Route::any('/user/post-boost-ad/{id}', [UserManageAdverts::class, 'post_boost_ad'])->middleware('usersession');
+Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
+Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
+Route::any('/user/boost-ad/{id}', [UserManageAdverts::class, 'boost_ad'])->middleware('usersession');
+Route::any('/user/boosted-ad/{id}', [UserManageAdverts::class, 'boosted_ad'])->middleware('usersession');
 
 
 //Profile
@@ -124,38 +134,42 @@ Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('paym
 
 //Admin Index
 Route::get('/admin/index', [AdminController::class, 'index'])->middleware('adminsession');
-Route::any('/admin/category', [AdminController::class, 'category'])->middleware('adminsession');
-Route::any('/admin/delete-category/{id}', [AdminController::class, 'delete_category'])->middleware('adminsession');
-Route::any('/admin/sub-category/{id}', [AdminController::class, 'sub_category'])->middleware('adminsession');
-Route::any('/admin/delete-subcategory/{id}/{cat}', [AdminController::class, 'delete_subcategory'])->middleware('adminsession');
-Route::any('/admin/brand/{id}', [AdminController::class, 'brand'])->middleware('adminsession');
-Route::any('/admin/delete-brand/{id}/{cat}', [AdminController::class, 'delete_brand'])->middleware('adminsession');
-Route::any('/admin/model/{id}', [AdminController::class, 'model'])->middleware('adminsession');
-Route::any('/admin/delete-model/{id}/{cat}', [AdminController::class, 'delete_model'])->middleware('adminsession');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
 
-//Manage Adverts
-Route::any('/admin/active-adverts', [AdminController::class, 'active_adverts'])->middleware('adminsession');
-Route::any('/admin/disabled-adverts', [AdminController::class, 'disabled_adverts'])->middleware('adminsession');
-Route::any('/admin/sold-adverts', [AdminController::class, 'sold_adverts'])->middleware('adminsession');
-Route::any('/admin/advert-status/{id}/{status}', [AdminController::class, 'advert_status'])->middleware('adminsession');
-Route::any('/admin/sold-status/{id}/{status}', [AdminController::class, 'sold_status'])->middleware('adminsession');
-Route::any('/admin/active-users', [AdminController::class, 'active_users'])->middleware('adminsession');
-Route::any('/admin/user-status/{id}/{status}', [AdminController::class, 'user_status'])->middleware('adminsession');
-Route::any('/admin/disabled-users', [AdminController::class, 'disabled_users'])->middleware('adminsession');
-//Route::any('/admin/delete-user/{id}', [AdminController::class, 'delete_user'])->middleware('adminsession');
-Route::any('/admin/view-user/{id}', [AdminController::class, 'view_user'])->middleware('adminsession');
-Route::any('/admin/delete-advert/{id}', [AdminController::class, 'delete_advert'])->middleware('adminsession');
+//Manage Categories
+Route::any('/admin/category', [ManageCategories::class, 'category'])->middleware('adminsession');
+Route::any('/admin/delete-category/{id}', [ManageCategories::class, 'delete_category'])->middleware('adminsession');
+Route::any('/admin/sub-category/{id}', [ManageCategories::class, 'sub_category'])->middleware('adminsession');
+Route::any('/admin/delete-subcategory/{id}/{cat}', [ManageCategories::class, 'delete_subcategory'])->middleware('adminsession');
+Route::any('/admin/brand/{id}', [ManageCategories::class, 'brand'])->middleware('adminsession');
+Route::any('/admin/delete-brand/{id}/{cat}', [ManageCategories::class, 'delete_brand'])->middleware('adminsession');
+Route::any('/admin/model/{id}', [ManageCategories::class, 'model'])->middleware('adminsession');
+Route::any('/admin/delete-model/{id}/{cat}', [ManageCategories::class, 'delete_model'])->middleware('adminsession');
 
+//Manage Adverts
+Route::any('/admin/active-adverts', [ManageAdverts::class, 'active_adverts'])->middleware('adminsession');
+Route::any('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts'])->middleware('adminsession');
+Route::any('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts'])->middleware('adminsession');
+Route::any('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->middleware('adminsession');
+Route::any('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->middleware('adminsession');
+Route::any('/admin/delete-advert/{id}', [ManageAdverts::class, 'delete_advert'])->middleware('adminsession');
+
+//Manage Users
+Route::any('/admin/active-users', [ManageUsers::class, 'active_users'])->middleware('adminsession');
+Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->middleware('adminsession');
+Route::any('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->middleware('adminsession');
+//Route::any('/admin/delete-user/{id}', [ManageUsers::class, 'delete_user'])->middleware('adminsession');
+Route::any('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->middleware('adminsession');
 
 //Manage Payments
-Route::any('/admin/completed-payments', [AdminController::class, 'completed_payments'])->middleware('adminsession');
-Route::any('/admin/pending-payments', [AdminController::class, 'pending_payments'])->middleware('adminsession');
-Route::any('/admin/confirm-delivery/{id}', [AdminController::class, 'confirm_delivery'])->middleware('adminsession');
+Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payments'])->middleware('adminsession');
+Route::any('/admin/pending-payments', [ManagePayments::class, 'pending_payments'])->middleware('adminsession');
+Route::any('/admin/confirm-delivery/{id}', [ManagePayments::class, 'confirm_delivery'])->middleware('adminsession');
 
 //Advertising
-Route::any('/admin/create-advert', [AdminController::class, 'create_advert'])->middleware('adminsession');
+Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
 
+//Reports
 Route::any('/admin/view-reports', [AdminController::class, 'view_reports'])->middleware('adminsession');
 Route::any('/admin/report-status/{id}/{status}', [AdminController::class, 'report_status'])->middleware('adminsession');
 
