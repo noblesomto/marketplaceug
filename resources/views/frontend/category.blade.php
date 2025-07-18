@@ -12,23 +12,26 @@
       <div class="col-span-10 md:col-span-6">
         <div class="grid grid-cols-10 gap-3">
            <div class="col-span-2 hidden sm:block">
-            <div><h4 class="font-semibold">Categories</h4></div>
+              <div><h4 class="font-semibold">Categories</h4></div>
 
-            <div class="mt-4"><a class="text-xs" href="/all-categories">All Categories</a></div>
-             <div class="flex  bg-gray-200 p-2 mt-1 mb-2">
-               <span class="font-semibold mr-2">{{ $cat->category }}</span>
-               <span>({{ $count_cat }})</span>
-             </div>
+              <div class="mt-4">
+                  <a class="text-xs" href="{{ url('/all-categories') }}">All Categories</a>
+              </div>
 
-             @foreach($categories as $subCategory)
-               <a href="/subcat/{{ $subCategory->id }}/{{ $subCategory->sub_cat_slug }}">
-                 <div class="flex ml-3 mt-1">
-                    <span class="mr-1">{{ $subCategory->sub_category }}</span>
-                    <span>({{ $subCategory->advert_count }})</span>
-                 </div>
-               </a>
-            @endforeach
-           </div>
+              <div class="flex bg-gray-200 p-2 mt-1 mb-2">
+                  <span class="font-semibold mr-2">{{ $cat->category }}</span>
+                  <span>({{ $count_cat }})</span>
+              </div>
+
+              @foreach($categories as $subCategory)
+                  <a href="{{ url('/category/' . $cat->category_slug . '/' . $subCategory->sub_cat_slug) }}">
+                      <div class="flex ml-3 mt-1">
+                          <span class="mr-1">{{ $subCategory->sub_category }}</span>
+                          <span>({{ $subCategory->advert_count }})</span>
+                      </div>
+                  </a>
+              @endforeach
+          </div>
            <div class="col-span-10 md:col-span-8">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')

@@ -13,14 +13,22 @@
         <div class="grid grid-cols-10 gap-3">
            <div class="col-span-2 hidden sm:block bg-white p-2">
              @foreach ($categories as $category)
-                  <div class=" border-b border-b-gray-300 pb-3 pt-1">
-                      <a href="/category/{{ $category->id }}/{{ $category->category_slug }}"><h2 class="font-semibold text-base">{{ $category->category }}</h2></a> <!-- Category name -->
-                        <ul class="">
-                            @foreach ($category->subCategories as $subCategory)
-                                <li class="ml-3 text-sm"><a href="/subcat/{{ $subCategory->id }}/{{ $subCategory->sub_cat_slug }}">{{ $subCategory->sub_category }}</a> </li> <!-- Subcategory name -->
-                            @endforeach
-                        </ul>
-                  </div>  
+                  <div class="border-b border-b-gray-300 pb-3 pt-1">
+                    <a href="{{ url('/category/' . $category->category_slug) }}">
+                        <h2 class="font-semibold text-base">{{ $category->category }}</h2>
+                    </a> <!-- Category name -->
+
+                    <ul>
+                        @foreach ($category->subCategories as $subCategory)
+                            <li class="ml-3 text-sm">
+                                <a href="{{ url('/category/' . $category->category_slug . '/' . $subCategory->sub_cat_slug) }}">
+                                    {{ $subCategory->sub_category }}
+                                </a>
+                            </li> <!-- Subcategory name -->
+                        @endforeach
+                    </ul>
+                </div>
+
               @endforeach
            </div>
            <div class="col-span-10 md:col-span-8">

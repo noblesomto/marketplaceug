@@ -3,64 +3,77 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
+<!-- Desktop Categories Grid (hidden on mobile) -->
+<section class="max-w-7xl mx-auto px-4 py-8 hidden lg:block">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Browse Categories</h2>
 
-<section class="max-w-5xl mx-auto mt-10 hidden lg:block">
-  <div class="grid grid-cols-3 gap-5">
-      @foreach ($categories as $category)
-          <div class="flex flex-col">
-              <div>
-                <a href="/category/{{ $category->id }}/{{ $category->category_slug }}"><h2 class="font-semibold text-base">{{ $category->category }}</h2></a>
-              </div>
-              <div>
-                  @foreach ($category->subCategories as $subCategory)
-                        <li class="ml-3 text-sm"><a href="/subcat/{{ $subCategory->id }}/{{ $subCategory->sub_cat_slug }}">{{ $subCategory->sub_category }}</a> </li> <!-- Subcategory name -->
-                    @endforeach
-              </div>
-          </div>
-      @endforeach
-  </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($categories as $category)
+                <div class="group">
+                    <a href="{{ url('/category/' . $category->category_slug) }}" class="block">
+                        <h3 class="font-semibold text-lg text-gray-800 group-hover:text-primary transition-colors mb-3">
+                            {{ $category->category }}
+                        </h3>
+                    </a>
+
+                    <ul class="space-y-2">
+                        @foreach ($category->subCategories as $subCategory)
+                            <li>
+                                <a href="{{ url('/category/' . $category->category_slug . '/' . $subCategory->sub_cat_slug) }}"
+                                   class="text-gray-600 hover:text-primary text-sm transition-colors flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-gray-300 rounded-full mr-2"></span>
+                                    {{ $subCategory->sub_category }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </section>
 
-<div class="bg-white block lg:hidden pb-20">
-      <a href="/all-categories">
-      <div class="flex justify-between items-center mt-6 mx-2 border-b border-b-gray-300 py-2">
-        <div class="flex items-center">
-            <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+<!-- Mobile Categories List (hidden on desktop) -->
+<div class="bg-white lg:hidden">
+    <div class="max-w-md mx-auto px-4 pb-20">
+        <!-- All Categories Header -->
+        <a href="/all-categories" class="block group">
+            <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <div class="bg-primary bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-gray-800 group-hover:text-primary transition-colors">All Categories</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
             </div>
-            <div>
-                All Categories
-            </div>
-        </div>
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-        </svg>
-        </div>
-  </div>
-  </a>
+        </a>
 
-  @foreach ($categories as $category)
-      <a href="/m-category/{{ $category->id }}/{{ $category->category_slug }}">
-          <div class="flex justify-between items-center mx-2 border-b border-b-gray-300 py-2">
-              <div class="flex items-center">
-                  <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-                      <img class="w-6" src="{{ asset('frontend/images/icons/' . $category->icon) }}">
-                  </div>
-                  <div>
-                      {{ $category->category }}
-                  </div>
-              </div>
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-              </div>
-        </div>
-      </a>
-  @endforeach
-  </div>
+        <!-- Individual Categories -->
+        @foreach ($categories as $category)
+            <a href="{{ url('/category/' . $category->category_slug) }}" class="block group">
+                <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <div class="bg-primary bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                            <img class="h-5 w-5" src="{{ asset('frontend/images/icons/' . $category->icon) }}" alt="{{ $category->category }}">
+                        </div>
+                        <span class="text-gray-800 group-hover:text-primary transition-colors">
+                            {{ $category->category }}
+                        </span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </a>
+        @endforeach
+
+    </div>
+</div>
 
 @include('frontend.layouts.footer')

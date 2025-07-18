@@ -199,45 +199,95 @@ class AdvertController extends Controller
         return view('frontend.all-categories', compact('title', 'ads', 'user', 'categories'));
     }
 
-    public function category(Request $request, $id, $slug)
+    public function category(Request $request, $category_slug)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage')->where('category', $id)->orderBy('created_at', 'asc')->paginate(20);
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $title = config('global.site_name') . ' | ' . $cat->category;
+        $ads = Advert::with('firstImage')->where('category', $cat->id)->orderBy('created_at', 'asc')->paginate(20);
+
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $cat = Category::where('id', $id)->first();
-        $count_cat = Advert::where('category', $id)->count();
+        $count_cat = Advert::where('category', $cat->id)->count();
+
         $categories = DB::table('sub_categories')
             ->leftJoin('adverts', 'sub_categories.id', '=', 'adverts.sub_category')
-            ->where('sub_categories.cat_id', $id)
+            ->where('sub_categories.cat_id', $cat->id)
             ->select('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
-            ->orderBy('advert_count', 'desc') // Optional: Order by count if needed
+            ->orderBy('advert_count', 'desc')
             ->get();
 
-        //dd($categories);
         return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
     }
 
-    public function sub_category(Request $request, $id, $slug)
+    public function sub_category(Request $request, $category_slug, $subcat_slug)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
-        $subcat_id = $id;
-        $ads = Advert::with('firstImage')->where('sub_category', $id)->orderBy('created_at', 'asc')->paginate(20);
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category;
+        $ads = Advert::with('firstImage')->where('sub_category', $subcat->id)->orderBy('created_at', 'asc')->paginate(20);
+
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $subcat = SubCategory::where('id', $id)->first();
-        $count_subcat = Advert::where('sub_category', $id)->count();
+        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
+
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $id)
+            ->where('brands.subcat_id', $subcat->id)
             ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-            ->orderBy('advert_count', 'desc') // Optional: Order by count if needed
+            ->orderBy('advert_count', 'desc')
             ->get();
 
-        //dd($count_subcat);
-        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat_id', 'subcat', 'count_subcat'));
+        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
+}
+
+    public function all_subcat(Request $request, $category_slug, $subcat_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
+        $ads = Advert::with('firstImage')->where('sub_category', $subcat->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
+
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        return view('frontend.all-subcat', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
+    }
+
+    public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+        $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
+
+        $title = config('global.site_name') . ' | ' . $brand->brand;
+        $ads = Advert::with('firstImage')->where('brand', $brand->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
+
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        return view('frontend.brand', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
     }
 
     public function mobile_category(Request $request, $id, $slug)

@@ -44,9 +44,18 @@ Route::any('/shipper', [AccountController::class, 'shipper']);
 Route::get('/advert/{id}/{slug}', [AdvertController::class, 'advert']);
 Route::get('/adverts', [AdvertController::class, 'adverts']);
 Route::get('/all-categories', [AdvertController::class, 'all_categories']);
-Route::get('/category/{id}/{slug}', [AdvertController::class, 'category']);
-Route::get('/subcat/{id}/{slug}', [AdvertController::class, 'sub_category']);
-Route::get('/brand/{id}/{slug}', [AdvertController::class, 'brand']);
+// Show all ads in a category (e.g. /category/electronics)
+Route::get('/category/{category_slug}', [AdvertController::class, 'category']);
+
+// Show all ads in a subcategory (e.g. /category/electronics/phones)
+Route::get('/category/{category_slug}/{subcat_slug}', [AdvertController::class, 'sub_category']);
+
+// Show all brands under a subcategory (e.g. /category/electronics/phones/all-brands)
+Route::get('/category/{category_slug}/{subcat_slug}/all-brands', [AdvertController::class, 'all_subcat']);
+
+// Show ads by brand under subcategory (e.g. /category/electronics/phones/apple)
+Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand']);
+
 Route::any('/search', [AdvertController::class, 'search']);
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct']);
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping']);

@@ -12,48 +12,8 @@
       <div class="col-span-10 lg:col-span-6">
         <div class="grid grid-cols-10 gap-3">
            <div class="col-span-2 hidden lg:block">
-            <div><h4 class="font-semibold">Categories</h4></div>
+            <div><h4 class="font-semibold">Filter</h4></div>
 
-            <div class="mt-4">
-              <a class="text-xs" href="/all-categories">All Categories</a>
-            </div>
-
-            <!-- Category Sidebar -->
-            <div class="flex bg-gray-200 p-2 mt-1 mb-2">
-              <span class="font-semibold mr-2">{{ $subcat->sub_category }}</span>
-              <span>({{ $count_subcat }})</span>
-            </div>
-
-            @php
-              $brandLimit = 15;
-            @endphp
-
-            @if($subcat->sub_category == "Cars" || $subcat->sub_category == "Mobile Phones")
-              @foreach($brands->take($brandLimit) as $brand)
-                <a href="{{ url('/category/' . $subcat->category->category_slug . '/' . $subcat->sub_cat_slug . '/' . $brand->brand_slug) }}">
-                  <div class="flex ml-3 mt-1">
-                    <span class="mr-1">{{ $brand->brand }}</span>
-                    <span>({{ $brand->advert_count }})</span>
-                  </div>
-                </a>
-              @endforeach
-            @else
-              @foreach($brands->take($brandLimit) as $brand)
-                <div class="flex ml-3 mt-1">
-                  <span class="mr-1">{{ $brand->brand }}</span>
-                  <span>({{ $brand->advert_count }})</span>
-                </div>
-              @endforeach
-            @endif
-
-            @if($brands->count() > $brandLimit)
-              <div class="ml-3 mt-2">
-                <a href="{{ url('/category/' . $subcat->category->category_slug . '/' . $subcat->sub_cat_slug . '/all-brands') }}"
-                   class="text-dark_green text-sm hover:underline">
-                  See all {{ $subcat->sub_category }}
-                </a>
-              </div>
-            @endif
 
            </div>
            <div class="col-span-10 lg:col-span-8">

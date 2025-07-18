@@ -23,6 +23,7 @@ mirror --reverse \
        --exclude-glob deploy.sh \
        --exclude-glob gitpush.sh \
        --exclude-glob storage/** \
+       --exclude-glob public/hot \
        --exclude-glob public/uploads/** \
        --exclude-glob public/ckeditor/** \
        --exclude-glob public/backend/** \

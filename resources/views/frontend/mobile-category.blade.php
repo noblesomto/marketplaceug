@@ -13,12 +13,12 @@
     </div>
 
     @foreach($categories as $subCategory)
-      <a href="/subcat/{{ $subCategory->id }}/{{ $subCategory->sub_cat_slug }}">
+      <a href="{{ url('/category/' . $subCategory->category->category_slug . '/' . $subCategory->sub_cat_slug) }}">
         <div class="flex ml-3 mt-1">
-          <span class="mr-1">{{ $subCategory->sub_category }}</span>
-          <span>({{ $subCategory->advert_count }})</span>
+            <span class="mr-1">{{ $subCategory->sub_category }}</span>
+            <span>({{ $subCategory->advert_count }})</span>
         </div>
-      </a>
+    </a>
     @endforeach
   </div>
 </main>

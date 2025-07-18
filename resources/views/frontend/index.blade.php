@@ -16,17 +16,17 @@
   </div>
 
   <div class="flex items-center justify-between px-2 block lg:hidden">
-      <a class="mx-1" href="/m-category/1/cars-and-bikes">
+      <a class="mx-1" href="/category/vehicles">
         <div class="flex flex-col items-center">
           <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
             <img class="w-6" src="{{ asset('frontend/images/icons/car-100.png') }}">
           </div>
           <div class="text-xs">
-              Cars & Bikes
+              Vehicles
           </div>
         </div>
       </a>
-      <a class="mx-1" href="/m-category/4/phones-and-laptops">
+      <a class="mx-1" href="/category/mobile-phones-and-tablets">
         <div class="flex flex-col items-center">
           <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
             <img class="w-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}">
@@ -36,7 +36,7 @@
           </div>
         </div>
       </a>
-      <a class="mx-1" href="/m-category/7/real-estate">
+      <a class="mx-1" href="/category/real-estate">
         <div class="flex flex-col items-center">
           <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
             <img class="w-6" src="{{ asset('frontend/images/icons/house-100.png') }}">
@@ -46,7 +46,7 @@
           </div>
         </div>
       </a>
-      <a class="mx-1" href="/m-category/5/fashion-and-beauty">
+      <a class="mx-1" href="/category/fashion">
         <div class="flex flex-col items-center">
           <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
             <img class="w-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}">
