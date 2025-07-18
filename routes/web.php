@@ -187,9 +187,9 @@ Route::any('/shipper/update-shipping/{id}', [ShipperController::class, 'update_s
 Route::any('/settings/gig-locations', [SettingController::class, 'gig_locations'])->middleware('adminsession');
 Route::any('/settings/delete-gig-location/{id}', [SettingController::class, 'delete_gig_location'])->middleware('adminsession');
 
-Route::get('/fetch-subcat/{cat_id}', [AdminController::class, 'fetch_subcat']);
-Route::get('/fetch-brand/{cat_id}', [AdminController::class, 'fetch_brand']);
-Route::get('/fetch-model/{cat_id}', [AdminController::class, 'fetch_model']);
+Route::get('/fetch-subcat/{cat_id}', [ManageCategories::class, 'fetch_subcat']);
+Route::get('/fetch-brand/{cat_id}', [ManageCategories::class, 'fetch_brand']);
+Route::get('/fetch-model/{cat_id}', [ManageCategories::class, 'fetch_model']);
 
 Route::get('/api/check-following/{userId}', [UserController::class, 'checkFollowing']);
 Route::post('/api/toggle-follow', [UserController::class, 'toggleFollow'])->middleware('usersession');

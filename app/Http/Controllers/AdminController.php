@@ -45,6 +45,8 @@ class AdminController extends Controller
         return redirect()->back()->with('status', ['text'=>'Report Status Changed','type'=>'success']);
     }
 
+
+
     public function logout(Request $request)
     {   
         $request->session()->forget('admin_id');
