@@ -18,10 +18,15 @@ class AdvertBoost extends Model
         'duration',
         'payment_status',
         'boost_status',
-        'boost_type'
+        'boost_type',
+        'start_date'
     ];
 
-    public function boost()
+    protected $casts = [
+        'start_date' => 'datetime',
+    ];
+
+    public function advert()
     {
         return $this->belongsTo(Advert::class, 'advert_id');
     }
@@ -31,11 +36,16 @@ class AdvertBoost extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getDaysRemainingAttribute()
+    {
+        $expiry = Carbon::parse($this->start_date)->addDays($this->duration);
+        return Carbon::now()->diffInDays($expiry, false); // negative means expired
+    }
 
 
     public function getExpiresAtAttribute()
     {
-        return $this->updated_at->copy()->addDays($this->duration);
+        return $this->start_date->copy()->addDays($this->duration);
     }
 
     public function getIsActiveAttribute()

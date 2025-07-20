@@ -44,16 +44,9 @@ Route::any('/shipper', [AccountController::class, 'shipper']);
 Route::get('/advert/{id}/{slug}', [AdvertController::class, 'advert']);
 Route::get('/adverts', [AdvertController::class, 'adverts']);
 Route::get('/all-categories', [AdvertController::class, 'all_categories']);
-// Show all ads in a category (e.g. /category/electronics)
 Route::get('/category/{category_slug}', [AdvertController::class, 'category']);
-
-// Show all ads in a subcategory (e.g. /category/electronics/phones)
 Route::get('/category/{category_slug}/{subcat_slug}', [AdvertController::class, 'sub_category']);
-
-// Show all brands under a subcategory (e.g. /category/electronics/phones/all-brands)
-Route::get('/category/{category_slug}/{subcat_slug}/all-brands', [AdvertController::class, 'all_subcat']);
-
-// Show ads by brand under subcategory (e.g. /category/electronics/phones/apple)
+Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertController::class, 'all_subcat']);
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand']);
 
 Route::any('/search', [AdvertController::class, 'search']);
@@ -177,6 +170,13 @@ Route::any('/admin/confirm-delivery/{id}', [ManagePayments::class, 'confirm_deli
 
 //Advertising
 Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
+
+//Manage Advert Boost
+Route::any('/boost/active', [ManageBoost::class, 'active'])->middleware('adminsession');
+Route::any('/boost/completed', [ManageBoost::class, 'completed'])->middleware('adminsession');
+Route::any('/boost/unpaid', [ManageBoost::class, 'unpaid'])->middleware('adminsession');
+Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status'])->middleware('adminsession');
+
 
 //Reports
 Route::any('/admin/view-reports', [AdminController::class, 'view_reports'])->middleware('adminsession');

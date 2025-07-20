@@ -102,8 +102,29 @@
                 <i class="bi bi-circle"></i><span>Pending Payments</span>
               </a>
             </li>
-       
+          </ul>
+        </li><!-- End Forms Nav -->
 
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#boost" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-badge-ad"></i><span>Ad Boost</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="boost" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="/boost/active">
+                <i class="bi bi-circle"></i><span>Active Boost</span>
+              </a>
+            </li>
+            <li>
+              <a href="/boost/completed">
+                <i class="bi bi-circle"></i><span>Completed Boost</span>
+              </a>
+            </li>
+            <li>
+              <a href="/boost/unpaid">
+                <i class="bi bi-circle"></i><span>Unpaid Boost</span>
+              </a>
+            </li>
           </ul>
         </li><!-- End Forms Nav -->
         

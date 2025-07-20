@@ -363,4 +363,49 @@ class UserManageAdverts extends Controller
     return redirect()->back()->with('success', 'Advert updated successfully');
 }
 
+public function boost_ad(Request $request, $id)
+    {
+        $title = "Boost Ad | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        $price = 500;
+        $advert = Advert::with(['images', 'car', 'phone'])
+                        ->where('id', $id)
+                        ->where('user_id', $user_id)
+                        ->firstOrFail();
+
+        return view('dashboard.boost-ad', compact('title','user','advert','count_ads', 'price'));
+    }
+
+    public function post_boost_ad(Request $request, $id)
+    {
+        $title = "Boost Ad | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $promotion = $request->session()->get('promotion');
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        $advert = Advert::with(['images', 'car', 'phone'])
+                        ->where('id', $id)
+                        ->where('user_id', $user_id)
+                        ->firstOrFail();
+
+        return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion'));
+    }
+
+    public function boosted_ad(Request $request, $id)
+    {
+        $title = "Boosted Ad | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        $price = 500;
+        $advert = Advert::with(['images', 'car', 'phone', 'boost'])
+                ->where('id', $id)
+                ->where('user_id', $user_id)
+                ->firstOrFail();
+
+        return view('dashboard.boosted-ad', compact('title','user','advert','count_ads', 'price'));
+    }
+
 }

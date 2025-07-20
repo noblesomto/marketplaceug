@@ -48,7 +48,7 @@
 
             @if($brands->count() > $brandLimit)
               <div class="ml-3 mt-2">
-                <a href="{{ url('/category/' . $subcat->category->category_slug . '/' . $subcat->sub_cat_slug . '/all-brands') }}"
+                <a href="{{ url('/category/' . $subcat->category->category_slug . '/' . $subcat->sub_cat_slug . '/all-'.$subcat->sub_cat_slug) }}"
                    class="text-dark_green text-sm hover:underline">
                   See all {{ $subcat->sub_category }}
                 </a>

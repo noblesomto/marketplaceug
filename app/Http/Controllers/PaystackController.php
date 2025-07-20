@@ -222,6 +222,7 @@ class PaystackController extends Controller
                 'payment_status' => 'paid',
                 'boost_status' => 'active',
                 'trans_id' => $transactionId,
+                'start_date' => Carbon::now(),
             ]);
             DB::table('adverts')
                 ->where('id', $boost->advert_id)
@@ -265,7 +266,7 @@ class PaystackController extends Controller
                 'payment_reference'=> $reference,
                 'amount'=> $request->input('promotion'),
                 'boost_type'=> $promotion,
-                'duration'=> "7",
+                'duration'=> 7,
                 'boost_status'=> "pending",
                 'payment_status'=> "pending",
             ]);

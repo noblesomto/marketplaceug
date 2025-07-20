@@ -35,8 +35,7 @@
                 <th scope="col">Days Remaining</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">Boost Type</th>
-                <th scope="col">Boost Status</th>
-                <th scope="col">Stop Boost</th>
+
               </tr>
             </thead>
             <tbody>
@@ -59,13 +58,6 @@
                 </td>
                 <td>{{ date('j F Y', strtotime($row->start_date)); }}</td>
                 <td><span class="text-capitalize">{{$row->boost_type}}</span> </td>
-                @if( $row->boost_status== "active" )
-                <td><span class="text-success">Active</span> </td>
-                <td><a class="text-danger" href="/boost/status/{{ $row->id }}/pending" onclick="return confirm('Are you sure you want to Stop Ad Boost?');"><i class="bi bi-stop-circle"></i> Stop Boost</a></td>
-                @else
-                <td><span class="text-danger">Pending</span></td>
-                <td><a class="text-primary" href="/boost/status/{{ $row->id }}/active" onclick="return confirm('Are you sure you want to Resume Ad Boost?');"><i class="bi bi-activity"></i> Resume Boost</a></td>
-                @endif
 
               </tr>
             @endforeach

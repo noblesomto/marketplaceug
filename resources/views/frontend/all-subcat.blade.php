@@ -5,7 +5,9 @@
 
 <section class="container mx-auto px-4 py-8 max-w-6xl pb-20">
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">Brands</h1>
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+            {{ ucwords(str_replace('-', ' ', $subcat_slug)) }}
+        </h1>
 
         <!-- Grid on desktop, list on mobile -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
