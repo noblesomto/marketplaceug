@@ -24,6 +24,10 @@ module.exports = {
         quicksand: ['Quicksand', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
       },
+      fontSize: {
+        'xxs': '0.625rem', // 10px
+        'xxxs': '0.5rem',  // 8px
+      },
       height: {
         '128': '32rem',
         '150': '40rem',

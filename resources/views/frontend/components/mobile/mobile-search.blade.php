@@ -21,11 +21,11 @@
                   <div class="col-span-3 mt-2">
                       <div class="flex flex-wrap  mb-3">
                         <div class="w-full mb-2">
-                          <input class="appearance-none block w-full h-12 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 rounded-l-lg" id="grid-city" type="text" name="product" placeholder="What are you looking for?" required>
+                          <input class="appearance-none block w-full h-12 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 rounded-l-lg" id="grid-city" type="text" name="product" placeholder="What are you looking for?" >
                         </div>
                         <div class="w-full ">
                           <div class="relative">
-                            <select name="category" class="block appearance-none w-full h-12 bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 rounded-r-lg text-sm" id="grid-state" required>
+                            <select name="category" class="block appearance-none w-full h-12 bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 rounded-r-lg text-sm" id="grid-state">
                                     <option value="">Select Category</option>
                                 @foreach(getCategories() as $category)
                                     <option value="{{ $category->id }}">{{ $category->category }}</option>
@@ -52,7 +52,7 @@
                                 ];
                             @endphp
 
-                            <select name="location" class="block appearance-none w-full h-12 bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 text-sm" required>
+                            <select name="location" class="block appearance-none w-full h-12 bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 text-sm">
                                 <option value="" selected="selected">Select Location</option>
                                 @foreach ($states as $state)
                                     <option value="{{ $state }}">{{ $state }}</option>

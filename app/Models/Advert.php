@@ -108,6 +108,13 @@ class Advert extends Model
         return $this->hasMany(Payment::class, 'advert_id');
     }
 
-
+    public function scopeActiveNotRecentlySold($query)
+    {
+        return $query->where('ad_status', 1)
+            ->where(function($q) {
+                $q->where('sold_date', '>=', now()->subDays(7))
+                  ->orWhereNull('sold_date');
+            });
+    }
 
 }

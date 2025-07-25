@@ -66,7 +66,7 @@ class AdvertController extends Controller
         $query = Advert::with('images')
             ->inRandomOrder()
             ->where('user_id', $ad_owner)
-            ->where('ad_status', 1)
+            ->activeNotRecentlySold()
             ->where('id', '!=', $id);  // or ->whereNot('id', $id)
 
         // Get the count
@@ -81,7 +81,7 @@ class AdvertController extends Controller
             ->where('ad_title', 'LIKE', '%' . $title . '%') // Partial match
             ->orWhere('category', $cat_id) 
             ->where('id', '!=', $id)
-            ->where('ad_status', 1)
+            ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad_owner)
             ->limit(3)
             ->get();
@@ -128,7 +128,7 @@ class AdvertController extends Controller
     public function adverts(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'asc')->limit(10)->get();
+        $ads = Advert::with('firstImage')->activeNotRecentlySold()->orderBy('created_at', 'asc')->limit(10)->get();
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
@@ -140,78 +140,86 @@ class AdvertController extends Controller
     public function seller(Request $request, $id)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage','owner')->where('user_id', $id)->where('ad_status', 1)->orderBy('created_at', 'asc')->limit(10)->get();
+        $ads = Advert::with('firstImage','owner')->where('user_id', $id)->activeNotRecentlySold()->orderBy('created_at', 'asc')->limit(10)->get();
         $user_id = $request->session()->get('user_id');
         $owner = User::where('user_id', $id)->first();
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->count();
 
-        //dd($categories);
         return view('frontend.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories','count_ads'));
     }
 
    
 
-    public function search(Request $request)
-    {
-        $title = config('global.site_name').' | '.config('global.site_title');
-
-        $request->validate([
-                'product' => 'required|string|min:3',
-                'location' => 'required',
-                'category' => 'required',
-            ]);
-
-        $ads = Advert::with('firstImage')
-                    ->where('ad_title', 'LIKE', '%' . $request->product . '%') // Partial match
-                    ->where('category', $request->category) 
-                    ->where('state', $request->location) 
-                    ->where('ad_status', 1)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(10);
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
-        $categories = Category::with('subCategories')->get();
-
-        //dd($categories);
-        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories'));
-    }
-
     public function all_categories(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'asc')->limit(10)->get();
+
+        // Featured ads with scope
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->orderBy('created_at', 'asc')
+                    ->limit(10)
+                    ->get();
+
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
 
-        $categoryCounts = Category::leftJoin('adverts', 'categories.id', '=', 'adverts.category')
-            ->leftJoin('sub_categories as sc', function ($join) {
-                $join->on('adverts.sub_category', '=', 'sc.id')
-                    ->orOn('categories.id', '=', 'sc.cat_id'); // Ensure subcategories without adverts are included
+        // Category counts with filtering
+        $categoryCounts = Category::leftJoin('adverts', function($join) {
+                $join->on('categories.id', '=', 'adverts.category')
+                     ->where('adverts.ad_status', 1)
+                     ->where(function($q) {
+                         $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                           ->orWhereNull('adverts.sold_date');
+                     });
             })
-            ->selectRaw('categories.category AS category_name, sc.sub_category AS sub_category_name, COUNT(adverts.id) AS advert_count')
-            ->groupBy('categories.category', 'sc.sub_category')
+            ->leftJoin('sub_categories as sc', function($join) {
+                $join->on('adverts.sub_category', '=', 'sc.id')
+                    ->orOn('categories.id', '=', 'sc.cat_id');
+            })
+            ->selectRaw('categories.id, categories.category AS category_name, categories.category_slug,
+                        sc.id as sub_category_id, sc.sub_category AS sub_category_name, sc.sub_cat_slug,
+                        COUNT(DISTINCT adverts.id) AS advert_count')
+            ->groupBy('categories.id', 'categories.category', 'categories.category_slug',
+                     'sc.id', 'sc.sub_category', 'sc.sub_cat_slug')
             ->get();
 
-        //dd($categoryCounts);
-        return view('frontend.all-categories', compact('title', 'ads', 'user', 'categories'));
+        return view('frontend.all-categories', compact('title','ads','user','categories','categoryCounts'));
     }
 
     public function category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $title = config('global.site_name') . ' | ' . $cat->category;
-        $ads = Advert::with('firstImage')->where('category', $cat->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold() // Using the scope
+                    ->where('category', $cat->id)
+                    ->orderBy('created_at', 'asc')
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $count_cat = Advert::where('category', $cat->id)->count();
+
+        // Update count to also use the scope
+        $count_cat = Advert::activeNotRecentlySold()
+                          ->where('category', $cat->id)
+                          ->count();
 
         $categories = DB::table('sub_categories')
             ->leftJoin('adverts', 'sub_categories.id', '=', 'adverts.sub_category')
             ->where('sub_categories.cat_id', $cat->id)
+            // Add scope conditions to the join
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
             ->select('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
             ->orderBy('advert_count', 'desc')
@@ -226,22 +234,41 @@ class AdvertController extends Controller
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
         $title = config('global.site_name') . ' | ' . $subcat->sub_category;
-        $ads = Advert::with('firstImage')->where('sub_category', $subcat->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        // Main ads query with scope
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('sub_category', $subcat->id)
+                    ->orderBy('created_at', 'asc')
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
 
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
+
+        // Brands query with filtering
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
             ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
             ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
 
         return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
-}
+    }
 
     public function all_subcat(Request $request, $category_slug, $subcat_slug)
     {
@@ -249,21 +276,40 @@ class AdvertController extends Controller
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
         $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
-        $ads = Advert::with('firstImage')->where('sub_category', $subcat->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        // Main ads query with scope
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('sub_category', $subcat->id)
+                    ->orderBy('created_at', 'asc')
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
 
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
+
+        // Brands query with filtering
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
             ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
             ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
 
-        return view('frontend.all-subcat', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat', 'subcat_slug'));
+        return view('frontend.all-subcat', compact('title','ads','user','brands','subcat','count_subcat','subcat_slug'));
     }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
@@ -273,21 +319,40 @@ class AdvertController extends Controller
         $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
 
         $title = config('global.site_name') . ' | ' . $brand->brand;
-        $ads = Advert::with('firstImage')->where('brand', $brand->id)->orderBy('created_at', 'asc')->paginate(20);
+
+        // Main ads query with scope
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('brand', $brand->id)
+                    ->orderBy('created_at', 'asc')
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $count_subcat = Advert::where('sub_category', $subcat->id)->count();
 
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                        ->where('sub_category', $subcat->id)
+                        ->count();
+
+        // Brands query with filtering
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
             ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
             ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
 
-        return view('frontend.brand', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
+        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat'));
     }
 
     public function mobile_category(Request $request, $id, $slug)

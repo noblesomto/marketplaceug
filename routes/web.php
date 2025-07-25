@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SearchFilter;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfile;
 use App\Http\Controllers\UserManageAdverts;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
@@ -37,7 +39,7 @@ Route::any('/authenticate', [AccountController::class, 'authenticate']);
 Route::any('/resend-otp', [AccountController::class, 'resend_otp']);
 Route::any('/forgot-password', [AccountController::class, 'forgot_password']);
 Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password']);
-Route::any('/admin', [AccountController::class, 'adminlogin']);
+Route::any('/admin', [AccountController::class, 'adminlogin'])->name('admin.login');
 Route::any('/shipper', [AccountController::class, 'shipper']);
 
 //Adverts
@@ -49,7 +51,7 @@ Route::get('/category/{category_slug}/{subcat_slug}', [AdvertController::class, 
 Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertController::class, 'all_subcat']);
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand']);
 
-Route::any('/search', [AdvertController::class, 'search']);
+
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct']);
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping']);
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');
@@ -57,11 +59,16 @@ Route::get('/seller/{id}', [AdvertController::class, 'seller']);
 Route::any('/report-ad/{id}', [AdvertController::class, 'report_advert'])->middleware('usersession');
 Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession');
 
+//Search and Filter
+Route::any('/search', [SearchFilter::class, 'search']);
+Route::post('/filter/adverts', [SearchFilter::class, 'filter']);
+Route::post('/filter/sellers', [SearchFilter::class, 'filterBySeller'])->name('filter.sellers');
+
+
 // Get State and Locations
 Route::get('/states', [LocationController::class, 'index']);
 Route::get('/get-gig/{state_id}', [LocationController::class, 'getGIG']);
 Route::post('/shipping-cost', [LocationController::class, 'getAgilityShippingCost']);
-
 
 //Buy Direct Paystack
 Route::post('/pay', [PaystackController::class, 'initialize'])->name('paystack.pay')->middleware('usersession');
@@ -108,18 +115,20 @@ Route::any('/user/boost-ad/{id}', [UserManageAdverts::class, 'boost_ad'])->middl
 Route::any('/user/boosted-ad/{id}', [UserManageAdverts::class, 'boosted_ad'])->middleware('usersession');
 
 
-//Profile
-Route::any('/user/profile', [UserController::class, 'profile'])->middleware('usersession');
-Route::any('/user/settings', [UserController::class, 'settings'])->middleware('usersession');
-Route::any('/user/profile-address', [UserController::class, 'profile_address'])->middleware('usersession');
-Route::any('/user/profile-info', [UserController::class, 'profile_info'])->middleware('usersession');
-Route::any('/user/payments', [UserController::class, 'payment_info'])->middleware('usersession');
-Route::any('/user/profile-phone', [UserController::class, 'profile_phone'])->middleware('usersession');
-Route::any('/user/change-password', [UserController::class, 'change_password'])->middleware('usersession');
-Route::any('/user/disable-account', [UserController::class, 'disable_account'])->middleware('usersession');
-Route::get('/user/logout', [UserController::class, 'logout'])->middleware('usersession');
-Route::any('/user/profile-notification', [UserController::class, 'profile_notification'])->middleware('usersession');
-Route::post('/update-notifications', [UserController::class, 'updateNotifications'])
+//User Profile
+Route::any('/user/profile', [UserProfile::class, 'profile'])->middleware('usersession');
+Route::any('/user/settings', [UserProfile::class, 'settings'])->middleware('usersession');
+Route::any('/user/profile-address', [UserProfile::class, 'profile_address'])->middleware('usersession');
+Route::any('/user/profile-info', [UserProfile::class, 'profile_info'])->middleware('usersession');
+Route::get('/user/get-verified', [UserProfile::class, 'get_verified'])->middleware('usersession');
+Route::post('/user/submit-verification', [UserProfile::class, 'submit_verification'])->middleware('usersession');
+Route::any('/user/payments', [UserProfile::class, 'payment_info'])->middleware('usersession');
+Route::any('/user/profile-phone', [UserProfile::class, 'profile_phone'])->middleware('usersession');
+Route::any('/user/change-password', [UserProfile::class, 'change_password'])->middleware('usersession');
+Route::any('/user/disable-account', [UserProfile::class, 'disable_account'])->middleware('usersession');
+Route::get('/user/logout', [UserProfile::class, 'logout'])->middleware('usersession');
+Route::any('/user/profile-notification', [UserProfile::class, 'profile_notification'])->middleware('usersession');
+Route::post('/update-notifications', [UserProfile::class, 'updateNotifications'])
     ->middleware('usersession')
     ->name('user.update-notifications');
 
@@ -159,9 +168,13 @@ Route::any('/admin/delete-advert/{id}', [ManageAdverts::class, 'delete_advert'])
 //Manage Users
 Route::any('/admin/active-users', [ManageUsers::class, 'active_users'])->middleware('adminsession');
 Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->middleware('adminsession');
+Route::any('/admin/disable-status/{id}/{status}', [ManageUsers::class, 'disable_status'])->middleware('adminsession');
+Route::any('/admin/unverified-users', [ManageUsers::class, 'unverified_users'])->middleware('adminsession');
 Route::any('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->middleware('adminsession');
 //Route::any('/admin/delete-user/{id}', [ManageUsers::class, 'delete_user'])->middleware('adminsession');
 Route::any('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->middleware('adminsession');
+Route::any('/admin/user-verification', [ManageUsers::class, 'user_verification'])->middleware('adminsession');
+Route::any('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->middleware('adminsession');
 
 //Manage Payments
 Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payments'])->middleware('adminsession');
@@ -215,4 +228,10 @@ Route::get('/unread-messages-count', function () {
 
     return response()->json(['count' => $count]);
 });
+
+Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
+    ->where([
+        'location' => '[a-zA-Z0-9\-]+',
+        'slug' => '[a-zA-Z0-9\-]+',
+    ]);
 

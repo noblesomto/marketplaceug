@@ -29,6 +29,7 @@
 		        	</a>
 				</div>
 
+
 				<div class="mt-2 border-b-2 border-b-gray-200 pb-2">
 		        	<a href="/user/profile-info">
 		        		<div class="flex items-center space-x-4">
@@ -38,6 +39,20 @@
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Account Settings</h4>
 			        			<p>Verified Phone Number, Email Address</p>
+			        		</div>
+			        	</div>
+		        	</a>
+				</div>
+
+				<div class="mt-2 border-b-2 border-b-gray-200 pb-2">
+		        	<a href="/user/get-verified">
+		        		<div class="flex items-center space-x-4">
+			        		<div>
+			        			<i class="bi bi-person-check text-3xl"></i>
+			        		</div>
+			        		<div>
+			        			<h4 class="font-semibold text-lg">Account Verification</h4>
+			        			<p>Get Trusted, Get a Verification Badge</p>
 			        		</div>
 			        	</div>
 		        	</a>

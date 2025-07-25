@@ -60,20 +60,14 @@ class UserManageAdverts extends Controller
                 'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20000',
             ];
 
-
             if($subcat=="31361"){
                 $rules['mileage'] = 'required|numeric';
                 $rules['condition'] = 'required';
-                $rules['month'] = 'required';
-                $rules['year'] = 'required|numeric';
                 $rules['fuel'] = 'required';
                 $rules['transmission'] = 'required';
                 $rules['vehicle_type'] = 'required';
                 $rules['doors'] = 'required';
-                $rules['exterior_color'] = 'required';
-                $rules['material_interior'] = 'required';
-                $rules['exterior_equipment'] = 'required';
-                $rules['interior'] = 'required';
+
             }
 
             if($subcat=="84676"){

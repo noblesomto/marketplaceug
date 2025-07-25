@@ -10,31 +10,15 @@
           @include('frontend.components.advert.side-advert')
       </div>
       <div class="col-span-10 md:col-span-6">
-        <div class="grid grid-cols-10 gap-3">
-           <div class="col-span-2 hidden sm:block bg-white p-2">
-             @foreach ($categories as $category)
-                  <div class="border-b border-b-gray-300 pb-3 pt-1">
-                    <a href="{{ url('/category/' . $category->category_slug) }}">
-                        <h2 class="font-semibold text-base">{{ $category->category }}</h2>
-                    </a> <!-- Category name -->
-
-                    <ul>
-                        @foreach ($category->subCategories as $subCategory)
-                            <li class="ml-3 text-sm">
-                                <a href="{{ url('/category/' . $category->category_slug . '/' . $subCategory->sub_cat_slug) }}">
-                                    {{ $subCategory->sub_category }}
-                                </a>
-                            </li> <!-- Subcategory name -->
-                        @endforeach
-                    </ul>
-                </div>
-
-              @endforeach
-           </div>
-           <div class="col-span-10 md:col-span-8">
-              <div class=" my-5 hidden lg:block">
+        <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>
+        <div class="grid grid-cols-10 gap-3">
+           <div class="col-span-3 hidden sm:block bg-white p-2">
+             @include('frontend.components.advert.seller-profile')
+           </div>
+           <div class="col-span-10 md:col-span-7">
+
 
               <div class="mt-2 bg-white p-3 block lg:hidden">
              

@@ -144,15 +144,16 @@
                     @endif
                 <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value="Damaged Car">Damaged Car</option>
-                    <option value="Undamaged Car">Undamaged Car</option>
+                    <option value=" Local used"> Local used</option>
+                    <option value="Foreign used">Foreign used</option>
+                    <option value="Brand new">Brand new</option>
                 </select>
                 </div>
            </div>
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">First Registration *</div>
+                    <div class="font-semibold">First Registration</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('month'))
@@ -213,7 +214,7 @@
                 <select id="pr" name="transmission" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
                     <option value="Automatic">Automatic</option>
-                    <option value="Manually">Manually</option>
+                    <option value="Manual">Manual</option>
                 </select>
                 </div>
            </div>
@@ -243,7 +244,7 @@
 
             <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Color *</div>
+                    <div class="font-semibold">Exterior Color</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('exterior_color'))
@@ -282,7 +283,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Material Interior *</div>
+                    <div class="font-semibold">Material Interior</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('material_interior'))
@@ -300,7 +301,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Equipment *</div>
+                    <div class="font-semibold">Exterior Equipment</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -333,7 +334,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Interior Equipment *</div>
+                    <div class="font-semibold">Interior Equipment</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -386,7 +387,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Security *</div>
+                    <div class="font-semibold">Security</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">

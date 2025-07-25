@@ -25,6 +25,7 @@ class User extends Authenticatable
         'city',
         'state',
         'password',
+        'verified',
         'acc_status',
         'acc_type',
         'token',
@@ -79,6 +80,11 @@ class User extends Authenticatable
     public function adverts()
     {
         return $this->hasMany(Advert::class, 'user_id', 'user_id'); // Linking custom user_id
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(UserVerification::class, 'user_id');
     }
 
     public function sentMessages()

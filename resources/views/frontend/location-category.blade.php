@@ -24,16 +24,7 @@
                       <span>({{ $count_cat }})</span>
                   </div>
 
-                  @foreach($categories as $subCategory)
-                      <span class="space-y-1 mt-1">
-                          <a class="" href="{{ url('/category/' . $cat->category_slug . '/' . $subCategory->sub_cat_slug) }}">
-                          <div class="flex ml-3 mt-2">
-                              <span class="mr-1">{{ $subCategory->sub_category }}</span>
-                              <span>({{ $subCategory->advert_count }})</span>
-                          </div>
-                      </a>
-                      </span>
-                  @endforeach
+
               </div>
               <div class="bg-white p-2 space-y-2">
                 <h4 class="font-semibold">Locations</h4>
@@ -44,21 +35,10 @@
                 <h4 class="font-semibold">Price</h4>
                 @include('frontend.components.advert.price-filter')
               </div>
-
-
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Verified Sellers </h4>
-                @include('frontend.components.advert.sellers-category')
-            </div>
-
-
           </div>
            <div class="col-span-10 md:col-span-7">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
-              </div>
-              <div class="block lg:hidden">
-                    @include('frontend.components.mobile.filter-category')
               </div>
             <div id="advert-results">
                 @include('frontend.components.advert.advert-list', ['ads' => $ads])

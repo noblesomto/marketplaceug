@@ -184,6 +184,101 @@
     setInterval(updateUnreadMessages, 10000);
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Get all price filter forms on the page
+  const priceForms = document.querySelectorAll('form[id^="price-filter-form"]');
+
+  // Allow uncheck for radio buttons and sync between forms
+  document.querySelectorAll('.price-radio').forEach(radio => {
+    radio.addEventListener('click', function() {
+      if (this.checked) {
+        if (this.dataset.checked === 'true') {
+          // Uncheck this radio
+          this.checked = false;
+          this.dataset.checked = 'false';
+          // Uncheck corresponding radios in other forms
+          syncRadios(this.name, this.value, false);
+        } else {
+          // Uncheck all radios first
+          document.querySelectorAll(`.price-radio[name="${this.name}"]`).forEach(r => {
+            r.checked = false;
+            r.dataset.checked = 'false';
+          });
+          // Check this one
+          this.checked = true;
+          this.dataset.checked = 'true';
+          // Check corresponding radios in other forms
+          syncRadios(this.name, this.value, true);
+        }
+      }
+    });
+  });
+
+  // Helper function to sync radio buttons across forms
+  function syncRadios(name, value, checked) {
+    document.querySelectorAll(`.price-radio[name="${name}"][value="${value}"]`).forEach(radio => {
+      radio.checked = checked;
+      radio.dataset.checked = checked.toString();
+    });
+  }
+
+  // Submit handler for all forms
+  priceForms.forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      fetchAds();
+    });
+  });
+
+  // Clear buttons - sync all forms
+  document.querySelectorAll('[id^="clear-filter"]').forEach(button => {
+    button.addEventListener('click', function() {
+      // Clear all forms
+      priceForms.forEach(form => form.reset());
+      // Uncheck all radios
+      document.querySelectorAll('.price-radio').forEach(radio => {
+        radio.checked = false;
+        radio.dataset.checked = 'false';
+      });
+    });
+  });
+
+  // Fetch ads function (unchanged)
+  function fetchAds(url = '/filter/adverts') {
+    // Use the first form (they should all have the same values)
+    const formData = new FormData(priceForms[0]);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Accept': 'application/json',
+      },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('advert-results').innerHTML = data.html;
+      attachPaginationEvents();
+      verifyPriceModal.classList.add('hidden');
+    });
+  }
+
+  // Pagination handling (unchanged)
+  function attachPaginationEvents() {
+    document.querySelectorAll('#advert-results .pagination a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetchAds(this.href);
+      });
+    });
+  }
+
+  attachPaginationEvents();
+});
+</script>
+
 
 </body>
 </html>

@@ -78,11 +78,20 @@
               </a>
             </li>
             <li>
+              <a href="/admin/unverified-users">
+                <i class="bi bi-circle"></i><span>Unverified Users</span>
+              </a>
+            </li>
+            <li>
               <a href="/admin/disabled-users">
                 <i class="bi bi-circle"></i><span>Disabled Users</span>
               </a>
             </li>
-       
+            <li>
+              <a href="/admin/user-verification">
+                <i class="bi bi-circle"></i><span>User Verification</span>
+              </a>
+            </li>
 
           </ul>
         </li><!-- End Forms Nav -->

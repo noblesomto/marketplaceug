@@ -6,7 +6,7 @@
 <section class="container mx-auto px-4 py-8 max-w-6xl pb-20">
     <div class="bg-white rounded-lg shadow-sm p-6">
         <h1 class="text-2xl font-semibold text-gray-800 mb-6">
-            {{ ucwords(str_replace('-', ' ', $subcat_slug)) }}
+            {{ $subcat->sub_category }}
         </h1>
 
         <!-- Grid on desktop, list on mobile -->
@@ -26,9 +26,13 @@
             @else
                 @foreach($brands as $brand)
                     <!-- Always list style for this condition -->
-                    <div class="flex items-center justify-between p-3 border-b border-gray-100 last:border-0">
-                        <span class="text-gray-600">{{ $brand->brand }}</span>
-                        <span class="text-gray-400 text-sm">({{ $brand->advert_count }})</span>
+                    <div class="md:bg-gray-50 md:hover:bg-gray-100 md:rounded-lg md:p-4 transition duration-200 border-b border-gray-100 last:border-0 md:border-0">
+                        <a href="/brand/{{ $brand->id }}/{{ $brand->brand_slug }}" class="flex items-center justify-between py-3 md:py-0">
+                            <span class="font-medium text-gray-700">{{ $brand->brand }}</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                {{ $brand->advert_count }}
+                            </span>
+                        </a>
                     </div>
                 @endforeach
             @endif

@@ -32,9 +32,9 @@
                 <th scope="col">A/C Type</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
+                <th scope="col">Verified</th>
                 <th scope="col">Date Joined</th>
                 <th scope="col">view</th>
-                <th scope="col">Action</th>
                 <th scope="col">Disable Account</th>
               </tr>
             </thead>
@@ -45,15 +45,20 @@
                 <td>{{ $row->acc_type }}</td>
                 <td>{{ $row->email }} </td>
                 <td>{{ $row->phone }} </td>
+                <td>
+                  <span class="badge
+                    {{ $row->verified === 'yes' ? 'bg-success text-white' : 'bg-secondary text-white' }}">
+                    {{ $row->verified }}
+                </span>
+                </td>
                 <td>{{ date('j F Y', strtotime($row->created_at)); }}</td>
                 <td><a href="/admin/view-user/{{ $row->user_id }}">View User</a></td>
-                @if( $row->acc_status == 1 )
-                <td><a class="text-primary" href="/admin/user-status/{{ $row->user_id }}/0">Disable User</a></td>
+                @if( $row->disable_account == "no" )
+                <td><a class="text-primary" href="/admin/disable-status/{{ $row->user_id }}/Yes">Disable User</a></td>
                 @else
-                <td><a class="text-primary" href="/admin/user-status/{{ $row->user_id }}/1">Enable User</a></td>
+                <td><a class="text-primary" href="/admin/disable-status/{{ $row->user_id }}/No">Enable User</a></td>
                 @endif
          
-                <td><a href="/admin/delete-user/{{ $row->user_id }}" onclick="return confirm('Are you sure you want to DISABLE User?');">Delete</a></td>
               </tr>
             @endforeach
               

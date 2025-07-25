@@ -154,8 +154,9 @@
                     @endif
                 <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value="Damaged Car" {{ $advert->car->condition == 'Damaged Car' ? 'selected' : '' }}>Damaged Car</option>
-                    <option value="Undamaged Car" {{ $advert->car->condition == 'Undamaged Car' ? 'selected' : '' }}>Undamaged Car</option>
+                    <option value=" Local used" {{ $advert->car->condition == ' Local used' ? 'selected' : '' }}> Local used</option>
+                    <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
+                    <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
                 </select>
                 </div>
            </div>
