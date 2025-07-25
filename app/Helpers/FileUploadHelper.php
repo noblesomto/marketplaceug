@@ -49,12 +49,14 @@ class FileUploadHelper
      */
     public static function getUploadPath(string $folder): string
     {
-        if (file_exists(base_path('../public'))) {
-            // Shared hosting structure
-            return base_path('../public/uploads/' . $folder);
+        $folder = trim($folder, '/');
+
+        // If we are in production (shared hosting), use DOCUMENT_ROOT
+        if (app()->environment('production') && isset($_SERVER['DOCUMENT_ROOT'])) {
+            return rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/uploads/' . $folder;
         }
 
-        // Local development
+        // Default (local environment)
         return public_path('uploads/' . $folder);
     }
 }

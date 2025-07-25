@@ -1,3 +1,4 @@
+<div class="pb-20">
 
 @forelse($ads as $row)
     <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
@@ -107,4 +108,6 @@
 
 <div class="mt-6">
   {{ $ads->links('pagination::tailwind') }}
+</div>
+
 </div>

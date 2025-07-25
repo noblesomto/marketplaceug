@@ -235,3 +235,6 @@ Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
         'slug' => '[a-zA-Z0-9\-]+',
     ]);
 
+Route::get('/test-upload-path', function () {
+    return \App\Helpers\FileUploadHelper::getUploadPath('verification');
+});
