@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Advert;
 use App\Models\UserVerification;
+use App\Helpers\FileUploadHelper;
 use Carbon\Carbon;
 use Hash;
 use Mail;
@@ -134,84 +135,60 @@ class UserProfile extends Controller
         return view('dashboard.settings.get-verified', compact('title','user','count_ads'));
     }
 
+
+
     public function submit_verification(Request $request)
     {
-        $title = "My Profile | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
+        $user = User::where('user_id', $user_id)->firstOrFail();
 
         $request->validate([
-            'document_number' => 'required',
-            'document_type' => 'sometimes',
-            'document_file' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
-            'proof_address' => 'sometimes|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
+            'document_number' => 'required|string|max:255',
+            'document_type'   => 'nullable|string|max:255',
+            'document_file'   => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
+            'proof_address'   => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
         ]);
 
-        // Get existing record if it exists
         $existingVerification = UserVerification::where('user_id', $user_id)->first();
 
-        // Handle document file
-        $file = $request->file('document_file');
-        $uploadPath = public_path('uploads/verification');
+        // Upload document
+        $filename = FileUploadHelper::upload(
+            $request->file('document_file'),
+            'verification',
+            $existingVerification?->document_file
+        );
 
-        if (!file_exists($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
-        }
-
-        // Delete old document file if it exists
-        if ($existingVerification && $existingVerification->document_file) {
-            $oldFilePath = public_path('uploads/verification/' . $existingVerification->document_file);
-            if (file_exists($oldFilePath)) {
-                unlink($oldFilePath);
-            }
-        }
-
-        $originalName = $file->getClientOriginalName();
-        $filename = uniqid() . '_' . $originalName;
-        $file->move($uploadPath, $filename);
-
-        // Handle proof address file
-        $proof_address = null;
+        // Upload proof address if provided
+        $proof_address = $existingVerification?->proof_address;
         if ($request->hasFile('proof_address')) {
-            $file2 = $request->file('proof_address');
-
-            // Delete old proof address file if it exists
-            if ($existingVerification && $existingVerification->proof_address) {
-                $oldProofPath = public_path('uploads/verification/' . $existingVerification->proof_address);
-                if (file_exists($oldProofPath)) {
-                    unlink($oldProofPath);
-                }
-            }
-
-            $fileName = $file2->getClientOriginalName();
-            $proof_address = uniqid() . '_' . $fileName;
-            $file2->move($uploadPath, $proof_address);
-        } else {
-            // Keep existing proof address if not updating
-            $proof_address = $existingVerification->proof_address ?? null;
+            $proof_address = FileUploadHelper::upload(
+                $request->file('proof_address'),
+                'verification',
+                $existingVerification?->proof_address
+            );
         }
 
-        // Use updateOrCreate to either update existing record or create new one
         UserVerification::updateOrCreate(
             ['user_id' => $user_id],
             [
                 'document_number' => $request->document_number,
-                'document_type' => $request->document_type,
-                'document_file' => $filename,
-                'proof_address' => $proof_address,
+                'document_type'   => $request->document_type,
+                'document_file'   => $filename,
+                'proof_address'   => $proof_address,
             ]
         );
 
-        $details = [
-            'user_id' => $user->user_id,
-            'name' => $user->name,
-            'email' => $user->email,
+        // Send email (can use queue)
+        Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
+            'user_id'         => $user->user_id,
+            'name'            => $user->name,
+            'email'           => $user->email,
             'document_number' => $request->document_number,
-        ];
+        ]));
 
-        Mail::to(config('global.site_email'))->send(new VerificationRequestMail($details));
         return redirect()->back()->with('success', 'Verification Information submitted successfully!');
     }
+
 
 
     public function payment_info(Request $request)
