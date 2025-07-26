@@ -23,7 +23,7 @@
                                 class="w-full h-full object-cover"
                                 onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                             />
-                            <div class="absolute top-4 right-4 space-y-2">
+                            <div class="absolute top-1 right-1 space-y-1 z-10">
                                 @if($row->owner->verified=='yes')
                                     <div class="bg-green-50 opacity-6 flex space-x-2 py-1 px-2 rounded">
                                         <span>
@@ -73,7 +73,7 @@
                             <div class="flex items-center justify-between text-xs mt-auto">
                                 <div class="text-gray-500 truncate flex">
                                     <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                         </svg>

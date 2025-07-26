@@ -94,7 +94,7 @@
                         class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                     >
-                    <div class="absolute top-4 right-4 space-y-1">
+                    <div class="absolute top-10 right-10 space-y-1 z-10">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
                                 <span>

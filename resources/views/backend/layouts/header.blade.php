@@ -10,22 +10,21 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{{ asset('frontend/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('frontend/img/favicon.png') }}" rel="apple-touch-icon">
+  <link href="{{ asset('frontend/images/favicon.png') }}" rel="icon">
+  <link href="{{ asset('frontend/images/favicon.png') }}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="{{ asset('backend/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-  <link href="{{ asset('backend/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-
+  <link href="{{ asset('backend/assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/remixicon/remixicon.css') }}" rel="stylesheet">
+  <link href="{{ asset('backend/assets/simple-datatables/style.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"  />
   </head>
   <!-- Template Main CSS File -->
