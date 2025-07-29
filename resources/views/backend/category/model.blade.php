@@ -34,7 +34,7 @@
                            </div>
                            <div class="col-sm-4">
                       
-                              <a href="/admin/delete-model/{{ $row->model_id }}/{{ $brand->brand_id }}" onclick="return confirm('Are you sure you want to delete thie Model?');" class="text-danger mx-2" title="Delete Brand" > <i class="fa fa-trash"></i> </a>
+                              <a href="/admin/delete-model/{{ $row->id }}/{{ $brand->id }}" onclick="return confirm('Are you sure you want to delete thie Model?');" class="text-danger mx-2" title="Delete Model" > <i class="fa fa-trash"></i> </a>
                            </div>
                        </div>
                    </div>

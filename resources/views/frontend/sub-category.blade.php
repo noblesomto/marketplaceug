@@ -24,7 +24,6 @@
                   <span class="font-semibold mr-2">{{ $subcat->sub_category }}</span>
                   <span>({{ $count_subcat }})</span>
                 </div>
-
                 @php
                   $brandLimit = 15;
                 @endphp

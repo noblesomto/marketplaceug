@@ -85,7 +85,7 @@
     <div class="grid grid-cols-2 gap-3 px-4">
         @foreach ($ads as $row)
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 h-full flex flex-col">
-            <a href="{{ url('/advert/' . $row->id . '/' . $row->title_slug) }}" class="block group h-full flex flex-col">
+            <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="block group h-full flex flex-col">
                 <!-- Image -->
                 <div class="aspect-[4/3] w-full overflow-hidden relative">
                     <img 
@@ -94,7 +94,7 @@
                         class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                     >
-                    <div class="absolute top-10 right-10 space-y-1 z-10">
+                    <div class="absolute top-1 right-1 space-y-1 z-10">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
                                 <span>

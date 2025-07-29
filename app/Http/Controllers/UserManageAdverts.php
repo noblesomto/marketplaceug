@@ -45,38 +45,51 @@ class UserManageAdverts extends Controller
 
             $ad_id = rand(00000,99999);
 
-            $subcat = $request->input('subcategory');
+            $subcat = (int) $request->input('subcategory');
 
-            $rules =[
-                'ad_title' => 'required',
-                'category' => 'required',
+            $rules = [
+                'ad_title'    => 'required',
+                'category'    => 'required',
                 'subcategory' => 'required',
-                'brand' => 'required',
-                'price' => 'required|numeric',
-                'price_type' => 'required',
-                'state' => 'required',
-                'lga' => 'required',
+                'brand'       => 'required',
+                'price'       => 'required|numeric',
+                'price_type'  => 'required',
+                'state'       => 'required',
+                'lga'         => 'required',
                 'description' => 'required',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20000',
+                'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
             ];
 
-            if($subcat=="31361"){
-                $rules['mileage'] = 'required|numeric';
-                $rules['condition'] = 'required';
-                $rules['fuel'] = 'required';
-                $rules['transmission'] = 'required';
-                $rules['vehicle_type'] = 'required';
-                $rules['doors'] = 'required';
+            switch ($subcat) {
+                case 2: // Vehicles
+                    $rules = array_merge($rules, [
+                        'model'    => 'required',
+                        'registration'    => 'required',
+                        'mileage'      => 'required|numeric',
+                        'condition'    => 'required',
+                        'fuel'         => 'required',
+                        'transmission' => 'required',
+                        'vehicle_type' => 'required',
+                        'doors'        => 'required',
+                    ]);
+                    break;
 
-            }
+                case 6: // Phones
+                    $rules = array_merge($rules, [
+                        'phone_color'     => 'required',
+                        'phone_condition' => 'required',
+                        'device'          => 'required',
+                    ]);
+                    break;
 
-            if($subcat=="84676"){
-                $rules['phone_color'] = 'required';
-                $rules['phone_condition'] = 'required';
-                $rules['device'] = 'required';
+                default:
+                    // other subcategories
+                    $rules['item_condition'] = 'required';
+                    break;
             }
 
             $validatedData = $request->validate($rules);
+
 
             if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
@@ -90,10 +103,12 @@ class UserManageAdverts extends Controller
             'sub_category'=> $request->input('subcategory'),
             'brand'=> $request->input('brand'),
             'price'=> $request->input('price'),
+            'item_condition'=> $request->input('item_condition'),
             'price_type'=> $request->input('price_type'),
             'buy_direct'=> $request->input('buy_direct'),
             'state'=> $request->input('state'),
             'lga'=> $request->input('lga'),
+            'state_slug'=> Str::slug($request->input('state')),
             'description'=> $request->input('description'),
             'keyword'=> $request->input('keyword'),
             'meta_description'=> $request->input('meta_description'),
@@ -140,8 +155,8 @@ class UserManageAdverts extends Controller
                 'model'=> $request->input('model'),
                 'mileage'=> $request->input('mileage'),
                 'condition'=> $request->input('condition'),
-                'registration_month'=> $request->input('month'),
-                'registration_year'=> $request->input('year'),
+                'registration'=> $request->input('registration'),
+                //'registration_year'=> $request->input('year'),
                 'fuel'=> $request->input('fuel'),
                 'transmission'=> $request->input('transmission'),
                 'vehicle_type'=> $request->input('vehicle_type'),
@@ -174,7 +189,7 @@ class UserManageAdverts extends Controller
             $request->session()->put('promotion', $request->promotion);
             return redirect('/user/post-boost-ad/' . $advert->id);
         }
-        return redirect('/user/post-ad')->with('success', 'Your Advert Has successfully been Posted');
+        return redirect('/user/my-ads')->with('success', 'Your Advert Has successfully been Posted');
 
         }
 
@@ -185,71 +200,100 @@ class UserManageAdverts extends Controller
 
 
     public function edit_ad(Request $request, $ad_id)
-{
-    $title = "Edit Advert - " . config('global.site_name');
-    $user_id = $request->session()->get('user_id');
-    $user = User::where('user_id', $user_id)->first();
-    $categories = Category::orderBy('category','asc')->get();
+    {
+        $title = "Edit Advert - " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $categories = Category::orderBy('category','asc')->get();
+        $states = State::all();
 
-    $advert = Advert::with(['images', 'car', 'phone'])
-        ->where('id', $ad_id)
-        ->where('user_id', $user_id)
-        ->firstOrFail();
+        $advert = Advert::with(['images', 'car', 'phone'])
+            ->where('id', $ad_id)
+            ->where('user_id', $user_id)
+            ->firstOrFail();
 
-    // Load dependent data
-    $subcategories = SubCategory::where('cat_id', $advert->category)->get();
-    $brands = Brands::where('subcat_id', $advert->sub_category)->get();
+        // Load dependent data
+        $subcategories = SubCategory::where('cat_id', $advert->category)->get();
+        $brands = Brands::where('subcat_id', $advert->sub_category)->get();
 
-    $models = collect();
-    if ($advert->brand) {
-        $models = Models::where('brand_id', $advert->brand)->get();
+        $models = collect();
+        if ($advert->brand) {
+            $models = Models::where('brand_id', $advert->brand)->get();
+        }
+        //dd($models);
+
+        // Parse car registration if exists
+        $registration = [];
+        if ($advert->car_details) {
+            $regParts = explode(' ', $advert->car_details->registration);
+            $registration = [
+                'month' => $regParts[0] ?? '',
+                'year' => $regParts[1] ?? ''
+            ];
+        }
+
+        if ($request->isMethod('POST')) {
+            return $this->update_ad($request, $advert);
+        }
+
+        return view('dashboard.edit-ad', compact(
+            'title',
+            'categories',
+            'user',
+            'advert',
+            'subcategories',
+            'brands',
+            'models',
+            'registration',
+            'states'
+        ));
     }
-    //dd($models);
-
-    // Parse car registration if exists
-    $registration = [];
-    if ($advert->car_details) {
-        $regParts = explode(' ', $advert->car_details->registration);
-        $registration = [
-            'month' => $regParts[0] ?? '',
-            'year' => $regParts[1] ?? ''
-        ];
-    }
-
-    if ($request->isMethod('POST')) {
-        return $this->update_ad($request, $advert);
-    }
-
-    return view('dashboard.edit-ad', compact(
-        'title',
-        'categories',
-        'user',
-        'advert',
-        'subcategories',
-        'brands',
-        'models',
-        'registration'
-    ));
-}
 
     protected function update_ad(Request $request, $advert)
 {
-    $subcat = $request->input('subcategory');
+
+    $subcat = (int) $request->input('subcategory');
 
     $rules = [
-        'ad_title' => 'required',
-        'category' => 'required',
+        'ad_title'    => 'required',
+        'category'    => 'required',
         'subcategory' => 'required',
-        'brand' => 'required',
-        'price' => 'required|numeric',
-        'price_type' => 'required',
-        'state' => 'required',
-        'lga' => 'required',
+        'brand'       => 'required',
+        'price'       => 'required|numeric',
+        'price_type'  => 'required',
+        'state'       => 'required',
+        'lga'         => 'required',
         'description' => 'required',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20288', // 12MB max
+        'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
     ];
 
-    // Add your conditional rules as in post_ad
+    switch ($subcat) {
+        case 2: // Vehicles
+            $rules = array_merge($rules, [
+                'model'    => 'required',
+                'registration'    => 'required',
+                'mileage'      => 'required|numeric',
+                'condition'    => 'required',
+                'fuel'         => 'required',
+                'transmission' => 'required',
+                'vehicle_type' => 'required',
+                'doors'        => 'required',
+            ]);
+            break;
+
+        case 6: // Phones
+            $rules = array_merge($rules, [
+                'phone_color'     => 'required',
+                'phone_condition' => 'required',
+                'device'          => 'required',
+            ]);
+            break;
+
+        default:
+            // other subcategories
+            $rules['item_condition'] = 'required';
+            break;
+    }
 
     $validatedData = $request->validate($rules);
 
@@ -262,9 +306,11 @@ class UserManageAdverts extends Controller
         'brand'=> $request->input('brand'),
         'price'=> $request->input('price'),
         'price_type'=> $request->input('price_type'),
+        'item_condition'=> $request->input('item_condition'),
         'buy_direct'=> $request->input('buy_direct'),
         'state'=> $request->input('state'),
         'lga'=> $request->input('lga'),
+        'state_slug'=> Str::slug($request->input('state')),
         'description'=> $request->input('description'),
         'keyword'=> $request->input('keyword'),
         'meta_description'=> $request->input('meta_description'),
@@ -274,24 +320,30 @@ class UserManageAdverts extends Controller
         'quantity'=> $request->input('quantity') ?? 1,
         'ad_image'=> "",
     ]);
+    $advert->state_slug = Str::slug($advert->state);
 
+//dd($request->has('deleted_images'));
     // Handle deleted images
     if ($request->has('deleted_images')) {
+
+
         foreach ($request->input('deleted_images') as $imageId) {
             $image = $advert->images()->find($imageId);
             if ($image) {
                 // Delete the file from storage
-                if (file_exists(public_path('uploads/images/' . $image->image))) {
-                    unlink(public_path('uploads/images/' . $image->image));
+                $filePath = public_path('uploads/images/' . $image->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
                 $image->delete();
             }
         }
     }
 
-    if ($request->has('existing_image_order')) {
+    // Handle existing image order
+    $orderedIds = [];
+    if ($request->filled('existing_image_order')) {
         $orderedIds = explode(',', $request->input('existing_image_order')); // e.g. [3,1,2]
-        //dd($orderedIds);
         foreach ($orderedIds as $index => $imageId) {
             DB::table('advert_images')
                 ->where('id', $imageId)
@@ -300,45 +352,46 @@ class UserManageAdverts extends Controller
         }
     }
 
-    // Handle new image uploads
-    $newPositionStart = count($orderedIds) + 1;
+    // Determine start position for new images
+    $newPositionStart = count($orderedIds) > 0
+        ? count($orderedIds) + 1
+        : ($advert->images()->count() + 1);
 
+    // Handle new image uploads
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $index => $image) {
-            $newFileName = rand(00000, 99999) . '_' . $image->getClientOriginalName();
-            $image->move('uploads/images', $newFileName);
+            if ($image->isValid()) {
+                $newFileName = rand(10000, 99999) . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/images'), $newFileName);
 
-            $advert->images()->create([
-                'image' => $newFileName,
-                'position' => $newPositionStart + $index // starts at 1 or after existing
-            ]);
+                $advert->images()->create([
+                    'image' => $newFileName,
+                    'position' => $newPositionStart + $index
+                ]);
+            }
         }
     }
-
-
-
-
 
     //dd($subcat);
     // Update car or phone details
     if($subcat=="2"){
-        $registration = $request->input('month') . " ".$request->input('year');
+
         $advert->car->update([
             'cat_id'=> $request->input('category'),
             'brand_id'=> $request->input('brand'),
             'model'=> $request->input('model'),
             'mileage'=> $request->input('mileage'),
             'condition'=> $request->input('condition'),
-            'registration'=> $registration,
+            'registration'=> $request->input('registration'),
             'fuel'=> $request->input('fuel'),
             'transmission'=> $request->input('transmission'),
             'vehicle_type'=> $request->input('vehicle_type'),
             'doors'=> $request->input('doors'),
             'exterior_color'=> $request->input('exterior_color'),
             'material_interior'=> $request->input('material_interior'),
-            'exterior_equipment'=> implode(",",$request->input('exterior_equipment', [])),
-            'interior'=> implode(",",$request->input('interior', [])),
-            'security'=> implode(",",$request->input('security', [])),
+            'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
+            'interior'=> json_encode($request->input('interior')),
+            'security'=> json_encode($request->input('security')),
         ]);
     }
 

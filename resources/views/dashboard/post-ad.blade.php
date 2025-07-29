@@ -99,7 +99,7 @@
                             <option value="">Select Options</option>
                         </select>
                     </div>
-                    <!--
+
                     <div id="divModel" class="col-span-6 md:col-span-2 hidden">
                         @if ($errors->has('model'))
                             <span class="text-red-400">{{ $errors->first('model') }}</span>
@@ -109,11 +109,27 @@
                             <option value="">Select Model</option>
                         </select>
                     </div>
-                    -->
+
 
                 </div>
             </div>
     
+       </div>
+
+       <div id="itemCondition" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Item Condition *</div>
+            </div>
+            <div class="col-span-10 md:col-span-6">
+                @if ($errors->has('item_condition'))
+                    <span class="text-red-400">{{ $errors->first('item_condition') }}</span>
+                @endif
+            <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">Please Choose</option>
+                <option value="Used">Used</option>
+                <option value="New">New</option>
+            </select>
+            </div>
        </div>
 
         <!-- Div 1 (Initially Hidden) -->
@@ -144,7 +160,7 @@
                     @endif
                 <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value=" Local used"> Local used</option>
+                    <option value="Local used">Local used</option>
                     <option value="Foreign used">Foreign used</option>
                     <option value="Brand new">Brand new</option>
                 </select>
@@ -153,32 +169,20 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">First Registration</div>
+                    <div class="font-semibold">Registration</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('month'))
-                        <span class="text-red-400">{{ $errors->first('month') }}</span>
+                    @if ($errors->has('registeration'))
+                        <span class="text-red-400">{{ $errors->first('registeration') }}</span>
                     @endif
-                    @if ($errors->has('year'))
-                        <span class="text-red-400">{{ $errors->first('year') }}</span>
-                    @endif
+
                     <div class="flex w-2/4">
-                        <select id="pr" name="month" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                            <option value="">Month</option>
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
+                        <select id="pr" name="registeration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                            <option value="">--Select Type--</option>
+                            <option value="Registered">Registered</option>
+                            <option value="Unregistered">Unregistered</option>
                         </select>
-                        <input type="text" name="year" placeholder="year" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('year') }}">
+
                     </div>
                 </div>
            </div>
@@ -633,7 +637,7 @@
                 @if ($errors->has('description'))
                     <span class="text-red-400">{{ $errors->first('description') }}</span>
                 @endif
-            <textarea name="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ old('description') }}</textarea>
+            <textarea name="description" id="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ old('description') }}</textarea>
             </div>
             <div class="col-span-10 md:col-span-3">
                 
@@ -764,6 +768,9 @@
 
     </form>
 </section>
+<script>
+    CKEDITOR.replace( 'description' );
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

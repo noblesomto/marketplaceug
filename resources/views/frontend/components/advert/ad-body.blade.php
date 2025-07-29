@@ -39,8 +39,14 @@
 
 
 <div class="my-2 w-full bg-white rounded p-5 flex justify-start">
-    <div class="w-32 font-bold">Type</div>
+    <div class="w-32 font-bold">Condition</div>
+    @if($ad->sub_category=="2")
+    <div>{{ $car->condition }}</div>
+    @elseif($ad->sub_category=="6")
+    {{ $phone->condition }}
+    @else
     <div>{{ $cat->category }}</div>
+    @endif
 </div>
 
 @if($ad->sub_category=="2")
@@ -71,7 +77,7 @@
               <div>{{ $car->condition }}</div>
             </div>
             <div class="flex justify-between items-center mb-1">
-              <div class="md:font-bold">Initial Registration</div>
+              <div class="md:font-bold">Registration</div>
               <div>{{ $car->registration }}</div>
             </div>
             <div class="flex justify-between items-center mb-1">
@@ -109,37 +115,37 @@
 
 <!-- Interior Fetures -->
 @php
-    $interiors = $car->interior;
-    $interiors = explode(",",$interiors);
+    $interiors = array_filter(array_map(function ($item) {
+        return trim(str_replace(['/', '"', '\\', '[]'], '', $item));
+    }, explode(',', $car->interior)));
 @endphp
-<div class="my-2 w-full bg-white rounded p-2 md:p-5">
-    <div class="block lg:hidden">
-      <div class="w-48 font-bold">Interior Features</div>
-    <div class="border border-gray-200 my-2"></div>
+
+@if(count($interiors))
+<div class="my-4 w-full bg-white rounded-lg shadow-sm p-4 md:p-6">
+    <div class="mb-4">
+        <h2 class="text-lg font-semibold text-gray-800">Interior Features</h2>
+        <hr class="mt-2 border-gray-200">
     </div>
-    <div class="text-sm leading-relaxed">
-        <div class="grid grid-cols-6 md:gap-2">
-          @foreach($interiors as $interior)
-          <div class="col-span-3 md:col-span-2">
-            <div class="flex justify-start">
-              <span class="text-dark_green mr-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-              </span>
-              <div class="md:font-bold capitalize">{{ $interior }}</div>
-            </div>
-          </div>
-          @endforeach
- 
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm text-gray-700">
+        @foreach($interiors as $interior)
+        <div class="flex items-start space-x-2">
+            <svg class="w-4 h-4 text-dark_green mt-1 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            <span class="md:font-bold capitalize">{{ $interior }}</span>
         </div>
+        @endforeach
     </div>
 </div>
+@endif
+
 
 <!-- Exterior Fetures -->
+
 @php
-    $exteriors = $car->exterior_equipment;
-    $exteriors = explode(",",$exteriors);
+    $exteriors = array_filter(array_map(function ($item) {
+        return trim(str_replace(['/', '"', '\\', '[]'], '', $item));
+    }, explode(',', $car->exterior_equipment)));
 @endphp
 <div class="my-2 w-full bg-white rounded p-2 md:p-5">
     <div class="block lg:hidden">

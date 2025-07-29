@@ -29,7 +29,9 @@ class Payment extends Model
         'shipping_status_date',
         'buyer_status',
         'ship_code',
-        'tracking_id'
+        'tracking_id',
+        'seller_settlement',
+        'settlement_date'
     ];
 
     public function advert()

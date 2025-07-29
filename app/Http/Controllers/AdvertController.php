@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Reports;
 use App\Models\State;
 use App\Models\Message;
+use App\Models\Shipping;
 use App\Models\GigLogistic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,9 +26,11 @@ use Illuminate\Support\Facades\File;
 
 class AdvertController extends Controller
 {
-    public function advert(Request $request, $id, $slug)
+    public function advert(Request $request, $location, $slug, $id)
     {
-        $data['ad'] = Advert::with('images','owner')->where('id', $id)->first();
+        $data['ad'] = Advert::with('images','owner')->where('title_slug', $slug)->first();
+        $ad_id = $data['ad']['id'];
+        //dd($ad_id);
         $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
         $title = $data['ad']->ad_title;
         $cat_id = $data['ad']->category;
@@ -50,12 +53,12 @@ class AdvertController extends Controller
         $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
         $data['cat'] = Category::where('id', $cat_id)->first();
         $data['brand'] = Brands::where('id', $brand_id)->first();
-        $data['car'] = CarDetail::where('advert_id', $id)->first();
+        $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
         if ($data['car']) {
             $model_id = $data['car']->model;
             $data['model'] = Models::where('id', $model_id)->first();
         }
-        $data['phone'] = PhoneDetail::where('advert_id', $id)->first();
+        $data['phone'] = PhoneDetail::where('advert_id', $ad_id)->first();
         if ($data['phone']) {
             $model_id = $data['phone']->model;
             $data['model'] = Models::where('id', $model_id)->first();
@@ -67,7 +70,7 @@ class AdvertController extends Controller
             ->inRandomOrder()
             ->where('user_id', $ad_owner)
             ->activeNotRecentlySold()
-            ->where('id', '!=', $id);  // or ->whereNot('id', $id)
+            ->where('id', '!=', $ad_id);  // or ->whereNot('id', $id)
 
         // Get the count
         $data['advertsCount'] = $query->count();
@@ -80,7 +83,7 @@ class AdvertController extends Controller
             ->inRandomOrder()
             ->where('ad_title', 'LIKE', '%' . $title . '%') // Partial match
             ->orWhere('category', $cat_id) 
-            ->where('id', '!=', $id)
+            ->where('id', '!=', $ad_id)
             ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad_owner)
             ->limit(3)
@@ -89,7 +92,7 @@ class AdvertController extends Controller
 
         //dd($data['adverts']);
         \DB::table('adverts')
-            ->where('id', $id)
+            ->where('id', $ad_id)
             ->increment('views', 1);
 
         return view('frontend.advert', $data);
@@ -210,20 +213,25 @@ class AdvertController extends Controller
                           ->count();
 
         $categories = DB::table('sub_categories')
-            ->leftJoin('adverts', 'sub_categories.id', '=', 'adverts.sub_category')
-            ->where('sub_categories.cat_id', $cat->id)
-            // Add scope conditions to the join
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
-                            ->orWhereNull('adverts.sold_date');
-                      });
+            ->leftJoin('adverts', function ($join) {
+                $join->on('sub_categories.id', '=', 'adverts.sub_category')
+                    ->where('adverts.ad_status', 1)
+                    ->where(function ($q) {
+                        $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          ->orWhereNull('adverts.sold_date');
+                    });
             })
-            ->select('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->where('sub_categories.cat_id', $cat->id)
+            ->select(
+                'sub_categories.id',
+                'sub_categories.sub_category',
+                'sub_categories.sub_cat_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
             ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
+         //dd($categories);
 
         return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
     }
@@ -355,6 +363,47 @@ class AdvertController extends Controller
         return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat'));
     }
 
+    public function all_cateory(Request $request, $category_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
+
+        // Main ads query with scope
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('sub_category', $subcat->id)
+                    ->orderBy('created_at', 'asc')
+                    ->paginate(20);
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
+
+        // Brands query with filtering
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        return view('frontend.all-subcat', compact('title','ads','user','brands','subcat','count_subcat','subcat_slug'));
+    }
+
     public function mobile_category(Request $request, $id, $slug)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
@@ -474,7 +523,10 @@ public function buy_direct_payment(Request $request, $id)
 
         //dd($data['ad']);
 
-
+        $ship_data = $request->session()->get('shipping_data');
+        $ship_id = $ship_data['shipping_method'];
+        $data['shipping_method'] = Shipping::where('id',$ship_id)->first();
+       // dd($data['shipping_method']);
         return view('frontend.buy-direct-payment', $data);
     }
 

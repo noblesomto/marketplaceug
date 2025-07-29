@@ -1,7 +1,7 @@
 <div class="pb-20">
 
 @forelse($ads as $row)
-    <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+    <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
       <div class="bg-white mb-1 border-b border-b-gray-300">
          <div class="flex w-full">
               <div class="w-2/6 mr-1 relative">
@@ -34,11 +34,7 @@
               <div class="w-4/6 relative">
                 <div class="flex justify-between text-xs">
                   <div class="flex justify-start items-center text-sm md:mr-5">
-                    <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    </span>
+
                     <div class="flex gap-2">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">

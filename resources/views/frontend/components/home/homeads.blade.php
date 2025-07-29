@@ -12,7 +12,7 @@
 	<div class="container mx-auto px-4">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach ($ads as $row)
-            <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}" class="group">
+            <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="group">
                 <div class="h-full flex flex-col">
                     <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
                         <!-- Image wrapper with fixed aspect ratio -->
@@ -21,7 +21,7 @@
                                 src="{{ asset('uploads/images/' . $row->firstImage->image) }}" 
                                 alt="{{ $row->ad_title }}" 
                                 class="w-full h-full object-cover"
-                                onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
+                                onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.jpg') }}';"
                             />
                             <div class="absolute top-1 right-1 space-y-1 z-10">
                                 @if($row->owner->verified=='yes')

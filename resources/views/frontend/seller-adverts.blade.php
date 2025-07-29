@@ -14,8 +14,11 @@
                  @include('frontend.components.advert.banner-advert')
               </div>
         <div class="grid grid-cols-10 gap-3">
-           <div class="col-span-3 hidden sm:block bg-white p-2">
+           <div class="col-span-3 hidden sm:block">
              @include('frontend.components.advert.seller-profile')
+             <div class="mt-3">
+                 @include('frontend.components.advert.side-advert')
+             </div>
            </div>
            <div class="col-span-10 md:col-span-7">
 

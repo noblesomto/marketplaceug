@@ -79,9 +79,6 @@ class UserController extends Controller
 
 
 
-
-
-
     public function my_ads(Request $request)
     {   
         $title = "My Orders | " . config('global.site_name');

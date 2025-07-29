@@ -19,7 +19,7 @@
 
     </div>
 
-    <form action="/user/edit-ad/{{ $advert->id }}" method="POST" role="form" class="" enctype="multipart/form-data">
+    <form action="/user/edit-ad/{{ $advert->id }}" id="advertForm" method="POST" role="form" class="" enctype="multipart/form-data">
              @csrf 
         <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 lg:col-span-2">
@@ -105,24 +105,49 @@
                 </select>
             </div>
 
-            <!-- Model Dropdown (conditionally shown) 
-            <div id="divModel" class="col-span-6 md:col-span-2 {{ in_array($advert->sub_category, [2,6]) ? '' : 'hidden' }}">
+
+            <!-- Model Dropdown (conditionally shown) -->
+            <div id="divModel" class="col-span-6 md:col-span-2 {{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
                 <select id="model" name="model" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white"
-                        data-selected="{{ $advert->sub_category == 2 ? optional($advert->car_details)->model : ($advert->sub_category == 6 ? optional($advert->phone_details)->model : '') }}" required>
+        data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}" >
+
                     <option value="">Select Model</option>
                     @foreach($models as $model)
                         <option value="{{ $model->id }}" 
-                            {{ ($advert->sub_category == 2 && optional($advert->car_details)->model == $model->id) || 
-                               ($advert->sub_category == 6 && optional($advert->phone_details)->model == $model->id) ? 'selected' : '' }}>
+                            {{
+                                ($advert->sub_category == 2 && optional($advert->car)->model == $model->id) ||
+                                ($advert->sub_category == 6 && optional($advert->phone)->model == $model->id)
+                                    ? 'selected' : ''
+                            }}
+                        >
                             {{ $model->model }}
                         </option>
+
                     @endforeach
                 </select>
             </div>
-            -->
+
         </div>
     </div>
 </div>
+
+
+
+        <div id="itemCondition" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 {{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
+        <div class="col-span-10 md:col-span-2">
+            <div class="font-semibold">Item Condition *</div>
+        </div>
+        <div class="col-span-10 md:col-span-6">
+            @if ($errors->has('item_condition'))
+                <span class="text-red-400">{{ $errors->first('item_condition') }}</span>
+            @endif
+            <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">Please Choose</option>
+                <option value="Used" {{ $advert->item_condition == 'Used' ? 'selected' : '' }}>Used</option>
+                <option value="New" {{ $advert->item_condition == 'New' ? 'selected' : '' }}>New</option>
+            </select>
+        </div>
+    </div>
 
         <!-- Div 1 (Initially Hidden) -->
     <div id="divCar" class="p-2 {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
@@ -163,43 +188,20 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">First Registration *</div>
+                    <div class="font-semibold">Registration</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('month'))
-                        <span class="text-red-400">{{ $errors->first('month') }}</span>
+                    @if ($errors->has('registration'))
+                        <span class="text-red-400">{{ $errors->first('registration') }}</span>
                     @endif
-                    @if ($errors->has('year'))
-                        <span class="text-red-400">{{ $errors->first('year') }}</span>
-                    @endif
+
                     <div class="flex w-2/4">
-                        <select id="pr" name="month" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                            <option value="">Month</option>
-                            @foreach([
-                                'January', 'February', 'March', 'April', 'May', 'June',
-                                'July', 'August', 'September', 'October', 'November', 'December'
-                            ] as $month)
-                                <option 
-                                    value="{{ $month }}" 
-                                    {{ $advert->car->registration_month === $month ? 'selected' : '' }}
-                                >
-                                    {{ $month }}
-                                </option>
-                            @endforeach
+                        <select id="pr" name="registration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                            <option value="">--Select Type--</option>
+                            <option value="Registered" {{ $advert->car->registeration == 'Registered' ? 'selected' : '' }}>Registered</option>
+                            <option value="Unregistered" {{ $advert->car->registeration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                         </select>
-                        <select id="registration_year" name="registration_year" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                            <option value="">Choose Year</option>
-                            @php
-                                $currentYear = date('Y');
-                                $years = range($currentYear, $currentYear - 30); // Last 30 years
-                            @endphp
-                            
-                            @foreach($years as $year)
-                                <option value="{{ $year }}" {{ $advert->car->registration_year == $year ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
-                            @endforeach
-                        </select>
+
                     </div>
                 </div>
            </div>
@@ -797,7 +799,7 @@
                 @if ($errors->has('description'))
                     <span class="text-red-400">{{ $errors->first('description') }}</span>
                 @endif
-            <textarea rows="10" name="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ $advert->description }}</textarea>
+            <textarea rows="10" name="description" id="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ $advert->description }}</textarea>
             </div>
             <div class="col-span-10 md:col-span-3">
                 
@@ -862,43 +864,9 @@
         @endif
         <select onchange="toggleLGA(this);" name="state" id="state" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
             <option value="" selected="selected">- Select State -</option>
-            <option value="Abia" {{ $advert->state == 'Abia' ? 'selected' : '' }}>Abia</option>
-            <option value="Adamawa" {{ $advert->state == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>
-            <option value="AkwaIbom" {{ $advert->state == 'AkwaIbom' ? 'selected' : '' }}>AkwaIbom</option>
-            <option value="Anambra" {{ $advert->state == 'Anambra' ? 'selected' : '' }}>Anambra</option>
-            <option value="Bauchi" {{ $advert->state == 'Bauchi' ? 'selected' : '' }}>Bauchi</option>
-            <option value="Bayelsa" {{ $advert->state == 'Bayelsa' ? 'selected' : '' }}>Bayelsa</option>
-            <option value="Benue" {{ $advert->state == 'Benue' ? 'selected' : '' }}>Benue</option>
-            <option value="Borno" {{ $advert->state == 'Borno' ? 'selected' : '' }}>Borno</option>
-            <option value="Cross River" {{ $advert->state == 'Cross River' ? 'selected' : '' }}>Cross River</option>
-            <option value="Delta" {{ $advert->state == 'Delta' ? 'selected' : '' }}>Delta</option>
-            <option value="Ebonyi" {{ $advert->state == 'Ebonyi' ? 'selected' : '' }}>Ebonyi</option>
-            <option value="Edo" {{ $advert->state == 'Edo' ? 'selected' : '' }}>Edo</option>
-            <option value="Ekiti" {{ $advert->state == 'Ekiti' ? 'selected' : '' }}>Ekiti</option>
-            <option value="Enugu" {{ $advert->state == 'Enugu' ? 'selected' : '' }}>Enugu</option>
-            <option value="FCT" {{ $advert->state == 'FCT' ? 'selected' : '' }}>FCT</option>
-            <option value="Gombe" {{ $advert->state == 'Gombe' ? 'selected' : '' }}>Gombe</option>
-            <option value="Imo" {{ $advert->state == 'Imo' ? 'selected' : '' }}>Imo</option>
-            <option value="Jigawa" {{ $advert->state == 'Jigawa' ? 'selected' : '' }}>Jigawa</option>
-            <option value="Kaduna" {{ $advert->state == 'Kaduna' ? 'selected' : '' }}>Kaduna</option>
-            <option value="Kano" {{ $advert->state == 'Kano' ? 'selected' : '' }}>Kano</option>
-            <option value="Katsina" {{ $advert->state == 'Katsina' ? 'selected' : '' }}>Katsina</option>
-            <option value="Kebbi" {{ $advert->state == 'Kebbi' ? 'selected' : '' }}>Kebbi</option>
-            <option value="Kogi" {{ $advert->state == 'Kogi' ? 'selected' : '' }}>Kogi</option>
-            <option value="Kwara" {{ $advert->state == 'Kwara' ? 'selected' : '' }}>Kwara</option>
-            <option value="Lagos" {{ $advert->state == 'Lagos' ? 'selected' : '' }}>Lagos</option>
-            <option value="Nasarawa" {{ $advert->state == 'Nasarawa' ? 'selected' : '' }}>Nasarawa</option>
-            <option value="Niger" {{ $advert->state == 'Niger' ? 'selected' : '' }}>Niger</option>
-            <option value="Ogun" {{ $advert->state == 'Ogun' ? 'selected' : '' }}>Ogun</option>
-            <option value="Ondo" {{ $advert->state == 'Ondo' ? 'selected' : '' }}>Ondo</option>
-            <option value="Osun" {{ $advert->state == 'Osun' ? 'selected' : '' }}>Osun</option>
-            <option value="Oyo" {{ $advert->state == 'Oyo' ? 'selected' : '' }}>Oyo</option>
-            <option value="Plateau" {{ $advert->state == 'Plateau' ? 'selected' : '' }}>Plateau</option>
-            <option value="Rivers" {{ $advert->state == 'Rivers' ? 'selected' : '' }}>Rivers</option>
-            <option value="Sokoto" {{ $advert->state == 'Sokoto' ? 'selected' : '' }}>Sokoto</option>
-            <option value="Taraba" {{ $advert->state == 'Taraba' ? 'selected' : '' }}>Taraba</option>
-            <option value="Yobe" {{ $advert->state == 'Yobe' ? 'selected' : '' }}>Yobe</option>
-            <option value="Zamfara" {{ $advert->state == 'Zamfara' ? 'selected' : '' }}>Zamafara</option>
+            @foreach($states as $state)
+            <option value="{{ $state->name }}" {{ ($advert->state == $state->name) ? "selected" : "" }}>{{ $state->name }}</option>
+            @endforeach
         </select>
     </div>
     <div class="col-span-10 md:col-span-3">
@@ -968,253 +936,78 @@
     </form>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Get all elements
-    const categorySelect = document.getElementById('category');
-    const subcategorySelect = document.getElementById('subcategory');
-    const brandSelect = document.getElementById('brand');
-    const modelSelect = document.getElementById('model');
-    const divCar = document.getElementById('divCar');
-    const divPhone = document.getElementById('divPhone');
-    const divModel = document.getElementById('divModel');
-    const shipmentDiv = document.getElementById('shipment');
+    CKEDITOR.replace( 'description' );
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="{{ asset('frontend/js/lga.js') }}"></script>
+<script src="{{ asset('backend/js/edit-ad.js') }}"></script>
 
-    // Store original values from data attributes
-    const originalValues = {
-        category: categorySelect.dataset.selected,
-        subcategory: subcategorySelect.dataset.selected,
-        brand: brandSelect.dataset.selected,
-        model: modelSelect ? modelSelect.dataset.selected : null
-    };
+<script>
+    // ==================== Image Upload and Management ====================
+    const existingPreview = document.getElementById("preview");
+    const orderInput = document.getElementById("existing_image_order");
+    const fileInput = document.getElementById("imageUpload");
+    const form = document.getElementById("advertForm");
 
-    // Initialize the form
-    initializeForm();
+    if (existingPreview) {
+        new Sortable(existingPreview, {
+            animation: 150,
+            handle: '.image-container',
+            onEnd: updateOrderInput
+        });
 
-    // Category change handler
-    categorySelect.addEventListener('change', function() {
-        const categoryId = this.value;
-        if (!categoryId) {
-            // Clear dependent fields if no category selected
-            subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
-            brandSelect.innerHTML = '<option value="">Select Brand</option>';
-            if (modelSelect) modelSelect.innerHTML = '<option value="">Select Model</option>';
-            toggleSections('');
-            return;
-        }
+        existingPreview.addEventListener("click", function (e) {
+            if (e.target.classList.contains("delete-image")) {
+                const imageId = e.target.dataset.id;
+                const container = e.target.closest(".image-container");
 
-        // Fetch subcategories for selected category
-        fetch(`/fetch-subcat/${categoryId}`)
-            .then(response => response.json())
-            .then(data => {
-                subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
-                data.forEach(subcat => {
-                    const option = document.createElement('option');
-                    option.value = subcat.id;
-                    option.text = subcat.sub_category;
-                    // Preselect if matches original value
-                    if (subcat.id == originalValues.subcategory && categoryId == originalValues.category) {
-                        option.selected = true;
-                    }
-                    subcategorySelect.appendChild(option);
-                });
-
-                // Trigger change event to load brands if subcategory was preselected
-                if (subcategorySelect.value) {
-                    subcategorySelect.dispatchEvent(new Event('change'));
+                if (imageId && form) {
+                    const deletedInput = document.createElement('input');
+                    deletedInput.type = 'hidden';
+                    deletedInput.name = 'deleted_images[]';
+                    deletedInput.value = imageId;
+                    form.appendChild(deletedInput);
                 }
-            })
-            .catch(error => console.error('Error:', error));
-    });
 
-    // Subcategory change handler
-    subcategorySelect.addEventListener('change', function() {
-        const subcategoryId = this.value;
-        if (!subcategoryId) {
-            // Clear dependent fields if no subcategory selected
-            brandSelect.innerHTML = '<option value="">Select Brand</option>';
-            if (modelSelect) modelSelect.innerHTML = '<option value="">Select Model</option>';
-            toggleSections('');
-            return;
-        }
+                container.remove();
 
-        // Toggle sections based on subcategory
-        toggleSections(subcategoryId);
+                const hiddenInput = document.querySelector(`input[name="existing_images[]"][value="${imageId}"]`);
+                if (hiddenInput) hiddenInput.remove();
 
-        // Fetch brands for selected subcategory
-        fetch(`/fetch-brand/${subcategoryId}`)
-            .then(response => response.json())
-            .then(data => {
-                brandSelect.innerHTML = '<option value="">Select Brand</option>';
-                data.forEach(brand => {
-                    const option = document.createElement('option');
-                    option.value = brand.id;
-                    option.text = brand.brand;
-                    // Preselect if matches original value
-                    if (brand.id == originalValues.brand && subcategoryId == originalValues.subcategory) {
-                        option.selected = true;
-                    }
-                    brandSelect.appendChild(option);
-                });
-
-                // Trigger change event to load models if brand was preselected
-                if (brandSelect.value && (subcategoryId == 2 || subcategoryId == 6)) {
-                    brandSelect.dispatchEvent(new Event('change'));
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-    // Brand change handler
-    if (brandSelect) {
-        brandSelect.addEventListener('change', function() {
-            const brandId = this.value;
-            const subcategoryId = subcategorySelect.value;
-            
-            if (!brandId || !(subcategoryId == 2 || subcategoryId == 6)) {
-                if (modelSelect) modelSelect.innerHTML = '<option value="">Select Model</option>';
-                return;
+                updateOrderInput();
             }
-
-            // Fetch models for selected brand
-            fetch(`/fetch-model/${brandId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!modelSelect) return;
-                    
-                    modelSelect.innerHTML = '<option value="">Select Model</option>';
-                    data.forEach(model => {
-                        const option = document.createElement('option');
-                        option.value = model.id;
-                        option.text = model.model;
-                        // Preselect if matches original value
-                        if (model.id == originalValues.model && brandId == originalValues.brand) {
-                            option.selected = true;
-                        }
-                        modelSelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
         });
     }
 
-    // Function to toggle sections
-    function toggleSections(subcategoryId) {
-        // Car section (subcategory 2)
-        if (subcategoryId == 2) {
-            if (divCar) divCar.classList.remove('hidden');
-            if (divPhone) divPhone.classList.add('hidden');
-            if (divModel) divModel.classList.remove('hidden');
-            if (shipmentDiv) shipmentDiv.classList.add('hidden');
-        } 
-        // Phone section (subcategory 6)
-        else if (subcategoryId == 6) {
-            if (divCar) divCar.classList.add('hidden');
-            if (divPhone) divPhone.classList.remove('hidden');
-            if (divModel) divModel.classList.remove('hidden');
-            if (shipmentDiv) shipmentDiv.classList.add('hidden');
-        } 
-        // Other sections
-        else {
-            if (divCar) divCar.classList.add('hidden');
-            if (divPhone) divPhone.classList.add('hidden');
-            if (divModel) divModel.classList.add('hidden');
-            if (shipmentDiv) shipmentDiv.classList.remove('hidden');
-        }
-    }
-
-    // Initialize form with correct values
-    function initializeForm() {
-        // If category has a value, trigger change to load subcategories
-        if (categorySelect.value) {
-            categorySelect.dispatchEvent(new Event('change'));
-        }
-    }
-});
-</script>
-
-<!-- JavaScript for Image Upload, Sorting, and Deleting -->
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const existingPreview = document.getElementById("preview");
-    const orderInput = document.getElementById("existing_image_order");
-
-    // Initialize Sortable
-    const sortable = new Sortable(existingPreview, {
-        animation: 150,
-        handle: '.image-container',
-        onEnd: updateOrderInput
+    fileInput?.addEventListener("change", function () {
+        Array.from(fileInput.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const newImage = document.createElement("div");
+                newImage.classList.add("relative", "group", "cursor-move", "image-container");
+                newImage.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-auto rounded-lg shadow">
+                    <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center">&times;</button>
+                `;
+                existingPreview.appendChild(newImage);
+            };
+            reader.readAsDataURL(file);
+        });
     });
 
-    // Update image order input
     function updateOrderInput() {
-        const ids = Array.from(existingPreview.querySelectorAll(".image-container"))
+        if (!orderInput) return;
+        const ids = Array.from(existingPreview.querySelectorAll(".image-container[data-id]"))
             .map(el => el.dataset.id);
         orderInput.value = ids.join(',');
     }
 
-    // Delete existing image (frontend only)
-    existingPreview.addEventListener("click", function (e) {
-        if (e.target.classList.contains("delete-image")) {
-            const imageId = e.target.dataset.id;
-            const container = e.target.closest(".image-container");
-            container.remove();
-
-            // Also remove hidden input so it's not submitted
-            const hiddenInput = document.querySelector(`input[name="existing_images[]"][value="${imageId}"]`);
-            if (hiddenInput) hiddenInput.remove();
-
-            updateOrderInput();
-        }
-    });
-
     // Initial population
     updateOrderInput();
-});
 </script>
-
-
-<script>
-    function toggleDiv() {
-      const selectedOption = document.querySelector('input[name="shipment"]:checked').value;
-      const shipping = document.getElementById("shipping");
-
-      if (selectedOption === "Ship") {
-        shipping.classList.remove("hidden"); // Show the div
-      } else {
-        shipping.classList.add("hidden"); // Hide the div
-      }
-    }
-  </script>
-<script>
-// You'll need to call this when the page loads if there's a selected state
-document.addEventListener('DOMContentLoaded', function() {
-    @if($advert->state)
-        // Trigger the LGA loading for the selected state
-        const stateSelect = document.getElementById('state');
-        toggleLGA(stateSelect);
-        
-        // After a small delay (to allow the LGA options to load), set the selected LGA
-        setTimeout(() => {
-            const lgaSelect = document.getElementById('lga');
-            if(lgaSelect) {
-                lgaSelect.value = "{{ $advert->lga }}";
-            }
-        }, 100);
-    @endif
-});
-</script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-
-<script src="{{ asset('frontend/js/lga.js') }}"></script>
 @include('dashboard.layouts.footer')

@@ -38,7 +38,7 @@
                             </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div> 
                           </div>
                         </div>
-                        <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+                        <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                             <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                         </a>
                         <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>

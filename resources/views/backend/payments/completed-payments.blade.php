@@ -43,49 +43,62 @@
               </tr>
             </thead>
             <tbody>
-              @if($payments !='')
-            @foreach ( $payments as $row )
-              <tr>
-                <td> <img width="60px" src="{{  asset('uploads/images/'.$row->advert->firstImage->image) }}" class="img-responsive" alt="Image"></td>
-                <td>{{ $row->advert->ad_title }}</td>                
-                <td><a href="/admin/view-user/{{ $row->user->user_id }}">{{ $row->user->name }}</a> </td>
-                <td>₦{{ number_format($row->advert->price, 2, '.', ',') }}</td>
-                <td>₦{{ number_format($row->commission, 2, '.', ',') }}</td>
-                <td>₦{{ number_format($row->amount_paid, 2, '.', ',') }}</td>
-                <td>{{ date('j F Y', strtotime($row->created_at)); }}</td>
-                @if($row->payment_status=="paid")
-                <td><span class="text-success text-capitalize">{{ $row->payment_status }}</span> </td>
-                @else
-                <td><span class="text-danger text-capitalize">{{ $row->payment_status }}</span> </td>
-                @endif
-                @if($row->payment_status=="paid")
-                <td>Payment Confirmed</td>
-                @else
-                <td><a class="text-primary" href="/admin/confirm-payment/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Payment?');">Comfirm Payment</a></td>
-                @endif
-                <td>{{ $row->ship_code }}</td>
-                @if($row->shipping_status=="delivered")
-                <td><span class="text-success text-capitalize">{{ $row->shipping_status }}</span> </td>
-                @else
-                <td><span class="text-danger text-capitalize">{{ $row->shipping_status }}</span> </td>
-                @endif
-                <td>
-                    @if($row->shipping_status=="delivered")
-                        <span>Delivery Confirmed</span>
-                    @else
-                        <a class="text-primary" href="/admin/confirm-delivery/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Delivery?');">Comfirm Delivery</a>
-                    @endif
-                </td>
-              </tr>
-            @endforeach
-              @else
-
-              <tr>
-                <td colspan="12">
-                  No Records available
-                </td>
-              </tr>
-              @endif
+            @if(!empty($payments) && $payments->isNotEmpty())
+    @foreach ($payments as $row)
+        <tr>
+    <td>
+        @if($row->advert->firstImage->image)
+            <img
+                width="60px"
+                src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}"
+                class="img-responsive"
+                alt="Image"
+            >
+        @else
+            <img
+                width="60px"
+                src="{{ asset('frontend/images/default.png') }}"
+                class="img-responsive"
+                alt="Default Image"
+            >
+        @endif
+    </td>
+    <td>{{ $row->advert->ad_title }}</td>
+    <td><a href="/admin/view-user/{{ $row->user->user_id }}">{{ $row->user->name }}</a> </td>
+    <td>₦{{ number_format($row->advert->price, 2, '.', ',') }}</td>
+    <td>₦{{ number_format($row->commission, 2, '.', ',') }}</td>
+    <td>₦{{ number_format($row->amount_paid, 2, '.', ',') }}</td>
+    <td>{{ date('j F Y', strtotime($row->created_at)); }}</td>
+    @if($row->payment_status=="paid")
+    <td><span class="text-success text-capitalize">{{ $row->payment_status }}</span> </td>
+    @else
+    <td><span class="text-danger text-capitalize">{{ $row->payment_status }}</span> </td>
+    @endif
+    @if($row->payment_status=="paid")
+    <td>Payment Confirmed</td>
+    @else
+    <td><a class="text-primary" href="/admin/confirm-payment/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Payment?');">Comfirm Payment</a></td>
+    @endif
+    <td>{{ $row->ship_code }}</td>
+    @if($row->shipping_status=="delivered")
+    <td><span class="text-success text-capitalize">{{ $row->shipping_status }}</span> </td>
+    @else
+    <td><span class="text-danger text-capitalize">{{ $row->shipping_status }}</span> </td>
+    @endif
+    <td>
+        @if($row->shipping_status=="delivered")
+            <span>Delivery Confirmed</span>
+        @else
+            <a class="text-primary" href="/admin/confirm-delivery/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Delivery?');">Comfirm Delivery</a>
+        @endif
+    </td>
+  </tr>
+    @endforeach
+@else
+    <tr>
+        <td colspan="12">No records available</td>
+    </tr>
+@endif
             </tbody>
           </table>
           </div>

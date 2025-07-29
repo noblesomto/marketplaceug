@@ -23,8 +23,10 @@
                       <span class="font-semibold mr-2">{{ $cat->category }}</span>
                       <span>({{ $count_cat }})</span>
                   </div>
-
-                  @foreach($categories as $subCategory)
+                  @php
+                      $catLimit = 15;
+                    @endphp
+                  @foreach($categories->take($catLimit) as $subCategory)
                       <span class="space-y-1 mt-1">
                           <a class="" href="{{ url('/category/' . $cat->category_slug . '/' . $subCategory->sub_cat_slug) }}">
                           <div class="flex ml-3 mt-2">
@@ -34,6 +36,15 @@
                       </a>
                       </span>
                   @endforeach
+
+                  @if($categories->count() > $catLimit)
+                  <div class="ml-3 mt-2">
+                    <a href="{{ url('/category/'.$cat->category_slug) }}"
+                       class="text-dark_green text-sm hover:underline">
+                      See all {{ $cat->category }}
+                    </a>
+                  </div>
+                @endif
               </div>
               <div class="bg-white p-2 space-y-2">
                 <h4 class="font-semibold">Locations</h4>

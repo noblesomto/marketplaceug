@@ -1,7 +1,7 @@
 
 document.getElementById('category').addEventListener('change', function () {
         var countryId = this.value;
-        console.log(countryId);
+        //console.log(countryId);
             if (countryId === "3") {
                 document.querySelector('label[for="brand"]').textContent = "Select Job Type:";
 
@@ -16,15 +16,17 @@ document.getElementById('category').addEventListener('change', function () {
                 var stateSelect = document.getElementById('subcategory');
                 stateSelect.innerHTML = '<option value="">Select Sub Category</option>'; // Reset state dropdown
                 document.getElementById('brand').innerHTML = '<option value="">Select Option</option>'; // Reset city dropdown
-                 var divCar = document.getElementById("divCar");
+                var divCar = document.getElementById("divCar");
                 var divPhone = document.getElementById("divPhone");
                 var shipment = document.getElementById("shipment");
+                var itemCondition = document.getElementById("itemCondition");
                 const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
 
                 // Hide all divs initially
             divCar.classList.add("hidden");
             divPhone.classList.add("hidden");
-            //divModel.classList.add("hidden");
+            divModel.classList.add("hidden");
+
 
 
                 response.data.forEach(function (subcat) {
@@ -60,10 +62,12 @@ document.getElementById('category').addEventListener('change', function () {
                     // Show the relevant div based on the selection
                     if (stateId === "2") {
                         divCar.classList.remove("hidden");
-                        //divModel.classList.remove("hidden");
+                        divModel.classList.remove("hidden");
                         shipment.classList.add("hidden");
+                        itemCondition.classList.add("hidden");
                     } else if (stateId === "6") {
                         divPhone.classList.remove("hidden");
+                        itemCondition.classList.add("hidden");
                         //divModel.classList.remove("hidden");
                     }else{
                         shipment.classList.remove("hidden");
@@ -75,7 +79,7 @@ document.getElementById('category').addEventListener('change', function () {
             });
     });
 
-/**
+
     document.getElementById('brand').addEventListener('change', function () {
         var brandId = this.value;
 
@@ -99,7 +103,7 @@ document.getElementById('category').addEventListener('change', function () {
             });
     });
 
-**/
+
 function toggleShipping() {
         const shippingDiv = document.getElementById("shipping");
         const isShipping = document.querySelector('input[name="shipment"]:checked').value === "Ship";

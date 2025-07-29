@@ -153,8 +153,7 @@ class ManageCategories extends Controller
 
     public function delete_model($id,$cat)
     {
-
-        $brand = Models::where('model_id', $id)->first();
+        $brand = Models::where('id', $id)->first();
         $brand->delete();
 
         return redirect("admin/model/".$cat)->with('status', ['text'=>'Model was deleted','type'=>'success']);
@@ -176,6 +175,7 @@ class ManageCategories extends Controller
     public function fetch_model($cat_id)
     {
         $model = Models::where('brand_id', $cat_id)->get();
+        //dd($model);
         return response()->json($model);
     }
 

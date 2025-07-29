@@ -371,7 +371,7 @@
           "Udi",
           "Uzo Uwani"
         ],
-        FCT: [
+        "FCT - Abuja": [
           "Abaji",
           "Bwari",
           "Gwagwalada",

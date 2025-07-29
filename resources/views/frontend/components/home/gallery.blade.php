@@ -32,12 +32,12 @@
       <!-- Cards -->
       @foreach ( $featured as $row )
         <div class="flex-none w-2/4 md:w-2/4 lg:w-2/4 2xl:w-1/4 p-1">
-          <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+          <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
             <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
               <!-- Image container with fixed height -->
               <div class="relative h-32 md:h-36 overflow-hidden">
                 <img class="w-full h-full object-cover" src="{{ asset('uploads/images/'.$row->firstImage->image) }}">
-                <div class="absolute top-4 right-4 space-y-1">
+                <div class="absolute top-1 right-1 space-y-1">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
                             <span>

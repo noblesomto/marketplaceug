@@ -12,7 +12,7 @@
   <!-- Card 1 -->
   @foreach ( $featured as $row )
   <div class="flex-none w-32">
-    <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+    <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
         <div class="relative overflow-hidden">
             <img class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110" src="{{  asset('uploads/images/'.$row->firstImage->image) }}">
             <div class="absolute top-2 right-2 space-y-1">

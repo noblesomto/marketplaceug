@@ -43,10 +43,10 @@ Route::any('/admin', [AccountController::class, 'adminlogin'])->name('admin.logi
 Route::any('/shipper', [AccountController::class, 'shipper']);
 
 //Adverts
-Route::get('/advert/{id}/{slug}', [AdvertController::class, 'advert']);
 Route::get('/adverts', [AdvertController::class, 'adverts']);
 Route::get('/all-categories', [AdvertController::class, 'all_categories']);
 Route::get('/category/{category_slug}', [AdvertController::class, 'category']);
+Route::get('/category/all-{slug}', [AdvertController::class, 'all_category']);
 Route::get('/category/{category_slug}/{subcat_slug}', [AdvertController::class, 'sub_category']);
 Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertController::class, 'all_subcat']);
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand']);
@@ -181,6 +181,12 @@ Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payme
 Route::any('/admin/pending-payments', [ManagePayments::class, 'pending_payments'])->middleware('adminsession');
 Route::any('/admin/confirm-delivery/{id}', [ManagePayments::class, 'confirm_delivery'])->middleware('adminsession');
 
+//Manage Settlements
+Route::any('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements'])->middleware('adminsession');
+Route::any('/admin/completed-settlements', [ManagePayments::class, 'completed_settlements'])->middleware('adminsession');
+Route::any('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement'])->middleware('adminsession');
+
+
 //Advertising
 Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
 
@@ -228,6 +234,8 @@ Route::get('/unread-messages-count', function () {
 
     return response()->json(['count' => $count]);
 });
+Route::get('/{location}/{slug}/{id}', [AdvertController::class, 'advert'])
+     ->where('location', '[A-Za-z0-9\-]+');
 
 Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
     ->where([
@@ -235,6 +243,4 @@ Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
         'slug' => '[a-zA-Z0-9\-]+',
     ]);
 
-Route::get('/test-upload-path', function () {
-    return \App\Helpers\FileUploadHelper::getUploadPath('verification');
-});
+

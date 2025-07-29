@@ -115,6 +115,24 @@
         </li><!-- End Forms Nav -->
 
         <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#settlements" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-cash-coin"></i><span>Settlements</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="settlements" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="/admin/pending-settlements">
+                <i class="bi bi-circle"></i><span>Pending Settlements</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/completed-settlements">
+                <i class="bi bi-circle"></i><span>Completed Settlements</span>
+              </a>
+            </li>
+          </ul>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#boost" data-bs-toggle="collapse" href="#">
             <i class="bi bi-badge-ad"></i><span>Ad Boost</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>

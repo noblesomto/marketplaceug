@@ -16,7 +16,7 @@ class CarDetail extends Model
         'model',
         'mileage',
         'condition',
-        'registration_month',
+        'registration',
         'registration_year',
         'fuel',
         'transmission',

@@ -64,6 +64,10 @@
 
             <div class="space-y-3 mt-4">
               <h4 class="font-semibold">Delivery/Pickup Location</h4>
+              <div class="flex items-center space-x-4">
+                    <span><img class="w-8 h-6" src="{{ asset('uploads/shipping/'.$shipping_method->logo) }}"> </span>
+                    <span>{{ $shipping_method->company }}</span>
+              </div>
               <div class="flex space-x-4">
                     <span>Address:</span>
                     <span>{{ $shipping['reciever_city']->address }}</span>

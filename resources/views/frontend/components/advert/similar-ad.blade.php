@@ -7,7 +7,7 @@
 <div class="bg-white p-2 md:p-5 -mt-5 md:mt-0">
     @if (!$adverts->isEmpty())
         @foreach ($adverts as $row)
-        <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+        <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
           <div class="bg-white mb-1 border-b border-b-gray-300">
              <div class="flex w-full">
                   <div class="w-1/4 mr-1 relative bg-gray-100">
@@ -43,14 +43,39 @@
                     </div>
                     <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                     <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
-                    <div class="flex justify-start text-dark_green font-bold text-base my-2">
-                      <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
-                      <div>{{ $row->price_type }}</div>
-                    </div>
-                    <div class="flex justify-start text-sm mt-2 absolute bottom-1">
-                      @if($row->shippment=="Ship")
-                      <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
+                    <div class="flex items-center justify-between text-xs mt-1">
+                        <div class="flex justify-start text-dark_green font-bold text-base my-2">
+                          <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
+                          <div>{{ $row->price_type }}</div>
+                        </div>
+                        @if($row->buy_direct=="Yes")
+                          <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                              </svg>
+                              <span class="text-xs text-blue-600">Buy Direct</span>
+                          </div>
                       @endif
+                    </div>
+                    <div class="flex items-center justify-between text-xs my-3">
+                        @if($row->shipment=="Ship")
+                            <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
+                        @endif
+                      @if($row->sold=="Yes")
+                      <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed" title="This advert is already sold">
+                          <span>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                          </span>
+                          <span class="font-semibold text-xs">Sold</span>
+                      </span>
+                      @endif
+                  </div>
+                    <div>
+
                     </div>
                   </div>
               </div>
@@ -83,7 +108,7 @@
 <div class="bg-white p-2 md:p-5 -mt-5 md:mt-0">
    @if (!$similar_ads->isEmpty())
         @foreach ($similar_ads as $row)
-        <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
+        <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
           <div class="bg-white mb-1 border-b border-b-gray-300">
              <div class="flex w-full">
                   <div class="w-1/4 mr-1 relative bg-gray-100">
@@ -119,15 +144,37 @@
                     </div>
                     <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                     <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
-                    <div class="flex justify-start text-dark_green font-bold text-base my-2">
-                      <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
-                      <div>{{ $row->price_type }}</div>
-                    </div>
-                    <div class="flex justify-start text-sm mt-2 absolute bottom-1">
-                      @if($row->shippment=="Ship")
-                      <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
+                    <div class="flex items-center justify-between text-xs mt-1">
+                        <div class="flex justify-start text-dark_green font-bold text-base my-2">
+                          <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
+                          <div>{{ $row->price_type }}</div>
+                        </div>
+                        @if($row->buy_direct=="Yes")
+                          <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                              </svg>
+                              <span class="text-xs text-blue-600">Buy Direct</span>
+                          </div>
                       @endif
                     </div>
+                    <div class="flex items-center justify-between text-xs my-3">
+                        @if($row->shipment=="Ship")
+                            <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
+                        @endif
+                      @if($row->sold=="Yes")
+                      <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed" title="This advert is already sold">
+                          <span>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                          </span>
+                          <span class="font-semibold text-xs">Sold</span>
+                      </span>
+                      @endif
+                  </div>
                   </div>
               </div>
           </div>
