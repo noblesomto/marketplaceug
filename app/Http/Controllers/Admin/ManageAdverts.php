@@ -75,51 +75,53 @@ class ManageAdverts extends Controller
 
 
     public function delete_advert($id)
-{
-    try {
-        \DB::beginTransaction();
+    {
+        try {
+            \DB::beginTransaction();
 
-        $advert = Advert::with('images')->find($id);
+            $advert = Advert::with('images')->find($id);
 
-        if (!$advert) {
+            if (!$advert) {
+                return redirect()->back()->with('status', [
+                    'text' => 'Advert not found',
+                    'type' => 'error'
+                ]);
+            }
+
+            // Delete all associated images
+            foreach ($advert->images as $image) {
+                $absolutePath = public_path('uploads/images/' . $image->image);
+
+                // Check if file exists before trying to delete
+                if (file_exists($absolutePath)) {
+                    if (!unlink($absolutePath)) {
+                        throw new \Exception("Failed to delete image file: " . $absolutePath);
+                    }
+                }
+
+                // Optional: Delete the image record from database
+                // $image->delete();
+            }
+
+            // Delete the advert
+            $advert->delete();
+
+            \DB::commit();
+
             return redirect()->back()->with('status', [
-                'text' => 'Advert not found',
+                'text' => 'Advert and all images deleted successfully',
+                'type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            \DB::rollBack();
+
+            return redirect()->back()->with('status', [
+                'text' => 'Error deleting advert: ' . $e->getMessage(),
                 'type' => 'error'
             ]);
         }
-
-        // Delete all associated images
-        foreach ($advert->images as $image) {
-            $absolutePath = public_path('uploads/images/' . $image->image);
-
-            // Check if file exists before trying to delete
-            if (file_exists($absolutePath)) {
-                if (!unlink($absolutePath)) {
-                    throw new \Exception("Failed to delete image file: " . $absolutePath);
-                }
-            }
-
-            // Optional: Delete the image record from database
-            // $image->delete();
-        }
-
-        // Delete the advert
-        $advert->delete();
-
-        \DB::commit();
-
-        return redirect()->back()->with('status', [
-            'text' => 'Advert and all images deleted successfully',
-            'type' => 'success'
-        ]);
-
-    } catch (\Exception $e) {
-        \DB::rollBack();
-
-        return redirect()->back()->with('status', [
-            'text' => 'Error deleting advert: ' . $e->getMessage(),
-            'type' => 'error'
-        ]);
     }
-}
+
+
 }

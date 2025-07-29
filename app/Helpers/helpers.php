@@ -177,3 +177,15 @@ if (!function_exists('advert_count_by_filter')) {
     }
 }
 
+if (!function_exists('setViews')) {
+    /**
+     * Set views count to 1000 or a specified value
+     *
+     * @param int|null $count Optional custom view count
+     * @return int
+     */
+    function setViews($count = null)
+    {
+        return $count ?? 1000;
+    }
+}

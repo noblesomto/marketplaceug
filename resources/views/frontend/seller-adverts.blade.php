@@ -54,7 +54,7 @@
                                         d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                                 </svg>
                             </span>
-                            <span>Particulary Friendly</span>
+                            <span>Very Friendly</span>
                         </div>
 
                         <div class="flex justify-start items-center bg-purple-200 rounded-full px-2 py-1 text-xs mt-1">
@@ -65,7 +65,7 @@
                                         d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
                                 </svg>
                             </span>
-                            <span>Particulary Reliable</span>
+                            <span>Very Reliable</span>
                         </div>
 
                         <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-2">
@@ -129,7 +129,8 @@
                 <div class="border border-gray-200 my-2"></div>
 
             </div>
-            @if (!$ads->isEmpty())
+            <div class="pb-20">
+                @if (!$ads->isEmpty())
               @foreach ($ads as $row)
                 <a href="/advert/{{ $row->id }}/{{ $row->title_slug }}">
                   <div class="bg-white mb-1 border-b border-b-gray-300">
@@ -137,6 +138,29 @@
                           <div class="w-2/6 mr-1 relative">
                             <img class="h-24 md:h-48 object-cover" src="{{  asset('uploads/images/'.$row->firstImage->image) }}">
                             <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
+                            <div class="absolute top-2 right-2 space-y-2">
+                                @if($row->owner->verified=='yes')
+                                    <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                                              <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                                              <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                            </svg>
+                                        </span>
+                                        <span class="text-xs">Verified</span>
+                                    </div>
+                                @endif
+                                @if($row->views >= setViews())
+                                <div class="bg-white opacity-8 flex space-x-2 py-1 px-2">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
+                                        </svg>
+                                    </span>
+                                    <span class="text-xs">Popular</span>
+                                </div>
+                                @endif
+                            </div>
                           </div>
                           <div class="w-4/6 relative">
                             <div class="flex justify-between text-xs">
@@ -147,7 +171,7 @@
                                 </svg>
                                 </span>
                                 <div>
-                                  <span class="text-xs">{{ $row->state }}</span> 
+                                  <span class="text-xs">{{ $row->state }}</span>
                                 </div>
                                 </div>
 
@@ -156,14 +180,26 @@
                                   <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                                 </svg>
-                                </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div> 
+                                </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
                               </div>
                             </div>
                             <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                             <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
-                            <div class="flex justify-start text-dark_green font-bold text-base my-2">
-                              <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
-                              <div>{{ $row->price_type }}</div>
+                            <div class="flex items-center justify-between text-xs mt-1">
+                                <div class="flex justify-start text-dark_green font-bold text-base my-2">
+                                  <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
+                                  <div>{{ $row->price_type }}</div>
+                                </div>
+                                @if($row->buy_direct=="Yes")
+                                  <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                          stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                                      </svg>
+                                      <span class="text-xs text-blue-600">Buy Direct</span>
+                                  </div>
+                              @endif
                             </div>
                             <div class="flex justify-start text-sm my-3">
                               @if($row->shipment=="Ship")
@@ -181,9 +217,10 @@
                     <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="external-Empty-empty-state-(outline)-outline-andi-nur-abdillah"/>
                 </span>
                 <span>No Item matches the Search...</span>
-                
+
             </div>
         @endif
+            </div>
 
            </div>
         </div>

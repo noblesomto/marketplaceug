@@ -94,9 +94,13 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="bg-dark_green hover:bg-secondary-200 text-white px-4 py-2 rounded-lg w-full mt-3 mb-2">Send</button>
+                        <button type="submit" id="sendBtn" class="bg-dark_green hover:bg-secondary-200 text-white px-4 py-2 rounded-lg w-full mt-3 mb-2">
+                            <span class="default-text">Send</span>
+                            <span class="loading-text hidden">Sending...</span>
+                        </button>
 
-                        @if($advert->buy_direct == "No")
+
+                        @if($advert->buy_direct == "No" && $advert->user_id != $user->user_id)
                             <span class="mt-4 text-red-500">** Please avoid making payment before inspecting the goods **</span>
                         @endif
 
@@ -117,6 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const amountInput = document.getElementById('extraInput');
     const chatInput = document.getElementById('chat-input');
     const chatForm = document.getElementById('chat-form');
+    const sendBtn = document.getElementById('sendBtn');
+    const defaultText = sendBtn.querySelector('.default-text');
+    const loadingText = sendBtn.querySelector('.loading-text');
 
     if (toggle && wrapper && amountInput) {
         // Toggle switch functionality
@@ -162,38 +169,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle form submission
     if (chatForm && chatInput) {
-        $(chatForm).on('submit', function (e) {
-            e.preventDefault();
+    $(chatForm).on('submit', function (e) {
+        e.preventDefault();
 
-            let message = chatInput.value.trim();
-            if (message === '') return;
+        let message = chatInput.value.trim();
+        if (message === '') return;
 
-            if (toggle && toggle.checked && amountInput.value && !message.includes(amountInput.value)) {
-                message = `Would you accept ₦${amountInput.value}`;
-                chatInput.value = message;
-            }
+        // Update message for offer
+        if (toggle && toggle.checked && amountInput.value && !message.includes(amountInput.value)) {
+            message = `Would you accept ₦${amountInput.value}`;
+            chatInput.value = message;
+        }
 
-            $.ajax({
-                url: '{{ route("chat.sendMessage", ["advertId" => $advert->id, "receiverId" => $receiver->user_id]) }}',
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function () {
-                    chatInput.value = '';
-                    if (toggle && toggle.checked) {
-                        amountInput.value = '';
-                        wrapper.classList.add('hidden');
-                        amountInput.setAttribute('disabled', 'disabled');
-                        amountInput.removeAttribute('required');
-                        toggle.checked = false;
-                    }
-                    loadMessages();
-                },
-                error: function () {
-                    alert('Error sending message');
+        // Disable button + show loading
+        sendBtn.disabled = true;
+        defaultText.classList.add('hidden');
+        loadingText.classList.remove('hidden');
+
+        $.ajax({
+            url: '{{ route("chat.sendMessage", ["advertId" => $advert->id, "receiverId" => $receiver->user_id]) }}',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function () {
+                // Reset form
+                chatInput.value = '';
+                if (toggle && toggle.checked) {
+                    amountInput.value = '';
+                    wrapper.classList.add('hidden');
+                    amountInput.setAttribute('disabled', 'disabled');
+                    amountInput.removeAttribute('required');
+                    toggle.checked = false;
                 }
-            });
+
+                loadMessages();
+            },
+            error: function () {
+                alert('Error sending message');
+            },
+            complete: function () {
+                // Re-enable button
+                sendBtn.disabled = false;
+                defaultText.classList.remove('hidden');
+                loadingText.classList.add('hidden');
+            }
         });
-    }
+    });
+}
 
     // Load chat messages
     function loadMessages() {

@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Advert;
 use App\Models\Payment;
 use Carbon\Carbon;
+use App\Events\NewMessageNotification;
+
 
 class MessageController extends Controller
 {
@@ -119,7 +121,8 @@ class MessageController extends Controller
         return redirect()->back();
     }
 
-    public function countUnreadMessages()
+
+    public function countUnreadMessages(Request $request)
     {
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();

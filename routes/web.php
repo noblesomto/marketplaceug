@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ManageShipping;
 use App\Http\Controllers\Admin\ManageUsers;
 use App\Http\Controllers\Admin\ManageAdvertising;
 use App\Http\Controllers\Admin\ManagePayments;
+use Illuminate\Support\Facades\Broadcast;
 
 Route::get('/', [PageController::class, 'index']);
 Route::any('/page', [PageController::class, 'page']);
@@ -221,6 +222,11 @@ Route::get('/fetch-model/{cat_id}', [ManageCategories::class, 'fetch_model']);
 
 Route::get('/api/check-following/{userId}', [UserController::class, 'checkFollowing']);
 Route::post('/api/toggle-follow', [UserController::class, 'toggleFollow'])->middleware('usersession');
+
+
+Route::post('/broadcasting/auth', function (Illuminate\Http\Request $request) {
+    return Broadcast::auth($request);
+})->middleware('usersession');
 
 Route::get('/unread-messages-count', function () {
     $userId = session('user_id');

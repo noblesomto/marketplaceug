@@ -2,14 +2,12 @@
 
 namespace App\Events;
 
+use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class NewMessageNotification implements ShouldBroadcast
 {
@@ -17,7 +15,7 @@ class NewMessageNotification implements ShouldBroadcast
 
     public $message;
 
-    public function __construct($message)
+    public function __construct(Message $message)
     {
         $this->message = $message;
     }
@@ -31,4 +29,17 @@ class NewMessageNotification implements ShouldBroadcast
     {
         return 'new.message';
     }
+
+    // Optional: format message payload
+    public function broadcastWith()
+    {
+        return [
+            'id' => $this->message->id,
+            'content' => $this->message->message_content,
+            'sender_id' => $this->message->sender_id,
+            'advert_id' => $this->message->advert_id,
+            'created_at' => $this->message->created_at->toDateTimeString(),
+        ];
+    }
 }
+

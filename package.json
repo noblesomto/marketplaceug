@@ -16,7 +16,7 @@
     "dependencies": {
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "bootstrap": "^5.3.7",
-        "laravel-echo": "^1.16.1",
-        "pusher-js": "^8.4.0-rc2"
+        "laravel-echo": "^1.19.0",
+        "pusher-js": "^8.4.0"
     }
 }
