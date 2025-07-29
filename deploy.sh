@@ -23,6 +23,7 @@ EXCLUDES=(
   "deploy.sh"
   "gitpush.sh"
   "storage/"
+  "bootstrap/"
   "public/hot"
   "public/uploads/"
   "public/ckeditor/"

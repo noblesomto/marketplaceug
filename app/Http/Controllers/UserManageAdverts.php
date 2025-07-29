@@ -17,6 +17,7 @@ use App\Models\AdvertImage;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
 use App\Models\Shipping;
+use App\Helpers\FileUploadHelper;
 
 class UserManageAdverts extends Controller
 {
@@ -37,14 +38,12 @@ class UserManageAdverts extends Controller
         $title = "Post New Advert - " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
-        $categories = Category::orderBy('category','asc')->get();
+        $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
-        $shippings = Shipping::where('status','Active')->orderBy('company','asc')->get();
-        //dd($categories);
+        $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
+
         if ($request->isMethod('POST')) {
-
-            $ad_id = rand(00000,99999);
-
+            $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
 
             $rules = [
@@ -61,140 +60,133 @@ class UserManageAdverts extends Controller
             ];
 
             switch ($subcat) {
-                case 2: // Vehicles
-                    $rules = array_merge($rules, [
-                        'model'    => 'required',
-                        'registration'    => 'required',
+                case 2:
+                    $rules += [
+                        'model'        => 'required',
+                        'registration' => 'required',
                         'mileage'      => 'required|numeric',
                         'condition'    => 'required',
                         'fuel'         => 'required',
                         'transmission' => 'required',
                         'vehicle_type' => 'required',
                         'doors'        => 'required',
-                    ]);
+                    ];
                     break;
 
-                case 6: // Phones
-                    $rules = array_merge($rules, [
+                case 6:
+                    $rules += [
                         'phone_color'     => 'required',
                         'phone_condition' => 'required',
                         'device'          => 'required',
-                    ]);
+                    ];
                     break;
 
                 default:
-                    // other subcategories
                     $rules['item_condition'] = 'required';
-                    break;
             }
 
             $validatedData = $request->validate($rules);
-
 
             if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
             }
 
+            $advert = Advert::create([
+                'ad_title'         => $request->input('ad_title'),
+                'ad_type'          => $request->input('ad_type'),
+                'category'         => $request->input('category'),
+                'sub_category'     => $request->input('subcategory'),
+                'brand'            => $request->input('brand'),
+                'price'            => $request->input('price'),
+                'item_condition'   => $request->input('item_condition'),
+                'price_type'       => $request->input('price_type'),
+                'buy_direct'       => $request->input('buy_direct'),
+                'state'            => $request->input('state'),
+                'lga'              => $request->input('lga'),
+                'state_slug'       => Str::slug($request->input('state')),
+                'description'      => $request->input('description'),
+                'keyword'          => $request->input('keyword'),
+                'meta_description' => $request->input('meta_description'),
+                'featured'         => $request->input('featured') ?? 'No',
+                'ad_id'            => $ad_id,
+                'shipment'         => $request->input('shipment'),
+                'show_contact'     => $request->input('show_contact'),
+                'quantity'         => $request->input('quantity') ?? 1,
+                'views'            => "0",
+                'ad_status'        => "1",
+                'user_id'          => $user_id,
+                'ad_image'         => "",
+            ]);
 
-          $advert = Advert::create([
-            'ad_title'=> $request->input('ad_title'),
-            'ad_type'=> $request->input('ad_type'),
-            'category'=> $request->input('category'),
-            'sub_category'=> $request->input('subcategory'),
-            'brand'=> $request->input('brand'),
-            'price'=> $request->input('price'),
-            'item_condition'=> $request->input('item_condition'),
-            'price_type'=> $request->input('price_type'),
-            'buy_direct'=> $request->input('buy_direct'),
-            'state'=> $request->input('state'),
-            'lga'=> $request->input('lga'),
-            'state_slug'=> Str::slug($request->input('state')),
-            'description'=> $request->input('description'),
-            'keyword'=> $request->input('keyword'),
-            'meta_description'=> $request->input('meta_description'),
-            'featured'=> $request->input('featured'),
-            'ad_id'=> $ad_id,
-            'shipment'=> $request->input('shipment'),
-            'show_contact'=> $request->input('show_contact'),
-            'quantity'=> $request->input('quantity') ?? 1,
-            'views'=> "0",
-            'featured'=> "No",
-            'ad_status'=> "1",
-            'user_id'=> $user_id,
-            'ad_image'=> "",
-        ]);
+            $advert->shippings()->sync($request->input('shipping', []));
 
-        $advert->shippings()->sync($request->input('shipping', []));
-        //dd($request->input('shipping', []));
+            // Handle uploaded images using FileUploadHelper
+            if ($request->hasFile('images')) {
+                $images = $request->file('images');
+                $order = explode(',', $request->input('image_order')); // e.g. "1,0,2"
 
-         if ($request->hasFile('images')) {
-            $images = $request->file('images');
-            $order = explode(',', $request->input('image_order')); // array of index positions
+                foreach ($order as $position => $index) {
+                    if (!isset($images[$index]) || !$images[$index]->isValid()) continue;
 
-            foreach ($order as $position => $index) {
-                if (!isset($images[$index])) continue;
+                    $uploadedFileName = FileUploadHelper::upload($images[$index], 'images');
 
-                $image = $images[$index];
-                $newFileName = rand(00000, 99999) . '_' . $image->getClientOriginalName();
-                $image->move('uploads/images', $newFileName);
-
-                $advert->images()->create([
-                    'image' => $newFileName,
-                    'position' => $position + 1,
-                ]);
+                    $advert->images()->create([
+                        'image'    => $uploadedFileName,
+                        'position' => $position + 1,
+                    ]);
+                }
             }
-        }
 
+            // Store car-specific info
+            if ($subcat === 2) {
+                $car = new CarDetail([
+                    'car_id'            => rand(10000, 99999),
+                    'cat_id'            => $request->input('category'),
+                    'brand_id'          => $request->input('brand'),
+                    'model'             => $request->input('model'),
+                    'mileage'           => $request->input('mileage'),
+                    'condition'         => $request->input('condition'),
+                    'registration'      => $request->input('registration'),
+                    'fuel'              => $request->input('fuel'),
+                    'transmission'      => $request->input('transmission'),
+                    'vehicle_type'      => $request->input('vehicle_type'),
+                    'doors'             => $request->input('doors'),
+                    'exterior_color'    => $request->input('exterior_color'),
+                    'material_interior' => $request->input('material_interior'),
+                    'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
+                    'interior'          => json_encode($request->input('interior')),
+                    'security'          => json_encode($request->input('security')),
+                ]);
+                $car->advert()->associate($advert);
+                $car->save();
+            }
 
-        if($subcat=="2"){
+            // Store phone-specific info
+            if ($subcat === 6) {
+                $phone = new PhoneDetail([
+                    'phone_id'  => rand(10000, 99999),
+                    'cat_id'    => $request->input('category'),
+                    'brand_id'  => $request->input('brand'),
+                    'model'     => $request->input('model'),
+                    'color'     => $request->input('phone_color'),
+                    'device'    => $request->input('device'),
+                    'condition' => $request->input('phone_condition'),
+                ]);
+                $phone->advert()->associate($advert);
+                $phone->save();
+            }
 
-            $car = new CarDetail([
-                'car_id'=> rand(00000,99999),
-                'cat_id'=> $request->input('category'),
-                'brand_id'=> $request->input('brand'),
-                'model'=> $request->input('model'),
-                'mileage'=> $request->input('mileage'),
-                'condition'=> $request->input('condition'),
-                'registration'=> $request->input('registration'),
-                //'registration_year'=> $request->input('year'),
-                'fuel'=> $request->input('fuel'),
-                'transmission'=> $request->input('transmission'),
-                'vehicle_type'=> $request->input('vehicle_type'),
-                'doors'=> $request->input('doors'),
-                'exterior_color'=> $request->input('exterior_color'),
-                'material_interior'=> $request->input('material_interior'),
-                'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
-                'interior'=> json_encode($request->input('interior')),
-                'security'=> json_encode($request->input('security')),
-            ]);
-            $car->advert()->associate($advert);
-            $car->save();
-        }
+            // Handle promotion
+            if ($request->has('promotion')) {
+                $request->session()->put('promotion', $request->promotion);
+                return redirect('/user/post-boost-ad/' . $advert->id);
+            }
 
-        if($subcat=="6"){
-            $phone = new PhoneDetail([
-                'phone_id'=> rand(00000,99999),
-                'cat_id'=> $request->input('category'),
-                'brand_id'=> $request->input('brand'),
-                'model'=> $request->input('model'),
-                'color'=> $request->input('phone_color'),
-                'device'=> $request->input('device'),
-                'condition'=> $request->input('phone_condition'),
-            ]);
-            $phone->advert()->associate($advert);
-            $phone->save();
-        }
-
-        if ($request->has('promotion')) {
-            $request->session()->put('promotion', $request->promotion);
-            return redirect('/user/post-boost-ad/' . $advert->id);
-        }
-        return redirect('/user/my-ads')->with('success', 'Your Advert Has successfully been Posted');
-
+            return redirect('/user/my-ads')->with('success', 'Your Advert Has successfully been Posted');
         }
 
         if ($request->isMethod('GET')) {
-            return view('dashboard.post-ad', compact('title','categories','user','shippings','states'));
+            return view('dashboard.post-ad', compact('title', 'categories', 'user', 'shippings', 'states'));
         }
     }
 
@@ -250,165 +242,148 @@ class UserManageAdverts extends Controller
     }
 
     protected function update_ad(Request $request, $advert)
-{
+    {
+        $subcat = (int) $request->input('subcategory');
 
-    $subcat = (int) $request->input('subcategory');
+        $rules = [
+            'ad_title'    => 'required',
+            'category'    => 'required',
+            'subcategory' => 'required',
+            'brand'       => 'required',
+            'price'       => 'required|numeric',
+            'price_type'  => 'required',
+            'state'       => 'required',
+            'lga'         => 'required',
+            'description' => 'required',
+            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
+        ];
 
-    $rules = [
-        'ad_title'    => 'required',
-        'category'    => 'required',
-        'subcategory' => 'required',
-        'brand'       => 'required',
-        'price'       => 'required|numeric',
-        'price_type'  => 'required',
-        'state'       => 'required',
-        'lga'         => 'required',
-        'description' => 'required',
-        'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
-    ];
+        switch ($subcat) {
+            case 2:
+                $rules += [
+                    'model'        => 'required',
+                    'registration' => 'required',
+                    'mileage'      => 'required|numeric',
+                    'condition'    => 'required',
+                    'fuel'         => 'required',
+                    'transmission' => 'required',
+                    'vehicle_type' => 'required',
+                    'doors'        => 'required',
+                ];
+                break;
+            case 6:
+                $rules += [
+                    'phone_color'     => 'required',
+                    'phone_condition' => 'required',
+                    'device'          => 'required',
+                ];
+                break;
+            default:
+                $rules['item_condition'] = 'required';
+        }
 
-    switch ($subcat) {
-        case 2: // Vehicles
-            $rules = array_merge($rules, [
-                'model'    => 'required',
-                'registration'    => 'required',
-                'mileage'      => 'required|numeric',
-                'condition'    => 'required',
-                'fuel'         => 'required',
-                'transmission' => 'required',
-                'vehicle_type' => 'required',
-                'doors'        => 'required',
-            ]);
-            break;
+        $validatedData = $request->validate($rules);
 
-        case 6: // Phones
-            $rules = array_merge($rules, [
-                'phone_color'     => 'required',
-                'phone_condition' => 'required',
-                'device'          => 'required',
-            ]);
-            break;
+        // Update main advert
+        $advert->update([
+            'ad_title'        => $request->input('ad_title'),
+            'ad_type'         => $request->input('ad_type'),
+            'category'        => $request->input('category'),
+            'sub_category'    => $request->input('subcategory'),
+            'brand'           => $request->input('brand'),
+            'price'           => $request->input('price'),
+            'price_type'      => $request->input('price_type'),
+            'item_condition'  => $request->input('item_condition'),
+            'buy_direct'      => $request->input('buy_direct'),
+            'state'           => $request->input('state'),
+            'lga'             => $request->input('lga'),
+            'state_slug'      => Str::slug($request->input('state')),
+            'description'     => $request->input('description'),
+            'keyword'         => $request->input('keyword'),
+            'meta_description'=> $request->input('meta_description'),
+            'featured'        => $request->input('featured'),
+            'shipment'        => $request->input('shipment'),
+            'show_contact'    => $request->input('show_contact'),
+            'quantity'        => $request->input('quantity') ?? 1,
+            'ad_image'        => "",
+        ]);
 
-        default:
-            // other subcategories
-            $rules['item_condition'] = 'required';
-            break;
-    }
-
-    $validatedData = $request->validate($rules);
-
-    // Update main advert
-    $advert->update([
-        'ad_title'=> $request->input('ad_title'),
-        'ad_type'=> $request->input('ad_type'),
-        'category'=> $request->input('category'),
-        'sub_category'=> $request->input('subcategory'),
-        'brand'=> $request->input('brand'),
-        'price'=> $request->input('price'),
-        'price_type'=> $request->input('price_type'),
-        'item_condition'=> $request->input('item_condition'),
-        'buy_direct'=> $request->input('buy_direct'),
-        'state'=> $request->input('state'),
-        'lga'=> $request->input('lga'),
-        'state_slug'=> Str::slug($request->input('state')),
-        'description'=> $request->input('description'),
-        'keyword'=> $request->input('keyword'),
-        'meta_description'=> $request->input('meta_description'),
-        'featured'=> $request->input('featured'),
-        'shipment'=> $request->input('shipment'),
-        'show_contact'=> $request->input('show_contact'),
-        'quantity'=> $request->input('quantity') ?? 1,
-        'ad_image'=> "",
-    ]);
-    $advert->state_slug = Str::slug($advert->state);
-
-//dd($request->has('deleted_images'));
-    // Handle deleted images
-    if ($request->has('deleted_images')) {
-
-
-        foreach ($request->input('deleted_images') as $imageId) {
-            $image = $advert->images()->find($imageId);
-            if ($image) {
-                // Delete the file from storage
-                $filePath = public_path('uploads/images/' . $image->image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+        // Handle deleted images
+        if ($request->has('deleted_images')) {
+            foreach ($request->input('deleted_images') as $imageId) {
+                $image = $advert->images()->find($imageId);
+                if ($image) {
+                    FileUploadHelper::delete('images', $image->image);
+                    $image->delete();
                 }
-                $image->delete();
             }
         }
-    }
 
-    // Handle existing image order
-    $orderedIds = [];
-    if ($request->filled('existing_image_order')) {
-        $orderedIds = explode(',', $request->input('existing_image_order')); // e.g. [3,1,2]
-        foreach ($orderedIds as $index => $imageId) {
-            DB::table('advert_images')
-                ->where('id', $imageId)
-                ->where('advert_id', $advert->id)
-                ->update(['position' => $index + 1]);
-        }
-    }
-
-    // Determine start position for new images
-    $newPositionStart = count($orderedIds) > 0
-        ? count($orderedIds) + 1
-        : ($advert->images()->count() + 1);
-
-    // Handle new image uploads
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $index => $image) {
-            if ($image->isValid()) {
-                $newFileName = rand(10000, 99999) . '_' . $image->getClientOriginalName();
-                $image->move(public_path('uploads/images'), $newFileName);
-
-                $advert->images()->create([
-                    'image' => $newFileName,
-                    'position' => $newPositionStart + $index
-                ]);
+        // Handle image reordering
+        $orderedIds = [];
+        if ($request->filled('existing_image_order')) {
+            $orderedIds = explode(',', $request->input('existing_image_order'));
+            foreach ($orderedIds as $index => $imageId) {
+                DB::table('advert_images')
+                    ->where('id', $imageId)
+                    ->where('advert_id', $advert->id)
+                    ->update(['position' => $index + 1]);
             }
         }
+
+        $newPositionStart = count($orderedIds) > 0
+            ? count($orderedIds) + 1
+            : ($advert->images()->count() + 1);
+
+        // Upload new images using helper
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                if ($image->isValid()) {
+                    $uploadedFileName = FileUploadHelper::upload($image, 'images');
+                    $advert->images()->create([
+                        'image'    => $uploadedFileName,
+                        'position' => $newPositionStart + $index,
+                    ]);
+                }
+            }
+        }
+
+        // Update Car details
+        if ($subcat === 2 && $advert->car) {
+            $advert->car->update([
+                'cat_id'            => $request->input('category'),
+                'brand_id'          => $request->input('brand'),
+                'model'             => $request->input('model'),
+                'mileage'           => $request->input('mileage'),
+                'condition'         => $request->input('condition'),
+                'registration'      => $request->input('registration'),
+                'fuel'              => $request->input('fuel'),
+                'transmission'      => $request->input('transmission'),
+                'vehicle_type'      => $request->input('vehicle_type'),
+                'doors'             => $request->input('doors'),
+                'exterior_color'    => $request->input('exterior_color'),
+                'material_interior' => $request->input('material_interior'),
+                'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
+                'interior'          => json_encode($request->input('interior')),
+                'security'          => json_encode($request->input('security')),
+            ]);
+        }
+
+        // Update Phone details
+        if ($subcat === 6 && $advert->phone) {
+            $advert->phone->update([
+                'phone_id'  => rand(10000, 99999),
+                'cat_id'    => $request->input('category'),
+                'brand_id'  => $request->input('brand'),
+                'model'     => $request->input('model'),
+                'color'     => $request->input('phone_color'),
+                'device'    => $request->input('device'),
+                'condition' => $request->input('phone_condition'),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Advert updated successfully');
     }
-
-    //dd($subcat);
-    // Update car or phone details
-    if($subcat=="2"){
-
-        $advert->car->update([
-            'cat_id'=> $request->input('category'),
-            'brand_id'=> $request->input('brand'),
-            'model'=> $request->input('model'),
-            'mileage'=> $request->input('mileage'),
-            'condition'=> $request->input('condition'),
-            'registration'=> $request->input('registration'),
-            'fuel'=> $request->input('fuel'),
-            'transmission'=> $request->input('transmission'),
-            'vehicle_type'=> $request->input('vehicle_type'),
-            'doors'=> $request->input('doors'),
-            'exterior_color'=> $request->input('exterior_color'),
-            'material_interior'=> $request->input('material_interior'),
-            'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
-            'interior'=> json_encode($request->input('interior')),
-            'security'=> json_encode($request->input('security')),
-        ]);
-    }
-
-    if($subcat=="6"){
-        $advert->phone->update([
-            'phone_id'=> rand(00000,99999),
-            'cat_id'=> $request->input('category'),
-            'brand_id'=> $request->input('brand'),
-            'model'=> $request->input('model'),
-            'color'=> $request->input('phone_color'),
-            'device'=> $request->input('device'),
-            'condition'=> $request->input('phone_condition'),
-        ]);
-    }
-
-    return redirect()->back()->with('success', 'Advert updated successfully');
-}
 
 public function boost_ad(Request $request, $id)
     {

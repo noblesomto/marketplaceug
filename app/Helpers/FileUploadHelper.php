@@ -23,12 +23,9 @@ class FileUploadHelper
             mkdir($uploadPath, 0755, true);
         }
 
-        // Delete old file if exists
+        // Delete old file if specified
         if ($oldFile) {
-            $oldPath = $uploadPath . '/' . $oldFile;
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
-            }
+            self::delete($folder, $oldFile);
         }
 
         // Generate safe filename
@@ -42,6 +39,22 @@ class FileUploadHelper
     }
 
     /**
+     * Delete a file from a given folder.
+     *
+     * @param string $folder
+     * @param string $filename
+     * @return bool
+     */
+    public static function delete(string $folder, string $filename): bool
+    {
+        $filePath = self::getUploadPath($folder) . '/' . $filename;
+        if (file_exists($filePath)) {
+            return unlink($filePath);
+        }
+        return false;
+    }
+
+    /**
      * Get the full upload path depending on environment.
      *
      * @param string $folder
@@ -51,12 +64,12 @@ class FileUploadHelper
     {
         $folder = trim($folder, '/');
 
-        // If we are in production (shared hosting), use DOCUMENT_ROOT
+        // For production (shared hosting)
         if (app()->environment('production') && isset($_SERVER['DOCUMENT_ROOT'])) {
             return rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/uploads/' . $folder;
         }
 
-        // Default (local environment)
+        // Default (local)
         return public_path('uploads/' . $folder);
     }
 }

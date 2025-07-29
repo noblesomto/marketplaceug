@@ -27,19 +27,29 @@ use Illuminate\Support\Facades\File;
 class AdvertController extends Controller
 {
     public function advert(Request $request, $location, $slug, $id)
-    {
-        $data['ad'] = Advert::with('images','owner')->where('title_slug', $slug)->first();
-        $ad_id = $data['ad']['id'];
-        //dd($ad_id);
-        $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
-        $title = $data['ad']->ad_title;
-        $cat_id = $data['ad']->category;
-        $brand_id = $data['ad']->brand;
-        //$model_id = $data['ad']->model;
-        $ad_owner = $data['ad']->user_id;
-        $subcat_id = $data['ad']->sub_category;
-        $user_id = $request->session()->get('user_id');
-        foreach ($data['ad']->images as $img) {
+{
+    // First get the ad and check if it exists
+    $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
+
+    if (!$ad) {
+
+        abort(404, 'Advert not found');
+    }
+
+    $data['ad'] = $ad;
+    $ad_id = $ad->id;
+
+    $data['title'] = $ad->ad_title.' - '.config('global.site_name');
+    $title = $ad->ad_title;
+    $cat_id = $ad->category;
+    $brand_id = $ad->brand;
+    $ad_owner = $ad->user_id;
+    $subcat_id = $ad->sub_category;
+    $user_id = $request->session()->get('user_id');
+
+    // Check if images exist before processing
+    if ($ad->images) {
+        foreach ($ad->images as $img) {
             $path = public_path('uploads/images/' . $img->image);
             if (File::exists($path)) {
                 [$width, $height] = getimagesize($path);
@@ -48,55 +58,56 @@ class AdvertController extends Controller
                 $img->is_portrait = false; // default to landscape
             }
         }
-        $data['user'] = User::where('user_id', $user_id)->first();
-        //dd($data['user']);
-        $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
-        $data['cat'] = Category::where('id', $cat_id)->first();
-        $data['brand'] = Brands::where('id', $brand_id)->first();
-        $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
-        if ($data['car']) {
-            $model_id = $data['car']->model;
-            $data['model'] = Models::where('id', $model_id)->first();
-        }
-        $data['phone'] = PhoneDetail::where('advert_id', $ad_id)->first();
-        if ($data['phone']) {
-            $model_id = $data['phone']->model;
-            $data['model'] = Models::where('id', $model_id)->first();
-        }
-        $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
-        //dd($data['cat']);
-        //Related Adverts
-        $query = Advert::with('images')
-            ->inRandomOrder()
-            ->where('user_id', $ad_owner)
-            ->activeNotRecentlySold()
-            ->where('id', '!=', $ad_id);  // or ->whereNot('id', $id)
-
-        // Get the count
-        $data['advertsCount'] = $query->count();
-
-        // Get the limited results
-        $data['adverts'] = $query->limit(6)->get();
-
-        //Similar Adverts
-        $data['similar_ads'] = Advert::with('images')
-            ->inRandomOrder()
-            ->where('ad_title', 'LIKE', '%' . $title . '%') // Partial match
-            ->orWhere('category', $cat_id) 
-            ->where('id', '!=', $ad_id)
-            ->activeNotRecentlySold()
-            ->where('user_id', '!=', $ad_owner)
-            ->limit(3)
-            ->get();
-
-
-        //dd($data['adverts']);
-        \DB::table('adverts')
-            ->where('id', $ad_id)
-            ->increment('views', 1);
-
-        return view('frontend.advert', $data);
     }
+
+    $data['user'] = User::where('user_id', $user_id)->first();
+    $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
+    $data['cat'] = Category::where('id', $cat_id)->first();
+    $data['brand'] = Brands::where('id', $brand_id)->first();
+
+    $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
+    if ($data['car']) {
+        $model_id = $data['car']->model;
+        $data['model'] = Models::where('id', $model_id)->first();
+    }
+
+    $data['phone'] = PhoneDetail::where('advert_id', $ad_id)->first();
+    if ($data['phone']) {
+        $model_id = $data['phone']->model;
+        $data['model'] = Models::where('id', $model_id)->first();
+    }
+
+    $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
+
+    //Related Adverts
+    $query = Advert::with('images')
+        ->inRandomOrder()
+        ->where('user_id', $ad_owner)
+        ->activeNotRecentlySold()
+        ->where('id', '!=', $ad_id);
+
+    $data['advertsCount'] = $query->count();
+    $data['adverts'] = $query->limit(6)->get();
+
+    //Similar Adverts
+    $data['similar_ads'] = Advert::with('images')
+        ->inRandomOrder()
+        ->where(function($q) use ($title, $cat_id) {
+            $q->where('ad_title', 'LIKE', '%' . $title . '%')
+              ->orWhere('category', $cat_id);
+        })
+        ->where('id', '!=', $ad_id)
+        ->activeNotRecentlySold()
+        ->where('user_id', '!=', $ad_owner)
+        ->limit(3)
+        ->get();
+
+    \DB::table('adverts')
+        ->where('id', $ad_id)
+        ->increment('views', 1);
+
+    return view('frontend.advert', $data);
+}
 
     public function chat(Request $request, $user_id, $id)
     {

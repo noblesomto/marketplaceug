@@ -137,7 +137,7 @@ Route::any('/user/chat-buyer/{user}/{id}', [UserController::class, 'chat_buyer']
 Route::get('/chat-seller/{user}/{id}', [UserController::class, 'chat_seller']);
 
 //Paystack User Boost Add
-Route::post('post-boost/pay', [PaystackController::class, 'initialize_post_boost'])->name('boost.pay')->middleware('usersession');
+Route::post('post-boost/pay', [PaystackController::class, 'initialize_post_boost'])->name('post-boost.pay')->middleware('usersession');
 Route::post('boost/pay', [PaystackController::class, 'initialize_boost'])->name('boost.pay')->middleware('usersession');
 Route::get('/boost/callback', [PaystackController::class, 'callback_boost'])->name('boost.callback')->middleware('usersession');
 Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');
