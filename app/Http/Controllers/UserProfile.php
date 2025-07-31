@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Advert;
+use App\Models\Bank;
 use App\Models\UserVerification;
 use App\Helpers\FileUploadHelper;
 use Carbon\Carbon;
@@ -197,14 +198,17 @@ class UserProfile extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
+        $banks = Bank::all();
         if ($request->isMethod('GET')) {
-            return view('dashboard.settings.payment-info', compact('title','user','count_ads'));
+            return view('dashboard.settings.payment-info', compact('title','user','count_ads','banks'));
         }
 
          if ($request->isMethod('PUT')) {
 
+            //dd($request);
             $request->validate([
                 'bank_name' => 'required',
+                'paystack_bank_code' => 'required',
                 'account_number' => 'required',
                 'account_name' => 'required',
             ]);
@@ -214,6 +218,7 @@ class UserProfile extends Controller
                 ->where('user_id', $user_id)
                 ->update([
                     'bank_name'=> $request->input('bank_name'),
+                    'bank_code'=> $request->input('paystack_bank_code'),
                     'account_name'=> $request->input('account_name'),
                     'account_number'=> $request->input('account_number'),
                 ]);

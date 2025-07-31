@@ -43,6 +43,13 @@
                         </div>
                         @endif
                     </div>
+                    <div class="absolute top-0 left-2">
+                        @if ($row->featured == 'Yes')
+                            <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                                Promoted
+                            </div>
+                        @endif
+                    </div>
                   </div>
                   <div class="w-3/4 relative">
                     <div class="flex justify-between text-xs">
@@ -168,6 +175,13 @@
                             </div>
                             @endif
                         </div>
+                        <div class="absolute top-0 left-2">
+                        @if ($row->featured == 'Yes')
+                            <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                                Promoted
+                            </div>
+                        @endif
+                    </div>
                   </div>
                   <div class="w-3/4 relative">
                     <div class="flex justify-between text-xs">

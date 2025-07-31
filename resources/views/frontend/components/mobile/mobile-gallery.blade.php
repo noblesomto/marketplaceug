@@ -38,6 +38,14 @@
                 </div>
                 @endif
             </div>
+            <div class="absolute top-0 left-2">
+                @if ($row->featured == 'Yes')
+                    <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                        Promoted
+                    </div>
+                @endif
+            </div>
+
         </div>
         <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
         <div class="flex justify-between">

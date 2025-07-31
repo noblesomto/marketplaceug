@@ -113,10 +113,25 @@ class Advert extends Model
     public function scopeActiveNotRecentlySold($query)
     {
         return $query->where('ad_status', 1)
-            ->where(function($q) {
-                $q->where('sold_date', '>=', now()->subDays(7))
-                  ->orWhereNull('sold_date');
+            ->where(function ($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function ($q) {
+                      $q->where('sold', 'Yes')
+                        ->whereNotNull('sold_date')
+                        ->where('sold_date', '>=', now()->subDays(7));
+                  });
             });
     }
+
+    public function scopeFeaturedBoosted($query)
+    {
+        return $query->where('featured', 'Yes')
+            ->where('sold', 'No')
+            ->where('ad_status', 1)
+            ->whereHas('boost', function ($q) {
+                $q->where('boost_status', 'active');
+            });
+    }
+
 
 }

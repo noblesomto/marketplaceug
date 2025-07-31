@@ -46,6 +46,14 @@
                                 </div>
                                 @endif
                             </div>
+                            <div class="absolute top-0 left-2">
+                                @if ($row->featured == 'Yes')
+                                    <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                                        Promoted
+                                    </div>
+                                @endif
+                            </div>
+
                         </div>
 
                         <!-- Price tag -->
@@ -56,19 +64,24 @@
                         </div>
 
                         <!-- Content -->
-                        <div class="p-3 flex flex-col flex-grow">
+                        <div class="p-3 flex flex-col flex-grow my-2">
                             <h4 class="font-bold text-sm mb-2">{{ Str::limit($row->ad_title, 20) }}</h4>
                             
-                            @if($row->buy_direct=="Yes")
-                            <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                                </svg>
-                                <span class="text-xs text-blue-600">Buy Direct</span>
+                            <div class="flex items-center justify-between">
+                                @if($row->buy_direct=="Yes")
+                                <div class="flex items-center  bg-blue-50 rounded-full px-2 py-1 w-fit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                                    </svg>
+                                    <span class="text-xs text-blue-600">Buy Direct</span>
+                                </div>
+                                @endif
+
+
                             </div>
-                            @endif
+
                             
                             <div class="flex items-center justify-between text-xs mt-auto">
                                 <div class="text-gray-500 truncate flex">

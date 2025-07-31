@@ -36,6 +36,7 @@
                 <th scope="col">Account name</th>
                 <th scope="col">Account Number</th>
                 <th scope="col">Settlement Status</th>
+                <th scope="col">Settle via Paystack</th>
                 <th scope="col">Action</th>
 
               </tr>
@@ -73,8 +74,14 @@
         {{ $row->seller_settlement }}
     </span>
     </td>
-
-    <td><a class="text-primary" href="/admin/confirm-settlement/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Settlement?');">Comfirm Settlement</a></td>
+    <td>
+        @if($row->seller_settlement === 'yes')
+            <span class="text-success">Seller Settled</span>
+        @else
+            <a class="text-primary" href="/admin/payout/{{ $row->id }}" onclick="return confirm('Are you sure you want to Settle Seller?');">Settle Seller</a>
+        @endif
+    </td>
+    <td><a class="text-primary" href="/admin/confirm-settlement/{{ $row->id }}" onclick="return confirm('Are you sure you want to Confirm Settlement?');">Manually Comfirm Settlement</a></td>
 
 
     @endforeach

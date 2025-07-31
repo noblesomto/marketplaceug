@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\DB;
 use App\Rules\ReCaptcha;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\FeaturedAdPaginator;
 
 
 class AdvertController extends Controller
@@ -142,7 +143,45 @@ class AdvertController extends Controller
     public function adverts(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage')->activeNotRecentlySold()->orderBy('created_at', 'asc')->limit(10)->get();
+        $page = request()->get('page', 1);
+        $perPage = 20;
+        $featuredLimit = 6;
+
+        // Step 1: Fetch top 6 featured boosted ads (not paginated)
+        $featured = Advert::with(['firstImage', 'boost' => fn($q) => $q->where('boost_status', 'active')])
+            ->featuredBoosted()
+            ->inRandomOrder()
+            ->limit($featuredLimit)
+            ->get();
+
+        // Step 2: Calculate how many regular ads are needed for this page
+        $offset = max(0, ($page - 1) * $perPage - $featuredLimit);
+        $regularLimit = $perPage - ($page == 1 ? $featured->count() : 0);
+
+        // Step 3: Fetch regular ads
+        $regular = Advert::with('firstImage')
+            ->regularAds()
+            ->orderBy('created_at', 'desc')
+            ->skip($offset)
+            ->take($regularLimit)
+            ->get();
+
+        // Step 4: Merge for page 1, use regular only for later pages
+        $ads = $page == 1
+            ? $featured->merge($regular)
+            : $regular;
+
+        // Step 5: Total count for pagination (add featured only to first page count)
+        $total = Advert::regularAds()->count() + ($page == 1 ? $featured->count() : 0);
+
+        // Step 6: Custom paginator
+        $paginated = new LengthAwarePaginator(
+            $ads,
+            $total,
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
@@ -209,11 +248,9 @@ class AdvertController extends Controller
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $title = config('global.site_name') . ' | ' . $cat->category;
 
-        $ads = Advert::with('firstImage')
-                    ->activeNotRecentlySold() // Using the scope
-                    ->where('category', $cat->id)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(20);
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['category' => $cat->id])
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -254,12 +291,9 @@ class AdvertController extends Controller
 
         $title = config('global.site_name') . ' | ' . $subcat->sub_category;
 
-        // Main ads query with scope
-        $ads = Advert::with('firstImage')
-                    ->activeNotRecentlySold()
-                    ->where('sub_category', $subcat->id)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(20);
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['sub_category' => $subcat->id])
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -296,12 +330,9 @@ class AdvertController extends Controller
 
         $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
 
-        // Main ads query with scope
-        $ads = Advert::with('firstImage')
-                    ->activeNotRecentlySold()
-                    ->where('sub_category', $subcat->id)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(20);
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['sub_category' => $subcat->id])
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -339,12 +370,9 @@ class AdvertController extends Controller
 
         $title = config('global.site_name') . ' | ' . $brand->brand;
 
-        // Main ads query with scope
-        $ads = Advert::with('firstImage')
-                    ->activeNotRecentlySold()
-                    ->where('brand', $brand->id)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(20);
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['brand' => $brand->id])
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -439,7 +467,7 @@ class AdvertController extends Controller
     public function buy_direct(Request $request, $id)
     {
         $title = "Buy Directly" .' | '.config('global.site_title');
-        $data['ad'] = Advert::with('images','shippings')->where('id', $id)->first();
+        $data['ad'] = Advert::with('images','shippings')->where('ad_id', $id)->first();
         $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();

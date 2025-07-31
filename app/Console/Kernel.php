@@ -8,16 +8,18 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * Define the application's command schedule.
+     * Register custom commands.
      */
+    protected $commands = [
+        \App\Console\Commands\MarkExpiredBoosts::class
+    ];
+
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('mark:expired-boosts')->daily();
+
     }
 
-    /**
-     * Register the commands for the application.
-     */
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
@@ -25,3 +27,4 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
+

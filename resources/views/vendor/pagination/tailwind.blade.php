@@ -24,19 +24,27 @@
 
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
+                @php
+                    $currentPage = $paginator->currentPage();
+                    $perPage = $paginator->perPage();
+                    $count = $paginator->count();
+                    $total = $paginator->total();
+
+                    // Correct offset for custom paginator
+                    $from = $count > 0 ? ($currentPage - 1) * $perPage + 1 : 0;
+                    $to = $from + $count - 1;
+                @endphp
+
                 <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
-                    {!! __('Showing') !!}
-                    @if ($paginator->firstItem())
-                        <span class="font-medium">{{ $paginator->firstItem() }}</span>
-                        {!! __('to') !!}
-                        <span class="font-medium">{{ $paginator->lastItem() }}</span>
-                    @else
-                        {{ $paginator->count() }}
-                    @endif
-                    {!! __('of') !!}
-                    <span class="font-medium">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
+                    Showing
+                    <span class="font-medium">{{ $from }}</span>
+                    to
+                    <span class="font-medium">{{ $to }}</span>
+                    of
+                    <span class="font-medium">{{ $total }}</span>
+                    results
                 </p>
+
             </div>
 
             <div>

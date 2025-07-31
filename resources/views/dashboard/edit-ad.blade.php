@@ -198,8 +198,8 @@
                     <div class="flex w-2/4">
                         <select id="pr" name="registration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                             <option value="">--Select Type--</option>
-                            <option value="Registered" {{ $advert->car->registeration == 'Registered' ? 'selected' : '' }}>Registered</option>
-                            <option value="Unregistered" {{ $advert->car->registeration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
+                            <option value="Registered" {{ $advert->car->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
+                            <option value="Unregistered" {{ $advert->car->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                         </select>
 
                     </div>
@@ -936,9 +936,7 @@
     </form>
 </section>
 
-<script>
-    CKEDITOR.replace( 'description' );
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

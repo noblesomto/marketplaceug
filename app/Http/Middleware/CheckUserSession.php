@@ -16,12 +16,6 @@ class CheckUserSession
             return redirect('/login');
         }
 
-        // This is required for broadcasting to work
-        $user = \App\Models\User::find($request->session()->get('user_id'));
-        if ($user) {
-            Auth::login($user); // this makes auth()->user() work
-        }
-
         return $next($request);
     }
 }

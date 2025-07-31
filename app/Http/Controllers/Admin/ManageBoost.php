@@ -22,6 +22,7 @@ class ManageBoost extends Controller
         })
         ->whereNotNull('start_date')
         ->where('payment_status','paid')
+        ->where('boost_status','active')
         ->whereRaw("DATE_ADD(start_date, INTERVAL CAST(duration AS UNSIGNED) DAY) > ?", [now()])
         ->orderBy('created_at', 'desc')
         ->paginate(20);
@@ -68,6 +69,7 @@ class ManageBoost extends Controller
             })
             ->whereNotNull('start_date')
             ->where('payment_status','paid')
+            ->where('boost_status','completed')
             ->whereRaw("DATE_ADD(start_date, INTERVAL CAST(duration AS UNSIGNED) DAY) < ?", [now()])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -85,10 +87,12 @@ class ManageBoost extends Controller
                 $query->where('ad_status', 1)->where('sold', 'No');
             })
             ->where('payment_status','pending')
+            ->where('boost_status','pending')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
         return view('backend.adboost.completed', compact('title', 'page_title', 'adverts'));
     }
+
 
 }

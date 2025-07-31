@@ -29,6 +29,13 @@
                     </div>
                     @endif
                 </div>
+                <div class="absolute top-0 left-2">
+                    @if ($row->featured == 'Yes')
+                        <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                            Promoted
+                        </div>
+                    @endif
+                </div>
                 <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
               </div>
               <div class="w-4/6 relative">
@@ -74,12 +81,12 @@
                   @endif
                 </div>
 
-                <div class="flex items-center justify-between text-xs my-3">
+                <div class="flex items-center justify-between text-xs my-3 ">
                     @if($row->shipment=="Ship")
                         <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
                     @endif
                   @if($row->sold=="Yes")
-                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed" title="This advert is already sold">
+                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-2 lg:mr-4" title="This advert is already sold" >
                       <span>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -102,7 +109,7 @@
     </div>
 @endforelse
 
-<div class="mt-6">
+<div class="mt-6 px-2">
   {{ $ads->links('pagination::tailwind') }}
 </div>
 

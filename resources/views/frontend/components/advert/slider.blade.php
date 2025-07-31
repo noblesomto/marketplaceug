@@ -41,7 +41,7 @@
                     <span class="text-xs">Verified</span>
                 </div>
             @endif
-            @if($ad->views >= 200)
+            @if($ad->views >= setViews())
             <div class="bg-white opacity-6 flex space-x-2 py-1 px-2">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">

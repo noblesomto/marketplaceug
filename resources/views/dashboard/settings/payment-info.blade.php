@@ -23,7 +23,21 @@
 				            @if ($errors->has('bank_name'))
 				                <span class="text-red-700 py-1">{{ $errors->first('bank_name') }}</span>
 				            @endif
-				            <input type="text" id="name" name="bank_name" placeholder="Bank Name" value="{{ $user->bank_name }}" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+				            <select name="bank_name" class="w-full px-3 py-2 bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                <option value="">--Select Bank--</option>
+                                @foreach($banks as $bank)
+                                    <option
+                                        value="{{ $bank->name }}"
+                                        data-paystack-code="{{ $bank->paystack_bank_code }}"
+                                        @if($user->bank_name == $bank->name) selected @endif
+                                    >
+                                        {{ $bank->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <!-- Hidden input to store the paystack bank code -->
+                            <input type="hidden" name="paystack_bank_code" id="paystackBankCode">
 				        </div>
 
 				        <div class="mb-4 mt-4">
@@ -68,5 +82,23 @@
 </section>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bankSelect = document.querySelector('select[name="bank_name"]');
+    const paystackCodeInput = document.getElementById('paystackBankCode');
 
+    // Set initial value if there's a selected option
+    if (bankSelect.selectedIndex > 0) {
+        const selectedOption = bankSelect.options[bankSelect.selectedIndex];
+        paystackCodeInput.value = selectedOption.getAttribute('data-paystack-code');
+    }
+
+    // Update hidden input when selection changes
+    bankSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        paystackCodeInput.value = selectedOption.getAttribute('data-paystack-code');
+    });
+
+});
+</script>
 @include('dashboard.layouts.footer')

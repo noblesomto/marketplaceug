@@ -35,6 +35,7 @@ class User extends Authenticatable
         'disable_account',
         'disable_account_date',
         'bank_name',
+        'bank_code',
         'account_name',
         'account_number',
     ];

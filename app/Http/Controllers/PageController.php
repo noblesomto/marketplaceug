@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Advert;
@@ -55,19 +56,38 @@ class PageController extends Controller
         ->limit(10)
         ->get();
             //dd($featured);
-        $ads = Advert::with('firstImage')
-        ->where('ad_status', 1)
-        ->where(function($query) {
-            $query->where('sold', '!=', 'Yes')
-                  ->orWhere(function($query) {
-                      $query->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
-                  });
-        })
-        ->orderBy('created_at', 'desc')
-        ->limit(20)
-        ->get();
+        $featuredAds = Advert::with('firstImage')
+            ->where('ad_status', 1)
+            ->where('featured', 'yes')
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(7));
+                      });
+            })
+            ->inRandomOrder()
+            ->limit(10)
+            ->get(); // no limit here; you can add limit if needed
+
+        // Step 2: Get the rest of the ads ordered by created_at
+        $otherAds = Advert::with('firstImage')
+            ->where('ad_status', 1)
+            ->where('featured', '!=', 'yes') // or ->whereNull('featured') if column can be null
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(7));
+                      });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Step 3: Merge and take only 20 results
+        $ads = $featuredAds->merge($otherAds)->take(20);
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();

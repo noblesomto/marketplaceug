@@ -186,7 +186,7 @@ Route::any('/admin/confirm-delivery/{id}', [ManagePayments::class, 'confirm_deli
 Route::any('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements'])->middleware('adminsession');
 Route::any('/admin/completed-settlements', [ManagePayments::class, 'completed_settlements'])->middleware('adminsession');
 Route::any('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement'])->middleware('adminsession');
-
+Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
 
 //Advertising
 Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
