@@ -172,12 +172,12 @@
                     <div class="font-semibold">Registration</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('registeration'))
-                        <span class="text-red-400">{{ $errors->first('registeration') }}</span>
+                    @if ($errors->has('registration'))
+                        <span class="text-red-400">{{ $errors->first('registration') }}</span>
                     @endif
 
                     <div class="flex w-2/4">
-                        <select id="pr" name="registeration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                        <select id="pr" name="registration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                             <option value="">--Select Type--</option>
                             <option value="Registered">Registered</option>
                             <option value="Unregistered">Unregistered</option>

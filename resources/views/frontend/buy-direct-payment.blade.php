@@ -6,11 +6,7 @@
 <section class="max-w-4xl mx-auto px-4  space-y-3 mb-20">
   <!-- Advertisement Banner (Desktop) -->
   <div class="hidden lg:block my-6 rounded-lg overflow-hidden shadow-md">
-    @foreach(getAdverts() as $advert)
-      <a href="{{ $advert->url }}" title="{{ $advert->company }}" target="_blank" class="block hover:opacity-90 transition-opacity duration-200">
-        <img class="w-full h-40 object-cover" src="{{ asset('uploads/advertising/'.$advert->image) }}" alt="{{ $advert->company }} advertisement">
-      </a>
-    @endforeach
+    @include('frontend.components.advert.banner-advert')
   </div>
 
   <!-- Product Purchase Section -->

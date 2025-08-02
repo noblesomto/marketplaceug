@@ -6,10 +6,9 @@
 
 <section class="w-full lg:w-4/6 mx-auto mb-20">
   <div class=" my-5 hidden lg:block">
-    @foreach(getAdverts() as $advert)
-      <a href="{{ $advert->url }}" title="{{ $advert->company }}" target="_blank"><img class="object-cover w-full h-36 md:h-64" src="{{ asset('uploads/advertising/'.$advert->image) }}"></a>
-    @endforeach
+   @include('frontend.components.advert.banner-advert')
   </div>
+
 
   <div class="grid grid-cols-6 gap-3">
         

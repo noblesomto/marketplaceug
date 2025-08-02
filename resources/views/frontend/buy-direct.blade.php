@@ -6,11 +6,7 @@
 <section class="max-w-4xl mx-auto px-4  space-y-3 mb-20">
   <!-- Advertisement Banner (Desktop) -->
   <div class="hidden lg:block my-6 rounded-lg overflow-hidden shadow-md">
-    @foreach(getAdverts() as $advert)
-      <a href="{{ $advert->url }}" title="{{ $advert->company }}" target="_blank" class="block hover:opacity-90 transition-opacity duration-200">
-        <img class="w-full h-40 object-cover" src="{{ asset('uploads/advertising/'.$advert->image) }}" alt="{{ $advert->company }} advertisement">
-      </a>
-    @endforeach
+    @include('frontend.components.advert.banner-advert')
   </div>
 
   <!-- Product Purchase Section -->
@@ -281,10 +277,19 @@
                     <li class="flex items-start">
                         <div class="flex-shrink-0 h-6 w-6 text-blue-500 mr-3">✓</div>
                         <div>
+                            <h4 class="font-medium text-gray-800">Payment Refund</h4>
+                            <p class="text-gray-600">If the seller does not ship your item within 3 working days after payment, you will receive a full refund.</p>
+                        </div>
+                    </li>
+
+                    <li class="flex items-start">
+                        <div class="flex-shrink-0 h-6 w-6 text-blue-500 mr-3">✓</div>
+                        <div>
                             <h4 class="font-medium text-gray-800">Dispute Resolution</h4>
                             <p class="text-gray-600">If there's an issue with your order, you can open a dispute within 3 days of delivery. Our support team will step in to mediate and resolve the issue fairly—whether it's a refund, replacement, or other solution.</p>
                         </div>
                     </li>
+
                 </ul>
                 
                 <div class="mt-6 p-4 bg-blue-50 rounded-lg">
@@ -292,6 +297,7 @@
                         With Buy Direct, shopping is simpler, faster, and more reliable—giving you peace of mind every step of the way.
                     </p>
                 </div>
+
             </div>
 
             <!-- Footer (optional) -->

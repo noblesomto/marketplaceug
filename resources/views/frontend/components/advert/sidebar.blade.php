@@ -279,7 +279,6 @@
         <li class="text-gray-800">Check the item carefully to ensure it matches the listing.</li>
         <li class="text-gray-800">Verify all documents and pay only when you're fully satisfied.</li>
         <li class="text-gray-800">Use the <strong>"Buy Direct"</strong> option (if available) to enjoy <strong>100% Buyer Protection</strong>.</li>
-        <li class="text-gray-800"> If the seller does not ship your item within 3 working days after payment, you will receive a full refund.</li>
     </ul>
 </div>
 
