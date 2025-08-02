@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 class FeaturedAdPaginator
 {
-    protected int $perPage = 3;
+    protected int $perPage = 20;
     protected int $featuredLimit = 6;
     protected array $filters = [];
 

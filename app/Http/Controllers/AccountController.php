@@ -21,7 +21,7 @@ class AccountController extends Controller
             return $this->showLoginForm();
         }
 
-        return $this->handleLoginRequest($request);
+        return $this->processLoginAttempt($request);
     }
 
     protected function showLoginForm()
@@ -30,25 +30,25 @@ class AccountController extends Controller
         return view('frontend.account.login', compact('title'));
     }
 
-    protected function handleLoginRequest(Request $request)
+    protected function processLoginAttempt(Request $request)
     {
         $request->validate($this->loginValidationRules());
 
         $user = $this->getUserByEmail($request->email);
-        
+
         if (!$this->isValidUser($user)) {
-            return $this->sendFailedLoginResponse($user);
+            return $this->failedLoginResponse($user);
         }
 
         if (!$this->isValidPassword($user, $request->password)) {
-            return redirect("/login")->with('error', 'Sorry, The password does not Match');
+            return redirect('/login')->with('error', 'Sorry, the password does not match.');
         }
 
-        if ($this->shouldBypassOtp($user)) {
-            return $this->authenticateUser($request, $user);
+        if ($this->isTrustedDevice($user, $request)) {
+            return $this->loginUser($request, $user);
         }
 
-        return $this->processOtpLogin($request,$user);
+        return $this->triggerOtpLogin($request, $user);
     }
 
     protected function loginValidationRules()
@@ -66,32 +66,24 @@ class AccountController extends Controller
 
     protected function isValidUser($user)
     {
-        if (!$user) {
-            return false;
-        }
-
-        if ($user->disable_account === "yes") {
-            return false;
-        }
-
-        return $user->acc_status == 1;
+        return $user && $user->acc_status == 1 && $user->disable_account !== 'yes';
     }
 
-    protected function sendFailedLoginResponse($user)
+    protected function failedLoginResponse($user)
     {
         if (!$user) {
-            return redirect()->back()->with('error', 'Sorry, The Email address does not exist');
+            return redirect()->back()->with('error', 'Sorry, the email address does not exist.');
         }
 
-        if ($user->disable_account === "yes") {
-            return redirect()->back()->with('error', 'Sorry, This Account Has been Disabled and pending Deletion in 30 Days, Contact Admin');
+        if ($user->disable_account === 'yes') {
+            return redirect()->back()->with('error', 'Sorry, this account has been disabled. Contact admin.');
         }
 
         if ($user->acc_status == 0) {
-            return redirect()->back()->with('error', 'Sorry, The Email address Not Verified');
+            return redirect()->back()->with('error', 'Sorry, the email address is not verified.');
         }
 
-        return redirect()->back()->with('error', 'Invalid login attempt');
+        return redirect()->back()->with('error', 'Invalid login attempt.');
     }
 
     protected function isValidPassword($user, $password)
@@ -99,60 +91,85 @@ class AccountController extends Controller
         return Hash::check($password, $user->password);
     }
 
-    protected function shouldBypassOtp($user)
+    protected function isTrustedDevice($user, Request $request)
     {
-        $currentIp = $this->getIp();
-        return $user->last_login_ip && $user->last_login_ip === $currentIp;
+        $deviceHash = $this->generateDeviceHash($request);
+
+        return $user->trustedDevices()
+            ->where('device_hash', $deviceHash)
+            ->exists();
     }
 
-    protected function authenticateUser(Request $request, $user)
+    protected function loginUser(Request $request, $user)
     {
         $request->session()->put('user_id', $user->user_id);
         $request->session()->put('name', $user->name);
 
-        if ($request->session()->has('previous_url')) {
-            return redirect($request->session()->get('previous_url'));
+        if ($request->has('remember_device')) {
+            $this->storeTrustedDevice($request, $user);
         }
 
-        return redirect()->action([UserController::class, 'index']);
+        return $request->session()->has('previous_url')
+            ? redirect($request->session()->get('previous_url'))
+            : redirect()->action([UserController::class, 'index']);
     }
 
-    protected function processOtpLogin(Request $request, $user)
+    protected function triggerOtpLogin(Request $request, $user)
     {
         $otp = rand(111111, 999999);
-        $currentIp = $this->getIp();
         $request->session()->put('acc_id', $user->id);
 
-        $this->updateUserOtpDetails($user, $otp, $currentIp);
+        // Save remember_device value for later use after OTP
+        $request->session()->put('remember_device', $request->has('remember_device'));
 
-        return $this->sendOtpEmail($user, $otp, $currentIp);
+        $this->storeOtp($user, $otp);
+
+        return $this->sendOtpEmail($user, $otp);
     }
 
-    protected function updateUserOtpDetails($user, $otp, $ip)
+    protected function storeOtp($user, $otp)
     {
         DB::table('users')
             ->where('user_id', $user->user_id)
-            ->update([
-                'otp' => $otp,
-            ]);
+            ->update(['otp' => $otp]);
     }
 
-    protected function sendOtpEmail($user, $otp, $ip)
+    protected function sendOtpEmail($user, $otp)
     {
         $details = [
             'user_id' => $user->user_id,
             'otp' => $otp,
             'name' => $user->name,
-            'ip' => $ip,
+            'ip' => $this->getIp(),
         ];
 
         try {
             Mail::to($user->email)->send(new NotifyMail($details));
-            return redirect("/authenticate")->with('success', 'Check your email for OTP to login');
-        } catch (Throwable $e) {
-            return redirect("/login")->with('error', 'Error! OTP could not be sent, please try again or contact admin');
+            return redirect('/authenticate')->with('success', 'Check your email for OTP to login.');
+        } catch (\Throwable $e) {
+            return redirect('/login')->with('error', 'Error! OTP could not be sent. Try again or contact admin.');
         }
     }
+
+    protected function generateDeviceHash(Request $request)
+    {
+        return sha1($request->userAgent() . '|' . $this->getIp());
+    }
+
+    protected function storeTrustedDevice(Request $request, $user)
+    {
+        $deviceHash = $this->generateDeviceHash($request);
+
+        $user->trustedDevices()->updateOrCreate(
+            ['device_hash' => $deviceHash],
+            [
+                'ip_address' => $this->getIp(),
+                'user_agent' => $request->userAgent(),
+                'last_used_at' => now(),
+            ]
+        );
+    }
+
 
     public function authenticate(Request $request)
     {
@@ -165,6 +182,7 @@ class AccountController extends Controller
             ]);
             
             $user_id = $request->session()->get('acc_id');
+
             if($user_id ==''){
                 return redirect("/login")->with('error','Sorry, Your Session has expired. Refresh');
             }
@@ -178,12 +196,19 @@ class AccountController extends Controller
             if ($login) {
                 $request->session()->put('user_id', $login->user_id);
                 $request->session()->put('name', $login->name);
+
                 DB::table('users')
                     ->where('user_id', $login->user_id)
                     ->update([
                         'last_login_ip' => $this->getIp(),
                         'last_login_at' => now(),
                     ]);
+
+                // ✅ Use $login instead of refetching
+                if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
+                    $this->storeTrustedDevice($request, $login);
+                }
+
                 if ($request->session()->has('previous_url')) {
                     $previous_url = $request->session()->get('previous_url');
                     return redirect($previous_url);
@@ -468,17 +493,19 @@ class AccountController extends Controller
     }
 }
 
-     public function getIp(){
-        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            //ip from share internet
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            //ip pass from proxy
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }else{
-            $ip = $_SERVER['REMOTE_ADDR'];
+    protected function getIp(Request $request = null)
+    {
+        if ($request) {
+            return $request->ip();
         }
-        return $ip;
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+        }
+
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     }
 
 }

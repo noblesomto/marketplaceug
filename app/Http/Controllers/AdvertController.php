@@ -525,7 +525,7 @@ class AdvertController extends Controller
                 return back()->with('error', $responseData->error ?? 'Failed to calculate shipping cost');
             }
 
-            $commission = 0.05 * $ad->price;
+            $commission = 0.04 * $ad->price;
             $shipping_cost = $responseData->data->GrandTotal ?? 0;
             $grand_total = $ad->price + $shipping_cost + $commission;
 

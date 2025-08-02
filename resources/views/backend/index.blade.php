@@ -23,12 +23,8 @@
             <!-- Sales Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
-
-               
-
                 <div class="card-body">
                   <h5 class="card-title">Total Users</h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-people"></i>
@@ -44,32 +40,90 @@
               </div>
             </div><!-- End Sales Card -->
 
-            <!-- Revenue Card -->
+            <!-- Advert Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
-
-              
-
                 <div class="card-body">
                   <h5 class="card-title">Total Adverts</h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart3"></i>
+                      <i class="bi bi-badge-ad"></i>
                     </div>
                     <div class="ps-3">
                       <h6>{{ $count_adverts }}</h6>
-                     
-
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div><!-- End Revenue Card -->
+            </div><!-- End Advert Card -->
 
-         
+            <!-- Advert Boost Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Active Boost Ads</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-rocket-takeoff"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ $count_boost }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Advert Boost Card -->
 
+            <!-- Pending Shipping Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Pending Shipping</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-truck-flatbed"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ $count_pending_shipping }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Pending Shipping Card -->
+
+            <!-- Pending Delivery Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Pending Delivery</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-truck"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ $count_pending_confirmed_shipping }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Pending Delivery Card -->
+
+            <!-- Pending Settlements Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Pending Settlements</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cash-coin"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ $count_pending_settlements }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Pending Settlements Card -->
            
               </div>
             </div><!-- End Top Selling -->

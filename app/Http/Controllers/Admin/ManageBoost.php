@@ -15,18 +15,18 @@ class ManageBoost extends Controller
         $title = "Active Boost Adverts | " . config('global.site_name');
         $page_title = "Active Boost Adverts";
 
-
-    $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
-        ->whereHas('advert', function ($query) {
-            $query->where('ad_status', 1)->where('sold', 'No');
-        })
-        ->whereNotNull('start_date')
-        ->where('payment_status','paid')
-        ->where('boost_status','active')
-        ->whereRaw("DATE_ADD(start_date, INTERVAL CAST(duration AS UNSIGNED) DAY) > ?", [now()])
-        ->orderBy('created_at', 'desc')
-        ->paginate(20);
-        return view('backend.adboost.index', compact('title', 'page_title', 'adverts'));
+        $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
+            ->whereHas('advert', function ($query) {
+                $query->where('ad_status', 1)->where('sold', 'No');
+            })
+            ->whereNotNull('start_date')
+            ->where('payment_status','paid')
+            ->where('boost_status','active')
+            ->whereRaw("DATE_ADD(start_date, INTERVAL CAST(duration AS UNSIGNED) DAY) > ?", [now()])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+            //dd($adverts);
+            return view('backend.adboost.index', compact('title', 'page_title', 'adverts'));
     }
 
     public function status($id, $status)

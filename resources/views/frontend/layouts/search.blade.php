@@ -93,20 +93,24 @@
 
                         <div class="invisible absolute z-50 flex w-30 flex-col bg-gray-100 mt-1 py-1 px-4 text-gray-800 shadow-xl group-hover:visible">
 
-                        <a href="/user/index" class="m block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            Dashboard
+                        <a href="/user/index" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-speedometer2"></i></span>
+                            <span>Dashboard</span>
                         </a>
 
-                        <a href="/user/my-ads" class="m block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            My Ads
+                        <a href="/user/my-ads" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-badge-ad"></i></span>
+                            <span>My Ads</span>
                         </a>
 
-                        <a href="/user/payment" class="m block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            Payments
+                        <a href="/user/payment" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-credit-card"></i></span>
+                            <span>Payments</span>
                         </a>
 
-                        <a href="/user/messages" class="block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2 relative">
-                            Messages
+                        <a href="/user/messages" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2 relative">
+                            <span><i class="bi bi-envelope"></i></span>
+                            <span>Messages</span>
                             <!-- Notification badge -->
                             <div class="unread-badge absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs" 
                                  style="display: none;">
@@ -114,11 +118,18 @@
                             </div>
                         </a>
 
-                        <a href="/user/profile" class="block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            Profile 
+                        <a href="/user/feedbacks" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-chat-right-dots"></i></span>
+                            <span>Feedback</span>
                         </a>
-                        <a href="/user/logout" class=" block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            Logout
+
+                        <a href="/user/profile" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-person"></i></span>
+                            <span>Profile</span>
+                        </a>
+                        <a href="/user/logout" class=" flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-box-arrow-right"></i></span>
+                            <span>Logout</span>
                         </a>
                     </div>
 

@@ -5,6 +5,14 @@ module.exports = {
     "./resources/**/*.js",
     "./resources/**/*.vue",
   ],
+  safelist: [
+    'bg-green-200', 'text-green-800',
+    'bg-emerald-200', 'text-emerald-800',
+    'bg-yellow-200', 'text-yellow-800',
+    'bg-orange-200', 'text-orange-800',
+    'bg-red-200', 'text-red-800',
+    'bg-gray-200', 'text-gray-600',
+  ],
   theme: {
     extend: {
       colors: {

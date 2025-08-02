@@ -9,11 +9,19 @@
     <span class="text-base"><strong>Marketplace NG</strong> - where sellers meet real buyers</span>
   </div>
 
-  <div class="my-5">
-    @foreach(getAdverts() as $advert)
-      <a href="{{ $advert->url }}" title="{{ $advert->company }}" target="_blank"><img class="object-cover w-full h-36 md:h-64" src="{{ asset('uploads/advertising/'.$advert->image) }}"></a>
-    @endforeach
-  </div>
+  <div class="my-5 space-y-2">
+   @foreach(getAdverts() as $advert)
+      <a href="{{ $advert->url }}" title="{{ $advert->company }}" target="_blank" rel="noopener noreferrer">
+         <div class="w-full aspect-[3/1] md:aspect-[4/1] bg-white">
+            <img class="object-contain w-full h-full"
+                 src="{{ asset('uploads/advertising/'.$advert->image) }}"
+                 alt="{{ $advert->company }} banner"
+                 loading="lazy">
+         </div>
+      </a>
+   @endforeach
+</div>
+
 
   <div class="flex items-center justify-between px-2 block lg:hidden">
       <a class="mx-1" href="/category/vehicles">

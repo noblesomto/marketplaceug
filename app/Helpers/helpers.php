@@ -8,6 +8,8 @@ use App\Models\Advert;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
 use App\Models\User;
+use App\Models\Feedback;
+
 
 if (!function_exists('getCategories')) {
     function getCategories()
@@ -65,8 +67,8 @@ if (!function_exists('getAdvertsGroupedByState')) {
     function getAdvertsGroupedByState(array $filters = [])
     {
         $query = Advert::select('state', DB::raw('count(*) as total'))
-            ->where('ad_status', 1)     // ✅ Only active ads
-            ->where('sold', 'No')       // ✅ Only unsold ads
+            ->where('ad_status', 1)
+            ->where('sold', 'No')
             ->groupBy('state')
             ->orderByDesc('total');
 
@@ -93,8 +95,8 @@ if (!function_exists('getAdvertCount')) {
     function getAdvertCount(array $filters = [])
     {
         $query = Advert::query()
-            ->where('ad_status', 1)     // Only active
-            ->where('sold', 'No');      // Only unsold
+            ->where('ad_status', 1)
+            ->where('sold', 'No');
 
         if (!empty($filters['category'])) {
             $query->where('category', $filters['category']);
@@ -140,8 +142,8 @@ if (!function_exists('advert_count_by_filter')) {
         $query = Advert::whereHas('owner', function ($q) use ($verified) {
                 $q->where('verified', $verified);
             })
-            ->where('ad_status', 1)     // Only active adverts
-            ->where('sold', 'No');      // Not sold
+            ->where('ad_status', 1)
+            ->where('sold', 'No');
 
         // Category filter
         if (!empty($category)) {
@@ -187,5 +189,90 @@ if (!function_exists('setViews')) {
     function setViews($count = null)
     {
         return $count ?? 1000;
+    }
+}
+
+if (!function_exists('get_user_feedback_averages')) {
+    function get_user_feedback_averages($user_id)
+    {
+        $feedbacks = Feedback::where('seller_id', $user_id)->get();
+
+        if ($feedbacks->isEmpty()) {
+            return [
+                'rating' => 0,
+                'satisfaction' => 0,
+                'reliable' => 0,
+                'friendly' => 0,
+                'count' => 0
+            ];
+        }
+
+        return [
+            'rating' => round($feedbacks->avg('rating'), 1),
+            'satisfaction' => round($feedbacks->avg('satisfaction'), 1),
+            'reliable' => round($feedbacks->avg('reliable'), 1),
+            'friendly' => round($feedbacks->avg('friendly'), 1),
+            'count' => $feedbacks->count()
+        ];
+    }
+}
+
+if (!function_exists('rating_label_class')) {
+    function rating_label_class($average)
+    {
+        if ($average >= 4.0) {
+            return ['label' => 'Very', 'color' => 'bg-green-200 text-green-800']; // Very Reliable
+        } elseif ($average >= 2.0) {
+            return ['label' => 'Fairly', 'color' => 'bg-yellow-200 text-yellow-800']; // Fairly Friendly
+        } elseif ($average > 0) {
+            return ['label' => 'Barely', 'color' => 'bg-red-200 text-red-800']; // Barely Satisfied
+        } else {
+            return ['label' => 'Unrated', 'color' => 'bg-gray-200 text-gray-600'];
+        }
+    }
+}
+
+
+if (!function_exists('feedback_rating_labels')) {
+    function feedback_rating_labels($user_id)
+    {
+        $averages = get_user_feedback_averages($user_id);
+        return [
+            'satisfaction' => rating_label_class($averages['satisfaction']),
+            'friendly' => rating_label_class($averages['friendly']),
+            'reliable' => rating_label_class($averages['reliable']),
+        ];
+
+    }
+}
+
+if (!function_exists('get_brands_with_advert_count')) {
+    function get_brands_with_advert_count($categoryId = null, $subCategoryId = null)
+    {
+        $brandsQuery = Brands::query();
+
+        if ($subCategoryId) {
+            $brandsQuery->where('subcat_id', $subCategoryId);
+        } elseif ($categoryId) {
+            // Get subcategory IDs that belong to this category
+            $subcatIds = SubCategory::where('cat_id', $categoryId)->pluck('id')->toArray();
+            $brandsQuery->whereIn('subcat_id', $subcatIds);
+        }
+
+        //dd($categoryId);
+        return $brandsQuery->with([
+            'subCategory.category'  // ✅ Eager load category via subcategory
+        ])->withCount(['adverts' => function ($query) use ($subCategoryId, $categoryId) {
+            $query->where('ad_status', 1)
+                  ->where('sold', 'No');
+
+            if ($subCategoryId) {
+                $query->where('sub_category', $subCategoryId);
+            } elseif ($categoryId) {
+                $subcatIds = SubCategory::where('cat_id', $categoryId)->pluck('id')->toArray();
+                $query->whereIn('sub_category', $subcatIds);
+            }
+        }])->having('adverts_count', '>', 0)->get();
+
     }
 }

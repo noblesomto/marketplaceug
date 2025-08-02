@@ -60,6 +60,10 @@ class Advert extends Model
         return $this->hasOne(AdvertImage::class)->orderBy('position', 'asc');
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brands::class, 'brand');
+    }
     public function phone()
     {
         return $this->hasOne(PhoneDetail::class, 'advert_id');
@@ -108,6 +112,11 @@ class Advert extends Model
     public function payment()
     {
         return $this->hasMany(Payment::class, 'advert_id');
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'advert_id');
     }
 
     public function scopeActiveNotRecentlySold($query)

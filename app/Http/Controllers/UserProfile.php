@@ -307,4 +307,10 @@ class UserProfile extends Controller
             'success' => true,
          ]);
     }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget('user_id');
+        return redirect("login")->with('success', 'Logged Out successfully!');
+    }
 }

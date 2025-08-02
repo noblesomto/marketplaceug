@@ -26,6 +26,11 @@ class Brands extends Model
         ];
     }
 
+    public function adverts()
+    {
+        return $this->hasMany(Advert::class, 'brand');
+    }
+
     public function subCategory()
     {
         return $this->belongsTo(SubCategory::class, 'subcat_id');

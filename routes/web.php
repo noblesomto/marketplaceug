@@ -103,9 +103,12 @@ Route::any('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status']
 Route::any('/user/category', [UserController::class, 'category'])->middleware('usersession');
 Route::any('/user/orders', [UserController::class, 'orders'])->middleware('usersession');
 Route::any('/user/messages', [UserController::class, 'messages'])->middleware('usersession');
+Route::get('/user/feedbacks', [UserController::class, 'feedbacks'])->middleware('usersession');
 Route::any('/user/add-wishlist/{id}', [UserController::class, 'add_wishlist'])->middleware('usersession');
 Route::any('/user/favourites', [UserController::class, 'favourites'])->middleware('usersession');
 Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->middleware('usersession');
+Route::any('/user/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
+Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
 
 //User Manage Ads
 Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');

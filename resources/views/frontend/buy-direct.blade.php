@@ -136,7 +136,7 @@
 
 
             @php 
-              $commission = 0.05 * $ad->price;           
+              $commission = 0.04 * $ad->price;
             @endphp
             
 

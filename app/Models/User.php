@@ -78,6 +78,12 @@ class User extends Authenticatable
     public $incrementing = false;
     protected $keyType = 'string';
 
+    public function trustedDevices()
+    {
+        return $this->hasMany(TrustedDevice::class, 'user_id', 'user_id');
+    }
+
+
     public function adverts()
     {
         return $this->hasMany(Advert::class, 'user_id', 'user_id'); // Linking custom user_id

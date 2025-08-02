@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\Advert;
 use App\Models\State;
+use App\Models\Feedback;
 use App\Models\Payment;
 use App\Models\Wishlist;
 use App\Models\Category;
@@ -220,7 +221,66 @@ class UserController extends Controller
     
     }
 
+    public function reviews_seller(Request $request, $id)
+    {
+        $title = "Feedbacks | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $user_id)->first();
+        $seller = User::where('user_id', $id)->first();
+        $feedbacks = Feedback::with('user')->orderBy('created_at', 'asc')->where('seller_id', $id)->paginate(20);
+        $count_feedbacks = Feedback::where('seller_id', $id)->count();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        return view('dashboard.reviews-seller', compact('title','user', 'seller', 'feedbacks','count_ads','count_feedbacks'));
+    }
 
+    public function feedbacks(Request $request)
+    {
+        $title = "Feedbacks | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $user_id)->first();
+        $feedbacks = Feedback::with('user')->orderBy('created_at', 'asc')->where('seller_id', $user_id)->paginate(20);
+        $count_feedbacks = Feedback::where('seller_id', $user_id)->count();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        return view('dashboard.feedbacks', compact('title','user', 'feedbacks','count_ads','count_feedbacks'));
+    }
+
+    public function submit_feedback(Request $request, $seller)
+    {
+        $title = "Feedbacks | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $user_id)->first();
+        $seller = User::where('user_id', $seller)->first();
+        $feedback = Feedback::with('user')->where('user_id', $user_id)->where('seller_id', $seller->user_id)->first();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        //dd($feedback);
+        if ($request->isMethod('GET')) {
+        return view('dashboard.submit-feedbacks', compact('title','user', 'feedback','count_ads','seller'));
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $validated = $request->validate([
+                'rating' => 'required|integer|between:1,5',
+                'satisfaction' => 'required|integer|between:1,5',
+                'reliable' => 'required|integer|between:1,5',
+                'friendly' => 'required|integer|between:1,5',
+                'message' => 'required|string|max:1000'
+            ]);
+
+            $validated['user_id'] = $user_id;
+            $validated['seller_id'] = $seller->user_id;
+
+            Feedback::updateOrCreate(
+                [
+                    'user_id' => $user_id,
+                    'seller_id' => $seller->user_id
+                ],
+                $validated
+            );
+
+            return redirect()->back()->with('success', 'Thank you for your review!');
+        }
+    }
 
 
     public function boost_ad(Request $request, $id)
@@ -307,9 +367,5 @@ class UserController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {   
-        $request->session()->forget('user_id');
-        return redirect("login")->with('success', 'Logged Out successfully!');
-    }
+
 }

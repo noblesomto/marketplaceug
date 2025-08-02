@@ -69,7 +69,7 @@
   
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-person"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-people"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
@@ -190,7 +190,7 @@
 
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#forms-setting" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-gear"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul id="forms-setting" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 

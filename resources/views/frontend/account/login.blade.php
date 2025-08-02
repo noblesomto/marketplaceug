@@ -41,6 +41,12 @@
           </button>
         </div>
 
+        <label class="inline-flex items-center mb-3">
+            <input type="checkbox" name="remember_device" class="form-checkbox text-indigo-600">
+            <span class="ml-2 text-sm">Remember this device for faster login</span>
+        </label>
+
+
         <div class="mt-8">
           <button type="submit" class="w-full bg-secondary-200 hover:bg-secondary-100 text-lg text-dark_green font-black py-2 px-2 rounded-full flex justify-center items-center">
             <span>Login</span>
