@@ -1,5 +1,5 @@
 
-<section class="px-2 pt-5 bg-white hidden lg:block border-t-2 border-t-gray-100">
+<section class="px-2 pt-5  hidden lg:block border-t-2 border-t-gray-300">
     <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-base">
             <div class="flex flex-col">
@@ -21,7 +21,7 @@
                     <li><a href="/our-terms" class="hover:text-secondary-200">Terms of Use</a></li>
                     <li><a href="/contact-us" class="hover:text-secondary-200">Contact Us</a></li>
                     <li><a href="/payments-refunds" class="hover:text-secondary-200">Payment & Refund</a></li>
-                    <li><a href="/faq" class="hover:text-secondary-200">Faq</a></li>
+                    <li><a href="/faq" class="hover:text-secondary-200">FAQ</a></li>
                 </ul>
             </div>
 

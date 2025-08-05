@@ -2,7 +2,7 @@
 
 
 return [
-    'site_name' => 'Market Place',
+    'site_name' => 'Marketplace Naija',
     'site_title' => 'A Market Place for your everyday needs..',
     'site_email' => 'noblesomto1@gmail.com',
     'site_phone' => '+234 8034 814 561',
