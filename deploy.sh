@@ -16,11 +16,15 @@ declare -A FOLDERS=(
 # Excludes (folders/files to ignore)
 EXCLUDES=(
   ".git/"
+  ".vite/"
   ".gitignore"
+  ".editorconfig"
+  ".gitattributes"
   "node_modules/"
   "vendor/"
   ".env"
   "deploy.sh"
+  "deploy.log"
   "gitpush.sh"
   "storage/"
   "bootstrap/"

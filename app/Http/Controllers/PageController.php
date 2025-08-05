@@ -99,19 +99,61 @@ class PageController extends Controller
     public function about()
     {   
         $title = "About Us  | " . config('global.site_name');
-        return view('frontend.about', compact('title'));
+        return view('frontend.pages.about', compact('title'));
     }
 
-    public function page()
+    public function career()
+    {
+        $title = "Career  | " . config('global.site_name');
+        return view('frontend.pages.career', compact('title'));
+    }
+
+    public function privacy()
+    {
+        $title = "Privacy Policy  | " . config('global.site_name');
+        return view('frontend.pages.privacy', compact('title'));
+    }
+
+    public function cookie()
+    {
+        $title = "Cookie Policy  | " . config('global.site_name');
+        return view('frontend.pages.cookie', compact('title'));
+    }
+
+    public function billing()
+    {
+        $title = "Billing Policy  | " . config('global.site_name');
+        return view('frontend.pages.billing', compact('title'));
+    }
+
+    public function copyright()
+    {
+        $title = "Copyright Policy  | " . config('global.site_name');
+        return view('frontend.pages.copyright', compact('title'));
+    }
+
+    public function safety()
     {   
-        $title = "About Us  | " . config('global.site_name');
-        return view('frontend.page', compact('title'));
+        $title = "Tips for your safety  | " . config('global.site_name');
+        return view('frontend.pages.safety', compact('title'));
+    }
+
+    public function terms()
+    {
+        $title = "Terms of Use  | " . config('global.site_name');
+        return view('frontend.pages.terms', compact('title'));
+    }
+
+    public function payments_refunds()
+    {
+        $title = "Terms of Use  | " . config('global.site_name');
+        return view('frontend.pages.payments-refunds', compact('title'));
     }
 
     public function faq()
     {   
         $title = "FAQ  | " . config('global.site_name');
-        return view('frontend.faq', compact('title'));
+        return view('frontend.pages.faq', compact('title'));
     }
 
     public function contact(Request $request)
@@ -119,7 +161,7 @@ class PageController extends Controller
         $title = 'Contact Us | '.config('global.site_name');
 
         if ($request->isMethod('GET')) {
-            return view('frontend.contact-us', compact('title'));
+            return view('frontend.pages.contact-us', compact('title'));
         }
 
 

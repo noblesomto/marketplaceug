@@ -12,6 +12,7 @@ use App\Models\Admin;
 use App\Models\Shipping;
 use App\Mail\RegisterMail;
 use App\Mail\NotifyMail;
+use App\Mail\PasswordMail;
 
 class AccountController extends Controller
 {
@@ -364,7 +365,7 @@ class AccountController extends Controller
             $login = User::where('email', $email)
                         ->first();
             if ($login) {
-                $name = $login->first_name;
+                $name = $login->name;
                 $user_id = $login->user_id;
                 $token = $login->token;
 
@@ -377,11 +378,11 @@ class AccountController extends Controller
 
                 try {
                     Mail::to($email)->send(new PasswordMail($details));
-                    return redirect("login")->with('status',['text'=>'Please check your email for link to change password','type'=>'success']);
+                    return redirect("login")->with('success','Please check your email for link to change password');
 
                 } catch (Throwable $e) {
                 
-                    return redirect("login")->with('status',['text'=>'Sorry!, This email does not exit on our system, please register ','type'=>'danger']);
+                    return redirect()->back()->with('danger','Sorry!, This email does not exit on our system, please register');
                 }
       
             
@@ -409,7 +410,7 @@ class AccountController extends Controller
             if($token == $token2){
                 return view('frontend.account.reset-password', compact('title','post'));
             }else{
-                return redirect("login")->with('status',['text'=>'Sorry!, There was an error and token does not match, Please contact admin ','type'=>'danger']);
+                return redirect("login")->with('danger','Sorry!, There was an error and token does not match, Please contact admin ');
             }
         }
 
@@ -424,7 +425,7 @@ class AccountController extends Controller
                 'password'=> Hash::make($request->input('password')),
             ]);
       
-            return redirect("login")->with('status',['text'=>'Your password was successfully updated, Please Login ','type'=>'success']);
+            return redirect("login")->with('success','Your password was successfully updated, Please Login');
         }
        
     }

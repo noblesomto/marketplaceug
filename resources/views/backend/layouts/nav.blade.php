@@ -162,14 +162,10 @@
           <ul id="advertising" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
               <a href="/admin/create-advert">
-                <i class="bi bi-circle"></i><span>Create Advert</span>
-              </a>
-            </li>
-            <li>
-              <a href="/admin/advertising">
                 <i class="bi bi-circle"></i><span>Manage Adverts</span>
               </a>
             </li>
+
           </ul>
         </li><!-- End Forms Nav -->
 

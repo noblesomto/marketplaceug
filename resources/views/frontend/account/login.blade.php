@@ -41,10 +41,15 @@
           </button>
         </div>
 
-        <label class="inline-flex items-center mb-3">
-            <input type="checkbox" name="remember_device" class="form-checkbox text-indigo-600">
-            <span class="ml-2 text-sm">Remember this device for faster login</span>
-        </label>
+        <div class="flex justify-between">
+            <label class="inline-flex items-center mb-3">
+                <input type="checkbox" name="remember_device" class="form-checkbox text-indigo-600">
+                <span class="ml-2 text-sm">Remember this device for faster login</span>
+            </label>
+            <div>
+                <a class="underline" href="/forgot-password">Forgot Password</a>
+            </div>
+        </div>
 
 
         <div class="mt-8">

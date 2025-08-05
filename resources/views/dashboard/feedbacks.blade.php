@@ -15,9 +15,48 @@
 
     <div class="max-w-2xl mx-auto bg-white p-3 md:p-10 mt-4 md:mt-10 mb-20 rounded-lg">
     	<div class="w-full bg-white shadow p-3">
+            <div class="my-2 flex justify-between">
+            <div class="font-bold space-x-1">
+                <span><i class="bi bi-chat-dots"></i></span>
+               <span> {{ get_user_feedback_averages($user->user_id)['count'] }} Feedback(s)</span>
+            </div>
+            <div>
+                @php
+                    $avgRating = round(get_user_feedback_averages($user->user_id)['rating']);
+                    $maxRating = 5;
+                @endphp
+
+                <div class="flex items-center">
+                    <!-- Full stars -->
+                    @for($i = 1; $i <= $avgRating; $i++)
+                        <span class="text-xl text-yellow-400">★</span>
+                    @endfor
+
+                    <!-- Empty stars -->
+                    @for($i = $avgRating + 1; $i <= $maxRating; $i++)
+                        <span class="text-xl text-gray-300">★</span>
+                    @endfor
+
+                    <!-- Optional: Display numeric value -->
+                    <span class="ml-2 font-semibold text-gray-600">{{ $avgRating }} of {{ $maxRating }}</span>
+                </div>
+            </div>
+
+        </div>
 			<div class="flex flex-col">
                 @forelse($feedbacks as $row)
-
+                    <div class="mb-2">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <span><img class="w-8" src="{{ asset('frontend/images/user.png') }}" alt="Marketplace User"> </span>
+                                <span class="text-lg font-semibold">{{ $row->user->name }}</span>
+                            </div>
+                            <div class="mt-2 text-base">
+                                {{ $row->message }}
+                            </div>
+                        </div>
+                        <div><span>{{ date('d/m/y', strtotime($row->created_at)) }}</span></div>
+                    </div>
                 @empty
                   <div class="flex flex-col mb-4 items-center bg-white">
                         <span>
@@ -30,7 +69,59 @@
                         </span>
                     </div>
                 @endforelse
-                <button class="bg-dark_green px-3 py-2 inline-block text-white font-semibold rounded">Copy my Link</button>
+                <button onclick="copyToClipboardModern('{{ url('/reviews/feedbacks/' . $user->user_id) }}')"
+        class="bg-dark_green px-3 py-2 inline-block text-white font-semibold rounded mt-10">
+    Copy my Link
+</button>
+
+<style>
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .toast.show {
+        opacity: 1;
+    }
+    .toast.error {
+        background: #f44336;
+    }
+</style>
+
+<script>
+async function copyToClipboardModern(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast('Link copied to clipboard!');
+    } catch (err) {
+        showToast('Failed to copy link', true);
+    }
+}
+
+function showToast(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = isError ? 'toast error' : 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 3000);
+}
+</script>
+
+
 
                 <div class="mt-6 px-2">
                   {{ $feedbacks->links('pagination::tailwind') }}
@@ -41,7 +132,6 @@
 
     
 </section>
-
 
 
 @include('dashboard.layouts.footer')

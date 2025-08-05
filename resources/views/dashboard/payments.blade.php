@@ -11,7 +11,7 @@
     <div class="pb-10 mb-10">
         @if (!$buyAds->isEmpty())
           @foreach ($buyAds as $row)
-              <a href="/advert/{{ $row->advert->id }}/{{ $row->advert->title_slug }}">
+              <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                   <div class="bg-white mb-1 border-b border-b-gray-300 shadow">
                      <div class="flex w-full">
                           <div class="w-2/6 mr-1 relative">

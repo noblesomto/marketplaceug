@@ -63,32 +63,7 @@
 	</div>
 </section>
 
-<section class="px-2 pt-5 bg-white hidden lg:block">
-    <div class="max-w-4xl mx-auto">
-
-         <div class="max-w-4xl mx-auto text-center text-sm font-semibold">
-            <ul class="flex flex-wrap justify-center space-x-6 text-gray-600">
-                <li><a href="/" class="hover:text-blue-500">Home</a></li>
-                <li><a href="/about-us" class="hover:text-blue-500">About Us</a></li>
-                <li><a href="/faq" class="hover:text-blue-500">FAQ</a></li>
-                <li><a href="/contact-us" class="hover:text-blue-500">Contact Us</a></li>
-            </ul>
-        </div>
-        
-
-    <!--Copy Rights -->
-    <div class="flex justify-center gap-2 mt-5 pb-10 text-sm text-center border-t-2 border-t-gray-300 pt-4">
-        <div class=" ">
-            <span class="font-semibold px-2">{{ config('global.site_name') }}. {{ date('Y ') }}</span>
-        </div>
-        <div class="">
-            All rights reserved
-        </div>
-     
-    </div>
-   
-    </div>
-</section>
+@include('frontend.layouts.footer-links')
 
 <script>
 	const openSearchButton = document.getElementById('openSearch');

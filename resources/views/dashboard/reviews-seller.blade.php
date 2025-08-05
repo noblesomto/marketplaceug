@@ -6,7 +6,7 @@
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm pb-20">
     <div class="border-b-2 border-b-gray-200 pt-4 px-2 font-bold text-dark_green mb-2 flex justify-between">
         <a href="{{ url()->previous() }}">< Back</a>
-        <span>Feedbaacks about {{$seller->name}}</span>
+        <span>Feedbacks about {{$seller->name}}</span>
 
     </div>
     @include('frontend.components.flash-message')

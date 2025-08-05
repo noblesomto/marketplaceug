@@ -278,7 +278,7 @@
         <li class="text-gray-800">Meet in a safe, public location.</li>
         <li class="text-gray-800">Check the item carefully to ensure it matches the listing.</li>
         <li class="text-gray-800">Verify all documents and pay only when you're fully satisfied.</li>
-        <li class="text-gray-800">Use the <strong>"Buy Direct"</strong> option (if available) to enjoy <strong>100% Buyer Protection</strong>.</li>
+        <li class="text-gray-800">Always use the <strong>"Buy Direct"</strong> option (if available) to enjoy <strong>100% Buyer Protection</strong>.</li>
     </ul>
 </div>
 

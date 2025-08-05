@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const divModel = document.getElementById('divModel');
     const shipmentDiv = document.getElementById('shipment');
     const itemCondition = document.getElementById("itemCondition");
+    const buyDirect = document.getElementById("buyDirect");
 
     // Store original values from data attributes
     const originalValues = {
@@ -140,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (shipmentDiv) shipmentDiv.classList.add('hidden');
             if (itemCondition) itemCondition.classList.add('hidden');
             if (modelSelect) modelSelect.setAttribute('required', 'required');
+            if (buyDirect) buyDirect.classList.add('hidden');
         }
         // Phone section (subcategory 6)
         else if (subcategoryId == 6) {

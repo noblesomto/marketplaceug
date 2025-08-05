@@ -48,7 +48,7 @@
                 <td>{{ $row->duration }} Days</td>
                 <td>{{ $row->type }}</td>
                 <td>{{ $row->status }}</td>
-                <td><a href="/admin/delete-trans/{{ $row->trans_id }}/{{ $row->user_id }}" onclick="return confirm('Are you sure you want to delete Transaction?');">Delete</a></td>
+                <td><a href="/admin/delete-advert/{{ $row->advert_id }}" onclick="return confirm('Are you sure you want to delete Advert?');">Delete</a></td>
               </tr>
             @endforeach
               

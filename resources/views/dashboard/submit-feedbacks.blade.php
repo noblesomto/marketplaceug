@@ -5,7 +5,7 @@
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm pb-20">
     <div class="border-b-2 border-b-gray-200 pt-4 px-2 font-bold text-dark_green mb-2 flex justify-between">
-        <span>Leave a Feedbaack for {{$seller->name}}</span>
+        <span>Leave a Feedback for {{$seller->name}}</span>
 
     </div>
     @include('frontend.components.flash-message')

@@ -26,8 +26,16 @@ use Illuminate\Support\Facades\Broadcast;
 Route::get('/', [PageController::class, 'index']);
 Route::any('/page', [PageController::class, 'page']);
 Route::any('/about-us', [PageController::class, 'about']);
-Route::any('/contact-us', [PageController::class, 'contact']);
+Route::any('/career', [PageController::class, 'career']);
+Route::any('/privacy-policy', [PageController::class, 'privacy']);
+Route::any('/cookie-policy', [PageController::class, 'cookie']);
+Route::any('/billing-policy', [PageController::class, 'billing']);
+Route::any('/copyright-policy', [PageController::class, 'copyright']);
+Route::any('/safety-tips', [PageController::class, 'safety']);
+Route::any('/our-terms', [PageController::class, 'terms']);
+Route::any('/payments-refunds', [PageController::class, 'payments_refunds']);
 Route::any('/faq', [PageController::class, 'faq']);
+Route::any('/contact-us', [PageController::class, 'contact']);
 Route::any('/shipping', [PageController::class, 'shipping']);
 Route::any('/email', [PageController::class, 'email']);
 
@@ -107,7 +115,7 @@ Route::get('/user/feedbacks', [UserController::class, 'feedbacks'])->middleware(
 Route::any('/user/add-wishlist/{id}', [UserController::class, 'add_wishlist'])->middleware('usersession');
 Route::any('/user/favourites', [UserController::class, 'favourites'])->middleware('usersession');
 Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->middleware('usersession');
-Route::any('/user/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
+Route::any('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
 Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
 
 //User Manage Ads
@@ -193,6 +201,7 @@ Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('
 
 //Advertising
 Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
+Route::any('/admin/delete-advert/{id}', [ManageAdvertising::class, 'delete_advert'])->middleware('adminsession');
 
 //Manage Advert Boost
 Route::any('/boost/active', [ManageBoost::class, 'active'])->middleware('adminsession');

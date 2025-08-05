@@ -20,6 +20,7 @@ document.getElementById('category').addEventListener('change', function () {
                 var divPhone = document.getElementById("divPhone");
                 var shipment = document.getElementById("shipment");
                 var itemCondition = document.getElementById("itemCondition");
+                var buyDirect = document.getElementById("buyDirect");
                 const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
 
                 // Hide all divs initially
@@ -65,6 +66,7 @@ document.getElementById('category').addEventListener('change', function () {
                         divModel.classList.remove("hidden");
                         shipment.classList.add("hidden");
                         itemCondition.classList.add("hidden");
+                        buyDirect.classList.add("hidden");
                     } else if (stateId === "6") {
                         divPhone.classList.remove("hidden");
                         itemCondition.classList.add("hidden");

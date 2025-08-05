@@ -9,7 +9,7 @@
     <span class="text-base"><strong>Marketplace NG</strong> - where sellers meet real buyers</span>
   </div>
 
-  <div class="my-5 space-y-2">
+  <div class="my-5">
    @include('frontend.components.advert.banner-advert')
 </div>
 

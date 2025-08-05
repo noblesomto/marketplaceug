@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Advertising;
 use Carbon\Carbon;
+use App\Helpers\FileUploadHelper;
 
 class ManageAdvertising extends Controller
 {
@@ -44,5 +45,15 @@ class ManageAdvertising extends Controller
             return view('backend.advertising.create-advert', compact('title', 'adverts'));
         }
 
+    }
+
+    public function delete_advert(Request $request, $id)
+    {
+        $advert = Advertising::where('advert_id',$id)->first();
+        //dd($advert);
+        FileUploadHelper::delete('advertising', $advert->image);
+        $advert->delete();
+
+        return back()->with('success', 'Advert deleted.');
     }
 }

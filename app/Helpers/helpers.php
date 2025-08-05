@@ -221,13 +221,13 @@ if (!function_exists('rating_label_class')) {
     function rating_label_class($average)
     {
         if ($average >= 4.0) {
-            return ['label' => 'Very', 'color' => 'bg-green-200 text-green-800']; // Very Reliable
+            return ['label' => 'Very', 'color' => 'bg-blue-100 text-blue-800']; // Very Reliable
         } elseif ($average >= 2.0) {
-            return ['label' => 'Fairly', 'color' => 'bg-yellow-200 text-yellow-800']; // Fairly Friendly
+            return ['label' => 'Fairly', 'color' => 'bg-yellow-100 text-yellow-800']; // Fairly Friendly
         } elseif ($average > 0) {
-            return ['label' => 'Barely', 'color' => 'bg-red-200 text-red-800']; // Barely Satisfied
+            return ['label' => 'Barely', 'color' => 'bg-red-100 text-red-800']; // Barely Satisfied
         } else {
-            return ['label' => 'Unrated', 'color' => 'bg-gray-200 text-gray-600'];
+            return ['label' => 'Unrated', 'color' => 'bg-gray-100 text-gray-600'];
         }
     }
 }

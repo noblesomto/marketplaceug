@@ -745,7 +745,7 @@
        </div>
        @endif
 
-        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+        <div id="buyDirect" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
             <div class="col-span-10 lg:col-span-2">
                 <div class="font-semibold">Bid/request</div>
             </div>
