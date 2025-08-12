@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<div class="max-w-4xl mx-auto bg-white my-10">
+<div class="max-w-4xl mx-auto bg-white my-10 pb-20">
     <section class="pb-2 pt-10 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">About Marketplace NG</h1>
@@ -13,7 +13,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="pb-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Who We Are</h2>
         <p class="text-gray-600 mb-6">
@@ -25,7 +25,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="pb-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Our Commitment</h2>
         <p class="text-gray-600 mb-6">

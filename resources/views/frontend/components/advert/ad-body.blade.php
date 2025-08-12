@@ -10,7 +10,19 @@
     @endif
     <span> {{ $ad->ad_title }}</span>
   </div>
-  @if($cat->category !="Jobs")
+  @if($ad->category==3)
+    <span class="text-dark_green font-bold text-lg md:text-xl my-2">
+        {{ $ad->salary }}
+    </span>
+    @elseif($ad->category==18)
+        <span class="text-dark_green font-bold text-lg md:text-xl my-2">
+            {{ $ad->expected_salary }}
+        </span>
+    @elseif($ad->contact_price=="yes")
+        <span class="text-dark_green font-bold text-lg md:text-xl my-2">
+            Contact For Price
+        </span>
+    @else
   <div class="flex justify-start text-dark_green font-bold text-lg md:text-xl my-2">
     <div class="mr-4">₦ {{ number_format($ad->price, 2, '.', ',') }} </div>
     <div>{{ $ad->price_type }}</div>
@@ -50,7 +62,7 @@
     @elseif($ad->sub_category=="6")
     {{ $phone->condition }}
     @else
-    <div>{{ $cat->category }}</div>
+    <div>{{ $ad->item_condition }}</div>
     @endif
 </div>
 

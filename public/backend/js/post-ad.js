@@ -1,3 +1,9 @@
+var salary = document.getElementById("salary");
+var expectedSalary = document.getElementById("expectedSalary");
+var services = document.getElementById("services");
+salary.classList.add("hidden");
+expectedSalary.classList.add("hidden");
+services.classList.add("hidden");
 
 document.getElementById('category').addEventListener('change', function () {
         var countryId = this.value;
@@ -22,12 +28,47 @@ document.getElementById('category').addEventListener('change', function () {
                 var itemCondition = document.getElementById("itemCondition");
                 var buyDirect = document.getElementById("buyDirect");
                 const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
+                var price = document.getElementById("price");
+                var shipping = document.getElementById('shipping');
+
 
                 // Hide all divs initially
             divCar.classList.add("hidden");
             divPhone.classList.add("hidden");
             divModel.classList.add("hidden");
 
+             if (countryId === "11") {
+                services.classList.remove("hidden");
+                shipment.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+                buyDirect.classList.add("hidden");
+             }else{
+                services.classList.add("hidden");
+                shipment.classList.remove("hidden");
+                itemCondition.classList.remove("hidden");
+                buyDirect.classList.remove("hidden");
+             }
+
+            if (countryId === "3") {
+                salary.classList.remove("hidden");
+                price.classList.add("hidden");
+                shipment.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+                shipping.classList.add("hidden");
+                buyDirect.classList.add("hidden");
+                expectedSalary.classList.add("hidden");
+            }else if (countryId === "18") {
+                expectedSalary.classList.remove("hidden");
+                price.classList.add("hidden");
+                salary.classList.add("hidden");
+                shipment.classList.add("hidden");
+                shipping.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+                buyDirect.classList.add("hidden");
+            }else{
+                price.classList.remove("hidden");
+                shipping.classList.remove("hidden");
+            }
 
 
                 response.data.forEach(function (subcat) {
@@ -70,9 +111,10 @@ document.getElementById('category').addEventListener('change', function () {
                     } else if (stateId === "6") {
                         divPhone.classList.remove("hidden");
                         itemCondition.classList.add("hidden");
+                         shipment.classList.remove("hidden");
                         //divModel.classList.remove("hidden");
                     }else{
-                        shipment.classList.remove("hidden");
+                        //shipment.classList.remove("hidden");
                     }
                 });
             })

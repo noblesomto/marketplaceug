@@ -18,7 +18,7 @@
                 
                 <div class="container mx-auto pb-5">
                     <div class="flex items-center mb-2">
-                        <a href="/advert/{{ $advert->id }}/{{ $advert->title_slug }}" class="flex items-center">
+                        <a href="{{ url($advert->state_slug . '/' . $advert->title_slug .'/'. $advert->ad_id) }}" class="flex items-center">
                             <div class="mr-2"><img class="w-14 h-14 rounded-full" src="{{  asset('uploads/images/'.$advert->firstImage->image) }}"> </div>
                             <div class="flex-col">
                                 <h4 class="font-semibold text-lg">{{ $advert->owner->name }}</h4> 

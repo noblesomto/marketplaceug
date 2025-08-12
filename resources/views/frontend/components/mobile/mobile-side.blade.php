@@ -20,6 +20,9 @@
                     <a href="/about-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">About</a>
                   </li>
                   <li>
+                    <a href="/how-it-works" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">How It Works</a>
+                  </li>
+                  <li>
                     <a href="/faq" class="text-gray-700 hover:text-black px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
                   </li>
                   <li>

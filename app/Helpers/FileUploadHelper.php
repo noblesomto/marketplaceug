@@ -3,48 +3,64 @@
 namespace App\Helpers;
 
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver; // Or Imagick driver if installed
 
 class FileUploadHelper
 {
     /**
-     * Upload a file to a given folder.
+     * Upload and compress an image to WebP (default quality 75).
      *
      * @param UploadedFile $file
-     * @param string       $folder   e.g., 'verification', 'avatars'
-     * @param string|null  $oldFile  Existing file to delete
-     * @return string|null Filename of uploaded file or null
+     * @param string       $folder
+     * @param string|null  $oldFile
+     * @return string|null
      */
     public static function upload(UploadedFile $file, string $folder, string $oldFile = null): ?string
     {
         $uploadPath = self::getUploadPath($folder);
+        $quality = 65; // WebP quality
 
-        // Create directory if it doesn't exist
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
 
-        // Delete old file if specified
         if ($oldFile) {
             self::delete($folder, $oldFile);
         }
 
-        // Generate safe filename
-        $extension = $file->getClientOriginalExtension();
-        $filename  = uniqid() . '.' . $extension;
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename  = uniqid() . '.webp'; // Always save as WebP
+        $fullPath  = $uploadPath . '/' . $filename;
 
-        // Move file
-        $file->move($uploadPath, $filename);
+        // Only process if it's an image
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])) {
+
+            // Create ImageManager instance (GD driver)
+            $manager = new ImageManager(new Driver());
+
+            // Read image
+            $image = $manager->read($file->getPathname());
+
+            // Optional: Resize if too large
+            if ($image->width() > 1920) {
+                $image->resize(1920, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
+
+            // Convert to WebP with given quality and save
+            $image->toWebp($quality)->save($fullPath);
+
+        } else {
+            // Non-image: just move without modification
+            $file->move($uploadPath, $filename);
+        }
 
         return $filename;
     }
 
-    /**
-     * Delete a file from a given folder.
-     *
-     * @param string $folder
-     * @param string $filename
-     * @return bool
-     */
     public static function delete(string $folder, string $filename): bool
     {
         $filePath = self::getUploadPath($folder) . '/' . $filename;
@@ -54,22 +70,14 @@ class FileUploadHelper
         return false;
     }
 
-    /**
-     * Get the full upload path depending on environment.
-     *
-     * @param string $folder
-     * @return string
-     */
     public static function getUploadPath(string $folder): string
     {
         $folder = trim($folder, '/');
 
-        // For production (shared hosting)
         if (app()->environment('production') && isset($_SERVER['DOCUMENT_ROOT'])) {
             return rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/uploads/' . $folder;
         }
 
-        // Default (local)
         return public_path('uploads/' . $folder);
     }
 }

@@ -659,49 +659,40 @@
             </div>
       </div>
 
-      <div id="shipping" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 hidden">
+       <!-- Shipping Methods (Hidden by default) -->
+        <div id="shipping" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 ">
             <div class="col-span-10 lg:col-span-2">
                 <div class="font-semibold">Shipping Method</div>
             </div>
-            <div class="col-span-10 lg:col-span-5 ">
-                <div>
-                    <div class="flex border border-dark_green rounded-lg p-2">
-                        <input id="checked-checkbox" name="shipping[]" type="checkbox" value="GUO" class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-ring-dark_green dark:focus:ring-dark_green dark:ring-offset-ring-dark_green focus:ring-2 accent-primary">
-                        <label for="checked-checkbox" class="ml-2 text-sm font-medium flex flex-col">
-                            <div class="flex items-center">
-                                <span><img class="w-10" src="{{ asset('frontend/images/icons/gig.png') }}"> </span>
-                                <span class="ml-2 font-bold">GIG Logistics 2kg </span>
-                            </div>
-                            <p>Max. 2 kg, max. 60 x 30 x 15 cm shipment tracking and liability up to N100,000</p>
-                        </label>
-                    </div>
+            <div class="col-span-10 lg:col-span-5">
+                <div id="shipping-methods">
+                    @foreach($shippings as $row)
                     <div class="flex border border-dark_green rounded-lg p-2 mt-2">
-                        <input id="checked-checkbox" name="shipping[]" type="checkbox" value="GUO" class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-ring-dark_green dark:focus:ring-dark_green dark:ring-offset-ring-dark_green focus:ring-2 accent-primary">
-                        <label for="checked-checkbox" class="ml-2 text-sm font-medium flex flex-col">
+                        <input
+                            id="shipping-{{ $row->id }}"
+                            name="shipping[]"
+                            type="checkbox"
+                            value="{{ $row->id }}"
+                            class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-dark_green accent-primary"
+                        >
+                        <label for="shipping-{{ $row->id }}" class="ml-2 text-sm font-medium flex flex-col">
                             <div class="flex items-center">
-                                <span><img class="w-10" src="{{ asset('frontend/images/icons/guo.png') }}"> </span>
-                                <span class="ml-2 font-bold">GUO Logistics 2kg </span>
+                                <span><img class="w-10" src="{{ asset('uploads/shipping/'.$row->logo) }}"></span>
+                                <span class="ml-2 font-bold">{{ $row->company }}</span>
                             </div>
-                            <p>Max. 2 kg, max. 60 x 30 x 15 cm shipment tracking and liability up to N100,000</p>
+                            <p>Max. {{ $row->weight }} kg, {{ $row->description }}</p>
                         </label>
                     </div>
-                    <div class="flex border border-dark_green rounded-lg p-2 mt-2">
-                        <input  id="checked-checkbox" name="shipping[]" type="checkbox" value="Fedex" class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-ring-dark_green dark:focus:ring-dark_green dark:ring-offset-ring-dark_green focus:ring-2 accent-primary">
-                        <label for="checked-checkbox" class="ml-2 text-sm font-medium flex flex-col">
-                            <div class="flex items-center">
-                                <span><img class="w-10" src="{{ asset('frontend/images/icons/fedex.png') }}"> </span>
-                                <span class="ml-2 font-bold">Fedex 2kg </span>
-                            </div>
-                            <p>Max. 2 kg, max. 60 x 30 x 15 cm shipment tracking and liability up to N100,000</p>
-                        </label>
-                    </div>
+                    @endforeach
                 </div>
+                <!-- Error message (hidden by default) -->
+                <p id="shipping-error" class="mt-2 text-red-500 hidden">Please select at least one shipping method.</p>
             </div>
-      </div>
+        </div>
     </div>
 
 
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+       <div id="price" class="grid grid-cols-10 gap-2 md:gap-5 py-3 border-b border-b-gray-200">
             <div class="col-span-10 md:col-span-2">
                 <div class="font-semibold">Price</div>
             </div>
@@ -712,12 +703,29 @@
                     @if ($errors->has('price'))
                         <span class="text-red-400">{{ $errors->first('price') }}</span>
                     @endif
-                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->price }}" required>
+                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->price }}">
                   </div>
                   <div class="text-base">
                    .00 Naira
                   </div>
             </div>
+            </div>
+            <div id="services" class="col-span-10 md:col-span-2 mt-1">
+                <label class="text-base flex items-center gap-1">
+                    <input
+                        type="hidden"
+                        name="contact_price"
+                        value="no"
+                    >
+                    <input
+                        type="checkbox"
+                        class="default:ring-2 w-6 h-6"
+                        name="contact_price"
+                        value="yes"
+                        {{ $advert->contact_price == 'yes' ? 'checked' : '' }}
+                    >
+                    Contact For Price
+                </label>
             </div>
             <div class="col-span-10 md:col-span-3">
                 <select id="price" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
@@ -727,6 +735,71 @@
                 </select>
             </div>
        </div>
+
+       <div id="salary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+    <div class="col-span-10 md:col-span-2">
+        <div class="font-semibold">Salary</div>
+    </div>
+    <div class="col-span-10 md:col-span-5">
+        @if ($errors->has('salary'))
+            <span class="text-red-400">{{ $errors->first('salary') }}</span>
+        @endif
+        <select id="salary" name="salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+            <option value="">--Select Salary--</option>
+            <option value="Commission" {{ $advert->salary == 'Commission' ? 'selected' : '' }}>Commission</option>
+            <option value="Below ₦20,000" {{ $advert->salary == 'Below ₦20,000' ? 'selected' : '' }}>Below ₦20,000</option>
+            <option value="₦20,000 - ₦40,000" {{ $advert->salary == '₦20,000 - ₦40,000' ? 'selected' : '' }}>₦20,000 - ₦40,000</option>
+            <option value="₦40,000 - ₦60,000" {{ $advert->salary == '₦40,000 - ₦60,000' ? 'selected' : '' }}>₦40,000 - ₦60,000</option>
+            <option value="₦60,000 - ₦80,000" {{ $advert->salary == '₦60,000 - ₦80,000' ? 'selected' : '' }}>₦60,000 - ₦80,000</option>
+            <option value="₦80,000 - ₦100,000" {{ $advert->salary == '₦80,000 - ₦100,000' ? 'selected' : '' }}>₦80,000 - ₦100,000</option>
+            <option value="₦100,000 - ₦120,000" {{ $advert->salary == '₦100,000 - ₦120,000' ? 'selected' : '' }}>₦100,000 - ₦120,000</option>
+            <option value="₦120,000 - ₦140,000" {{ $advert->salary == '₦120,000 - ₦140,000' ? 'selected' : '' }}>₦120,000 - ₦140,000</option>
+            <option value="₦140,000 - ₦160,000" {{ $advert->salary == '₦140,000 - ₦160,000' ? 'selected' : '' }}>₦140,000 - ₦160,000</option>
+            <option value="₦160,000 - ₦180,000" {{ $advert->salary == '₦160,000 - ₦180,000' ? 'selected' : '' }}>₦160,000 - ₦180,000</option>
+            <option value="₦180,000 - ₦200,000" {{ $advert->salary == '₦180,000 - ₦200,000' ? 'selected' : '' }}>₦180,000 - ₦200,000</option>
+            <option value="₦200,000 - ₦220,000" {{ $advert->salary == '₦200,000 - ₦220,000' ? 'selected' : '' }}>₦200,000 - ₦220,000</option>
+            <option value="₦220,000 - ₦250,000" {{ $advert->salary == '₦220,000 - ₦250,000' ? 'selected' : '' }}>₦220,000 - ₦250,000</option>
+            <option value="₦250,000 - ₦300,000" {{ $advert->salary == '₦250,000 - ₦300,000' ? 'selected' : '' }}>₦250,000 - ₦300,000</option>
+            <option value="₦300,000 - ₦350,000" {{ $advert->salary == '₦300,000 - ₦350,000' ? 'selected' : '' }}>₦300,000 - ₦350,000</option>
+            <option value="₦350,000 - ₦400,000" {{ $advert->salary == '₦350,000 - ₦400,000' ? 'selected' : '' }}>₦350,000 - ₦400,000</option>
+            <option value="₦400,000 - ₦450,000" {{ $advert->salary == '₦400,000 - ₦450,000' ? 'selected' : '' }}>₦400,000 - ₦450,000</option>
+            <option value="₦450,000 - ₦500,000" {{ $advert->salary == '₦450,000 - ₦500,000' ? 'selected' : '' }}>₦450,000 - ₦500,000</option>
+        </select>
+    </div>
+    <div class="col-span-10 md:col-span-3">
+    </div>
+</div>
+
+       <div id="expectedSalary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+    <div class="col-span-10 md:col-span-2">
+        <div class="font-semibold">Expected Salary</div>
+    </div>
+    <div class="col-span-10 md:col-span-5">
+        @if ($errors->has('expected_salary'))
+            <span class="text-red-400">{{ $errors->first('expected_salary') }}</span>
+        @endif
+        <select id="expected_salary" name="expected_salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+            <option value="">--Select Expected Salary--</option>
+            <option value="Below ₦50,000" {{ $advert->expected_salary == 'Below ₦50,000' ? 'selected' : '' }}>Below ₦50,000</option>
+            <option value="₦50,000 - ₦75,000" {{ $advert->expected_salary == '₦50,000 - ₦75,000' ? 'selected' : '' }}>₦50,000 - ₦75,000</option>
+            <option value="₦75,000 - ₦100,000" {{ $advert->expected_salary == '₦75,000 - ₦100,000' ? 'selected' : '' }}>₦75,000 - ₦100,000</option>
+            <option value="₦100,000 - ₦120,000" {{ $advert->expected_salary == '₦100,000 - ₦120,000' ? 'selected' : '' }}>₦100,000 - ₦120,000</option>
+            <option value="₦120,000 - ₦140,000" {{ $advert->expected_salary == '₦120,000 - ₦140,000' ? 'selected' : '' }}>₦120,000 - ₦140,000</option>
+            <option value="₦140,000 - ₦160,000" {{ $advert->expected_salary == '₦140,000 - ₦160,000' ? 'selected' : '' }}>₦140,000 - ₦160,000</option>
+            <option value="₦160,000 - ₦180,000" {{ $advert->expected_salary == '₦160,000 - ₦180,000' ? 'selected' : '' }}>₦160,000 - ₦180,000</option>
+            <option value="₦180,000 - ₦200,000" {{ $advert->expected_salary == '₦180,000 - ₦200,000' ? 'selected' : '' }}>₦180,000 - ₦200,000</option>
+            <option value="₦200,000 - ₦220,000" {{ $advert->expected_salary == '₦200,000 - ₦220,000' ? 'selected' : '' }}>₦200,000 - ₦220,000</option>
+            <option value="₦220,000 - ₦250,000" {{ $advert->expected_salary == '₦220,000 - ₦250,000' ? 'selected' : '' }}>₦220,000 - ₦250,000</option>
+            <option value="₦250,000 - ₦300,000" {{ $advert->expected_salary == '₦250,000 - ₦300,000' ? 'selected' : '' }}>₦250,000 - ₦300,000</option>
+            <option value="₦300,000 - ₦350,000" {{ $advert->expected_salary == '₦300,000 - ₦350,000' ? 'selected' : '' }}>₦300,000 - ₦350,000</option>
+            <option value="₦350,000 - ₦400,000" {{ $advert->expected_salary == '₦350,000 - ₦400,000' ? 'selected' : '' }}>₦350,000 - ₦400,000</option>
+            <option value="₦400,000 - ₦450,000" {{ $advert->expected_salary == '₦400,000 - ₦450,000' ? 'selected' : '' }}>₦400,000 - ₦450,000</option>
+            <option value="₦450,000 - ₦500,000" {{ $advert->expected_salary == '₦450,000 - ₦500,000' ? 'selected' : '' }}>₦450,000 - ₦500,000</option>
+        </select>
+    </div>
+    <div class="col-span-10 md:col-span-3">
+    </div>
+</div>
 
        @if($user->acc_type=="Commercial")
        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
@@ -799,7 +872,9 @@
                 @if ($errors->has('description'))
                     <span class="text-red-400">{{ $errors->first('description') }}</span>
                 @endif
-            <textarea rows="10" name="description" id="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ $advert->description }}</textarea>
+            <input id="content" type="hidden" name="description" value="{{ old('description', $advert->description ?? '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <trix-editor input="content"></trix-editor>
+
             </div>
             <div class="col-span-10 md:col-span-3">
                 
@@ -940,8 +1015,6 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
 <script src="{{ asset('backend/js/edit-ad.js') }}"></script>
 
@@ -1007,5 +1080,20 @@
 
     // Initial population
     updateOrderInput();
+
+    // ==================== LGA Initialization ====================
+    @if($advert->state)
+        const stateSelect = document.getElementById('state');
+        toggleLGA(stateSelect);
+
+        setTimeout(() => {
+            const lgaSelect = document.getElementById('lga');
+            if(lgaSelect) {
+                lgaSelect.value = "{{ $advert->lga }}";
+            }
+        }, 100);
+    @endif
+
 </script>
+
 @include('dashboard.layouts.footer')

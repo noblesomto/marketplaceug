@@ -21,7 +21,6 @@ module.exports = {
           100: '#b7eb41',
           200: '#AFD145',
         },
-        light_pink: '#fff9e6',
         dark_green: '#326916',
         body: '#f3f2ee',
         dark: '#001e00',

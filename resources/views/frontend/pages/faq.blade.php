@@ -20,7 +20,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">What is Marketplace Naija?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -30,7 +30,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Is Marketplace Naija free to use?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -48,7 +48,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Do I need an account to use Marketplace Naija?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -58,7 +58,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">How do I create an account?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -68,7 +68,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">I forgot my password. How can I reset it?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -86,7 +86,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">How do I buy an item on Marketplace Naija?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -100,7 +100,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">What is "Buy Direct"?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -110,7 +110,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">What if I don't receive the item?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -128,7 +128,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">How do I post an ad?</h3>
                 </div>
                 <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-2 ml-9">
@@ -141,7 +141,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Can I promote my ads?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -151,7 +151,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">How do I get paid using Buy Direct?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -169,7 +169,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">What payment methods do you accept?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -187,7 +187,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Can I get a refund?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -213,7 +213,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Is it safe to use Marketplace Naija?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -223,7 +223,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">What items are prohibited?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -250,7 +250,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">My ad isn't showing. What should I do?</h3>
                 </div>
                 <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-2 ml-9">
@@ -262,7 +262,7 @@
 
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">I'm experiencing a bug or error. How do I report it?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
@@ -285,7 +285,7 @@
             <div class="space-y-8">
               <div>
                 <div class="flex items-start">
-                  <span class="text-xl mr-3">❓</span>
+
                   <h3 class="text-lg font-medium text-gray-900">Can I open a shop or sell as a business?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">

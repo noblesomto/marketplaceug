@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // ==================== Form Selection Logic ====================
     const categorySelect = document.getElementById('category');
@@ -8,9 +10,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const divPhone = document.getElementById('divPhone');
     const divModel = document.getElementById('divModel');
     const shipmentDiv = document.getElementById('shipment');
+    const shipping = document.getElementById('shipping');
     const itemCondition = document.getElementById("itemCondition");
     const buyDirect = document.getElementById("buyDirect");
-
+    var salary = document.getElementById("salary");
+    var expectedSalary = document.getElementById("expectedSalary");
+    var services = document.getElementById("services");
+    salary.classList.add("hidden");
+    expectedSalary.classList.add("hidden");
+    services.classList.add("hidden");
     // Store original values from data attributes
     const originalValues = {
         category: categorySelect.dataset.selected,
@@ -29,10 +37,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Functions
     function initializeForm() {
-        if (categorySelect.value) {
-            categorySelect.dispatchEvent(new Event('change'));
-        }
+        const catId = categorySelect.value;
+        const subcatId = subcategorySelect.value;
+
+        toggleSections(subcatId, catId);
+
+        // If a category was pre-selected, trigger the dependent changes
+        if (catId) categorySelect.dispatchEvent(new Event('change'));
+        if (subcatId) subcategorySelect.dispatchEvent(new Event('change'));
+        //console.log(subcatId);
     }
+
 
     function handleCategoryChange() {
         const categoryId = this.value;
@@ -43,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleSections('');
             return;
         }
+        toggleSections(null,categoryId);
 
         fetch(`/fetch-subcat/${categoryId}`)
             .then(response => response.json())
@@ -74,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        toggleSections(subcategoryId);
+        toggleSections(subcategoryId,null);
 
         fetch(`/fetch-brand/${subcategoryId}`)
             .then(response => response.json())
@@ -132,12 +148,52 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
     }
 
-    function toggleSections(subcategoryId) {
+    function toggleSections(subcategoryId,categoryId) {
+
+        //category services 11;
+         if (categoryId === "11") {
+                services.classList.remove("hidden");
+                buyDirect.classList.add("hidden");
+                shipping.classList.add("hidden");
+                shipmentDiv.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+             }else{
+                services.classList.add("hidden");
+                buyDirect.classList.remove("hidden");
+                shipping.classList.remove("hidden");
+                shipmentDiv.classList.remove("hidden");
+                itemCondition.classList.remove("hidden");
+             }
+
+             //Category Jobs 3
+            if (categoryId === "3") {
+                salary.classList.remove("hidden");
+                price.classList.add("hidden");
+                shipmentDiv.classList.add("hidden");
+                shipping.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+                buyDirect.classList.add("hidden");
+                expectedSalary.classList.add("hidden");
+                 //Category CV 18
+            }else if (categoryId === "18")  {
+                expectedSalary.classList.remove("hidden");
+                price.classList.add("hidden");
+                salary.classList.add("hidden");
+                shipmentDiv.classList.add("hidden");
+                shipping.classList.add("hidden");
+                itemCondition.classList.add("hidden");
+                buyDirect.classList.add("hidden");
+            }else{
+                price.classList.remove("hidden");
+                salary.classList.add("hidden");
+                expectedSalary.classList.add("hidden");
+            }
         // Car section (subcategory 2)
         if (subcategoryId == 2) {
             if (divCar) divCar.classList.remove('hidden');
             if (divPhone) divPhone.classList.add('hidden');
             if (divModel) divModel.classList.remove('hidden');
+            if (shipping) shipping.classList.add('hidden');
             if (shipmentDiv) shipmentDiv.classList.add('hidden');
             if (itemCondition) itemCondition.classList.add('hidden');
             if (modelSelect) modelSelect.setAttribute('required', 'required');
@@ -157,8 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (divCar) divCar.classList.add('hidden');
             if (divPhone) divPhone.classList.add('hidden');
             if (divModel) divModel.classList.add('hidden');
-            if (shipmentDiv) shipmentDiv.classList.remove('hidden');
-
         }
     }
 
@@ -176,16 +230,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ==================== LGA Initialization ====================
-    @if($advert->state)
-        const stateSelect = document.getElementById('state');
-        toggleLGA(stateSelect);
 
-        setTimeout(() => {
-            const lgaSelect = document.getElementById('lga');
-            if(lgaSelect) {
-                lgaSelect.value = "{{ $advert->lga }}";
-            }
-        }, 100);
-    @endif
 });

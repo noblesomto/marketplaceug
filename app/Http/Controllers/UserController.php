@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
@@ -23,7 +24,8 @@ class UserController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'asc')->where('user_id', $user_id)->paginate(20);
+        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(20);
+        //dd($ads);
         return view('dashboard.index', compact('title','user','ads','count_ads'));
     }
 
@@ -85,7 +87,7 @@ class UserController extends Controller
         $title = "My Orders | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'asc')->where('user_id', $user_id)->paginate(20);
+        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(20);
         $count_ads = Advert::where('user_id', $user_id)->count();
         return view('dashboard.my-ads', compact('title','user', 'ads','count_ads'));
     }
@@ -143,7 +145,7 @@ class UserController extends Controller
             ->whereHas('wishlists', function($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate(20);
         
         $countAds = Advert::where('user_id', $userId)->count();
@@ -164,14 +166,48 @@ class UserController extends Controller
         // Eager load advert and its firstImage
         $buyAds = Payment::with(['advert.firstImage','shipping'])
             ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
-
+        //dd($buyAds);
         return view('dashboard.payments', [
             'title' => "Buy Direct Adverts | " . config('global.site_name'),
             'user' => $user,
             'buyAds' => $buyAds,
         ]);
     }
+
+    public function confirmDelivery(Request $request, $orderId)
+{
+    try {
+        // Find the order
+        $order = Payment::findOrFail($orderId);
+
+        // Optional: Add authorization check
+        // $this->authorize('update', $order);
+
+        // Update the order status
+        $order->shipping_status = 'delivered';
+        $order->shipping_status_date = now(); // Optional: Add timestamp
+        $order->save();
+
+        // Log the action (optional)
+        \Log::info("Order {$orderId} marked as delivered by user " . auth()->id());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delivery confirmed successfully',
+            'order' => $order
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error("Error confirming delivery for order {$orderId}: " . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to confirm delivery. Please try again.'
+        ], 500);
+    }
+}
 
     public function ad_shipping(Request $request, $id)
     {

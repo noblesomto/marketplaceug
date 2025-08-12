@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New Purchase Notification</title>
+    <title>Marketplace Naija – Order Confirmation & Purchase Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -131,15 +131,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Ad Purchase Details</h1>
-            <p>Below are the details of the ad you bought</p>
+            <h1>Your Order Summary</h1>
+
         </div>
         
         <div class="content">
-       
+
             <div class="section">
-                <h4>Ad Purchased</h4>
-                <p><span class="label">Ad Title:</span> {{ $details['advert'] }}</p>
+                <p>Hello {{ $details['buyer'] }},</p>
+                <p>Thank you for your purchase on Marketplace Naija. Below are the details of your order:</p>
+            </div>
+
+            <div class="section">
+                <h4>Item Purchased:</h4>
+                <p><span class="label">Product Name:</span> {{ $details['advert'] }}</p>
             </div>
 
             <div class="section">
@@ -149,14 +154,25 @@
             
             <div class="section">
                 <h4>Selected Delivery/Pickup Information</h4>
-                <p><span class="label">State:</span> {{ $details['state'] }}</p>
-                <p><span class="label">City:</span> {{ $details['city'] }}</p>
                 <p><span class="label">Address:</span> {{ $details['address'] }}</p>
+                <p><span class="label">City:</span> {{ $details['city'] }}</p>
+                <p><span class="label">State:</span> {{ $details['state'] }}</p>
+            </div>
+
+            <div class="section">
+                <p>If you have any questions or require assistance, please don&#39;t hesitate to contact our support team.</p>
+                <br>
+                <p>Thank you for choosing Marketplace Naija.</p>
+                <p>We sincerely appreciate your trust in our platform.</p>
+                <br>
+                <p>Best regards,</p>
+                <p><b>The Marketplace Naija Team</b></p>
             </div>
         </div>
+
         
         <div class="footer">
-            <p>Thank you for using our platform!</p>
+
             <p>© {{ date('Y') }} {{ config('global.site_name') }}. All rights reserved.</p>
         </div>
     </div>

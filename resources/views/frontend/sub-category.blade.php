@@ -72,6 +72,11 @@
                 @include('frontend.components.advert.sellers-subcategory')
             </div>
 
+            <div class="bg-white p-2 space-y-2">
+                <h4 class="font-semibold">Brands</h4>
+                <button id="brandsButton" class="text-dark_green">Select Brand</button>
+            </div>
+
            </div>
            <div class="col-span-10 lg:col-span-7">
               <div class=" my-5 hidden lg:block">
@@ -96,6 +101,7 @@
 
 
 @include('frontend.components.advert.modal-subcat-locations')
+@include('frontend.components.advert.modal-filter-brands')
 
 @include('frontend.layouts.footer')
 

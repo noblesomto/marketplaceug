@@ -28,7 +28,7 @@ class BuyDirectMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Ad Purchase Details',
+            subject: 'Marketplace Naija – Order Confirmation & Purchase Details',
         );
     }
 

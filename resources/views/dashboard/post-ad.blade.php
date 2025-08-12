@@ -539,7 +539,7 @@
 
 
 
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+       <div id="price" class="grid grid-cols-10 gap-2 md:gap-5 py-3 border-b border-b-gray-200">
             <div class="col-span-10 md:col-span-2">
                 <div class="font-semibold">Price</div>
             </div>
@@ -550,12 +550,29 @@
                     @if ($errors->has('price'))
                         <span class="text-red-400">{{ $errors->first('price') }}</span>
                     @endif
-                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('price') }}" required>
+                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('price') }}" >
                   </div>
                   <div class="text-base">
                    .00 Naira
                   </div>
             </div>
+            </div>
+            <div id="services" class="col-span-10 md:col-span-2 mt-1">
+                <label class="text-base flex items-center gap-1">
+                    <input
+                        type="hidden"
+                        name="contact_price"
+                        value="no"
+                    >
+                    <input
+                        type="checkbox"
+                        class="default:ring-2 w-6 h-6"
+                        name="contact_price"
+                        value="yes"
+
+                    >
+                    Contact For Price
+                </label>
             </div>
             <div class="col-span-10 md:col-span-3">
                 <select id="price" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
@@ -563,6 +580,76 @@
                     <option value="Negotiable">Negotiable</option>
                     <option value="Give Away">Give Away</option>
                 </select>
+            </div>
+
+       </div>
+
+       <div id="salary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Salary</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('salary'))
+                    <span class="text-red-400">{{ $errors->first('salary') }}</span>
+                @endif
+            <select id="salary" name="salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">--Select Salary--</option>
+                <option value="Commission">Commission</option>
+                <option value="Below ₦20,000">Below ₦20,000</option>
+                <option value="₦20,000 - ₦40,000">₦20,000 - ₦40,000</option>
+                <option value="₦40,000 - ₦60,000">₦40,000 - ₦60,000</option>
+                <option value="₦60,000 - ₦80,000">₦60,000 - ₦80,000</option>
+                <option value="₦80,000 - ₦100,000">₦80,000 - ₦100,000</option>
+                <option value="₦100,000 - ₦120,000">₦100,000 - ₦120,000</option>
+                <option value="₦120,000 - ₦140,000">₦120,000 - ₦140,000</option>
+                <option value="₦140,000 - ₦160,000">₦140,000 - ₦160,000</option>
+                <option value="₦160,000 - ₦180,000">₦160,000 - ₦180,000</option>
+                <option value="₦180,000 - ₦200,000">₦180,000 - ₦200,000</option>
+                <option value="₦200,000 - ₦220,000">₦200,000 - ₦220,000</option>
+                <option value="₦220,000 - ₦250,000">₦220,000 - ₦250,000</option>
+                <option value="₦250,000 - ₦300,000">₦250,000 - ₦300,000</option>
+                <option value="₦300,000 - ₦350,000">₦300,000 - ₦350,000</option>
+                <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
+                <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
+                <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
+
+            </select>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+
+            </div>
+       </div>
+
+       <div id="expectedSalary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Expected Salary</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('expected_salary'))
+                    <span class="text-red-400">{{ $errors->first('expected_salary') }}</span>
+                @endif
+            <select id="expected_salary" name="expected_salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">--Select Expected Salary--</option>
+                <option value="Below ₦50,000">Below ₦50,000</option>
+                <option value="₦50,000 - ₦75,000">₦50,000 - ₦75,000</option>
+                <option value="₦75,000 - ₦100,000">₦75,000 - ₦100,000</option>
+                <option value="₦100,000 - ₦120,000">₦100,000 - ₦120,000</option>
+                <option value="₦120,000 - ₦140,000">₦120,000 - ₦140,000</option>
+                <option value="₦140,000 - ₦160,000">₦140,000 - ₦160,000</option>
+                <option value="₦160,000 - ₦180,000">₦160,000 - ₦180,000</option>
+                <option value="₦180,000 - ₦200,000">₦180,000 - ₦200,000</option>
+                <option value="₦200,000 - ₦220,000">₦200,000 - ₦220,000</option>
+                <option value="₦220,000 - ₦250,000">₦220,000 - ₦250,000</option>
+                <option value="₦250,000 - ₦300,000">₦250,000 - ₦300,000</option>
+                <option value="₦300,000 - ₦350,000">₦300,000 - ₦350,000</option>
+                <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
+                <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
+                <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
+
+            </select>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+
             </div>
        </div>
 
@@ -633,16 +720,17 @@
             <div class="col-span-10 md:col-span-2">
                 <div class="font-semibold">Description</div>
             </div>
-            <div class="col-span-10 md:col-span-5">
+            <div class="col-span-10 md:col-span-7">
                 @if ($errors->has('description'))
                     <span class="text-red-400">{{ $errors->first('description') }}</span>
                 @endif
-            <textarea name="description" id="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ old('description') }}</textarea>
-            </div>
-            <div class="col-span-10 md:col-span-3">
+                <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                <trix-editor input="content"></trix-editor>
                 
             </div>
        </div>
+
+
    
 
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
@@ -680,7 +768,7 @@
             </div>
             <div class="col-span-10 md:col-span-3">
                 <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 12 MB. Your pictures become perfect with our photo tips.
+                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 20 MB. Your pictures become perfect with our photo tips.
                   </div>
             </div>
        </div>

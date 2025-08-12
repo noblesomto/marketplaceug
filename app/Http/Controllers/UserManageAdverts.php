@@ -45,20 +45,41 @@ class UserManageAdverts extends Controller
         if ($request->isMethod('POST')) {
             $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
-
-            $rules = [
+            $category = (int) $request->input('category');
+            //dd($category);
+                $rules = [
                 'ad_title'    => 'required',
                 'category'    => 'required',
                 'subcategory' => 'required',
                 'brand'       => 'required',
-                'price'       => 'required|numeric',
-                'price_type'  => 'required',
                 'state'       => 'required',
                 'lga'         => 'required',
                 'description' => 'required',
-                'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
+                //'images'      => 'required|array',
+                'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
             ];
 
+            // Category-specific rules
+            if ($category == 3) {
+                $rules += [
+                    'salary' => 'required',
+                ];
+            } elseif ($category == 18) {
+                $rules += [
+                    'expected_salary' => 'required',
+                ];
+            }elseif ($category == 11) {
+                $rules += [
+                    'price'      => 'nullable|numeric',
+                ];
+            } else {
+                $rules += [
+                    'price'      => 'required|numeric',
+                    'price_type' => 'required',
+                ];
+            }
+
+            // Subcategory-specific rules
             switch ($subcat) {
                 case 2:
                     $rules += [
@@ -80,12 +101,15 @@ class UserManageAdverts extends Controller
                         'device'          => 'required',
                     ];
                     break;
+            }
 
-                default:
-                    $rules['item_condition'] = 'required';
+            // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
+            if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+                $rules['item_condition'] = 'required';
             }
 
             $validatedData = $request->validate($rules);
+
 
             if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
@@ -98,6 +122,9 @@ class UserManageAdverts extends Controller
                 'sub_category'     => $request->input('subcategory'),
                 'brand'            => $request->input('brand'),
                 'price'            => $request->input('price'),
+                'contact_price'    => $request->input('contact_price'),
+                'salary'           => $request->input('salary'),
+                'expected_salary'  => $request->input('expected_salary'),
                 'item_condition'   => $request->input('item_condition'),
                 'price_type'       => $request->input('price_type'),
                 'buy_direct'       => $request->input('buy_direct'),
@@ -107,7 +134,7 @@ class UserManageAdverts extends Controller
                 'description'      => $request->input('description'),
                 'keyword'          => $request->input('keyword'),
                 'meta_description' => $request->input('meta_description'),
-                'featured'         => $request->input('featured') ?? 'No',
+                'featured'         => "No",
                 'ad_id'            => $ad_id,
                 'shipment'         => $request->input('shipment'),
                 'show_contact'     => $request->input('show_contact'),
@@ -198,7 +225,7 @@ class UserManageAdverts extends Controller
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::orderBy('category','asc')->get();
         $states = State::all();
-
+        $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
         $advert = Advert::with(['images', 'car', 'phone'])
             ->where('id', $ad_id)
             ->where('user_id', $user_id)
@@ -237,27 +264,49 @@ class UserManageAdverts extends Controller
             'brands',
             'models',
             'registration',
-            'states'
+            'states',
+            'shippings'
         ));
     }
 
     protected function update_ad(Request $request, $advert)
     {
         $subcat = (int) $request->input('subcategory');
+        $category = (int) $request->input('category');
 
         $rules = [
             'ad_title'    => 'required',
             'category'    => 'required',
             'subcategory' => 'required',
             'brand'       => 'required',
-            'price'       => 'required|numeric',
-            'price_type'  => 'required',
             'state'       => 'required',
             'lga'         => 'required',
             'description' => 'required',
-            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:20000',
+            //'images'      => 'required|array',
+            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
         ];
 
+        // Category-specific rules
+        if ($category == 3) {
+            $rules += [
+                'salary' => 'required',
+            ];
+        } elseif ($category == 18) {
+            $rules += [
+                'expected_salary' => 'required',
+            ];
+        }elseif ($category == 11) {
+            $rules += [
+                'price'      => 'nullable|numeric',
+            ];
+        } else {
+            $rules += [
+                'price'      => 'required|numeric',
+                'price_type' => 'required',
+            ];
+        }
+
+        // Subcategory-specific rules
         switch ($subcat) {
             case 2:
                 $rules += [
@@ -271,6 +320,7 @@ class UserManageAdverts extends Controller
                     'doors'        => 'required',
                 ];
                 break;
+
             case 6:
                 $rules += [
                     'phone_color'     => 'required',
@@ -278,8 +328,11 @@ class UserManageAdverts extends Controller
                     'device'          => 'required',
                 ];
                 break;
-            default:
-                $rules['item_condition'] = 'required';
+        }
+
+        // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
+        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+            $rules['item_condition'] = 'required';
         }
 
         $validatedData = $request->validate($rules);
@@ -293,6 +346,9 @@ class UserManageAdverts extends Controller
             'brand'           => $request->input('brand'),
             'price'           => $request->input('price'),
             'price_type'      => $request->input('price_type'),
+            'contact_price'    => $request->input('contact_price'),
+            'salary'           => $request->input('salary'),
+            'expected_salary'  => $request->input('expected_salary'),
             'item_condition'  => $request->input('item_condition'),
             'buy_direct'      => $request->input('buy_direct'),
             'state'           => $request->input('state'),

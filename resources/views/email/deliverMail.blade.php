@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace Naija –  Your Item Has Been Sold – Time to Ship!</title>
+    <title>Marketplace Naija – Your Order Is Ready For Pickup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -51,21 +51,6 @@
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
-        }
-         .shipping-code {
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 20px;
-            color: #2E7D32;
-        }
-
-        .note {
-            font-style: italic;
-            color: #7f8c8d;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-left: 3px solid #3498db;
         }
         
         /* Typography */
@@ -140,38 +125,27 @@
             p {
                 margin-bottom: 12px;
             }
-
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>New Sale Notification</h1>
+            <h1>Your Order Is Ready For Pickup</h1>
 
         </div>
         
         <div class="content">
+       
             <div class="section">
-                <h2>Hello {{ $details['seller'] }},</h2>
-                <p>Thank you for your purchase on Marketplace Naija. Below are the details of your order:</p>
-                <p>A user has made payment for your advertisement</p>
+                <h2>Hello {{ $details['buyer'] }},</h2>
+            <p>We’re happy to inform you that your order for {{ $details['advert'] }} is ready for Pickup.</p>
             </div>
 
             <div class="section">
-                <h2>Buyer Information</h2>
-                <p><span class="label">Name:</span> {{ $details['buyer'] }}</p>
-                <p><span class="label">Phone:</span> {{ $details['phone'] }}</p>
-            </div>
-            
-            <div class="section">
-                <h4>Item Sold</h4>
-                <p><span class="label">Product Name:</span> {{ $details['advert'] }}</p>
-            </div>
-
-            <div class="section">
-                <h4>Selected Shipping</h4>
-                <p><span class="label">Company:</span> {{ $details['shipping'] }}</p>
+                <h4>Shipping Details:</h4>
+                <p><span class="label">Item:</span> {{ $details['advert'] }}</p>
+                <p><span class="label">Shipping Provider:</span> GIG Logistics (GIGL)</p>
             </div>
             
             <div class="section">
@@ -182,33 +156,19 @@
             </div>
 
             <div class="section">
-                <h4>It’s Time to Ship</h4>
-                <p>To complete the delivery, please follow these steps:</p>
-                 <ol class="shipping-steps">
-                    <li>Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address to ensure it arrives in good condition.</li>
-                    <li>Take it to your nearest GIG Logistics (GIGL) office.</li>
-                    <li>Present the following 10-digit shipping code at the counter to process the shipment:
-                        <span class="shipping-code">{{ $details['ship_code'] }}</span>
-                    </li>
-                    <li>No payment is required at the shipping office. All logistics fees have been covered.</li>
-                </ol>
-
-                <p class="note">Please follow these instructions carefully to ensure smooth processing of your shipment.</p>
-            </div>
-
-            <div class="section">
-                <h4>Note:</h4>
-                <p>This transaction is secured by our <b>Buy Direct service.</b> Your payment will be released as soon as the buyer
-confirms delivery.</p>
-                <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+                <p>If you have any questions or need further assistance, please don’t hesitate to contact our support team.</p>
+                <br>
+                <p>Thank you for choosing <b>Marketplace Naija.</b> We appreciate your trust and look forward to serving you
+again.</p>
                 <br>
                 <p>Best regards,</p>
                 <p><b>The Marketplace Naija Team</b></p>
             </div>
         </div>
+
         
         <div class="footer">
-            <p>Thank you for using our platform!</p>
+
             <p>© {{ date('Y') }} {{ config('global.site_name') }}. All rights reserved.</p>
         </div>
     </div>

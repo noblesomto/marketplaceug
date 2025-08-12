@@ -49,8 +49,22 @@
         </div>
         <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
         <div class="flex justify-between">
+            @if($row->category==3)
+            <span class="text-sm font-bold text-green-600">
+                {{ $row->salary }}
+            </span>
+            @elseif($row->category==18)
+                <span class="text-sm font-bold text-green-600">
+                    {{ $row->expected_salary }}
+                </span>
+            @elseif($row->contact_price=="yes")
+                <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                    Contact For Price
+                </div>
+            @else
             <span class="text-xs font-semibold text-dark_green">₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 10) }}
             </span>
+            @endif
         </div>
         @if($row->buy_direct=="Yes")
         <div class="flex items-center mt-1">

@@ -34,7 +34,9 @@ Route::any('/copyright-policy', [PageController::class, 'copyright']);
 Route::any('/safety-tips', [PageController::class, 'safety']);
 Route::any('/our-terms', [PageController::class, 'terms']);
 Route::any('/payments-refunds', [PageController::class, 'payments_refunds']);
+Route::any('/how-it-works', [PageController::class, 'how_it_works']);
 Route::any('/faq', [PageController::class, 'faq']);
+Route::any('/advertise-with-us', [PageController::class, 'advertise']);
 Route::any('/contact-us', [PageController::class, 'contact']);
 Route::any('/shipping', [PageController::class, 'shipping']);
 Route::any('/email', [PageController::class, 'email']);
@@ -105,6 +107,7 @@ Route::get('/payment/mark-received/{id}', [MessageController::class, 'mark_recei
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware('usersession');
 Route::any('/user/my-ads', [UserController::class, 'my_ads'])->middleware('usersession');
 Route::any('/user/payment', [UserController::class, 'payments'])->middleware('usersession');
+Route::post('/user/confirm-delivery/{id}', [UserController::class, 'confirmDelivery'])->middleware('usersession');
 Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->middleware('usersession');
 Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->middleware('usersession');
 Route::any('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->middleware('usersession');
@@ -227,6 +230,7 @@ Route::any('/shipper/update-shipping/{id}', [ShipperController::class, 'update_s
 //GIG Logistics
 Route::any('/settings/gig-locations', [SettingController::class, 'gig_locations'])->middleware('adminsession');
 Route::any('/settings/delete-gig-location/{id}', [SettingController::class, 'delete_gig_location'])->middleware('adminsession');
+Route::post('/settings/update-gig-location', [SettingController::class, 'updateGigLocation'])->name('update.gig.location')->middleware('adminsession');
 
 Route::get('/fetch-subcat/{cat_id}', [ManageCategories::class, 'fetch_subcat']);
 Route::get('/fetch-brand/{cat_id}', [ManageCategories::class, 'fetch_brand']);

@@ -14,7 +14,7 @@
               <div class="bg-white mb-1 border-b border-b-gray-300 shadow p-2">
                  <div class="flex w-full">
                       <div class="w-2/6 mr-1 relative">
-                        <img class="h-24 lg:h-40 object-cover" src="{{  asset('uploads/images/'.$row->firstImage->image) }}">
+                        <img class="h-24 lg:h-40 object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}">
                         <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
                       </div>
                       <div class="w-4/6 relative space-y-2">
@@ -42,10 +42,24 @@
                             <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                         </a>
                         <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
+                        @if($row->category==3)
+                            <div class="text-dark_green font-bold text-base my-2">
+                                {{ $row->salary }}
+                            </div>
+                            @elseif($row->category==18)
+                                <div class="text-dark_green font-bold text-base my-2">
+                                    {{ $row->expected_salary }}
+                                </div>
+                            @elseif($row->contact_price=="yes")
+                                <div class="text-dark_green font-bold text-base my-2">
+                                    Contact For Price
+                                </div>
+                            @else
                         <div class="flex justify-start text-dark_green font-bold text-base my-2">
                           <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
                           <div>{{ $row->price_type }}</div>
                         </div>
+                        @endif
                         <div class="flex justify-start text-sm mt-2 ">
                           @if($row->shipment=="Ship")
                           <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>

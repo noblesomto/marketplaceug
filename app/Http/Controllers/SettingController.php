@@ -94,4 +94,25 @@ class SettingController extends Controller
         return redirect()->back()->with('status', ['text'=>'Location was deleted','type'=>'success']);
 
     }
+
+    public function updateGigLocation(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:gig_logistics,id',
+            'state' => 'required|exists:states,id',
+            'city' => 'required|string|max:255',
+            'address' => 'required|string|max:255'
+        ]);
+
+        $gig = GigLogistic::findOrFail($request->id);
+
+        //dd($gig);
+        $gig->update([
+            'state_id' => $request->state,
+            'city' => $request->city,
+            'address' => $request->address
+        ]);
+
+        return response()->json(['success' => true]);
+    }
 }

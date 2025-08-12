@@ -11,6 +11,7 @@ class Reports extends Model
     protected $fillable = [
         'advert_id',
         'user_id',
+        'subject',
         'message'
     ];
 

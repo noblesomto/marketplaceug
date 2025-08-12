@@ -114,6 +114,7 @@ class PaystackController extends Controller
 
             $user_id = $request->session()->get('user_id');
             $user = User::where('user_id', $user_id)->first();
+             $owner = User::where('user_id', $advert->user_id)->first();
 
             $location = GigLogistic::with('state')->where('id', $booking->city)->first();
             $ship = Shipping::where('id', $booking->shipping_method)->first();
@@ -122,6 +123,7 @@ class PaystackController extends Controller
             $details = [
                 'advert' => $advert->ad_title,
                 'buyer' => $user->name,
+                'seller' => $owner->name,
                 'phone' => $user->phone,
                 'shipping' => $ship->company,
                 'address' => $user->address,
@@ -131,7 +133,7 @@ class PaystackController extends Controller
                 'ship_code' => $ship_code,
             ];
 
-            $owner = User::where('user_id', $advert->user_id)->first();
+
             Mail::to($user->email)->send(new BuyDirectMail($details));
             Mail::to($owner->email)->send(new SellerMail($details));
             return redirect()->route('payment.success');

@@ -10,6 +10,7 @@
         <div class="flex justify-center">
         <h3 class="text-2xl font-bold">Report Ad</h3>
     </div>
+
         @include('frontend.components.flash-message')
         <form method="POST" action="/report-ad/{{ $ad->id }}">
             @csrf
@@ -22,6 +23,23 @@
                 @endif
                 <label class="text-sm font-semibold">Advert *</label>
                 <input type="text" id="name" name="subject" placeholder="Subject" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $ad->ad_title }}" readonly>
+            </div>
+
+            <div class="mb-4 mt-4">
+                @if ($errors->has('subject'))
+                    <span class="text-red-700 py-1">{{ $errors->first('subject') }}</span>
+                @endif
+                <label class="text-sm font-semibold">Subject *</label>
+                <select name="subject" class="w-full px-3 py-2 border border-gray-300 bg-white rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    <option value="">--Select Subject--</option>
+                    <option value="This is Illegal/Fraudulent">This is Illegal/Fraudulent</option>
+                    <option value="This Ad is a Spam">This Ad is a Spam</option>
+                    <option value="The Item is Sold">The Item is Sold</option>
+                    <option value="Seller asked for payment">Seller asked for payment</option>
+                    <option value="The Seller is not Responding">The Seller is not Responding</option>
+                    <option value="The Item was not Delivered">The Item was not Delivered</option>
+                    <option value="Others">Others</option>
+                </select>
             </div>
 
             <div class="mb-4 mt-4">

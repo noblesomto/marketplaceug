@@ -57,11 +57,31 @@
                         </div>
 
                         <!-- Price tag -->
+                        @if($row->category==3)
+                        <div class="relative -mt-6 mb-2 mr-2 w-full">
+                            <div class="bg-primary h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                            {{ $row->salary }}
+                        </div>
+                        </div>
+                        @elseif($row->category==18)
+                            <div class="relative -mt-6 mb-2 mr-2 w-full">
+                                <div class="bg-primary h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                                {{ $row->expected_salary }}
+                                </div>
+                            </div>
+                        @elseif($row->contact_price=="yes")
+                            <div class="relative -mt-6 mb-2 mr-2 w-full">
+                                <div class="bg-primary h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                                Contact For Price
+                                </div>
+                            </div>
+                        @else
                         <div class="relative -mt-6 mb-2 mr-2 w-full">
                             <div class="bg-primary h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
                                 ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                             </div>
                         </div>
+                        @endif
 
                         <!-- Content -->
                         <div class="p-3 flex flex-col flex-grow my-2">

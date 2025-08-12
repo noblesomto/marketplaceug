@@ -151,9 +151,21 @@ class PageController extends Controller
     }
 
     public function faq()
-    {   
+    {
         $title = "FAQ  | " . config('global.site_name');
         return view('frontend.pages.faq', compact('title'));
+    }
+
+    public function how_it_works()
+    {
+        $title = "How It Works  | " . config('global.site_name');
+        return view('frontend.pages.how-it-works', compact('title'));
+    }
+
+    public function advertise()
+    {
+        $title = "Advertise With Us  | " . config('global.site_name');
+        return view('frontend.pages.advertise', compact('title'));
     }
 
     public function contact(Request $request)
@@ -260,26 +272,31 @@ class PageController extends Controller
                 'postcode' => '093033',
                 'city' => 'Lekki',
                 'state' => 'Lagos',
-                'bedrooms' => '2 bedrooms',
-                'checkin' => '2025-02-14',
+                'shipping' => '2 bedrooms',
+                'shipped_date' => '2025-02-14',
                 'checkout' => '2025-03-01',
+                'title' => 'Stunning Modern 2-Floor House with 3 Ensuite Rooms',
+                'subject' => 'Stunning Modern 2-Floor House with 3 Ensuite Rooms',
                 'advert' => 'Stunning Modern 2-Floor House with 3 Ensuite Rooms',
                 'address' => 'Entire home in Greater London, United Kingdom',
                 'token' => '093033',
                 'name' => "noble",
                 'buyer' => "noble",
+                'seller' => "noble",
                 'user_id' => "5244",
-                'book_id' => "GO5Ka244",
+                'tracking_id' => "GO5Ka244",
                 'date' => "5-2-44",
                 'otp'=>"049403",
+                'ship_code'=>"049403",
                 'currency'=>"USD",
                 'email_subject'=>"049403",
+                'message' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mattis vitae quam vel viverra. Etiam vitae orci sit amet quam euismod tincidunt.',
                 'email_body'=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mattis vitae quam vel viverra. Etiam vitae orci sit amet quam euismod tincidunt. Cras eu porttitor nunc. Integer lacinia augue nibh, ac pretium nunc venenatis vitae. Fusce sapien elit, commodo vitae purus id, ultricies placerat lectus. Sed non sagittis augue. Donec in consequat turpis. Donec vel lectus tempor, fringilla dolor at, varius mi. Praesent a nulla maximus, blandit ex non, rutrum augue. Pellentesque sit amet turpis luctus, porta purus vitae, lobortis tellus. Aliquam erat volutpat. Ut eget quam euismod, feugiat eros in, venenatis quam. Nam vitae nibh in augue venenatis porta non in nunc. Vivamus iaculis ut enim nec egestas. Morbi tristique lectus in orci ultricies, id imperdiet massa consectetur. Donec semper diam in laoreet hendrerit.<br><br>
 
 Morbi faucibus pulvinar lectus. Sed vehicula elit ac cursus porttitor. Aenean augue quam, vehicula iaculis vulputate sit amet, pretium et mauris. Maecenas ut scelerisque sem. Morbi in purus non eros ullamcorper placerat. Etiam semper sit amet ex non dictum. Phasellus facilisis mauris vitae tellus finibus, a semper justo bibendum.
 
 Nunc justo velit, dictum sed est ut, porttitor semper odio. Fusce sit amet diam vitae lectus pretium mattis a a quam. Morbi dictum viverra metus. Donec sed lectus nec risus laoreet gravida ut non leo. Mauris sed tellus lorem. Pellentesque sit amet dolor a tortor viverra imperdiet ut sed metus. Vivamus venenatis sem risus, sed aliquet sem lobortis in. Nam quis erat vel tortor aliquam cursus eget id justo. Sed sollicitudin ex pellentesque libero feugiat mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean rutrum volutpat placerat. Vestibulum sed congue lorem, sit amet posuere dui. Proin sagittis mi odio, id congue mi viverra at. Pellentesque sit amet tellus eget quam fringilla tincidunt. Morbi aliquam dolor ut nisl semper ultricies.",
             ];
-        return view('email.buyMail', compact('title','details'));
+        return view('email.reportMail', compact('title','details'));
     }
 }

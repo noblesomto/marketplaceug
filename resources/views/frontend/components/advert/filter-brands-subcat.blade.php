@@ -3,7 +3,9 @@
 @endphp
 
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+
+
+<div class="grid gap-3 max-w-7xl" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
     @foreach($brands as $brand)
         <div class="bg-white border border-gray-200 rounded-lg hover:shadow-sm transition duration-200">
             <a class="flex items-center justify-between px-4 py-3 w-full"

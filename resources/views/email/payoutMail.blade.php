@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New Payout Notification</title>
+    <title>Payout Confirmation – Payment Successfully Sent</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -131,24 +131,40 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Ad Payout Notification</h1>
-            <p>Below are the details of your ad payout</p>
+            <h1>Payout Confirmation – Payment Successfully Sent</h1>
+
         </div>
         
         <div class="content">
-       
+       <div class="section">
+            <h2>Hello {{ $details['seller'] }},</h2>
+            <p>We are pleased to inform you that your payment for the recent sale has been successfully processed.</p>
+
+        </div>
 
 
             <div class="section">
-                <h4>Payment Details</h4>
-                <p><span class="label">Ad Tile:</span> {{ $details['title'] }}</p>
-                <p><span class="label">Amount:</span> {{ $details['amount'] }}</p>
-                <p><span class="label">Date:</span> {{ date('j F Y', strtotime($details['date'])) }}</p>
+                <h4>Payout Details</h4>
+                <p><span class="label">Item Sold:</span> {{ $details['title'] }}</p>
+                <p><span class="label">Amount Paid:</span> {{ $details['amount'] }}</p>
+                <p><span class="label">Payout Date:</span> {{ date('j F Y', strtotime($details['date'])) }}</p>
             </div>
+
+            <div class="section">
+                <p>The funds have been disbursed to your registered payout method. If you do not receive the payment within 1–2 working days, please contact our support team.</p>
+                <br>
+                <p>Thank you for selling with <b>Marketplace Naija</b>.</p>
+                <br>
+                <p>Best regards,</p>
+                <p><b>The Marketplace Naija Team</b></p>
+            </div>
+
         </div>
+
+
         
         <div class="footer">
-            <p>Thank you for using our platform!</p>
+
             <p>© {{ date('Y') }} {{ config('global.site_name') }}. All rights reserved.</p>
         </div>
     </div>

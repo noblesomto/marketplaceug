@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\GigLogistic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Payment;
 use App\Models\Shipping;
+use Mail;
+use App\Mail\ShipAdMail;
+use App\Mail\DeliverAdMail;
 use Carbon\Carbon;
 
 class ShipperController extends Controller
@@ -45,6 +49,7 @@ class ShipperController extends Controller
             'advert.firstImage',
             'advert.owner',
             'user',
+            'shipping',
             'stateRel.gigLogistics'
         ])->where('ship_code', $id)->first();
 
@@ -63,8 +68,14 @@ class ShipperController extends Controller
 
         //dd($request);
         $ship_code = $request->ship_code;
-        $ship = Payment::where('ship_code', $ship_code)->first();
-
+        $ship = Payment::with([
+            'advert.firstImage',
+            'advert.owner',
+            'user',
+            'shipping',
+            'stateRel.gigLogistics'
+        ])->where('ship_code', $id)->first();
+        //dd($ship);
         if($ship){
              DB::table('payments')
                 ->where('ship_code', $id)
@@ -72,7 +83,31 @@ class ShipperController extends Controller
                     'tracking_id'=> $request->input('tracking_id'),
                     'shipping_status'=> $request->input('shipping_status'),
                     'updated_at' => Carbon::now(),
+                    'shipping_status_date' => Carbon::now(),
                 ]);
+
+            $user = User::where('user_id', $ship->user_id)->first();
+            $city = GigLogistic::where('id', $ship->city)->first();
+            $details = [
+                'advert' => $ship->advert->ad_title,
+                'buyer' => $user->name,
+                'phone' => $user->phone,
+                'shipping' => $ship->shipping->company,
+                'tracking_id' => $request->input('tracking_id'),
+                'shipped_date' => Carbon::now(),
+                'address' => $city->address,
+                'city' => $city->city,
+                'state' => $ship->stateRel->name,
+            ];
+            //dd($details);
+            if($request->input('shipping_status')=="shipped"){
+                //dd("shipped");
+                Mail::to($user->email)->send(new ShipAdMail($details));
+            }else{
+                //dd("delivered");
+                Mail::to($user->email)->send(new DeliverAdMail($details));
+
+            }
 
         return redirect()->back()->with('success', 'Shipping Status Has been Updated');
         }else{

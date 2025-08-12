@@ -5,7 +5,7 @@
       <div class="bg-white mb-1 border-b border-b-gray-300">
          <div class="flex w-full">
               <div class="w-2/6 mr-1 relative">
-                <img class="h-24 md:h-48 object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                <img class=" object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-2 right-2 space-y-2">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
@@ -64,23 +64,27 @@
                 <div class="font-semibold leading-5 md:font-bold text-base md:text-xl mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
 
                 <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
+                @if($row->category==3)
+                    <div class="text-dark_green font-bold text-base my-2">
+                        {{ $row->salary }}
+                    </div>
+                    @elseif($row->category==18)
+                        <div class="text-dark_green font-bold text-base my-2">
+                            {{ $row->expected_salary }}
+                        </div>
+                    @elseif($row->contact_price=="yes")
+                        <div class="text-dark_green font-bold text-base my-2">
+                            Contact For Price
+                        </div>
+                    @else
                 <div class="flex items-center justify-between text-xs mt-1">
                     <div class="flex justify-start text-dark_green font-bold text-base my-2">
                       <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
                       <div>{{ $row->price_type }}</div>
                     </div>
-                    @if($row->buy_direct=="Yes")
-                      <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                          </svg>
-                          <span class="text-xs text-blue-600">Buy Direct</span>
-                      </div>
-                  @endif
-                </div>
 
+                </div>
+                @endif
                 <div class="flex items-center justify-between text-xs my-3 ">
                     @if($row->shipment=="Ship")
                         <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
@@ -94,6 +98,17 @@
                       </span>
                       <span class="font-semibold text-xs">Sold</span>
                   </span>
+                  @else
+                     @if($row->buy_direct=="Yes")
+                          <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                              </svg>
+                              <span class="text-xs text-blue-600">Buy Direct</span>
+                          </div>
+                      @endif
                   @endif
               </div>
               </div>

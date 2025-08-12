@@ -72,6 +72,14 @@
             <!-- Pickup Location Details -->
             <div class="text-base space-y-4">
                 <h4 class="text-xl font-semibold underline">Receiver Pickup Location</h4>
+                <div class="flex items-center space-x-4">
+                        <span><img class="w-8 h-6" src="{{ asset('uploads/shipping/'.$ship->shipping->logo) }}"> </span>
+                        <span>{{ $ship->shipping->company }}</span>
+                  </div>
+                <div class="flex justify-start space-x-4">
+                    <span class="font-semibold">Address:</span>
+                    <span><h5>{{ $city->address }}</h5></span>
+                </div>
                 <div class="flex justify-start space-x-4">
                     <span class="font-semibold">City:</span>
                     <span><h5>{{ $city->city }}</h5></span>

@@ -62,6 +62,11 @@
                 @include('frontend.components.advert.sellers-category')
             </div>
 
+            <div class="bg-white p-2 space-y-2">
+                <h4 class="font-semibold">Brands</h4>
+                <button id="brandsButton" class="text-dark_green">Select Brand</button>
+            </div>
+
 
           </div>
            <div class="col-span-10 md:col-span-7">
@@ -86,6 +91,7 @@
 
 
 @include('frontend.components.advert.modal-locations')
+@include('frontend.components.advert.modal-filter-brands')
 
 
 @include('frontend.layouts.footer')

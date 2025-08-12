@@ -106,6 +106,7 @@ class ManagePayments extends Controller
                 ]);
 
         Mail::to($payment->advert->owner->email)->send(new PayoutMail([
+            'seller'         => $payment->advert->owner->name,
             'title'         => $payment->advert->ad_title,
             'amount'            => $payment->amount,
             'date'           => $payment->settlement_date,
@@ -168,6 +169,7 @@ class ManagePayments extends Controller
 
         if ($transfer->ok() && $transfer['status']) {
             Mail::to($payment->advert->owner->email)->send(new PayoutMail([
+                'seller'         => $payment->advert->owner->name,
                 'title'         => $payment->advert->ad_title,
                 'amount'            => $payment->amount,
                 'date'           => $payment->settlement_date,

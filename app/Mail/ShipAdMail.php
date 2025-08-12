@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PayoutMail extends Mailable
+class ShipAdMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class PayoutMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – You&#39;ve Been Paid for Your Sold Item',
+            subject: 'Marketplace Naija – Your Order Has Been Shipped – Shipping & Tracking Info',
         );
     }
 
@@ -38,7 +38,7 @@ class PayoutMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.payoutMail',
+            view: 'email.shipMail',
         );
     }
 

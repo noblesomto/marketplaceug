@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\FeaturedAdPaginator;
+use App\Mail\ReportMail;
+use Mail;
 
 
 class AdvertController extends Controller
@@ -524,8 +526,12 @@ class AdvertController extends Controller
             if (!$responseData->status) {
                 return back()->with('error', $responseData->error ?? 'Failed to calculate shipping cost');
             }
+            if($ad->price >= 300000){
+                $commission = 0.02 * $ad->price;
+            }else{
+                $commission = 0.03 * $ad->price;
+            }
 
-            $commission = 0.04 * $ad->price;
             $shipping_cost = $responseData->data->GrandTotal ?? 0;
             $grand_total = $ad->price + $shipping_cost + $commission;
 
@@ -572,7 +578,7 @@ public function buy_direct_payment(Request $request, $id)
     public function report_advert(Request $request, $id)
     {
         $data['title'] = 'Report Advert | '.config('global.site_name');
-        $data['ad'] = Advert::with('images')->where('id', $id)->first();
+        $data['ad'] = $advert = Advert::with('images')->where('id', $id)->first();
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
 
@@ -584,18 +590,33 @@ public function buy_direct_payment(Request $request, $id)
         if ($request->isMethod('POST')) {
             $request->validate([
                 'name' => 'required',
+                'subject' => 'required',
                 'message' => 'required',
                 'g-recaptcha-response' => ['required', new ReCaptcha],
             ]);
 
-            $message = Reports::create([
-                'advert_id' => $id,
-                'user_id' => $user_id,
+            $message = Reports::updateOrCreate(
+                [
+                    'advert_id' => $id,
+                    'user_id' => $user_id,
+                ],
+                [
+                    'subject' => $request->subject,
+                    'message' => $request->message,
+                ]
+            );
+            $details = [
+                'advert' => $advert->ad_title,
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'email' => $user->email,
+                'subject' => $request->subject,
                 'message' => $request->message,
-            ]);
+            ];
+
+            Mail::to(config('global.admin_email'))->send(new ReportMail($details));
 
             return redirect()->back()->with('success', 'Your Report Has Been Received, We will Get back to Shortly');
-
         }
     }
 

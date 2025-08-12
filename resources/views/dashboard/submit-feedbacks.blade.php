@@ -54,7 +54,7 @@
                     </script>
 
 
-               <form action="/user/feedbacks/{{ $seller->user_id }}" method="POST"
+               <form action="/reviews/feedbacks/{{ $seller->user_id }}" method="POST"
                   x-data="feedbackForm({
                     rating: {{ $feedback->rating ?? 0 }},
                     satisfaction: {{ $feedback->satisfaction ?? 0 }},

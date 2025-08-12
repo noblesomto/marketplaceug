@@ -21,6 +21,7 @@
                     <li><a href="/our-terms" class="hover:text-secondary-200">Terms of Use</a></li>
                     <li><a href="/contact-us" class="hover:text-secondary-200">Contact Us</a></li>
                     <li><a href="/payments-refunds" class="hover:text-secondary-200">Payment & Refund</a></li>
+                    <li><a href="/how-it-works" class="hover:text-secondary-200">How It Works</a></li>
                     <li><a href="/faq" class="hover:text-secondary-200">FAQ</a></li>
                 </ul>
             </div>
