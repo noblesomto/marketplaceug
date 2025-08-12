@@ -357,7 +357,6 @@ class UserManageAdverts extends Controller
             'description'     => $request->input('description'),
             'keyword'         => $request->input('keyword'),
             'meta_description'=> $request->input('meta_description'),
-            'featured'        => $request->input('featured'),
             'shipment'        => $request->input('shipment'),
             'show_contact'    => $request->input('show_contact'),
             'quantity'        => $request->input('quantity') ?? 1,

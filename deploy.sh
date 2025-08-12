@@ -13,6 +13,11 @@ declare -A FOLDERS=(
   ["./public/build/"]="public_html/build/"
 )
 
+# Extra remote build paths using same local folder
+EXTRA_BUILD_PATHS=(
+  "public_html/marketplace/public/build/"
+)
+
 # Excludes (folders/files to ignore)
 EXCLUDES=(
   ".git/"
@@ -33,23 +38,16 @@ EXCLUDES=(
   "public/ckeditor/"
 )
 
-# Create a dynamic exclude string for lftp and rsync
+# Build exclude string for lftp and rsync
 EXCLUDE_ARGS=""
 for pattern in "${EXCLUDES[@]}"; do
   EXCLUDE_ARGS+=" --exclude-glob $pattern"
 done
 
-# Function to check for changes using rsync
-check_changes() {
-    local LOCAL_DIR=$1
-    CHANGES=$(rsync -av --dry-run $LOCAL_DIR /tmp/deploy_check $RSYNC_EXCLUDES | grep -v '/$' | wc -l)
-    echo $CHANGES
-}
-
 # Build RSYNC_EXCLUDES for rsync
 RSYNC_EXCLUDES=""
 for pattern in "${EXCLUDES[@]}"; do
-    RSYNC_EXCLUDES+=" --exclude=$pattern"
+  RSYNC_EXCLUDES+=" --exclude=$pattern"
 done
 
 # Function to upload folder if changes exist
@@ -57,11 +55,24 @@ upload_if_changed() {
     local LOCAL_DIR=$1
     local REMOTE_DIR=$2
     local NAME=$3
+    local CLEAR_FIRST=$4
 
     CHANGED=$(rsync -av --dry-run $RSYNC_EXCLUDES "$LOCAL_DIR" "/tmp/deploy_check" | grep -v '/$' | wc -l)
 
     if [ "$CHANGED" -gt 0 ]; then
-        echo "🔄 Changes detected in $NAME ($CHANGED files). Uploading..."
+        echo "🔄 Changes detected in $NAME ($CHANGED files)."
+
+        if [[ "$CLEAR_FIRST" == "yes" ]]; then
+            echo "🧹 Clearing remote $NAME folder before upload..."
+            lftp -e "
+            set ssl:verify-certificate no;
+            open -u $USER,$PASS $HOST;
+            rm -r $REMOTE_DIR/*
+            bye
+            "
+        fi
+
+        echo "📤 Uploading $NAME..."
         lftp -e "
         set ssl:verify-certificate no;
         open -u $USER,$PASS $HOST;
@@ -77,9 +88,19 @@ upload_if_changed() {
     fi
 }
 
-# Main loop through all folders
+# Upload all mapped folders
 for LOCAL_DIR in "${!FOLDERS[@]}"; do
   REMOTE_DIR=${FOLDERS[$LOCAL_DIR]}
   NAME=$(basename "$REMOTE_DIR")
-  upload_if_changed "$LOCAL_DIR" "$REMOTE_DIR" "$NAME"
+
+  if [[ "$LOCAL_DIR" == "./public/build/" ]]; then
+      upload_if_changed "$LOCAL_DIR" "$REMOTE_DIR" "$NAME" "yes"
+
+      # Also upload to extra build paths
+      for EXTRA_PATH in "${EXTRA_BUILD_PATHS[@]}"; do
+          upload_if_changed "$LOCAL_DIR" "$EXTRA_PATH" "build (extra)" "yes"
+      done
+  else
+      upload_if_changed "$LOCAL_DIR" "$REMOTE_DIR" "$NAME" "no"
+  fi
 done

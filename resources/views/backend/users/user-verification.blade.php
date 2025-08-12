@@ -48,7 +48,7 @@
                 <td>{{ $row->user->acc_type }}</td>
                 <td>{{ $row->user->email }} </td>
                 <td>
-                  <span class="badge
+                  <span class="badge text-capitalize
                     {{ $row->user->verified === 'yes' ? 'bg-success text-white' : 'bg-secondary text-white' }}">
                     {{ $row->user->verified }}
                 </span>

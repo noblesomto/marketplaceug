@@ -41,7 +41,10 @@
                         <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                             <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
                         </a>
-                        <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
+                        <div class="text-sm mt-2 hidden lg:block text-gray-600">
+                            {!! Str::limit(strip_tags($row->description), 80) !!}
+
+                        </div>
                         @if($row->category==3)
                         <div class="text-dark_green font-bold text-base my-2">
                             {{ $row->salary }}

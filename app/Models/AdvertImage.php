@@ -19,6 +19,7 @@ class AdvertImage extends Model
         return $this->belongsTo(Advert::class);
     }
 
+/**
     public function getImageAttribute($value)
     {
         $fullPath = public_path('uploads/images/' . $value);
@@ -38,7 +39,7 @@ class AdvertImage extends Model
         // Fallback to default image
         return 'default.png';
     }
-
+**/
 
     
 }

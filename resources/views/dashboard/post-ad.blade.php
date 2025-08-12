@@ -126,8 +126,9 @@
                 @endif
             <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                 <option value="">Please Choose</option>
-                <option value="Used">Used</option>
                 <option value="New">New</option>
+                <option value="Foreign Used">Foreign Used</option>
+                <option value="Locally Used">Locally Used</option>
             </select>
             </div>
        </div>
@@ -254,16 +255,56 @@
                     @if ($errors->has('exterior_color'))
                         <span class="text-red-400">{{ $errors->first('exterior_color') }}</span>
                     @endif
-                <select id="Phonecolor" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <select id="Carcolor" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Choose Color</option>
-                    <option value="black">Black</option>
-                      <option value="white">White</option>
-                      <option value="gray">Gray</option>
-                      <option value="silver">Silver</option>
-                      <option value="blue">Blue</option>
-                      <option value="red">Red</option>
-                      <option value="gold">Gold</option>
-                      <option value="green">Green</option>
+                    @php
+                        $carColors = [
+                            // Basic colors
+                            'Black' => 'Black',
+                            'White' => 'White',
+                            'Gray' => 'Gray',
+                            'Silver' => 'Silver',
+                            'Blue' => 'Blue',
+                            'Red' => 'Red',
+                            'Gold' => 'Gold',
+                            'Green' => 'Green',
+
+                            // Common extras
+                            'Beige' => 'Beige',
+                            'Brown' => 'Brown',
+                            'Yellow' => 'Yellow',
+                            'Orange' => 'Orange',
+                            'Purple' => 'Purple',
+                            'Maroon' => 'Maroon',
+                            'Burgundy' => 'Burgundy',
+                            'Bronze' => 'Bronze',
+                            'Champagne' => 'Champagne',
+
+                            // Premium & luxury shades
+                            'Pearl White' => 'Pearl White',
+                            'Gunmetal' => 'Gunmetal Gray',
+                            'Midnight Blue' => 'Midnight Blue',
+                            'Navy Blue' => 'Navy Blue',
+                            'Olive Green' => 'Olive Green',
+                            'Charcoal' => 'Charcoal',
+                            'Matte Black' => 'Matte Black',
+
+                            // Special finishes
+                            'Two Tone' => 'Two-Tone',
+                            'Gradient' => 'Gradient',
+                            'Chameleon' => 'Chameleon',
+                            'Custom Wrap' => 'Custom Wrap',
+                            'Chrome' => 'Chrome',
+                            'Camo' => 'Camouflage',
+                            'Others' => 'Others',
+                        ];
+                    @endphp
+
+                    @foreach($carColors as $value => $label)
+                        <option value="{{ $value }}">
+                            {{ $label }}
+                        </option>
+                    @endforeach
                 </select>
                 </div>
            </div>
@@ -432,15 +473,46 @@
                     @endif
                 <select id="Phonecolor" name="phone_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Choose Color</option>
-                    <option value="black">Black</option>
-                      <option value="white">White</option>
-                      <option value="gray">Gray</option>
-                      <option value="silver">Silver</option>
-                      <option value="blue">Blue</option>
-                      <option value="red">Red</option>
-                      <option value="gold">Gold</option>
-                      <option value="green">Green</option>
+
+                    <!-- Basic colors -->
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Gray">Gray</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+
+                    <!-- Standard vibrant colors -->
+                    <option value="Blue">Blue</option>
+                    <option value="Red">Red</option>
+                    <option value="Green">Green</option>
+                    <option value="Yellow">Yellow</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Pink">Pink</option>
+
+                    <!-- Premium shades -->
+                    <option value="Rose Gold">Rose Gold</option>
+                    <option value="Bronze">Bronze</option>
+                    <option value="Copper">Copper</option>
+                    <option value="Midnight">Midnight</option>
+                    <option value="Space Gray">Space Gray</option>
+                    <option value="Midnight Green">Midnight Green</option>
+
+                    <!-- Trendy / unique finishes -->
+                    <option value="Lavender">Lavender</option>
+                    <option value="Aqua">Aqua</option>
+                    <option value="Teal">Teal</option>
+                    <option value="Turquoise">Turquoise</option>
+                    <option value="Coral">Coral</option>
+                    <option value="Champagne">Champagne</option>
+                    <option value="Graphite">Graphite</option>
+                    <option value="Starlight">Starlight</option>
+                    <option value="Twilight">Twilight</option>
+                    <option value="Gradient">Gradient</option>
+                    <option value="Transparent">Transparent</option>
+                    <option value="Others">Others</option>
                 </select>
+
                 </div>
            </div>
 
@@ -471,11 +543,12 @@
                     @endif
                 <select id="pr" name="phone_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value="New">New <span class="text-xs" > (Unused item with or without original packaging)</span>  </option>
-                    <option value="Very Good">Very Good (Well-maintained item with barely visible signs of wear  )</option>
-                    <option value="Good">Good (Used item with visible signs of wear )</option>
-                    <option value="In Order">In Order (Used item with clearly visible signs of wear, but still usable)</option>
-                    <option value="Defect">Defect (Defective item suitable for repair or spare parts)</option>
+                    <option value="New - Unboxed">New<span class="text-xs" > (New and Unboxed)</span>  </option>
+                    <option value="New - No Packaging">Used<span class="text-xs" > (Unused item with or without original packaging)</span>  </option>
+                    <option value="Used - Very Good">Very Good (Well-maintained item with barely visible signs of wear  )</option>
+                    <option value="Used - Good">Good (Used item with visible signs of wear )</option>
+                    <option value="Used - In Order">In Order (Used item with clearly visible signs of wear, but still usable)</option>
+                    <option value="Used - Defect">Defect (Defective item suitable for repair or spare parts)</option>
                 </select>
                 </div>
              

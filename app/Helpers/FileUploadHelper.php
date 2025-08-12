@@ -20,6 +20,7 @@ class FileUploadHelper
     {
         $uploadPath = self::getUploadPath($folder);
         $quality = 65; // WebP quality
+        $maxFileSize = 100 * 1024; // 100 KB in bytes
 
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
@@ -35,6 +36,12 @@ class FileUploadHelper
 
         // Only process if it's an image
         if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])) {
+
+            // If already below size threshold, just move without compression
+            if ($file->getSize() <= $maxFileSize) {
+                $file->move($uploadPath, $filename);
+                return $filename;
+            }
 
             // Create ImageManager instance (GD driver)
             $manager = new ImageManager(new Driver());

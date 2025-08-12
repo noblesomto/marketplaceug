@@ -200,7 +200,7 @@
         <div class="grid grid-cols-6 md:gap-20">
           <div class="col-span-6 md:col-span-3">
             <div class="flex justify-between items-center mb-1">
-              <div class="md:font-bold">brand</div>
+              <div class="md:font-bold">Brand</div>
               <div>{{ $brand->brand }} @isset($model->model) {{ $model->model }} @endisset</div>
             </div>
             <div class="flex justify-between items-center mb-1">

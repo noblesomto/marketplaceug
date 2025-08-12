@@ -46,7 +46,7 @@
                 <td>{{ $row->email }} </td>
                 <td>{{ $row->phone }} </td>
                 <td>
-                  <span class="badge
+                  <span class="badge text-capitalize
                     {{ $row->verified === 'yes' ? 'bg-success text-white' : 'bg-secondary text-white' }}">
                     {{ $row->verified }}
                 </span>

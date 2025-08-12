@@ -143,8 +143,9 @@
             @endif
             <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                 <option value="">Please Choose</option>
-                <option value="Used" {{ $advert->item_condition == 'Used' ? 'selected' : '' }}>Used</option>
                 <option value="New" {{ $advert->item_condition == 'New' ? 'selected' : '' }}>New</option>
+                <option value="Foreign Used" {{ $advert->item_condition == 'Foreign Used' ? 'selected' : '' }}>Foreign Used</option>
+                <option value="Locally Used" {{ $advert->item_condition == 'Locally Used' ? 'selected' : '' }}>Locally Used</option>
             </select>
         </div>
     </div>
@@ -294,20 +295,51 @@
                 <select id="exterior_color" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Choose Color</option>
                     @php
-                        $colors = [
-                            'black' => 'Black',
-                            'white' => 'White',
-                            'gray' => 'Gray',
-                            'silver' => 'Silver',
-                            'blue' => 'Blue',
-                            'red' => 'Red',
-                            'gold' => 'Gold',
-                            'green' => 'Green'
+                        $carColors = [
+                            // Basic colors
+                            'Black' => 'Black',
+                            'White' => 'White',
+                            'Gray' => 'Gray',
+                            'Silver' => 'Silver',
+                            'Blue' => 'Blue',
+                            'Red' => 'Red',
+                            'Gold' => 'Gold',
+                            'Green' => 'Green',
+
+                            // Common extras
+                            'Beige' => 'Beige',
+                            'Brown' => 'Brown',
+                            'Yellow' => 'Yellow',
+                            'Orange' => 'Orange',
+                            'Purple' => 'Purple',
+                            'Maroon' => 'Maroon',
+                            'Burgundy' => 'Burgundy',
+                            'Bronze' => 'Bronze',
+                            'Champagne' => 'Champagne',
+
+                            // Premium & luxury shades
+                            'Pearl White' => 'Pearl White',
+                            'Gunmetal' => 'Gunmetal Gray',
+                            'Midnight Blue' => 'Midnight Blue',
+                            'Navy Blue' => 'Navy Blue',
+                            'Olive Green' => 'Olive Green',
+                            'Charcoal' => 'Charcoal',
+                            'Matte Black' => 'Matte Black',
+
+                            // Special finishes
+                            'Two Tone' => 'Two-Tone',
+                            'Gradient' => 'Gradient',
+                            'Chameleon' => 'Chameleon',
+                            'Custom Wrap' => 'Custom Wrap',
+                            'Chrome' => 'Chrome',
+                            'Camo' => 'Camouflage',
+                            'Others' => 'Others',
                         ];
                     @endphp
-                    
-                    @foreach($colors as $value => $label)
-                        <option value="{{ $value }}" {{ $advert->car->exterior_color == $value ? 'selected' : '' }}>
+
+                    @foreach($carColors as $value => $label)
+                        <option value="{{ $value }}"
+                                {{ optional($advert->car)->exterior_color === $value ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -552,20 +584,49 @@
                     <option value="">Choose Color</option>
                     @php
                         $phoneColors = [
-                            'black' => 'Black',
-                            'white' => 'White',
-                            'gray' => 'Gray',
-                            'silver' => 'Silver',
-                            'blue' => 'Blue',
-                            'red' => 'Red',
-                            'gold' => 'Gold',
-                            'green' => 'Green'
+                            // Basic colors
+                            'Black' => 'Black',
+                            'White' => 'White',
+                            'Gray' => 'Gray',
+                            'Silver' => 'Silver',
+                            'Gold' => 'Gold',
+
+                            // Standard vibrant colors
+                            'Blue' => 'Blue',
+                            'Red' => 'Red',
+                            'Green' => 'Green',
+                            'Yellow' => 'Yellow',
+                            'Orange' => 'Orange',
+                            'Purple' => 'Purple',
+                            'Pink' => 'Pink',
+
+                            // Premium shades
+                            'Rose Gold' => 'Rose Gold',
+                            'Bronze' => 'Bronze',
+                            'Copper' => 'Copper',
+                            'Midnight' => 'Midnight',
+                            'Space Gray' => 'Space Gray',
+                            'Midnight Green' => 'Midnight Green',
+
+                            // Trendy / unique finishes
+                            'Lavender' => 'Lavender',
+                            'Aqua' => 'Aqua',
+                            'Teal' => 'Teal',
+                            'Turquoise' => 'Turquoise',
+                            'Coral' => 'Coral',
+                            'Champagne' => 'Champagne',
+                            'Graphite' => 'Graphite',
+                            'Starlight' => 'Starlight',
+                            'Twilight' => 'Twilight',
+                            'Gradient' => 'Gradient',
+                            'Transparent' => 'Transparent',
+                            'Others' => 'Others',
                         ];
                     @endphp
-                    
+
                     @foreach($phoneColors as $value => $label)
-                        <option value="{{ $value }}" 
-                                {{ $advert->phone->color == $value ? 'selected' : '' }}>
+                        <option value="{{ $value }}"
+                                {{ optional($advert->phone)->color === $value ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -613,18 +674,19 @@
                     <option value="">Please Choose</option>
                     @php
                         $phoneConditions = [
-                            'New' => 'New <span class="text-xs">(Unused item with or without original packaging)</span>',
-                            'Very Good' => 'Very Good (Well-maintained item with barely visible signs of wear)',
-                            'Good' => 'Good (Used item with visible signs of wear)',
-                            'In Order' => 'In Order (Used item with clearly visible signs of wear, but still usable)',
-                            'Defect' => 'Defect (Defective item suitable for repair or spare parts)'
+                            'New - Unboxed' => 'New <span class="text-xs">(New and Unboxed)</span>',
+                            'New - No Packaging' => 'Used <span class="text-xs">(Unused item with or without original packaging)</span>',
+                            'Used - Very Good' => 'Very Good (Well-maintained item with barely visible signs of wear)',
+                            'Used - Good' => 'Good (Used item with visible signs of wear)',
+                            'Used - In Order' => 'In Order (Used item with clearly visible signs of wear, but still usable)',
+                            'Used -Defect' => 'Defect (Defective item suitable for repair or spare parts)'
                         ];
                     @endphp
                     
                     @foreach($phoneConditions as $value => $label)
                         <option value="{{ $value }}" 
                                 {{ $advert->phone->condition == $value ? 'selected' : '' }}
-                                {!! $value !== 'New' ? 'data-description="'.htmlspecialchars($label).'"' : '' !!}>
+                                {!! $value !== 'New - Unboxed' ? 'data-description="'.htmlspecialchars($label).'"' : '' !!}>
                             {!! $label !!}
                         </option>
                     @endforeach
