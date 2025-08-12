@@ -2,6 +2,42 @@
 @include('dashboard.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('dashboard.layouts.search')
+<style>
+
+    /* Hide the entire toolbar */
+trix-toolbar {
+    display: none !important;
+}
+    /* Hide file attachment button */
+trix-toolbar [data-trix-button-group="file-tools"] {
+    display: none !important;
+}
+
+/* Hide specific formatting buttons
+trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="bold"] {
+    display: none !important;
+}
+*/
+/* Hide specific formatting buttons */
+trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="italic"] {
+    display: none !important;
+}
+
+/* Hide link button */
+trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="href"] {
+    display: none !important;
+}
+
+/* Hide code button */
+trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="code"] {
+    display: none !important;
+}
+
+/* Hide entire groups */
+trix-toolbar [data-trix-button-group="history-tools"] {
+    display: none !important;
+}
+</style>
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
@@ -685,7 +721,7 @@
                 <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
                 <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
                 <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
-
+                <option value="Above ₦500,000">Above ₦500,000</option>
             </select>
             </div>
             <div class="col-span-10 md:col-span-3">
@@ -718,7 +754,7 @@
                 <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
                 <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
                 <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
-
+                <option value="Above ₦500,000">Above ₦500,000</option>
             </select>
             </div>
             <div class="col-span-10 md:col-span-3">
@@ -798,7 +834,7 @@
                     <span class="text-red-400">{{ $errors->first('description') }}</span>
                 @endif
                 <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                <trix-editor input="content"></trix-editor>
+                <trix-editor input="content" ></trix-editor>
                 
             </div>
        </div>

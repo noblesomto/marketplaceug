@@ -63,11 +63,12 @@ upload_if_changed() {
         echo "🔄 Changes detected in $NAME ($CHANGED files)."
 
         if [[ "$CLEAR_FIRST" == "yes" ]]; then
-            echo "🧹 Clearing remote $NAME folder before upload..."
+            echo "🧹 Clearing remote $NAME folder before upload (preserving .htaccess)..."
             lftp -e "
             set ssl:verify-certificate no;
             open -u $USER,$PASS $HOST;
-            rm -r $REMOTE_DIR/*
+            cd $REMOTE_DIR;
+            mrm -r [!.]*;   # Remove all non-hidden files/folders
             bye
             "
         fi
@@ -94,6 +95,7 @@ for LOCAL_DIR in "${!FOLDERS[@]}"; do
   NAME=$(basename "$REMOTE_DIR")
 
   if [[ "$LOCAL_DIR" == "./public/build/" ]]; then
+      # Main build folder
       upload_if_changed "$LOCAL_DIR" "$REMOTE_DIR" "$NAME" "yes"
 
       # Also upload to extra build paths

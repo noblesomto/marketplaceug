@@ -8,12 +8,12 @@
     @if (!$adverts->isEmpty())
         @foreach ($adverts as $row)
         <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
-          <div class="bg-white mb-1 border-b border-b-gray-300">
+          <div class="bg-white my-2 py-1 border-b border-b-gray-300">
              <div class="flex w-full">
                   <div class="w-1/4 mr-1 relative bg-gray-100">
                     <img class="w-full h-32 sm:h-40 object-contain rounded" 
                          src="{{ asset('uploads/images/'.$row->firstImage->image) }}" 
-                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}'"
                          alt="{{ $row->ad_title }}">
                         @if($row->images->count() > 0)
                         <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
@@ -73,8 +73,21 @@
                       </div>
                     </div>
                     <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
-                    <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
-                    <div class="flex items-center justify-between text-xs mt-1">
+                    <div class="text-sm my-2 hidden lg:block">{!! Str::limit(strip_tags($row->description), 80) !!}</div>
+                    @if($row->category==3)
+                    <span class="text-base font-bold text-dark_green mt-4">
+                        {{ $row->salary }}
+                    </span>
+                    @elseif($row->category==18)
+                        <span class="text-base font-bold text-dark_green mt-4">
+                            {{ $row->expected_salary }}
+                        </span>
+                    @elseif($row->contact_price=="yes")
+                        <span class="text-base font-bold text-dark_green mt-4">
+                            Contact For Price
+                        </span>
+                    @else
+                    <div class="flex items-center justify-between  mt-1">
                         <div class="flex justify-start text-dark_green font-bold text-base my-2">
                           <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
                           <div>{{ $row->price_type }}</div>
@@ -90,6 +103,7 @@
                           </div>
                       @endif
                     </div>
+                    @endif
                     <div class="flex items-center justify-between text-xs my-3">
                         @if($row->shipment=="Ship")
                             <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
@@ -123,7 +137,7 @@
             </div>
         @endif
         @if($advertsCount > 6)
-            <span class="my-2">
+            <span class="mb-4 mt-10 w-full flex justify-end">
                 <a class="text-dark_green font-semibold" href="/seller/{{ $ad->owner->user_id }}">View All Ads More from Seller ({{ $advertsCount }} Ads)</a>
             </span>
         @endif
@@ -145,7 +159,7 @@
                   <div class="w-1/4 mr-1 relative bg-gray-100">
                     <img class="w-full h-32 sm:h-40 object-contain rounded" 
                          src="{{ asset('uploads/images/'.$row->firstImage->image) }}" 
-                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}'"
                          alt="{{ $row->ad_title }}">
                             @if($row->images->count() > 0)
                             <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">

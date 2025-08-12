@@ -1,11 +1,11 @@
-<div class="pb-20">
+<section class="pb-20 space-y-2">
 
 @forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
-      <div class="bg-white mb-1 border-b border-b-gray-300">
-         <div class="flex w-full">
-              <div class="w-2/6 mr-1 relative">
-                <img class=" object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+      <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[140px] sm:h-[160px] md:h-[180px]">
+         <div class="flex w-full h-full">
+              <div class="w-2/6 mr-1 relative h-full">
+                <img class="w-full h-full object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-2 right-2 space-y-2">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
@@ -31,17 +31,16 @@
                 </div>
                 <div class="absolute top-0 left-2">
                     @if ($row->featured == 'Yes')
-                        <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left">
+                        <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left text-xs">
                             Promoted
                         </div>
                     @endif
                 </div>
                 <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
               </div>
-              <div class="w-4/6 relative">
+              <div class="w-4/6 relative h-full overflow-hidden">
                 <div class="flex justify-between text-xs">
                   <div class="flex justify-start items-center text-sm md:mr-5">
-
                     <div class="flex gap-2">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -52,7 +51,6 @@
                       <span class="text-xs">{{ $row->state }}</span>
                     </div>
                     </div>
-
                   <div>
                     <div class="flex justify-start mr-5 text-xs md:mt-2">
                       <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -61,46 +59,45 @@
                     </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
                   </div>
                 </div>
-                <div class="font-semibold leading-5 md:font-bold text-base md:text-xl mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
+                <div class="font-semibold leading-5 md:font-bold text-sm md:text-base mt-1 line-clamp-2"> {{ Str::limit($row->ad_title, 50) }}</div>
 
-                <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
+                <div class="text-xs mt-1 hidden lg:block line-clamp-2">{!! Str::limit(strip_tags($row->description), 80) !!}</div>
                 @if($row->category==3)
-                    <div class="text-dark_green font-bold text-base my-2">
+                    <div class="text-dark_green font-bold text-sm my-1">
                         {{ $row->salary }}
                     </div>
                     @elseif($row->category==18)
-                        <div class="text-dark_green font-bold text-base my-2">
+                        <div class="text-dark_green font-bold text-sm my-1">
                             {{ $row->expected_salary }}
                         </div>
                     @elseif($row->contact_price=="yes")
-                        <div class="text-dark_green font-bold text-base my-2">
+                        <div class="text-dark_green font-bold text-sm my-1">
                             Contact For Price
                         </div>
                     @else
                 <div class="flex items-center justify-between text-xs mt-1">
-                    <div class="flex justify-start text-dark_green font-bold text-base my-2">
-                      <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
+                    <div class="flex justify-start text-dark_green font-bold text-sm my-1">
+                      <div class="mr-2">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
                       <div>{{ $row->price_type }}</div>
                     </div>
-
                 </div>
                 @endif
-                <div class="flex items-center justify-between text-xs my-3 ">
+                <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
                     @if($row->shipment=="Ship")
-                        <span class="bg-gray-100 p-1 mr-2">Shipping Possible</span>
+                        <span class="bg-gray-100 p-1 mr-2 text-xs">Shipping Possible</span>
                     @endif
                   @if($row->sold=="Yes")
-                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-2 lg:mr-4" title="This advert is already sold" >
+                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-2 lg:mr-4 text-xs" title="This advert is already sold" >
                       <span>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
                       </span>
-                      <span class="font-semibold text-xs">Sold</span>
+                      <span class="font-semibold">Sold</span>
                   </span>
                   @else
                      @if($row->buy_direct=="Yes")
-                          <div class="flex items-center mt-2 bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                          <div class="flex items-center bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                   stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
                                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -128,4 +125,4 @@
   {{ $ads->links('pagination::tailwind') }}
 </div>
 
-</div>
+</section>

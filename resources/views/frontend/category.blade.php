@@ -4,17 +4,17 @@
 @include('frontend.layouts.search')
 
 
-<section class="w-full md:w-5/6 mx-auto mt-3">
+<section class="w-full xl:w-5/6 mx-auto mt-3">
   <div class="grid grid-cols-10 gap-3">
-      <div class="col-span-2 hidden sm:block">
+      <div class="col-span-2 hidden lg:block">
         @include('frontend.components.advert.side-advert')
       </div>
-      <div class="col-span-10 md:col-span-6">
+      <div class="col-span-10 lg:col-span-6">
         <div class="grid grid-cols-10 gap-3">
-           <div class="col-span-3 hidden sm:block space-y-4">
+           <div class="col-span-3 hidden lg:block space-y-4">
               <div><h4 class="font-semibold">Categories</h4></div>
 
-              <div class=" bg-white p-2 space-y-2">
+              <div class="bg-white p-2 space-y-2">
                     <div class="mt-4">
                       <a class="text-xs" href="{{ url('/all-categories') }}">All Categories</a>
                   </div>
@@ -56,21 +56,18 @@
                 @include('frontend.components.advert.price-filter')
               </div>
 
-
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Verified Sellers </h4>
+              <div class="bg-white p-2 space-y-2">
+                <h4 class="font-semibold">Verified Sellers</h4>
                 @include('frontend.components.advert.sellers-category')
-            </div>
+              </div>
 
-            <div class="bg-white p-2 space-y-2">
+              <div class="bg-white p-2 space-y-2">
                 <h4 class="font-semibold">Brands</h4>
                 <button id="brandsButton" class="text-dark_green">Select Brand</button>
-            </div>
-
-
+              </div>
           </div>
-           <div class="col-span-10 md:col-span-7">
-              <div class=" my-5 hidden lg:block">
+           <div class="col-span-10 lg:col-span-7">
+              <div class="my-5 hidden md:block">
                  @include('frontend.components.advert.banner-advert')
               </div>
               <div class="block lg:hidden">
@@ -79,21 +76,16 @@
             <div id="advert-results">
                 @include('frontend.components.advert.advert-list', ['ads' => $ads])
             </div>
-
            </div>
         </div>
       </div>
-      <div class="col-span-2 hidden sm:block">
+      <div class="col-span-2 hidden lg:block">
         @include('frontend.components.advert.side-advert')
       </div>
   </div>
 </section>
 
-
 @include('frontend.components.advert.modal-locations')
 @include('frontend.components.advert.modal-filter-brands')
 
-
 @include('frontend.layouts.footer')
-
-

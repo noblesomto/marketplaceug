@@ -154,8 +154,7 @@
         <div class="content">
             <div class="section">
                 <h2>Hello {{ $details['seller'] }},</h2>
-                <p>Thank you for your purchase on Marketplace Naija. Below are the details of your order:</p>
-                <p>A user has made payment for your advertisement</p>
+                <p>Great news — a buyer has successfully made payment for your item on <b>Marketplace Naija</b>. Please find the order and shipping details below.</p>
             </div>
 
             <div class="section">

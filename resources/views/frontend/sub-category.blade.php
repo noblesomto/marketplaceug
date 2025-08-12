@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 
-<section class="w-full lg:w-5/6 mx-auto mt-3">
+<section class="w-full xl:w-5/6 mx-auto mt-3">
   <div class="grid grid-cols-10 gap-3">
       <div class="col-span-2 hidden lg:block">
         @include('frontend.components.advert.side-advert')
