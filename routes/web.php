@@ -194,7 +194,8 @@ Route::any('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, '
 //Manage Payments
 Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payments'])->middleware('adminsession');
 Route::any('/admin/pending-payments', [ManagePayments::class, 'pending_payments'])->middleware('adminsession');
-Route::any('/admin/confirm-delivery/{id}', [ManagePayments::class, 'confirm_delivery'])->middleware('adminsession');
+Route::any('/admin/update-payment/{id}', [ManagePayments::class, 'update_payment'])->middleware('adminsession');
+Route::any('/admin/confirm-payment/{id}', [ManagePayments::class, 'confirm_payment'])->middleware('adminsession');
 
 //Manage Settlements
 Route::any('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements'])->middleware('adminsession');
@@ -205,6 +206,7 @@ Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('
 //Advertising
 Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
 Route::any('/admin/delete-advert/{id}', [ManageAdvertising::class, 'delete_advert'])->middleware('adminsession');
+Route::put('/admin/update-advert/{id}', [ManageAdvertising::class, 'updateAdvert'])->name('admin.update.advert');
 
 //Manage Advert Boost
 Route::any('/boost/active', [ManageBoost::class, 'active'])->middleware('adminsession');
@@ -219,13 +221,13 @@ Route::any('/admin/report-status/{id}/{status}', [AdminController::class, 'repor
 
 //Shhipping
 Route::any('/settings/setup-shipping', [SettingController::class, 'shipping'])->middleware('adminsession');
+Route::put('/settings/update-shipping/{id}', [SettingController::class, 'shipping'])->middleware('adminsession');
 
 //Shipper Dashboard
 Route::get('/shipper/index', [ShipperController::class, 'index'])->middleware('shipsession');
 Route::any('/shipper/get-shipping', [ShipperController::class, 'get_shipping'])->middleware('shipsession');
 Route::get('/shipper/order-details/{id}', [ShipperController::class, 'order_details'])->middleware('shipsession');
 Route::any('/shipper/update-shipping/{id}', [ShipperController::class, 'update_shipping'])->middleware('shipsession');
-
 
 //GIG Logistics
 Route::any('/settings/gig-locations', [SettingController::class, 'gig_locations'])->middleware('adminsession');

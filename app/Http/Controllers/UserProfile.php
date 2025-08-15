@@ -23,8 +23,9 @@ class UserProfile extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
+        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
 
-        return view('dashboard.settings.profile', compact('title','user','count_ads'));
+        return view('dashboard.settings.profile', compact('title','user','count_ads','ads'));
 
     }
 

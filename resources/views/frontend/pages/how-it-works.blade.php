@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-      <img src="https://placehold.co/800x400" alt="marketplace" class="w-full h-full object-cover" />
+      <img src="{{ asset('frontend/images/how/1.png') }}" alt="marketplace" class="w-full h-full object-cover" />
     </div>
   </section>
 
@@ -29,7 +29,7 @@
     <div class="grid md:grid-cols-3 gap-8">
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Create listing" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/2.png') }}" alt="Create listing" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">1</div>
@@ -40,24 +40,24 @@
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Connect with buyers" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/3.png') }}" alt="Connect with buyers" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">2</div>
-          <h4 class="text-lg font-semibold text-gray-800">Connect & agree</h4>
+          <h4 class="text-lg font-semibold text-gray-800">Sell it, ship it</h4>
         </div>
-        <p class="text-sm text-gray-600">Buyers can message sellers to ask questions or negotiate. Once you agree, the buyer pays through our secure checkout.</p>
+        <p class="text-sm text-gray-600">Sold! Box and label your item, take the 10-digit shipping code, and go-to your nearest drop-off point within 3 days.</p>
       </article>
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Ship items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/4.png') }}" alt="Ship items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">3</div>
-          <h4 class="text-lg font-semibold text-gray-800">Ship & confirm</h4>
+          <h4 class="text-lg font-semibold text-gray-800">It’s payday!</h4>
         </div>
-        <p class="text-sm text-gray-600">Use our recommended shipping partners or your own method. Payment is released to you when the buyer confirms delivery.</p>
+        <p class="text-sm text-gray-600">There are zero selling fees, so what you earn is yours to keep. Payment is released to you when the buyer confirms delivery</p>
       </article>
     </div>
   </section>
@@ -112,7 +112,7 @@
     <div class="grid md:grid-cols-3 gap-8">
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Find items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/5.png') }}" alt="Find items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">1</div>
@@ -123,7 +123,7 @@
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Purchase items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/5.png') }}" alt="Purchase items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">2</div>
@@ -134,7 +134,7 @@
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="https://placehold.co/600x400" alt="Receive items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/6.png') }}" alt="Receive items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">3</div>

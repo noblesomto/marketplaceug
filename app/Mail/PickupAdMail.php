@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class DeliverAdMail extends Mailable
+class PickupAdMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class DeliverAdMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – Your Order has been Delivered!',
+            subject: 'Marketplace Naija – Your Order Is Ready For Pickup!',
         );
     }
 
@@ -38,7 +38,7 @@ class DeliverAdMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.deliverMail',
+            view: 'email.pickupMail',
         );
     }
 

@@ -202,6 +202,26 @@
                 <span>Active since {{ date('j F Y', strtotime($ad->owner->created_at)) }}</span>
             </div>
 
+            <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-1">
+                <span class="mr-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </span>
+                <span>Last Seen:
+                    @php
+                        $lastSeen = \Carbon\Carbon::parse($ad->owner->last_login_at);
+                        if ($lastSeen->isToday()) {
+                            echo 'Today at ' . $lastSeen->format('g:i A');
+                        } elseif ($lastSeen->isYesterday()) {
+                            echo 'Yesterday at ' . $lastSeen->format('g:i A');
+                        } else {
+                            echo $lastSeen->diffForHumans();
+                        }
+                    @endphp
+                    </span>
+            </div>
+
             <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-2">
                 <span class="mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">

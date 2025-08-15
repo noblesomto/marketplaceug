@@ -10,7 +10,9 @@ use App\Models\Payment;
 use App\Models\Shipping;
 use Mail;
 use App\Mail\ShipAdMail;
+use App\Mail\PickupAdMail;
 use App\Mail\DeliverAdMail;
+use App\Mail\CancelAdMail;
 use Carbon\Carbon;
 
 class ShipperController extends Controller
@@ -99,14 +101,16 @@ class ShipperController extends Controller
                 'city' => $city->city,
                 'state' => $ship->stateRel->name,
             ];
-            //dd($details);
+
             if($request->input('shipping_status')=="shipped"){
                 //dd("shipped");
                 Mail::to($user->email)->send(new ShipAdMail($details));
-            }else{
-                //dd("delivered");
+            }elseif($request->input('shipping_status')=="pickup"){
+                Mail::to($user->email)->send(new PickupAdMail($details));
+            }elseif($request->input('shipping_status')=="delivered"){
                 Mail::to($user->email)->send(new DeliverAdMail($details));
-
+            }else{
+                Mail::to($user->email)->send(new CancelAdMail($details));
             }
 
         return redirect()->back()->with('success', 'Shipping Status Has been Updated');

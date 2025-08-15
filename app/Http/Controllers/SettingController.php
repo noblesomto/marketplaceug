@@ -72,8 +72,6 @@ class SettingController extends Controller
 
             ]);
 
-
-
                 GigLogistic::create([
                     'state_id'=> $request->input('state'),
                     'city'=> $request->input('city'),

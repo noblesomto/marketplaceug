@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     public function adverts()
     {
-        return $this->hasMany(Advert::class, 'user_id', 'user_id'); // Linking custom user_id
+        return $this->hasMany(Advert::class, 'user_id', 'user_id');
     }
 
     public function verification()

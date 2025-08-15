@@ -9,6 +9,7 @@ use App\Models\UserVerification;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Advert;
+use App\Models\Payment;
 
 class ManageUsers extends Controller
 {
@@ -16,7 +17,7 @@ class ManageUsers extends Controller
     {
         $title = "Active Users | " . config('global.site_name');
         $page_title = "Active Users";
-        $users = User::where('acc_status', 1)->where('disable_account', "no")->orderBy('created_at', 'desc')->paginate(10);
+        $users = User::where('acc_status', 1)->where('disable_account', "no")->orderBy('created_at', 'desc')->paginate(20);
 
         return view('backend..users.active-users', compact('title', 'users', 'page_title'));
     }
@@ -25,7 +26,7 @@ class ManageUsers extends Controller
     {
         $title = "Unverified Users | " . config('global.site_name');
         $page_title = "Unverified Users";
-        $users = User::where('acc_status', 0)->orderBy('created_at', 'desc')->paginate(10);
+        $users = User::where('acc_status', 0)->orderBy('created_at', 'desc')->paginate(20);
 
         return view('backend.users.unverified-users', compact('title', 'users', 'page_title'));
     }
@@ -34,7 +35,7 @@ class ManageUsers extends Controller
     {
         $title = "Disabled Users | " . config('global.site_name');
         $page_title = "Disabled Users";
-        $users = User::where('acc_status', 1)->where('disable_account', "yes")->orderBy('created_at', 'desc')->paginate(10);
+        $users = User::where('acc_status', 1)->where('disable_account', "yes")->orderBy('created_at', 'desc')->paginate(20);
 
         return view('backend.users.active-users', compact('title', 'users', 'page_title'));
     }
@@ -69,9 +70,18 @@ class ManageUsers extends Controller
     public function view_user(Request $request, $id)
     {
         $title = "User Details | " . config('global.site_name');
-        $user = User::where('user_id', $id)->first();
-
-        return view('backend.users.view-user', compact('title', 'user'));
+        $user = User::with('adverts')->where('user_id', $id)->first();
+        $active_adverts = Advert::where('ad_status', 1)->where('sold', "No")->where('user_id', $id)->count();
+        $sold_adverts = Advert::where('sold', "Yes")->where('user_id', $id)->count();
+        $totalRevenue = Payment::where('payment_status', "paid")
+                ->where('seller_settlement', "yes")
+                ->where('user_id', $id)
+                ->sum('amount_paid');
+        $pendingRevenue = Payment::where('payment_status', "paid")
+            ->where('seller_settlement', "no")
+            ->where('user_id', $id)
+            ->sum('amount_paid');
+        return view('backend.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
     }
 
     public function delete_user($user_id,$status)

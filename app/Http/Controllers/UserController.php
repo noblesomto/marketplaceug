@@ -186,7 +186,7 @@ class UserController extends Controller
         // $this->authorize('update', $order);
 
         // Update the order status
-        $order->shipping_status = 'delivered';
+        $order->buyer_status = 'delivered';
         $order->shipping_status_date = now(); // Optional: Add timestamp
         $order->save();
 

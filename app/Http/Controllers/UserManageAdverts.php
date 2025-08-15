@@ -17,6 +17,7 @@ use App\Models\AdvertImage;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
 use App\Models\Shipping;
+use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 
 class UserManageAdverts extends Controller
@@ -115,6 +116,16 @@ class UserManageAdverts extends Controller
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
             }
 
+            $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
+            $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
+            $filteredWords = array_filter($rawWords, function ($word) {
+            return strlen($word) > 3;
+            });
+
+            $uniqueWords = array_unique($filteredWords);
+
+            $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
+
             $advert = Advert::create([
                 'ad_title'         => $request->input('ad_title'),
                 'ad_type'          => $request->input('ad_type'),
@@ -131,9 +142,9 @@ class UserManageAdverts extends Controller
                 'state'            => $request->input('state'),
                 'lga'              => $request->input('lga'),
                 'state_slug'       => Str::slug($request->input('lga')),
-                'description'      => $request->input('description'),
-                'keyword'          => $request->input('keyword'),
-                'meta_description' => $request->input('meta_description'),
+                'description' => ContentHelper::sanitizeContent($request->input('description')),
+                'keyword'          => $keywords,
+                'meta_description' => $metaDescription,
                 'featured'         => "No",
                 'ad_id'            => $ad_id,
                 'shipment'         => $request->input('shipment'),
@@ -337,6 +348,17 @@ class UserManageAdverts extends Controller
 
         $validatedData = $request->validate($rules);
 
+        $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
+        $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
+        $filteredWords = array_filter($rawWords, function ($word) {
+        return strlen($word) > 3;
+        });
+
+        $uniqueWords = array_unique($filteredWords);
+
+        $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
+
+        //dd($keywords);
         // Update main advert
         $advert->update([
             'ad_title'        => $request->input('ad_title'),
@@ -354,9 +376,10 @@ class UserManageAdverts extends Controller
             'state'           => $request->input('state'),
             'lga'             => $request->input('lga'),
             'state_slug'      => Str::slug($request->input('lga')),
-            'description'     => $request->input('description'),
-            'keyword'         => $request->input('keyword'),
-            'meta_description'=> $request->input('meta_description'),
+            'description'       => ContentHelper::sanitizeContent($request->input('description')),
+            'featured'         => $advert->featured,
+            'keyword'         => $keywords,
+            'meta_description'=> $metaDescription,
             'shipment'        => $request->input('shipment'),
             'show_contact'    => $request->input('show_contact'),
             'quantity'        => $request->input('quantity') ?? 1,

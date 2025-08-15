@@ -109,7 +109,12 @@ class AccountController extends Controller
         if ($request->has('remember_device')) {
             $this->storeTrustedDevice($request, $user);
         }
-
+        DB::table('users')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'last_login_ip' => $this->getIp(),
+                'last_login_at' => now(),
+            ]);
         return $request->session()->has('previous_url')
             ? redirect($request->session()->get('previous_url'))
             : redirect()->action([UserController::class, 'index']);

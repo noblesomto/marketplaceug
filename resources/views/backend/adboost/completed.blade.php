@@ -2,104 +2,156 @@
 @include('backend.layouts.nav')
 
 <main id="main" class="main">
+    <div class="pagetitle">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{ $page_title }}</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{ $page_title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
 
-<div class="pagetitle">
-  <h1>{{ $page_title }}</h1>
-
-</div><!-- End Page Title -->
-
-<section class="section">
-  <div class="row">
-
-
-    <div class="col-lg-12">
-
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ $page_title }}</h5>
-
-          @if(session('status'))
-              <div class="alert alert-{{session('status')['type']}}">
-                  {{session('status')['text']}}
-              </div>
-          @endif
-          <!-- Table with stripped rows -->
-          <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Advert</th>
-                <th scope="col">Ad Owner</th>
-                <th scope="col">Amount Paid</th>
-                <th scope="col">Days Remaining</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">Boost Type</th>
-
-              </tr>
-            </thead>
-            <tbody>
-            @foreach ( $adverts as $row )
-              @php
-                  $expiry = \Carbon\Carbon::parse($row->start_date)->addDays($row->duration);
-                  $daysRemaining = \Carbon\Carbon::now()->diffInDays($expiry, false); // false to get negative if expired
-              @endphp
-              <tr>
-                <td> <img width="60px" src="{{  asset('uploads/images/'.$row->advert->firstImage->image) }}" class="img-responsive" alt="Image"></td>
-                <td>{{ $row->advert->ad_title }}</td>
-                <td><a href="/admin/view-user/{{ $row->user->user_id }}">{{ $row->user->name }}</a> </td>
-                <td>₦{{ number_format($row->amount, 2, '.', ',') }}</td>
-                <td>
-                  @if ($daysRemaining >= 0)
-                      <p class="text-green-600">Expires in {{ $daysRemaining }} day{{ $daysRemaining != 1 ? 's' : '' }}</p>
-                  @else
-                      <p class="text-red-600">Expired</p>
-                  @endif
-                </td>
-                <td>{{ date('j F Y', strtotime($row->start_date)); }}</td>
-                <td><span class="text-capitalize">{{$row->boost_type}}</span> </td>
-
-              </tr>
-            @endforeach
-
-            </tbody>
-          </table>
-          </div>
-          <!-- End Table with stripped rows -->
-
-<div class="row">
+    <section class="section">
+        <div class="row">
             <div class="col-lg-12">
-                <div class="pagination-box text-center mt-50">
-
-                    <div class="row">
-                        <div class="col-md-6 d-flex justify-content-start">
-                            Showing {{ $adverts->firstItem() }} to {{ $adverts->lastItem() }} of {{ $adverts->total() }} results
-                        </div>
-                        <div class="col-md-6 d-flex justify-content-end">
-                            {{ $adverts->links('pagination::bootstrap-4') }}
-                        </div>
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title text-white mb-0">
+                            <i class="bi bi-megaphone me-2"></i>Boosted Advertisements
+                        </h5>
                     </div>
-                  <br>
 
+                    <div class="card-body">
+                        @if(session('status'))
+                            <div class="alert alert-{{ session('status')['type'] }} alert-dismissible fade show">
+                                <div class="d-flex align-items-center">
+                                    @if(session('status')['type'] === 'success')
+                                        <i class="bi bi-check-circle-fill me-2"></i>
+                                    @else
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    @endif
+                                    <div>{{ session('status')['text'] }}</div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" width="80px">Ad</th>
+                                        <th scope="col">Details</th>
+                                        <th scope="col">Owner</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Boost Type</th>
+                                        <th scope="col">Dates</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($adverts as $row)
+                                        @php
+                                            $expiry = \Carbon\Carbon::parse($row->start_date)->addDays($row->duration);
+                                            $daysRemaining = \Carbon\Carbon::now()->diffInDays($expiry, false);
+                                        @endphp
+                                        <tr>
+                                            <td>
+                                                <img src="{{ asset('uploads/images/'.$row->advert->firstImage->image) }}"
+                                                     class="rounded border"
+                                                     width="60"
+                                                     height="60"
+                                                     alt="{{ $row->advert->ad_title }}"
+                                                     style="object-fit: cover;">
+                                            </td>
+                                            <td>
+                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title }}</h6>
+                                                <small class="text-muted">ID: {{ $row->advert->id }}</small>
+                                            </td>
+                                            <td>
+                                                <a href="/admin/view-user/{{ $row->user->user_id }}" class="text-primary fw-medium">
+                                                    {{ $row->user->name }}
+                                                </a>
+                                            </td>
+                                            <td class="fw-bold text-success">
+                                                ₦{{ number_format($row->amount, 2) }}
+                                            </td>
+                                            <td>
+                                                @if($daysRemaining >= 0)
+                                                    <span class="badge bg-success text-white">
+                                                        <i class="bi bi-clock me-1"></i> {{ $daysRemaining }} day{{ $daysRemaining != 1 ? 's' : '' }} left
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-danger text-white">
+                                                        <i class="bi bi-x-circle me-1"></i> Expired
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info text-white text-capitalize">
+                                                    <i class="bi bi-lightning-charge me-1"></i> {{ $row->boost_type }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="small">
+                                                    <div class="fw-medium">Started: {{ date('M j, Y', strtotime($row->start_date)) }}</div>
+                                                    <div class="text-muted">Expires: {{ date('M j, Y', strtotime($expiry)) }}</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @if($adverts->hasPages())
+                            <div class="row align-items-center mt-4 pt-3 border-top">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <span>Showing <strong>{{ $adverts->firstItem() }}</strong> to <strong>{{ $adverts->lastItem() }}</strong> of <strong>{{ $adverts->total() }}</strong> results</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-end">
+                                        {{ $adverts->links('pagination::bootstrap-4') }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
-          </div>
-
         </div>
-      </div>
-
-
-
-
-
-    </div>
-  </div>
-</section>
-
+    </section>
 </main><!-- End #main -->
-<script>
-function myFunction() {
-  confirm("Are you sure you want to delete?");
-}
-</script>
+
+<style>
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .table th {
+        font-weight: 600;
+        color: #495057;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+    .badge {
+        padding: 0.5em 0.75em;
+        font-weight: 500;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+    .img-responsive {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+
 @include('backend.layouts.footer')

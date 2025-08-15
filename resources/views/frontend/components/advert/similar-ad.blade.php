@@ -218,8 +218,8 @@
                         </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div> 
                       </div>
                     </div>
-                    <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
-                    <div class="text-sm mt-2 hidden lg:block">{!! Str::limit($row->description, 80) !!}</div>
+                    <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>y
+                    <div class="text-sm my-2 hidden lg:block">{!! Str::limit(strip_tags($row->description), 80) !!}</div>
                     <div class="flex items-center justify-between text-xs mt-1">
                         <div class="flex justify-start text-dark_green font-bold text-base my-2">
                           <div class="mr-4">₦ {{ number_format($row->price, 0, '.', ',') }} </div>

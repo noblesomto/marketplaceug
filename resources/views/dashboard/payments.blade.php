@@ -81,7 +81,7 @@
                                 <div class="flex justify-start flex-wrap gap-2 md:space-x-3 text-sm md:pr-6">
                                     <div><a href="/report-ad/{{ $row->advert->id }}" class="bg-secondary-200 px-4 py-1 rounded-lg inline-block" href="">Report Issue</a></div>
                                     <div>
-                                        @if(($row->shipping_status ?? '') == 'delivered')
+                                        @if(($row->buyer_status ?? '') == 'delivered')
                                             <button class="bg-green-200 px-4 py-1 rounded-lg inline-block cursor-not-allowed"
                                                     disabled>
                                                 ✓ Delivered
@@ -101,7 +101,7 @@
 
                             @if(($row->shipping_status ?? '') == "shipped")
                             <div class="mb-2">
-                                <p>Item Will be delivered within 5 - 14 working days</p>
+                                <p>Item Will be delivered within 3 - 7 working days</p>
                                 <span>Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
                             </div>
                             @endif

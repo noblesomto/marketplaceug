@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Advert;
 use Carbon\Carbon;
 use Mail;
 use App\Mail\PayoutMail;
+use App\Mail\ShipAdMail;
+use App\Mail\PickupAdMail;
+use App\Mail\DeliverAdMail;
+use App\Mail\CancelAdMail;
+use App\Mail\BuyDirectMail;
+use App\Mail\SellerMail;
+use App\Models\GigLogistic;
 
 class ManagePayments extends Controller
 {
@@ -44,17 +53,96 @@ class ManagePayments extends Controller
         return view('backend.payments.pending-payments', compact('title', 'page_title', 'payments'));
     }
 
-    public function confirm_delivery($id)
+    public function update_payment(Request $request,$id)
     {
+        //dd($request);
         DB::table('payments')
                 ->where('id', $id)
                 ->update([
-                    'shipping_status'=> "delivered",
-                    'buyer_status'=> "delivered",
+                    'shipping_status'=> $request->input('shipping_status'),
+                    'buyer_status'=> $request->input('buyer_status'),
+                    'shipping_status_date' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
+        $ship = Payment::with([
+            'advert.firstImage',
+            'advert.owner',
+            'user',
+            'shipping',
+        ])->where('id', $id)->first();
 
-        return redirect()->back()->with('status', ['text'=>'Delivery Status Updated','type'=>'success']);
+        //dd($ship);
+        $user = User::where('user_id', $ship->user_id)->first();
+        $city = GigLogistic::where('id', $ship->city)->first();
+        $details = [
+            'advert' => $ship->advert->ad_title,
+            'buyer' => $user->name,
+            'phone' => $user->phone,
+            'shipping' => $ship->shipping->company,
+            'shipped_date' => Carbon::now(),
+            'address' => $city->address,
+            'city' => $city->city,
+            'state' => $ship->stateRel->name,
+        ];
+
+        if($request->input('shipping_status')=="pickup"){
+            Mail::to($user->email)->send(new PickupAdMail($details));
+        }elseif($request->input('shipping_status')=="delivered"){
+            Mail::to($user->email)->send(new DeliverAdMail($details));
+        }else{
+            Mail::to($user->email)->send(new CancelAdMail($details));
+        }
+
+        return redirect()->back()->with('status', ['text'=>'Shipping/Buyer Status Updated','type'=>'success']);
+    }
+
+    public function confirm_payment(Request $request,$id)
+    {
+        //dd($request);
+        $ship = Payment::with([
+            'advert.firstImage',
+            'advert.owner',
+            'user',
+            'shipping',
+            'stateRel.gigLogistics'
+        ])->where('id', $id)->first();
+        $ship_code = Str::upper(Str::random(10));
+
+        //dd($ship->advert->id);
+        DB::table('payments')
+            ->where('id', $id)
+            ->update([
+                'payment_status' => 'paid',
+                'ship_code' => $ship_code,
+            ]);
+
+
+        $advert = Advert::where('id',$ship->advert->id)->first();
+
+        $advert->update([
+            'sold' => 'Yes',
+            'sold_date' => Carbon::now(),
+
+        ]);
+        $user = User::where('user_id', $ship->user_id)->first();
+        $city = GigLogistic::where('id', $ship->city)->first();
+        $details = [
+            'advert' => $ship->advert->ad_title,
+            'buyer' => $user->name,
+            'seller' => $ship->advert->owner->name,
+            'phone' => $user->phone,
+            'shipping' => $ship->shipping->company,
+            'shipped_date' => Carbon::now(),
+            'address' => $city->address,
+            'city' => $city->city,
+            'state' => $ship->stateRel->name,
+            'ship_code' => $ship->ship_code,
+        ];
+
+        Mail::to($user->email)->send(new BuyDirectMail($details));
+        Mail::to($ship->advert->owner->email)->send(new SellerMail($details));
+
+        return redirect()->back()->with('status', ['text'=>'Payment Status Updated','type'=>'success']);
     }
 
     public function pending_settlements(Request $request)

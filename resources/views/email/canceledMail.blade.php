@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace Naija – Your Order Has Been Delivered</title>
+    <title>Marketplace Naija – Your Order Has Been Canceled</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -131,7 +131,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Your Order has been Deleivered</h1>
+            <h1>Your Order Has Been Canceled</h1>
 
         </div>
         
@@ -139,16 +139,21 @@
        
             <div class="section">
                 <h2>Hello {{ $details['buyer'] }},</h2>
-            <p>We’re happy to inform you that your order for {{ $details['advert'] }} has finally been delivered.</p>
+            <p>We’re sorry to inform you that your order for {{ $details['advert'] }} has been canceled.</p>
+            <p>We regret any inconvenience caused by this.</p>
             </div>
 
-
+            <div class="section">
+                <h4>Shipping Details:</h4>
+                <p><span class="label">Item:</span> {{ $details['advert'] }}</p>
+                <p><span class="label">Shipping Provider:</span> GIG Logistics (GIGL)</p>
+            </div>
+            
 
             <div class="section">
                 <p>If you have any questions or need further assistance, please don’t hesitate to contact our support team.</p>
                 <br>
-                <p>Thank you for choosing <b>Marketplace Naija.</b> We appreciate your trust and look forward to serving you
-again.</p>
+                <p>Thank you for choosing <b>Marketplace Naija.</b> We appreciate your trust and look forward to serving you again.</p>
                 <br>
                 <p>Best regards,</p>
                 <p><b>The Marketplace Naija Team</b></p>

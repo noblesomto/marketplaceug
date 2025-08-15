@@ -18,10 +18,11 @@
                         <!-- Image wrapper with fixed aspect ratio -->
                         <div class="w-full aspect-[4/3] overflow-hidden rounded-t-lg relative">
                             <img 
-                                src="{{ asset('uploads/images/' . $row->firstImage->image) }}" 
-                                alt="{{ $row->ad_title }}" 
+                                src="{{ $row->firstImage && $row->firstImage->image
+                                        ? asset('uploads/images/' . $row->firstImage->image)
+                                        : asset('frontend/images/default.png') }}"
+                                alt="{{ $row->ad_title }}"
                                 class="w-full h-full object-cover"
-                                onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
                             />
                             <div class="absolute top-1 right-1 space-y-1">
                                 @if($row->owner->verified=='yes')

@@ -14,6 +14,7 @@ class Advertising extends Model
         'image',
         'url',
         'duration',
+        'start_date',
         'type',
         'status',
     ];

@@ -34,7 +34,7 @@ class Advert extends Model
         'ad_status',
         'shipment',
         'shipping',
-        'keywords',
+        'keyword',
         'meta_description',
         'views',
         'featured',

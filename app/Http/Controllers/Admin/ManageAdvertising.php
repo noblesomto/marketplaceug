@@ -13,10 +13,12 @@ class ManageAdvertising extends Controller
 {
     public function create_advert(Request $request)
     {
+
         $title = "New Adverts - " . config('global.site_name');
         $adverts = Advertising::orderBy('created_at', 'desc')->paginate(20);
-        //dd($cat);
+
             if ($request->isMethod('POST')) {
+                //dd($request);
             $request->validate([
                 'company' => 'required',
                 'advert_image' => 'required|image|mimes:jpg,png,jpeg,gif|max:3048',
@@ -34,9 +36,10 @@ class ManageAdvertising extends Controller
                 'company'=> $request->input('company'),
                 'url'=> $request->input('url'),
                 'duration'=> $request->input('duration'),
+                'start_date'=> Carbon::now(),
                 'type'=> $request->input('type'),
                 'image'=> $imageName,
-                'status'=> 1,
+                'status'=> "active",
             ]);
 
             return redirect()->back()->with('status', ['text'=>'Advert  Successfully published','type'=>'success']);
@@ -46,6 +49,61 @@ class ManageAdvertising extends Controller
         }
 
     }
+
+    public function updateAdvert(Request $request, $id)
+    {
+        //dd($id);
+        // Validation rules
+        $request->validate([
+            'company' => 'required|string|max:255',
+            'url' => 'required|url|max:500',
+            'duration' => 'required|integer',
+            'type' => 'required|string|in:banner,sidebar',
+            'status' => 'required|string|in:active,inactive,pending',
+            'advert_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        try {
+            // Find the advertisement
+            $advert = Advertising::where('advert_id', $id)->firstOrFail();
+            //dd($advert);
+            // Update basic fields
+            $advert->company = $request->company;
+            $advert->url = $request->url;
+            $advert->duration = $request->duration;
+            $advert->type = $request->type;
+            $advert->status = $request->status;
+
+            // Handle image upload if provided
+            if ($request->hasFile('advert_image')) {
+                // Delete old image if it exists
+                if ($advert->image && file_exists(public_path('uploads/advertising/' . $advert->image))) {
+                    unlink(public_path('uploads/advertising/' . $advert->image));
+                }
+
+                // Upload new image
+                $image = $request->file('advert_image');
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/advertising'), $imageName);
+                $advert->image = $imageName;
+            }
+
+            // Save the updated advertisement
+            $advert->save();
+
+            return redirect()->back()->with('status', [
+                'type' => 'success',
+                'text' => 'Advertisement updated successfully!'
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('status', [
+                'type' => 'danger',
+                'text' => 'Error updating advertisement: ' . $e->getMessage()
+            ])->withInput();
+        }
+    }
+
 
     public function delete_advert(Request $request, $id)
     {
