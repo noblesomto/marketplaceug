@@ -8,7 +8,7 @@
         <span>Profile Section</span>
         <div class="space-x-4">
         	<a title="My Ad" href="/user/my-ads" ><i class="bi bi-badge-ad text-lg lg:text-3xl"></i></a>
-            <a title="Purchase" href="/user/purchase" ><i class="bi bi-credit-card text-lg lg:text-3xl"></i></a>
+            <a title="Purchase" href="/user/payment" ><i class="bi bi-box2 text-lg lg:text-3xl"></i></a>
             <a title="Feedbacks" href="/user/feedbacks" ><i class="bi bi-chat-right-dots text-lg lg:text-3xl"></i></a>
         	<a title="Settings" href="/user/settings"><i class="bi bi-gear text-lg lg:text-3xl"></i></a>
             <a title="Logout" href="/user/logout" ><i class="bi bi-box-arrow-right text-lg lg:text-3xl"></i></a>
@@ -19,12 +19,16 @@
     	<div class="w-full bg-white shadow p-3">
 			<div class="flex flex-col">
 		        <div class="flex">
-		        	@if($user->profile_picture=="")
-		            	<img class="w-10 h-10 rounded-full" src="{{ asset('frontend/images/user.png') }}">
-		            @else
-		            	<img class="w-10 h-10 rounded-full" src="{{ asset('uploads/profile/'. $user->profile_picture) }}">
-		            @endif
-		        </div>
+                    @if($user->profile_picture == "")
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $user->name)[1] ?? '', 0, 1)) }}
+                            </span>
+                        </div>
+                    @else
+                        <img class="w-10 h-10 rounded-full" src="{{ asset('uploads/profile/'. $user->profile_picture) }}">
+                    @endif
+                </div>
 		        <div class="mt-2 ">
 		  <div class="block lg:hidden">
 		      <div class="w-48 font-bold">Profile</div>
@@ -119,7 +123,7 @@
 
 </section>
 
-<section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm pb-20 -mt-24">
+<section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm pb-20 -mt-28">
     <div class="border-b-2 border-b-gray-200 p-4 font-bold text-dark_green mb-2">
         My Adverts
         @include('frontend.components.flash-message')

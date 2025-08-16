@@ -8,7 +8,7 @@
   <section class="grid md:grid-cols-2 gap-8 items-center mb-16">
     <div>
       <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">How Marketplace Naija works</h2>
-      <p class="text-lg text-gray-600 mb-6">A simple, secure marketplace to buy and sell pre-loved items. Follow these easy steps and start earning or finding great deals today.</p>
+      <p class="text-lg text-gray-600 mb-6">A simple, secure marketplace to buy and sell new and used items. Follow these easy steps and start earning or finding great deals today.</p>
       <div class="flex gap-3">
         <a href="/register" class="px-5 py-3 bg-[#B5E93F] hover:bg-[#AFD145] text-[#326916] rounded-md font-semibold transition-colors">Get started</a>
         <a href="/faq" class="px-5 py-3 border border-gray-200 hover:border-gray-300 rounded-md text-gray-700 hover:text-gray-900 transition-colors">Read the FAQ</a>
@@ -123,7 +123,7 @@
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="{{ asset('frontend/images/how/5.png') }}" alt="Purchase items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/6.png') }}" alt="Purchase items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">2</div>
@@ -134,7 +134,7 @@
 
       <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
         <div class="mb-4 overflow-hidden rounded-lg">
-          <img src="{{ asset('frontend/images/how/6.png') }}" alt="Receive items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
+          <img src="{{ asset('frontend/images/how/7.png') }}" alt="Receive items" class="w-full h-48 object-cover hover:scale-105 transition-transform" />
         </div>
         <div class="flex items-center gap-4 mb-3">
           <div class="w-10 h-10 rounded-full bg-[#B5E93F] flex items-center justify-center font-semibold text-[#326916]">3</div>

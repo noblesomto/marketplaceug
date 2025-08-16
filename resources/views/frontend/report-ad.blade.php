@@ -38,6 +38,8 @@
                     <option value="Seller asked for payment">Seller asked for payment</option>
                     <option value="The Seller is not Responding">The Seller is not Responding</option>
                     <option value="The Item was not Delivered">The Item was not Delivered</option>
+                    <option value="The item is defective">The item is defective</option>
+                    <option value="The item is not as described">The item is not as described</option>
                     <option value="Others">Others</option>
                 </select>
             </div>

@@ -11,10 +11,13 @@
           <div class="bg-white my-2 py-1 border-b border-b-gray-300">
              <div class="flex w-full">
                   <div class="w-1/4 mr-1 relative bg-gray-100">
-                    <img class="w-full h-32 sm:h-40 object-contain rounded" 
-                         src="{{ asset('uploads/images/'.$row->firstImage->image) }}" 
-                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}'"
-                         alt="{{ $row->ad_title }}">
+                    <img
+                        src="{{ $row->firstImage && $row->firstImage->image
+                                ? asset('uploads/images/' . $row->firstImage->image)
+                                : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-32 sm:h-40 object-contain rounded"
+                    />
                         @if($row->images->count() > 0)
                         <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
                             {{ $row->images->count() }}+
@@ -157,10 +160,13 @@
           <div class="bg-white mb-1 border-b border-b-gray-300">
              <div class="flex w-full">
                   <div class="w-1/4 mr-1 relative bg-gray-100">
-                    <img class="w-full h-32 sm:h-40 object-contain rounded" 
-                         src="{{ asset('uploads/images/'.$row->firstImage->image) }}" 
-                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}'"
-                         alt="{{ $row->ad_title }}">
+                    <img
+                        src="{{ $row->firstImage && $row->firstImage->image
+                                ? asset('uploads/images/' . $row->firstImage->image)
+                                : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-32 sm:h-40 object-contain rounded"
+                    />
                             @if($row->images->count() > 0)
                             <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
                                 {{ $row->images->count() }}+

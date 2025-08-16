@@ -13,30 +13,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
     display: none !important;
 }
 
-/* Hide specific formatting buttons
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="bold"] {
-    display: none !important;
-}
-*/
-/* Hide specific formatting buttons */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="italic"] {
-    display: none !important;
-}
 
-/* Hide link button */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="href"] {
-    display: none !important;
-}
-
-/* Hide code button */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="code"] {
-    display: none !important;
-}
-
-/* Hide entire groups */
-trix-toolbar [data-trix-button-group="history-tools"] {
-    display: none !important;
-}
 </style>
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
@@ -797,7 +774,7 @@ trix-toolbar [data-trix-button-group="history-tools"] {
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                                 </svg>
                             </span>
-                            <span>This item can be paid for using the new “Buy Now” feature. <br><a class="font-semibold text-dartk_green" href="">Learn More</a> </span>
+                            <span>This item can be paid for using the new “Buy Direct” feature. <br><a class="font-semibold text-dartk_green" href="/payments-refunds">Learn More</a> </span>
                         </div>
                         <div class="flex text-xs mt-1">
                             <span class="mr-1">

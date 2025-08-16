@@ -56,9 +56,12 @@ class UserManageAdverts extends Controller
                 'state'       => 'required',
                 'lga'         => 'required',
                 'description' => 'required',
-                //'images'      => 'required|array',
                 'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
             ];
+
+            if ($category != 3) {
+                $rules['images'] = 'required|array';
+            }
 
             // Category-specific rules
             if ($category == 3) {
@@ -173,6 +176,12 @@ class UserManageAdverts extends Controller
                         'position' => $position + 1,
                     ]);
                 }
+            }elseif ($category == 3) {
+                // Save default image when no upload
+                $advert->images()->create([
+                    'image'    => 'jobs.png',
+                    'position' => 1,
+                ]);
             }
 
             // Store car-specific info

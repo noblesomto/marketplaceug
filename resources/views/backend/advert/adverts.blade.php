@@ -53,9 +53,16 @@
                   @foreach($adverts as $row)
                   <tr>
                     <td>
-                      <img width="60px" height="60px" src="{{ asset('uploads/images/'.$row->firstImage->image) }}"
-                           class="img-thumbnail rounded" alt="Advert Image"
-                           data-bs-toggle="tooltip" data-bs-placement="top" title="View image">
+                      <img width="60" height="60"
+                         src="{{ $row->firstImage && $row->firstImage->image
+                                ? asset('uploads/images/' . $row->firstImage->image)
+                                : asset('frontend/images/default.png') }}"
+                         class="img-thumbnail rounded"
+                         alt="Advert Image"
+                         data-bs-toggle="tooltip"
+                         data-bs-placement="top"
+                         title="View image">
+
                     </td>
                     <td class="fw-bold">{{ Str::limit($row->ad_title, 30) }}</td>
                     <td>

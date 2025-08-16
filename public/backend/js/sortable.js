@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+//console.log(countryId);
     // Validate on submit
     form?.addEventListener("submit", function (e) {
         if (!fileList.length) {

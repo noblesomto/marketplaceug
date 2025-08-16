@@ -104,7 +104,7 @@
                         </a>
 
                         <a href="/user/payment" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                            <span><i class="bi bi-credit-card"></i></span>
+                            <span><i class="bi bi-box2"></i></span>
                             <span>Purchases</span>
                         </a>
 
