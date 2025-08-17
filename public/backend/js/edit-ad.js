@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var salary = document.getElementById("salary");
     var expectedSalary = document.getElementById("expectedSalary");
     var services = document.getElementById("services");
+    var quantity = document.getElementById('quantity');
     salary.classList.add("hidden");
     expectedSalary.classList.add("hidden");
     services.classList.add("hidden");
@@ -157,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 shipping.classList.add("hidden");
                 shipmentDiv.classList.add("hidden");
                 itemCondition.classList.add("hidden");
+                quantity.classList.add("hidden");
              }else{
                 services.classList.add("hidden");
                 buyDirect.classList.remove("hidden");
@@ -174,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
+                quantity.classList.add("hidden");
                  //Category CV 18
             }else if (categoryId === "18")  {
                 expectedSalary.classList.remove("hidden");
@@ -183,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 shipping.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
+                quantity.classList.add("hidden");
             }else{
                 price.classList.remove("hidden");
                 salary.classList.add("hidden");

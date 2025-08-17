@@ -22,7 +22,11 @@
                                     <div class="flex items-center space-x-3">
                                         <div class="flex-shrink-0">
                                             @if($conversation['other_user']->profile_picture=="")
-                                                <img class="w-12 h-12 rounded-full" src="{{ asset('frontend/images/user.png') }}" alt="Default profile">
+                                                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                                                    <span class="text-white text-sm font-medium">
+                                                        {{ strtoupper(substr($conversation['other_user']->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $conversation['other_user']->name)[1] ?? '', 0, 1)) }}
+                                                    </span>
+                                                </div>
                                             @else
                                                 <img class="w-12 h-12 rounded-full object-cover" src="{{ asset('uploads/profile/'. $conversation['other_user']->profile_picture) }}" alt="{{ $conversation['other_user']->name }}">
                                             @endif

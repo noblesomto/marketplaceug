@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-//console.log(countryId);
+//console.log(selectedCategoryId);
     // Validate on submit
     form?.addEventListener("submit", function (e) {
-        if (!fileList.length) {
+        if (!fileList.length && selectedCategoryId != 3 ) {
             e.preventDefault();
             errorBox.textContent = "Please select at least one image before submitting.";
             errorBox.classList.remove("hidden");

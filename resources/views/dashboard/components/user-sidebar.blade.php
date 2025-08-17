@@ -2,7 +2,11 @@
 	<div class="flex flex-col">
         <div class="flex justify-start">
             @if($user->profile_picture=="")
-                <img class="w-12 h-12 rounded-full" src="{{ asset('frontend/images/user.png') }}">
+                <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
+                    <span class="text-white text-sm font-medium">
+                        {{ strtoupper(substr($user->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $user->name)[1] ?? '', 0, 1)) }}
+                    </span>
+                </div>
               @else
                 <img class="w-12 h-12 rounded-full" src="{{ asset('uploads/profile/'. $user->profile_picture) }}">
               @endif

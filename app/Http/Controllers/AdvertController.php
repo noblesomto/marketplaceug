@@ -114,7 +114,7 @@ class AdvertController extends Controller
 
     public function loadMoreAds(Request $request)
     {
-        $perPage = 4;
+        $perPage = 20;
 
         $ads = Advert::with('firstImage', 'owner')
             ->where('ad_status', 1)
@@ -145,7 +145,7 @@ class AdvertController extends Controller
 
     public function loadMoreAdsMobile(Request $request)
     {
-        $perPage = 4;
+        $perPage = 20;
 
         $ads = Advert::with('firstImage', 'owner')
             ->where('ad_status', 1)

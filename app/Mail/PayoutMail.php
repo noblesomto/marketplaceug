@@ -28,7 +28,7 @@ class PayoutMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – You&#39;ve Been Paid for Your Sold Item',
+            subject: 'Marketplace Naija – You Have Been Paid for Your Sold Item',
         );
     }
 

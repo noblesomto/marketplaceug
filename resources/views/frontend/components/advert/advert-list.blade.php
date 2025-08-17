@@ -2,7 +2,7 @@
 
 @forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
-      <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[140px] sm:h-[160px] md:h-[180px]">
+      <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[150px] sm:h-[160px] md:h-[180px]">
          <div class="flex w-full h-full">
               <div class="w-2/6 mr-1 relative h-full p-2">
                 <img class="w-full h-full object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
@@ -38,7 +38,7 @@
                 </div>
                 <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
               </div>
-              <div class="w-4/6 relative h-full overflow-hidden space-y-2">
+              <div class="w-4/6 relative h-full overflow-hidden space-y-1">
                 <div class="flex justify-between text-xs">
                   <div class="flex justify-start items-center text-sm md:mr-5">
                     <div class="flex gap-2">
@@ -84,12 +84,13 @@
                 @endif
 
                  @if($row->sub_category==2)
-                  <div class="flex-col space-y-2">
+                  <div class="flex-col space-y-2 pb-2">
                     <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }} </span>
                     <div class="flex items-center">
                         <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }} </span>
                     </div>
                   </div>
+
                   @endif
 
                 <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">

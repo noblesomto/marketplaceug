@@ -56,7 +56,7 @@ class PageController extends Controller
         ->limit(10)
         ->get();
             //dd($featured);
-        $perPage = 4;
+        $perPage = 20;
 
         $ads = Advert::with('firstImage', 'owner')
             ->where('ad_status', 1)

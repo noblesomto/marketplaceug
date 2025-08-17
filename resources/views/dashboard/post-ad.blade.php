@@ -740,7 +740,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
        </div>
 
        @if($user->acc_type=="Commercial")
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+       <div id="quantity" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 md:col-span-2">
                 <div class="font-semibold">Item Quantity</div>
             </div>

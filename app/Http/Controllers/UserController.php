@@ -53,6 +53,7 @@ class UserController extends Controller
             )
             ->where('sender_id', $userId)
             ->orWhere('receiver_id', $userId)
+            ->orderBy('created_at', 'desc')
             ->distinct()
             ->get();
 

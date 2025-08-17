@@ -1,3 +1,4 @@
+let selectedCategoryId = null;
 var salary = document.getElementById("salary");
 var expectedSalary = document.getElementById("expectedSalary");
 var services = document.getElementById("services");
@@ -7,7 +8,8 @@ services.classList.add("hidden");
 
 document.getElementById('category').addEventListener('change', function () {
         var countryId = this.value;
-        //console.log(countryId);
+        selectedCategoryId = this.value;
+        //console.log(selectedCategoryId);
             if (countryId === "3") {
                 document.querySelector('label[for="brand"]').textContent = "Select Job Type:";
 
@@ -30,6 +32,7 @@ document.getElementById('category').addEventListener('change', function () {
                 const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
                 var price = document.getElementById("price");
                 var shipping = document.getElementById('shipping');
+                var quantity = document.getElementById('quantity');
 
 
                 // Hide all divs initially
@@ -42,6 +45,7 @@ document.getElementById('category').addEventListener('change', function () {
                 shipment.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
+                quantity.classList.add("hidden");
              }else{
                 services.classList.add("hidden");
                 shipment.classList.remove("hidden");
@@ -57,6 +61,7 @@ document.getElementById('category').addEventListener('change', function () {
                 shipping.classList.add("hidden");
                 buyDirect.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
+                quantity.classList.add("hidden");
             }else if (countryId === "18") {
                 expectedSalary.classList.remove("hidden");
                 price.classList.add("hidden");
@@ -65,6 +70,7 @@ document.getElementById('category').addEventListener('change', function () {
                 shipping.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
+                quantity.classList.add("hidden");
             }else{
                 price.classList.remove("hidden");
                 shipping.classList.remove("hidden");
@@ -189,3 +195,5 @@ function toggleShipping() {
             });
         }
     });
+
+
