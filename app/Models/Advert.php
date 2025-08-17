@@ -63,7 +63,7 @@ class Advert extends Model
         return $this->hasOne(AdvertImage::class)->orderBy('position', 'asc');
     }
 
-    public function brand()
+    public function brands()
     {
         return $this->belongsTo(Brands::class, 'brand');
     }

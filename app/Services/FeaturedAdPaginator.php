@@ -44,7 +44,7 @@ class FeaturedAdPaginator
 
     protected function getFeaturedAds(): Collection
     {
-        $query = Advert::with(['firstImage', 'boost' => fn($q) => $q->where('boost_status', 'active')])
+        $query = Advert::with(['firstImage','car', 'brands', 'boost' => fn($q) => $q->where('boost_status', 'active')])
             ->where('featured', 'Yes')
             ->activeNotRecentlySold()
             ->whereHas('boost', fn($q) => $q->where('boost_status', 'active'));
@@ -62,7 +62,7 @@ class FeaturedAdPaginator
         $limit = $this->perPage;
 
         // Regular ads only
-        $query = Advert::with('firstImage')
+        $query = Advert::with('firstImage','car','brands')
             ->activeNotRecentlySold()
             ->where(function ($q) {
                 $q->where('featured', '!=', 'Yes')->orWhereNull('featured');

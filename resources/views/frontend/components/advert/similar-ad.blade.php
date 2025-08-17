@@ -8,7 +8,7 @@
     @include('frontend.components.advert.advert-list-fixed', ['ads' => $adverts])
     @if($advertsCount > 6)
         <span class="mb-4 -mt-20 w-full flex justify-end">
-            <a class="text-dark_green font-semibold" href="/seller/{{ $ad->owner->user_id }}">View All Ads More from Seller ({{ $advertsCount }} Ads)</a>
+            <a class="text-dark_green font-semibold" href="/seller/{{ $ad->owner->user_id }}">View All Ads – Other Listings from this Seller  ({{ $advertsCount }} Ads)</a>
         </span>
     @endif
 </div>

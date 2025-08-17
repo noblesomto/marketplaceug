@@ -41,11 +41,11 @@
             <div class="flex flex-col">
                 <h4 class="font-bold">Social Media</h4>
                 <ul class="flex flex-col space-y-1 mt-2">
-                    <li><a href="#" class="hover:text-secondary-200">Facebook</a></li>
-                    <li><a href="#" class="hover:text-secondary-200">Instagram</a></li>
-                    <li><a href="#" class="hover:text-secondary-200">TikTok</a></li>
-                    <li><a href="#" class="hover:text-secondary-200">YouTube</a></li>
-                    <li><a href="#" class="hover:text-secondary-200">Pinterest</a></li>
+                    <li><a href="https://www.facebook.com/MarketplaceNaijaOnline/" target="_blank" class="hover:text-secondary-200">Facebook</a></li>
+                    <li><a href="https://www.instagram.com/marketplacenaija/" target="_blank" class="hover:text-secondary-200">Instagram</a></li>
+                    <li><a href="https://www.tiktok.com/@marketplace.naija" target="_blank" class="hover:text-secondary-200">TikTok</a></li>
+                    <li><a href="https://www.youtube.com/@marketplacenaija" target="_blank" class="hover:text-secondary-200">YouTube</a></li>
+                    <li><a href="https://www.pinterest.com/marketplacenaija/" target="_blank" class="hover:text-secondary-200">Pinterest</a></li>
                 </ul>
             </div>
 

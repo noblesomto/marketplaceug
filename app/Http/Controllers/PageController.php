@@ -56,38 +56,23 @@ class PageController extends Controller
         ->limit(10)
         ->get();
             //dd($featured);
-        $featuredAds = Advert::with('firstImage')
+        $perPage = 4;
+
+        $ads = Advert::with('firstImage', 'owner')
             ->where('ad_status', 1)
-            ->where('featured', 'yes')
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(7));
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(7));
                       });
             })
-            ->inRandomOrder()
-            ->limit(10)
-            ->get(); // no limit here; you can add limit if needed
-
-        // Step 2: Get the rest of the ads ordered by created_at
-        $otherAds = Advert::with('firstImage')
-            ->where('ad_status', 1)
-            ->where('featured', '!=', 'yes') // or ->whereNull('featured') if column can be null
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(7));
-                      });
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Step 3: Merge and take only 20 results
-        $ads = $featuredAds->merge($otherAds)->take(20);
+            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
+            ->orderByDesc('is_featured') // ✅ Featured first
+            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END') // ✅ Random featured
+            ->orderByDesc('created_at') // ✅ Others by newest
+            ->paginate($perPage);
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
@@ -95,6 +80,9 @@ class PageController extends Controller
         //dd($categories);
         return view('frontend.index', compact('title','ads','featured','user','categories'));
     }
+
+
+
 
     public function about()
     {   

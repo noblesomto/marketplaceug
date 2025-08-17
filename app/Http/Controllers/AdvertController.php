@@ -30,87 +30,150 @@ use Mail;
 class AdvertController extends Controller
 {
     public function advert(Request $request, $location, $slug, $id)
-{
-    // First get the ad and check if it exists
-    $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
+    {
+        // First get the ad and check if it exists
+        $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
 
-    if (!$ad) {
+        if (!$ad) {
 
-        abort(404, 'Advert not found');
-    }
+            abort(404, 'Advert not found');
+        }
 
-    $data['ad'] = $ad;
-    $ad_id = $ad->id;
+        $data['ad'] = $ad;
+        $ad_id = $ad->id;
 
-    $data['title'] = $ad->ad_title.' - '.config('global.site_name');
-    $title = $ad->ad_title;
-    $cat_id = $ad->category;
-    $brand_id = $ad->brand;
-    $ad_owner = $ad->user_id;
-    $subcat_id = $ad->sub_category;
-    $user_id = $request->session()->get('user_id');
+        $data['title'] = $ad->ad_title.' - '.config('global.site_name');
+        $title = $ad->ad_title;
+        $cat_id = $ad->category;
+        $brand_id = $ad->brand;
+        $ad_owner = $ad->user_id;
+        $subcat_id = $ad->sub_category;
+        $user_id = $request->session()->get('user_id');
 
-    // Check if images exist before processing
-    if ($ad->images) {
-        foreach ($ad->images as $img) {
-            $path = public_path('uploads/images/' . $img->image);
-            if (File::exists($path)) {
-                [$width, $height] = getimagesize($path);
-                $img->is_portrait = $height > $width;
-            } else {
-                $img->is_portrait = false; // default to landscape
+        // Check if images exist before processing
+        if ($ad->images) {
+            foreach ($ad->images as $img) {
+                $path = public_path('uploads/images/' . $img->image);
+                if (File::exists($path)) {
+                    [$width, $height] = getimagesize($path);
+                    $img->is_portrait = $height > $width;
+                } else {
+                    $img->is_portrait = false; // default to landscape
+                }
             }
         }
+
+        $data['user'] = User::where('user_id', $user_id)->first();
+        $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
+        $data['cat'] = Category::where('id', $cat_id)->first();
+        $data['brand'] = Brands::where('id', $brand_id)->first();
+
+        $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
+        if ($data['car']) {
+            $model_id = $data['car']->model;
+            $data['model'] = Models::where('id', $model_id)->first();
+        }
+
+        $data['phone'] = PhoneDetail::where('advert_id', $ad_id)->first();
+        if ($data['phone']) {
+            $model_id = $data['phone']->model;
+            $data['model'] = Models::where('id', $model_id)->first();
+        }
+
+        $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
+
+        //Related Adverts
+        $query = Advert::with('images')
+            ->inRandomOrder()
+            ->where('user_id', $ad_owner)
+            ->activeNotRecentlySold()
+            ->where('id', '!=', $ad_id);
+
+        $data['advertsCount'] = $query->count();
+        $data['adverts'] = $query->limit(6)->get();
+
+        //Similar Adverts
+        $data['similar_ads'] = Advert::with('images')
+            ->inRandomOrder()
+            ->where(function($q) use ($title, $cat_id) {
+                $q->where('ad_title', 'LIKE', '%' . $title . '%')
+                  ->orWhere('category', $cat_id);
+            })
+            ->where('id', '!=', $ad_id)
+            ->activeNotRecentlySold()
+            ->where('user_id', '!=', $ad_owner)
+            ->limit(3)
+            ->get();
+
+        \DB::table('adverts')
+            ->where('id', $ad_id)
+            ->increment('views', 1);
+
+        return view('frontend.advert', $data);
     }
 
-    $data['user'] = User::where('user_id', $user_id)->first();
-    $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
-    $data['cat'] = Category::where('id', $cat_id)->first();
-    $data['brand'] = Brands::where('id', $brand_id)->first();
+    public function loadMoreAds(Request $request)
+    {
+        $perPage = 4;
 
-    $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
-    if ($data['car']) {
-        $model_id = $data['car']->model;
-        $data['model'] = Models::where('id', $model_id)->first();
+        $ads = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 1)
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(7));
+                      });
+            })
+            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
+            ->orderByDesc('is_featured')
+            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END')
+            ->orderByDesc('created_at')
+            ->paginate($perPage, ['*'], 'page', $request->get('page', 1));
+
+        $html = '';
+        foreach ($ads as $row) {
+            $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+        }
+
+        return response()->json([
+            'html' => $html,
+            'next_page' => $ads->hasMorePages() ? $ads->currentPage() + 1 : null,
+        ]);
     }
 
-    $data['phone'] = PhoneDetail::where('advert_id', $ad_id)->first();
-    if ($data['phone']) {
-        $model_id = $data['phone']->model;
-        $data['model'] = Models::where('id', $model_id)->first();
+    public function loadMoreAdsMobile(Request $request)
+    {
+        $perPage = 4;
+
+        $ads = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 1)
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(7));
+                      });
+            })
+            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
+            ->orderByDesc('is_featured')
+            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END')
+            ->orderByDesc('created_at')
+            ->paginate($perPage, ['*'], 'page', $request->get('page', 1));
+
+        $html = '';
+        foreach ($ads as $row) {
+            $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+        }
+
+        return response()->json([
+            'html' => $html,
+            'next_page' => $ads->hasMorePages() ? $ads->currentPage() + 1 : null,
+        ]);
     }
 
-    $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
-
-    //Related Adverts
-    $query = Advert::with('images')
-        ->inRandomOrder()
-        ->where('user_id', $ad_owner)
-        ->activeNotRecentlySold()
-        ->where('id', '!=', $ad_id);
-
-    $data['advertsCount'] = $query->count();
-    $data['adverts'] = $query->limit(6)->get();
-
-    //Similar Adverts
-    $data['similar_ads'] = Advert::with('images')
-        ->inRandomOrder()
-        ->where(function($q) use ($title, $cat_id) {
-            $q->where('ad_title', 'LIKE', '%' . $title . '%')
-              ->orWhere('category', $cat_id);
-        })
-        ->where('id', '!=', $ad_id)
-        ->activeNotRecentlySold()
-        ->where('user_id', '!=', $ad_owner)
-        ->limit(3)
-        ->get();
-
-    \DB::table('adverts')
-        ->where('id', $ad_id)
-        ->increment('views', 1);
-
-    return view('frontend.advert', $data);
-}
 
     public function chat(Request $request, $user_id, $id)
     {
