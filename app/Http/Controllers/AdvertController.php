@@ -195,7 +195,7 @@ class AdvertController extends Controller
     public function seller(Request $request, $id)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage','owner')->where('user_id', $id)->activeNotRecentlySold()->orderBy('created_at', 'asc')->limit(10)->get();
+        $ads = Advert::with('firstImage','owner')->where('user_id', $id)->activeNotRecentlySold()->orderBy('created_at', 'desc')->paginate(10);
         $user_id = $request->session()->get('user_id');
         $owner = User::where('user_id', $id)->first();
         $user = User::where('user_id', $user_id)->first();

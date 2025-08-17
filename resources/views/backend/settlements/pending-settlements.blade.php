@@ -58,9 +58,7 @@
                                             <td>
                                                 @if($row->advert->firstImage->image ?? false)
                                                     <img src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}"
-                                                         class="rounded"
-                                                         width="60"
-                                                         height="60"
+                                                         style="width: 60px; height: 50px; object-fit: cover;"
                                                          alt="{{ $row->advert->ad_title }}">
                                                 @else
                                                     <img src="{{ asset('frontend/images/default.png') }}"

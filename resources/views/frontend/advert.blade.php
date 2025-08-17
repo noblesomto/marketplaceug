@@ -21,7 +21,7 @@
         </div>
   </div>
 
-  <div class="">
+  <div class="max-w-4xl">
     <div>@include('frontend.components.advert.similar-ad')</div>
   </div>
 </section>

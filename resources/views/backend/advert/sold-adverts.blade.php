@@ -59,9 +59,15 @@
                   @foreach($adverts as $row)
                   <tr>
                     <td>
-                      <img width="60" height="60" src="{{ asset('uploads/images/'.$row->firstImage->image) }}"
-                           class="img-thumbnail rounded object-fit-cover" alt="Advert Image"
-                           data-bs-toggle="tooltip" data-bs-placement="top" title="View image">
+                      <img src="{{ $row->firstImage && $row->firstImage->image
+                                  ? asset('uploads/images/' . $row->firstImage->image)
+                                  : asset('frontend/images/default.png') }}"
+                           class="img-thumbnail rounded"
+                           style="width: 60px; height: 50px; object-fit: cover;"
+                           alt="Advert Image"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="View image">
                     </td>
                     <td class="fw-bold">{{ Str::limit($row->ad_title, 25) }}</td>
                     <td>
@@ -118,7 +124,7 @@
                       @endif
                     </td>
                     <td class="text-center">
-                      <a href="/admin/delete-advert/{{ $row->id }}" class="btn btn-sm btn-outline-dark"
+                      <a href="/admin/delete-ad/{{ $row->id }}" class="btn btn-sm btn-outline-dark"
                          onclick="return confirm('Permanently delete this advert?')" data-bs-toggle="tooltip" title="Delete">
                         <i class="bi bi-trash"></i>
                       </a>

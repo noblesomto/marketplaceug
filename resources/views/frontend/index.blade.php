@@ -14,58 +14,49 @@
 </div>
 
 
-  <div class="flex items-center justify-between px-2 block lg:hidden">
-      <a class="mx-1" href="/category/vehicles">
-        <div class="flex flex-col items-center">
-          <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-            <img class="w-6" src="{{ asset('frontend/images/icons/car-100.png') }}">
-          </div>
-          <div class="text-xs">
-              Vehicles
-          </div>
-        </div>
-      </a>
-      <a class="mx-1" href="/category/mobile-phones-and-tablets">
-        <div class="flex flex-col items-center">
-          <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-            <img class="w-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}">
-          </div>
-          <div class="text-xs">
-              Phones & Tablets
-          </div>
-        </div>
-      </a>
-      <a class="mx-1" href="/category/real-estate">
-        <div class="flex flex-col items-center">
-          <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-            <img class="w-6" src="{{ asset('frontend/images/icons/house-100.png') }}">
-          </div>
-          <div class="text-xs">
-              Real Estate
-          </div>
-        </div>
-      </a>
-      <a class="mx-1" href="/category/fashion">
-        <div class="flex flex-col items-center">
-          <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-            <img class="w-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}">
-          </div>
-          <div class="text-xs">
-              Fashion & Beauty
-          </div>
-        </div>
-      </a>
-      <a class="mx-1" href="/all-categories">
-        <div class="flex flex-col items-center">
-          <div class="bg-primary w-10 h-10 rounded-full flex items-center justify-center mr-2">
-            <img class="w-6" src="{{ asset('frontend/images/icons/list-100.png') }}">
-          </div>
-          <div class="text-xs">
-              All Categories
-          </div>
-        </div>
-      </a>
+  <div class="lg:hidden bg-white shadow-sm  border-t border-gray-100">
+  <div class="flex justify-around items-center py-2 px-1">
+    <!-- Vehicles -->
+    <a href="/category/vehicles" class="flex-1 flex flex-col items-center group">
+      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/car-100.png') }}" alt="Vehicles">
+      </div>
+      <span class="text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200">Vehicles</span>
+    </a>
+
+    <!-- Phones & Tablets -->
+    <a href="/category/mobile-phones-and-tablets" class="flex-1 flex flex-col items-center group">
+      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}" alt="Phones & Tablets">
+      </div>
+      <span class="text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200">Phones <br>& Tablets</span>
+    </a>
+
+    <!-- Real Estate -->
+    <a href="/category/real-estate" class="flex-1 flex flex-col items-center group">
+      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/house-100.png') }}" alt="Real Estate">
+      </div>
+      <span class="text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200">Real Estate</span>
+    </a>
+
+    <!-- Fashion & Beauty -->
+    <a href="/category/fashion" class="flex-1 flex flex-col items-center group">
+      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}" alt="Fashion & Beauty">
+      </div>
+      <span class="text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200">Fashion <br>& Beauty</span>
+    </a>
+
+    <!-- All Categories -->
+    <a href="/all-categories" class="flex-1 flex flex-col items-center group">
+      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/list-100.png') }}" alt="All Categories">
+      </div>
+      <span class="text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200">All Categories</span>
+    </a>
   </div>
+</div>
 
   <div class="block lg:hidden mt-4">
     @include('frontend.components.mobile.mobile-gallery')

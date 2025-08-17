@@ -113,16 +113,13 @@
       </div>
 </a>
 @empty
-  <div class="flex flex-col h-screen items-center bg-white">
+  <div class="flex flex-col  items-center bg-white">
         <span>
             <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="No Adverts Currently"/>
         </span>
-        <span>No Item matches the Search...</span>
+        <span>No Item here yet...</span>
     </div>
 @endforelse
 
-<div class="mt-6 px-2">
-  {{ $ads->links('pagination::tailwind') }}
-</div>
 
 </section>

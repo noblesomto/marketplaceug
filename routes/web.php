@@ -178,7 +178,7 @@ Route::any('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts']
 Route::any('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts'])->middleware('adminsession');
 Route::any('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->middleware('adminsession');
 Route::any('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->middleware('adminsession');
-Route::any('/admin/delete-advert/{id}', [ManageAdverts::class, 'delete_advert'])->middleware('adminsession');
+Route::any('/admin/delete-ad/{id}', [ManageAdverts::class, 'delete_advert'])->middleware('adminsession');
 
 //Manage Users
 Route::any('/admin/active-users', [ManageUsers::class, 'active_users'])->middleware('adminsession');

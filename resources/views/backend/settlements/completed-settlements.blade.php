@@ -62,7 +62,7 @@
                                                          width="60"
                                                          height="60"
                                                          alt="{{ $row->advert->ad_title }}"
-                                                         style="object-fit: cover;">
+                                                         style="width: 60px; height: 50px; object-fit: cover;">
                                                 @else
                                                     <img src="{{ asset('frontend/images/default.png') }}"
                                                          class="rounded"
