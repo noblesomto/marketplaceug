@@ -191,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price.classList.remove("hidden");
                 salary.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
+                quantity.classList.remove("hidden");
             }
         // Car section (subcategory 2)
         if (subcategoryId == 2) {

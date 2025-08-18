@@ -25,11 +25,14 @@
         
         /* Header */
         .header {
-            background-color: #4CAF50;
+            background-color: #1d4b00;
             color: white;
-            padding: 25px 20px;
+            padding: 40px 0;
             text-align: center;
-            border-radius: 5px 5px 0 0;
+        }
+
+        .logo {
+            max-height: 80px;
         }
         
         /* Content Area */
@@ -131,7 +134,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Your Order Has Been Shipped</h1>
+            <img src="{{ asset('frontend/images/email-logo.png') }}" alt="{{ config('global.site_name') }} Logo" class="logo">
 
         </div>
         

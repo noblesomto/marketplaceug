@@ -51,6 +51,7 @@ document.getElementById('category').addEventListener('change', function () {
                 shipment.classList.remove("hidden");
                 itemCondition.classList.remove("hidden");
                 buyDirect.classList.remove("hidden");
+                quantity.classList.remove("hidden");
              }
 
             if (countryId === "3") {
@@ -74,6 +75,7 @@ document.getElementById('category').addEventListener('change', function () {
             }else{
                 price.classList.remove("hidden");
                 shipping.classList.remove("hidden");
+                quantity.classList.remove("hidden");
             }
 
 

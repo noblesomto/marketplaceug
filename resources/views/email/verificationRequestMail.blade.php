@@ -12,9 +12,14 @@
             padding: 20px;
         }
         .header {
-            color: #2c3e50;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            background-color: #1d4b00;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .logo {
+            max-height: 80px;
         }
         .content {
             padding: 20px 0;
@@ -43,7 +48,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>User Verification Required</h1>
+        <img src="{{ asset('frontend/images/email-logo.png') }}" alt="{{ config('global.site_name') }} Logo" class="logo">
     </div>
 
     <div class="content">
