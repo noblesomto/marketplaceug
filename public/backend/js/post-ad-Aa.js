@@ -45,13 +45,17 @@ document.getElementById('category').addEventListener('change', function () {
                 shipment.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
              }else{
                 services.classList.add("hidden");
                 shipment.classList.remove("hidden");
                 itemCondition.classList.remove("hidden");
                 buyDirect.classList.remove("hidden");
-                quantity.classList.remove("hidden");
+                if (quantity) {
+                    quantity.classList.remove("hidden");
+                }
              }
 
             if (countryId === "3") {
@@ -62,7 +66,9 @@ document.getElementById('category').addEventListener('change', function () {
                 shipping.classList.add("hidden");
                 buyDirect.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
             }else if (countryId === "18") {
                 expectedSalary.classList.remove("hidden");
                 price.classList.add("hidden");
@@ -71,11 +77,15 @@ document.getElementById('category').addEventListener('change', function () {
                 shipping.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
             }else{
                 price.classList.remove("hidden");
                 shipping.classList.remove("hidden");
-                quantity.classList.remove("hidden");
+                if (quantity) {
+                    quantity.classList.remove("hidden");
+                }
             }
 
 

@@ -1115,7 +1115,7 @@ trix-toolbar [data-trix-button-group="history-tools"] {
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
-<script src="{{ asset('backend/js/edit-ad.js') }}"></script>
+<script src="{{ asset('backend/js/edit-ad-Aa.js') }}"></script>
 
 <script>
     // ==================== Image Upload and Management ====================

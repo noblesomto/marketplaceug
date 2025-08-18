@@ -158,13 +158,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 shipping.classList.add("hidden");
                 shipmentDiv.classList.add("hidden");
                 itemCondition.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
              }else{
                 services.classList.add("hidden");
                 buyDirect.classList.remove("hidden");
                 shipping.classList.remove("hidden");
                 shipmentDiv.classList.remove("hidden");
                 itemCondition.classList.remove("hidden");
+                if (quantity) {
+                    quantity.classList.remove("hidden");
+                }
              }
 
              //Category Jobs 3
@@ -176,7 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
                  //Category CV 18
             }else if (categoryId === "18")  {
                 expectedSalary.classList.remove("hidden");
@@ -186,12 +193,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 shipping.classList.add("hidden");
                 itemCondition.classList.add("hidden");
                 buyDirect.classList.add("hidden");
-                quantity.classList.add("hidden");
+                if (quantity) {
+                    quantity.classList.add("hidden");
+                }
             }else{
                 price.classList.remove("hidden");
                 salary.classList.add("hidden");
                 expectedSalary.classList.add("hidden");
-                quantity.classList.remove("hidden");
+                if (quantity) {
+                    quantity.classList.remove("hidden");
+                }
             }
         // Car section (subcategory 2)
         if (subcategoryId == 2) {

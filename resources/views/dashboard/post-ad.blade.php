@@ -957,7 +957,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <!-- JavaScript for Image Upload, Sorting, and Deleting -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-<script src="{{ asset('backend/js/post-ad.js') }}"></script>
+<script src="{{ asset('backend/js/post-ad-Aa.js') }}"></script>
 <script src="{{ asset('backend/js/sortable.js') }}"></script>
 
 
