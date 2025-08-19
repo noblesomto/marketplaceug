@@ -6,7 +6,7 @@
 <div class="max-w-4xl mx-auto bg-white my-10 pb-20">
     <section class="pb-2 pt-10 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">About Marketplace NG</h1>
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">About Marketplace Naija</h1>
         <p class="text-gray-600 mb-8">
           Welcome to Marketplace Naija, Nigeria's trusted online marketplace where individuals and businesses come together to buy and sell a wide variety of products with ease. Whether you're looking to declutter your home, launch a small business, or find great deals on new or used items, Marketplace Naija is your go-to platform.
         </p>

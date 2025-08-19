@@ -45,7 +45,11 @@
                     <div class="mb-2">
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <div class="flex items-center space-x-2">
-                                <span><img class="w-8" src="{{ asset('frontend/images/user.png') }}" alt="Marketplace User"> </span>
+                                <div class="w-10 h-10 rounded-full bg-dark_green flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">
+                                        {{ strtoupper(substr($row->user->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $row->user->name)[1] ?? '', 0, 1)) }}
+                                    </span>
+                                </div>
                                 <span class="text-lg font-semibold">{{ $row->user->name }}</span>
                             </div>
                             <div class="mt-2 text-base">

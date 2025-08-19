@@ -25,10 +25,11 @@
         
         /* Header */
         .header {
-            background-color: #1d4b00;
+            background-color: #4CAF50;
             color: white;
-            padding: 40px 0;
+            padding: 25px 20px;
             text-align: center;
+            border-radius: 5px 5px 0 0;
         }
 
         .logo {
@@ -142,6 +143,7 @@
             <div class="section">
                 <h2>Hello {{ $details['buyer'] }},</h2>
             <p>We’re happy to inform you that your order for {{ $details['advert'] }} is ready for Pickup.</p>
+            <p>Please visit your selected GIG Logistics office to collect your item.</p>
             </div>
 
             <div class="section">

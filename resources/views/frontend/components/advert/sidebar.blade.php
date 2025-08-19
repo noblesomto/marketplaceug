@@ -114,13 +114,15 @@
     </div>
     <div class="flex justify-start ">
         <a href="/seller/{{ $ad->owner->user_id }}">
-            <div class=" bg-gray-200 rounded-full py-4 px-4 mr-2 h-12">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
+            @if($ad->owner->profile_picture == "")
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                <span class="text-dark_green text-sm font-medium">
+                    {{ strtoupper(substr($ad->owner->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $ad->owner->name)[1] ?? '', 0, 1)) }}
+                </span>
             </div>
+            @else
+                <img class="w-12 h-12 rounded-full" src="{{ asset('uploads/profile/'. $ad->owner->profile_picture) }}">
+            @endif
         </a>
         <div>
             <div class="text-dark_green text-sm font-semibold"><a href="/seller/{{ $ad->owner->user_id }}">{{ $ad->owner->name }} </a> </div>
@@ -291,8 +293,31 @@
     </a>
 </div>
 
+
 <div class="mt-5 w-full bg-white p-5">
     <h4 class="font-bold text-lg">Safety Guidelines</h4>
+    @if($ad->category==3)
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li class="text-gray-800">Never pay to apply or attend an interview</li>
+        <li class="text-gray-800">Research the company and verify their details beforehand</li>
+        <li class="text-gray-800">Only attend interviews at official company addresses</li>
+        <li class="text-gray-800">Share personal information only after receiving a confirmed job offer</li>
+    </ul>
+    @elseif($ad->category==11)
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li class="text-gray-800">Clearly define the work and payment terms in advance</li>
+        <li class="text-gray-800">Review ratings and feedback to confirm reliability</li>
+        <li class="text-gray-800">Arrange meetings only in safe, public locations</li>
+        <li class="text-gray-800">Keep a record of all agreements and communications for future reference</li>
+    </ul>
+    @elseif($ad->category==18)
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li class="text-gray-800">Check the candidate’s background before arranging interviews</li>
+        <li class="text-gray-800">Keep sensitive personal details private</li>
+        <li class="text-gray-800">Avoid clicking on suspicious links outside the provided CV</li>
+        <li class="text-gray-800">Hold interviews only in a secure, professional setting</li>
+    </ul>
+    @else
     <ul class="list-disc pl-5 space-y-2 mt-2">
         <li class="text-gray-800">Never pay upfront before inspecting the item.</li>
         <li class="text-gray-800">Meet in a safe, public location.</li>
@@ -300,6 +325,7 @@
         <li class="text-gray-800">Verify all documents and pay only when you're fully satisfied.</li>
         <li class="text-gray-800">Always use the <strong>"Buy Direct"</strong> option (if available) to enjoy <strong>100% Buyer Protection</strong>.</li>
     </ul>
+    @endif
 </div>
 
 <!--

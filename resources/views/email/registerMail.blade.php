@@ -47,9 +47,11 @@
         }
         
         .header {
-            background-color: #1d4b00;
-            padding: 40px 0;
+            background-color: #4CAF50;
+            color: white;
+            padding: 25px 20px;
             text-align: center;
+            border-radius: 5px 5px 0 0;
         }
         
         .logo {
@@ -97,7 +99,7 @@
         .button{
             background: #1d4b00;
             color: white;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
             padding: 10px 40px;
             text-decoration: none;
@@ -134,6 +136,25 @@
             font-size: 16px;
             margin-top: 30px;
         }
+
+        /* Typography */
+        h1 {
+            color: white;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: #2E7D32;
+            margin: 0 0 15px 0;
+            font-size: 20px;
+        }
+
+        h4 {
+            color: #4CAF50;
+            margin: 0 0 12px 0;
+            font-size: 16px;
+        }
         
         /* Responsive Styles */
         @media screen and (max-width: 600px) {
@@ -163,13 +184,13 @@
         <!-- Header -->
         <tr>
             <td class="header">
-                <img src="{{ asset('frontend/images/email-logo.png') }}" alt="{{ config('global.site_name') }} Logo" class="logo">
+                <h1>Welcome to {{ config('global.site_name') }}</h1>
             </td>
         </tr>
         
         <!-- Main Content -->
         <tr>
-            <td style="padding: 20px 10px;">
+            <td style="">
                 <table class="content-box" align="center" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td style="padding: 40px 30px;">

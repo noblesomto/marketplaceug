@@ -25,10 +25,11 @@
         
         /* Header */
         .header {
-            background-color: #1d4b00;
+            background-color: #4CAF50;
             color: white;
-            padding: 40px 0;
+            padding: 25px 20px;
             text-align: center;
+            border-radius: 5px 5px 0 0;
         }
 
         .logo {

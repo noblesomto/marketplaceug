@@ -132,7 +132,6 @@
     <div class="container">
         <div class="header">
             <h1>Your Order has been Deleivered</h1>
-
         </div>
         
         <div class="content">

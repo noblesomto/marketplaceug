@@ -3,7 +3,7 @@
     <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-base">
             <div class="flex flex-col">
-                <h4 class="font-bold">Marketplace NG </h4>
+                <h4 class="font-bold">Marketplace Naija</h4>
                 <ul class="flex flex-col space-y-1 mt-2">
                     <li><a href="/about-us" class="hover:text-secondary-200">About Us</a></li>
                     <li><a href="/career" class="hover:text-secondary-200">Career</a></li>
