@@ -110,6 +110,16 @@ if (!function_exists('getAdvertCount')) {
             $query->where('brand', $filters['brand']);
         }
 
+        // Filter by buy_direct
+        if (isset($filters['buy_direct'])) {
+            if ($filters['buy_direct'] === 'Yes') {
+                $query->where('buy_direct', 'Yes');
+            } elseif ($filters['buy_direct'] === 'No') {
+                // force no results if "No"
+                $query->whereRaw('1 = 0');
+            }
+        }
+
         if (!empty($filters['state'])) {
             $query->where('state', $filters['state']);
         }

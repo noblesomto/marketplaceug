@@ -76,6 +76,7 @@ Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('u
 Route::any('/search', [SearchFilter::class, 'search']);
 Route::post('/filter/adverts', [SearchFilter::class, 'filter']);
 Route::post('/filter/sellers', [SearchFilter::class, 'filterBySeller'])->name('filter.sellers');
+Route::post('/filter/buydirect', [SearchFilter::class, 'filterByBuydirect'])->name('filter.buydirect');
 
 
 // Get State and Locations

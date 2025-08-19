@@ -54,7 +54,7 @@
                     </div>
                     @endif
 
-                    @if(!in_array($row->category, [3, 11, 18]))
+                    @if(!in_array($row->category, [1, 3, 11, 18]))
                     <div class="mt-2">
                         <div class="flex justify-between text-sm ">
                           @if($row->shipment=="Ship")

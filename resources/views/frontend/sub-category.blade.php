@@ -68,6 +68,11 @@
               </div>
 
             <div class="bg-white p-2 space-y-2">
+                <h4 class="font-semibold">Buy Dircetly</h4>
+                @include('frontend.components.filter.buydirect-subcategory')
+            </div>
+
+            <div class="bg-white p-2 space-y-2">
                 <h4 class="font-semibold">Verified Sellers </h4>
                 @include('frontend.components.advert.sellers-subcategory')
             </div>

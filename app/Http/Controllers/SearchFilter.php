@@ -50,6 +50,10 @@ class SearchFilter extends Controller
             $query->where('state', $request->location);
         }
 
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->brand);
+        }
+
         // Order and paginate results
         $ads = $query->orderBy('created_at', 'asc')
                     ->paginate(10)
@@ -256,6 +260,50 @@ class SearchFilter extends Controller
     }
 
 
+        public function filterByBuydirect(Request $request)
+    {
+        $query = Advert::with('firstImage')
+            ->where('ad_status', 1)
+            ->where('sold', 'No');
+
+        // 🟢 Seller filter
+        $sellers = $request->input('sellers', 'all');
+        if ($sellers !== 'all') {
+            $query->whereHas('owner', function ($q) use ($sellers) {
+                $q->where('verified', $sellers); // yes/no
+            });
+        }
+
+        // Optional: category context
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buyDirect);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        // 🟢 Paginate with sellers filter appended
+        $adverts = $query->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->appends(['sellers' => $sellers]);
+
+        return response()->json([
+            'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
+        ]);
+    }
 
 
 }
