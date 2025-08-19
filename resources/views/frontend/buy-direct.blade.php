@@ -64,71 +64,78 @@
             </div>
 
             <div x-data="{ open: false, selected: null }" class="relative w-full max-w-md mx-auto">
-                <!-- Selected item -->
-                <div
-                    @click="open = !open"
-                    class="border border-gray-300 rounded-xl px-4 py-3 flex items-center justify-between bg-white shadow-sm cursor-pointer transition-all"
-                >
-                    <template x-if="selected">
-                        <div class="flex items-center space-x-3 w-full">
-                            <img :src="selected.logo" class="w-10 h-10 object-contain rounded-md" loading="lazy">
-                            <div class="w-full">
-                                <div class="flex justify-between items-center">
-                                    <div class="font-medium text-base text-gray-800" x-text="selected.company"></div>
-                                    <div class="text-sm text-gray-700 flex-shrink-0"><span x-text="selected.weight"></span> KG</div>
-                                </div>
-                                <div class="text-sm text-gray-500">Max <span x-text="selected.weight"></span> kg</div>
+            <!-- Selected item -->
+            <div
+                @click="open = !open"
+                class="border border-gray-300 rounded-xl px-4 py-3 flex items-center justify-between bg-white shadow-sm cursor-pointer transition-all"
+                :class="{ 'border-red-500': !selected && @json($errors->has('shipping_selected')) }"
+            >
+                <template x-if="selected">
+                    <div class="flex items-center space-x-3 w-full">
+                        <img :src="selected.logo" class="w-10 h-10 object-contain rounded-md" loading="lazy">
+                        <div class="w-full">
+                            <div class="flex justify-between items-center">
+                                <div class="font-medium text-base text-gray-800" x-text="selected.company"></div>
+                                <div class="text-sm text-gray-700 flex-shrink-0"><span x-text="selected.weight"></span> KG</div>
                             </div>
+                            <div class="text-sm text-gray-500">Max <span x-text="selected.weight"></span> kg</div>
                         </div>
-                    </template>
-                    <template x-if="!selected">
-                        <span class="text-gray-400 text-sm">Select a shipping option</span>
-                    </template>
-                    <svg class="w-5 h-5 ml-3 text-gray-500 transition-transform duration-200"
-                        :class="open ? 'rotate-180' : ''"
-                        fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-
-                <!-- Dropdown list -->
-                <div
-                    x-show="open"
-                    x-transition
-                    @click.away="open = false"
-                    class="absolute z-50 bg-white border border-gray-200 mt-2 w-full rounded-xl shadow-lg overflow-hidden max-h-80 overflow-y-auto"
-                    style="scroll-behavior: smooth;"
-                >
-                    @foreach($ad->shippings as $shipping)
-                        <div
-                            @click="
-                                selected = {
-                                    company: '{{ $shipping->company }}',
-                                    price: {{ $shipping->price }},
-                                    weight: {{ $shipping->weight }},
-                                    logo: '{{ asset('uploads/shipping/'.$shipping->logo) }}',
-                                    ship_id: {{ $shipping->id }},
-                                };
-                                open = false;
-                                document.getElementById('shipping_price').value = selected.price;
-                                document.getElementById('ship_id').value = selected.ship_id;
-                            "
-                            class="flex items-center gap-4 px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 transition-colors"
-                        >
-                            <img src="{{ asset('uploads/shipping/'.$shipping->logo) }}"
-                                 class="w-10 h-10 object-contain rounded-md" loading="lazy">
-                            <div>
-                                <div class="font-medium text-sm text-gray-800">{{ $shipping->company }}</div>
-                                <div class="text-xs text-gray-500">Max {{ $shipping->weight }} kg</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Hidden inputs -->
-                <input type="hidden" name="shipping_price" id="shipping_price">
-                <input type="hidden" name="ship_id" id="ship_id">
+                    </div>
+                </template>
+                <template x-if="!selected">
+                    <span class="text-gray-400 text-sm">Select a shipping option</span>
+                </template>
+                <svg class="w-5 h-5 ml-3 text-gray-500 transition-transform duration-200"
+                    :class="open ? 'rotate-180' : ''"
+                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" />
+                </svg>
             </div>
+
+            <!-- Dropdown list -->
+            <div
+                x-show="open"
+                x-transition
+                @click.away="open = false"
+                class="absolute z-50 bg-white border border-gray-200 mt-2 w-full rounded-xl shadow-lg overflow-hidden max-h-80 overflow-y-auto"
+                style="scroll-behavior: smooth;"
+            >
+                @foreach($ad->shippings as $shipping)
+                    <div
+                        @click="
+                            selected = {
+                                company: '{{ $shipping->company }}',
+                                price: {{ $shipping->price }},
+                                weight: {{ $shipping->weight }},
+                                logo: '{{ asset('uploads/shipping/'.$shipping->logo) }}',
+                                ship_id: {{ $shipping->id }},
+                            };
+                            open = false;
+                            document.getElementById('shipping_price').value = selected.price;
+                            document.getElementById('ship_id').value = selected.ship_id;
+                            document.getElementById('shipping_selected').value = selected.ship_id;
+                        "
+                        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 transition-colors"
+                    >
+                        <img src="{{ asset('uploads/shipping/'.$shipping->logo) }}"
+                             class="w-10 h-10 object-contain rounded-md" loading="lazy">
+                        <div>
+                            <div class="font-medium text-sm text-gray-800">{{ $shipping->company }}</div>
+                            <div class="text-xs text-gray-500">Max {{ $shipping->weight }} kg</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Hidden inputs -->
+            <input type="hidden" name="shipping_price" id="shipping_price">
+            <input type="hidden" name="ship_id" id="ship_id">
+            <input type="hidden" name="shipping_selected" id="shipping_selected" required>
+
+            @if ($errors->has('shipping_selected'))
+                <span class="text-red-700 py-1">Please select a shipping option</span>
+            @endif
+        </div>
 
 
             @php 

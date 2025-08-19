@@ -48,7 +48,7 @@
 </head>
 <body>
     <div class="header">
-       <img src="{{ asset('frontend/images/email-logo.png') }}" alt="{{ config('global.site_name') }} Logo" class="logo">
+       <h1>A New Report from a User</h1>
     </div>
 
     <div class="content">

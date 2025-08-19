@@ -134,8 +134,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('frontend/images/email-logo.png') }}" alt="{{ config('global.site_name') }} Logo" class="logo">
-
+           <h1>Your Order Summary</h1>
         </div>
         
         <div class="content">

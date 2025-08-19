@@ -79,7 +79,7 @@
                                     @endif
                                 </div>
                                 <div class="flex justify-start flex-wrap gap-2 md:space-x-3 text-sm md:pr-6">
-                                    <div><a href="/report-ad/{{ $row->advert->id }}" class="bg-secondary-200 px-4 py-1 rounded-lg inline-block" href="">Report Issue</a></div>
+                                    <div><a href="/report-ad/{{ $row->advert->id }}" class="bg-secondary-200 px-4 py-1 rounded-lg inline-block" href="">Report an Issue</a></div>
                                     <div>
                                         @if(($row->buyer_status ?? '') == 'delivered')
                                             <button class="bg-green-200 px-4 py-1 rounded-lg inline-block cursor-not-allowed"
