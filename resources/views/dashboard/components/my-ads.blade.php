@@ -1,7 +1,7 @@
 <div class="pb-10 mb-10">
     @if (!$ads->isEmpty())
       @foreach ($ads as $row)
-          <div class="bg-white mb-1 border-b border-b-gray-300 shadow p-2 mb-1">
+          <div class="bg-white mb-2 border-b border-b-gray-300 shadow p-2 mb-1">
              <div class="flex w-full">
                   <div class="w-2/6 mr-1 relative bg-gray-50">
                     <img class="h-24 lg:h-40 object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}">
