@@ -8,12 +8,12 @@ const loadMoreAdsDesktop = () => {
     if (desktopLoading) return;
     desktopLoading = true;
     document.getElementById('loading').classList.remove('hidden');
-    fetch(`/ads/fetchDesktop?page=${desktopPage}`)
+    fetch(`/listings/fetchDesktop?page=${desktopPage}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById('loading').classList.add('hidden');
             if (data.html.trim()) {
-                document.getElementById('ads-container').insertAdjacentHTML('beforeend', data.html);
+                document.getElementById('listings-container').insertAdjacentHTML('beforeend', data.html);
                 if (data.next_page) {
                     desktopPage = data.next_page;
                     desktopLoading = false;
@@ -23,7 +23,7 @@ const loadMoreAdsDesktop = () => {
             }
         })
         .catch(error => {
-            console.error('Error loading desktop ads:', error);
+            console.error('Error loading desktop listings:', error);
             document.getElementById('loading').classList.add('hidden');
             desktopLoading = false;
         });
@@ -44,12 +44,12 @@ const loadMoreAdsMobile = () => {
     if (mobileLoading) return;
     mobileLoading = true;
     document.getElementById('loading-mobile').classList.remove('hidden');
-    fetch(`/ads/fetchMobile?page=${mobilePage}`)
+    fetch(`/listings/fetchMobile?page=${mobilePage}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById('loading-mobile').classList.add('hidden');
             if (data.html.trim()) {
-                document.getElementById('ads-container-mobile').insertAdjacentHTML('beforeend', data.html);
+                document.getElementById('listings-container-mobile').insertAdjacentHTML('beforeend', data.html);
                 if (data.next_page) {
                     mobilePage = data.next_page;
                     mobileLoading = false;
@@ -59,7 +59,7 @@ const loadMoreAdsMobile = () => {
             }
         })
         .catch(error => {
-            console.error('Error loading mobile ads:', error);
+            console.error('Error loading mobile listings:', error);
             document.getElementById('loading-mobile').classList.add('hidden');
             mobileLoading = false;
         });

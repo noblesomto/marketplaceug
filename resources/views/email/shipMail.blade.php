@@ -142,7 +142,7 @@
        
             <div class="section">
                 <h2>Hello {{ $details['buyer'] }},</h2>
-            <p>We’re happy to inform you that your order for {{ $details['advert'] }} has been processed and shipped by GIG
+            <p>We’re happy to inform you that your order for <b>{{ $details['advert'] }}</b> has been processed and shipped by GIG
 Logistics (GIGL).</p>
             </div>
 

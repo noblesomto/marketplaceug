@@ -131,14 +131,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Your Order has been Deleivered</h1>
+            <h1>Your Order has been Delivered</h1>
         </div>
         
         <div class="content">
        
             <div class="section">
                 <h2>Hello {{ $details['buyer'] }},</h2>
-            <p>We’re happy to inform you that your order for {{ $details['advert'] }} has finally been delivered.</p>
+            <p>We’re happy to inform you that your order for <b>{{ $details['advert'] }}</b> has finally been delivered.</p>
             </div>
 
 

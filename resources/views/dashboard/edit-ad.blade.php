@@ -42,7 +42,7 @@ trix-toolbar [data-trix-button-group="history-tools"] {
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
         Ad Details
-
+        @include('frontend.components.flash-message')
         @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
                 <p>There were some issues with your submission:</p>

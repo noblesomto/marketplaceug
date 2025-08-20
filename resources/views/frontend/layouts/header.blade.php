@@ -2,9 +2,14 @@
 <html>
 <head>
     <title>{{ $title }}</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  @vite(['resources/css/app.css','resources/js/app.js'])
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     @vite(['resources/css/app.css','resources/js/app.js'])
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVDT4VHH"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
      <!-- SEO Meta Tags -->
     <meta name="description" content="Marketplace Naija – Nigeria’s trusted online marketplace. Buy, sell, and trade confidently with Buyer Protection on every transaction. Post free ads today">
@@ -36,6 +41,15 @@
        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
    })(window, document, "clarity", "script", "su2vqghfhw");
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TPBJ5F0GJP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TPBJ5F0GJP');
 </script>
 </head>
 <body class="bg-body text-gray-700 text-sm">

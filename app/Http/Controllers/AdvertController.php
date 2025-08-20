@@ -563,6 +563,9 @@ class AdvertController extends Controller
                 'city' => 'required',
                 'state' => 'required',
                 'shipping_selected' => 'required',
+            ],
+             [
+                'shipping_selected.required' => 'Please Select a shipping option',
             ]);
 
             $sender_station = State::where('name', $ad->state)->firstOrFail();

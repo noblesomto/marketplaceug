@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 
-<section>
+<section class="pb-14">
     
     <div class="max-w-2xl mx-auto bg-white p-3 md:p-10 mt-4 md:mt-10 mb-5 rounded-lg">
         <div class="flex justify-center">

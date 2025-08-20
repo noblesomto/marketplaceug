@@ -1,18 +1,16 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class CheckUserSession
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (!$request->session()->has('user_id')) {
-            // Save intended destination before redirect
-            $request->session()->put('previous_url', $request->fullUrl());
-
+            // Use Laravel's intended URL mechanism
+            $request->session()->put('url.intended', $request->fullUrl());
             return redirect('/login');
         }
 

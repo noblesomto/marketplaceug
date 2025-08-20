@@ -58,7 +58,7 @@ class PageController extends Controller
             //dd($featured);
         $perPage = 20;
 
-        $ads = Advert::with('firstImage', 'owner')
+        $listings = Advert::with('firstImage', 'owner')
             ->where('ad_status', 1)
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
@@ -78,7 +78,7 @@ class PageController extends Controller
         $categories = Category::with('subCategories')->get();
         
         //dd($categories);
-        return view('frontend.index', compact('title','ads','featured','user','categories'));
+        return view('frontend.index', compact('title','listings','featured','user','categories'));
     }
 
 

@@ -10,8 +10,8 @@
 
 <div class="container mx-auto">
 	<div class="container mx-auto px-4">
-    <div id="ads-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        @foreach ($ads as $row)
+    <div id="listings-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        @foreach ($listings as $row)
             @include('frontend.components.advert.advert-card', ['row' => $row])
         @endforeach
     </div>

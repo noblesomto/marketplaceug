@@ -469,7 +469,7 @@ class UserManageAdverts extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Advert updated successfully');
+        return redirect('/user/my-ads')->with('success', 'Advert updated successfully');
     }
 
 public function boost_ad(Request $request, $id)

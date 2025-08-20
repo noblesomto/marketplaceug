@@ -54,9 +54,9 @@ Route::any('/admin', [AccountController::class, 'adminlogin'])->name('admin.logi
 Route::any('/shipper', [AccountController::class, 'shipper']);
 
 //Adverts
-Route::get('/adverts', [AdvertController::class, 'adverts']);
-Route::get('/ads/fetchDesktop', [AdvertController::class, 'loadMoreAds'])->name('ads.loadMore');
-Route::get('/ads/fetchMobile', [AdvertController::class, 'loadMoreAdsMobile'])->name('ads.loadMore');
+Route::get('/listings', [AdvertController::class, 'adverts']);
+Route::get('/listings/fetchDesktop', [AdvertController::class, 'loadMoreAds'])->name('ads.loadMore');
+Route::get('/listings/fetchMobile', [AdvertController::class, 'loadMoreAdsMobile'])->name('ads.loadMore');
 Route::get('/all-categories', [AdvertController::class, 'all_categories']);
 Route::get('/category/{category_slug}', [AdvertController::class, 'category']);
 Route::get('/category/all-{slug}', [AdvertController::class, 'all_category']);

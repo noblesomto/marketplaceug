@@ -6,7 +6,7 @@
 
 <section class="w-full lg:w-4/6 mx-auto bg-white md:bg-body pb-20">
   <div class="block lg:hidden bg-white pt-3 ml-2">
-    <span class="text-base"><strong>Marketplace NG</strong> - where sellers meet real buyers</span>
+    <span class="text-base"><strong>Marketplace Naija</strong> - where sellers meet real buyers</span>
   </div>
 
   <div class="my-5">
@@ -83,8 +83,8 @@
 
  <div class="block lg:hidden mt-6">
     <h4 class="font-semibold text-lg px-4 mb-3 text-gray-800">Recent Listings</h4>
-    <div id="ads-container-mobile" class="grid grid-cols-2 gap-3 px-4">
-        @foreach ($ads as $row)
+    <div id="listings-container-mobile" class="grid grid-cols-2 gap-3 px-4">
+        @foreach ($listings as $row)
             @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
         @endforeach
     </div>

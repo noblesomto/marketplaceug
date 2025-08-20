@@ -115,8 +115,8 @@ class AccountController extends Controller
                 'last_login_ip' => $this->getIp(),
                 'last_login_at' => now(),
             ]);
-        return $request->session()->has('previous_url')
-            ? redirect($request->session()->get('previous_url'))
+        return $request->session()->has('url.intended')
+            ? redirect($request->session()->get('url.intended'))
             : redirect()->action([UserController::class, 'index']);
     }
 

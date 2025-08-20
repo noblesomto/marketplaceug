@@ -12,7 +12,7 @@
     }
 </style>
 
-<section class="max-w-2xl  mx-auto text-sm pt-2">
+<section class="max-w-2xl  mx-auto text-sm pt-2 pb-10">
    
             <div class="flex flex-col bg-white p-3">
                 
@@ -40,7 +40,7 @@
                         @endforeach
                     </div>
 
-                    <form id="chat-form" class="">
+                    <form id="chat-form" class="pb-2">
                         @csrf
                         <input type="hidden" name="advert_id" value="{{ $advert->id }}">
                         <input type="hidden" name="receiver_id" value="{{ $receiver->user_id }}">

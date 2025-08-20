@@ -142,7 +142,7 @@
        
             <div class="section">
                 <h2>Hello {{ $details['buyer'] }},</h2>
-            <p>We’re happy to inform you that your order for {{ $details['advert'] }} is ready for Pickup.</p>
+            <p>We’re happy to inform you that your order for <b>{{ $details['advert'] }}</b> is ready for Pickup.</p>
             <p>Please visit your selected GIG Logistics office to collect your item.</p>
             </div>
 

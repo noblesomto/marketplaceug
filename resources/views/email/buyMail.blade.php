@@ -163,7 +163,7 @@
             </div>
 
             <div class="section">
-                <p>If you have any questions or require assistance, please don&#39;t hesitate to contact our support team.</p>
+                <p>If you have any questions or require assistance, please don't hesitate to contact our support team.</p>
                 <br>
                 <p>Thank you for choosing Marketplace Naija.</p>
                 <p>We sincerely appreciate your trust in our platform.</p>

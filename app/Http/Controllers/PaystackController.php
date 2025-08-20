@@ -43,10 +43,16 @@ class PaystackController extends Controller
         $data = $response->json();
 
         if ($data['status']) {
+        $reference = $data['data']['reference'];
 
-            $reference = $data['data']['reference'];
+        // Check if there is already a pending payment for this advert and user
+        $existingPayment = Payment::where('advert_id', $shipping['ad']->id)
+            ->where('user_id', $user_id)
+            ->where('payment_status', 'pending')
+            ->first();
 
-
+        if (!$existingPayment) {
+            // Only create if no pending exists
             $post = Payment::create([
                 'advert_id'        => $shipping['ad']->id,
                 'user_id'          => $user_id,
@@ -63,10 +69,17 @@ class PaystackController extends Controller
                 'state'            => $shipping['reciever_state']->id ?? null,
                 'payment_status'   => 'pending',
             ]);
+        } else {
+            // Reuse the existing pending payment (update reference if needed)
+            $existingPayment->update([
+                'payment_reference' => $reference, // update new reference
+            ]);
 
-
-            return redirect($data['data']['authorization_url']);
+            $post = $existingPayment;
         }
+
+        return redirect($data['data']['authorization_url']);
+    }
 
         return back()->with('error', 'Payment initialization failed.');
     }
@@ -122,9 +135,9 @@ class PaystackController extends Controller
 
             $details = [
                 'advert' => $advert->ad_title,
-                'buyer' => $user->name,
+                'buyer' => $booking->first_name . " " .$booking->last_name,
                 'seller' => $owner->name,
-                'phone' => $user->phone,
+                'phone' => $booking->phone,
                 'shipping' => $ship->company,
                 'address' => $user->address,
                 'state' => $location->state->name,
