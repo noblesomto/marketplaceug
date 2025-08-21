@@ -6,7 +6,7 @@
 
 <section class="w-full lg:w-4/6 mx-auto bg-white md:bg-body pb-20">
   <div class="block lg:hidden bg-white pt-3 ml-2">
-    <span class="text-base"><strong>Marketplace Naija</strong> - where sellers meet real buyers</span>
+    <span class="text-base"><strong>Marketplace Naija</strong> - Buy. Sell. Deals.</span>
   </div>
 
   <div class="my-5">

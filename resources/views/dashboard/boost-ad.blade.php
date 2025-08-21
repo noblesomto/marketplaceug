@@ -3,8 +3,8 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('dashboard.layouts.search')
 
-<section class="w-full max-w-4xl mx-auto p-4 md:p-6">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+<section class="w-full max-w-4xl mx-auto pb-20">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 p-4 md:p-6">
         <!-- Header Section -->
         <div class="bg-dark_green text-white px-6 py-4">
             <h1 class="text-xl font-semibold">Boost Your Advert</h1>

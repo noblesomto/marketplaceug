@@ -7,7 +7,7 @@
             <h1 class="text-2xl font-bold">Dashboard</h1>
             <nav class="mt-6">
                 <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Dashboard</a>
-                <a href="/my-ads" class="block py-2.5 px-4 rounded hover:bg-gray-700">My Ads</a>
+                <a href="/my-ads" class="block py-2.5 px-4 rounded hover:bg-gray-700">My Listings</a>
                 <a href="/profile" class="block py-2.5 px-4 rounded hover:bg-gray-700">Profile</a>
             </nav>
         </div>

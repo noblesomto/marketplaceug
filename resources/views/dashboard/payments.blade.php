@@ -51,26 +51,25 @@
                     </div>
                     <div class="flex justify-between items-center text-dark_green font-bold text-base my-1 lg:my-3">
                         <div class="mr-4">₦ {{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}</div>
-                        <div class="capitalize w-48 px-3 py-0 lg:py-1 text-center rounded {{ ($row->payment_status ?? '') === 'paid' ? 'bg-green-200' : 'bg-yellow-200' }}">
+                        <div class="capitalize w-36 px-3 py-0 lg:py-1 text-center rounded {{ ($row->payment_status ?? '') === 'paid' ? 'bg-green-200' : 'bg-yellow-200' }}">
                             {{ $row->payment_status ?? 'pending' }}
                         </div>
                     </div>
 
-
-
                     @if(($row->shipping_status ?? '') == "shipped")
-                    <div class="mb-2 flex justify-between">
-                        <span>Item Will be delivered within 3 - 7 working days</span>
-                        <span>Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
+                    <div class="flex flex-col lg:flex-row lg:justify-between gap-1 lg:gap-10 mt-1">
+                        <span class="block">Item Will be delivered within 3 - 7 working days</span>
+                        <span class="block">Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
                     </div>
                     @endif
 
                     @if(($row->shipping_status ?? '') == "delivered")
-                    <div class="mb-2 flex justify-between">
-                        <span>Package Delivered</span>
-                        <span>Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
+                    <div class="flex flex-col lg:flex-row lg:justify-between gap-1 lg:gap-10 mt-1">
+                        <span class="block">Package Delivered</span>
+                        <span class="block">Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
                     </div>
                     @endif
+
                   </div>
               </div>
 

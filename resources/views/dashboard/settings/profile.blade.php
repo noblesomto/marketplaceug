@@ -125,7 +125,7 @@
 
 <section class="w-full md:w-3/6  mx-auto p-3 text-sm pb-10 -mt-28">
     <div class="border-b-2 border-b-gray-200 p-4 font-bold text-dark_green mb-2">
-        My Adverts
+        Your Ads
         @include('frontend.components.flash-message')
     </div>
     @include('frontend.components.advert.advert-list', ['ads' => $ads])
