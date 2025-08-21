@@ -103,6 +103,11 @@
                             <span>My Ads</span>
                         </a>
 
+                        <a href="/user/favourites" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                            <span><i class="bi bi-heart"></i></span>
+                            <span>Wishlists</span>
+                        </a>
+
                         <a href="/user/payment" class="flex gap-2 border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
                             <span><i class="bi bi-box2"></i></span>
                             <span>Purchases</span>

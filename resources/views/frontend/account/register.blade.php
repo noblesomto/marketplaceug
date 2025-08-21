@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<section class="w-full md:w-4/6 mx-auto bg-white pb-10">
+<section class="w-full md:w-4/6 mx-auto bg-white pb-20">
     <div class="border-b-2 border-b-gray-400 h-20 flex justify-center items-center">
         <h2 class="font-bold text-lg">Register in 30 seconds</h2>
     </div>

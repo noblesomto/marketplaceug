@@ -90,8 +90,12 @@
                         <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }} </span>
                     </div>
                   </div>
+                @elseif($row->sub_category==6)
+                <div class="flex-col space-y-2 pb-2">
+                    <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }} </span>
 
-                  @endif
+                  </div>
+                @endif
 
                 <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
                     @if($row->shipment=="Ship")
