@@ -131,7 +131,7 @@ Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('e
 Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
 Route::any('/user/boost-ad/{id}', [UserManageAdverts::class, 'boost_ad'])->middleware('usersession');
 Route::any('/user/boosted-ad/{id}', [UserManageAdverts::class, 'boosted_ad'])->middleware('usersession');
-
+Route::get('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('edit.ad')->middleware('usersession');
 
 //User Profile
 Route::any('/user/profile', [UserProfile::class, 'profile'])->middleware('usersession');

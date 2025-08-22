@@ -1,4 +1,4 @@
-<section class="pb-20 space-y-2">
+<section class="pb-20 space-y-2 px-1">
 
 @forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
@@ -29,7 +29,7 @@
                     </div>
                     @endif
                 </div>
-                <div class="absolute top-0 left-2">
+                <div class="absolute top-0 left-3">
                     @if ($row->featured == 'Yes')
                         <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left text-xs">
                             Promoted
@@ -84,13 +84,23 @@
                 @endif
 
                 @if($row->sub_category==2)
-                  <div class="flex-col space-y-2 pb-4">
-                    <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }} </span>
-                    <div class="flex items-center">
-                        <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }} </span>
+                    <div class="flex-col space-y-2 pb-4">
+                        <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }} </span>
+                        <div class="flex items-center">
+                            <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }} </span>
+                        </div>
                     </div>
-                  </div>
-                  @endif
+                @elseif($row->sub_category==6)
+                    <div class="flex-col space-y-2 pb-2">
+                        <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }} </span>
+                    </div>
+                @else
+                    @if(!empty($row->item_condition))
+                        <div class="flex-col space-y-2 pb-2">
+                            <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->item_condition }} </span>
+                        </div>
+                    @endif
+                @endif
 
                 <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
                     @if($row->shipment=="Ship")

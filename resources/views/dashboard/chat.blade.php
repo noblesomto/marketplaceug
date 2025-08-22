@@ -101,7 +101,7 @@
 
 
                         @if($advert->buy_direct == "No" && $advert->user_id != $user->user_id)
-                            <span class="mt-4 text-red-500">** Please avoid making payment before inspecting the item **</span>
+                            <span class="mt-4 text-red-500">** Please avoid making payment before inspecting the item</span>
                         @endif
 
                     </form>

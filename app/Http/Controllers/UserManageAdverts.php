@@ -517,4 +517,52 @@ public function boost_ad(Request $request, $id)
         return view('dashboard.boosted-ad', compact('title','user','advert','count_ads', 'price'));
     }
 
+
+       public function delete_ad($id)
+    {
+        try {
+            \DB::beginTransaction();
+
+            $advert = Advert::with('images')->find($id);
+            if (!$advert) {
+                return redirect()->back()->with('error', 'Advert not found');
+            }
+
+            // Delete all associated images safely (except for category Job which uses default image)
+            if ($advert->category != 3) {
+                foreach ($advert->images ?? [] as $image) {
+                    if ($image && !empty($image->image)) {
+                        try {
+                            // Use your helper to delete the file
+                            FileUploadHelper::delete('images', $image->image);
+                            // Delete the image record from database
+                            $image->delete();
+                        } catch (\Exception $imgEx) {
+                            throw new \Exception("Unable to delete image file");
+                        }
+                    }
+                }
+            }
+
+            // Delete the advert itself
+            $advert->delete();
+
+            \DB::commit();
+
+            return redirect()->back()->with('success', 'Advert deleted successfully');
+
+        } catch (\Exception $e) {
+            \DB::rollBack();
+
+            // Log the actual error for debugging
+            \Log::error('Failed to delete advert', [
+                'advert_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->with('error', 'Failed to delete advert');
+        }
+    }
+
 }

@@ -3,8 +3,8 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('dashboard.layouts.search')
 
-<section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm ">
-    <div class="border-b-2 border-b-gray-200 pt-4 px-2 font-bold text-dark_green mb-2 flex justify-between">
+<section class="w-full md:w-3/6  mx-auto p-3 text-sm ">
+    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 flex justify-between items-center rounded-lg">
         <span>Profile Section</span>
         <div class="space-x-4">
         	<a title="My Ad" href="/user/my-ads" ><i class="bi bi-badge-ad text-lg lg:text-3xl"></i></a>
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="max-w-2xl mx-auto bg-white p-3 md:p-10 mt-4 md:mt-10 mb-20 rounded-lg">
+    <div class=" mx-auto bg-white p-4 md:p-10 mt-2  rounded-lg">
     	<div class="w-full bg-white shadow p-3">
 			<div class="flex flex-col">
 		        <div class="flex">
@@ -123,8 +123,8 @@
 
 </section>
 
-<section class="w-full md:w-3/6  mx-auto p-3 text-sm pb-10 -mt-28">
-    <div class="border-b-2 border-b-gray-200 p-4 font-bold text-dark_green mb-2">
+<section class="w-full md:w-3/6  mx-auto p-3 text-sm pb-10 ">
+    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 rounded-lg">
         Your Ads
         @include('frontend.components.flash-message')
     </div>

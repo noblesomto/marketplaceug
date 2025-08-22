@@ -83,7 +83,7 @@
             @else
                 <!-- Price -->
                 <div class="mt-auto">
-                    <div class="flex justify-between items-center mb-1">
+                    <div class="flex justify-between items-center gap-4 mb-1">
                         <span class="text-sm font-bold text-green-600">
                             ₦{{ number_format($row->price, 0, '.', ',') }}
                         </span>

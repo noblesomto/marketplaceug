@@ -8,7 +8,7 @@
                     <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
                   </div>
                   <div class="w-4/6 relative space-y-2">
-                    <div class="flex justify-between text-xs">
+                    <div class="flex justify-between items-center text-xs">
                       <div class="flex justify-start items-center text-sm md:mr-5">
                         <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -27,6 +27,29 @@
                         </svg>
                         </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
                       </div>
+                      <div class="relative dropdown inline-block">
+                          <button
+                            type="button"
+                            class="dropdown-button inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="bi bi-three-dots text-xl text-gray-600"></i>
+                          </button>
+
+                          <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                              <a
+                                href="/user/delete-ad/{{ $row->id }}"
+                                onclick="return confirm('Delete this advert permanently?')"
+                                class="flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
+                              >
+                                <i class="bi bi-trash mr-3 text-red-400"></i> Delete Ad
+                              </a>
+
+                            </div>
+                          </div>
+                        </div>
                     </div>
                     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                         <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2"> {{ Str::limit($row->ad_title, 50) }}</div>
@@ -218,4 +241,47 @@
 </div>
 
 
+
+<script>
+(function () {
+  // Toggle the clicked dropdown; close others
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.dropdown-button');
+    const anyDropdown = e.target.closest('.dropdown');
+
+    // If a button was clicked
+    if (btn && anyDropdown) {
+      const thisMenu = anyDropdown.querySelector('.dropdown-menu');
+      const willOpen = thisMenu.classList.contains('hidden');
+
+      // Close all first
+      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+
+      // Then toggle this one
+      if (willOpen) {
+        thisMenu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        thisMenu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      return;
+    }
+
+    // Clicked outside any dropdown -> close all
+    if (!anyDropdown) {
+      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.dropdown-button[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded','false'));
+    }
+  });
+
+  // Escape key closes all
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded','false'));
+    }
+  });
+})();
+</script>
 
