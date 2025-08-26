@@ -146,4 +146,14 @@ class Advert extends Model
     }
 
 
+    public function scopeOrderWithFeatured($query)
+    {
+        return $query->selectRaw('adverts.*, (featured = "yes") as is_featured')
+                     ->orderByDesc('is_featured') // Featured first
+                     ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END') // Random featured
+                     ->orderByDesc('created_at'); // Others newest
+    }
+
+
+
 }

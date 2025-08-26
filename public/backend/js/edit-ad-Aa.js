@@ -1,5 +1,4 @@
 
-
 document.addEventListener('DOMContentLoaded', function() {
     // ==================== Form Selection Logic ====================
     const categorySelect = document.getElementById('category');

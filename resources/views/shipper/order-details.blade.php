@@ -118,9 +118,11 @@
             <select name="shipping_status" class="w-full px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="pending" {{ ($ship->shipping_status =='pending') ? "selected" : ""; }}>Pending</option>
                 <option value="shipped" {{ ($ship->shipping_status =='shipped') ? "selected" : ""; }}>Shipped</option>
+                <!--
                 <option value="pickup" {{ ($ship->shipping_status =='pickup') ? "selected" : ""; }}>Ready for Pickup</option>
                 <option value="delivered" {{ ($ship->shipping_status =='delivered') ? "selected" : ""; }}>Delivered</option>
                 <option value="canceled" {{ ($ship->shipping_status =='canceled') ? "selected" : ""; }}>Canceled</option>
+                -->
             </select>
         </div>
 

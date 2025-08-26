@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\ManageShipping;
 use App\Http\Controllers\Admin\ManageUsers;
 use App\Http\Controllers\Admin\ManageAdvertising;
 use App\Http\Controllers\Admin\ManagePayments;
+use App\Http\Controllers\Admin\ManageAdminUsers;
+use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Broadcast;
 
 Route::get('/', [PageController::class, 'index']);
@@ -165,66 +167,113 @@ Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('paym
 Route::get('/admin/index', [AdminController::class, 'index'])->middleware('adminsession');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
 
-//Manage Categories
-Route::any('/admin/category', [ManageCategories::class, 'category'])->middleware('adminsession');
-Route::any('/admin/delete-category/{id}', [ManageCategories::class, 'delete_category'])->middleware('adminsession');
-Route::any('/admin/sub-category/{id}', [ManageCategories::class, 'sub_category'])->middleware('adminsession');
-Route::any('/admin/delete-subcategory/{id}/{cat}', [ManageCategories::class, 'delete_subcategory'])->middleware('adminsession');
-Route::any('/admin/brand/{id}', [ManageCategories::class, 'brand'])->middleware('adminsession');
-Route::any('/admin/delete-brand/{id}/{cat}', [ManageCategories::class, 'delete_brand'])->middleware('adminsession');
-Route::any('/admin/model/{id}', [ManageCategories::class, 'model'])->middleware('adminsession');
-Route::any('/admin/delete-model/{id}/{cat}', [ManageCategories::class, 'delete_model'])->middleware('adminsession');
 
-//Manage Adverts
-Route::any('/admin/active-adverts', [ManageAdverts::class, 'active_adverts'])->middleware('adminsession');
-Route::any('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts'])->middleware('adminsession');
-Route::any('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts'])->middleware('adminsession');
-Route::any('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->middleware('adminsession');
-Route::any('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->middleware('adminsession');
-Route::any('/admin/delete-ad/{id}', [ManageAdverts::class, 'delete_advert'])->middleware('adminsession');
+Route::middleware(['adminsession','adminrole:Finance,super_admin'])->group(function () {
+    // Manage Payments
+    Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payments']);
+    Route::any('/admin/pending-payments', [ManagePayments::class, 'pending_payments']);
+    Route::any('/admin/update-payment/{id}', [ManagePayments::class, 'update_payment']);
+    Route::any('/admin/confirm-payment/{id}', [ManagePayments::class, 'confirm_payment']);
 
-//Manage Users
-Route::any('/admin/active-users', [ManageUsers::class, 'active_users'])->middleware('adminsession');
-Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->middleware('adminsession');
-Route::any('/admin/disable-status/{id}/{status}', [ManageUsers::class, 'disable_status'])->middleware('adminsession');
-Route::any('/admin/unverified-users', [ManageUsers::class, 'unverified_users'])->middleware('adminsession');
-Route::any('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->middleware('adminsession');
-//Route::any('/admin/delete-user/{id}', [ManageUsers::class, 'delete_user'])->middleware('adminsession');
-Route::any('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->middleware('adminsession');
-Route::any('/admin/user-verification', [ManageUsers::class, 'user_verification'])->middleware('adminsession');
-Route::any('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->middleware('adminsession');
+    // Manage Settlements
+    Route::any('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements']);
+    Route::any('/admin/completed-settlements', [ManagePayments::class, 'completed_settlements']);
+    Route::any('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement']);
+    Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
+});
 
-//Manage Payments
-Route::any('/admin/completed-payments', [ManagePayments::class, 'completed_payments'])->middleware('adminsession');
-Route::any('/admin/pending-payments', [ManagePayments::class, 'pending_payments'])->middleware('adminsession');
-Route::any('/admin/update-payment/{id}', [ManagePayments::class, 'update_payment'])->middleware('adminsession');
-Route::any('/admin/confirm-payment/{id}', [ManagePayments::class, 'confirm_payment'])->middleware('adminsession');
+/*
+|--------------------------------------------------------------------------
+| Advert Manager Role Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['adminsession','adminrole:Advert_manager,super_admin'])->group(function () {
+    // Advertising
+    Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert']);
+    Route::any('/admin/delete-advert/{id}', [ManageAdvertising::class, 'delete_advert']);
+    Route::put('/admin/update-advert/{id}', [ManageAdvertising::class, 'updateAdvert'])->name('admin.update.advert');
 
-//Manage Settlements
-Route::any('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements'])->middleware('adminsession');
-Route::any('/admin/completed-settlements', [ManagePayments::class, 'completed_settlements'])->middleware('adminsession');
-Route::any('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement'])->middleware('adminsession');
-Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
+    // Manage Advert Boost
+    Route::any('/boost/active', [ManageBoost::class, 'active']);
+    Route::any('/boost/completed', [ManageBoost::class, 'completed']);
+    Route::any('/boost/unpaid', [ManageBoost::class, 'unpaid']);
+    Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status']);
 
-//Advertising
-Route::any('/admin/create-advert', [ManageAdvertising::class, 'create_advert'])->middleware('adminsession');
-Route::any('/admin/delete-advert/{id}', [ManageAdvertising::class, 'delete_advert'])->middleware('adminsession');
-Route::put('/admin/update-advert/{id}', [ManageAdvertising::class, 'updateAdvert'])->name('admin.update.advert');
+    //Manage Adverts
+    Route::any('/admin/active-adverts', [ManageAdverts::class, 'active_adverts']);
+    Route::any('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts']);
+    Route::any('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts']);
+    Route::any('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status']);
+    Route::any('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status']);
+    Route::any('/admin/delete-ad/{id}', [ManageAdverts::class, 'delete_advert']);
 
-//Manage Advert Boost
-Route::any('/boost/active', [ManageBoost::class, 'active'])->middleware('adminsession');
-Route::any('/boost/completed', [ManageBoost::class, 'completed'])->middleware('adminsession');
-Route::any('/boost/unpaid', [ManageBoost::class, 'unpaid'])->middleware('adminsession');
-Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status'])->middleware('adminsession');
+    //Manage Categories
+    Route::any('/admin/category', [ManageCategories::class, 'category']);
+    Route::any('/admin/delete-category/{id}', [ManageCategories::class, 'delete_category']);
+    Route::any('/admin/sub-category/{id}', [ManageCategories::class, 'sub_category']);
+    Route::any('/admin/delete-subcategory/{id}/{cat}', [ManageCategories::class, 'delete_subcategory']);
+    Route::any('/admin/brand/{id}', [ManageCategories::class, 'brand']);
+    Route::any('/admin/delete-brand/{id}/{cat}', [ManageCategories::class, 'delete_brand']);
+    Route::any('/admin/model/{id}', [ManageCategories::class, 'model']);
+    Route::any('/admin/delete-model/{id}/{cat}', [ManageCategories::class, 'delete_model']);
+});
 
+/*
+|--------------------------------------------------------------------------
+| Resolution Role Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['adminsession','adminrole:Resolution,super_admin'])->group(function () {
+    // Reports
+    Route::any('/admin/view-reports', [AdminController::class, 'view_reports']);
+    Route::any('/admin/report-status/{id}/{status}', [AdminController::class, 'report_status']);
+});
 
-//Reports
-Route::any('/admin/view-reports', [AdminController::class, 'view_reports'])->middleware('adminsession');
-Route::any('/admin/report-status/{id}/{status}', [AdminController::class, 'report_status'])->middleware('adminsession');
+/*
+|--------------------------------------------------------------------------
+| Customer Care Role Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['adminsession','adminrole:Customer_care,super_admin'])->group(function () {
 
-//Shhipping
-Route::any('/settings/setup-shipping', [SettingController::class, 'shipping'])->middleware('adminsession');
-Route::put('/settings/update-shipping/{id}', [SettingController::class, 'shipping'])->middleware('adminsession');
+    //Manage Users
+    Route::any('/admin/active-users', [ManageUsers::class, 'active_users']);
+    Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status']);
+    Route::any('/admin/disable-status/{id}/{status}', [ManageUsers::class, 'disable_status']);
+    Route::any('/admin/unverified-users', [ManageUsers::class, 'unverified_users']);
+    Route::any('/admin/disabled-users', [ManageUsers::class, 'disabled_users']);
+    //Route::any('/admin/delete-user/{id}', [ManageUsers::class, 'delete_user']);
+    Route::any('/admin/view-user/{id}', [ManageUsers::class, 'view_user']);
+    Route::any('/admin/user-verification', [ManageUsers::class, 'user_verification']);
+    Route::any('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status']);
+
+    // Shipping
+    Route::any('/settings/setup-shipping', [SettingController::class, 'shipping']);
+    Route::put('/settings/update-shipping/{id}', [SettingController::class, 'shipping']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Super Admin Only Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['adminsession','adminrole:super_admin'])->group(function () {
+    // Roles & Permissions
+    Route::prefix('settings/roles')->group(function () {
+        Route::get('/', [RolePermissionController::class, 'index'])->name('admin.roles.index');
+        // Create
+        Route::post('/roles', [RolePermissionController::class, 'storeRole'])->name('admin.roles.store');
+        Route::post('/permissions', [RolePermissionController::class, 'storePermission'])->name('admin.permissions.store');
+        // Assign
+        Route::post('/roles/{role}/assign', [RolePermissionController::class, 'assignPermission'])->name('admin.roles.assign');
+        Route::post('/admins/{admin}/assign', [RolePermissionController::class, 'assignRoleToAdmin'])->name('admin.admins.assign');
+    });
+
+    //GIG Logistics
+    Route::any('/settings/gig-locations', [SettingController::class, 'gig_locations']);
+    Route::any('/settings/delete-gig-location/{id}', [SettingController::class, 'delete_gig_location']);
+    Route::post('/settings/update-gig-location', [SettingController::class, 'updateGigLocation'])->name('update.gig.location');
+});
 
 //Shipper Dashboard
 Route::get('/shipper/index', [ShipperController::class, 'index'])->middleware('shipsession');
@@ -232,10 +281,18 @@ Route::any('/shipper/get-shipping', [ShipperController::class, 'get_shipping'])-
 Route::get('/shipper/order-details/{id}', [ShipperController::class, 'order_details'])->middleware('shipsession');
 Route::any('/shipper/update-shipping/{id}', [ShipperController::class, 'update_shipping'])->middleware('shipsession');
 
-//GIG Logistics
-Route::any('/settings/gig-locations', [SettingController::class, 'gig_locations'])->middleware('adminsession');
-Route::any('/settings/delete-gig-location/{id}', [SettingController::class, 'delete_gig_location'])->middleware('adminsession');
-Route::post('/settings/update-gig-location', [SettingController::class, 'updateGigLocation'])->name('update.gig.location')->middleware('adminsession');
+//Manage Admin USers
+Route::prefix('settings/manage-admins')
+    ->middleware(['adminsession','adminrole:super_admin'])
+    ->group(function () {
+    Route::get('/', [ManageAdminUsers::class, 'index']); // Create
+    Route::post('/', [ManageAdminUsers::class, 'store']); // Create
+    Route::put('/{id}', [ManageAdminUsers::class, 'update']); // Update
+    Route::delete('/{id}', [ManageAdminUsers::class, 'destroy']); // Delete
+});
+
+
+
 
 Route::get('/fetch-subcat/{cat_id}', [ManageCategories::class, 'fetch_subcat']);
 Route::get('/fetch-brand/{cat_id}', [ManageCategories::class, 'fetch_brand']);

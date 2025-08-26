@@ -69,7 +69,17 @@
                         {{ $row->user->name }}
                       </a>
                     </td>
-                    <td>₦{{ number_format($row->price, 2) }}</td>
+
+                    @if($row->category==3)
+                        <td>{{ $row->salary }}</td>
+                    @elseif($row->category==18)
+                        <td>{{ $row->expected_salary }}</td>
+                    @elseif($row->contact_price=="yes")
+                        <td>Contact For Price</td>
+                    @else
+                        <td>₦{{ number_format(floatval($row->price ?? 0), 2) }}</td>
+                    @endif
+
                     <td>{{ $row->state }}</td>
                     <td>{{ date('j M Y', strtotime($row->created_at)) }}</td>
                     <td>

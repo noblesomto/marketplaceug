@@ -55,9 +55,10 @@ class SearchFilter extends Controller
         }
 
         // Order and paginate results
-        $ads = $query->orderBy('created_at', 'asc')
-                    ->paginate(10)
-                    ->appends($request->except('page'));
+        $ads = $query->orderWithFeatured()
+             ->paginate(10)
+             ->appends($request->except('page'));
+
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -89,8 +90,9 @@ class SearchFilter extends Controller
                     ->activeNotRecentlySold()
                     ->where('state', $location)
                     ->where('category', $cat->id)
-                    ->orderBy('created_at', 'asc')
+                    ->orderWithFeatured()
                     ->paginate(10);
+
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -113,7 +115,7 @@ class SearchFilter extends Controller
                     ->where('sold', 'No')
                     ->where('state', $location)
                     ->where('sub_category', $subcat->id)
-                    ->orderBy('created_at', 'asc')
+                    ->orderWithFeatured()
                     ->paginate(10);
 
         $user_id = $request->session()->get('user_id');
@@ -136,7 +138,7 @@ class SearchFilter extends Controller
                     ->activeNotRecentlySold()
                     ->where('state', $location)
                     ->where('brand', $brand->id)
-                    ->orderBy('created_at', 'asc')
+                    ->orderWithFeatured()
                     ->paginate(10);
 
         $user_id = $request->session()->get('user_id');
@@ -207,9 +209,9 @@ class SearchFilter extends Controller
         }
 
         // Paginate
-        $adverts = $query->orderBy('created_at', 'desc')
-                         ->paginate(10)
-                         ->appends($request->except('page'));
+        $adverts = $query->orderWithFeatured()
+                 ->paginate(10)
+                 ->appends($request->except('page'));
 
         // Return only partial
         return response()->json([
@@ -249,10 +251,10 @@ class SearchFilter extends Controller
             $query->where('state', $request->location);
         }
 
-        // 🟢 Paginate with sellers filter appended
-        $adverts = $query->orderBy('created_at', 'desc')
-            ->paginate(10)
-            ->appends(['sellers' => $sellers]);
+        //Paginate with sellers filter appended
+        $adverts = $query->orderWithFeatured()
+                 ->paginate(10)
+                 ->appends(['sellers' => $sellers]);
 
         return response()->json([
             'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
@@ -264,14 +266,14 @@ class SearchFilter extends Controller
     {
         $query = Advert::with('firstImage')
             ->where('ad_status', 1)
-            ->where('sold', 'No');
+            ->where('sold', 'No')
+            ->where('buy_direct', $request->buy_direct);
 
-        // 🟢 Seller filter
-        $sellers = $request->input('sellers', 'all');
-        if ($sellers !== 'all') {
-            $query->whereHas('owner', function ($q) use ($sellers) {
-                $q->where('verified', $sellers); // yes/no
-            });
+        //dd($request->buy_direct);
+
+        // 🟢 Buy Direct filter - AND condition
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
         }
 
         // Optional: category context
@@ -287,18 +289,16 @@ class SearchFilter extends Controller
             $query->where('brand', $request->brand);
         }
 
-        if ($request->filled('buydirect')) {
-            $query->where('buy_direct', $request->buyDirect);
-        }
-
         if ($request->filled('location')) {
             $query->where('state', $request->location);
         }
 
-        // 🟢 Paginate with sellers filter appended
-        $adverts = $query->orderBy('created_at', 'desc')
-            ->paginate(10)
-            ->appends(['sellers' => $sellers]);
+        // 🟢 Paginate with sellers and buydirect filters appended
+        $adverts = $query->orderWithFeatured()
+                 ->paginate(10)
+                 ->appends([
+                     'buydirect' => $request->input('buydirect')
+                 ]);
 
         return response()->json([
             'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()

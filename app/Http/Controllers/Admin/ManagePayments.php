@@ -20,6 +20,7 @@ use App\Mail\CancelAdMail;
 use App\Mail\BuyDirectMail;
 use App\Mail\SellerMail;
 use App\Models\GigLogistic;
+use App\Mail\SellerDeliverAdMail;
 
 class ManagePayments extends Controller
 {
@@ -76,6 +77,7 @@ class ManagePayments extends Controller
         $city = GigLogistic::where('id', $ship->city)->first();
         $details = [
             'advert' => $ship->advert->ad_title,
+            'seller' => $ship->advert->owner->name,
             'buyer' => $user->name,
             'phone' => $user->phone,
             'shipping' => $ship->shipping->company,
@@ -89,6 +91,7 @@ class ManagePayments extends Controller
             Mail::to($user->email)->send(new PickupAdMail($details));
         }elseif($request->input('shipping_status')=="delivered"){
             Mail::to($user->email)->send(new DeliverAdMail($details));
+            Mail::to($ship->advert->owner->email)->send(new SellerDeliverAdMail($details));
         }else{
             Mail::to($user->email)->send(new CancelAdMail($details));
         }

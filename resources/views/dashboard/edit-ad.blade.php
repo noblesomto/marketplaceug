@@ -827,7 +827,7 @@ trix-toolbar [data-trix-button-group="history-tools"] {
                 </label>
             </div>
             <div class="col-span-10 md:col-span-3">
-                <select id="price" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <select id="price_type" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="Fixed" {{ ($advert->price_type =='Fixed') ? "selected" : ""; }}>Fixed Price</option>
                     <option value="Negotiable" {{ ($advert->price_type =='Negotiable') ? "selected" : ""; }}>Negotiable</option>
                     <option value="Give Away" {{ ($advert->price_type =='Give Away') ? "selected" : ""; }}>Give Away</option>

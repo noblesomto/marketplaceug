@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'adminsession' => \App\Http\Middleware\CheckAdminSession::class,
         'usersession' => \App\Http\Middleware\CheckUserSession::class,
         'shipsession' => \App\Http\Middleware\CheckShipSession::class,
+        'adminpermission' => \App\Http\Middleware\AdminPermission::class,
+        'adminrole' => \App\Http\Middleware\AdminRole::class,
     ];
 }

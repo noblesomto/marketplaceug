@@ -201,6 +201,18 @@
                 <i class="bi bi-circle"></i><span>GIG Locations</span>
               </a>
             </li>
+
+            <li>
+              <a href="/settings/manage-admins">
+                <i class="bi bi-circle"></i><span>Manage Admins</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/settings/roles">
+                <i class="bi bi-circle"></i><span>Manage Admins Roles</span>
+              </a>
+            </li>
    
             <li>
               <a href="/settings/change-password">

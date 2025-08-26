@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Shipping;
 use App\Models\User;
+use App\Models\Admin;
+use Hash;
 use App\Models\State;
 use App\Models\GigLogistic;
 
@@ -112,5 +114,43 @@ class SettingController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function manageAdmin(Request $request)
+    {
+        $title = "Manage Admins - " . config('global.site_name');
+        $admins = Admin::get();
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'username' => 'required|string|min:3|max:50|unique:admins,username',
+                'email' => 'required|email|unique:admins,email',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+            //dd($request);
+            try {
+                $admin = Admin::create([
+                    'admin_id' => rand(11111,99999),
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                return redirect()->back()->with('status', [
+                    'text' => 'Admin user created successfully!',
+                    'type' => 'success'
+                ]);
+
+            } catch (\Exception $e) {
+                return redirect()->back()->with('status', [
+                    'text' => 'Error creating admin user. Please try again.',
+                    'type' => 'danger'
+                ])->withInput($request->except('password', 'password_confirmation'));
+            }
+        }
+
+        if ($request->isMethod('GET')) {
+            return view('backend.settings.admins.users', compact('title','admins'));
+        }
     }
 }

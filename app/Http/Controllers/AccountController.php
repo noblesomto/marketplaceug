@@ -96,9 +96,26 @@ class AccountController extends Controller
     {
         $deviceHash = $this->generateDeviceHash($request);
 
-        return $user->trustedDevices()
+        $trustedDevice = $user->trustedDevices()
             ->where('device_hash', $deviceHash)
-            ->exists();
+            ->where('expires_at', '>=', now())
+            ->first();
+
+        // Fallback: check cookie
+        if (!$trustedDevice && $request->hasCookie('trusted_device')) {
+            $cookieHash = $request->cookie('trusted_device');
+            $trustedDevice = $user->trustedDevices()
+                ->where('device_hash', $cookieHash)
+                ->where('expires_at', '>=', now())
+                ->first();
+        }
+
+        if ($trustedDevice) {
+            $trustedDevice->update(['last_used_at' => now()]);
+            return true;
+        }
+
+        return false;
     }
 
     protected function loginUser(Request $request, $user)
@@ -106,15 +123,24 @@ class AccountController extends Controller
         $request->session()->put('user_id', $user->user_id);
         $request->session()->put('name', $user->name);
 
+        // Handle "remember this device"
         if ($request->has('remember_device')) {
             $this->storeTrustedDevice($request, $user);
+
+            // persist cookie for 30 days (trusted device hash)
+            cookie()->queue(
+                cookie('trusted_device', $this->generateDeviceHash($request), 60 * 24 * 30)
+            );
         }
+
+        // Update last login info
         DB::table('users')
             ->where('user_id', $user->user_id)
             ->update([
                 'last_login_ip' => $this->getIp(),
                 'last_login_at' => now(),
             ]);
+
         return $request->session()->has('url.intended')
             ? redirect($request->session()->get('url.intended'))
             : redirect()->action([UserController::class, 'index']);
@@ -159,7 +185,7 @@ class AccountController extends Controller
 
     protected function generateDeviceHash(Request $request)
     {
-        return sha1($request->userAgent() . '|' . $this->getIp());
+        return sha1($request->userAgent());
     }
 
     protected function storeTrustedDevice(Request $request, $user)
@@ -169,9 +195,10 @@ class AccountController extends Controller
         $user->trustedDevices()->updateOrCreate(
             ['device_hash' => $deviceHash],
             [
-                'ip_address' => $this->getIp(),
+                'ip_address' => $this->getIp(), // optional, just for logging
                 'user_agent' => $request->userAgent(),
                 'last_used_at' => now(),
+                'expires_at' => now()->addDays(30),
             ]
         );
     }
@@ -435,30 +462,32 @@ class AccountController extends Controller
        
     }
 
-     public function adminlogin(Request $request)
+    public function adminlogin(Request $request)
     {
         $title = "Admin Login - " . config('global.site_name');
 
         if ($request->isMethod('POST')) {
             $request->validate([
-                'username' => 'required',
+                'email' => 'required|email',
                 'password' => 'required|min:4',
             ]);
-            
-            $username = $request->username;
+
+            $email = $request->email;
             $password = $request->password;
 
-            $login = Admin::where('username', $username)
-               ->where('password', md5($password))
-               ->first();
-            if ($login) {
-                $admin_id = $login->admin_id;
-                $request->session()->put('admin_id', $admin_id);
+            // Find admin by email
+            $admin = Admin::where('email', $email)->first();
 
-               return redirect()->action([AdminController::class, 'index']);
+            // Check if admin exists and password is correct
+            if ($admin && Hash::check($password, $admin->password)) {
+                $request->session()->put('admin_id', $admin->id);
+                return redirect()->action([AdminController::class, 'index']);
             }
-      
-            return redirect("admin")->with('status',['text'=>'Sorry! you enter wrong credentials ','type'=>'danger']);
+
+            return redirect("admin")->with('status', [
+                'text' => 'Invalid email or password. Please try again.',
+                'type' => 'danger'
+            ]);
         }
 
         if ($request->isMethod('GET')) {

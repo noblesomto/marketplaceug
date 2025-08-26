@@ -16,6 +16,7 @@
     <meta name="keywords" content="Marketplace Naija, Buy & Sell in Nigeria, Post free ads in Nigeria, Online marketplace Nigeria, Secure deals in Nigeria, Safe online marketplace, Buy safely in Nigeria, Sell safely in Nigeria, Trade confidently in Nigeria, Nigeria classifieds website, Buy and sell goods online">
     <meta name="author" content="Marketplace Naija">
 
+
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="{{ $title ?? 'Marketplace Naija' }}">
     <meta property="og:description" content="Marketplace Naija – Nigeria’s trusted online marketplace. Buy, sell, and trade confidently with Buyer Protection on every transaction. Post free ads today">
@@ -34,6 +35,7 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/fontawesome/css/all.min.css') }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+  <link rel="canonical" href="https://marketplace.ng/" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
 <script type="text/javascript">
    (function(c,l,a,r,i,t,y){

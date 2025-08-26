@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 🟢 Fetch Ads Function
+
+    // Fetch Ads Function
     function fetchSellerAds(url = '{{ route("filter.buydirect") }}') {
         // Show loading state (optional)
         const resultsContainer = document.getElementById('advert-results');
