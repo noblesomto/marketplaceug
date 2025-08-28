@@ -48,19 +48,19 @@
                 @if ($errors->has('first_name'))
                     <span class="text-red-700 py-1">{{ $errors->first('first_name') }}</span>
                 @endif
-                <input type="text" name="first_name" id="first_name" placeholder="First Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400">
+                <input type="text" name="first_name" id="first_name" placeholder="First Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" value="{{ old('first_name') }}">
             </div>
             <div class="my-3">
                 @if ($errors->has('last_name'))
                     <span class="text-red-700 py-1">{{ $errors->first('last_name') }}</span>
                 @endif
-                <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400">
+                <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" value="{{ old('last_name') }}">
             </div>
             <div class="my-3">
                 @if ($errors->has('phone'))
                     <span class="text-red-700 py-1">{{ $errors->first('phone') }}</span>
                 @endif
-                <input type="text" name="phone" id="phone" placeholder="Phone Number" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required>
+                <input type="text" name="phone" id="phone" placeholder="Phone Number" class="w-full bg-white px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required value="{{ old('phone') }}">
             </div>
 
             <div x-data="{ open: false, selected: null }" class="relative w-full max-w-md mx-auto">

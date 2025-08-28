@@ -34,7 +34,7 @@ class Admin extends Model
     public function isSuperAdmin()
     {
         // Option A: always treat the very first admin as super admin
-        if ($this->id === 23) {
+        if ($this->id === 1) {
             return true;
         }
 

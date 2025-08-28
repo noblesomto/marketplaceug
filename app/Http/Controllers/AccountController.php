@@ -414,10 +414,12 @@ class AccountController extends Controller
 
                 } catch (Throwable $e) {
                 
-                    return redirect()->back()->with('danger','Sorry!, This email does not exit on our system, please register');
+                    return redirect()->back()->with('error','Sorry!, Email Could not be Sent now, Try again later');
                 }
       
-            
+            }else{
+                return redirect()->back()->with('error','Sorry!, This email does not exit on our system... Please register');
+
             }
         }
 

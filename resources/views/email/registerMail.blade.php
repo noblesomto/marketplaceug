@@ -97,8 +97,8 @@
         }
 
         .button{
-            background: #1d4b00;
-            color: white;
+            background: #4CAF50;
+            color: #FFF !important;
             font-size: 24px;
             font-weight: 600;
             padding: 10px 40px;

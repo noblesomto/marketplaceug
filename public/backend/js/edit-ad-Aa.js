@@ -247,3 +247,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 });
+
+
+
+document.getElementById('ad_title').addEventListener('input', function() {
+    const charCount = this.value.length;
+    const maxLength = 75;
+    const charCountElement = document.getElementById('char-count');
+
+    // Update character count
+    charCountElement.textContent = charCount;
+
+    // Style the input field
+    if (charCount >= maxLength) {
+        this.classList.remove('focus:ring-blue-500', 'border-gray-300');
+        this.classList.add('border-red-500', 'focus:ring-red-500');
+
+        // Make character counter red
+        charCountElement.parentElement.classList.remove('text-gray-500');
+        charCountElement.parentElement.classList.add('text-red-500', 'font-semibold');
+    } else {
+        this.classList.remove('border-red-500', 'focus:ring-red-500');
+        this.classList.add('focus:ring-blue-500', 'border-gray-300');
+
+        // Reset character counter to gray
+        charCountElement.parentElement.classList.remove('text-red-500', 'font-semibold');
+        charCountElement.parentElement.classList.add('text-gray-500');
+    }
+});
+

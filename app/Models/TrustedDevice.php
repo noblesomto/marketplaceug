@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TrustedDevice extends Model
 {
     protected $fillable = [
-        'user_id', 'device_hash', 'ip_address', 'user_agent', 'last_used_at'
+        'user_id', 'device_hash', 'ip_address', 'user_agent', 'last_used_at', 'expires_at'
     ];
 
     public function user()

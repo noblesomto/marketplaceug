@@ -49,7 +49,7 @@ class UserManageAdverts extends Controller
             $category = (int) $request->input('category');
             //dd($category);
                 $rules = [
-                'ad_title'    => 'required',
+                'ad_title' => 'required|max:75',
                 'category'    => 'required',
                 'subcategory' => 'required',
                 'brand'       => 'required',
@@ -295,7 +295,7 @@ class UserManageAdverts extends Controller
         $category = (int) $request->input('category');
 
         $rules = [
-            'ad_title'    => 'required',
+            'ad_title' => 'required|max:75',
             'category'    => 'required',
             'subcategory' => 'required',
             'brand'       => 'required',

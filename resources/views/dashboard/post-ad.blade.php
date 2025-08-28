@@ -63,7 +63,21 @@ trix-toolbar [data-trix-button-group="file-tools"] {
                 @if ($errors->has('ad_title'))
                     <span class="text-red-400">{{ $errors->first('ad_title') }}</span>
                 @endif
-            <input type="text" name="ad_title" placeholder="Ad Title" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('ad_title') }}" required>
+            <div class="relative">
+                <input type="text"
+                       name="ad_title"
+                       id="ad_title"
+                       placeholder="Ad Title"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       value="{{ old('ad_title') }}"
+                       maxlength="75"
+                       required>
+                <div class="text-sm text-gray-500 mt-1">
+                    <span id="char-count">0</span>/75 characters
+                </div>
+            </div>
+
+
             </div>
             <div class="col-span-10 md:col-span-3">
                 <div class="text-xs">
