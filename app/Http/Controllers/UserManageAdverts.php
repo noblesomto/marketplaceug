@@ -55,7 +55,7 @@ class UserManageAdverts extends Controller
                 'brand'       => 'required',
                 'state'       => 'required',
                 'lga'         => 'required',
-                'description' => 'required',
+                'description' => 'required|max:3500',
                 'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
             ];
 
@@ -301,7 +301,7 @@ class UserManageAdverts extends Controller
             'brand'       => 'required',
             'state'       => 'required',
             'lga'         => 'required',
-            'description' => 'required',
+            'description' => 'required|max:3500',
             //'images'      => 'required|array',
             'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
         ];

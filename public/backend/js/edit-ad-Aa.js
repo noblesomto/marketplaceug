@@ -276,3 +276,45 @@ document.getElementById('ad_title').addEventListener('input', function() {
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const trixEditor = document.querySelector('trix-editor');
+    const hiddenInput = document.getElementById('content');
+    const wordCountElement = document.getElementById('word-count');
+    const maxLength = 3500;
+
+    function updateCharacterCount() {
+        const content = trixEditor.editor.getDocument().toString();
+        const charCount = content.length;
+
+        // Update character count display
+        wordCountElement.textContent = charCount;
+
+        // Update hidden input value
+        hiddenInput.value = content;
+
+        // Add red styling when at limit
+        if (charCount >= maxLength) {
+            trixEditor.style.border = '2px solid #ef4444';
+            wordCountElement.parentElement.classList.remove('text-gray-500');
+            wordCountElement.parentElement.classList.add('text-red-500', 'font-semibold');
+
+            // Prevent further input
+            if (charCount > maxLength) {
+                const truncatedContent = content.substring(0, maxLength);
+                trixEditor.editor.loadHTML(truncatedContent);
+                trixEditor.editor.setSelectedRange(maxLength);
+            }
+        } else {
+            trixEditor.style.border = '1px solid #d1d5db';
+            wordCountElement.parentElement.classList.remove('text-red-500', 'font-semibold');
+            wordCountElement.parentElement.classList.add('text-gray-500');
+        }
+    }
+
+    // Listen for text changes in Trix editor
+    trixEditor.addEventListener('trix-change', updateCharacterCount);
+
+    // Initial count on page load
+    updateCharacterCount();
+});

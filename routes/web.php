@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\ManageAdminUsers;
 use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Broadcast;
 
-Route::get('/', [PageController::class, 'index']);
+Route::get('/', [AdvertController::class, 'index']);
 Route::any('/page', [PageController::class, 'page']);
 Route::any('/about-us', [PageController::class, 'about']);
 Route::any('/career', [PageController::class, 'career']);

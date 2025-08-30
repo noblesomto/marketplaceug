@@ -53,4 +53,19 @@ class Payment extends Model
     {
         return $this->belongsTo(State::class, 'state', 'id');
     }
+
+    public function shippingMethod()
+    {
+        return $this->belongsTo(Shipping::class, 'shipping_method');
+    }
+
+    public function cityLocation()
+    {
+        return $this->belongsTo(GigLogistic::class, 'city');
+    }
+
+    public function stateLocation()
+    {
+        return $this->belongsTo(State::class, 'state');
+    }
 }

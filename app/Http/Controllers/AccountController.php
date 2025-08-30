@@ -101,7 +101,7 @@ class AccountController extends Controller
             ->where('expires_at', '>=', now())
             ->first();
 
-        // Fallback: check cookie
+        // fallback: check cookie
         if (!$trustedDevice && $request->hasCookie('trusted_device')) {
             $cookieHash = $request->cookie('trusted_device');
             $trustedDevice = $user->trustedDevices()
@@ -123,17 +123,24 @@ class AccountController extends Controller
         $request->session()->put('user_id', $user->user_id);
         $request->session()->put('name', $user->name);
 
-        // Handle "remember this device"
+        // Handle "remember device" (does both: OTP skip + stay logged in)
         if ($request->has('remember_device')) {
+            // 1. Trusted device (OTP skip)
             $this->storeTrustedDevice($request, $user);
+            cookie()->queue(cookie('trusted_device', $this->generateDeviceHash($request), 60 * 24 * 30));
 
-            // persist cookie for 30 days (trusted device hash)
+            // 2. Persistent login (stay logged in)
+            $token = Str::random(60);
+
+            DB::table('users')->where('user_id', $user->user_id)
+                ->update(['remember_token' => hash('sha256', $token)]);
+
             cookie()->queue(
-                cookie('trusted_device', $this->generateDeviceHash($request), 60 * 24 * 30)
+                cookie('remember_login', $token, 60 * 24 * 30) // 30 days
             );
         }
 
-        // Update last login info
+        // Update login activity
         DB::table('users')
             ->where('user_id', $user->user_id)
             ->update([
@@ -146,12 +153,12 @@ class AccountController extends Controller
             : redirect()->action([UserController::class, 'index']);
     }
 
+
     protected function triggerOtpLogin(Request $request, $user)
     {
         $otp = rand(111111, 999999);
         $request->session()->put('acc_id', $user->id);
 
-        // Save remember_device value for later use after OTP
         $request->session()->put('remember_device', $request->has('remember_device'));
 
         $this->storeOtp($user, $otp);
@@ -185,7 +192,7 @@ class AccountController extends Controller
 
     protected function generateDeviceHash(Request $request)
     {
-        return sha1($request->userAgent());
+        return sha1($request->userAgent()); // no IP, keeps hash stable
     }
 
     protected function storeTrustedDevice(Request $request, $user)
@@ -195,12 +202,32 @@ class AccountController extends Controller
         $user->trustedDevices()->updateOrCreate(
             ['device_hash' => $deviceHash],
             [
-                'ip_address' => $this->getIp(), // optional, just for logging
+                'ip_address' => $this->getIp(),
                 'user_agent' => $request->userAgent(),
                 'last_used_at' => now(),
                 'expires_at' => now()->addDays(30),
             ]
         );
+    }
+
+    // Auto-login from remember cookie
+    public static function autoLoginFromCookie(Request $request)
+    {
+        if (!$request->session()->has('user_id') && $request->hasCookie('remember_login')) {
+            $token = $request->cookie('remember_login');
+            $user = User::where('remember_token', hash('sha256', $token))->first();
+
+            if ($user) {
+                $request->session()->put('user_id', $user->user_id);
+                $request->session()->put('name', $user->name);
+
+                // refresh cookie validity
+                cookie()->queue(cookie('remember_login', $token, 60 * 24 * 30));
+
+                return $user;
+            }
+        }
+        return null;
     }
 
 
@@ -464,6 +491,21 @@ class AccountController extends Controller
        
     }
 
+    protected function getIp(Request $request = null)
+    {
+        if ($request) {
+            return $request->ip();
+        }
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+        }
+
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    }
+
     public function adminlogin(Request $request)
     {
         $title = "Admin Login - " . config('global.site_name');
@@ -530,19 +572,6 @@ class AccountController extends Controller
     }
 }
 
-    protected function getIp(Request $request = null)
-    {
-        if ($request) {
-            return $request->ip();
-        }
 
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
-        }
-
-        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-    }
 
 }

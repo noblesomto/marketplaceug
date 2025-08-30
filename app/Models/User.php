@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -38,6 +39,7 @@ class User extends Authenticatable
         'bank_code',
         'account_name',
         'account_number',
+        'remember_token'
     ];
 
     /**
@@ -102,5 +104,35 @@ class User extends Authenticatable
     public function receivedMessages()
     {
         return $this->hasMany(Message::class, 'receiver_id', 'user_id');
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class, 'user_id', 'user_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'user_id', 'user_id');
+    }
+
+    public function feedbacksGiven()
+    {
+        return $this->hasMany(Feedback::class, 'user_id', 'user_id');
+    }
+
+    public function feedbacksReceived()
+    {
+        return $this->hasMany(Feedback::class, 'seller_id', 'user_id');
+    }
+
+    public function followers()
+    {
+        return $this->hasMany(Followers::class, 'follow', 'user_id');
+    }
+
+    public function following()
+    {
+        return $this->hasMany(Followers::class, 'user_id', 'user_id');
     }
 }

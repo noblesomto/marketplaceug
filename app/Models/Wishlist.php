@@ -17,4 +17,9 @@ class Wishlist extends Model
     {
         return $this->belongsTo(Advert::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

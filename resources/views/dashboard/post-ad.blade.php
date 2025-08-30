@@ -817,19 +817,20 @@ trix-toolbar [data-trix-button-group="file-tools"] {
       </div>
 
      <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Description</div>
+        <div class="col-span-10 md:col-span-2">
+            <div class="font-semibold">Description</div>
+        </div>
+        <div class="col-span-10 md:col-span-7">
+            @if ($errors->has('description'))
+                <span class="text-red-400">{{ $errors->first('description') }}</span>
+            @endif
+            <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <trix-editor input="content" class="min-h-36"></trix-editor>
+            <div class="text-sm text-gray-500 mt-1">
+                <span id="word-count">0</span>/3500 characters
             </div>
-            <div class="col-span-10 md:col-span-7">
-                @if ($errors->has('description'))
-                    <span class="text-red-400">{{ $errors->first('description') }}</span>
-                @endif
-                <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                <trix-editor input="content" ></trix-editor>
-                
-            </div>
-       </div>
-
+        </div>
+    </div>
 
    
 

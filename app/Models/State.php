@@ -18,4 +18,9 @@ class State extends Model
     {
         return $this->hasMany(GigLogistic::class, 'state_id');
     }
+
+    public function cities()
+    {
+        return $this->hasMany(GigLogistic::class, 'state_id');
+    }
 }

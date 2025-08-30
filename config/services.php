@@ -35,9 +35,13 @@ return [
         'secretKey' => env('PAYSTACK_SECRET_KEY'),
         'paymentUrl' => env('PAYSTACK_PAYMENT_URL'),
     ],
+
     'agility' => [
         'token' => env('AGILITY_API_TOKEN'),
-        'url' => env('AGILITY_API_URL', 'https://thirdpartynode.theagilitysystems.com/price'),
+        'email' => env('AGILITY_EMAIL', 'Info@marketplace.ng'),
+        'password' => env('AGILITY_PASSWORD', 'Mj:wNWI0'),
+        'customer_code' => env('AGILITY_CUSTOMER_CODE', 'IND1875642'),
+        'url' => env('AGILITY_URL', 'https://thirdpartynode.theagilitysystems.com/api/ShippingCost/GetShippingCost'),
     ],
 
 
