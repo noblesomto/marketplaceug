@@ -8,16 +8,25 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use App\Mail\NotifyMail;
 use App\Mail\RegisterMail;
 use App\Mail\PasswordMail;
-use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
     /**
      * API Login
+     * ----------------------------------------
+     * path = "/api/login"
+     * method = POST
+     * body = { "email": "user@example.com", "password": "secret" }
+     * response = {
+     *   "status": true,
+     *   "message": "Login successful",
+     *   "data": {
+     *     "user": {...},
+     *     "token": "xxxx"
+     *   }
+     * }
      */
     public function login(Request $request)
     {
@@ -42,7 +51,7 @@ class AccountController extends Controller
             ], 401);
         }
 
-        // Generate token (Sanctum)
+        // Generate token (Laravel Sanctum)
         $token = $user->createToken('mobile')->plainTextToken;
 
         return response()->json([
@@ -57,6 +66,24 @@ class AccountController extends Controller
 
     /**
      * API Register
+     * ----------------------------------------
+     * path = "/api/register"
+     * method = POST
+     * body = {
+     *   "acc_type": "customer",
+     *   "address": "123 Street",
+     *   "state": "Lagos",
+     *   "name": "John Doe",
+     *   "phone": "08012345678",
+     *   "email": "john@example.com",
+     *   "password": "secret",
+     *   "password_confirmation": "secret"
+     * }
+     * response = {
+     *   "status": true,
+     *   "message": "Registration successful, please verify your email.",
+     *   "data": {...}
+     * }
      */
     public function register(Request $request)
     {
@@ -92,7 +119,7 @@ class AccountController extends Controller
                 'name'    => $user->name,
             ]));
         } catch (\Throwable $e) {
-            // Mail failure, but still return success
+            // Mail failure ignored, still return success
         }
 
         return response()->json([
@@ -104,6 +131,13 @@ class AccountController extends Controller
 
     /**
      * Verify Account
+     * ----------------------------------------
+     * path = "/api/verify/{email}/{token}"
+     * method = GET
+     * response = {
+     *   "status": true,
+     *   "message": "Email verified successfully."
+     * }
      */
     public function verifyAccount($email, $token)
     {
@@ -126,10 +160,19 @@ class AccountController extends Controller
 
     /**
      * Forgot Password
+     * ----------------------------------------
+     * path = "/api/forgot-password"
+     * method = POST
+     * body = { "email": "user@example.com" }
+     * response = {
+     *   "status": true,
+     *   "message": "Check your email for reset instructions."
+     * }
      */
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
+
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
@@ -160,6 +203,14 @@ class AccountController extends Controller
 
     /**
      * Reset Password
+     * ----------------------------------------
+     * path = "/api/reset-password/{user_id}/{token}"
+     * method = POST
+     * body = { "password": "newsecret", "password_confirmation": "newsecret" }
+     * response = {
+     *   "status": true,
+     *   "message": "Password reset successfully."
+     * }
      */
     public function resetPassword(Request $request, $user_id, $token)
     {
@@ -176,22 +227,13 @@ class AccountController extends Controller
             ], 400);
         }
 
-        $user->update(['password' => Hash::make($request->password)]);
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
 
         return response()->json([
             'status'  => true,
             'message' => 'Password reset successfully.'
         ]);
     }
-
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'status'  => true,
-            'message' => 'Logged out successfully'
-        ]);
-    }
-
 }

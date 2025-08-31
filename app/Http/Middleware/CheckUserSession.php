@@ -4,23 +4,48 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AccountController; // we’ll call the static helper here
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserSession
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        // If no session, try to auto-login from cookie
-        if (!$request->session()->has('user_id')) {
-            $user = AccountController::autoLoginFromCookie($request);
+        // ✅ If session already exists, continue
+        if ($request->session()->has('user_id')) {
+            return $next($request);
+        }
 
-            if (!$user) {
-                // Save intended URL and redirect to login
-                $request->session()->put('url.intended', $request->fullUrl());
-                return redirect('/login');
+        // ✅ If no session, try auto-login via cookie
+        if ($request->hasCookie('remember_login')) {
+            $token = $request->cookie('remember_login');
+
+            $user = DB::table('users')
+                ->where('remember_token', hash('sha256', $token))
+                ->first();
+
+            if ($user) {
+                // Restore session
+                $request->session()->put('user_id', $user->user_id);
+                $request->session()->put('name', $user->name);
+
+                // Refresh cookie expiry (rolling 30 days)
+                cookie()->queue(cookie(
+                    'remember_login',
+                    $token,
+                    60 * 24 * 30, // 30 days
+                    '/',
+                    null,
+                    false, // set to true if using HTTPS
+                    true   // httpOnly
+                ));
+
+                return $next($request);
             }
         }
 
-        return $next($request);
+        // ✅ If everything fails → force login
+        $request->session()->put('url.intended', $request->fullUrl());
+        return redirect('/login');
     }
 }

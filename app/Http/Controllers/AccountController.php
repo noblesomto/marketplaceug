@@ -135,9 +135,16 @@ class AccountController extends Controller
             DB::table('users')->where('user_id', $user->user_id)
                 ->update(['remember_token' => hash('sha256', $token)]);
 
-            cookie()->queue(
-                cookie('remember_login', $token, 60 * 24 * 30) // 30 days
-            );
+            cookie()->queue(cookie(
+                'remember_login',      // name
+                $token,                // value
+                60 * 24 * 30,          // minutes (30 days)
+                '/',                   // path
+                null,                  // domain (current host)
+                false,                 // secure (true if https)
+                true                   // httpOnly
+            ));
+
         }
 
         // Update login activity
@@ -222,7 +229,15 @@ class AccountController extends Controller
                 $request->session()->put('name', $user->name);
 
                 // refresh cookie validity
-                cookie()->queue(cookie('remember_login', $token, 60 * 24 * 30));
+                cookie()->queue(cookie(
+                    'remember_login',      // name
+                    $token,                // value
+                    60 * 24 * 30,          // minutes (30 days)
+                    '/',                   // path
+                    null,                  // domain (current host)
+                    false,                 // secure (true if https)
+                    true                   // httpOnly
+                ));
 
                 return $user;
             }

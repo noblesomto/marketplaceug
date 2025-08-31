@@ -15,6 +15,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+        screens: {
+            xs: '330px',
+          },
       colors: {
         primary: '#B5E93F',
         secondary:{
