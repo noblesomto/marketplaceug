@@ -106,10 +106,10 @@
 
                 <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
                     @if($row->shipment=="Ship")
-                        <span class="bg-gray-100 p-1 mr-2 text-xs">Shipping Possible</span>
+                        <span class="bg-gray-100 p-1 text-xs">Shipping Possible</span>
                     @endif
                   @if($row->sold=="Yes")
-                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-2 lg:mr-4 text-xs" title="This advert is already sold" >
+                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-1 lg:mr-4 text-xs" title="This advert is already sold" >
                       <span>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -119,7 +119,7 @@
                   </span>
                   @else
                      @if($row->buy_direct=="Yes")
-                          <div class="flex items-center bg-blue-50 rounded-full px-2 py-1 w-fit mr-2 lg:mr-4">
+                          <div class="flex items-center bg-blue-50 rounded-full px-2 py-1 w-fit mr-1 lg:mr-4">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                   stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
                                   <path stroke-linecap="round" stroke-linejoin="round"

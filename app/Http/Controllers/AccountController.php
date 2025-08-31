@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Shipping;
 use App\Mail\RegisterMail;
-use App\Mail\NotifyMail;
+use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
 
 class AccountController extends Controller
@@ -183,7 +183,7 @@ class AccountController extends Controller
         ];
 
         try {
-            Mail::to($user->email)->send(new NotifyMail($details));
+            Mail::to($user->email)->send(new OTPMail($details));
             return redirect('/authenticate')->with('success', 'Check your email for OTP to login.');
         } catch (\Throwable $e) {
             return redirect('/login')->with('error', 'Error! OTP could not be sent. Try again or contact admin.');

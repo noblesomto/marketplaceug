@@ -13,9 +13,12 @@ trix-toolbar [data-trix-button-group="file-tools"] {
     display: none !important;
 }
 
-
+@media (min-width: 1024px) {
+    trix-editor {
+        min-height: 144px !important;
+    }
+}
 </style>
-
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
         Ad Details
@@ -825,7 +828,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
                 <span class="text-red-400">{{ $errors->first('description') }}</span>
             @endif
             <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-            <trix-editor input="content" class="min-h-36"></trix-editor>
+            <trix-editor input="content" style="min-height: 80px;"></trix-editor>
             <div class="text-sm text-gray-500 mt-1">
                 <span id="word-count">0</span>/3500 characters
             </div>
@@ -951,7 +954,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
        </div>
 
        <div class="flex justify-start mb-10">
-            <button type="submit" class="btn btn-secondary py-2 px-6">Submit</button>
+            <button type="submit" class="btn btn-secondary py-2 px-6">Post Ad</button>
        </div>
 
 

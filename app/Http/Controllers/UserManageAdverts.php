@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Mail;
+use App\Mail\NewAdMail;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Message;
@@ -13,6 +15,7 @@ use App\Models\Brands;
 use App\Models\Advert;
 use App\Models\Models;
 use App\Models\State;
+use App\Models\Followers;
 use App\Models\AdvertImage;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
@@ -42,6 +45,8 @@ class UserManageAdverts extends Controller
         $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
+        $followers = Followers::with('user')->where('follow', $user_id)->get();
+
 
         if ($request->isMethod('POST')) {
             $ad_id = rand(10000, 99999);
@@ -221,6 +226,18 @@ class UserManageAdverts extends Controller
                 ]);
                 $phone->advert()->associate($advert);
                 $phone->save();
+            }
+
+
+            foreach ($followers as $follow) {
+                $details = [
+                    'advert' => $advert->ad_title,
+                    'state_slug' => $advert->state_slug,
+                    'title_slug' => $advert->title_slug,
+                    'ad_id' => $advert->ad_id,
+                    'name' => $follow->user->name,
+                ];
+                Mail::to($follow->user->email)->queue(new NewAdMail($details));
             }
 
             // Handle promotion
