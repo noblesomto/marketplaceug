@@ -60,7 +60,6 @@
 
 <script>
 	const openSearchButton = document.getElementById('openSearch');
-	const openSearchButtonFooter = document.getElementById('openSearchFooter');
 	const closeSearchButton = document.getElementById('closeSearch');
 	const searchOverlay = document.getElementById('searchOverlay');
 
@@ -71,7 +70,7 @@
 
 	// Add click event to both open buttons
 	openSearchButton.addEventListener('click', openSearchOverlay);
-	openSearchButtonFooter.addEventListener('click', openSearchOverlay);
+
 
 	closeSearchButton.addEventListener('click', () => {
 	    searchOverlay.classList.add('hidden');

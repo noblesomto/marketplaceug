@@ -90,7 +90,7 @@
               <div class="block lg:hidden">
                     @include('frontend.components.mobile.filter-subcategory')
               </div>
-            <div id="advert-results">
+            <div id="advert-results" class="pb-20">
                 @include('frontend.components.advert.advert-list', ['ads' => $ads])
             </div>
 

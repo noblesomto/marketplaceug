@@ -3,30 +3,13 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-@php
-    $count = getUserNotificationCount();
-@endphp
 
 <section class="w-full lg:w-4/6 mx-auto bg-white md:bg-body pb-20">
-  <div class="block lg:hidden bg-white pt-3 ml-2 flex justify-between">
+  <div class="block lg:hidden bg-white pt-3 ml-2">
     <div>
         <span class="text-base"><strong>Marketplace Naija</strong> - Buy. Sell. Secure Deals.</span>
     </div>
-    <div>
-        <a href="/user/notifications">
-            <div class="flex flex-col items-center mx-2 relative">
-                <!-- Notification badge - hidden by default if count is 0 -->
-                <div class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs" >
-                    {{ $count }}
-                </div>
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                    </svg>
-                </div>
-            </div>
-        </a>
-    </div>
+
   </div>
 
   <div class="my-5">
@@ -101,7 +84,7 @@
         </div>
   </div>
 
- <div class="block lg:hidden mt-6">
+ <div class="block lg:hidden mt-6 pb-20">
     <h4 class="font-semibold text-lg px-4 mb-3 text-gray-800">Recent Listings</h4>
     <div id="listings-container-mobile" class="grid grid-cols-2 gap-3 px-4">
         @foreach ($listings as $row)

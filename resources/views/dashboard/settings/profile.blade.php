@@ -123,7 +123,7 @@
 
 </section>
 
-<section class="w-full md:w-3/6  mx-auto p-3 text-sm pb-10 ">
+<section class="w-full md:w-3/6  mx-auto p-3 text-sm pb-20 ">
     <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 rounded-lg">
         Your Ads
         @include('frontend.components.flash-message')
