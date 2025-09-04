@@ -834,7 +834,6 @@ trix-toolbar [data-trix-button-group="file-tools"] {
             </div>
         </div>
     </div>
-
    
 
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">

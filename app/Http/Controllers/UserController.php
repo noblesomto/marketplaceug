@@ -14,6 +14,7 @@ use App\Models\Payment;
 use App\Models\Wishlist;
 use App\Models\Category;
 use App\Models\Followers;
+use App\Models\Notification;
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -92,6 +93,7 @@ class UserController extends Controller
         $count_ads = Advert::where('user_id', $user_id)->count();
         return view('dashboard.my-ads', compact('title','user', 'ads','count_ads'));
     }
+
 
     public function ad_status($status , $id)
     {   
@@ -403,6 +405,35 @@ class UserController extends Controller
             return response()->json(['isFollowing' => true, 'message' => 'Followed successfully']);
         }
     }
+
+    public function notifications(Request $request)
+    {
+        $title = "My Notifications | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $user_id)->first();
+        $notifications = Notification::with(['advert.owner', 'advert.firstImage'])
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+        $count_ads = Advert::where('user_id', $user_id)->count();
+
+        $groupedNotifications = $notifications->groupBy(function ($notification) {
+            $date = $notification->created_at;
+
+            if ($date->isToday()) {
+                return 'Today';
+            } elseif ($date->isYesterday()) {
+                return 'Yesterday';
+            } elseif ($date->isCurrentWeek()) {
+                return $date->format('l'); // Monday, Tuesday, etc.
+            } else {
+                return $date->format('M j, Y'); // Jan 1, 2024
+            }
+        });
+        //dd($notifications);
+        return view('dashboard.notifications', compact('title','user', 'groupedNotifications','count_ads'));
+    }
+
 
 
 }

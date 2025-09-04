@@ -243,14 +243,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxLength = 3500;
 
     function updateCharacterCount() {
-        const content = trixEditor.editor.getDocument().toString();
-        const charCount = content.length;
+        // Get plain text for character counting (without HTML tags)
+        const plainTextContent = trixEditor.editor.getDocument().toString();
+        const charCount = plainTextContent.length;
+
+        // Get HTML content for saving to database (preserves formatting)
+        const htmlContent = trixEditor.innerHTML;
 
         // Update character count display
         wordCountElement.textContent = charCount;
 
-        // Update hidden input value
-        hiddenInput.value = content;
+        // Update hidden input with HTML content (preserves styling)
+        hiddenInput.value = htmlContent;
 
         // Add red styling when at limit
         if (charCount >= maxLength) {
@@ -258,11 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
             wordCountElement.parentElement.classList.remove('text-gray-500');
             wordCountElement.parentElement.classList.add('text-red-500', 'font-semibold');
 
-            // Prevent further input
+            // Note: Truncation is tricky with HTML content, so we'll just warn the user
             if (charCount > maxLength) {
-                const truncatedContent = content.substring(0, maxLength);
-                trixEditor.editor.loadHTML(truncatedContent);
-                trixEditor.editor.setSelectedRange(maxLength);
+                // You might want to show a warning instead of truncating
+                console.warn('Content exceeds maximum length');
             }
         } else {
             trixEditor.style.border = '1px solid #d1d5db';

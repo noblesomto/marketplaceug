@@ -20,8 +20,10 @@ use App\Models\AdvertImage;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
 use App\Models\Shipping;
+use App\Models\Notification;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
+use App\Jobs\PostAdvertJob;
 
 class UserManageAdverts extends Controller
 {
@@ -40,13 +42,16 @@ class UserManageAdverts extends Controller
     public function post_ad(Request $request)
     {
         $title = "Post New Advert - " . config('global.site_name');
-        $user_id = $request->session()->get('user_id');
+        $seller_id = $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
         $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
-        $followers = Followers::with('user')->where('follow', $user_id)->get();
+        $followers = Followers::with(['user:user_id,id,email,name'])
+            ->where('follow', $user_id)
+            ->get();
 
+        //dd($followers);
 
         if ($request->isMethod('POST')) {
             $ad_id = rand(10000, 99999);
@@ -229,16 +234,17 @@ class UserManageAdverts extends Controller
             }
 
 
-            foreach ($followers as $follow) {
-                $details = [
-                    'advert' => $advert->ad_title,
-                    'state_slug' => $advert->state_slug,
-                    'title_slug' => $advert->title_slug,
-                    'ad_id' => $advert->ad_id,
-                    'name' => $follow->user->name,
-                ];
-                Mail::to($follow->user->email)->queue(new NewAdMail($details));
-            }
+            $user_id = $request->session()->get('user_id');
+            $seller  = User::where('user_id', $user_id)->first();
+
+            // Dispatch job
+            PostAdvertJob::dispatch(
+                $advert,
+                $seller,
+                'New Ad',
+                $seller->name . ' has placed the ad "' . $advert->ad_title . '"',
+            );
+
 
             // Handle promotion
             if ($request->has('promotion')) {
@@ -310,6 +316,7 @@ class UserManageAdverts extends Controller
     {
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
+        $oldPrice = $advert->getOriginal('price');
 
         $rules = [
             'ad_title' => 'required|max:75',
@@ -485,6 +492,20 @@ class UserManageAdverts extends Controller
                 'condition' => $request->input('phone_condition'),
             ]);
         }
+
+        $user_id = $request->session()->get('user_id');
+        $seller  = User::where('user_id', $user_id)->first();
+
+
+        if ($advert->price != $oldPrice) {
+            PostAdvertJob::dispatch(
+                $advert,
+                $seller,
+                'Price Update',
+                $seller->name . ' updated the price of ' . $advert->ad_title
+            );
+        }
+
 
         return redirect('/user/my-ads')->with('success', 'Advert updated successfully');
     }

@@ -18,4 +18,15 @@ class Followers extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'follow');
+    }
+
 }

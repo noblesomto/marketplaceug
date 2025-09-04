@@ -1,4 +1,4 @@
-<section class="pb-20 space-y-2 px-1">
+<section class="space-y-2 px-1">
 
 @forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">

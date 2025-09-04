@@ -16,6 +16,7 @@ use App\Models\State;
 use App\Models\Message;
 use App\Models\Shipping;
 use App\Models\GigLogistic;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Rules\ReCaptcha;
@@ -93,6 +94,8 @@ class AdvertController extends Controller
 
     public function advert(Request $request, $location, $slug, $id)
     {
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
         // First get the ad and check if it exists
         $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
 
@@ -170,6 +173,10 @@ class AdvertController extends Controller
         \DB::table('adverts')
             ->where('id', $ad_id)
             ->increment('views', 1);
+
+        $notification = Notification::where('user_id', $user->id)->where('advert_id', $ad_id)->first();
+        $notification->update(['is_read' => true]);
+
 
         return view('frontend.advert', $data);
     }

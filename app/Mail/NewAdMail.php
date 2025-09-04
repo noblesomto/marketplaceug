@@ -9,11 +9,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NewAdMail extends Mailable
+class NewAdMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $details;
+
     /**
      * Create a new message instance.
      */
@@ -27,8 +28,14 @@ class NewAdMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $subject = match($this->details['type'] ?? 'New Ad') {
+            'Price Update' => 'Marketplace Naija – Price Updated!',
+            'New Ad'   => 'Marketplace Naija – New Ad Posted!',
+            default        => 'Marketplace Naija – Notification',
+        };
+
         return new Envelope(
-            subject: 'Marketplace Naija – New Ad Posted!',
+            subject: $subject,
         );
     }
 
@@ -39,13 +46,12 @@ class NewAdMail extends Mailable
     {
         return new Content(
             view: 'email.newadMail',
+            with: [ 'details' => $this->details ]
         );
     }
 
     /**
      * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

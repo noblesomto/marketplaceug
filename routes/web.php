@@ -125,6 +125,7 @@ Route::any('/user/favourites', [UserController::class, 'favourites'])->middlewar
 Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->middleware('usersession');
 Route::any('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
 Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
+Route::any('/user/notifications', [UserController::class, 'notifications'])->middleware('usersession');
 
 //User Manage Ads
 Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');

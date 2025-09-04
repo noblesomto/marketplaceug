@@ -157,7 +157,7 @@ class AccountController extends Controller
 
         return $request->session()->has('url.intended')
             ? redirect($request->session()->get('url.intended'))
-            : redirect()->action([UserController::class, 'index']);
+            : redirect()->action([UserProfile::class, 'profile']);
     }
 
 
