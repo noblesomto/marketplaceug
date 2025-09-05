@@ -92,6 +92,12 @@ class PageController extends Controller
         return view('frontend.pages.advertise', compact('title'));
     }
 
+    public function page()
+    {
+        $title = "FAQ  | " . config('global.site_name');
+        return view('frontend.page', compact('title'));
+    }
+
     public function contact(Request $request)
     {
         $title = 'Contact Us | '.config('global.site_name');

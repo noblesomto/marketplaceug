@@ -95,7 +95,7 @@
             <div class="section">
                 <p>If you have any questions or need further assistance, please don’t hesitate to contact our support team.</p>
                 <br>
-                <p>Thank you for choosing <b>Marketplace Naija.</b> We appreciate your trust and look forward to serving you again.</p>
+                <p>Thank you for choosing <b>Marketplace Naija.</b> </p>
                 <br>
                 <p>Best regards,</p>
                 <p><b>The Marketplace Naija Team</b></p>

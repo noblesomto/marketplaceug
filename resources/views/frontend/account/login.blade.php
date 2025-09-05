@@ -1,6 +1,6 @@
 @include('frontend.layouts.header')
 
-<div class="bg-white h-screen">
+<div class="bg-white h-screen pb-20">
   <section class="w-full flex justify-center items-center h-24 border-b-2 border-b-gray-400 shadow-lg shadow-b-2.5 shadow-gray-300">
     <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-9" alt="Marketplace NG Logo"></a>
   </section>
@@ -11,8 +11,8 @@
       <form method="POST" action="/login">
         @csrf
         <div class="mb-5">
-          <h2 class="font-bold text-xl mt-5 w-full">Welcome to Marketplace NG</h2>
-          <p class="text-base mt-3">Log in to find and sell used treasures.</p>
+          <h2 class="font-bold text-lg lg:text-xl mt-5 w-full">Welcome to Marketplace NG</h2>
+          <p class="text-sm lg:text-base mt-3">Log in to find and sell used treasures.</p>
         </div>
 
         <div class="mb-6 mt-3 lg:mt-10">
@@ -41,14 +41,13 @@
           </button>
         </div>
 
-        <div class="flex justify-between">
-            <label class="inline-flex items-center mb-3">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 text-base lg:text-lg mt-2">
+          <label class="inline-flex items-center mb-3">
                 <input type="checkbox" name="remember_device" class="form-checkbox text-indigo-600">
                 <span class="ml-2 text-sm">Remember this device for faster login</span>
             </label>
-            <div>
-                <a class="underline" href="/forgot-password">Forgot Password</a>
-            </div>
+          <div><a class="underline" href="/forgot-password">Forgot Password</a></div>
         </div>
 
 
@@ -63,9 +62,9 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 text-lg mt-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 text-base lg:text-lg mt-4">
           <div>Not registered yet?</div>
-          <div><a class="mx-2 font-black underline" href="/register">Create an account</a></div>
+          <div><a class="font-black underline" href="/register">Create an account</a></div>
         </div>
       </form>
     </div>

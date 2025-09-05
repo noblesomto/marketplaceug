@@ -7,11 +7,11 @@
     <div class="border-b-2 border-b-gray-200 pt-4 px-2 font-bold text-dark_green mb-2 flex justify-between">
         <span>Profile Section</span>
         <div class="space-x-4">
-        	<a title="My Ad" href="/user/my-ads" ><i class="bi bi-badge-ad text-lg lg:text-3xl"></i></a>
-            <a title="Purchase" href="/user/payment" ><i class="bi bi-box2 text-lg lg:text-3xl"></i></a>
-            <a title="Feedbacks" href="/user/feedbacks" ><i class="bi bi-chat-right-dots text-lg lg:text-3xl"></i></a>
-            <a title="Settings" href="/user/settings"><i class="bi bi-gear text-lg lg:text-3xl"></i></a>
-            <a title="Logout" href="/user/logout" ><i class="bi bi-box-arrow-right text-lg lg:text-3xl"></i></a>
+        	<a title="My Ad" href="/user/my-ads" ><i class="bi bi-badge-ad text-lg lg:text-2xl"></i></a>
+            <a title="Purchase" href="/user/payment" ><i class="bi bi-box2 text-lg lg:text-2xl"></i></a>
+            <a title="Feedbacks" href="/user/feedbacks" ><i class="bi bi-chat-right-dots text-lg lg:text-2xl"></i></a>
+            <a title="Settings" href="/user/settings"><i class="bi bi-gear text-lg lg:text-2xl"></i></a>
+            <a title="Logout" href="/user/logout" ><i class="bi bi-box-arrow-right text-lg lg:text-2xl"></i></a>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
 		        	<a href="/user/profile-address">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-person-square text-3xl"></i>
+			        			<i class="bi bi-person-square text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Profile Information</h4>
@@ -37,7 +37,7 @@
 		        	<a href="/user/profile-info">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-gear text-3xl"></i>
+			        			<i class="bi bi-gear text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Account Settings</h4>
@@ -51,7 +51,7 @@
 		        	<a href="/user/get-verified">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-person-check text-3xl"></i>
+			        			<i class="bi bi-person-check text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Account Verification</h4>
@@ -65,7 +65,7 @@
 		        	<a href="/user/payments">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-bag-dash text-3xl"></i>
+			        			<i class="bi bi-bag-dash text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Payments</h4>
@@ -79,7 +79,7 @@
 		        	<a href="/user/profile-notification">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-bell text-3xl"></i>
+			        			<i class="bi bi-bell text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Notifications</h4>
@@ -93,7 +93,7 @@
 		        	<a href="/contact-us">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-globe text-3xl"></i>
+			        			<i class="bi bi-globe text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Help & Feed Back</h4>
@@ -107,7 +107,7 @@
 		        	<a href="/user/logout">
 		        		<div class="flex items-center space-x-4">
 			        		<div>
-			        			<i class="bi bi-box-arrow-right text-3xl"></i>
+			        			<i class="bi bi-box-arrow-right text-2xl"></i>
 			        		</div>
 			        		<div>
 			        			<h4 class="font-semibold text-lg">Sign Out</h4>

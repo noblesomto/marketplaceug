@@ -174,10 +174,14 @@ class AdvertController extends Controller
             ->where('id', $ad_id)
             ->increment('views', 1);
 
-        $notification = Notification::where('user_id', $user->id)->where('advert_id', $ad_id)->first();
+        if ($user) {
+            $notification = Notification::where('user_id', $user->id)
+                ->where('advert_id', $ad_id)
+                ->first();
 
-        if ($notification) {
-            $notification->update(['is_read' => true]);
+            if ($notification) {
+                $notification->update(['is_read' => true]);
+            }
         }
 
 

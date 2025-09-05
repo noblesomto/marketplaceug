@@ -5,7 +5,7 @@
 
 <section class="w-full md:w-4/6 mx-auto bg-white pb-20">
     <div class="border-b-2 border-b-gray-400 h-20 flex justify-center items-center">
-        <h2 class="font-bold text-lg">Register in 30 seconds</h2>
+        <h2 class="font-bold text-base lg:text-lg">Register in 30 seconds</h2>
     </div>
     
     <div class="w-full md:w-[35%] mx-auto px-4">
@@ -17,7 +17,7 @@
             @csrf
             
             <div class="flex justify-center w-full">
-                <h2 class="font-bold text-base">How would you like to use Marketplace NG</h2>
+                <h2 class="font-bold text-sm lg:text-base">How would you like to use Marketplace NG</h2>
             </div>
 
             <div class="flex space-x-4 my-3">

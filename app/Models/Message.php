@@ -24,4 +24,9 @@ class Message extends Model
     {
         return $this->belongsTo(Advert::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(MessageImage::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
+use App\Models\MessageImage;
 use Illuminate\Http\Request;
 use App\Events\MessageSent;
 use App\Models\User;
@@ -10,25 +11,12 @@ use App\Models\Advert;
 use App\Models\Payment;
 use Carbon\Carbon;
 use App\Events\NewMessageNotification;
+use App\Helpers\FileUploadHelper;
 
 
 class MessageController extends Controller
 {
-    public function sendMessage22(Request $request)
-    {
-        $user_id = $request->session()->get('user_id');
 
-        $message = Message::create([
-            'advert_id' => $request->ad_id,
-            'receiver_id' => $request->ad_owner,
-            'sender_id' => $request->session()->get('user_id'),
-            'message_content' => $request->message,
-        ]);
-
-        broadcast(new MessageSent($message))->toOthers();
-
-        return response()->json(['status' => 'Message Sent!']);
-    }
 
     public function fetchMessages(Request $request, $id, $owner)
     {   
@@ -58,18 +46,7 @@ class MessageController extends Controller
         return ($message);
     }
 
-    public function Message(){
-                $ad_owner = DB::table('messages')
-                ->join('users','messages.user_id', '=', 'users.user_id')
-                ->where('messages.ad_id',$ad_id)
-                ->where('messages.user_id',$user_id)
-                ->first();
-        if($ad_owner){     
-            $userId = $ad_owner->ad_owner;
-            //dd($userId);
-            $message['user'] = User::where('user_id', $userId)->first();
-        }
-    }
+
 
     public function showMessages(Request $request, $advertId, $receiverId)
     {
@@ -83,7 +60,8 @@ class MessageController extends Controller
         $payment = Payment::where('advert_id', $advertId)->first();
         //dd($sender);
         
-        $messages = Message::where(function ($query) use ($sender, $receiver, $advertId) {
+        $messages = Message::with('images')
+            ->where(function ($query) use ($sender, $receiver, $advertId) {
                 $query->where('sender_id', $sender->user_id)
                       ->where('receiver_id', $receiver->user_id)
                       ->where('advert_id', $advertId);
@@ -107,8 +85,12 @@ class MessageController extends Controller
 
     public function sendMessage(Request $request, $advertId, $receiverId)
     {
-        $request->validate(['message' => 'required|string']);
+        $request->validate([
+            'message'   => 'nullable|string|max:1000',
+            'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
+        // Create the message
         $message = new Message();
         $message->advert_id = $advertId;
         $message->sender_id = $request->session()->get('user_id');
@@ -117,9 +99,24 @@ class MessageController extends Controller
         $message->is_read = false;
         $message->save();
 
+        // Handle image uploads if present
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $path = FileUploadHelper::upload($imageFile, 'chat');
+
+                MessageImage::create([
+                    'message_id' => $message->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
+
+        // Fire event
         event(new NewMessageNotification($message));
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Message sent successfully!');
     }
+
 
 
     public function countUnreadMessages(Request $request)
