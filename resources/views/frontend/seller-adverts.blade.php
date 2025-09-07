@@ -6,7 +6,7 @@
 
 <section class="w-full md:w-5/6 mx-auto mt-3">
   <div class="grid grid-cols-10 gap-3">
-      <div class="col-span-2  hidden sm:block">
+      <div class="col-span-2  hidden lg:block">
           @include('frontend.components.advert.side-advert')
       </div>
       <div class="col-span-10 md:col-span-6">
@@ -14,7 +14,7 @@
                  @include('frontend.components.advert.banner-advert')
               </div>
         <div class="grid grid-cols-10 gap-3">
-           <div class="col-span-3 hidden sm:block">
+           <div class="col-span-3 hidden lg:block">
              @include('frontend.components.advert.seller-profile')
              <div class="mt-3">
                  @include('frontend.components.advert.side-advert')
@@ -22,8 +22,7 @@
            </div>
            <div class="col-span-10 md:col-span-7">
 
-
-              <div class="mt-2 bg-white p-3 block lg:hidden">
+            <div class="mt-2 bg-white p-3 block lg:hidden">
              
                 <div class="flex justify-start ">
                     <div class=" bg-gray-200 rounded-full py-4 px-4 mr-2 h-12">
@@ -147,12 +146,14 @@
                 <div class="border border-gray-200 my-2"></div>
 
             </div>
-            @include('frontend.components.advert.advert-list', ['ads' => $ads])
+            <div class="pb-20">
+                @include('frontend.components.advert.advert-list', ['ads' => $ads])
+            </div>
 
            </div>
         </div>
       </div>
-      <div class="col-span-2 hidden sm:block">
+      <div class="col-span-2 hidden lg:block">
         @include('frontend.components.advert.side-advert')
       </div>
   </div>

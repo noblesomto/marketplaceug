@@ -1,6 +1,9 @@
+@import './chat.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 .btn {
   @apply font-bold  px-6 rounded text-dark_green;

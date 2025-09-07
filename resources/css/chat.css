@@ -1,0 +1,111 @@
+
+.chat-layout {
+    /* Desktop: Account for larger navigation */
+    height: calc(100vh - 140px); /* Adjust 140px to match your nav height */
+    display: flex;
+    flex-direction: column;
+}
+
+
+.chat-header {
+    flex-shrink: 0; /* Don't shrink */
+    width: 100%;
+}
+
+.chat-main {
+    flex: 1; /* Take all available space */
+    min-height: 0; /* Important for flex child overflow */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.chat-box {
+    flex: 1; /* Take all available space in main area */
+    overflow-y: auto;
+    min-height: 0; /* Important for overflow to work */
+}
+
+.chat-footer {
+    flex-shrink: 0; /* Don't shrink */
+}
+
+/* Custom scrollbar for chat */
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.chat-box::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.chat-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+/* Auto-resize textarea */
+.auto-resize {
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+    max-height: 120px;
+}
+
+/* Custom colors */
+.bg-dark_green { background-color: #0f5132; }
+.text-dark_green { color: #0f5132; }
+
+/* Image preview container */
+.image-preview-container {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.image-preview-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.image-preview-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 2px;
+}
+
+.image-preview-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+}
+
+/* Drag and drop feedback */
+.drag-over {
+    border: 2px dashed #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Mobile: Account for smaller navigation */
+@media (max-width: 768px) {
+    .chat-layout {
+        height: calc(100vh - 68px); /* Adjust 120px to match mobile nav height */
+    }
+}
+
+
+/* Ensure proper spacing on larger screens */
+@media (min-width: 769px) {
+    .chat-container {
+        max-width: 42rem; /* max-w-2xl equivalent */
+        margin: 0 auto;
+    }
+}
+

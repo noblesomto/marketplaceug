@@ -2,7 +2,7 @@
     $count = getUserNotificationCount();
 @endphp
 
-<div class="flex justify-between items-center bg-white h-16 py-2 border-solid border-b-8 border-b-primary block lg:hidden">
+<div id="nav-mobile" class="flex justify-between items-center bg-white h-16 py-2 border-solid border-b-8 border-b-primary block lg:hidden">
   <div class="flex justify-start items-center">
       <div class="mr-1 -ml-2 md:ml-0 md:mr-4">
         @include('frontend.components.mobile.mobile-side')

@@ -341,6 +341,7 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->count();
 
+
         return view('frontend.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories','count_ads'));
     }
 

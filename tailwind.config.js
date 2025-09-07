@@ -16,12 +16,7 @@ module.exports = {
   theme: {
     extend: {
         screens: {
-            xs: { max: '360px' }, // <=360px
-            sm: '361px',          // >=361px
-            md: '768px',          // override default if you like
-            lg: '1024px',
-            xl: '1280px',
-            '2xl': '1536px',
+            'xs-max': { max: '360px' },
           },
       colors: {
         primary: '#B5E93F',

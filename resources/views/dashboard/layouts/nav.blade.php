@@ -1,4 +1,4 @@
-<section class="w-full md:w-4/6 mx-auto h-12 py-2 mt-4  hidden lg:block">
+<section id="nav-bar" class="w-full md:w-4/6 mx-auto h-12 py-2 mt-4  hidden lg:block">
     <div class="text-sm">
         <div class="grid grid-cols-6 gap-1 md:gap-3">
           <div class="col-span-3 md:col-span-4 flex items-center">

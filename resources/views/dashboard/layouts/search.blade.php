@@ -1,4 +1,4 @@
-<section class="mt-5 w-full bg-primary h-12 hidden lg:block">
+<section id="search" class="mt-5 w-full bg-primary h-12 hidden lg:block">
     <div class="w-4/6 mx-auto">
         <form action="/search" method="POST" class="">
             @csrf
