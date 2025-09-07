@@ -2,48 +2,6 @@
 @include('dashboard.layouts.nav')
 @include('dashboard.layouts.search')
 
-<style>
-    /* Hide file attachment button */
-trix-toolbar [data-trix-button-group="file-tools"] {
-    display: none !important;
-}
-
-/* Hide the entire toolbar */
-trix-toolbar {
-    display: none !important;
-}
-
-/* Hide specific formatting buttons
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="bold"] {
-    display: none !important;
-}
-*/
-/* Hide specific formatting buttons */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="italic"] {
-    display: none !important;
-}
-
-/* Hide link button */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="href"] {
-    display: none !important;
-}
-
-/* Hide code button */
-trix-toolbar [data-trix-button-group="text-tools"] [data-trix-attribute="code"] {
-    display: none !important;
-}
-
-/* Hide entire groups */
-trix-toolbar [data-trix-button-group="history-tools"] {
-    display: none !important;
-}
-
-@media (min-width: 1024px) {
-    trix-editor {
-        min-height: 144px !important;
-    }
-}
-</style>
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
@@ -1136,83 +1094,15 @@ trix-toolbar [data-trix-button-group="history-tools"] {
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
 <script src="{{ asset('backend/js/edit-ad-Aa.js') }}"></script>
+<script src="{{ asset('backend/js/edit-sortable.js') }}"></script>
+<script src="{{ asset('backend/js/word-count.js') }}"></script>
 
 <script>
-    // ==================== Image Upload and Management ====================
-    const existingPreview = document.getElementById("preview");
-    const orderInput = document.getElementById("existing_image_order");
-    const fileInput = document.getElementById("imageUpload");
-    const form = document.getElementById("advertForm");
-
-    if (existingPreview) {
-        new Sortable(existingPreview, {
-            animation: 150,
-            handle: '.image-container',
-            onEnd: updateOrderInput
-        });
-
-        existingPreview.addEventListener("click", function (e) {
-            if (e.target.classList.contains("delete-image")) {
-                const imageId = e.target.dataset.id;
-                const container = e.target.closest(".image-container");
-
-                if (imageId && form) {
-                    const deletedInput = document.createElement('input');
-                    deletedInput.type = 'hidden';
-                    deletedInput.name = 'deleted_images[]';
-                    deletedInput.value = imageId;
-                    form.appendChild(deletedInput);
-                }
-
-                container.remove();
-
-                const hiddenInput = document.querySelector(`input[name="existing_images[]"][value="${imageId}"]`);
-                if (hiddenInput) hiddenInput.remove();
-
-                updateOrderInput();
-            }
-        });
-    }
-
-    fileInput?.addEventListener("change", function () {
-        Array.from(fileInput.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const newImage = document.createElement("div");
-                newImage.classList.add("relative", "group", "cursor-move", "image-container");
-                newImage.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-auto rounded-lg shadow">
-                    <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center">&times;</button>
-                `;
-                existingPreview.appendChild(newImage);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
-    function updateOrderInput() {
-        if (!orderInput) return;
-        const ids = Array.from(existingPreview.querySelectorAll(".image-container[data-id]"))
-            .map(el => el.dataset.id);
-        orderInput.value = ids.join(',');
-    }
-
-    // Initial population
-    updateOrderInput();
-
-    // ==================== LGA Initialization ====================
-    @if($advert->state)
-        const stateSelect = document.getElementById('state');
-        toggleLGA(stateSelect);
-
-        setTimeout(() => {
-            const lgaSelect = document.getElementById('lga');
-            if(lgaSelect) {
-                lgaSelect.value = "{{ $advert->lga }}";
-            }
-        }, 100);
-    @endif
-
+    // Pass PHP data to JavaScript
+    window.advertData = {
+        state: @json($advert->state ?? ''),
+        lga: @json($advert->lga ?? '')
+    };
 </script>
 
 @include('dashboard.layouts.footer')

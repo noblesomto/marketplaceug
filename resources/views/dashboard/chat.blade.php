@@ -34,7 +34,7 @@
 
             <!-- Chat Main Area -->
             <div class="chat-main">
-                <div class="chat-container h-full flex flex-col pb-16">
+                <div class="chat-container h-full flex flex-col pb-16 border-x-2 border-gray-200">
                     <!-- Chat Messages -->
                     <div id="chat-box" class="chat-box  rounded-t-lg lg:rounded-t-xl">
                         @foreach($messages as $msg)

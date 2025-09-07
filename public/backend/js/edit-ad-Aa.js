@@ -284,6 +284,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxLength = 3500;
 
     function updateCharacterCount() {
+        // Check if editor is initialized
+        if (!trixEditor.editor) {
+            return;
+        }
+
         // Get plain text for character counting (without HTML tags)
         const plainTextContent = trixEditor.editor.getDocument().toString();
         const charCount = plainTextContent.length;
@@ -303,9 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             wordCountElement.parentElement.classList.remove('text-gray-500');
             wordCountElement.parentElement.classList.add('text-red-500', 'font-semibold');
 
-            // Note: Truncation is tricky with HTML content, so we'll just warn the user
             if (charCount > maxLength) {
-                // You might want to show a warning instead of truncating
                 console.warn('Content exceeds maximum length');
             }
         } else {
@@ -315,9 +318,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Wait for Trix editor to initialize before setting up listeners
+    trixEditor.addEventListener('trix-initialize', function() {
+        // Initial count after initialization
+        updateCharacterCount();
+    });
+
     // Listen for text changes in Trix editor
     trixEditor.addEventListener('trix-change', updateCharacterCount);
 
-    // Initial count on page load
-    updateCharacterCount();
+    // Also listen for other Trix events that might change content
+    trixEditor.addEventListener('trix-attachment-add', updateCharacterCount);
+    trixEditor.addEventListener('trix-attachment-remove', updateCharacterCount);
 });

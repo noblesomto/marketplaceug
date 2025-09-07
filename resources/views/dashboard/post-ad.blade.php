@@ -2,23 +2,7 @@
 @include('dashboard.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('dashboard.layouts.search')
-<style>
 
-    /* Hide the entire toolbar */
-trix-toolbar {
-    display: none !important;
-}
-    /* Hide file attachment button */
-trix-toolbar [data-trix-button-group="file-tools"] {
-    display: none !important;
-}
-
-@media (min-width: 1024px) {
-    trix-editor {
-        min-height: 144px !important;
-    }
-}
-</style>
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
         Ad Details
@@ -975,8 +959,9 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 <!-- JavaScript for Image Upload, Sorting, and Deleting -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="{{ asset('backend/js/post-ad-Aa.js') }}"></script>
+<script src="{{ asset('backend/js/word-count.js') }}"></script>
 <script src="{{ asset('backend/js/sortable.js') }}"></script>
 
 
-    
+
 @include('dashboard.layouts.footer')
