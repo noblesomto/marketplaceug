@@ -558,7 +558,7 @@
                 <select id="pr" name="phone_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
                     <option value="New - Unboxed">New<span class="text-xs" > (New and Unboxed)</span>  </option>
-                    <option value="New - No Packaging">Used<span class="text-xs" > (Unused item with or without original packaging)</span>  </option>
+                    <option value="Foreign Used - No Packaging">Foreign Used<span class="text-xs" > (Without original packaging)</span>  </option>
                     <option value="Used - Very Good">Very Good (Well-maintained item with barely visible signs of wear  )</option>
                     <option value="Used - Good">Good (Used item with visible signs of wear )</option>
                     <option value="Used - In Order">In Order (Used item with clearly visible signs of wear, but still usable)</option>

@@ -688,7 +688,7 @@
                     @php
                         $phoneConditions = [
                             'New - Unboxed' => 'New <span class="text-xs">(New and Unboxed)</span>',
-                            'New - No Packaging' => 'Used <span class="text-xs">(Unused item with or without original packaging)</span>',
+                            'Foreign Used - No Packaging' => 'Foreign Used <span class="text-xs">(Without original packaging)</span>',
                             'Used - Very Good' => 'Very Good (Well-maintained item with barely visible signs of wear)',
                             'Used - Good' => 'Good (Used item with visible signs of wear)',
                             'Used - In Order' => 'In Order (Used item with clearly visible signs of wear, but still usable)',
