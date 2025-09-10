@@ -48,6 +48,7 @@ Route::any('/email', [PageController::class, 'email']);
 Route::any('/login', [AccountController::class, 'login']);
 Route::any('/register', [AccountController::class, 'register']);
 Route::get('/verifyaccount/{id}/{token}', [AccountController::class, 'verifyaccount']);
+Route::any('/resend-email', [AccountController::class, 'resend_email'])->name('activation.resend');
 Route::any('/authenticate', [AccountController::class, 'authenticate']);
 Route::any('/resend-otp', [AccountController::class, 'resend_otp']);
 Route::any('/forgot-password', [AccountController::class, 'forgot_password']);

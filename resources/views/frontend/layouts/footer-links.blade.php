@@ -34,7 +34,7 @@
                 </ul>
                 <div class="flex flex-col gap-2 mt-1">
                     <img class="w-24" src="{{ asset('frontend/images/app-store.svg') }}">
-                    <img class="w-24" src="{{ asset('frontend/images/play-store.svg') }}">
+                    <a href="https://play.google.com/store/apps/details?id=com.app.marketplacenaija"><img class="w-24" src="{{ asset('frontend/images/play-store.svg') }}"></a>
                 </div>
             </div>
 

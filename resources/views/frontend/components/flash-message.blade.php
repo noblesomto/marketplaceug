@@ -1,34 +1,27 @@
-@if ($message = Session::get('success'))
-<div class="bg-green-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3">
-    <h4 class="font-semibold text-green-900">{{ $message }}</h4>
-</div>
-@endif
+@php
+    $flashTypes = [
+        'success' => 'bg-green-100 text-green-900 border-green-400',
+        'error'   => 'bg-red-100 text-red-900 border-red-400',
+        'warning' => 'bg-yellow-100 text-yellow-900 border-yellow-400',
+        'info'    => 'bg-blue-100 text-blue-900 border-blue-400',
+    ];
+@endphp
 
-@if ($message = Session::get('error'))
-<div class="bg-red-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3">
-    <h4 class="font-semibold text-red-900">{{ $message }}</h4>
-</div>
-@endif
-
-@if ($message = Session::get('warning'))
-<div class="bg-yellow-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3">
-    <h4 class="font-semibold text-yellow-900">{{ $message }}</h4>
-</div>
-@endif
-
-@if ($message = Session::get('info'))
-<div class="bg-blue-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3">
-    <h4 class="font-semibold text-blue-900">{{ $message }}</h4>
-</div>
-@endif
+@foreach ($flashTypes as $type => $classes)
+    @if (session($type))
+        <div class="{{ $classes }} border px-4 py-3 rounded my-2">
+            {!! session($type) !!}
+        </div>
+    @endif
+@endforeach
 
 @if ($errors->any())
-<div class="bg-red-100 w-full text-base my-2 rounded-lg p-4">
-    <h4 class="font-semibold text-red-900 mb-2">Please fix the following errors:</h4>
-    <ul class="list-disc list-inside space-y-1">
-        @foreach ($errors->all() as $error)
-            <li class="text-red-700">{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
+    <div class="bg-red-100 border border-red-400 text-red-900 px-4 py-3 rounded my-2">
+        <h4 class="font-semibold mb-2">Please fix the following errors:</h4>
+        <ul class="list-disc list-inside space-y-1">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif

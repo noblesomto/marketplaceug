@@ -81,7 +81,10 @@ class AccountController extends Controller
         }
 
         if ($user->acc_status == 0) {
-            return redirect()->back()->with('error', 'Sorry, the email address is not verified.');
+            return redirect()->back()->with('error',
+                'Sorry, the email address is not verified. ' .
+                '<a href="'.route('activation.resend', ['email' => $user->email]).'" class="text-blue-600 underline">Resend activation email</a>'
+            );
         }
 
         return redirect()->back()->with('error', 'Invalid login attempt.');
@@ -395,8 +398,10 @@ class AccountController extends Controller
             try {
                 Mail::to($email)->send(new RegisterMail($details));
                 
-                return redirect("login")->with('success', 'Great, you have successfully registered, Please verify your email');
-
+                return redirect("login")->with('success',
+                    'Great, you have successfully registered. Check your email to activate your account. ' .
+                    '<a href="'.route('activation.resend', ['email' => $email]).'" class="text-blue-600 underline">Resend activation email</a>'
+                );
             } catch (Throwable $e) {
                 
                  return redirect("register")->with('error', 'Error!, Your account details could not be sent, please contact admin');
@@ -404,6 +409,29 @@ class AccountController extends Controller
         }
     }
 
+    public function resend_email(Request $request)
+    {
+        $email = $request->query('email');
+
+        $user = User::where('email', $email)->where('acc_status', 0)->first();
+
+        if (!$user) {
+            return redirect('login')->with('error', 'Invalid or already verified account.');
+        }
+
+        $token = Str::random(40);
+        $user->update(['token' => $token]);
+
+        $details = [
+            'user_id' => $user->email,
+            'token'   => $token,
+            'name'    => $user->name,
+        ];
+
+        Mail::to($user->email)->send(new RegisterMail($details));
+
+        return redirect('login')->with('success', 'We have resent your activation email. Please check your inbox.');
+    }
 
     public function verifyaccount($user_id, $token)
     {       
