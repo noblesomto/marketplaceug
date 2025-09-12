@@ -13,7 +13,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">General Questions</h2>
 
@@ -41,7 +41,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">Account & Registration</h2>
 
@@ -79,7 +79,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">For Buyers</h2>
 
@@ -121,7 +121,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">For Sellers</h2>
 
@@ -162,7 +162,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">💳 Payments & Billing</h2>
 
@@ -206,7 +206,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">📄 Safety & Policies</h2>
 
@@ -243,7 +243,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">Technical Support</h2>
 
@@ -278,7 +278,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">Business & Vendors</h2>
 
@@ -304,7 +304,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-8">Contact & Support</h2>
             <p class="text-gray-600 mb-6">

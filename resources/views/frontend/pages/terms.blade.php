@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Terms of Use</h1>
         <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
@@ -17,7 +17,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Acceptance of Terms</h2>
         <p class="text-gray-600">
@@ -26,7 +26,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. About Marketplace Naija</h2>
         <p class="text-gray-600">
@@ -35,7 +35,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Eligibility</h2>
         <p class="text-gray-600 mb-4">
@@ -52,7 +52,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. User Accounts</h2>
 
@@ -79,7 +79,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. User Responsibilities</h2>
         <p class="text-gray-600 mb-4">
@@ -95,7 +95,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. Prohibited Items & Content</h2>
         <p class="text-gray-600 mb-4">
@@ -116,7 +116,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. Posting Ads</h2>
         <p class="text-gray-600 mb-4">
@@ -134,7 +134,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Buy Direct: Payment & Delivery</h2>
         <p class="text-gray-600 mb-6">
@@ -162,7 +162,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">9. Paid Promotions & Billing</h2>
         <p class="text-gray-600 mb-6">
@@ -176,7 +176,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Intellectual Property</h2>
         <p class="text-gray-600 mb-6">
@@ -192,7 +192,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">11. Privacy & Data Protection</h2>
         <p class="text-gray-600">
@@ -201,7 +201,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">12. Disclaimers</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
@@ -213,7 +213,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">13. Limitation of Liability</h2>
         <p class="text-gray-600 mb-6">
@@ -231,7 +231,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">14. Indemnification</h2>
         <p class="text-gray-600">
@@ -245,7 +245,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">15. Governing Law & Dispute Resolution</h2>
         <p class="text-gray-600 mb-6">
@@ -257,7 +257,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">16. Changes to Terms</h2>
         <p class="text-gray-600 mb-6">
@@ -273,7 +273,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">17. Contact Us</h2>
         <p class="text-gray-600 mb-6">

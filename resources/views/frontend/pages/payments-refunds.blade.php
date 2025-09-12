@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment & Refund Policy</h1>
         <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
@@ -20,7 +20,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Paid Services on Marketplace Naija</h2>
         <p class="text-gray-600 mb-4">
@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. Payment Methods Accepted</h2>
         <p class="text-gray-600 mb-4">
@@ -57,7 +57,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Ad Promotion Billing & Validity</h2>
         <p class="text-gray-600 mb-4">
@@ -75,7 +75,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Buy Direct Payment Terms</h2>
         <p class="text-gray-600 mb-6">
@@ -98,7 +98,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Refund Policy</h2>
         <p class="text-gray-600 mb-6">
@@ -148,7 +148,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. Disputes and Chargebacks</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
@@ -159,7 +159,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. How to Request a Refund</h2>
         <p class="text-gray-600 mb-6">
@@ -200,7 +200,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Currency & Tax</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
@@ -210,7 +210,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">9. Updates to This Policy</h2>
         <p class="text-gray-600">
@@ -219,7 +219,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Questions?</h2>
         <p class="text-gray-600 mb-8">

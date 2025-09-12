@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Careers at Marketplace Naija</h1>
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Join Us. Build the Future of Online Commerce in Nigeria.</h2>
@@ -17,7 +17,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-8">Why Work With Us?</h2>
         <div class="space-y-6">
@@ -94,7 +94,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Who We're Looking For</h2>
         <p class="text-gray-600 mb-6">
@@ -112,7 +112,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Current Openings</h2>
         <p class="text-gray-600 mb-8">
@@ -163,7 +163,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8 ">
+    <section class="py-2 px-4 sm:px-6 lg:px-8 ">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Internship & Graduate Program</h2>
         <p class="text-gray-600">

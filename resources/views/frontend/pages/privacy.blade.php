@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
         <p class="text-sm text-gray-500 mb-8">Effective Date: August 1, 2024</p>
@@ -17,7 +17,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Information We Collect</h2>
         <p class="text-gray-600 mb-6">
@@ -59,7 +59,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. How We Use Your Information</h2>
         <p class="text-gray-600 mb-6">
@@ -78,7 +78,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Buy Direct: Secure Transaction Handling</h2>
         <p class="text-gray-600 mb-6">
@@ -95,7 +95,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Who We Share Your Information With</h2>
         <p class="text-gray-600 mb-6">
@@ -113,7 +113,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Cookies and Tracking Technologies</h2>
         <p class="text-gray-600 mb-6">
@@ -130,7 +130,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. Data Retention</h2>
         <p class="text-gray-600 mb-6">
@@ -144,7 +144,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. Data Security</h2>
         <p class="text-gray-600 mb-6">
@@ -162,7 +162,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Your Rights</h2>
         <p class="text-gray-600 mb-6">
@@ -181,7 +181,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">9. Children's Privacy</h2>
         <p class="text-gray-600 mb-6">
@@ -190,7 +190,7 @@
       </div>
     </section>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Changes to This Policy</h2>
         <p class="text-gray-600 mb-6">
@@ -199,7 +199,7 @@
       </div>
     </section>
 
-    <section class=" py-6 px-4 sm:px-6 lg:px-8">
+    <section class=" py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">11. Contact Us</h2>
         <p class="text-gray-600 mb-2">

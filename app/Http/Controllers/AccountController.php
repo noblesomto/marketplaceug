@@ -13,6 +13,9 @@ use App\Models\Shipping;
 use App\Mail\RegisterMail;
 use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+
 
 class AccountController extends Controller
 {
@@ -246,6 +249,64 @@ class AccountController extends Controller
             }
         }
         return null;
+    }
+
+
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function handleProviderCallback($provider)
+    {
+        try {
+            $socialUser = Socialite::driver($provider)->user();
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Login failed, please try again.');
+        }
+
+        // Try to find user by email
+        $user = User::where('email', $socialUser->getEmail())->first();
+
+        if (!$user) {
+            // If no user exists, create new one (status active by default)
+            $user = User::create([
+                'name'       => $socialUser->getName() ?? $socialUser->getNickname(),
+                'email'      => $socialUser->getEmail(),
+                $provider . '_id' => $socialUser->getId(),
+                'acc_status' => 1, // mark verified
+                'password'   => bcrypt(Str::random(16)), // random password
+            ]);
+        } else {
+            // Update provider ID if missing
+            if (!$user->{$provider . '_id'}) {
+                $user->update([
+                    $provider . '_id' => $socialUser->getId(),
+                ]);
+            }
+        }
+
+        // Use your existing login process (skip password + OTP since provider is trusted)
+        return $this->loginSocialUser($user);
+    }
+
+    protected function loginSocialUser($user)
+    {
+        // Put the same session values as normal login
+        session()->put('user_id', $user->user_id);
+        session()->put('name', $user->name);
+
+        // Update login activity
+        DB::table('users')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'last_login_ip' => $this->getIp(),
+                'last_login_at' => now(),
+            ]);
+
+        return session()->has('url.intended')
+            ? redirect(session()->get('url.intended'))
+            : redirect()->action([UserProfile::class, 'profile']);
     }
 
 

@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Cookies Policy</h1>
             <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
@@ -20,7 +20,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. What Are Cookies?</h2>
             <p class="text-gray-600">
@@ -29,7 +29,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. Why We Use Cookies</h2>
             <p class="text-gray-600 mb-4">
@@ -46,7 +46,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Types of Cookies We Use</h2>
             <p class="text-gray-600 mb-6">
@@ -101,7 +101,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Third-Party Cookies</h2>
             <p class="text-gray-600 mb-6">
@@ -119,7 +119,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. How to Manage or Disable Cookies</h2>
             <p class="text-gray-600 mb-6">
@@ -158,7 +158,7 @@
           </div>
         </section>
 
-        <section class=" py-6 px-4 sm:px-6 lg:px-8">
+        <section class=" py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. How Long Cookies Are Stored</h2>
             <p class="text-gray-600 mb-4">
@@ -174,7 +174,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. Updates to This Cookies Policy</h2>
             <p class="text-gray-600">
@@ -183,7 +183,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Contact Us</h2>
             <p class="text-gray-600 mb-6">

@@ -4,7 +4,7 @@
 @include('frontend.layouts.search')
 
 <div class="max-w-4xl mx-auto bg-white my-10">
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Copyright Policy</h1>
             <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
@@ -20,7 +20,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Ownership of Content on Marketplace Naija</h2>
             <p class="text-gray-600 mb-6">
@@ -32,7 +32,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. User-Generated Content (Ads, Images, Text, etc.)</h2>
             <p class="text-gray-600 mb-4">
@@ -57,7 +57,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Prohibited Use of Copyrighted Material</h2>
             <p class="text-gray-600 mb-6">
@@ -75,7 +75,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Reporting Copyright Infringement</h2>
             <p class="text-gray-600 mb-6">
@@ -103,7 +103,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Counter-Notification Process</h2>
             <p class="text-gray-600 mb-6">
@@ -125,7 +125,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. Repeat Infringers Policy</h2>
             <p class="text-gray-600 mb-6">
@@ -139,7 +139,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. Protecting Your Own Content</h2>
             <p class="text-gray-600 mb-6">
@@ -154,7 +154,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Use of Marketplace Naija Content</h2>
             <p class="text-gray-600 mb-6">
@@ -171,7 +171,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">9. Modifications to This Policy</h2>
             <p class="text-gray-600">
@@ -180,7 +180,7 @@
           </div>
         </section>
 
-        <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Contact Us</h2>
             <p class="text-gray-600 mb-6">

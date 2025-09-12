@@ -44,6 +44,11 @@ Route::any('/shipping', [PageController::class, 'shipping']);
 Route::any('/email', [PageController::class, 'email']);
 
 
+// Social Login
+Route::get('auth/{provider}', [AccountController::class, 'redirectToProvider']);
+Route::get('auth/{provider}/callback', [AccountController::class, 'handleProviderCallback']);
+
+
 //Account Section
 Route::any('/login', [AccountController::class, 'login']);
 Route::any('/register', [AccountController::class, 'register']);
