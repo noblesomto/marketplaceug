@@ -275,6 +275,7 @@ class AccountController extends Controller
                 'email'      => $socialUser->getEmail(),
                 $provider . '_id' => $socialUser->getId(),
                 'acc_status' => 1, // mark verified
+                'acc_type'=> "Private",
                 'password'   => bcrypt(Str::random(16)), // random password
             ]);
         } else {

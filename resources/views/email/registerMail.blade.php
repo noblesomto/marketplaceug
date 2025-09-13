@@ -99,9 +99,9 @@
         .button{
             background: #4CAF50;
             color: #FFF !important;
-            font-size: 24px;
+            font-size:18px;
             font-weight: 600;
-            padding: 10px 40px;
+            padding: 10px 20px;
             text-decoration: none;
             margin: 10px 5px;
             border-radius: 20px;
@@ -110,7 +110,7 @@
         .meta-info {
             color: #777777;
             font-size: 14px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         
         .footer {
@@ -204,7 +204,7 @@
 
                                 <div class=""><a href="{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}" target="_blank" class="button">Confirm Account</a></div>
                                 <div class="meta-info">
-                                    If that doesn't work, copy and paste the following link in your browser:<br>
+                                    If that doesn't work, copy and paste the following link in your browser:<br><br>
                                     <a href="{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}" target="_blank" style="color: #4CAF50;">{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}</a>
                                 </div>
                             </div>

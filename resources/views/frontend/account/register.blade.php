@@ -164,7 +164,7 @@
                 <div class="flex items-start">
                     <input id="terms-checkbox" type="checkbox" class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" required>
                     <label for="terms-checkbox" class="ml-2 text-sm text-gray-900">
-                        Yes, I look forward to regular news by email from the group of companies - you can unsubscribe at any time
+                        Yes, I’d like to receive email updates. You can unsubscribe at any time.
                     </label>
                 </div>
             </div>

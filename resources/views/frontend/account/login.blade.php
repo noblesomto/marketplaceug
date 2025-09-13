@@ -14,7 +14,7 @@
         <p class="text-sm lg:text-base mt-3">Log in to find and sell used treasures.</p>
       </div>
 
-      <!-- Social Login Buttons
+      <!-- Social Login Buttons -->
       <div class="mb-6 space-y-3">
         <a href="/auth/google" class="w-full bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200 ease-in-out shadow-sm hover:shadow-md">
           <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -40,7 +40,7 @@
         <span class="flex-shrink mx-4 text-gray-600 text-sm">or continue with email</span>
         <div class="flex-grow border-t border-gray-300"></div>
       </div>
-      Divider -->
+      <!-- Divider -->
       <form method="POST" action="/login">
         @csrf
 
