@@ -34,88 +34,32 @@ class LocationController extends Controller
 
     public function getAgilityShippingCost(Request $request)
     {
+
+        // Validate input parameters
+        $validated = $request->validate([
+            'sender_station' => 'required|integer',
+            'reciever_station' => 'required|integer', // Fixed typo
+            'ad_price' => 'required|numeric|min:0',
+            'ad_title' => 'required|string|max:255',
+            'ad_des' => 'nullable|string|max:4000',
+        ]);
+
         try {
             // Step 1: Retrieve token from cache or login
-            $token = Cache::remember('agility_access_token', 3600, function () {
-                $loginResponse = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])->post('https://thirdpartynode.theagilitysystems.com/login', [
-                    'email' => 'Info@marketplace.ng',
-                    'password' => 'Mj:wNWI0',
-                ]);
-
-                if ($loginResponse->failed()) {
-                    Log::error('Agility login failed', ['status' => $loginResponse->status()]);
-                    throw new \Exception('Unable to retrieve Agility access token.');
-                }
-
-                $loginData = $loginResponse->json();
-                return $loginData['data']['access-token'] ?? null;
-            });
+            $token = $this->getAgilityToken();
 
             if (!$token) {
-                throw new \Exception('Access token was not retrieved or is null.');
+                throw new \Exception('Unable to retrieve Agility access token.');
             }
-
-            //dd($token);
 
             // Step 2: Build the shipping cost payload
-            config(['app.timezone' => 'UTC']);
+            $payload = $this->buildShippingPayload($validated);
 
-            $payload = [
-                "SenderStationId" => $request->sender_station,
-                "ReceiverStationId" => $request->reciever_station,
-                "VehicleType" => 3,
-                "ReceiverLocation" => ["Latitude" => 0.00, "Longitude" => 0.00],
-                "SenderLocation" => ["Latitude" => 0, "Longitude" => 0],
-                "IsFromAgility" => false,
-                "CustomerCode" => "IND1875642",
-                "CustomerType" => 0,
-                "DeliveryOptionIds" => [3],
-                "Value" => $request->ad_price,
-                "PickUpOptions" => 1,
-                "ShipmentItems" => [[
-                    "ItemName" => $request->ad_title,
-                    "Description" => $request->ad_des ?? '',
-                    "SpecialPackageId" => 1,
-                    "Quantity" => 1,
-                    "Weight" => 5,
-                    "IsVolumetric" => false,
-                    "Length" => 0,
-                    "Width" => 0,
-                    "Height" => 0,
-                    "ShipmentType" => 0,
-                    "Value" => $request->ad_price
-                ]]
-            ];
+            //dd($payload);
+            // Step 3: Make the shipping cost API request with retry logic
+            $response = $this->makeAgilityApiRequest($token, $payload);
 
-            // Step 3: Make the shipping cost API request
-            $response = Http::withOptions([
-                'verify' => storage_path('cacert.pem'),
-            ])->withHeaders([
-                'Authorization' => 'Bearer ' . $token,
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-                'User-Agent' => 'AgilityOfficialClient/1.0',
-                'Access-Token' => $token,
-                'Request-ID' => (string) Str::uuid(),
-            ])->withBody(json_encode($payload), 'application/json')
-              ->timeout(25)
-              ->post(config('services.agility.url'));
-
-            // Step 4: Handle errors
-            if ($response->status() === 440) {
-                // Force token to refresh next time
-                Cache::forget('agility_access_token');
-                throw new \Exception("Agility rejected our token (440).");
-            }
-
-            if ($response->failed()) {
-                throw new \Exception("Agility API request failed with status " . $response->status());
-            }
-
-            // Step 5: Return success response
+            // Step 4: Return success response
             return response()->json([
                 'status' => true,
                 'data' => $response->json()['data'] ?? [],
@@ -124,15 +68,124 @@ class LocationController extends Controller
         } catch (\Exception $e) {
             Log::error('Agility API Error', [
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json([
                 'status' => false,
-                'error' => 'Shipping cost calculation failed: ' . $e->getMessage(),
+                'error' => 'Shipping cost calculation failed. Please try again later.',
             ], 500);
         }
     }
 
+    private function getAgilityToken()
+    {
+        return Cache::remember('agility_access_token', 3600, function () {
+            $loginResponse = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->timeout(15)->post('https://thirdpartynode.theagilitysystems.com/login', [
+                'email' => config('services.agility.email'), // Use env variable
+                'password' => config('services.agility.password'), // Use env variable
+            ]);
 
+            if ($loginResponse->failed()) {
+                Log::error('Agility login failed', [
+                    'status' => $loginResponse->status(),
+                    'response' => $loginResponse->body()
+                ]);
+                return null;
+            }
+
+            $loginData = $loginResponse->json();
+            return $loginData['data']['access-token'] ?? null;
+        });
+    }
+
+    private function buildShippingPayload(array $validated)
+    {
+        return [
+            "SenderStationId" => $validated['sender_station'],
+            "ReceiverStationId" => $validated['reciever_station'],
+            "VehicleType" => config('services.agility.vehicle_type', 3),
+            "ReceiverLocation" => ["Latitude" => 0.00, "Longitude" => 0.00],
+            "SenderLocation" => ["Latitude" => 0, "Longitude" => 0],
+            "IsFromAgility" => false,
+            "CustomerCode" => config('services.agility.customer_code'),
+            "CustomerType" => 0,
+            "DeliveryOptionIds" => [3],
+            "Value" => $validated['ad_price'],
+            "PickUpOptions" => 1,
+            "ShipmentItems" => [[
+                "ItemName" => $validated['ad_title'],
+                "Description" => $this->cleanDescription($validated['ad_des'] ?? ''),
+                "SpecialPackageId" => 1,
+                "Quantity" => 1,
+                "Weight" => config('services.agility.default_weight', 5),
+                "IsVolumetric" => false,
+                "Length" => 0,
+                "Width" => 0,
+                "Height" => 0,
+                "ShipmentType" => 0,
+                "Value" => $validated['ad_price']
+            ]]
+        ];
+    }
+
+    private function makeAgilityApiRequest($token, $payload, $isRetry = false)
+    {
+        $httpOptions = [];
+
+        // Only use custom SSL cert if file exists
+        $certPath = storage_path('cacert.pem');
+        if (file_exists($certPath)) {
+            $httpOptions['verify'] = $certPath;
+        }
+
+        $response = Http::withOptions($httpOptions)
+            ->withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'User-Agent' => 'AgilityOfficialClient/1.0',
+                'Request-ID' => (string) Str::uuid(),
+            ])
+            ->withBody(json_encode($payload), 'application/json')
+            ->timeout(25)
+            ->post(config('services.agility.url'));
+
+        // Handle token expiry with retry
+        if ($response->status() === 440 && !$isRetry) {
+            Cache::forget('agility_access_token');
+            $newToken = $this->getAgilityToken();
+
+            if ($newToken) {
+                return $this->makeAgilityApiRequest($newToken, $payload, true);
+            }
+        }
+
+        if ($response->failed()) {
+            throw new \Exception("Agility API request failed with status " . $response->status());
+        }
+
+        return $response;
+    }
+
+    private function cleanDescription($description)
+{
+    if (empty($description)) {
+        return '';
+    }
+
+    // Strip HTML tags and decode HTML entities
+    $cleaned = strip_tags($description);
+    $cleaned = html_entity_decode($cleaned, ENT_QUOTES, 'UTF-8');
+
+    // Remove extra whitespace and line breaks
+    $cleaned = preg_replace('/\s+/', ' ', $cleaned);
+
+    // Trim and limit length if needed
+    return trim($cleaned);
+}
 
 }

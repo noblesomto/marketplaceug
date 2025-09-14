@@ -749,7 +749,7 @@
                 @if ($errors->has('quantity'))
                     <span class="text-red-400">{{ $errors->first('quantity') }}</span>
                 @endif
-            <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1" min="1" max="20">
+            <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1" min="1" max="100">
             </div>
             <div class="col-span-10 md:col-span-3">
                 

@@ -37,11 +37,12 @@ return [
     ],
 
     'agility' => [
-        'token' => env('AGILITY_API_TOKEN'),
-        'email' => env('AGILITY_EMAIL', 'Info@marketplace.ng'),
-        'password' => env('AGILITY_PASSWORD', 'Mj:wNWI0'),
+        'url' => env('AGILITY_URL', 'https://api.agility.com/shipping-cost'),
+        'email' => env('AGILITY_EMAIL'),
+        'password' => env('AGILITY_PASSWORD'),
         'customer_code' => env('AGILITY_CUSTOMER_CODE', 'IND1875642'),
-        'url' => env('AGILITY_URL', 'https://thirdpartynode.theagilitysystems.com/api/ShippingCost/GetShippingCost'),
+        'vehicle_type' => env('AGILITY_VEHICLE_TYPE', 3),
+        'default_weight' => env('AGILITY_DEFAULT_WEIGHT', 5),
     ],
 
     'google' => [

@@ -10,8 +10,8 @@
       @include('frontend.components.flash-message')
 
       <div class="mb-5">
-        <h2 class="font-bold text-lg lg:text-xl mt-5 w-full">Welcome to Marketplace NG</h2>
-        <p class="text-sm lg:text-base mt-3">Log in to find and sell used treasures.</p>
+        <h2 class="font-bold text-lg lg:text-xl mt-5 w-full">Welcome to Marketplace Naija</h2>
+        <p class="text-sm lg:text-base mt-3">Log in to find and sell new and used treasures</p>
       </div>
 
       <!-- Social Login Buttons -->

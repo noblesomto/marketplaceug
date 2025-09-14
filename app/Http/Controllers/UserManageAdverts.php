@@ -173,26 +173,28 @@ class UserManageAdverts extends Controller
 
             // Handle uploaded images using FileUploadHelper
             if ($request->hasFile('images')) {
-                $images = $request->file('images');
-                $order = explode(',', $request->input('image_order')); // e.g. "1,0,2"
+                $images = array_values($request->file('images')); // reindex just in case
+                $order  = explode(',', $request->input('image_order')); // e.g. "2,0,1"
 
                 foreach ($order as $position => $index) {
-                    if (!isset($images[$index]) || !$images[$index]->isValid()) continue;
+                    if (!isset($images[$index]) || !$images[$index]->isValid()) {
+                        continue;
+                    }
 
                     $uploadedFileName = FileUploadHelper::upload($images[$index], 'images');
 
                     $advert->images()->create([
                         'image'    => $uploadedFileName,
-                        'position' => $position + 1,
+                        'position' => $position + 1, // 1-based order
                     ]);
                 }
-            }elseif ($category == 3) {
-                // Save default image when no upload
+            } elseif ($category == 3) {
                 $advert->images()->create([
                     'image'    => 'jobs.png',
                     'position' => 1,
                 ]);
             }
+
 
             // Store car-specific info
             if ($subcat === 2) {

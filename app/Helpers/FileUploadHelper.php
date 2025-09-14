@@ -19,8 +19,8 @@ class FileUploadHelper
     public static function upload(UploadedFile $file, string $folder, string $oldFile = null): ?string
     {
         $uploadPath = self::getUploadPath($folder);
-        $quality = 65; // WebP quality
-        $maxFileSize = 100 * 1024; // 100 KB in bytes
+        $quality = 65;
+        $maxFileSize = 100 * 1024;
 
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
@@ -31,42 +31,54 @@ class FileUploadHelper
         }
 
         $extension = strtolower($file->getClientOriginalExtension());
-        $filename  = uniqid() . '.webp'; // Always save as WebP
+        $filename  = uniqid() . '.webp';
         $fullPath  = $uploadPath . '/' . $filename;
 
-        // Only process if it's an image
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])) {
+        $manager = new ImageManager(new Driver());
 
-            // If already below size threshold, just move without compression
-            if ($file->getSize() <= $maxFileSize) {
-                $file->move($uploadPath, $filename);
-                return $filename;
+        // --- HEIC/HEIF Handling ---
+        if (in_array($extension, ['heic', 'heif'])) {
+            // Check if heif-convert is installed
+            $heifConvertExists = shell_exec("command -v heif-convert");
+
+            if (!$heifConvertExists) {
+                throw new \Exception("HEIC images are not supported on this server. Please upload JPG or PNG instead.");
             }
 
-            // Create ImageManager instance (GD driver)
-            $manager = new ImageManager(new Driver());
+            $tempPath = sys_get_temp_dir() . '/' . uniqid() . '.jpg';
 
-            // Read image
-            $image = $manager->read($file->getPathname());
+            // Convert HEIC → JPG
+            exec("heif-convert " . escapeshellarg($file->getPathname()) . " " . escapeshellarg($tempPath) . " 2>&1", $output, $status);
 
-            // Optional: Resize if too large
-            if ($image->width() > 1920) {
-                $image->resize(1920, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+            if ($status !== 0 || !file_exists($tempPath)) {
+                throw new \Exception("HEIC conversion failed. Please try again with JPG or PNG.");
             }
 
-            // Convert to WebP with given quality and save
-            $image->toWebp($quality)->save($fullPath);
-
-        } else {
-            // Non-image: just move without modification
-            $file->move($uploadPath, $filename);
+            $image = $manager->read($tempPath)->orient();
         }
+        // --- Normal Image Handling ---
+        elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])) {
+            $image = $manager->read($file->getPathname())->orient();
+        } else {
+            // Non-image fallback
+            $file->move($uploadPath, $filename);
+            return $filename;
+        }
+
+        // Resize if needed
+        if ($image->width() > 1920) {
+            $image->resize(1920, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        }
+
+        // Save as WebP
+        $image->toWebp($quality)->save($fullPath);
 
         return $filename;
     }
+
 
     public static function delete(string $folder, string $filename): bool
     {
