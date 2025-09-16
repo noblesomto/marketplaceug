@@ -138,7 +138,7 @@
                         @endif
 
                         <div >
-                           @if($row->ad_status==1)
+                           @if($row->ad_status=='active')
                                 <a title="Click to Change Status" class="flex items-center gap-2 bg-green-200 p-1 rounded cursor-not-allowed" >
                                     <span>Active Ad</span>
                                     <span class="">
@@ -147,9 +147,18 @@
                                         </svg>
                                 </span>
                                 </a>
-                            @else
+                            @elseif($row->ad_status=='disabled')
                                 <a title="Click to Change Status" class="flex items-center gap-2 bg-red-200 p-1 rounded cursor-not-allowed" >
                                     <span>Disabled</span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                </span>
+                                </a>
+                            @else
+                                <a title="Click to Change Status" class="flex items-center gap-2 bg-red-500 p-1 rounded cursor-not-allowed" >
+                                    <span>Banned</span>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -199,7 +208,7 @@
                         @endif
 
                         <div >
-                           @if($row->ad_status==1)
+                           @if($row->ad_status=='active')
                                 <a title="Click to Change Status" class="flex items-center gap-2 bg-green-200 p-1 rounded" href="/user/ad-status/0/{{ $row->id }}">
                                     <span>Active Ad</span>
                                     <span class="">
@@ -208,9 +217,19 @@
                                         </svg>
                                 </span>
                                 </a>
-                            @else
+                            @elseif($row->ad_status=='disabled')
                                 <a title="Click to Change Status" class="flex items-center gap-2 bg-red-200 p-1 rounded" href="/user/ad-status/1/{{ $row->id }}">
                                     <span>Disabled</span>
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                </span>
+                                </a>
+
+                            @else
+                                <a title="Click to Change Status" class="flex items-center gap-2 bg-red-200 p-1 rounded cursor-not-allowed" >
+                                    <span>Ad Banned</span>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />

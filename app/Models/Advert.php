@@ -124,7 +124,7 @@ class Advert extends Model
 
     public function scopeActiveNotRecentlySold($query)
     {
-        return $query->where('ad_status', 1)
+        return $query->where('ad_status', 'active')
             ->where(function ($q) {
                 $q->where('sold', '!=', 'Yes')
                   ->orWhere(function ($q) {
@@ -139,7 +139,7 @@ class Advert extends Model
     {
         return $query->where('featured', 'Yes')
             ->where('sold', 'No')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->whereHas('boost', function ($q) {
                 $q->where('boost_status', 'active');
             });

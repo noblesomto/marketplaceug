@@ -16,7 +16,7 @@ class ManageAdverts extends Controller
         $title = "Active Adverts | " . config('global.site_name');
         $page_title = "Active Adverts";
         $adverts = Advert::with(['user', 'firstImage'])
-                ->where("ad_status", 1)
+                ->where("ad_status", 'active')
                 ->where("sold", "No")
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
@@ -29,7 +29,7 @@ class ManageAdverts extends Controller
         $title = "Disabled Adverts | " . config('global.site_name');
         $page_title = "Disabled Adverts";
         $adverts = Advert::with(['user', 'firstImage'])
-                ->where("ad_status", 0)
+                ->where("ad_status", '<>', 'active')
                 ->where("sold", "No")
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);

@@ -37,7 +37,7 @@ class AdvertController extends Controller
         $featured = Advert::inRandomOrder()
             ->where('featured', "Yes")
             ->where('sold', 'No')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->whereHas('boost', function($query) {
                 $query->where('boost_status', 'active');
             })
@@ -54,7 +54,7 @@ class AdvertController extends Controller
             ->values(); // Reindex collection
         **/
         $featured = Advert::inRandomOrder()
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where(function($query) {
             $query->where('sold', '!=', 'Yes')
                   ->orWhere(function($query) {
@@ -70,7 +70,7 @@ class AdvertController extends Controller
         $perPage = 20;
 
         $listings = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function ($q) {
@@ -193,7 +193,7 @@ class AdvertController extends Controller
         $perPage = 20;
 
         $ads = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function ($q) {
@@ -224,7 +224,7 @@ class AdvertController extends Controller
         $perPage = 20;
 
         $ads = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function ($q) {

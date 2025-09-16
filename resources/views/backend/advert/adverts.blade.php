@@ -83,10 +83,12 @@
                     <td>{{ $row->state }}</td>
                     <td>{{ date('j M Y', strtotime($row->created_at)) }}</td>
                     <td>
-                      @if($row->ad_status == 1)
+                      @if($row->ad_status == 'active')
                         <span class="badge bg-success">Active</span>
-                      @else
+                      @elseif($row->ad_status == 'disabled')
                         <span class="badge bg-warning text-dark">Disabled</span>
+                      @else
+                        <span class="badge bg-danger text-dark">Banned</span>
                       @endif
                     </td>
                     <td>
@@ -98,12 +100,12 @@
                     </td>
                     <td>
                       <div class="btn-group" role="group">
-                        @if($row->ad_status == 1)
-                          <a href="/admin/advert-status/{{ $row->id }}/0" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Disable">
+                        @if($row->ad_status == 'active')
+                          <a href="/admin/advert-status/{{ $row->id }}/banned" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Disable/Ban">
                             <i class="bi bi-x-circle"></i>
                           </a>
                         @else
-                          <a href="/admin/advert-status/{{ $row->id }}/1" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Enable">
+                          <a href="/admin/advert-status/{{ $row->id }}/active" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Enable">
                             <i class="bi bi-check-all"></i>
                           </a>
                         @endif

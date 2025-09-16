@@ -164,7 +164,7 @@ class UserManageAdverts extends Controller
                 'show_contact'     => $request->input('show_contact'),
                 'quantity'         => $request->input('quantity') ?? 1,
                 'views'            => "0",
-                'ad_status'        => "1",
+                'ad_status'        => "active",
                 'user_id'          => $user_id,
                 'ad_image'         => "",
             ]);
