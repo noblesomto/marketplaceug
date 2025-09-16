@@ -69,7 +69,7 @@ if (!function_exists('getAdvertsGroupedByState')) {
     function getAdvertsGroupedByState(array $filters = [])
     {
         $query = Advert::select('state', DB::raw('count(*) as total'))
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where('sold', 'No')
             ->groupBy('state')
             ->orderByDesc('total');
@@ -97,7 +97,7 @@ if (!function_exists('getAdvertCount')) {
     function getAdvertCount(array $filters = [])
     {
         $query = Advert::query()
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where('sold', 'No');
 
         if (!empty($filters['category'])) {
@@ -154,7 +154,7 @@ if (!function_exists('advert_count_by_filter')) {
         $query = Advert::whereHas('owner', function ($q) use ($verified) {
                 $q->where('verified', $verified);
             })
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where('sold', 'No');
 
         // Category filter
@@ -275,7 +275,7 @@ if (!function_exists('get_brands_with_advert_count')) {
         return $brandsQuery->with([
             'subCategory.category'  // ✅ Eager load category via subcategory
         ])->withCount(['adverts' => function ($query) use ($subCategoryId, $categoryId) {
-            $query->where('ad_status', 1)
+            $query->where('ad_status', 'active')
                   ->where('sold', 'No');
 
             if ($subCategoryId) {

@@ -133,13 +133,14 @@
                             <label class="flex items-center cursor-pointer">
                                 <!-- Switch -->
                                 <div class="relative">
-                                    <input type="checkbox" id="toggleSwitch" class="sr-only">
-                                    <div class="w-11 h-6 bg-gray-300 rounded-full shadow-inner transition-colors duration-200"></div>
-                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200"></div>
+                                    <input type="checkbox" id="toggleSwitch" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 rounded-full shadow-inner transition-colors duration-200 peer-checked:bg-green-500"></div>
+                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"></div>
                                 </div>
                                 <!-- Label -->
                                 <span class="ml-3 text-gray-700">Send the seller an offer?</span>
                             </label>
+
 
                             <!-- Conditionally Visible Input -->
                             <div id="extraInputWrapper" class="hidden">

@@ -154,7 +154,7 @@ class SearchFilter extends Controller
     public function filter(Request $request)
     {
         $query = Advert::with('firstImage')
-                    ->where('ad_status', 1)
+                    ->where('ad_status', 'active')
                     ->where('sold', 'No');
 
         //dd($request->location);
@@ -223,7 +223,7 @@ class SearchFilter extends Controller
     public function filterBySeller(Request $request)
     {
         $query = Advert::with('firstImage')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where('sold', 'No');
 
         // 🟢 Seller filter
@@ -265,7 +265,7 @@ class SearchFilter extends Controller
         public function filterByBuydirect(Request $request)
     {
         $query = Advert::with('firstImage')
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
             ->where('sold', 'No')
             ->where('buy_direct', $request->buy_direct);
 

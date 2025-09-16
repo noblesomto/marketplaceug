@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Hash;
 use Mail;
 use App\Mail\VerificationRequestMail;
+use App\Rules\NigerianPhoneNumber;
 
 class UserProfile extends Controller
 {
@@ -112,7 +113,7 @@ class UserProfile extends Controller
         $count_ads = Advert::where('user_id', $user_id)->count();
 
         $request->validate([
-            'phone' => 'required|numeric',
+            'phone' => ['required', new NigerianPhoneNumber()]
         ]);
 
 

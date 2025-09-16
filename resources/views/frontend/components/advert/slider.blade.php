@@ -77,29 +77,42 @@
         <img id="lightbox-image"
              src=""
              alt="Fullscreen Image"
-             class="max-h-full max-w-full object-contain transition-transform duration-300"
+             class="max-h-[90vh] max-w-[90vw] object-contain transition-transform duration-300"
              style="transform: scale(1);">
 
         <!-- Close -->
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 z-10">&times;</button>
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+        </button>
 
         <!-- Prev -->
         <button id="lightbox-prev"
             class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">
-            &#10094;
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
         </button>
 
         <!-- Next -->
         <button id="lightbox-next"
             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">
-            &#10095;
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
         </button>
 
-        <!-- Zoom -->
+        <!-- Zoom Controls -->
         <div class="absolute bottom-6 right-6 flex space-x-2 z-10">
-            <button onclick="zoomIn()" class="bg-white text-black px-2 py-1 rounded shadow">+</button>
-            <button onclick="zoomOut()" class="bg-white text-black px-2 py-1 rounded shadow">−</button>
-            <button onclick="resetZoom()" class="bg-white text-black px-2 py-1 rounded shadow">Reset</button>
+            <button onclick="zoomIn()" class="bg-white text-black px-2 py-1 rounded shadow hover:bg-gray-200">+</button>
+            <button onclick="zoomOut()" class="bg-white text-black px-2 py-1 rounded shadow hover:bg-gray-200">−</button>
+            <button onclick="resetZoom()" class="bg-white text-black px-2 py-1 rounded shadow hover:bg-gray-200">Reset</button>
+        </div>
+
+        <!-- Optional: Image info overlay -->
+        <div class="absolute bottom-6 left-6 text-white text-sm z-10">
+            <span id="image-counter">1 / {{ count($ad->images) }}</span>
         </div>
     </div>
 </div>
@@ -152,6 +165,7 @@
     showSlide(index);
 </script>
 
+<!-- Enhanced JavaScript for better zoom handling -->
 <script>
     let currentIndex = 0;
     let zoomLevel = 1;
@@ -163,16 +177,27 @@
         zoomLevel = 1;
         updateLightbox();
         lightbox.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 
     function closeLightbox() {
         lightbox.classList.add('hidden');
         lightboxImage.src = '';
+        document.body.style.overflow = ''; // Restore scrolling
     }
 
     function updateLightbox() {
         lightboxImage.src = imageList[currentIndex];
         lightboxImage.style.transform = `scale(${zoomLevel})`;
+
+        // Update counter if you added it
+        const counter = document.getElementById('image-counter');
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${imageList.length}`;
+        }
+
+        // Reset any pan position when changing images
+        lightboxImage.style.transformOrigin = 'center center';
     }
 
     function showNext() {
@@ -188,24 +213,62 @@
     }
 
     function zoomIn() {
-        zoomLevel += 0.2;
+        zoomLevel = Math.min(zoomLevel + 0.2, 3); // Max zoom 3x
         lightboxImage.style.transform = `scale(${zoomLevel})`;
     }
 
     function zoomOut() {
-        zoomLevel = Math.max(0.2, zoomLevel - 0.2);
+        zoomLevel = Math.max(0.5, zoomLevel - 0.2); // Min zoom 0.5x
         lightboxImage.style.transform = `scale(${zoomLevel})`;
     }
 
     function resetZoom() {
         zoomLevel = 1;
         lightboxImage.style.transform = `scale(1)`;
+        lightboxImage.style.transformOrigin = 'center center';
     }
 
+    // Enhanced pan functionality for zoomed images
+    let isPanning = false;
+    let startPanX = 0;
+    let startPanY = 0;
+    let currentPanX = 0;
+    let currentPanY = 0;
+
+    lightboxImage.addEventListener('mousedown', (e) => {
+        if (zoomLevel > 1) {
+            isPanning = true;
+            startPanX = e.clientX - currentPanX;
+            startPanY = e.clientY - currentPanY;
+            lightboxImage.style.cursor = 'grabbing';
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isPanning && zoomLevel > 1) {
+            currentPanX = e.clientX - startPanX;
+            currentPanY = e.clientY - startPanY;
+            lightboxImage.style.transform = `scale(${zoomLevel}) translate(${currentPanX / zoomLevel}px, ${currentPanY / zoomLevel}px)`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isPanning = false;
+        lightboxImage.style.cursor = 'grab';
+    });
+
+    // Reset pan when zoom changes
+    function resetPan() {
+        currentPanX = 0;
+        currentPanY = 0;
+        isPanning = false;
+    }
+
+    // Event listeners
     document.getElementById('lightbox-next').addEventListener('click', showNext);
     document.getElementById('lightbox-prev').addEventListener('click', showPrev);
 
-    // Close on backdrop
+    // Close on backdrop click
     lightbox.addEventListener('click', e => {
         if (e.target === lightbox) closeLightbox();
     });
@@ -216,13 +279,76 @@
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowRight') showNext();
         if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === '+' || e.key === '=') zoomIn();
+        if (e.key === '-') zoomOut();
+        if (e.key === '0') resetZoom();
     });
 
-    // Swipe support (mobile)
-    lightbox.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lightbox.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
     lightbox.addEventListener('touchend', e => {
-        const endX = e.changedTouches[0].clientX;
-        if (endX - startX > 50) showPrev();
-        else if (startX - endX > 50) showNext();
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Only swipe if it's more horizontal than vertical
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+            if (deltaX > 0) showPrev();
+            else showNext();
+        }
+    });
+
+    // Double-tap to zoom
+    let lastTap = 0;
+    lightboxImage.addEventListener('touchend', (e) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        if (tapLength < 500 && tapLength > 0) {
+            if (zoomLevel === 1) {
+                zoomLevel = 2;
+            } else {
+                zoomLevel = 1;
+                resetPan();
+            }
+            updateLightbox();
+        }
+        lastTap = currentTime;
     });
 </script>
+
+<!-- Additional CSS for better mobile experience -->
+<style>
+    #lightbox-image {
+        cursor: grab;
+    }
+
+    #lightbox-image:active {
+        cursor: grabbing;
+    }
+
+    /* Prevent text selection during pan */
+    #lightbox {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Better button styling */
+    #lightbox button {
+        transition: all 0.2s ease;
+    }
+
+    /* Hide scrollbar but allow scrolling */
+    body.lightbox-open {
+        overflow: hidden;
+    }
+</style>
