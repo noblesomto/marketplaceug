@@ -97,8 +97,14 @@
                                             </td>
                                             <td>
                                                 <div class="small">
-                                                    <div class="fw-medium">Started: {{ date('M j, Y', strtotime($row->start_date)) }}</div>
-                                                    <div class="text-muted">Expires: {{ date('M j, Y', strtotime($expiry)) }}</div>
+                                                    <div class="fw-medium">
+                                                        Started:
+                                                        {{ !empty($row->start_date) ? date('M j, Y', strtotime($row->start_date)) : 'Not set' }}
+                                                    </div>
+                                                    <div class="text-muted">
+                                                        Expires:
+                                                        {{ !empty($expiry) ? date('M j, Y', strtotime($expiry)) : 'Not set' }}
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
