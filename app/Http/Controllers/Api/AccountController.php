@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\RegisterMail;
 use App\Mail\PasswordMail;
+use App\Rules\NigerianPhoneNumber;
 
 class AccountController extends Controller
 {
@@ -92,7 +93,7 @@ class AccountController extends Controller
             'address'  => 'required',
             'state'    => 'required',
             'name'     => 'required',
-            'phone'    => 'required|numeric|unique:users',
+            'phone' => ['required|unique:users', new NigerianPhoneNumber()],
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
