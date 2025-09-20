@@ -86,7 +86,7 @@ class UserController extends Controller
 
     public function my_ads(Request $request)
     {   
-        $title = "My Orders | " . config('global.site_name');
+        $title = "My Ads | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
         $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(20);

@@ -15,7 +15,7 @@
         <span class="text-dark_green font-bold text-lg md:text-xl my-2">Contact For Price</span>
     @else
         <div class="flex text-dark_green font-bold text-lg md:text-xl my-2">
-            <div class="mr-4">₦ {{ number_format($ad->price ?? 0, 2, '.', ',') }}</div>
+            <div class="mr-4">₦ {{ number_format($ad->price ?? 0, 0, '.', ',') }}</div>
             <div>{{ $ad->price_type ?? '' }}</div>
         </div>
     @endif

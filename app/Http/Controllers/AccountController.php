@@ -597,7 +597,7 @@ class AccountController extends Controller
        
     }
 
-    protected function getIp(Request $request = null)
+    protected function getIp(?Request $request = null)
     {
         if ($request) {
             return $request->ip();

@@ -35,8 +35,8 @@
                         <div class="space-y-4">
                             @foreach($advert->boost as $boost)
                                 @php
-                                    $endDate = \Carbon\Carbon::parse($boost->start_date)->addDays($boost->duration);
-                                    $remainingDays = max(0, \Carbon\Carbon::now()->diffInDays($endDate, false));
+                                    $endDate = \Carbon\Carbon::parse($boost->start_date)->addDays($boost->duration)->startOfDay();
+                                    $remainingDays = max(0, \Carbon\Carbon::now()->startOfDay()->diffInDays($endDate, false));
                                 @endphp
 
                                 <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
