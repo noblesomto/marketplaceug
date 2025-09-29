@@ -121,7 +121,7 @@
                 </span>
             </div>
             @else
-                <img class="w-12 h-12 rounded-full" src="{{ asset('uploads/profile/'. $ad->owner->profile_picture) }}">
+                <img class="w-12 h-12 rounded-full" src="{{ $ad->owner->profile_thumbnail_url }}">
             @endif
         </a>
         <div>

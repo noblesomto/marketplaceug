@@ -43,8 +43,8 @@
                     <tr>
                       <td>{{ $loop->iteration + ($payments->currentPage() - 1) * $payments->perPage() }}</td>
                       <td>
-                        @if($row->advert->firstImage->image)
-                          <img style="width: 60px; height: 50px; object-fit: cover;" src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}" class="img-thumbnail" alt="Image">
+                        @if($row->hasMedia('images'))
+                          <img style="width: 60px; height: 50px; object-fit: cover;" src="{{ $row->getFirstMediaUrl('images', 'thumbnail') }}" class="img-thumbnail" alt="Image">
                         @else
                           <img width="60px" src="{{ asset('frontend/images/default.png') }}" class="img-thumbnail" alt="Default Image">
                         @endif

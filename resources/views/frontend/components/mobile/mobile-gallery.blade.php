@@ -14,7 +14,7 @@
   <div class="flex-none w-32">
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
         <div class="relative overflow-hidden">
-            <img class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+            <img class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
             <div class="absolute top-2 right-2 space-y-1">
                 @if($row->owner->verified=='yes')
                     <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">

@@ -34,7 +34,6 @@ class LocationController extends Controller
 
     public function getAgilityShippingCost(Request $request)
     {
-
         // Validate input parameters
         $validated = $request->validate([
             'sender_station' => 'required|integer',
@@ -84,7 +83,7 @@ class LocationController extends Controller
             $loginResponse = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-            ])->timeout(15)->post('https://thirdpartynode.theagilitysystems.com/login', [
+            ])->timeout(30)->post('https://thirdpartynode.theagilitysystems.com/login', [
                 'email' => config('services.agility.email'), // Use env variable
                 'password' => config('services.agility.password'), // Use env variable
             ]);
@@ -144,14 +143,14 @@ class LocationController extends Controller
 
         $response = Http::withOptions($httpOptions)
             ->withHeaders([
-                'Authorization' => 'Bearer ' . $token,
+                'access-token' =>  $token,
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'User-Agent' => 'AgilityOfficialClient/1.0',
                 'Request-ID' => (string) Str::uuid(),
             ])
             ->withBody(json_encode($payload), 'application/json')
-            ->timeout(25)
+            ->timeout(30)
             ->post(config('services.agility.url'));
 
         // Handle token expiry with retry

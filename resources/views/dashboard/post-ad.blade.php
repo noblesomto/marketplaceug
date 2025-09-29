@@ -639,7 +639,9 @@
                     @endif
                     <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('price') }}" >
                   </div>
-
+                  <div class="text-base ml-2">
+                   Naira
+                  </div>
             </div>
             </div>
             <div id="services" class="col-span-10 md:col-span-2 mt-1">

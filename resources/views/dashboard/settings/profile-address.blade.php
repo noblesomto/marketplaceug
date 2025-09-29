@@ -90,14 +90,42 @@
 
 				        
 				        <div class="mb-6 mt-4">
-				            
-				           <label for="profile_image" class="block text-gray-700 text-sm font-bold mb-2">Profile Image</label>
-				           @if ($errors->has('profile_image'))
-				                <span class="text-red-900 my-1">{{ $errors->first('profile_image') }}</span>
-				            @endif
-						    <input type="file" name="profile_image" id="profile_image"
-						        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-				          </div>
+                            <div class="flex items-start space-x-4">
+                                <!-- Profile Thumbnail -->
+                                <div class="flex-shrink-0">
+                                    @if ($user->profile_thumbnail_url)
+                                        <img
+                                            class="w-16 h-16 rounded-full object-cover border"
+                                            src="{{ $user->profile_thumbnail_url }}"
+                                            alt="Profile Image">
+                                    @else
+                                        <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border">
+                                            <!-- Heroicon: User -->
+                                            <svg class="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+                                <!-- Upload Input -->
+                                <div class="flex-1">
+                                    <label for="profile_image" class="block text-gray-700 text-sm font-bold mb-2">
+                                        Profile Image
+                                    </label>
+
+                                    @if ($errors->has('profile_image'))
+                                        <span class="text-red-600 text-xs block mb-2">
+                                            {{ $errors->first('profile_image') }}
+                                        </span>
+                                    @endif
+
+                                    <input type="file" name="profile_image" id="profile_image"
+                                        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
 				
 
 				          <div class="mt-8">

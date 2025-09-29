@@ -35,10 +35,11 @@
     31 => 'Termwind\\Laravel\\TermwindServiceProvider',
     32 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
     33 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    34 => 'App\\Providers\\AppServiceProvider',
-    35 => 'App\\Providers\\AuthServiceProvider',
-    36 => 'App\\Providers\\EventServiceProvider',
-    37 => 'App\\Providers\\RouteServiceProvider',
+    34 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    35 => 'App\\Providers\\AppServiceProvider',
+    36 => 'App\\Providers\\AuthServiceProvider',
+    37 => 'App\\Providers\\EventServiceProvider',
+    38 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -60,10 +61,11 @@
     15 => 'Termwind\\Laravel\\TermwindServiceProvider',
     16 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
     17 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    18 => 'App\\Providers\\AppServiceProvider',
-    19 => 'App\\Providers\\AuthServiceProvider',
-    20 => 'App\\Providers\\EventServiceProvider',
-    21 => 'App\\Providers\\RouteServiceProvider',
+    18 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    19 => 'App\\Providers\\AppServiceProvider',
+    20 => 'App\\Providers\\AuthServiceProvider',
+    21 => 'App\\Providers\\EventServiceProvider',
+    22 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (

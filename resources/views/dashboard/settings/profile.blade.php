@@ -26,7 +26,7 @@
                             </span>
                         </div>
                     @else
-                        <img class="w-10 h-10 rounded-full" src="{{ asset('uploads/profile/'. $user->profile_picture) }}">
+                        <img class="w-10 h-10 rounded-full" src="{{ $user->profile_thumbnail_url }}" alt="Profile">
                     @endif
                 </div>
 		        <div class="mt-2 ">

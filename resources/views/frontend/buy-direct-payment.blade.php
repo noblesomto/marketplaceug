@@ -15,7 +15,7 @@
       <!-- Product Image Gallery -->
       <div class="md:w-1/2 p-6">
         <div class="relative overflow-hidden rounded-lg bg-gray-100 aspect-square mb-4">
-          <img src="{{ asset('uploads/images/' . $ad->firstImage->image) }}" 
+          <img src="{{ $ad->hasMedia('images') ? $ad->getFirstMediaUrl('images', 'large') : asset('frontend/images/default.png') }}"
                alt="{{ $ad->ad_title }}" 
                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
         </div>

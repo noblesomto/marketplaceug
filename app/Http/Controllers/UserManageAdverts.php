@@ -24,9 +24,12 @@ use App\Models\Notification;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
+use App\Traits\ManagesImages;
 
 class UserManageAdverts extends Controller
 {
+    use ManagesImages;
+
       public function fetch_subcat($cat_id)
     {
         $subcat = SubCategory::where('cat_id', $cat_id)->get();
@@ -43,7 +46,7 @@ class UserManageAdverts extends Controller
     {
         $title = "Post New Advert - " . config('global.site_name');
         $seller_id = $user_id = $request->session()->get('user_id');
-        $user = User::where('users.user_id', $user_id)->first();
+        $user = User::where('user_id', $user_id)->first();
         $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
@@ -51,6 +54,13 @@ class UserManageAdverts extends Controller
             ->where('follow', $user_id)
             ->get();
 
+        if (empty($user->phone)) {
+            return redirect('/user/profile-info')->with('error', 'Please Update your Phone number');
+        }
+
+        if (empty($user->address) && empty($user->state)) {
+            return redirect('/user/profile-address')->with('error', 'Please update your Address and State');
+        }
         //dd($followers);
 
         if ($request->isMethod('POST')) {
@@ -124,7 +134,6 @@ class UserManageAdverts extends Controller
 
             $validatedData = $request->validate($rules);
 
-
             if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
             }
@@ -140,7 +149,7 @@ class UserManageAdverts extends Controller
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
 
             $advert = Advert::create([
-                'ad_title'         => $request->input('ad_title'),
+                'ad_title'         => ContentHelper::sanitizeContent($request->input('ad_title')),
                 'ad_type'          => $request->input('ad_type'),
                 'category'         => $request->input('category'),
                 'sub_category'     => $request->input('subcategory'),
@@ -171,28 +180,12 @@ class UserManageAdverts extends Controller
 
             $advert->shippings()->sync($request->input('shipping', []));
 
-            // Handle uploaded images using FileUploadHelper
+
             if ($request->hasFile('images')) {
-                $images = array_values($request->file('images')); // reindex just in case
-                $order  = explode(',', $request->input('image_order')); // e.g. "2,0,1"
-
-                foreach ($order as $position => $index) {
-                    if (!isset($images[$index]) || !$images[$index]->isValid()) {
-                        continue;
-                    }
-
-                    $uploadedFileName = FileUploadHelper::upload($images[$index], 'images');
-
-                    $advert->images()->create([
-                        'image'    => $uploadedFileName,
-                        'position' => $position + 1, // 1-based order
-                    ]);
-                }
-            } elseif ($category == 3) {
-                $advert->images()->create([
-                    'image'    => 'jobs.png',
-                    'position' => 1,
-                ]);
+            $this->handleImageUploads($request, $advert);
+            } elseif ($request->input('category') == 3) {
+                // Add default image for jobs category
+                $advert->addDefaultImage('jobs.png');
             }
 
 
@@ -396,7 +389,7 @@ class UserManageAdverts extends Controller
         //dd($keywords);
         // Update main advert
         $advert->update([
-            'ad_title'        => $request->input('ad_title'),
+            'ad_title'        => ContentHelper::sanitizeContent($request->input('ad_title')),
             'ad_type'         => $request->input('ad_type'),
             'category'        => $request->input('category'),
             'sub_category'    => $request->input('subcategory'),
@@ -421,44 +414,111 @@ class UserManageAdverts extends Controller
             'ad_image'        => "",
         ]);
 
-        // Handle deleted images
-        if ($request->has('deleted_images')) {
-            foreach ($request->input('deleted_images') as $imageId) {
-                $image = $advert->images()->find($imageId);
-                if ($image) {
-                    FileUploadHelper::delete('images', $image->image);
-                    $image->delete();
-                }
+        $messages = [];
+
+
+        // Handle deleted images first
+if ($request->has('deleted_images') && !empty($request->input('deleted_images'))) {
+    $deletedImages = $request->input('deleted_images');
+
+    // Ensure it's an array
+    if (!is_array($deletedImages)) {
+        $deletedImages = explode(',', $deletedImages);
+    }
+
+    $deletedImages = array_filter(array_map('intval', $deletedImages));
+
+    if (!empty($deletedImages)) {
+        \Log::info('Attempting to delete images:', $deletedImages);
+
+        // Step 1: Try normal deletion
+        $deleteResults = $this->getImageService()->deleteMultipleImages(
+            $advert,
+            $deletedImages,
+            'images',
+            true // Reorder after deletion
+        );
+
+        $deletedCount = $deleteResults['deleted'] ?? 0;
+        if ($deletedCount > 0) {
+            $messages[] = "{$deletedCount} image(s) deleted";
+        }
+
+        // Step 2: Force delete ALL requested IDs to guarantee DB + files are gone
+        $forceDeletedCount = 0;
+        foreach ($deletedImages as $mediaId) {
+            if ($this->getImageService()->forceDeleteMedia($mediaId)) {
+                $forceDeletedCount++;
             }
         }
 
-        // Handle image reordering
-        $orderedIds = [];
+        if ($forceDeletedCount > 0) {
+            $messages[] = "{$forceDeletedCount} image(s) force deleted (cleanup)";
+        }
+
+        // Log any errors from step 1
+        if (!empty($deleteResults['errors'])) {
+            foreach ($deleteResults['errors'] as $error) {
+                \Log::warning("Image deletion error: " . $error);
+            }
+        }
+    }
+}
+
+
+        // Upload new images BEFORE reordering existing ones
+        $newImagesUploaded = 0;
+        if ($request->hasFile('images')) {
+            // Debug: Check what files we're receiving
+            \Log::info('Files received for upload:', [
+                'count' => count($request->file('images')),
+                'files' => array_map(function($file) {
+                    return $file ? $file->getClientOriginalName() : 'null';
+                }, $request->file('images'))
+            ]);
+
+            // Get current image count to set proper positions for new images
+            $currentImageCount = $advert->getMedia('images')->count();
+
+            $uploadedMedia = $this->handleImageUploads($request, $advert, 'images', false);
+            $newImagesUploaded = count($uploadedMedia);
+
+            if ($newImagesUploaded > 0) {
+                $messages[] = "{$newImagesUploaded} new image(s) uploaded";
+
+                // Set positions for new images starting after existing ones
+                foreach ($uploadedMedia as $index => $media) {
+                    $media->order_column = $currentImageCount + $index + 1;
+                    $media->setCustomProperty('position', $currentImageCount + $index + 1);
+                    $media->save();
+                }
+            } else {
+                \Log::warning('No images were uploaded despite files being present');
+            }
+        }
+
+        // Handle image reordering AFTER uploads
         if ($request->filled('existing_image_order')) {
             $orderedIds = explode(',', $request->input('existing_image_order'));
-            foreach ($orderedIds as $index => $imageId) {
-                DB::table('advert_images')
-                    ->where('id', $imageId)
-                    ->where('advert_id', $advert->id)
-                    ->update(['position' => $index + 1]);
-            }
-        }
+            $orderedIds = array_filter(array_map('intval', $orderedIds));
 
-        $newPositionStart = count($orderedIds) > 0
-            ? count($orderedIds) + 1
-            : ($advert->images()->count() + 1);
+            if (!empty($orderedIds)) {
+                // Get all current media IDs (including newly uploaded ones)
+                $allCurrentMediaIds = $advert->getMedia('images')->pluck('id')->toArray();
 
-        // Upload new images using helper
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $image) {
-                if ($image->isValid()) {
-                    $uploadedFileName = FileUploadHelper::upload($image, 'images');
-                    $advert->images()->create([
-                        'image'    => $uploadedFileName,
-                        'position' => $newPositionStart + $index,
-                    ]);
+                // Add any new media IDs that aren't in the existing order
+                $newMediaIds = array_diff($allCurrentMediaIds, $orderedIds);
+                $finalOrder = array_merge($orderedIds, $newMediaIds);
+
+                $reordered = $this->getImageService()->reorderImages($advert, $finalOrder, 'images');
+                if ($reordered) {
+                    $messages[] = "Images reordered";
                 }
             }
+        } else if ($newImagesUploaded > 0) {
+            // If no specific order given but new images uploaded, reorder all to ensure consistent numbering
+            $allMediaIds = $advert->getMedia('images')->sortBy('order_column')->pluck('id')->toArray();
+            $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
         }
 
         // Update Car details
@@ -508,8 +568,11 @@ class UserManageAdverts extends Controller
             );
         }
 
-
-        return redirect('/user/my-ads')->with('success', 'Advert updated successfully');
+        $message = 'Advert updated successfully';
+        if (!empty($messages)) {
+            $message .= ': ' . implode(', ', $messages);
+        }
+        return redirect('/user/my-ads')->with('success', $message);
     }
 
 public function boost_ad(Request $request, $id)
@@ -563,38 +626,22 @@ public function boost_ad(Request $request, $id)
         try {
             \DB::beginTransaction();
 
-            $advert = Advert::with('images')->find($id);
+            $advert = Advert::find($id);
             if (!$advert) {
+                \DB::rollBack();
                 return redirect()->back()->with('error', 'Advert not found');
             }
 
-            // Delete all associated images safely (except for category Job which uses default image)
-            if ($advert->category != 3) {
-                foreach ($advert->images ?? [] as $image) {
-                    if ($image && !empty($image->image)) {
-                        try {
-                            // Use your helper to delete the file
-                            FileUploadHelper::delete('images', $image->image);
-                            // Delete the image record from database
-                            $image->delete();
-                        } catch (\Exception $imgEx) {
-                            throw new \Exception("Unable to delete image file");
-                        }
-                    }
-                }
-            }
-
-            // Delete the advert itself
+            // Delete the advert - the model event will handle image deletion
+            // based on category (Job category preserves default images)
             $advert->delete();
 
             \DB::commit();
-
             return redirect()->back()->with('success', 'Advert deleted successfully');
 
         } catch (\Exception $e) {
             \DB::rollBack();
 
-            // Log the actual error for debugging
             \Log::error('Failed to delete advert', [
                 'advert_id' => $id,
                 'error' => $e->getMessage(),
@@ -604,5 +651,7 @@ public function boost_ad(Request $request, $id)
             return redirect()->back()->with('error', 'Failed to delete advert');
         }
     }
+
+
 
 }

@@ -15,6 +15,9 @@ use Hash;
 use Mail;
 use App\Mail\VerificationRequestMail;
 use App\Rules\NigerianPhoneNumber;
+use App\Services\ImageProcessingService;
+use Illuminate\Support\Facades\Storage;
+
 
 class UserProfile extends Controller
 {
@@ -46,54 +49,56 @@ class UserProfile extends Controller
     {
         $title = "My Profile | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
+        $user = User::where('user_id', $user_id)->firstOrFail();
         $count_ads = Advert::where('user_id', $user_id)->count();
+
         if ($request->isMethod('GET')) {
             return view('dashboard.settings.profile-address', compact('title','user','count_ads'));
         }
 
-         if ($request->isMethod('PUT')) {
-
+        if ($request->isMethod('PUT')) {
             $request->validate([
-                'name' => 'required',
-                'address' => 'required',
-                'city' => 'required',
-                'state' => 'required',
-                'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:12048',
-
+                'name'          => 'required',
+                'address'       => 'required',
+                'city'          => 'required',
+                'state'         => 'required',
+                'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
             ]);
 
-            if ($request->hasFile('profile_image')) {
-                $image = $request->file('profile_image');
-                $imageName = time().'.'.$image->extension();
-                $imageName = str_replace(' ', '-', $imageName);
-                $request->file('profile_image')->move('uploads/profile', $imageName);
+            $updateData = $request->only(['name', 'address', 'city', 'state']);
 
-                $user = DB::table('users')
-                    ->where('user_id', $user_id)
-                    ->update([
-                        'name'=> $request->input('name'),
-                        'address'=> $request->input('address'),
-                        'city'=> $request->input('city'),
-                        'state'=> $request->input('state'),
-                        'profile_picture'=> $imageName,
-                    ]);
-            }else{
-                $user = DB::table('users')
-                    ->where('user_id', $user_id)
-                    ->update([
-                        'name'=> $request->input('name'),
-                        'address'=> $request->input('address'),
-                        'city'=> $request->input('city'),
-                        'state'=> $request->input('state'),
-                    ]);
+            try {
+                if ($request->hasFile('profile_image')) {
+                    $fileName = now()->format('YmdHis') . '_profile.' . $request->file('profile_image')->getClientOriginalExtension();
+
+                    $user->addMediaFromRequest('profile_image')
+                        ->usingFileName($fileName)
+                        ->toMediaCollection('profile_image');
+
+                    $media = $user->getFirstMedia('profile_image');
+
+                    // after conversions finish inline, delete original
+                    if ($media && $media->hasGeneratedConversion('optimized') && $media->hasGeneratedConversion('thumbnail')) {
+                            $originalPath = $media->getPath();
+                            if (file_exists($originalPath)) {
+                                unlink($originalPath);
+                            }
+                        }
+
+                }
+            } catch (\Exception $e) {
+                \Log::error('Profile image upload failed: ' . $e->getMessage());
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Profile image upload failed. Please try again.');
             }
 
+            $user->update($updateData);
 
-
-             return redirect()->back()->with('success', 'Profile Information updated successfully!');
+            return redirect()->back()->with('success', 'Profile information updated successfully!');
         }
     }
+
 
     public function profile_info(Request $request)
     {
@@ -148,48 +153,57 @@ class UserProfile extends Controller
         $request->validate([
             'document_number' => 'required|string|max:255',
             'document_type'   => 'nullable|string|max:255',
-            'document_file'   => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
-            'proof_address'   => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
+            'document_file'   => 'required|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
+            'proof_address'   => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
         ]);
 
-        $existingVerification = UserVerification::where('user_id', $user_id)->first();
-
-        // Upload document
-        $filename = FileUploadHelper::upload(
-            $request->file('document_file'),
-            'verification',
-            $existingVerification?->document_file
-        );
-
-        // Upload proof address if provided
-        $proof_address = $existingVerification?->proof_address;
-        if ($request->hasFile('proof_address')) {
-            $proof_address = FileUploadHelper::upload(
-                $request->file('proof_address'),
-                'verification',
-                $existingVerification?->proof_address
-            );
-        }
-
-        UserVerification::updateOrCreate(
+        $verification = UserVerification::updateOrCreate(
             ['user_id' => $user_id],
             [
                 'document_number' => $request->document_number,
                 'document_type'   => $request->document_type,
-                'document_file'   => $filename,
-                'proof_address'   => $proof_address,
             ]
         );
 
-        // Send email (can use queue)
-        Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
-            'user_id'         => $user->user_id,
-            'name'            => $user->name,
-            'email'           => $user->email,
-            'document_number' => $request->document_number,
-        ]));
+        try {
+            // Handle document file upload
+            if ($request->hasFile('document_file')) {
+                $fileName = now()->format('YmdHis') . '_document.' . $request->file('document_file')->getClientOriginalExtension();
 
-        return redirect()->back()->with('success', 'Verification Information submitted successfully!');
+                $verification->addMediaFromRequest('document_file')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_documents');
+            }
+
+            // Handle proof of address upload (optional)
+            if ($request->hasFile('proof_address')) {
+                $fileName = now()->format('YmdHis') . '_address.' . $request->file('proof_address')->getClientOriginalExtension();
+
+                $verification->addMediaFromRequest('proof_address')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_address');
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('File upload failed: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'File upload failed. Please try again.');
+        }
+
+        // Send email notification
+        try {
+            \Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
+                'user_id'         => $user->user_id,
+                'name'            => $user->name,
+                'email'           => $user->email,
+                'document_number' => $request->document_number,
+            ]));
+        } catch (\Exception $e) {
+            \Log::error('Verification email failed: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Verification information submitted successfully!');
     }
 
 

@@ -59,9 +59,7 @@
                   @foreach($adverts as $row)
                   <tr>
                     <td>
-                      <img src="{{ $row->firstImage && $row->firstImage->image
-                                  ? asset('uploads/images/' . $row->firstImage->image)
-                                  : asset('frontend/images/default.png') }}"
+                      <img src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}"
                            class="img-thumbnail rounded"
                            style="width: 60px; height: 50px; object-fit: cover;"
                            alt="Advert Image"

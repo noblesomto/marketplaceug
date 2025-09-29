@@ -1,145 +1,214 @@
 <?php
 namespace App\Helpers;
+
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver; // Or Imagick driver if installed
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\FileAdder;
+use Spatie\Image\Enums\Fit;
 
 class FileUploadHelper
 {
     /**
-     * Upload and compress an image to WebP (default quality 75).
+     * Upload and process file using Spatie Media Library
      *
      * @param UploadedFile $file
-     * @param string       $folder
-     * @param string|null  $oldFile
+     * @param HasMedia     $model
+     * @param string       $collection
+     * @param string|null  $conversionName
+     * @return Media|null
+     */
+    public static function upload(
+        UploadedFile $file,
+        HasMedia $model,
+        string $collection = 'default',
+        string $conversionName = 'optimized'
+    ): ?Media {
+        try {
+            // Delete old media if exists
+            $model->clearMediaCollection($collection);
+
+            // Add file to media collection
+            $media = $model
+                ->addMediaFromRequest('file')
+                ->usingFileName(uniqid() . '.webp')
+                ->toMediaCollection($collection);
+
+            return $media;
+        } catch (\Exception $e) {
+            throw new \Exception("Failed to upload file: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Upload file from path
+     *
+     * @param string   $filePath
+     * @param HasMedia $model
+     * @param string   $collection
+     * @return Media|null
+     */
+    public static function uploadFromPath(
+        string $filePath,
+        HasMedia $model,
+        string $collection = 'default'
+    ): ?Media {
+        try {
+            $model->clearMediaCollection($collection);
+
+            $media = $model
+                ->addMedia($filePath)
+                ->usingFileName(uniqid() . '.webp')
+                ->toMediaCollection($collection);
+
+            return $media;
+        } catch (\Exception $e) {
+            throw new \Exception("Failed to upload file from path: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete media from collection
+     *
+     * @param HasMedia $model
+     * @param string   $collection
+     * @return bool
+     */
+    public static function delete(HasMedia $model, string $collection = 'default'): bool
+    {
+        try {
+            $model->clearMediaCollection($collection);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete specific media item
+     *
+     * @param Media $media
+     * @return bool
+     */
+    public static function deleteMedia(Media $media): bool
+    {
+        try {
+            $media->delete();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get media URL with conversion
+     *
+     * @param HasMedia    $model
+     * @param string      $collection
+     * @param string|null $conversion
      * @return string|null
      */
-    public static function upload(UploadedFile $file, string $folder, string $oldFile = null): ?string
-    {
-        $uploadPath = self::getUploadPath($folder);
-        $quality = 65;
-        $maxFileSize = 100 * 1024;
+    public static function getMediaUrl(
+        HasMedia $model,
+        string $collection = 'default',
+        string $conversion = null
+    ): ?string {
+        $media = $model->getFirstMedia($collection);
 
-        if (!file_exists($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
+        if (!$media) {
+            return null;
         }
 
-        if ($oldFile) {
-            self::delete($folder, $oldFile);
-        }
-
-        $extension = strtolower($file->getClientOriginalExtension());
-        $filename  = uniqid() . '.webp';
-        $fullPath  = $uploadPath . '/' . $filename;
-
-        $manager = new ImageManager(new Driver());
-
-        // --- HEIC/HEIF Handling ---
-        if (in_array($extension, ['heic', 'heif'])) {
-            // Check if heif-convert is installed
-            $heifConvertExists = shell_exec("command -v heif-convert");
-            if (!$heifConvertExists) {
-                throw new \Exception("HEIC images are not supported on this server. Please upload JPG or PNG instead.");
-            }
-
-            $tempPath = sys_get_temp_dir() . '/' . uniqid() . '.jpg';
-
-            // Convert HEIC → JPG
-            exec("heif-convert " . escapeshellarg($file->getPathname()) . " " . escapeshellarg($tempPath) . " 2>&1", $output, $status);
-
-            if ($status !== 0 || !file_exists($tempPath)) {
-                throw new \Exception("HEIC conversion failed. Please try again with JPG or PNG.");
-            }
-
-            $image = $manager->read($tempPath)->orient();
-
-            // Clean up temp file
-            if (file_exists($tempPath)) {
-                unlink($tempPath);
-            }
-        }
-        // --- Normal Image Handling ---
-        elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])) {
-            $image = $manager->read($file->getPathname())->orient();
-        } else {
-            // Non-image fallback
-            $file->move($uploadPath, $filename);
-            return $filename;
-        }
-
-        // IMPROVED RESIZE LOGIC - Fix for stretched images
-        $maxWidth = 1920;
-        $maxHeight = 1920;
-
-        // Method 1: Resize based on largest dimension (recommended)
-        if ($image->width() > $maxWidth || $image->height() > $maxHeight) {
-            $image->resize($maxWidth, $maxHeight, function ($constraint) {
-                $constraint->aspectRatio();      // Maintain aspect ratio
-                $constraint->upsize(false);      // Don't upsize smaller images
-            });
-        }
-
-        // Alternative Method 2: Scale down proportionally if image is too large
-        // Uncomment this and comment out Method 1 if you prefer this approach
-        /*
-        $currentWidth = $image->width();
-        $currentHeight = $image->height();
-
-        if ($currentWidth > $maxWidth || $currentHeight > $maxHeight) {
-            // Calculate scale factor to fit within bounds
-            $scaleX = $maxWidth / $currentWidth;
-            $scaleY = $maxHeight / $currentHeight;
-            $scale = min($scaleX, $scaleY); // Use smaller scale to fit within bounds
-
-            $newWidth = (int)($currentWidth * $scale);
-            $newHeight = (int)($currentHeight * $scale);
-
-            $image->resize($newWidth, $newHeight);
-        }
-        */
-
-        // Alternative Method 3: Fit within bounds (adds padding if needed)
-        // Uncomment this and comment out Method 1 if you want exact dimensions with padding
-        /*
-        if ($image->width() > $maxWidth || $image->height() > $maxHeight) {
-            $image->fit($maxWidth, $maxHeight, function ($constraint) {
-                $constraint->upsize(false);
-            }, 'center');
-        }
-        */
-
-        // Save as WebP with error handling
-        try {
-            $image->toWebp($quality)->save($fullPath);
-
-            // Optional: Check final file size and adjust quality if needed
-            if (filesize($fullPath) > $maxFileSize && $quality > 30) {
-                $newQuality = max(30, $quality - 15);
-                $image->toWebp($newQuality)->save($fullPath);
-            }
-
-        } catch (\Exception $e) {
-            throw new \Exception("Failed to save image: " . $e->getMessage());
-        }
-
-        return $filename;
+        return $conversion ? $media->getUrl($conversion) : $media->getUrl();
     }
 
-    public static function delete(string $folder, string $filename): bool
+    /**
+     * Check if model has media in collection
+     *
+     * @param HasMedia $model
+     * @param string   $collection
+     * @return bool
+     */
+    public static function hasMedia(HasMedia $model, string $collection = 'default'): bool
     {
-        $filePath = self::getUploadPath($folder) . '/' . $filename;
-        if (file_exists($filePath)) {
-            return unlink($filePath);
-        }
-        return false;
+        return $model->hasMedia($collection);
+    }
+}
+
+// Example Model that uses media library
+// You would add this trait and method to your existing models
+
+trait HasMediaTrait
+{
+    use InteractsWithMedia;
+
+    /**
+     * Register media conversions
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        // Optimized version - maintains aspect ratio, only resizes if larger
+        $this->addMediaConversion('optimized')
+            ->format('webp')
+            ->quality(65)
+            ->optimize()
+            ->nonQueued(); // Use queued() for better performance in production
+
+        // Large version - max dimension constraint while preserving aspect ratio
+        $this->addMediaConversion('large')
+            ->format('webp')
+            ->quality(70)
+            ->width(1200)
+            ->height(1200)
+            ->fit(Fit::Max) // Maintains aspect ratio, won't exceed either dimension
+            ->optimize()
+            ->nonQueued();
+
+        // Medium version - responsive sizing
+        $this->addMediaConversion('medium')
+            ->format('webp')
+            ->quality(65)
+            ->width(800)
+            ->height(800)
+            ->fit(Fit::Max)
+            ->optimize()
+            ->nonQueued();
+
+        // Thumbnail - square crop for consistency in grids
+        $this->addMediaConversion('thumbnail')
+            ->format('webp')
+            ->quality(70)
+            ->width(300)
+            ->height(300)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->nonQueued();
+
+        // Small thumbnail
+        $this->addMediaConversion('small')
+            ->format('webp')
+            ->quality(60)
+            ->width(150)
+            ->height(150)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->nonQueued();
     }
 
-    public static function getUploadPath(string $folder): string
+    /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
     {
-        $folder = trim($folder, '/');
-        if (app()->environment('production') && isset($_SERVER['DOCUMENT_ROOT'])) {
-            return rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/uploads/' . $folder;
-        }
-        return public_path('uploads/' . $folder);
+        $this->addMediaCollection('images')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp', 'image/tiff'])
+            ->singleFile();
+
+        $this->addMediaCollection('documents')
+            ->acceptsMimeTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+            ->singleFile();
+
+        $this->addMediaCollection('gallery');
     }
 }

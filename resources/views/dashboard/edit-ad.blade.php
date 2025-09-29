@@ -780,7 +780,9 @@
                     @endif
                     <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->price }}">
                   </div>
-
+                  <div class="text-base ml-2">
+                   Naira
+                  </div>
             </div>
             </div>
             <div id="services" class="col-span-10 md:col-span-2 mt-1">
@@ -957,6 +959,7 @@
         </div>
    
 
+
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
         <div class="col-span-10 md:col-span-2">
             <div class="font-semibold">Pictures (recommended)</div>
@@ -984,11 +987,12 @@
                 <!-- Image Preview Container -->
                 <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4">
                     <!-- Display existing images -->
-                    @foreach($advert->images as $index => $image)
-                        <div class="relative group cursor-move image-container" draggable="true" data-id="{{ $image->id }}">
-                            <img src="{{ asset('uploads/images/' . $image->image) }}" class="w-full h-auto rounded-lg shadow">
-                            <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center" data-id="{{ $image->id }}">&times;</button>
-                            <input type="hidden" name="existing_images[]" value="{{ $image->id }}">
+
+                   @foreach($advert->getMedia('images') as $media)
+                        <div class="relative group cursor-move image-container" draggable="true" data-id="{{ $media->id }}">
+                            <img src="{{ $media->getUrl('thumbnail') }}" class="w-full h-auto rounded-lg shadow">
+                            <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center" data-id="{{ $media->id }}">&times;</button>
+                            <input type="hidden" name="existing_images[]" value="{{ $media->id }}">
                         </div>
                     @endforeach
                 </div>

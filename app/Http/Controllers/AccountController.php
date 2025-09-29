@@ -15,6 +15,7 @@ use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
 
 
@@ -430,7 +431,11 @@ class AccountController extends Controller
                 'address' => 'required',
                 'state' => 'required',
                 'name' => 'required',
-                'phone' => ['required|unique:users', new NigerianPhoneNumber()],
+                'phone' => [
+                        'required',
+                        Rule::unique('users', 'phone'),
+                        new NigerianPhoneNumber(),
+                    ],
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:6',
                 'g-recaptcha-response' => ['required', new ReCaptcha],

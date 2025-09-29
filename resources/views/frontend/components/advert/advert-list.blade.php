@@ -5,7 +5,7 @@
       <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[154px] sm:h-[160px] md:h-[190px]">
          <div class="flex w-full h-full">
               <div class="flex-[40%] xs-max:flex-[38%] sm:flex-[40%] lg:flex-[35%] mr-1 relative h-full p-2">
-                <img class="w-full h-full object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-2 right-2 space-y-2">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
@@ -36,7 +36,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
+                <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
               </div>
               <div class="flex-[60%] xs:flex-[62%] sm:flex-[60%] lg:flex-[65%] relative h-full overflow-hidden space-y-1">
                 <div class="flex justify-between text-xs">

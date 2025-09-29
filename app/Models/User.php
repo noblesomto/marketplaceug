@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Image\Enums\Fit;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -134,5 +138,65 @@ class User extends Authenticatable
     public function following()
     {
         return $this->hasMany(Followers::class, 'user_id', 'user_id');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_image')
+            ->singleFile()
+            ->onlyKeepLatest(1)
+            ->acceptsMimeTypes(['image/jpeg','image/png','image/webp','image/gif'])
+            ->useDisk('spatie')
+            ->useFallbackUrl('/images/placeholder-profile.png');
+    }
+
+
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+            ->format('webp')
+            ->quality(70)
+            ->width(1200)
+            ->fit(Fit::Max)
+            ->optimize()
+            ->performOnCollections('profile_image')
+            ->nonQueued();
+
+        $this->addMediaConversion('thumbnail')
+            ->width(200)
+            ->height(200)
+            ->format('webp')
+            ->quality(50)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->performOnCollections('profile_image')
+            ->nonQueued();
+    }
+
+    // ADD THIS METHOD TO YOUR USER MODEL:
+    public function afterMediaConversion(Media $media): void
+    {
+        // Wait 2 seconds then delete original file
+        sleep(2);
+
+        if ($media->collection_name === 'profile_image') {
+            $disk = $media->getDisk();
+            $originalPath = $media->getPath();
+
+            if ($disk->exists($originalPath)) {
+                $disk->delete($originalPath);
+            }
+        }
+    }
+
+    public function getProfileImageUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('profile_image', 'optimized');
+    }
+
+    public function getProfileThumbnailUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('profile_image', 'thumbnail');
     }
 }

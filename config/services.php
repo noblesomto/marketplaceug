@@ -37,7 +37,7 @@ return [
     ],
 
     'agility' => [
-        'url' => env('AGILITY_URL', 'https://api.agility.com/shipping-cost'),
+        'url' => env('AGILITY_URL', 'https://thirdpartynode.theagilitysystems.com/price'),
         'email' => env('AGILITY_EMAIL'),
         'password' => env('AGILITY_PASSWORD'),
         'customer_code' => env('AGILITY_CUSTOMER_CODE', 'IND1875642'),

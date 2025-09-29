@@ -5,9 +5,7 @@
             <!-- Image wrapper with fixed aspect ratio -->
             <div class="w-full aspect-[4/3] overflow-hidden rounded-t-lg relative">
                 <img
-                    src="{{ $row->firstImage && $row->firstImage->image
-                            ? asset('uploads/images/' . $row->firstImage->image)
-                            : asset('frontend/images/default.png') }}"
+                    src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}"
                     alt="{{ $row->ad_title }}"
                     class="w-full h-full object-cover"
                 />
@@ -72,8 +70,22 @@
             @endif
 
             <!-- Content -->
-            <div class="p-3 flex flex-col flex-grow my-2">
-                <h4 class="font-bold text-sm mb-2">{{ Str::limit($row->ad_title, 20) }}</h4>
+            <div class="p-3 flex flex-col flex-grow space-y-2">
+                <h4 class="font-bold text-sm">{{ Str::limit($row->ad_title, 20) }}</h4>
+                <div class="flex items-center justify-between text-xs mt-auto">
+                    <div class="text-gray-500 truncate flex">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                        </span>
+                        <span>{{ $row->state }}</span>
+                    </div>
+
+                </div>
+
+
 
                 <div class="flex items-center justify-between">
                     @if($row->buy_direct=="Yes")
@@ -87,20 +99,6 @@
                     </div>
                     @endif
 
-
-                </div>
-
-
-                <div class="flex items-center justify-between text-xs mt-auto">
-                    <div class="text-gray-500 truncate flex">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                            </svg>
-                        </span>
-                        <span>{{ $row->state }}</span>
-                    </div>
                     @if($row->sold=="Yes")
                     <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed" title="This advert is already sold">
                         <span>
@@ -111,6 +109,7 @@
                         <span class="font-semibold text-xs">Sold</span>
                     </span>
                     @endif
+
                 </div>
             </div>
         </div>

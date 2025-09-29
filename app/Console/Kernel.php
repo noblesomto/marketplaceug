@@ -11,13 +11,14 @@ class Kernel extends ConsoleKernel
      * Register custom commands.
      */
     protected $commands = [
-        \App\Console\Commands\MarkExpiredBoosts::class
+        \App\Console\Commands\MarkExpiredBoosts::class,
+        \App\Console\Commands\MigrateAdvertImagesToSpatie::class,
     ];
 
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('mark:expired-boosts')->daily();
-        $schedule->command('boosts:expire')->hourly();
+
 
     }
 

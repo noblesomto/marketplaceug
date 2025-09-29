@@ -4,8 +4,16 @@
           <div class="bg-white mb-2 border-b border-b-gray-300 shadow p-2 mb-1">
              <div class="flex w-full">
                   <div class="w-2/6 mr-1 relative bg-gray-50">
-                    <img class="h-24 lg:h-40 object-cover" src="{{ $row->firstImage ? asset('uploads/images/' . $row->firstImage->image) : asset('frontend/images/default.png') }}">
-                    <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->images->count() }}</div>
+                    @if($row->hasMedia('images'))
+                        <img src="{{ $row->getFirstMediaUrl('images', 'thumbnail') }}"
+                             alt="{{ $row->ad_title ?? 'Image' }}"
+                             class="h-24 lg:h-40 object-cover">
+                    @else
+                        <img src="{{ asset('frontend/images/default.png') }}"
+                             alt="Default image"
+                             class="h-24 lg:h-40 object-cover">
+                    @endif
+                    <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
                   </div>
                   <div class="w-4/6 relative space-y-2">
                     <div class="flex justify-between items-center text-xs">

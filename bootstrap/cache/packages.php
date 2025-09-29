@@ -88,4 +88,11 @@
       0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
   ),
+  'spatie/laravel-medialibrary' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    ),
+  ),
 );
