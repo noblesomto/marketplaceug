@@ -20,7 +20,7 @@
                         <a href="{{ url($advert->state_slug . '/' . $advert->title_slug .'/'. $advert->ad_id) }}" class="flex items-center min-w-0 flex-1">
                             <div class="flex-shrink-0 mr-3 lg:mr-4">
                                 <img class="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gray-300 object-cover"
-                                     src="{{ asset('uploads/images/'.$advert->firstImage->image) }}"
+                                     src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
                                      alt="{{ $advert->ad_title }}">
                             </div>
                             <div class="min-w-0 flex-1">
@@ -54,7 +54,7 @@
                                 $avatarColor = $isCurrentUser ? 'bg-gray-500' : 'bg-gray-200';
                             @endphp
 
-                            <div class="chat-message flex mb-4 lg:mb-6 {{ $isCurrentUser ? 'justify-end' : 'justify-start' }}">
+                            <div class="chat-message flex mt-1 mb-4 lg:mb-6 {{ $isCurrentUser ? 'justify-end' : 'justify-start' }}">
                                 {{-- Avatar (left side for others) --}}
                                 @if(!$isCurrentUser)
                                     <div class="flex-shrink-0 mr-2 lg:mr-2">

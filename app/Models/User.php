@@ -197,6 +197,21 @@ class User extends Authenticatable implements HasMedia
 
     public function getProfileThumbnailUrlAttribute(): ?string
     {
-        return $this->getFirstMediaUrl('profile_image', 'thumbnail');
+        if ($this->hasMedia('profile_image')) {
+            return $this->getFirstMediaUrl('profile_image', 'thumbnail');
+        }
+
+        // Inline SVG fallback (simple avatar)
+        $svg = <<<SVG
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#9ca3af" viewBox="0 0 24 24">
+            <circle cx="12" cy="7" r="5"/>
+            <path d="M12 14c-5 0-9 2.5-9 5v2h18v-2c0-2.5-4-5-9-5z"/>
+        </svg>
+        SVG;
+
+        return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
+
+
+
 }

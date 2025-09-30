@@ -31,7 +31,7 @@
           "Ukwa East",
           "Ukwa West",
           "Umuahia North",
-          "muahia South",
+          "Umuahia South",
           "Umu Nneochi"
         ],
         Adamawa: [
@@ -57,7 +57,7 @@
           "Yola North",
           "Yola South"
         ],
-        AkwaIbom: [
+        "Akwa Ibom": [
           "Abak",
           "Eastern Obolo",
           "Eket",

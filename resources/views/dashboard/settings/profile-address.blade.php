@@ -93,20 +93,10 @@
                             <div class="flex items-start space-x-4">
                                 <!-- Profile Thumbnail -->
                                 <div class="flex-shrink-0">
-                                    @if ($user->profile_thumbnail_url)
-                                        <img
-                                            class="w-16 h-16 rounded-full object-cover border"
-                                            src="{{ $user->profile_thumbnail_url }}"
-                                            alt="Profile Image">
-                                    @else
-                                        <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border">
-                                            <!-- Heroicon: User -->
-                                            <svg class="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    @endif
-
+                                    <img
+                                        class="w-16 h-16 rounded-full object-cover border"
+                                        src="{{ $user->profile_thumbnail_url }}"
+                                        alt="{{ $user->name }}">
                                 </div>
 
                                 <!-- Upload Input -->

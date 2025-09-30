@@ -17,6 +17,7 @@ use App\Mail\VerificationRequestMail;
 use App\Rules\NigerianPhoneNumber;
 use App\Services\ImageProcessingService;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 
 class UserProfile extends Controller
@@ -118,20 +119,22 @@ class UserProfile extends Controller
         $count_ads = Advert::where('user_id', $user_id)->count();
 
         $request->validate([
-            'phone' => ['required', new NigerianPhoneNumber()]
+            'phone' => [
+                'required',
+                new NigerianPhoneNumber(),
+                Rule::unique('users', 'phone')->ignore($user_id, 'user_id'),
+            ],
         ]);
 
-
-        $user = DB::table('users')
+        DB::table('users')
             ->where('user_id', $user_id)
             ->update([
-                'phone'=> $request->input('phone'),
+                'phone' => $request->input('phone'),
             ]);
 
-
         return redirect()->back()->with('success', 'Profile Information updated successfully!');
-
     }
+
 
     public function get_verified(Request $request)
     {

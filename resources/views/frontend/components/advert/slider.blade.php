@@ -19,8 +19,8 @@
         </div>
 
         <!-- Navigation Arrows -->
-        <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block">‹</button>
-        <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block">›</button>
+        <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block"><i class="bi bi-chevron-left text-2xl"></i></button>
+        <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block"><i class="bi bi-chevron-right text-2xl"></i></button>
 
         <!-- Indicators -->
         <div id="indicators" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
@@ -43,8 +43,8 @@
 
         <!-- Controls -->
         <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 z-10">✕</button>
-        <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">‹</button>
-        <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">›</button>
+        <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10"><i class="bi bi-chevron-left text-2xl"></i></button>
+        <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10"><i class="bi bi-chevron-right text-2xl"></i></button>
 
         <!-- Zoom Controls -->
         <div class="absolute bottom-6 right-6 flex space-x-2 z-10">
