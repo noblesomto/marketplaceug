@@ -70,7 +70,7 @@ class PageController extends Controller
 
     public function payments_refunds()
     {
-        $title = "Terms of Use  | " . config('global.site_name');
+        $title = "Payment and Refunds  | " . config('global.site_name');
         return view('frontend.pages.payments-refunds', compact('title'));
     }
 

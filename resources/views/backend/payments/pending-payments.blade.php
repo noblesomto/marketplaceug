@@ -58,8 +58,8 @@
                       <td>{{ $loop->iteration + ($payments->currentPage() - 1) * $payments->perPage() }}</td>
                       <td>
                         <div class="d-flex align-items-center">
-                          @if($row->hasMedia('images'))
-                            <img width="50" height="50" src="{{ $row->getFirstMediaUrl('images', 'thumbnail') }}"
+                          @if($row->advert && $row->advert->hasMedia('images'))
+                            <img width="50" height="50" src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') }}"
                                  class="rounded me-2 object-fit-cover" alt="Ad Image">
                           @else
                             <img width="50" height="50" src="{{ asset('frontend/images/default.png') }}"

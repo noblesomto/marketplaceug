@@ -19,7 +19,7 @@ class ExpireAdvertBoosts extends Command
         $expiredBoosts = DB::table('advert_boosts')
             ->where('boost_status', 'active')
             ->where('payment_status', 'paid')
-            ->whereRaw("DATE_ADD(start_date, INTERVAL duration_days DAY) <= ?", [$now])
+            ->whereRaw("DATE_ADD(start_date, INTERVAL duration DAY) <= ?", [$now])
             ->pluck('advert_id'); // collect affected advert IDs
 
         if ($expiredBoosts->isEmpty()) {

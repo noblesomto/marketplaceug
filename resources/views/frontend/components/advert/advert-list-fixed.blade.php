@@ -84,41 +84,36 @@
                 @endif
 
                 <div class="mb-2 pb-4">
-                    @if($row->sub_category==2)
-                        <div class="flex-col space-y-2">
-                            <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }} </span>
-                            <div class="flex items-center">
-                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }} </span>
-                            </div>
-                        </div>
-                    @elseif($row->sub_category==6)
+                    <div class="flex justify-between">
                         <div class="flex-col space-y-2 pb-2">
-                            <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }} </span>
+                            @if($row->sub_category == 2)
+                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }}</span>
+                                <div class="flex items-center">
+                                    <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }}</span>
+                                </div>
+                            @elseif($row->sub_category == 6)
+                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }}</span>
+                            @elseif(!empty($row->item_condition))
+                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->item_condition }}</span>
+                            @endif
                         </div>
-                    @else
-                        @if(!empty($row->item_condition))
-                            <div class="flex-col space-y-2 pb-2">
-                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->item_condition }} </span>
-                            </div>
+
+                        @if($row->sold == "Yes")
+                            <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-1 lg:mr-4 text-xs h-fit whitespace-nowrap " title="This advert is already sold">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            <span class="font-semibold">Sold</span>
+                        </span>
                         @endif
-                    @endif
+                    </div>
                 </div>
 
                 <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
                     @if($row->shipment=="Ship")
                         <span class="bg-gray-100 p-1 text-xs">Shipping Possible</span>
                     @endif
-                  @if($row->sold=="Yes")
-                  <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-1 lg:mr-4 text-xs" title="This advert is already sold" >
-                      <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                          </svg>
-                      </span>
-                      <span class="font-semibold">Sold</span>
-                  </span>
-                  @else
-                     @if($row->buy_direct=="Yes")
+                    @if($row->buy_direct=="Yes")
                           <div class="flex items-center bg-blue-50 rounded-full px-2 py-1 w-fit mr-1 lg:mr-4">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                   stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
@@ -127,8 +122,7 @@
                               </svg>
                               <span class="text-xs text-blue-600">Buy Direct</span>
                           </div>
-                      @endif
-                  @endif
+                    @endif
               </div>
               </div>
           </div>

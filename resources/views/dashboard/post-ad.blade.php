@@ -961,6 +961,7 @@
 <script src="{{ asset('backend/js/post-ad-Aa.js') }}"></script>
 <script src="{{ asset('backend/js/word-count.js') }}"></script>
 <script src="{{ asset('backend/js/sortable.js') }}"></script>
+<script src="{{ asset('backend/js/submit.js') }}"></script>
 
 
 

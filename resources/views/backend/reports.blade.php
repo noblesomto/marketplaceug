@@ -4,11 +4,11 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>{{ $page_title }}</h1>
+            <h1>{{ $page_title ?? 'Complaints' }}</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active">{{ $page_title }}</li>
+                    <li class="breadcrumb-item active">{{ $page_title ?? 'Complaints' }}</li>
                 </ol>
             </nav>
         </div>
@@ -26,14 +26,14 @@
 
                     <div class="card-body">
                         @if(session('status'))
-                            <div class="alert alert-{{ session('status')['type'] }} alert-dismissible fade show">
+                            <div class="alert alert-{{ session('status')['type'] ?? 'info' }} alert-dismissible fade show">
                                 <div class="d-flex align-items-center">
-                                    @if(session('status')['type'] === 'success')
+                                    @if((session('status')['type'] ?? 'info') === 'success')
                                         <i class="bi bi-check-circle-fill me-2"></i>
                                     @else
                                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     @endif
-                                    <div>{{ session('status')['text'] }}</div>
+                                    <div>{{ session('status')['text'] ?? 'Operation completed' }}</div>
                                 </div>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -51,25 +51,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($adverts as $row)
+                                    @forelse($adverts ?? [] as $row)
                                         <tr>
                                             <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->adverts->ad_title }}</h6>
-                                                <small class="text-muted">ID: {{ $row->adverts->id }}</small>
+                                                <h6 class="mb-0 fw-semibold">{{ $row->adverts->ad_title ?? 'N/A' }}</h6>
+                                                <small class="text-muted">ID: {{ $row->adverts->id ?? 'N/A' }}</small>
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column">
-                                                    <span class="fw-medium">{{ $row->user->name }}</span>
-                                                    <small class="text-muted">{{ $row->user->email }}</small>
+                                                    <span class="fw-medium">{{ $row->user->name ?? 'Unknown User' }}</span>
+                                                    <small class="text-muted">{{ $row->user->email ?? 'No email' }}</small>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="text-truncate" style="max-width: 250px;" title="{{ $row->message }}">
-                                                    {{ $row->message }}
+                                                <div class="text-truncate" style="max-width: 250px;" title="{{ $row->message ?? 'No message' }}">
+                                                    {{ $row->message ?? 'No complaint message' }}
                                                 </div>
                                             </td>
                                             <td>
-                                                @if($row->status == "resolved")
+                                                @if(($row->status ?? 'pending') == "resolved")
                                                     <span class="badge bg-success text-white">
                                                         <i class="bi bi-check-circle me-1"></i> Resolved
                                                     </span>
@@ -81,38 +81,50 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                    @if($row->status == "resolved")
-                                                        <a href="/admin/report-status/{{ $row->id }}/pending"
+                                                    @if(($row->status ?? 'pending') == "resolved")
+                                                        <a href="/admin/report-status/{{ $row->id ?? '#' }}/pending"
                                                            class="btn btn-sm btn-outline-warning"
                                                            title="Mark as unresolved">
                                                             <i class="bi bi-arrow-counterclockwise"></i>
                                                         </a>
                                                     @else
-                                                        <a href="/admin/report-status/{{ $row->id }}/resolved"
+                                                        <a href="/admin/report-status/{{ $row->id ?? '#' }}/resolved"
                                                            class="btn btn-sm btn-outline-success"
                                                            title="Mark as resolved">
                                                             <i class="bi bi-check-lg"></i>
                                                         </a>
                                                     @endif
                                                     <button class="btn btn-sm btn-outline-danger"
-                                                            onclick="confirmDelete('{{ $row->id }}')"
+                                                            onclick="confirmDelete('{{ $row->id ?? '#' }}')"
                                                             title="Delete complaint">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <div class="bg-light rounded-circle p-4 mb-3">
+                                                        <i class="bi bi-flag display-4 text-muted"></i>
+                                                    </div>
+                                                    <h5 class="text-muted mb-2">No Complaints Found</h5>
+                                                    <p class="text-muted">There are currently no complaints to display.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
 
-                        @if($adverts->hasPages())
+                        @if(($adverts ?? null)?->hasPages())
                             <div class="row align-items-center mt-4 pt-3 border-top">
                                 <div class="col-md-6">
                                     <div class="d-flex align-items-center text-muted">
                                         <i class="bi bi-info-circle me-2"></i>
-                                        <span>Showing <strong>{{ $adverts->firstItem() }}</strong> to <strong>{{ $adverts->lastItem() }}</strong> of <strong>{{ $adverts->total() }}</strong> results</span>
+                                        <span>Showing <strong>{{ $adverts->firstItem() ?? 0 }}</strong> to <strong>{{ $adverts->lastItem() ?? 0 }}</strong> of <strong>{{ $adverts->total() ?? 0 }}</strong> results</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -132,7 +144,9 @@
 <script>
 function confirmDelete(id) {
     if(confirm('Are you sure you want to delete this complaint?')) {
-        window.location.href = '/admin/delete-complaint/' + id;
+        if(id && id !== '#') {
+            window.location.href = '/admin/delete-complaint/' + id;
+        }
     }
     return false;
 }

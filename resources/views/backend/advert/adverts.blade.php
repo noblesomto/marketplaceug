@@ -18,19 +18,42 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="card-title mb-0">{{ $page_title }}</h5>
-              <div class="search-bar" style="max-width: 300px;">
-                <form class="search-form d-flex align-items-center">
-                  <input type="text" name="query" placeholder="Search adverts..." title="Enter search keyword">
-                  <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-                </form>
-              </div>
-            </div>
+                  <h5 class="card-title mb-0">{{ $page_title }}</h5>
+                  <div class="search-bar" style="max-width: 300px;">
+                    <form class="d-flex" method="GET" action="{{ url()->current() }}">
+                      <div class="input-group">
+                        <input type="text"
+                               class="form-control form-control-sm rounded-start"
+                               name="query"
+                               placeholder="Search adverts..."
+                               title="Enter search keyword"
+                               value="{{ request('query') }}">
+
+                        <button class="btn btn-sm btn-primary" type="submit" title="Search">
+                          <i class="bi bi-search"></i>
+                        </button>
+
+                        @if(request('query'))
+                          <a href="{{ url()->current() }}" class="btn btn-sm btn-outline-secondary" title="Clear search">
+                            <i class="bi bi-x-circle"></i>
+                          </a>
+                        @endif
+                      </div>
+                    </form>
+                  </div>
+                </div>
 
             @if(session('status'))
               <div class="alert alert-{{session('status')['type']}} alert-dismissible fade show mt-3">
                 {{session('status')['text']}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
+
+            @if(request('query'))
+              <div class="alert alert-info mt-3">
+                <i class="bi bi-info-circle"></i> Showing results for: <strong>{{ request('query') }}</strong>
+                ({{ $adverts->total() }} {{ Str::plural('result', $adverts->total()) }})
               </div>
             @endif
 
@@ -50,7 +73,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($adverts as $row)
+                  @forelse($adverts as $row)
                   <tr>
                     <td>
                       <img src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}"
@@ -127,11 +150,25 @@
                       </div>
                     </td>
                   </tr>
-                  @endforeach
+                  @empty
+                  <tr>
+                    <td colspan="9" class="text-center py-4">
+                      <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+                      <p class="mt-2 text-muted">
+                        @if(request('query'))
+                          No adverts found matching "{{ request('query') }}"
+                        @else
+                          No adverts available
+                        @endif
+                      </p>
+                    </td>
+                  </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
 
+            @if($adverts->total() > 0)
             <div class="row mt-3">
               <div class="col-md-6">
                 <div class="text-muted">
@@ -140,10 +177,11 @@
               </div>
               <div class="col-md-6">
                 <div class="float-end">
-                  {{ $adverts->links('pagination::bootstrap-4') }}
+                  {{ $adverts->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
                 </div>
               </div>
             </div>
+            @endif
 
           </div>
         </div>

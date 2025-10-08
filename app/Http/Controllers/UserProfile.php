@@ -278,26 +278,35 @@ class UserProfile extends Controller
     }
 
     public function disable_account(Request $request)
-    {
-        $title = "My Profile | " . config('global.site_name');
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
-        $count_ads = Advert::where('user_id', $user_id)->count();
+{
+    $title = "My Profile | " . config('global.site_name');
+    $user_id = $request->session()->get('user_id');
+    $user = User::where('user_id', $user_id)->first();
+    $count_ads = Advert::where('user_id', $user_id)->count();
 
+    // Update user account status
+    DB::table('users')
+        ->where('user_id', $user_id)
+        ->update([
+            'disable_account'=> "yes",
+            'disable_account_date'=> Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
 
-        $user = DB::table('users')
-            ->where('user_id', $user_id)
-            ->update([
-                'acc_status'=> 0,
-                'disable_account'=> "yes",
-                'disable_account_date'=> Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+    // Invalidate the entire session (this clears all session data)
+    $request->session()->invalidate();
 
-        $request->session()->forget('user_id');
-        return redirect("login")->with('success', 'Account Disabled successfully!');
+    // Regenerate CSRF token to prevent reuse
+    $request->session()->regenerateToken();
 
-    }
+    return redirect("login")
+        ->with('success', 'Account Deactivated successfully!')
+        ->withHeaders([
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ]);
+}
 
     public function profile_notification(Request $request)
     {

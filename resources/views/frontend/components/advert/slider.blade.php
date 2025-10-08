@@ -164,6 +164,20 @@
         if (e.key === '-') zoomOut();
         if (e.key === '0') resetZoom();
     });
+
+    // Swipe support for lightbox
+    let lightboxStartX = 0;
+    lightboxImage.addEventListener('touchstart', e => {
+        lightboxStartX = e.touches[0].clientX;
+    });
+    lightboxImage.addEventListener('touchend', e => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = lightboxStartX - endX;
+        if (Math.abs(diff) > 50) { // minimum swipe distance
+            if (diff > 0) showNext(); // swipe left
+            else showPrev(); // swipe right
+        }
+    });
 </script>
 
 <style>

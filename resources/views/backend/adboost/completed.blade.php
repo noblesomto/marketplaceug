@@ -56,12 +56,20 @@
                                     @foreach($adverts as $row)
                                         @php
                                             $expiry = \Carbon\Carbon::parse($row->start_date)->addDays($row->duration);
-                                            $daysRemaining = \Carbon\Carbon::now()->diffInDays($expiry, false);
+                                            $now = \Carbon\Carbon::now();
+
+                                            if ($now->lessThanOrEqualTo($expiry)) {
+                                                $daysRemaining = (int) ceil($now->diffInDays($expiry, false));
+                                            } else {
+                                                $daysRemaining = -1; // expired
+                                            }
                                         @endphp
                                         <tr>
                                             <td>
-                                                <img src="{{ asset('uploads/images/'.$row->advert->firstImage->image) }}"
-                                                     class="rounded border"
+                                                <img src="{{ $row->advert && $row->advert->hasMedia('images')
+                                                    ? $row->advert->getFirstMediaUrl('images', 'thumbnail')
+                                                    : asset('frontend/images/default.png') }}"
+                                                     class="rounded"
                                                      width="60"
                                                      height="60"
                                                      alt="{{ $row->advert->ad_title }}"

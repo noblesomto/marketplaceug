@@ -30,7 +30,7 @@ class ManagePayments extends Controller
         $page_title = "Completed Payments";
 
         $payments = Payment::with([
-                'advert.firstImage', // This loads the advert and its firstImage
+                'advert.media', // This loads the advert and its firstImage
                 'user'
             ])
             ->where("payment_status", "paid")
@@ -45,7 +45,7 @@ class ManagePayments extends Controller
         $title = "Pending Payments | " . config('global.site_name');
         $page_title = "Pending/Failed Payments";
 
-        $payments = Payment::with(['advert.firstImage', 'user'])
+        $payments = Payment::with(['advert.media', 'user'])
         ->where("payment_status", '!=', "paid")
         ->whereHas('advert') // Only include payments with an advert
         ->orderBy('created_at', 'desc')

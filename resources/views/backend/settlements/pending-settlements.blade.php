@@ -4,11 +4,11 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>{{ $page_title }}</h1>
+            <h1>{{ $page_title ?? 'Settlements' }}</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active">{{ $page_title }}</li>
+                    <li class="breadcrumb-item active">{{ $page_title ?? 'Settlements' }}</li>
                 </ol>
             </nav>
         </div>
@@ -20,20 +20,20 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title text-white mb-0">
-                            <i class="bi bi-cash-coin me-2"></i>{{ $page_title }} Management
+                            <i class="bi bi-cash-coin me-2"></i>{{ $page_title ?? 'Settlements' }} Management
                         </h5>
                     </div>
 
                     <div class="card-body">
                         @if(session('status'))
-                            <div class="alert alert-{{ session('status')['type'] }} alert-dismissible fade show">
+                            <div class="alert alert-{{ session('status')['type'] ?? 'info' }} alert-dismissible fade show">
                                 <div class="d-flex align-items-center">
-                                    @if(session('status')['type'] === 'success')
+                                    @if((session('status')['type'] ?? 'info') === 'success')
                                         <i class="bi bi-check-circle-fill me-2"></i>
                                     @else
                                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     @endif
-                                    <div>{{ session('status')['text'] }}</div>
+                                    <div>{{ session('status')['text'] ?? 'Operation completed' }}</div>
                                 </div>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -56,10 +56,11 @@
                                     @forelse($payments as $row)
                                         <tr>
                                             <td>
-                                                @if($row->advert->firstImage->image ?? false)
+                                                @if(($row->advert->firstImage->image ?? false) && file_exists(public_path('uploads/images/' . $row->advert->firstImage->image)))
                                                     <img src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}"
                                                          style="width: 60px; height: 50px; object-fit: cover;"
-                                                         alt="{{ $row->advert->ad_title }}">
+                                                         alt="{{ $row->advert->ad_title ?? 'Ad Image' }}"
+                                                         class="rounded">
                                                 @else
                                                     <img src="{{ asset('frontend/images/default.png') }}"
                                                          class="rounded"
@@ -69,43 +70,51 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title }}</h6>
-                                                <small class="text-muted">ID: {{ $row->advert->id }}</small>
+                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title ?? 'N/A' }}</h6>
+                                                <small class="text-muted">ID: {{ $row->advert->id ?? 'N/A' }}</small>
                                             </td>
                                             <td>
-                                                <a href="/admin/view-user/{{ $row->user->user_id }}" class="text-primary">
-                                                    {{ $row->advert->owner->name }}
-                                                </a>
+                                                @if($row->advert->owner ?? false)
+                                                    <a href="/admin/view-user/{{ $row->advert->owner->user_id ?? '#' }}" class="text-primary text-decoration-none">
+                                                        {{ $row->advert->owner->name ?? 'Unknown User' }}
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">User not found</span>
+                                                @endif
                                             </td>
                                             <td class="fw-bold text-success">
-                                                ₦{{ number_format($row->advert->price, 2) }}
+                                                ₦{{ number_format($row->advert->price ?? 0, 2) }}
                                             </td>
                                             <td>
-                                                <div class="small">
-                                                    <div><strong>{{ $row->advert->owner->bank_name }}</strong></div>
-                                                    <div>{{ $row->advert->owner->account_name }}</div>
-                                                    <div class="text-muted">{{ $row->advert->owner->account_number }}</div>
-                                                </div>
+                                                @if($row->advert->owner ?? false)
+                                                    <div class="small">
+                                                        <div><strong>{{ $row->advert->owner->bank_name ?? 'N/A' }}</strong></div>
+                                                        <div>{{ $row->advert->owner->account_name ?? 'N/A' }}</div>
+                                                        <div class="text-muted">{{ $row->advert->owner->account_number ?? 'N/A' }}</div>
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">Bank details not available</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <span class="badge rounded-pill text-capitalize
-                                                    {{ $row->seller_settlement === 'yes' ? 'bg-success' : 'bg-secondary' }}">
-                                                    {{ $row->seller_settlement }}
+                                                    {{ ($row->seller_settlement ?? 'no') === 'yes' ? 'bg-success' : 'bg-secondary' }}">
+                                                    {{ $row->seller_settlement ?? 'no' }}
                                                 </span>
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                    @if($row->seller_settlement === 'yes')
+                                                    @if(($row->seller_settlement ?? 'no') === 'yes')
                                                         <span class="text-success">
                                                             <i class="bi bi-check-circle-fill"></i> Settled
                                                         </span>
                                                     @else
-                                                        <a href="/admin/payout/{{ $row->id }}"
+                                                        <a href="/admin/payout/{{ $row->id ?? '#' }}"
                                                            class="btn btn-sm btn-outline-primary"
                                                            onclick="return confirm('Are you sure you want to settle this payment via Paystack?');">
                                                             <i class="bi bi-send"></i> Paystack
                                                         </a>
-                                                        <a href="/admin/confirm-settlement/{{ $row->id }}"
+                                                        <a href="/admin/confirm-settlement/{{ $row->id ?? '#' }}"
                                                            class="btn btn-sm btn-outline-success"
                                                            onclick="return confirm('Are you sure you want to manually confirm this settlement?');">
                                                             <i class="bi bi-check-lg"></i> Manual
@@ -131,12 +140,12 @@
                             </table>
                         </div>
 
-                        @if($payments->hasPages())
+                        @if($payments->hasPages() && $payments->count() > 0)
                             <div class="row align-items-center mt-4 pt-3 border-top">
                                 <div class="col-md-6">
                                     <div class="d-flex align-items-center text-muted">
                                         <i class="bi bi-info-circle me-2"></i>
-                                        <span>Showing <strong>{{ $payments->firstItem() }}</strong> to <strong>{{ $payments->lastItem() }}</strong> of <strong>{{ $payments->total() }}</strong> results</span>
+                                        <span>Showing <strong>{{ $payments->firstItem() ?? 0 }}</strong> to <strong>{{ $payments->lastItem() ?? 0 }}</strong> of <strong>{{ $payments->total() ?? 0 }}</strong> results</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

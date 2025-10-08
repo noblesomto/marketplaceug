@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('mark:expired-boosts')->daily();
+        $schedule->command('boosts:expire')->everySixHours();
 
 
     }

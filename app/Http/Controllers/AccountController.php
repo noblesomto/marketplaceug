@@ -135,24 +135,34 @@ class AccountController extends Controller
         if ($request->has('remember_device')) {
             // 1. Trusted device (OTP skip)
             $this->storeTrustedDevice($request, $user);
-            cookie()->queue(cookie('trusted_device', $this->generateDeviceHash($request), 60 * 24 * 30));
+            cookie()->queue(cookie(
+                'trusted_device',
+                $this->generateDeviceHash($request),
+                60 * 24 * 30,
+                '/',
+                null,
+                true,  // secure - set to true for HTTPS
+                true,  // httpOnly
+                false, // raw
+                'Lax' // sameSite
+            ));
 
             // 2. Persistent login (stay logged in)
             $token = Str::random(60);
-
             DB::table('users')->where('user_id', $user->user_id)
                 ->update(['remember_token' => hash('sha256', $token)]);
 
             cookie()->queue(cookie(
-                'remember_login',      // name
-                $token,                // value
-                60 * 24 * 30,          // minutes (30 days)
-                '/',                   // path
-                null,                  // domain (current host)
-                false,                 // secure (true if https)
-                true                   // httpOnly
+                'remember_login',
+                $token,
+                60 * 24 * 30,          // 30 days
+                '/',
+                null,
+                true,                  // secure - set to true for HTTPS
+                true,                  // httpOnly
+                false,                 // raw
+                'Lax'                  // sameSite
             ));
-
         }
 
         // Update login activity
@@ -163,11 +173,10 @@ class AccountController extends Controller
                 'last_login_at' => now(),
             ]);
 
-        return $request->session()->has('url.intended')
-            ? redirect($request->session()->get('url.intended'))
-            : redirect()->action([UserProfile::class, 'profile']);
+        // Redirect to intended URL or default profile page
+        // This automatically pulls and clears 'url.intended' from session
+        return redirect()->intended(action([UserProfile::class, 'profile']));
     }
-
 
     protected function triggerOtpLogin(Request $request, $user)
     {

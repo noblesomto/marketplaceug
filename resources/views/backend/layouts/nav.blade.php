@@ -11,14 +11,7 @@
         <i class="bi bi-list toggle-sidebar-btn"></i>
       </div><!-- End Logo -->
   
-      <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="/admin/search">
-          @csrf
-          <input type="text" name="search" placeholder="Search" title="Enter search keyword">
-          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-      </div><!-- End Search Bar -->
-  
+
  
   
     </header><!-- End Header -->

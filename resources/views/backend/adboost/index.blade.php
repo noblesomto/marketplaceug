@@ -50,6 +50,7 @@
                                         <th scope="col">Duration</th>
                                         <th scope="col">Boost Type</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Dates</th>
                                         <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -57,11 +58,19 @@
                                     @foreach($adverts as $row)
                                         @php
                                             $expiry = \Carbon\Carbon::parse($row->start_date)->addDays($row->duration);
-                                            $daysRemaining = \Carbon\Carbon::now()->diffInDays($expiry, false);
+                                            $now = \Carbon\Carbon::now();
+
+                                            if ($now->lessThanOrEqualTo($expiry)) {
+                                                $daysRemaining = (int) ceil($now->diffInDays($expiry, false));
+                                            } else {
+                                                $daysRemaining = -1; // expired
+                                            }
                                         @endphp
                                         <tr>
                                             <td>
-                                                <img src="{{ asset('uploads/images/'.$row->advert->firstImage->image) }}"
+                                                <img src="{{ $row->advert && $row->advert->hasMedia('images')
+                                                    ? $row->advert->getFirstMediaUrl('images', 'thumbnail')
+                                                    : asset('frontend/images/default.png') }}"
                                                      class="rounded"
                                                      width="60"
                                                      height="60"
@@ -85,7 +94,7 @@
                                             <td>
                                                 @if($daysRemaining >= 0)
                                                     <span class="badge bg-success text-white">
-                                                        {{ $daysRemaining }} day{{ $daysRemaining != 1 ? 's' : '' }} left
+                                                        {{ $daysRemaining }} day{{ $daysRemaining !== 1 ? 's' : '' }} left
                                                     </span>
                                                 @else
                                                     <span class="badge bg-danger text-white">
@@ -108,6 +117,18 @@
                                                         <i class="bi bi-hourglass me-1"></i> Pending
                                                     </span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <div class="small">
+                                                    <div class="fw-medium">
+                                                        Started:
+                                                        {{ !empty($row->start_date) ? date('M j, Y', strtotime($row->start_date)) : 'Not set' }}
+                                                    </div>
+                                                    <div class="text-muted">
+                                                        Expires:
+                                                        {{ !empty($expiry) ? date('M j, Y', strtotime($expiry)) : 'Not set' }}
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 @if($row->boost_status == "active")

@@ -14,8 +14,8 @@
             <h5 class="card-title">{{ $page_title }}</h5>
 
             @if(session('status'))
-              <div class="alert alert-{{session('status')['type']}} alert-dismissible fade show">
-                {{session('status')['text']}}
+              <div class="alert alert-{{ session('status')['type'] ?? 'info' }} alert-dismissible fade show">
+                {{ session('status')['text'] ?? 'Operation completed' }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             @endif
@@ -41,42 +41,46 @@
                 <tbody>
                   @forelse ($payments as $row)
                     <tr>
-                      <td>{{ $loop->iteration + ($payments->currentPage() - 1) * $payments->perPage() }}</td>
+                      <td>{{ ($payments->currentPage() - 1) * $payments->perPage() + $loop->iteration }}</td>
                       <td>
-                        @if($row->hasMedia('images'))
-                          <img style="width: 60px; height: 50px; object-fit: cover;" src="{{ $row->getFirstMediaUrl('images', 'thumbnail') }}" class="img-thumbnail" alt="Image">
+                        @if($row->advert && $row->advert->hasMedia('images'))
+                          <img style="width: 60px; height: 50px; object-fit: cover;" src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') }}" class="img-thumbnail" alt="Image">
                         @else
                           <img width="60px" src="{{ asset('frontend/images/default.png') }}" class="img-thumbnail" alt="Default Image">
                         @endif
                         <br>
-                        <small>{{ $row->advert->ad_title }}</small>
+                        <small>{{ $row->advert->ad_title ?? 'N/A' }}</small>
                       </td>
                       <td>
-                        <a href="/admin/view-user/{{ $row->user->user_id }}" class="text-primary">
-                          {{ $row->user->name }}
-                        </a>
+                        @if($row->user)
+                          <a href="/admin/view-user/{{ $row->user->user_id ?? '#' }}" class="text-primary">
+                            {{ $row->user->name ?? 'Unknown User' }}
+                          </a>
+                        @else
+                          <span class="text-muted">User not found</span>
+                        @endif
                       </td>
-                      <td>₦{{ number_format($row->advert->price, 2) }}</td>
-                      <td>₦{{ number_format($row->commission, 2) }}</td>
-                      <td>₦{{ number_format($row->amount_paid, 2) }}</td>
+                      <td>₦{{ number_format($row->advert->price ?? 0, 2) }}</td>
+                      <td>₦{{ number_format($row->commission ?? 0, 2) }}</td>
+                      <td>₦{{ number_format($row->amount_paid ?? 0, 2) }}</td>
                       <td>{{ $row->created_at->format('j F Y') }}</td>
                       <td>{{ $row->ship_code ?? 'N/A' }}</td>
 
                       <td>
                         <span class="badge bg-{{ $row->buyer_status == 'delivered' ? 'success' : ($row->buyer_status == 'canceled' ? 'danger' : 'warning') }}">
-                          {{ ucfirst($row->buyer_status) }}
+                          {{ ucfirst($row->buyer_status ?? 'pending') }}
                         </span>
                       </td>
                       <td>
                           <span class="badge bg-{{ $row->shipping_status == 'delivered' ? 'success' : ($row->shipping_status == 'canceled' ? 'danger' : 'warning') }}">
-                            {{ ucfirst($row->shipping_status) }}
+                            {{ ucfirst($row->shipping_status ?? 'pending') }}
                           </span>
                         </td>
                       <td>
                         <button class="btn btn-sm btn-primary edit-btn"
                                 data-id="{{ $row->id }}"
-                                data-buyer-status="{{ $row->buyer_status }}"
-                                data-shipping-status="{{ $row->shipping_status }}"
+                                data-buyer-status="{{ $row->buyer_status ?? 'pending' }}"
+                                data-shipping-status="{{ $row->shipping_status ?? 'pending' }}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editModal">
                           <i class="bi bi-pencil"></i> Edit
@@ -85,7 +89,7 @@
                     </tr>
                   @empty
                     <tr>
-                      <td colspan="10" class="text-center">No records available</td>
+                      <td colspan="11" class="text-center">No completed payments found</td>
                     </tr>
                   @endforelse
                 </tbody>
@@ -93,18 +97,20 @@
             </div>
             <!-- End Table with stripped rows -->
 
-            <div class="row mt-3">
-              <div class="col-md-6">
-                <div class="text-muted">
-                  Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} of {{ $payments->total() }} results
+            @if($payments->count() > 0)
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="text-muted">
+                    Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} of {{ $payments->total() }} results
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="float-end">
+                    {{ $payments->links('pagination::bootstrap-4') }}
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="float-end">
-                  {{ $payments->links('pagination::bootstrap-4') }}
-                </div>
-              </div>
-            </div>
+            @endif
           </div>
         </div>
       </div>
@@ -129,7 +135,7 @@
             <select class="form-select" id="buyer_status" name="buyer_status">
               <option value="pending">Pending</option>
               <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="canceled">Canceled</option>
             </select>
           </div>
           <div class="mb-3">
@@ -137,7 +143,7 @@
             <select class="form-select" id="shipping_status" name="shipping_status">
               <option value="pending">Pending</option>
               <option value="shipped">Shipped</option>
-               <option value="pickup">Ready for Pickup</option>
+              <option value="pickup">Ready for Pickup</option>
               <option value="delivered">Delivered</option>
               <option value="canceled">Canceled</option>
             </select>
@@ -167,8 +173,8 @@
         document.getElementById('editForm').action = `/admin/update-payment/${id}`;
 
         // Populate form fields
-        document.getElementById('buyer_status').value = buyerStatus || '';
-        document.getElementById('shipping_status').value = shippingStatus;
+        document.getElementById('buyer_status').value = buyerStatus || 'pending';
+        document.getElementById('shipping_status').value = shippingStatus || 'pending';
       });
     });
   });

@@ -60,7 +60,7 @@ class AdvertController extends Controller
                   ->orWhere(function($query) {
                       $query->where('sold', 'Yes')
                             ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
+                            ->where('sold_date', '>=', now()->subDays(30));
                   });
         })
         ->orderBy('views', 'desc')
@@ -76,7 +76,7 @@ class AdvertController extends Controller
                       ->orWhere(function ($q) {
                           $q->where('sold', 'Yes')
                             ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
+                            ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
             ->selectRaw('adverts.*, (featured = "yes") as is_featured')
@@ -84,12 +84,59 @@ class AdvertController extends Controller
             ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END') // ✅ Random featured
             ->orderByDesc('created_at') // ✅ Others by newest
             ->paginate($perPage);
+
+            $cars = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('sub_category', 2)
+                ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+                })
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+
+            $phones = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('sub_category', 6)
+                ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+                })
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+
+            $fashion = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('category', 5)
+                ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+                })
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+        //dd($fashion);
+
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
 
         //dd($categories);
-        return view('frontend.index', compact('title','listings','featured','user','categories'));
+        return view('frontend.index', compact('title','listings','featured','user','categories','cars','phones','fashion'));
     }
 
     public function advert(Request $request, $location, $slug, $id)
@@ -131,6 +178,7 @@ class AdvertController extends Controller
         $data['user'] = User::where('user_id', $user_id)->first();
         $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
         $data['cat'] = Category::where('id', $cat_id)->first();
+        $data['sub_cat'] = SubCategory::where('id', $subcat_id)->first();
         $data['brand'] = Brands::where('id', $brand_id)->first();
 
         $data['car'] = CarDetail::where('advert_id', $ad_id)->first();
@@ -199,7 +247,7 @@ class AdvertController extends Controller
                       ->orWhere(function ($q) {
                           $q->where('sold', 'Yes')
                             ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
+                            ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
             ->selectRaw('adverts.*, (featured = "yes") as is_featured')
@@ -230,7 +278,7 @@ class AdvertController extends Controller
                       ->orWhere(function ($q) {
                           $q->where('sold', 'Yes')
                             ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
+                            ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
             ->selectRaw('adverts.*, (featured = "yes") as is_featured')
@@ -367,7 +415,7 @@ class AdvertController extends Controller
                 $join->on('categories.id', '=', 'adverts.category')
                      ->where('adverts.ad_status', 1)
                      ->where(function($q) {
-                         $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                         $q->where('adverts.sold_date', '>=', now()->subDays(30))
                            ->orWhereNull('adverts.sold_date');
                      });
             })
@@ -407,7 +455,7 @@ class AdvertController extends Controller
                 $join->on('sub_categories.id', '=', 'adverts.sub_category')
                     ->where('adverts.ad_status', 1)
                     ->where(function ($q) {
-                        $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
                           ->orWhereNull('adverts.sold_date');
                     });
             })
@@ -453,7 +501,7 @@ class AdvertController extends Controller
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                             ->orWhereNull('adverts.sold_date');
                       });
             })
@@ -492,7 +540,7 @@ class AdvertController extends Controller
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                             ->orWhereNull('adverts.sold_date');
                       });
             })
@@ -532,7 +580,7 @@ class AdvertController extends Controller
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                             ->orWhereNull('adverts.sold_date');
                       });
             })
@@ -573,7 +621,7 @@ class AdvertController extends Controller
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                             ->orWhereNull('adverts.sold_date');
                       });
             })

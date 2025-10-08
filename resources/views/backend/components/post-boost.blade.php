@@ -1,5 +1,8 @@
 <div class="my-2 space-y-6">
-    <h5 class="text-base font-bold text-dark_green">Boost Ad to get more views & sell faster</h5>
+    <div class="flex  text-sm font-bold text-dark_green">
+        <h5 class="">Boost Ad to get more views & sell faster (Optional)</h5>
+
+    </div>
   <!-- Highlight -->
   <div class="w-full flex justify-start">
     <label class="w-full flex justify-start cursor-pointer">

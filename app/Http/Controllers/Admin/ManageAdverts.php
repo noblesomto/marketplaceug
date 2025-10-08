@@ -11,15 +11,39 @@ use App\Helpers\FileUploadHelper;
 
 class ManageAdverts extends Controller
 {
+
+    private function applyAdvertSearch($query, $searchTerm)
+    {
+        return $query->where(function($q) use ($searchTerm) {
+            $q->where('ad_title', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('state', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('price', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('salary', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('expected_salary', 'LIKE', "%{$searchTerm}%")
+              ->orWhereHas('user', function($userQuery) use ($searchTerm) {
+                  $userQuery->where('name', 'LIKE', "%{$searchTerm}%")
+                           ->orWhere('email', 'LIKE', "%{$searchTerm}%");
+              });
+        });
+    }
+
+
     public function active_adverts(Request $request)
     {
         $title = "Active Adverts | " . config('global.site_name');
         $page_title = "Active Adverts";
-        $adverts = Advert::with(['user', 'firstImage'])
+
+        $query = Advert::with(['user', 'firstImage'])
                 ->where("ad_status", 'active')
-                ->where("sold", "No")
-                ->orderBy('created_at', 'desc')
-                ->paginate(20);
+                ->where("sold", "No");
+
+        // Apply search if present
+        if ($request->filled('query')) {
+            $query = $this->applyAdvertSearch($query, $request->input('query'));
+        }
+
+        $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
         return view('backend.advert.adverts', compact('title', 'page_title','adverts'));
     }
@@ -28,16 +52,59 @@ class ManageAdverts extends Controller
     {
         $title = "Disabled Adverts | " . config('global.site_name');
         $page_title = "Disabled Adverts";
-        $adverts = Advert::with(['user', 'firstImage'])
+
+        $query = Advert::with(['user', 'firstImage'])
                 ->where("ad_status", '<>', 'active')
-                ->where("sold", "No")
-                ->orderBy('created_at', 'desc')
-                ->paginate(20);
+                ->where("sold", "No");
+
+        // Apply search if present
+        if ($request->filled('query')) {
+            $query = $this->applyAdvertSearch($query, $request->input('query'));
+        }
+
+        $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
         return view('backend.advert.adverts', compact('title', 'page_title', 'adverts'));
     }
 
+    // all adverts method
+    public function all_adverts(Request $request)
+    {
+        $title = "All Adverts | " . config('global.site_name');
+        $page_title = "All Adverts";
+
+        $query = Advert::with(['user', 'firstImage']);
+
+        // Apply search if present
+        if ($request->filled('query')) {
+            $query = $this->applyAdvertSearch($query, $request->input('query'));
+        }
+
+        $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('backend.advert.adverts', compact('title', 'page_title', 'adverts'));
+    }
+
+    // sold adverts
     public function sold_adverts(Request $request)
+    {
+        $title = "Sold Adverts | " . config('global.site_name');
+        $page_title = "Sold Adverts";
+
+        $query = Advert::with(['user', 'firstImage'])
+                ->where("sold", "Yes");
+
+        // Apply search if present
+        if ($request->filled('query')) {
+            $query = $this->applyAdvertSearch($query, $request->input('query'));
+        }
+
+        $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
+
+         return view('backend.advert.sold-adverts', compact('title', 'page_title','adverts'));
+    }
+
+    public function sold_adverts44(Request $request)
     {
         $title = "Sold Adverts | " . config('global.site_name');
         $page_title = "Sold Adverts";

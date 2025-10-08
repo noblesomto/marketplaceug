@@ -65,7 +65,10 @@ class Advert extends Model implements HasMedia
 
     public function firstImage()
     {
-        return $this->hasOne(AdvertImage::class)->orderBy('position', 'asc');
+        return $this->hasOne(Media::class, 'model_id')
+            ->where('model_type', self::class)
+            ->where('collection_name', 'images')
+            ->orderBy('order_column');
     }
 
     public function brands()
@@ -135,7 +138,7 @@ class Advert extends Model implements HasMedia
                   ->orWhere(function ($q) {
                       $q->where('sold', 'Yes')
                         ->whereNotNull('sold_date')
-                        ->where('sold_date', '>=', now()->subDays(7));
+                        ->where('sold_date', '>=', now()->subDays(30));
                   });
             });
     }

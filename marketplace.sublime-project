@@ -1,0 +1,51 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "folder_exclude_patterns": ["node_modules", "vendor", "storage", "public/storage"],
+            "file_exclude_patterns": ["*.log", "*.lock", ".env"]
+        }
+    ],
+    "settings": {
+        "LSP": {
+            "LSP-intelephense": {
+                "enabled": true,
+                "settings": {
+                    "intelephense.environment.includePaths": [
+                        "${folder}/vendor"
+                    ]
+                }
+            }
+        }
+    },
+    "build_systems": [
+        {
+            "name": "Laravel: Artisan Serve (Port 8030)",
+            "target": "terminus_open",
+            "cancel": "terminus_close",
+            "cmd": "php artisan serve --host=127.0.0.1 --port=8030",
+            "cwd": "${folder}",
+            "working_dir": "${folder}",
+            "selector": "source.php",
+            "auto_close": false
+        },
+        {
+            "name": "Laravel: Migrate",
+            "target": "terminus_exec",
+            "cmd": "php artisan migrate",
+            "cwd": "${folder}",
+            "working_dir": "${folder}",
+            "selector": "source.php"
+        },
+        {
+            "name": "Laravel: NPM Dev (Tailwind/Vite)",
+            "target": "terminus_open",
+            "cancel": "terminus_close",
+            "cmd": "npm run dev",
+            "cwd": "${folder}",
+            "working_dir": "${folder}",
+            "selector": "source.js",
+            "auto_close": false
+        }
+    ]
+}
