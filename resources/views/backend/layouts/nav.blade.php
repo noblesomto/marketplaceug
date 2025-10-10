@@ -162,6 +162,27 @@
           </ul>
         </li><!-- End Forms Nav -->
 
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#blog" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-badge-ad"></i><span>Blog</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="blog" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="/blogs">
+                <i class="bi bi-circle"></i><span>All Posts</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/blog">
+                <i class="bi bi-circle"></i><span>New Posts</span>
+              </a>
+            </li>
+
+          </ul>
+        </li><!-- End Forms Nav -->
+
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse" href="#">
             <i class="bi bi-book"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>

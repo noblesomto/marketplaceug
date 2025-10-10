@@ -12,6 +12,7 @@ use App\Models\Advert;
 use App\Models\AdvertImage;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Blog;
 use Mail;
 use Hash;
 use App\Mail\RegisterMail;
@@ -90,6 +91,33 @@ class PageController extends Controller
     {
         $title = "Advertise With Us  | " . config('global.site_name');
         return view('frontend.pages.advertise', compact('title'));
+    }
+
+    public function blog()
+    {
+        $title = "Our Blog  | " . config('global.site_name');
+        $blogs = Blog::where('status', 'published')->latest()->paginate(10);
+        return view('frontend.blog.index', compact('title','blogs'));
+    }
+
+    public function blog_details($slug, $id)
+    {
+        $title = "Our Blog  | " . config('global.site_name');
+        $blog = Blog::find($id);
+
+        // Check if blog exists
+        if (!$blog) {
+            abort(404);
+        }
+        $blog->increment('views');
+        $similar = Blog::where('category', $blog->category)
+            ->where('id', '!=', $id)
+            ->where('status','published')
+            ->inRandomOrder()
+            ->limit(2)
+            ->get();
+        //dd($similar);
+        return view('frontend.blog.blog-details', compact('title','blog','similar'));
     }
 
     public function page()

@@ -36,6 +36,7 @@ EXCLUDES=(
   "public/hot"
   "public/uploads/"
   "public/ckeditor/"
+  "*.zip"
 )
 
 # Build exclude string for lftp and rsync

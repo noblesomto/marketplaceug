@@ -29,7 +29,7 @@
             <div class="flex flex-col">
                 <h4 class="font-bold">Our Resources</h4>
                 <ul class="flex flex-col space-y-1 mt-2">
-                    <li><a href="#" class="hover:text-secondary-200">Blog</a></li>
+                    <li><a href="/blog" class="hover:text-secondary-200">Blog</a></li>
                     <li><a href="#" class="hover:text-secondary-200">Mobile Apps</a></li>
                 </ul>
                 <div class="flex flex-col gap-2 mt-1">

@@ -3,7 +3,7 @@
     $imageUrls = $mediaItems->map(fn($media) => $media->getUrl('optimized'))->toArray();
 @endphp
 
-<div class="bg-gray-100 flex items-center justify-center py-6">
+<div class="bg-gray-100 flex items-center justify-center py-1">
     <div class="relative w-full max-w-screen-lg overflow-hidden rounded-lg shadow-md group">
         <!-- Slider Container -->
         <div id="slider" class="flex transition-transform duration-500 ease-out">

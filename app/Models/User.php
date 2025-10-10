@@ -140,6 +140,47 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Followers::class, 'user_id', 'user_id');
     }
 
+    public function blockedUsers()
+    {
+        return $this->hasMany(BlockedUser::class, 'blocker_id', 'user_id');
+    }
+
+    public function blockedBy()
+    {
+        return $this->hasMany(BlockedUser::class, 'blocked_id', 'user_id');
+    }
+
+    // Helper methods
+    public function hasBlocked($userId, $advertId = null)
+    {
+        $query = $this->blockedUsers()
+            ->where('blocked_id', $userId);
+
+        if ($advertId) {
+            $query->where(function($q) use ($advertId) {
+                $q->where('advert_id', $advertId)
+                  ->orWhereNull('advert_id'); // global blocks
+            });
+        }
+
+        return $query->exists();
+    }
+
+    public function isBlockedBy($userId, $advertId = null)
+    {
+        $query = $this->blockedBy()
+            ->where('blocker_id', $userId);
+
+        if ($advertId) {
+            $query->where(function($q) use ($advertId) {
+                $q->where('advert_id', $advertId)
+                  ->orWhereNull('advert_id');
+            });
+        }
+
+        return $query->exists();
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_image')
@@ -203,11 +244,16 @@ class User extends Authenticatable implements HasMedia
 
         // Inline SVG fallback (simple avatar)
         $svg = <<<SVG
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#9ca3af" viewBox="0 0 24 24">
-            <circle cx="12" cy="7" r="5"/>
-            <path d="M12 14c-5 0-9 2.5-9 5v2h18v-2c0-2.5-4-5-9-5z"/>
-        </svg>
-        SVG;
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <!-- Gray rounded background -->
+                <rect width="24" height="24" rx="12" fill="#e5e7eb"/>
+
+                <!-- User icon -->
+                <circle cx="12" cy="7" r="5" fill="#9ca3af"/>
+                <path d="M12 14c-5 0-9 2.5-9 5v2h18v-2c0-2.5-4-5-9-5z" fill="#9ca3af"/>
+            </svg>
+            SVG;
+
 
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }

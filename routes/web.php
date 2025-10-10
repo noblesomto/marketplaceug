@@ -5,6 +5,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchFilter;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfile;
+use App\Http\Controllers\BlockUser;
 use App\Http\Controllers\UserManageAdverts;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Admin\ManageUsers;
 use App\Http\Controllers\Admin\ManageAdvertising;
 use App\Http\Controllers\Admin\ManagePayments;
 use App\Http\Controllers\Admin\ManageAdminUsers;
+use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -38,6 +40,8 @@ Route::any('/our-terms', [PageController::class, 'terms']);
 Route::any('/payments-refunds', [PageController::class, 'payments_refunds']);
 Route::any('/how-it-works', [PageController::class, 'how_it_works']);
 Route::any('/faq', [PageController::class, 'faq']);
+Route::any('/blog', [PageController::class, 'blog']);
+Route::any('/blog/{slug}/{id}', [PageController::class, 'blog_details']);
 Route::any('/advertise-with-us', [PageController::class, 'advertise']);
 Route::any('/contact-us', [PageController::class, 'contact']);
 Route::any('/shipping', [PageController::class, 'shipping']);
@@ -132,6 +136,13 @@ Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->midd
 Route::any('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
 Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
 Route::any('/user/notifications', [UserController::class, 'notifications'])->middleware('usersession');
+
+// routes/api.php or routes/web.php
+Route::middleware('usersession')->group(function () {
+    Route::post('user/block', [BlockUser::class, 'block']);
+    Route::delete('user/unblock', [BlockUser::class, 'unblock']);
+    Route::get('user/blocked-users', [BlockUser::class, 'blockedList']);
+});
 
 //User Manage Ads
 Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');
@@ -298,7 +309,9 @@ Route::prefix('settings/manage-admins')
     Route::delete('/{id}', [ManageAdminUsers::class, 'destroy']); // Delete
 });
 
-
+Route::resource('/admin/blogs', ManageBlog::class);
+Route::post('/tinymce/upload', [ManageBlog::class, 'upload'])->name('tinymce.upload');
+Route::post('/blogs/{blog}/toggle-status', [ManageBlog::class, 'toggleStatus'])->name('blogs.toggleStatus');
 
 
 Route::get('/fetch-subcat/{cat_id}', [ManageCategories::class, 'fetch_subcat']);

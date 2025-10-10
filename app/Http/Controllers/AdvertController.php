@@ -70,6 +70,7 @@ class AdvertController extends Controller
         $perPage = 20;
 
         $listings = Advert::with('firstImage', 'owner')
+            ->inRandomOrder()
             ->where('ad_status', 'active')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')

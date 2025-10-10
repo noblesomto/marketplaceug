@@ -18,7 +18,6 @@
   <script src="{{ asset ('backend/assets/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset ('backend/assets/quill/quill.min.js') }}"></script>
   <script src="{{ asset ('backend/assets/simple-datatables/simple-datatables.js') }}"></script>
-  <script src="{{ asset ('backend/assets/tinymce/tinymce.min.js') }}"></script>
   <script src="{{ asset ('backend/assets/php-email-form/validate.js') }}"></script>
 
   <!-- Template Main JS File -->

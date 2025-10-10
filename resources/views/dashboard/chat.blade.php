@@ -13,21 +13,85 @@
             <!-- Chat Header -->
             <div class="chat-header bg-white border-b  border-gray-200">
                 <div class="chat-container">
-                    <div class="flex items-center gap-4 py-2">
-                        <a href="/user/messages" class="flex-shrink-0">
-                            <i class="bi bi-chevron-left text-dark_green text-xl lg:text-2xl"></i>
-                        </a>
-                        <a href="{{ url($advert->state_slug . '/' . $advert->title_slug .'/'. $advert->ad_id) }}" class="flex items-center min-w-0 flex-1">
-                            <div class="flex-shrink-0 mr-3 lg:mr-4">
-                                <img class="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gray-300 object-cover"
-                                     src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
-                                     alt="{{ $advert->ad_title }}">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4 py-2">
+                            <a href="/user/messages" class="flex-shrink-0">
+                                <i class="bi bi-chevron-left text-dark_green text-xl lg:text-2xl"></i>
+                            </a>
+                            <a href="{{ url($advert->state_slug . '/' . $advert->title_slug .'/'. $advert->ad_id) }}" class="flex items-center min-w-0 flex-1">
+                                <div class="flex-shrink-0 mr-3 lg:mr-4">
+                                    <img class="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gray-300 object-cover"
+                                         src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
+                                         alt="{{ $advert->ad_title }}">
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-semibold text-lg lg:text-xl text-gray-900 truncate">{{ $advert->owner->name }}</h4>
+                                    <h6 class="text-sm lg:text-base text-gray-600 truncate -mt-1">{{ $advert->ad_title }}</h6>
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <div class="relative dropdown inline-block">
+                              <button
+                                type="button"
+                                class="dropdown-button inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                <i class="bi bi-three-dots-vertical text-xl text-gray-600"></i>
+                              </button>
+
+                              <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                                <div class="space-y-2">
+                                    <form
+                                        action="{{ $isBlocked ? '/user/unblock' : '/user/block' }}"
+                                        method="POST"
+                                        class="block"
+                                    >
+                                        @csrf
+                                        @if($isBlocked)
+                                            @method('DELETE')
+                                        @endif
+
+                                        <input type="hidden" name="blocked_id" value="{{ $receiver->user_id }}">
+                                        <input type="hidden" name="advert_id" value="{{ $advert->id ?? '' }}">
+
+                                        <button
+                                            type="submit"
+                                            onclick="return confirm('{{ $isBlocked ? 'Unblock this user?' : 'Block this user from messaging you?' }}')"
+                                            class="w-full text-left px-4 py-2 text-sm {{ $isBlocked ? 'text-green-700 hover:bg-green-50 hover:text-green-900' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }} transition-colors duration-150"
+                                        >
+                                            {{ $isBlocked ? 'Unblock User' : 'Block User' }}
+                                        </button>
+                                    </form>
+
+
+                                       <a href="/report-user/{{ $receiver->user_id }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-150"
+                                    >
+                                        Report User
+                                    </a>
+
+                                    <form action="/messages/archive" method="POST" class="block">
+                                        @csrf
+                                        <input type="hidden" name="advert_id" value="{{ $advert->id ?? '' }}">
+                                        <input type="hidden" name="other_user_id" value="{{ $receiver->user_id }}">
+
+                                        <button
+                                            type="submit"
+                                            onclick="return confirm('Archive this conversation? The sender will not be able to message you about this advert.')"
+                                            class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
+                                        >
+                                            Archive Conversation
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <h4 class="font-semibold text-lg lg:text-xl text-gray-900 truncate">{{ $advert->owner->name }}</h4>
-                                <h6 class="text-sm lg:text-base text-gray-600 truncate -mt-1">{{ $advert->ad_title }}</h6>
                             </div>
-                        </a>
+
+
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,7 +132,7 @@
                                 <div class="chat-message-content">
                                     {{-- Message Bubble --}}
                                     <div class="message-bubble rounded-2xl px-4 py-3 lg:px-5 lg:py-4 {{ $isCurrentUser
-                                        ? 'bg-gray-200 text-gray-800 rounded-br-md'
+                                        ? 'bg-secondary-200 text-gray-800 rounded-br-md'
                                         : 'bg-gray-50 text-gray-800 rounded-bl-md' }}">
 
                                         {{-- Text Content --}}
@@ -627,5 +691,48 @@ document.getElementById('image-overlay').addEventListener('click', function () {
 </script>
 
 
+<script>
+(function () {
+  const toggleDropdown = (dropdown) => {
+    const menu = dropdown.querySelector('.dropdown-menu');
+    const button = dropdown.querySelector('.dropdown-button');
+    const isHidden = menu.classList.contains('hidden');
 
+    // Close all dropdowns first
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
 
+    // Then open this one if it was hidden
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      button.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  // Click handler
+  document.addEventListener('click', (e) => {
+    const clickedButton = e.target.closest('.dropdown-button');
+    const clickedDropdown = e.target.closest('.dropdown');
+
+    if (clickedButton && clickedDropdown) {
+      e.preventDefault();
+      toggleDropdown(clickedDropdown);
+      return;
+    }
+
+    // If clicked outside all dropdowns, close all
+    if (!clickedDropdown) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    }
+  });
+
+  // Close all dropdowns on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    }
+  });
+})();
+</script>

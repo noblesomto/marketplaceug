@@ -9,6 +9,7 @@ use App\Events\MessageSent;
 use App\Models\User;
 use App\Models\Advert;
 use App\Models\Payment;
+use App\Models\BlockedUser;
 use Carbon\Carbon;
 use App\Events\NewMessageNotification;
 use App\Helpers\FileUploadHelper;
@@ -80,7 +81,9 @@ class MessageController extends Controller
             ->where('advert_id', $advertId)
             ->update(['is_read' => true]);
 
-        return view('dashboard.chat', compact('title','messages', 'advert', 'receiver','user','count_ads','payment'));
+            $isBlocked = $user->hasBlocked($receiver->user_id, $advert->id ?? null);
+
+        return view('dashboard.chat', compact('title','messages', 'advert', 'receiver','user','count_ads','payment','isBlocked'));
     }
 
     public function sendMessage(Request $request, $advertId, $receiverId)
@@ -90,10 +93,24 @@ class MessageController extends Controller
             'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $senderId = $request->session()->get('user_id');
+        // Check if sender is blocked
+        $isBlocked = BlockedUser::where('blocker_id', $receiverId)
+            ->where('blocked_id', $senderId)
+            ->where(function($query) use ($advertId) {
+                $query->where('advert_id', $advertId)
+                      ->orWhereNull('advert_id');
+            })
+            ->exists();
+
+        if ($isBlocked) {
+            return redirect()->back()->with('error', 'You cannot send messages to this user.');
+        }
+
         // Create the message
         $message = new Message();
         $message->advert_id = $advertId;
-        $message->sender_id = $request->session()->get('user_id');
+        $message->sender_id = $senderId;
         $message->receiver_id = $receiverId;
         $message->message_content = $request->message;
         $message->is_read = false;
