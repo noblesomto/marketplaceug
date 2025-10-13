@@ -29,7 +29,7 @@
       <!-- Cards Wrapper -->
       <div class="cardSlider flex transition-transform duration-500">
         <!-- Cards -->
-        @foreach ( $featured as $row )
+        @foreach ( $gallery as $row )
           <div class="flex-none w-2/4 md:w-2/4 lg:w-2/4 2xl:w-1/4 p-1">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">

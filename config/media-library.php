@@ -103,6 +103,12 @@ return [
      */
     'url_generator' => Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator::class,
 
+
+    /*
+     * Whether to delete the original file after conversions have been generated.
+     */
+    'delete_original_after_conversion' => true, // This is key!
+
     /*
      * Moves media on updating to keep path consistent. Enable it only with a custom
      * PathGenerator that uses, for example, the media UUID.

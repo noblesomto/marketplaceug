@@ -10,7 +10,7 @@
 
 <div class="flex overflow-x-auto space-x-2 px-2  pb-5">
   <!-- Card 1 -->
-  @foreach ( $featured as $row )
+  @foreach ( $gallery as $row )
   <div class="flex-none w-32">
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
         <div class="relative overflow-hidden">

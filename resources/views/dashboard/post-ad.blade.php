@@ -855,7 +855,7 @@
             </div>
             <div class="col-span-10 md:col-span-3">
                 <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 20 MB. Your pictures become perfect with our photo tips.
+                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 20 MB. To keep listings clear, please avoid uploading images with watermarks or text.
                   </div>
             </div>
        </div>

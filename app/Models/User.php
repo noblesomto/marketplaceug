@@ -181,6 +181,30 @@ class User extends Authenticatable implements HasMedia
         return $query->exists();
     }
 
+
+    public function archivedMessages()
+    {
+        return $this->hasMany(ArchivedMessage::class, 'user_id', 'user_id');
+    }
+
+    public function hasArchivedConversation($advertId, $otherUserId)
+    {
+        return $this->archivedMessages()
+            ->where('advert_id', $advertId)
+            ->where('other_user_id', $otherUserId)
+            ->exists();
+    }
+
+    public function getArchivedConversation($advertId, $otherUserId)
+    {
+        return $this->archivedMessages()
+            ->where('advert_id', $advertId)
+            ->where('other_user_id', $otherUserId)
+            ->first();
+    }
+
+
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_image')

@@ -10,7 +10,7 @@
 @foreach ($flashTypes as $type => $classes)
     @if (session($type))
         <div class="{{ $classes }} border px-4 py-3 rounded my-2">
-            {!! session($type) !!}
+            {{ session($type) }}
         </div>
     @endif
 @endforeach

@@ -2,7 +2,7 @@
 @if ($ad->sold == 'Yes')
    
 @else
-<div class="text-sm font-semibold mt-10">
+<div class="text-sm font-semibold lg:mt-10">
     @include('frontend.layouts.flash-message')
         @if($cat->category =="Jobs")
             <div class="mt-2">

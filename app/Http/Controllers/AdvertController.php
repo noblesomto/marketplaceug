@@ -33,9 +33,9 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         $title = config('global.site_name') . " | " . config('global.site_title');
-        /**
-        $featured = Advert::inRandomOrder()
-            ->where('featured', "Yes")
+        /*
+        $gallery = Advert::inRandomOrder()
+            //->where('featured', "Yes")
             ->where('sold', 'No')
             ->where('ad_status', 'active')
             ->whereHas('boost', function($query) {
@@ -52,39 +52,127 @@ class AdvertController extends Controller
             })
             ->take(6) // Take only 6 after filtering
             ->values(); // Reindex collection
-        **/
-        $featured = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where(function($query) {
-            $query->where('sold', '!=', 'Yes')
-                  ->orWhere(function($query) {
-                      $query->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(30));
-                  });
-        })
-        ->orderBy('views', 'desc')
-        ->limit(10)
-        ->get();
-            //dd($featured);
-        $perPage = 20;
+        */
+        $gallery = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                //->where('featured', 'yes')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->limit(10)
+                ->get();
 
-        $listings = Advert::with('firstImage', 'owner')
-            ->inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where(function ($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function ($q) {
-                          $q->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
-            ->orderByDesc('is_featured') // ✅ Featured first
-            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END') // ✅ Random featured
-            ->orderByDesc('created_at') // ✅ Others by newest
-            ->paginate($perPage);
+        $featured = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('featured', 'yes')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->limit(10)
+                ->get();
+
+            $perPage = 20;
+            $currentPage = request()->get('page', 1);
+
+            // Get IDs to exclude (featured posts)
+            $excludeIds = $featured->pluck('id')->toArray();
+
+            // Split: 50% recent, 50% random older posts
+            $recentCount = (int) ($perPage * 0.3); // 10 posts
+            $randomCount = $perPage - $recentCount; // 10 posts
+
+            // Get recent listings (excluding featured)
+            $recentListings = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->whereNotIn('id', $excludeIds)
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->orderByDesc('created_at')
+                ->skip(($currentPage - 1) * $recentCount)
+                ->limit($recentCount)
+                ->get();
+
+            // Get random older listings
+            $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+
+            $randomListings = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->whereNotIn('id', $excludeIds)
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->inRandomOrder()
+                ->limit($randomCount)
+                ->get();
+
+            // Interleave recent and random posts - keep as model instances
+            $mixed = collect();
+            $maxCount = max($recentListings->count(), $randomListings->count());
+
+            for ($i = 0; $i < $maxCount; $i++) {
+                if ($recentListings->has($i)) {
+                    $mixed->push($recentListings->get($i));
+                }
+                if ($randomListings->has($i)) {
+                    $mixed->push($randomListings->get($i));
+                }
+            }
+
+            // On first page, prepend featured posts
+            if ($currentPage == 1) {
+                $allListings = $featured->concat($mixed);
+            } else {
+                $allListings = $mixed;
+            }
+
+            // Get total count for pagination
+            $totalCount = Advert::where('ad_status', 'active')
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->count();
+
+            // Add featured count only for first page
+            if ($currentPage == 1) {
+                $totalCount += $featured->count();
+            }
+
+            $listings = new \Illuminate\Pagination\LengthAwarePaginator(
+                $allListings,
+                $totalCount,
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
 
             $cars = Advert::inRandomOrder()
                 ->where('ad_status', 'active')
@@ -137,7 +225,7 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
 
         //dd($categories);
-        return view('frontend.index', compact('title','listings','featured','user','categories','cars','phones','fashion'));
+        return view('frontend.index', compact('title','gallery','listings','featured','user','categories','cars','phones','fashion'));
     }
 
     public function advert(Request $request, $location, $slug, $id)
@@ -240,9 +328,40 @@ class AdvertController extends Controller
     public function loadMoreAds(Request $request)
     {
         $perPage = 20;
+        $currentPage = $request->get('page', 1);
 
-        $ads = Advert::with('firstImage', 'owner')
+        // If it's page 1, get featured posts
+        if ($currentPage == 1) {
+            $featured = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->where('featured', 'yes')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+
+            $excludeIds = $featured->pluck('id')->toArray();
+        } else {
+            $featured = collect();
+            $excludeIds = [];
+        }
+
+        // Split: 50% recent, 50% random older posts
+        $recentCount = (int) ($perPage * 0.3); // 10 posts
+        $randomCount = $perPage - $recentCount; // 10 posts
+
+        // Get recent listings (excluding featured)
+        $recentListings = Advert::with('firstImage', 'owner')
             ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function ($q) {
@@ -251,24 +370,195 @@ class AdvertController extends Controller
                             ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
-            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
-            ->orderByDesc('is_featured')
-            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END')
             ->orderByDesc('created_at')
-            ->paginate($perPage, ['*'], 'page', $request->get('page', 1));
+            ->skip(($currentPage - 1) * $recentCount)
+            ->limit($recentCount)
+            ->get();
 
+        // Get random older listings
+        $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+
+        $randomListings = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->inRandomOrder()
+            ->limit($randomCount)
+            ->get();
+
+        // Interleave recent and random posts
+        $mixed = collect();
+        $maxCount = max($recentListings->count(), $randomListings->count());
+
+        for ($i = 0; $i < $maxCount; $i++) {
+            if ($recentListings->has($i)) {
+                $mixed->push($recentListings->get($i));
+            }
+            if ($randomListings->has($i)) {
+                $mixed->push($randomListings->get($i));
+            }
+        }
+
+        // On first page, prepend featured posts
+        if ($currentPage == 1) {
+            $ads = $featured->concat($mixed);
+        } else {
+            $ads = $mixed;
+        }
+
+        // Generate HTML
         $html = '';
         foreach ($ads as $row) {
             $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
         }
 
+        // Check if there are more pages
+        $totalCount = Advert::where('ad_status', 'active')
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->count();
+
+        $hasMorePages = ($currentPage * $perPage) < $totalCount;
+
         return response()->json([
             'html' => $html,
-            'next_page' => $ads->hasMorePages() ? $ads->currentPage() + 1 : null,
+            'next_page' => $hasMorePages ? $currentPage + 1 : null,
         ]);
     }
 
+
     public function loadMoreAdsMobile(Request $request)
+    {
+        $perPage = 20;
+        $currentPage = $request->get('page', 1);
+
+        // If it's page 1, get featured posts
+        if ($currentPage == 1) {
+            $featured = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->where('featured', 'yes')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+
+            $excludeIds = $featured->pluck('id')->toArray();
+        } else {
+            $featured = collect();
+            $excludeIds = [];
+        }
+
+        // Split: 50% recent, 50% random older posts
+        $recentCount = (int) ($perPage * 0.3); // 10 posts
+        $randomCount = $perPage - $recentCount; // 10 posts
+
+        // Get recent listings (excluding featured)
+        $recentListings = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->orderByDesc('created_at')
+            ->skip(($currentPage - 1) * $recentCount)
+            ->limit($recentCount)
+            ->get();
+
+        // Get random older listings
+        $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+
+        $randomListings = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->inRandomOrder()
+            ->limit($randomCount)
+            ->get();
+
+        // Interleave recent and random posts
+        $mixed = collect();
+        $maxCount = max($recentListings->count(), $randomListings->count());
+
+        for ($i = 0; $i < $maxCount; $i++) {
+            if ($recentListings->has($i)) {
+                $mixed->push($recentListings->get($i));
+            }
+            if ($randomListings->has($i)) {
+                $mixed->push($randomListings->get($i));
+            }
+        }
+
+        // On first page, prepend featured posts
+        if ($currentPage == 1) {
+            $ads = $featured->concat($mixed);
+        } else {
+            $ads = $mixed;
+        }
+
+        // Generate HTML
+        $html = '';
+        foreach ($ads as $row) {
+            $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+        }
+
+        // Check if there are more pages
+        $totalCount = Advert::where('ad_status', 'active')
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->count();
+
+        $hasMorePages = ($currentPage * $perPage) < $totalCount;
+
+        return response()->json([
+            'html' => $html,
+            'next_page' => $hasMorePages ? $currentPage + 1 : null,
+        ]);
+    }
+
+    public function loadMoreAdsMobile0000(Request $request)
     {
         $perPage = 20;
 

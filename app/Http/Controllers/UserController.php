@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
+use App\Models\ArchivedMessage;
 use App\Models\Advert;
 use App\Models\State;
 use App\Models\Feedback;
@@ -15,7 +16,11 @@ use App\Models\Wishlist;
 use App\Models\Category;
 use App\Models\Followers;
 use App\Models\Notification;
+use App\Models\ReportUser;
 use Carbon\Carbon;
+use App\Rules\ReCaptcha;
+use Mail;
+use App\Mail\ReportMail;
 
 class UserController extends Controller
 {
@@ -46,24 +51,64 @@ class UserController extends Controller
         $title = "User Dashboard  - " . config('global.site_name');
         $userId = $request->session()->get('user_id');
         $user = User::where('users.user_id', $userId)->first();
+
+        if (!$user) {
+            return redirect('/login')->with('error', 'Please login to view messages');
+        }
+
         $count_ads = Advert::where('user_id', $userId)->count();
+
+        // Get archived conversation keys for this user (using user_id string)
+        $archivedConversations = ArchivedMessage::where('user_id', $userId)
+            ->get()
+            ->map(function($archive) {
+                return $archive->advert_id . '_' . $archive->other_user_id;
+            })
+            ->toArray();
+
         // Fetch distinct conversations for the logged-in user as either sender or receiver
-        $conversations = Message::select(
-                DB::raw("(CASE WHEN sender_id = {$userId} THEN receiver_id ELSE sender_id END) AS other_user_id"),
-                'advert_id'
+        $allConversations = Message::select(
+                DB::raw("(CASE WHEN sender_id = '{$userId}' THEN receiver_id ELSE sender_id END) AS other_user_id"),
+                'advert_id',
+                DB::raw('MAX(created_at) as last_message_at'),
+                DB::raw('MAX(id) as last_message_id')
             )
-            ->where('sender_id', $userId)
-            ->orWhere('receiver_id', $userId)
-            ->orderBy('updated_at', 'desc')
-            ->distinct()
+            ->where(function($query) use ($userId) {
+                $query->where('sender_id', $userId)
+                      ->orWhere('receiver_id', $userId);
+            })
+            ->groupBy('other_user_id', 'advert_id')
             ->get();
+
+        // Filter out archived conversations
+        $filteredConversations = $allConversations->filter(function($conversation) use ($archivedConversations) {
+            $key = $conversation->advert_id . '_' . $conversation->other_user_id;
+            return !in_array($key, $archivedConversations);
+        });
+
+        // Sort by last message date and reset keys
+        $conversations = $filteredConversations->sortByDesc('last_message_at')->values();
 
         // Load additional details
         $conversations = $conversations->map(function ($conversation) use ($userId) {
             // Fetch advert and other user details
             $advert = Advert::find($conversation->advert_id);
             $otherUserId = $conversation->other_user_id;
-            $otherUser = User::find($otherUserId);
+            $otherUser = User::where('user_id', $otherUserId)->first();
+
+            // Get the last message in this conversation
+            $lastMessage = Message::where('advert_id', $conversation->advert_id)
+                ->where(function($query) use ($userId, $otherUserId) {
+                    $query->where(function($q) use ($userId, $otherUserId) {
+                        $q->where('sender_id', $userId)
+                          ->where('receiver_id', $otherUserId);
+                    })->orWhere(function($q) use ($userId, $otherUserId) {
+                        $q->where('sender_id', $otherUserId)
+                          ->where('receiver_id', $userId);
+                    });
+                })
+                ->orderBy('created_at', 'desc')
+                ->first();
 
             // Count unread messages in this conversation
             $unreadCount = Message::where('advert_id', $conversation->advert_id)
@@ -75,13 +120,68 @@ class UserController extends Controller
             return [
                 'advert' => $advert,
                 'other_user' => $otherUser,
-                'unread_count' => $unreadCount
+                'unread_count' => $unreadCount,
+                'last_message' => $lastMessage,
+                'last_message_at' => $conversation->last_message_at
             ];
         });
 
-        return view('dashboard.messages', compact('title','user', 'conversations','count_ads'));
+        return view('dashboard.messages', compact('title', 'user', 'conversations', 'count_ads'));
     }
 
+    public function archivedMessages(Request $request)
+    {
+        $title = "Archived Messages - " . config('global.site_name');
+        $userId = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $userId)->first();
+
+        if (!$user) {
+            return redirect('/login')->with('error', 'Please login to view messages');
+        }
+
+        $count_ads = Advert::where('user_id', $userId)->count();
+
+        // Get archived conversations
+        $archivedConversations = ArchivedMessage::where('user_id', $userId)
+            ->with(['advert', 'otherUser'])
+            ->orderBy('archived_at', 'desc')
+            ->get()
+            ->map(function($archive) use ($userId) {
+                // Get the last message in this conversation
+                $lastMessage = Message::where('advert_id', $archive->advert_id)
+                    ->where(function($query) use ($userId, $archive) {
+                        $query->where(function($q) use ($userId, $archive) {
+                            $q->where('sender_id', $userId)
+                              ->where('receiver_id', $archive->other_user_id);
+                        })->orWhere(function($q) use ($userId, $archive) {
+                            $q->where('sender_id', $archive->other_user_id)
+                              ->where('receiver_id', $userId);
+                        });
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                // Count unread messages in this conversation
+                $unreadCount = Message::where('advert_id', $archive->advert_id)
+                    ->where('receiver_id', $userId)
+                    ->where('sender_id', $archive->other_user_id)
+                    ->where('is_read', false)
+                    ->count();
+
+                return [
+                    'advert' => $archive->advert,
+                    'other_user' => $archive->otherUser,
+                    'unread_count' => $unreadCount,
+                    'last_message' => $lastMessage,
+                    'archived_at' => $archive->archived_at,
+                    'archive_id' => $archive->id,
+                    'advert_id' => $archive->advert_id,
+                    'other_user_id' => $archive->other_user_id
+                ];
+            });
+
+        return view('dashboard.archived-messages', compact('title', 'user', 'archivedConversations', 'count_ads'));
+    }
 
 
     public function my_ads(Request $request)
@@ -180,37 +280,37 @@ class UserController extends Controller
     }
 
     public function confirmDelivery(Request $request, $orderId)
-{
-    try {
-        // Find the order
-        $order = Payment::findOrFail($orderId);
+    {
+        try {
+            // Find the order
+            $order = Payment::findOrFail($orderId);
 
-        // Optional: Add authorization check
-        // $this->authorize('update', $order);
+            // Optional: Add authorization check
+            // $this->authorize('update', $order);
 
-        // Update the order status
-        $order->buyer_status = 'delivered';
-        $order->shipping_status_date = now(); // Optional: Add timestamp
-        $order->save();
+            // Update the order status
+            $order->buyer_status = 'delivered';
+            $order->shipping_status_date = now(); // Optional: Add timestamp
+            $order->save();
 
-        // Log the action (optional)
-        \Log::info("Order {$orderId} marked as delivered by user " . auth()->id());
+            // Log the action (optional)
+            \Log::info("Order {$orderId} marked as delivered by user " . auth()->id());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Delivery confirmed successfully',
-            'order' => $order
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Delivery confirmed successfully',
+                'order' => $order
+            ]);
 
-    } catch (\Exception $e) {
-        \Log::error("Error confirming delivery for order {$orderId}: " . $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::error("Error confirming delivery for order {$orderId}: " . $e->getMessage());
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to confirm delivery. Please try again.'
-        ], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to confirm delivery. Please try again.'
+            ], 500);
+        }
     }
-}
 
     public function ad_shipping(Request $request, $id)
     {
@@ -433,6 +533,54 @@ class UserController extends Controller
         //dd($notifications);
         return view('dashboard.notifications', compact('title','user', 'groupedNotifications','count_ads'));
     }
+
+    public function report_user(Request $request, $id)
+{
+    $data['title'] = 'Report User | '.config('global.site_name');
+    $data['reported']  = $reported = User::where('user_id', $id)->first();
+    $user_id = $request->session()->get('user_id');
+    $data['reporter'] = $user = User::where('user_id', $user_id)->first();
+
+    if ($request->isMethod('GET')) {
+        return view('frontend.report-user', $data);
+    }
+
+    if ($request->isMethod('POST')) {
+        $request->validate([
+            'name' => 'required',
+            'subject' => 'required',
+            'message' => 'required',
+            'g-recaptcha-response' => ['required', new ReCaptcha],
+        ]);
+
+        $message = ReportUser::updateOrCreate(
+            [
+                'reported' => $reported->id,
+                'reporter' => $user->id,
+            ],
+            [
+                'subject' => $request->subject,
+                'message' => $request->message,
+            ]
+        );
+
+        $details = [
+            'advert' => $reported->name,
+            'name' => $user->name,
+            'phone' => $user->phone,
+            'email' => $user->email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ];
+
+        // Send email in background
+        Mail::to(config('global.admin_email'))
+            ->queue(new ReportMail($details));
+
+        return redirect()->back()
+            ->with('success', 'Your Report Has Been Received, We will Get back to Shortly');
+    }
+}
 
 
 

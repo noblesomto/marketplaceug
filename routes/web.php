@@ -129,6 +129,7 @@ Route::any('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status']
 Route::any('/user/category', [UserController::class, 'category'])->middleware('usersession');
 Route::any('/user/orders', [UserController::class, 'orders'])->middleware('usersession');
 Route::any('/user/messages', [UserController::class, 'messages'])->middleware('usersession');
+Route::any('/user/archived-messages', [UserController::class, 'archivedMessages'])->middleware('usersession');
 Route::get('/user/feedbacks', [UserController::class, 'feedbacks'])->middleware('usersession');
 Route::any('/user/add-wishlist/{id}', [UserController::class, 'add_wishlist'])->middleware('usersession');
 Route::any('/user/favourites', [UserController::class, 'favourites'])->middleware('usersession');
@@ -136,12 +137,19 @@ Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->midd
 Route::any('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
 Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
 Route::any('/user/notifications', [UserController::class, 'notifications'])->middleware('usersession');
+Route::any('report-user/{id}', [UserController::class, 'report_user'])->middleware('usersession');
 
-// routes/api.php or routes/web.php
+//Block User
 Route::middleware('usersession')->group(function () {
     Route::post('user/block', [BlockUser::class, 'block']);
     Route::delete('user/unblock', [BlockUser::class, 'unblock']);
     Route::get('user/blocked-users', [BlockUser::class, 'blockedList']);
+
+    // Archive routes
+    Route::post('/messages/archive', [MessageController::class, 'archive'])->name('messages.archive');
+    Route::delete('/messages/unarchive', [MessageController::class, 'unarchive'])->name('messages.unarchive');
+    Route::get('/messages/archived', [MessageController::class, 'archivedList'])->name('messages.archived');
+
 });
 
 //User Manage Ads

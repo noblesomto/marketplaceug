@@ -195,7 +195,7 @@
         </div>
         
         <div class="mt-4">
-            <p>In Marketplace NG ads, we separate private from business: private and commercial users must meet different requirements.</p>
+            <p>In Marketplace Naija, we separate private from business: private and commercial users must meet different requirements.</p>
         </div>
 
         <div class="mt-6">
@@ -209,7 +209,7 @@
                 </button>
                 <div id="accordion1" class="max-h-0 overflow-hidden transition-all duration-300">
                     <div class="pb-4">
-                        <p>You are trading commercially on Marketplace NG ads if you:</p>
+                        <p>You are trading commercially on Marketplace Naija if you:</p>
                         <ul class="list-disc pl-5 mt-2 space-y-1">
                             <li>Buy or create items to sell</li>
                             <li>Offer services</li>
@@ -230,10 +230,8 @@
                 </button>
                 <div id="accordion2" class="max-h-0 overflow-hidden transition-all duration-300">
                     <div class="pb-4">
-                        <p class="mt-2">Posting Ad on Marketplace NG is basically free. Both commercial and private users can place ads free of charge.</p>
-                        <p class="mt-2">For commercial providers, up to 10 advertisements within 30 days are free of charge. A fee of ₦500 (including VAT) applies from the 11th advertisement onwards.</p>
-                        <p class="mt-2">Exceptions are certain real estate categories and cars, for which fees may be charged from the first advertisement.</p>
-                        <p class="mt-2">Optional additional fees may apply through additional packages for commercial users.</p>
+                        <p class="mt-2">Posting Ad on Marketplace Naija is basically free. Both commercial and private users can place ads free of charge.</p>
+
                     </div>
                 </div>
             </div>

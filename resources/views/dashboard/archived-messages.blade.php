@@ -7,7 +7,7 @@
     <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
 
         <div class="flex justify-between">
-            <h1 class="text-xl font-semibold text-dark_green">Messages</h1>
+            <h1 class="text-xl font-semibold text-dark_green">Archived Messages</h1>
             <div class="relative dropdown inline-block">
               <button
                 type="button"
@@ -21,10 +21,10 @@
               <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                 <div class="py-1">
                   <a
-                    href="/user/archived-messages"
-                    class="flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
+                    href="/user/messages"
+                    class="flex items-center px-4 py-2 text-sm text-dark_green hover:bg-primary hover:text-dark_green transition-colors duration-150"
                   >
-                    Archived Messages
+                    Messages
                   </a>
 
                 </div>
@@ -37,9 +37,9 @@
     <div class="flex flex-col lg:flex-row gap-4 pb-20">
         <!-- Messages List -->
         <div class="w-full lg:w-2/3 bg-white rounded-lg shadow-sm overflow-hidden">
-            @if (!$conversations->isEmpty())
+            @if (!$archivedConversations->isEmpty())
                 <div class="divide-y divide-gray-100">
-                    @foreach($conversations as $conversation)
+                    @foreach($archivedConversations as $conversation)
                         <a href="{{ route('chat.show', ['advertId' => $conversation['advert']->id, 'receiverId' => $conversation['other_user']->user_id]) }}" 
                            class="block hover:bg-gray-50 transition-colors duration-150">
                             <div class="p-4">
@@ -58,7 +58,7 @@
                                         </div>
                                         <div>
                                             <h3 class="text-base font-medium text-gray-900">{{ $conversation['other_user']->name }}</h3>
-                                            <p class="text-sm text-gray-500 truncate max-w-[260px] sm:max-w-md">{{ $conversation['advert']->ad_title }}</p>
+                                            <p class="text-sm text-gray-500 truncate max-w-[180px] sm:max-w-xs">{{ $conversation['advert']->ad_title }}</p>
                                         </div>
                                     </div>
                                     @if($conversation['unread_count'] > 0)

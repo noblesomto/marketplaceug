@@ -169,13 +169,13 @@
           </a>
           <ul id="blog" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-              <a href="/blogs">
+              <a href="/admin/blogs">
                 <i class="bi bi-circle"></i><span>All Posts</span>
               </a>
             </li>
 
             <li>
-              <a href="/blog">
+              <a href="/admin/blogs/create">
                 <i class="bi bi-circle"></i><span>New Posts</span>
               </a>
             </li>

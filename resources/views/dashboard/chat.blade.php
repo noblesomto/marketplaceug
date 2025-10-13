@@ -26,71 +26,12 @@
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <h4 class="font-semibold text-lg lg:text-xl text-gray-900 truncate">{{ $advert->owner->name }}</h4>
-                                    <h6 class="text-sm lg:text-base text-gray-600 truncate -mt-1">{{ $advert->ad_title }}</h6>
+                                    <h6 class="text-sm lg:text-base text-gray-600 truncate -mt-1">{{ Str::limit($advert->ad_title, 30) }}</h6>
                                 </div>
                             </a>
                         </div>
                         <div>
-                            <div class="relative dropdown inline-block">
-                              <button
-                                type="button"
-                                class="dropdown-button inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                <i class="bi bi-three-dots-vertical text-xl text-gray-600"></i>
-                              </button>
-
-                              <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                                <div class="space-y-2">
-                                    <form
-                                        action="{{ $isBlocked ? '/user/unblock' : '/user/block' }}"
-                                        method="POST"
-                                        class="block"
-                                    >
-                                        @csrf
-                                        @if($isBlocked)
-                                            @method('DELETE')
-                                        @endif
-
-                                        <input type="hidden" name="blocked_id" value="{{ $receiver->user_id }}">
-                                        <input type="hidden" name="advert_id" value="{{ $advert->id ?? '' }}">
-
-                                        <button
-                                            type="submit"
-                                            onclick="return confirm('{{ $isBlocked ? 'Unblock this user?' : 'Block this user from messaging you?' }}')"
-                                            class="w-full text-left px-4 py-2 text-sm {{ $isBlocked ? 'text-green-700 hover:bg-green-50 hover:text-green-900' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }} transition-colors duration-150"
-                                        >
-                                            {{ $isBlocked ? 'Unblock User' : 'Block User' }}
-                                        </button>
-                                    </form>
-
-
-                                       <a href="/report-user/{{ $receiver->user_id }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-150"
-                                    >
-                                        Report User
-                                    </a>
-
-                                    <form action="/messages/archive" method="POST" class="block">
-                                        @csrf
-                                        <input type="hidden" name="advert_id" value="{{ $advert->id ?? '' }}">
-                                        <input type="hidden" name="other_user_id" value="{{ $receiver->user_id }}">
-
-                                        <button
-                                            type="submit"
-                                            onclick="return confirm('Archive this conversation? The sender will not be able to message you about this advert.')"
-                                            class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
-                                        >
-                                            Archive Conversation
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            </div>
-
-
-
+                            @include('dashboard.components.chat-dropdown')
                         </div>
                     </div>
                 </div>
@@ -146,15 +87,14 @@
                                                 {{ $msg->images->count() == 1 ? 'grid-cols-1' :
                                                    ($msg->images->count() == 2 ? 'grid-cols-2' :
                                                    'grid-cols-2 sm:grid-cols-3') }}">
-                                                @foreach($msg->images as $index => $img)
+                                                @foreach($msg->images as $messageImage)
                                                     <div class="relative group">
                                                         <img
-                                                            src="{{ asset('uploads/chat/' . $img->image_path) }}"
+                                                            src="{{ $messageImage->getFirstMediaUrl('message_images', 'thumbnail') }}"
                                                             alt="Shared image"
                                                             class="w-full h-24 sm:h-28 object-cover rounded-lg cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-md"
-                                                            onclick="enlargeImage('{{ asset('uploads/chat/' . $img->image_path) }}')"
+                                                            onclick="enlargeImage('{{ $messageImage->getFirstMediaUrl('message_images', 'large') }}')"
                                                         />
-
                                                         <div class="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-200 rounded-lg"></div>
                                                     </div>
                                                 @endforeach
@@ -452,45 +392,36 @@ document.addEventListener('DOMContentLoaded', function () {
     if (chatForm && chatInput) {
         $(chatForm).on('submit', function (e) {
             e.preventDefault();
-
             let message = chatInput.value.trim();
             const hasFiles = selectedFiles.length > 0;
-
             // Check if we have content to send (message or files)
             if (message === '' && !hasFiles) {
                 return; // Don't send empty messages
             }
-
             // Update message for offer
             if (toggle && toggle.checked && amountInput.value && !message.includes(amountInput.value)) {
                 message = `Would you accept ₦${amountInput.value}`;
                 chatInput.value = message;
             }
-
             // Disable button + show loading
             sendBtn.disabled = true;
             const originalIcon = sendBtn.innerHTML;
             sendBtn.innerHTML = '<i class="bi bi-hourglass-split text-2xl text-gray-400"></i>';
-
             // Create FormData for file upload
             const formData = new FormData();
-
             // Add form fields
             formData.append('_token', $('input[name="_token"]').val());
             formData.append('advert_id', $('input[name="advert_id"]').val());
             formData.append('receiver_id', $('input[name="receiver_id"]').val());
             formData.append('message', message);
-
             // Add amount if applicable
             if (toggle && toggle.checked && amountInput.value) {
                 formData.append('amount', amountInput.value);
             }
-
             // Add files
             selectedFiles.forEach((file, index) => {
                 formData.append(`images[${index}]`, file);
             });
-
             $.ajax({
                 url: '{{ route("chat.sendMessage", ["advertId" => $advert->id, "receiverId" => $receiver->user_id]) }}',
                 method: 'POST',
@@ -501,12 +432,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Reset form
                     chatInput.value = '';
                     chatInput.style.height = 'auto';
-
                     // Reset file upload
                     fileUpload.value = '';
                     selectedFiles = [];
                     updateFileDisplay();
-
                     // Reset offer toggle
                     if (toggle && toggle.checked) {
                         amountInput.value = '';
@@ -515,22 +444,61 @@ document.addEventListener('DOMContentLoaded', function () {
                         amountInput.removeAttribute('required');
                         toggle.checked = false;
                     }
-
                     loadMessages();
+
+                    // No success alert - silent success
                 },
                 error: function (xhr, status, error) {
                     console.error('Error sending message:', error);
 
-                    // Show user-friendly error message
+                    // Show user-friendly error message based on status code
+                    let errorTitle = 'Error';
                     let errorMessage = 'Error sending message';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
+
+                    if (xhr.status === 422) {
+                        // Validation errors
+                        errorTitle = 'Validation Error';
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = Object.values(xhr.responseJSON.errors).flat();
+                            errorMessage = errors.join(', ');
+                        }
+                    } else if (xhr.status === 401) {
+                        // Unauthorized
+                        errorTitle = 'Unauthorized';
+                        errorMessage = 'You are not authorized to perform this action';
+                    } else if (xhr.status === 403) {
+                        // Forbidden
+                        errorTitle = 'Access Denied';
+                        errorMessage = 'You do not have permission to send this message';
+                    } else if (xhr.status === 404) {
+                        // Not found
+                        errorTitle = 'Not Found';
+                        errorMessage = 'The conversation could not be found';
+                    } else if (xhr.status === 500) {
+                        // Server error
+                        errorTitle = 'Server Error';
+                        errorMessage = 'An internal server error occurred. Please try again later';
+                    }
+                    // Handle your custom HTTP errors
+                    else if (xhr.status === 460) {
+                        errorTitle = 'Insufficient Credits';
+                        errorMessage = xhr.responseJSON?.message || 'You do not have enough credits';
+                    } else if (xhr.status === 461) {
+                        errorTitle = 'Chat Limit Reached';
+                        errorMessage = xhr.responseJSON?.message || 'You have reached your daily chat limit';
+                    } else if (xhr.status === 462) {
+                        errorTitle = 'User Blocked';
+                        errorMessage = xhr.responseJSON?.message || 'You cannot send messages to this user';
+                    } else if (xhr.status === 463) {
+                        errorTitle = 'File Too Large';
+                        errorMessage = xhr.responseJSON?.message || 'The file is too large to upload';
+                    }
+                    // Fallback to server message if available
+                    else if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
-                    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        const errors = Object.values(xhr.responseJSON.errors).flat();
-                        errorMessage = errors.join(', ');
                     }
 
-                    alert(errorMessage);
+                    showSweetAlert('error', errorTitle, errorMessage);
                 },
                 complete: function () {
                     // Re-enable button and restore original icon
@@ -538,6 +506,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     sendBtn.innerHTML = originalIcon;
                 }
             });
+        });
+    }
+
+    function showSweetAlert(type, title, message) {
+        Swal.fire({
+            icon: type,
+            title: title,
+            text: message,
+            timer: 3000,
+            showConfirmButton: false
         });
     }
 
@@ -691,48 +669,4 @@ document.getElementById('image-overlay').addEventListener('click', function () {
 </script>
 
 
-<script>
-(function () {
-  const toggleDropdown = (dropdown) => {
-    const menu = dropdown.querySelector('.dropdown-menu');
-    const button = dropdown.querySelector('.dropdown-button');
-    const isHidden = menu.classList.contains('hidden');
 
-    // Close all dropdowns first
-    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-    document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
-
-    // Then open this one if it was hidden
-    if (isHidden) {
-      menu.classList.remove('hidden');
-      button.setAttribute('aria-expanded', 'true');
-    }
-  };
-
-  // Click handler
-  document.addEventListener('click', (e) => {
-    const clickedButton = e.target.closest('.dropdown-button');
-    const clickedDropdown = e.target.closest('.dropdown');
-
-    if (clickedButton && clickedDropdown) {
-      e.preventDefault();
-      toggleDropdown(clickedDropdown);
-      return;
-    }
-
-    // If clicked outside all dropdowns, close all
-    if (!clickedDropdown) {
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
-    }
-  });
-
-  // Close all dropdowns on ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded', 'false'));
-    }
-  });
-})();
-</script>

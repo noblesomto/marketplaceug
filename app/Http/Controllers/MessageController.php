@@ -13,6 +13,7 @@ use App\Models\BlockedUser;
 use Carbon\Carbon;
 use App\Events\NewMessageNotification;
 use App\Helpers\FileUploadHelper;
+use App\Models\ArchivedMessage;
 
 
 class MessageController extends Controller
@@ -102,9 +103,12 @@ class MessageController extends Controller
                       ->orWhereNull('advert_id');
             })
             ->exists();
-
+        //dd($isBlocked);
         if ($isBlocked) {
-            return redirect()->back()->with('error', 'You cannot send messages to this user.');
+            return response()->json([
+                'success' => false,
+                'message' => 'You cannot send messages to this user'
+            ], 462);
         }
 
         // Create the message
@@ -116,15 +120,26 @@ class MessageController extends Controller
         $message->is_read = false;
         $message->save();
 
+
         // Handle image uploads if present
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $imageFile) {
-                $path = FileUploadHelper::upload($imageFile, 'chat');
-
-                MessageImage::create([
+                $messageImage = MessageImage::create([
                     'message_id' => $message->id,
-                    'image_path' => $path,
                 ]);
+
+                // Add media
+                $media = $messageImage->addMedia($imageFile)
+                    ->toMediaCollection('message_images');
+
+                // Manually delete original after conversion (most reliable way)
+                $originalPath = $media->getPath();
+                $conversionPath = $media->getPath('webp');
+
+                // Wait a moment for conversion to complete if using queued conversions
+                if (file_exists($conversionPath) && file_exists($originalPath)) {
+                    unlink($originalPath);
+                }
             }
         }
 
@@ -158,5 +173,93 @@ class MessageController extends Controller
  
         return redirect()->back()->with('success', 'Ad Status Marked Delivered');
     
+    }
+
+    public function archive(Request $request)
+    {
+        $validated = $request->validate([
+            'advert_id' => 'required|exists:adverts,id',
+            'other_user_id' => 'required|exists:users,user_id',
+        ]);
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        if (!$user) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+            return redirect('/login');
+        }
+
+        $userId = $user->user_id; // This is the string user_id (e.g., "67686")
+
+        // Prevent self-archiving
+        if ($userId == $validated['other_user_id']) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Invalid operation.'], 400);
+            }
+            return back()->with('error', 'Invalid operation.');
+        }
+
+        // Create or update archive record
+        $archived = ArchivedMessage::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'advert_id' => $validated['advert_id'],
+                'other_user_id' => $validated['other_user_id'],
+            ],
+            [
+                'archived_at' => now(),
+            ]
+        );
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Conversation archived successfully. It will be hidden from your message list.',
+                'archived' => $archived
+            ], 200);
+        }
+
+        return redirect("user/messages")->with('success', 'Conversation archived successfully.');
+
+    }
+
+
+    public function unarchive(Request $request)
+    {
+        $validated = $request->validate([
+            'advert_id' => 'required|exists:adverts,id',
+            'other_user_id' => 'required|exists:users,user_id',
+        ]);
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        if (!$user) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+            return redirect('/login');
+        }
+
+        $userId = $user->user_id;
+
+        $deleted = ArchivedMessage::where('user_id', $userId)
+            ->where('advert_id', $validated['advert_id'])
+            ->where('other_user_id', $validated['other_user_id'])
+            ->delete();
+
+        if ($deleted) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Conversation unarchived successfully.'], 200);
+            }
+            return redirect("user/messages")->with('success', 'Conversation unarchived successfully.');
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Archive not found.'], 404);
+        }
+        return back()->with('error', 'Archive not found.');
     }
 }
