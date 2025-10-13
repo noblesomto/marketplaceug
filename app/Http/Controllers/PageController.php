@@ -100,18 +100,19 @@ class PageController extends Controller
         return view('frontend.blog.index', compact('title','blogs'));
     }
 
-    public function blog_details($slug, $id)
+    public function blog_details($slug)
     {
         $title = "Our Blog  | " . config('global.site_name');
-        $blog = Blog::find($id);
+        $blog = Blog::where('slug',$slug)->first();
 
         // Check if blog exists
         if (!$blog) {
             abort(404);
         }
+        //dd($slug);
         $blog->increment('views');
         $similar = Blog::where('category', $blog->category)
-            ->where('id', '!=', $id)
+            ->where('slug', '!=', $slug)
             ->where('status','published')
             ->inRandomOrder()
             ->limit(2)

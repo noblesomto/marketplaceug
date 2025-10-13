@@ -53,6 +53,10 @@ class UserManageAdverts extends Controller
         $followers = Followers::with(['user:user_id,id,email,name'])
             ->where('follow', $user_id)
             ->get();
+        if ($user->disable_account=='yes') {
+            $request->session()->forget('user_id');
+            return redirect("login")->with('success', 'Logged Out successfully!');
+        }
 
         if (empty($user->phone)) {
             return redirect('/user/profile-info')->with('error', 'Please Update your Phone number');

@@ -41,7 +41,7 @@ Route::any('/payments-refunds', [PageController::class, 'payments_refunds']);
 Route::any('/how-it-works', [PageController::class, 'how_it_works']);
 Route::any('/faq', [PageController::class, 'faq']);
 Route::any('/blog', [PageController::class, 'blog']);
-Route::any('/blog/{slug}/{id}', [PageController::class, 'blog_details']);
+Route::any('/blog/{slug}', [PageController::class, 'blog_details']);
 Route::any('/advertise-with-us', [PageController::class, 'advertise']);
 Route::any('/contact-us', [PageController::class, 'contact']);
 Route::any('/shipping', [PageController::class, 'shipping']);

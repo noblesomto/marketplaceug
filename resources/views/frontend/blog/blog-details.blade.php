@@ -54,10 +54,8 @@
                             </div>
 
                             <!-- Article Content -->
-                            <div class="content text-gray-700">
-                                <p class="text-lg font-medium">
-                                    {!! $blog->content !!}
-                                </p>
+                            <div class="content text-gray-700 text-lg font-medium prose max-w-none">
+                                {!! $blog->content !!}
                             </div>
                         </div>
                     </article>
