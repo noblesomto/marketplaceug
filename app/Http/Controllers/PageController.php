@@ -102,13 +102,13 @@ class PageController extends Controller
 
     public function blog_details($slug)
     {
-        $title = "Our Blog  | " . config('global.site_name');
         $blog = Blog::where('slug',$slug)->first();
 
         // Check if blog exists
         if (!$blog) {
             abort(404);
         }
+         $title = $blog->title . " | " . config('global.site_name');
         //dd($slug);
         $blog->increment('views');
         $similar = Blog::where('category', $blog->category)

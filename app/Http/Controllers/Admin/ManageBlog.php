@@ -53,6 +53,7 @@ class ManageBlog extends Controller
             ->with('success', 'Blog created successfully!');
     }
 
+
      public function edit(Blog $blog)
     {
         $title = "Blog Posts | " . config('global.site_name');

@@ -20,12 +20,12 @@
                         </svg>
                     </div>
                     <div class="ml-4">
-                        <h3 class="text-lg font-medium text-gray-900">Deactivate Account</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Delete Account</h3>
                     </div>
                 </div>
                 <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                        Are you sure you want to deactivate your account? This action cannot be undone. You will lose access to all your data and settings.
+                        Are you sure you want to delete your account? This action cannot be undone. You will lose access to all your data and settings.
                     </p>
                 </div>
                 <div class="mt-6 flex justify-end space-x-3">
@@ -33,7 +33,7 @@
                         Cancel
                     </button>
                     <a href="/user/disable-account" id="confirmDeactivate" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                        Yes, Deactivate
+                        Yes, Delete
                     </a>
                 </div>
             </div>
@@ -125,7 +125,7 @@
         </div>
 
         <div class="mt-6 text-red-700 font-semibold">
-            <a href="#" id="deactivateLink" class="hover:text-red-800 transition-colors duration-200">Deactivate Account</a>
+            <a href="#" id="deactivateLink" class="hover:text-red-800 transition-colors duration-200">Delete Account</a>
         </div>
     </div>
 </section>

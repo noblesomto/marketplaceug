@@ -58,7 +58,7 @@
                                         </div>
                                         <div>
                                             <h3 class="text-base font-medium text-gray-900">{{ $conversation['other_user']->name }}</h3>
-                                            <p class="text-sm text-gray-500 truncate max-w-[260px] sm:max-w-md">{{ $conversation['advert']->ad_title }}</p>
+                                            <p class="text-sm text-gray-500 truncate max-w-[240px] sm:max-w-md">{{ $conversation['advert']->ad_title }}</p>
                                         </div>
                                     </div>
                                     @if($conversation['unread_count'] > 0)

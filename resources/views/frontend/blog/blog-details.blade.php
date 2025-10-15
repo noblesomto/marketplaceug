@@ -40,7 +40,7 @@
                                         <span>{{ $blog->created_at->format('M j, Y') }}</span>
                                     </div>
 
-                                    <div class="flex items-center mb-2">
+                                    <div class="flex items-center mb-2 hidden">
                                         <i class="far fa-eye mr-2"></i>
                                         <span>{{ $blog->views }} views</span>
                                     </div>
@@ -49,12 +49,12 @@
 
                             <!-- Featured Image -->
                             <div class="mb-8">
-                                <img class="w-full  object-cover rounded-lg" src="{{ $blog->featured_image_webp }}" alt="{{ $blog->title }}">
+                                <img class="w-full h-64 lg:h-96  object-contain rounded-lg" src="{{ $blog->featured_image_webp }}" alt="{{ $blog->title }}">
 
                             </div>
 
                             <!-- Article Content -->
-                            <div class="content text-gray-700 text-lg font-medium prose max-w-none">
+                            <div class="content text-gray-700 prose max-w-none">
                                 {!! $blog->content !!}
                             </div>
                         </div>

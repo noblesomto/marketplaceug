@@ -990,7 +990,6 @@ class AdvertController extends Controller
             $data['shipping_method'] = $request->ship_id;
 
             //dd($reciever_station);
-
             $details = [
                 'advert_id' => $id,
                 'first_name' => $validated['first_name'],

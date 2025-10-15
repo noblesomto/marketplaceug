@@ -6,10 +6,10 @@
 
 <section class="w-full xl:w-5/6 mx-auto mt-3">
   <div class="grid grid-cols-10 gap-3">
-      <div class="col-span-2 hidden lg:block">
+      <div class="col-span-2 hidden xl:block">
         @include('frontend.components.advert.side-advert')
       </div>
-      <div class="col-span-10 lg:col-span-6">
+      <div class="col-span-10 xl:col-span-6">
         <div class="grid grid-cols-10 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4">
               <div><h4 class="font-semibold">Categories</h4></div>
@@ -84,7 +84,7 @@
            </div>
         </div>
       </div>
-      <div class="col-span-2 hidden lg:block">
+      <div class="col-span-2 hidden xl:block">
         @include('frontend.components.advert.side-advert')
       </div>
   </div>
