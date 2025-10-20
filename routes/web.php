@@ -208,6 +208,7 @@ Route::middleware(['adminsession','adminrole:Finance,super_admin'])->group(funct
     Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Advert Manager Role Routes

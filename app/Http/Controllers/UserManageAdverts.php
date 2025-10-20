@@ -608,6 +608,7 @@ public function boost_ad(Request $request, $id)
 
         return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion'));
     }
+    
 
     public function boosted_ad(Request $request, $id)
     {

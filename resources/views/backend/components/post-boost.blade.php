@@ -79,7 +79,7 @@
         <div class="space-y-1">
           <span class="text-dark_green font-bold text-base">Top Ad</span>
           <div class="flex gap-3">
-            <span class="font-semibold">Up to 10x more visibility! your ad is at the top of visibility list. (7 Days)</span>
+            <span class="font-semibold">Up to 10x more visibility! your ad is at the top of visibility list. (14 Days)</span>
             <span class="cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
@@ -109,7 +109,7 @@
         <div class="space-y-1">
           <span class="text-dark_green font-bold text-base">Gallery</span>
           <div class="flex gap-3">
-            <span class="font-semibold">Up to 15x more visibility! your ad will appear on the homepage. (7 Days)</span>
+            <span class="font-semibold">Up to 15x more visibility! your ad will appear on the homepage. (14 Days)</span>
             <span class="cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />

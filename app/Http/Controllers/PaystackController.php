@@ -258,7 +258,7 @@ class PaystackController extends Controller
         $user = User::where('user_id', $user_id)->first();
         $email = $user->email;
         $promotion = $request->session()->get('promotion');
-
+        $duration = $request->input('duration');
         $response = Http::withToken(config('services.paystack.secretKey'))
             ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
                 'email' => $email,

@@ -48,8 +48,8 @@
                                 <option value="">Select Boost Option</option>
                                 <option value="1500" {{ $promotion == 'highlight' ? 'selected' : '' }}>Highlight - ₦1,500 (7 days)</option>
                                 <option value="3500" {{ $promotion == 'repeated' ? 'selected' : '' }}>Repeated Pushing Up - ₦3,500 (7 days)</option>
-                                <option value="7500" {{ $promotion == 'top' ? 'selected' : '' }}>Top Ad - ₦7,500 (7 days)</option>
-                                <option value="1000" {{ $promotion == 'gallery' ? 'selected' : '' }}>Gallery - ₦10,000 (7 days)</option>
+                                <option value="7500" {{ $promotion == 'top' ? 'selected' : '' }}>Top Ad - ₦7,500 (14 days)</option>
+                                <option value="1000" {{ $promotion == 'gallery' ? 'selected' : '' }}>Gallery - ₦10,000 (14 days)</option>
                             </select>
                         </div>
 

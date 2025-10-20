@@ -19,7 +19,7 @@
               </div>
 
               <!-- Loading the Ads from Components -->
-            <div id="advert-results">
+            <div id="advert-results" class="pb-20">
                 @include('frontend.components.advert.advert-list', ['ads' => $ads])
             </div>
 

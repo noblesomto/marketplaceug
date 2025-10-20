@@ -988,15 +988,17 @@ class AdvertController extends Controller
             $data['reciever_state'] = $reciever_station = State::findOrFail($request->state);
             $data['reciever_city'] = GigLogistic::findOrFail($request->city);
             $data['shipping_method'] = $request->ship_id;
-
-            //dd($reciever_station);
+            $reciever_address = $data['reciever_city']['city'].",".$data['reciever_state']['name'];
+            //dd($reciever_address);
             $details = [
                 'advert_id' => $id,
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
                 'phone' => $validated['phone'],
                 'reciever_station' => $reciever_station->station_id,
+                'reciever_address' => $reciever_address,
                 'sender_station' => $sender_station->station_id,
+                'sender_address' => $ad->lga.','. $ad->state,
                 'ad_title' => $ad->ad_title,
                 'ad_price' => $ad->price,
                 'ad_des' => $ad->description,

@@ -38,7 +38,7 @@
             </div>
 
             <!-- Chat Main Area -->
-            <div class="chat-main {{ $advert->sold == 'Yes' ? 'p-20' : '' }}">
+            <div class="chat-main {{ $advert->sold == 'Yes' ? 'pb-20' : '' }}">
                 <div class="chat-container h-full flex flex-col pb-16 border-x-2 border-gray-200">
                     <!-- Chat Messages -->
                     <div id="chat-box" class="chat-box  rounded-t-lg lg:rounded-t-xl">

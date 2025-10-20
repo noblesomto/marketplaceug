@@ -106,12 +106,27 @@ class ManageAdvertising extends Controller
 
 
     public function delete_advert(Request $request, $id)
-    {
-        $advert = Advertising::where('advert_id',$id)->first();
-        //dd($advert);
-        FileUploadHelper::delete('advertising', $advert->image);
-        $advert->delete();
+{
+    $advert = Advertising::where('advert_id', $id)->first();
+    
+    if ($advert) {
+        // Check if the advert has an image and delete it
+        if ($advert->image) {
+            // Get the image path - adjust based on your storage structure
+            $imagePath = public_path('uploads/advertising/' . $advert->image);
 
-        return back()->with('success', 'Advert deleted.');
+            // Check if file exists and delete it
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+        
+        // Delete the advert record
+        $advert->delete();
+        
+        return back()->with('success', 'Advert deleted successfully.');
     }
+    
+    return back()->with('error', 'Advert not found.');
+}
 }

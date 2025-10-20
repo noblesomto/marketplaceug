@@ -37,7 +37,9 @@ class LocationController extends Controller
         // Validate input parameters
         $validated = $request->validate([
             'sender_station' => 'required|integer',
-            'reciever_station' => 'required|integer', // Fixed typo
+            'sender_address' => 'required|string',
+            'reciever_station' => 'required|integer',
+            'reciever_address' => 'required|string',
             'ad_price' => 'required|numeric|min:0',
             'ad_title' => 'required|string|max:255',
             'ad_des' => 'nullable|string|max:4000',
@@ -50,9 +52,13 @@ class LocationController extends Controller
             if (!$token) {
                 throw new \Exception('Unable to retrieve Agility access token.');
             }
+            $senderAddress = $this->getSenderLocation($validated['sender_address']);
+            $recieverAddress = $this->getRecieverLocation($validated['reciever_address']);
+            //dd($recieverAddress);
 
+            //dd($token);
             // Step 2: Build the shipping cost payload
-            $payload = $this->buildShippingPayload($validated);
+            $payload = $this->buildShippingPayload($validated, $senderAddress, $recieverAddress);
 
             //dd($payload);
             // Step 3: Make the shipping cost API request with retry logic
@@ -95,20 +101,20 @@ class LocationController extends Controller
                 ]);
                 return null;
             }
-
+            //dd($loginResponse);
             $loginData = $loginResponse->json();
             return $loginData['data']['access-token'] ?? null;
         });
     }
 
-    private function buildShippingPayload(array $validated)
+    private function buildShippingPayload(array $validated, array $senderAddress, array $recieverAddress)
     {
         return [
             "SenderStationId" => $validated['sender_station'],
             "ReceiverStationId" => $validated['reciever_station'],
             "VehicleType" => config('services.agility.vehicle_type', 3),
-            "ReceiverLocation" => ["Latitude" => 0.00, "Longitude" => 0.00],
-            "SenderLocation" => ["Latitude" => 0, "Longitude" => 0],
+            "ReceiverLocation" => ["Latitude" => $recieverAddress['latitude'], "Longitude" => $recieverAddress['longitude']],
+            "SenderLocation" => ["Latitude" => $senderAddress['latitude'], "Longitude" => $senderAddress['longitude']],
             "IsFromAgility" => false,
             "CustomerCode" => config('services.agility.customer_code'),
             "CustomerType" => 0,
@@ -186,5 +192,41 @@ class LocationController extends Controller
     // Trim and limit length if needed
     return trim($cleaned);
 }
+
+    private function getSenderLocation($address)
+    {
+    // Get Latitude & Longitude using OpenStreetMap (Nominatim)
+        $geoData = Http::withHeaders([
+            'User-Agent' => 'jjhomelondon/1.0 (noblesomto1@gmail.com)'
+        ])->get("https://nominatim.openstreetmap.org/search", [
+            'q' => $address,
+            'format' => 'json',
+        ])->json();
+
+        if (empty($geoData)) {
+            return back()->with('status', ['text'=>'Address not Found','type'=>'danger']);
+        }
+        $latitude = $geoData[0]['lat'];
+        $longitude = $geoData[0]['lon'];
+        return ['latitude' => $latitude, 'longitude' => $longitude];
+    }
+
+    private function getRecieverLocation($address)
+    {
+    // Get Latitude & Longitude using OpenStreetMap (Nominatim)
+        $geoData = Http::withHeaders([
+            'User-Agent' => 'jjhomelondon/1.0 (noblesomto1@gmail.com)'
+        ])->get("https://nominatim.openstreetmap.org/search", [
+            'q' => $address,
+            'format' => 'json',
+        ])->json();
+
+        if (empty($geoData)) {
+            return back()->with('status', ['text'=>'Address not Found','type'=>'danger']);
+        }
+        $latitude = $geoData[0]['lat'];
+        $longitude = $geoData[0]['lon'];
+        return ['latitude' => $latitude, 'longitude' => $longitude];
+    }
 
 }

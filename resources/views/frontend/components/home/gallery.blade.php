@@ -1,7 +1,7 @@
 <div class="gallery-container">
   <div class="flex justify-between h-16 px-5 -mb-4">
     <div class="flex items-center font-bold">
-      Gallery
+     Discover what’s trending
     </div>
     <div class="flex justify-end">
       <div class="text-dark_green text-sm font-semibold mr-3 flex items-center"><a href="/user/post-ad">Post Ad</a></div>

@@ -9,8 +9,8 @@
 </div>
 
 <div class="container mx-auto">
-	<div class="container mx-auto px-4">
-    <div id="listings-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+	<div class="container mx-auto">
+    <div id="listings-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
         @foreach ($listings as $row)
             @include('frontend.components.advert.advert-card', ['row' => $row])
         @endforeach

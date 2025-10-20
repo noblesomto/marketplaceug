@@ -86,7 +86,7 @@
 
  <div class="block lg:hidden mt-6 pb-20">
     <h4 class="font-semibold text-lg px-4 mb-3 text-gray-800">Recent Listings</h4>
-    <div id="listings-container-mobile" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div id="listings-container-mobile" class="grid grid-cols-2 md:grid-cols-3 gap-2 px-2">
         @foreach ($listings as $row)
             @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
         @endforeach

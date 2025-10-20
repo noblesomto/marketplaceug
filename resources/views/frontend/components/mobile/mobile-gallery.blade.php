@@ -1,14 +1,14 @@
-<section class="bg-white">
+<section class="bg-white px-2">
     <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
         <span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
             </svg>
         </span>
-        <span>gallery</span>
+        <span>Discover what’s trending</span>
     </div>
 
-    <div class="flex overflow-x-auto space-x-2 px-2 pb-5 snap-x snap-mandatory">
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory">
         <!-- Card 1 -->
         @foreach ($gallery as $row)
         <div class="flex-none w-1/3 md:w-1/4 snap-start">
@@ -84,7 +84,7 @@
 </section>
 
 <!-- Vehicles Section -->
-<section class="bg-white">
+<section class="bg-white px-2">
     <div class="flex justify-between">
         <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
             <span>
@@ -106,7 +106,7 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-2 pb-5 snap-x snap-mandatory">
+<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory">
         <!-- Card 1 -->
         @foreach ($cars as $row)
         <div class="flex-none w-1/3 md:w-1/4 snap-start">
@@ -187,7 +187,7 @@
 
 
  <!-- Phone Section -->
-<section class="bg-white">
+<section class="bg-white px-2">
     <div class="flex justify-between">
         <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
             <span>
@@ -209,7 +209,7 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-2 pb-5 snap-x snap-mandatory">
+<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory">
     <!-- Card 1 -->
     @foreach ($phones as $row)
     <div class="flex-none w-1/3 md:w-1/4 snap-start">
@@ -290,7 +290,7 @@
 
 
 <!-- Fashion &amp; Beauty -->
-<section class="bg-white">
+<section class="bg-white px-2">
     <div class="flex justify-between">
         <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
             <span>
@@ -312,7 +312,7 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-2 pb-5 snap-x snap-mandatory">
+<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory">
     <!-- Card 1 -->
     @foreach ($fashion as $row)
     <div class="flex-none w-1/3 md:w-1/4 snap-start">
