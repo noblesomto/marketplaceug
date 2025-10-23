@@ -273,6 +273,7 @@ Route::middleware(['adminsession','adminrole:Customer_care,super_admin'])->group
     Route::any('/admin/view-user/{id}', [ManageUsers::class, 'view_user']);
     Route::any('/admin/user-verification', [ManageUsers::class, 'user_verification']);
     Route::any('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status']);
+    Route::get('/admin/users/search', [ManageUsers::class, 'search'])->name('admin.users.search');
 
     // Shipping
     Route::any('/settings/setup-shipping', [SettingController::class, 'shipping']);

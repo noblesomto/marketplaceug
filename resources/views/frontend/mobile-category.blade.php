@@ -3,6 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
+
 <main class="min-h-[calc(100vh-200px)] bg-white p-5"> <!-- Adjust 200px based on your header/footer heights -->
   <div class="flex-col">
     <div><h4 class="font-semibold">Categories</h4></div>

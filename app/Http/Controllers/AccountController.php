@@ -17,6 +17,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
+use Illuminate\Support\HtmlString;
 
 
 class AccountController extends Controller
@@ -86,10 +87,10 @@ class AccountController extends Controller
         }
 
         if ($user->acc_status == 0) {
-            return redirect()->back()->with('error',
+            return redirect()->back()->with('error', new HtmlString(
                 'Sorry, the email address is not verified. ' .
                 '<a href="'.route('activation.resend', ['email' => $user->email]).'" class="text-blue-600 underline">Resend activation email</a>'
-            );
+            ));
         }
 
         return redirect()->back()->with('error', 'Invalid login attempt.');

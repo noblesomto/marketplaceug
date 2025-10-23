@@ -50,6 +50,10 @@
     </div>
 </section>
 
+<section class="mt-2">
+    <img class="w-full" src="{{ asset('frontend/images/download-app.png') }}" alt="Download our App">
+</section>
+
 <script>
     function toggleExtra(categoryId, button) {
         const items = document.querySelectorAll('.extra-' + categoryId);

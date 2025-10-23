@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('boosts:expire')->everySixHours();
-        $schedule->command('feed:google')->dailyAt('02:00');
+        $schedule->command('feed:google')->everySixHours();
 
     }
 

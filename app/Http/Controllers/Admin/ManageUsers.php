@@ -65,7 +65,53 @@ class ManageUsers extends Controller
         return redirect()->back()->with('status', ['text'=>'User Status Changed','type'=>'success']);
     }
 
-
+    public function search(Request $request)
+    {
+        try {
+            $query = User::query();
+            
+            // Search term
+            if ($request->has('search') && !empty($request->search)) {
+                $searchTerm = $request->search;
+                $query->where(function($q) use ($searchTerm) {
+                    $q->where('name', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('user_id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('phone', 'LIKE', "%{$searchTerm}%");
+                });
+            }
+            
+            // Account type filter
+            if ($request->has('account_type') && !empty($request->account_type)) {
+                $query->where('acc_type', $request->account_type);
+            }
+            
+            // Verification filter
+            if ($request->has('verification') && !empty($request->verification)) {
+                $query->where('verified', $request->verification);
+            }
+            
+            $users = $query->orderBy('created_at', 'desc')->paginate(10);
+            
+            return response()->json([
+                'success' => true,
+                'users' => $users->items(),
+                'pagination' => [
+                    'current_page' => $users->currentPage(),
+                    'last_page' => $users->lastPage(),
+                    'per_page' => $users->perPage(),
+                    'total' => $users->total(),
+                    'from' => $users->firstItem(),
+                    'to' => $users->lastItem(),
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error searching users: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     public function view_user(Request $request, $id)
     {

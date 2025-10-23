@@ -292,7 +292,402 @@
 </div>
 
 <script>
-// Enhanced confirmation function
+// Global variables to track current state
+let currentState = {
+    page: 1,
+    search: '',
+    accountType: '',
+    verification: ''
+};
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeEventListeners();
+    
+    // Load initial data if needed (optional)
+    // performSearch(1);
+});
+
+function initializeEventListeners() {
+    // Search input with debounce
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentState.search = this.value;
+                performSearch(1);
+            }, 500);
+        });
+    }
+
+    // Account type filter
+    const accountTypeFilter = document.getElementById('accountTypeFilter');
+    if (accountTypeFilter) {
+        accountTypeFilter.addEventListener('change', function() {
+            currentState.accountType = this.value;
+            performSearch(1);
+        });
+    }
+
+    // Verification filter
+    const verificationFilter = document.getElementById('verificationFilter');
+    if (verificationFilter) {
+        verificationFilter.addEventListener('change', function() {
+            currentState.verification = this.value;
+            performSearch(1);
+        });
+    }
+}
+
+function performSearch(page = 1) {
+    currentState.page = page;
+    
+    showLoading();
+    
+    // Prepare query parameters
+    const params = new URLSearchParams({
+        search: currentState.search,
+        account_type: currentState.accountType,
+        verification: currentState.verification,
+        page: page
+    });
+    
+    fetch(`/admin/users/search?${params}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                updateTable(data.users);
+                updatePagination(data.pagination);
+                updateStatistics(data.pagination.total);
+            } else {
+                throw new Error(data.message || 'Unknown error occurred');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching search results:', error);
+            showError('Failed to load users. Please try again.');
+        });
+}
+
+function updateTable(users) {
+    const tbody = document.querySelector('#usersTable tbody');
+    if (!tbody) {
+        console.error('Table body not found');
+        return;
+    }
+    
+    if (!users || users.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-5">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="bi bi-people display-1 text-muted mb-3"></i>
+                        <h5 class="text-muted">No users found</h5>
+                        <p class="text-muted">There are no users matching your criteria.</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    let html = '';
+    users.forEach(user => {
+        // Sanitize data to prevent XSS and handle undefined values
+        const userName = escapeHtml(user.name || 'N/A');
+        const userId = escapeHtml(user.user_id || '');
+        const userEmail = escapeHtml(user.email || '');
+        const userPhone = escapeHtml(user.phone || '');
+        const accType = escapeHtml(user.acc_type || '');
+        const verified = user.verified === 'yes';
+        const disabled = user.disable_account === 'yes';
+        const createdAt = user.created_at ? new Date(user.created_at) : new Date();
+        
+        html += `
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="avatar bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <i class="bi bi-person text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${userName}</h6>
+                            <small class="text-muted">ID: ${userId}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge bg-info text-capitalize">
+                        ${accType}
+                    </span>
+                </td>
+                <td>
+                    <a href="mailto:${userEmail}" class="text-decoration-none">
+                        ${userEmail}
+                    </a>
+                </td>
+                <td>
+                    ${userPhone ? 
+                        `<a href="tel:${userPhone}" class="text-decoration-none">${userPhone}</a>` : 
+                        'N/A'
+                    }
+                </td>
+                <td class="text-center">
+                    <div class="d-flex flex-column align-items-center gap-1">
+                        <span class="badge ${verified ? 'bg-success' : 'bg-secondary'}">
+                            <i class="bi bi-${verified ? 'check-circle' : 'x-circle'} me-1"></i>
+                            ${verified ? 'Verified' : 'Unverified'}
+                        </span>
+                        ${disabled ? 
+                            `<span class="badge bg-danger">
+                                <i class="bi bi-slash-circle me-1"></i>Disabled
+                            </span>` : ''
+                        }
+                    </div>
+                </td>
+                <td>
+                    <span class="text-muted">${formatDate(createdAt)}</span>
+                    <small class="d-block text-muted">${formatTime(createdAt)}</small>
+                </td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="/admin/view-user/${userId}"
+                           class="btn btn-outline-primary btn-sm"
+                           title="View User Details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+
+                        ${!disabled ? 
+                            `<button type="button"
+                                class="btn btn-outline-warning btn-sm"
+                                onclick="confirmAction('disable', '${userId}', '${userName.replace(/'/g, "\\'")}')"
+                                title="Disable User">
+                                <i class="bi bi-lock"></i>
+                            </button>` :
+                            `<button type="button"
+                                class="btn btn-outline-success btn-sm"
+                                onclick="confirmAction('enable', '${userId}', '${userName.replace(/'/g, "\\'")}')"
+                                title="Enable User">
+                                <i class="bi bi-unlock"></i>
+                            </button>`
+                        }
+
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" title="More Actions">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/admin/edit-user/${userId}">
+                                    <i class="bi bi-pencil me-2"></i>Edit User
+                                </a></li>
+                                <li><a class="dropdown-item" href="/admin/user-activity/${userId}">
+                                    <i class="bi bi-activity me-2"></i>View Activity
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#"
+                                       onclick="confirmDelete('${userId}', '${userName.replace(/'/g, "\\'")}')">
+                                    <i class="bi bi-trash me-2"></i>Delete User
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    
+    tbody.innerHTML = html;
+    
+    // Re-initialize tooltips for new content
+    initializeTooltips();
+}
+
+function updatePagination(pagination) {
+    // Remove existing pagination if it exists
+    const existingPagination = document.querySelector('.pagination-container');
+    if (existingPagination) {
+        existingPagination.remove();
+    }
+    
+    // Create new pagination container
+    const tableContainer = document.querySelector('.table-responsive');
+    if (!tableContainer || !pagination) return;
+    
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'row align-items-center mt-4 pagination-container';
+    paginationContainer.innerHTML = `
+        <div class="col-md-6">
+            <div class="d-flex align-items-center text-muted">
+                <i class="bi bi-info-circle me-2"></i>
+                <span id="paginationInfo">Showing ${pagination.from || 0} to ${pagination.to || 0} of ${pagination.total || 0} results</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <nav>
+                    <ul class="pagination mb-0" id="paginationLinks"></ul>
+                </nav>
+            </div>
+        </div>
+    `;
+    
+    tableContainer.parentNode.insertBefore(paginationContainer, tableContainer.nextSibling);
+    
+    // Generate pagination links
+    const paginationLinks = document.getElementById('paginationLinks');
+    if (!paginationLinks) return;
+    
+    let paginationHtml = '';
+    const currentPage = pagination.current_page;
+    const lastPage = pagination.last_page;
+    
+    // Previous button
+    if (currentPage > 1) {
+        paginationHtml += `
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)" onclick="performSearch(${currentPage - 1})" aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+        `;
+    } else {
+        paginationHtml += `
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </span>
+            </li>
+        `;
+    }
+    
+    // Page numbers - show limited range around current page
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(lastPage, currentPage + 2);
+    
+    for (let i = startPage; i <= endPage; i++) {
+        if (i === currentPage) {
+            paginationHtml += `
+                <li class="page-item active">
+                    <span class="page-link">${i}</span>
+                </li>
+            `;
+        } else {
+            paginationHtml += `
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" onclick="performSearch(${i})">${i}</a>
+                </li>
+            `;
+        }
+    }
+    
+    // Next button
+    if (currentPage < lastPage) {
+        paginationHtml += `
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)" onclick="performSearch(${currentPage + 1})" aria-label="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        `;
+    } else {
+        paginationHtml += `
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </li>
+        `;
+    }
+    
+    paginationLinks.innerHTML = paginationHtml;
+}
+
+function updateStatistics(totalUsers) {
+    // This is optional - update if you have dynamic statistics
+    console.log('Total users:', totalUsers);
+}
+
+function showLoading() {
+    const tbody = document.querySelector('#usersTable tbody');
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-5">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="spinner-border text-primary me-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text-muted">Loading users...</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+function showError(message) {
+    const tbody = document.querySelector('#usersTable tbody');
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-5">
+                    <div class="alert alert-danger d-inline-block" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>${message}
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary btn-sm" onclick="performSearch(1)">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Try Again
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// Helper functions
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+    });
+}
+
+function formatTime(date) {
+    return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+    });
+}
+
+function initializeTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+// Existing functions (keep these as they are)
 function confirmAction(action, userId, userName) {
     const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
     const confirmButton = document.getElementById('confirmButton');
@@ -322,74 +717,27 @@ function confirmDelete(userId, userName) {
     confirmButton.textContent = 'Delete Account';
 
     confirmButton.onclick = function() {
-        // Add your delete logic here
         window.location.href = `/admin/delete-user/${userId}`;
     };
 
     modal.show();
 }
 
-// Table filtering and search functionality
-function filterTable() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const accountType = document.getElementById('accountTypeFilter').value.toLowerCase();
-    const verification = document.getElementById('verificationFilter').value.toLowerCase();
-    const table = document.getElementById('usersTable');
-    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-    for (let row of rows) {
-        let showRow = true;
-        const cells = row.getElementsByTagName('td');
-
-        if (cells.length > 0) {
-            const name = cells[0].textContent.toLowerCase();
-            const email = cells[2].textContent.toLowerCase();
-            const rowAccountType = cells[1].textContent.toLowerCase();
-            const rowVerification = cells[4].textContent.toLowerCase();
-
-            // Search filter
-            if (searchInput && !name.includes(searchInput) && !email.includes(searchInput)) {
-                showRow = false;
-            }
-
-            // Account type filter
-            if (accountType && !rowAccountType.includes(accountType)) {
-                showRow = false;
-            }
-
-            // Verification filter
-            if (verification && !rowVerification.includes(verification)) {
-                showRow = false;
-            }
-        }
-
-        row.style.display = showRow ? '' : 'none';
-    }
-}
-
-// Event listeners for filters
-document.getElementById('searchInput').addEventListener('keyup', filterTable);
-document.getElementById('accountTypeFilter').addEventListener('change', filterTable);
-document.getElementById('verificationFilter').addEventListener('change', filterTable);
-
 function clearFilters() {
     document.getElementById('searchInput').value = '';
     document.getElementById('accountTypeFilter').value = '';
     document.getElementById('verificationFilter').value = '';
-    filterTable();
+    
+    currentState.search = '';
+    currentState.accountType = '';
+    currentState.verification = '';
+    
+    performSearch(1);
 }
 
 function refreshTable() {
-    location.reload();
+    performSearch(currentState.page);
 }
-
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', function () {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-});
 </script>
 
 @include('backend.layouts.footer')

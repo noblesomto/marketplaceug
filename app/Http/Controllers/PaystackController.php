@@ -271,6 +271,14 @@ class PaystackController extends Controller
             ]);
 
         $data = $response->json();
+        
+        if($promotion == 'top'){
+            $duration = 14;
+        } elseif($promotion == 'gallery'){
+            $duration = 14;
+        } else {
+            $duration = 7;
+        }
 
         if ($data['status']) {
 
@@ -281,7 +289,7 @@ class PaystackController extends Controller
                 'payment_reference'=> $reference,
                 'amount'=> $request->input('promotion'),
                 'boost_type'=> $promotion,
-                'duration'=> 7,
+                'duration'=> $duration,
                 'boost_status'=> "pending",
                 'payment_status'=> "pending",
             ]);

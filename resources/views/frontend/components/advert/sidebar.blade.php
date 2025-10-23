@@ -328,6 +328,10 @@
     @endif
 </div>
 
+<div class="mt-2 hidden lg:block">
+    <img class="w-full" src="{{ asset('frontend/images/download-app.png') }}" alt="Download our App">
+</div>
+
 <!--
 <div class="my-2 w-full rounded p-2 flex justify-center text-sm text-dark_green font-semibold">
     <button class="flex justify-center items-center" onclick="window.print()">
