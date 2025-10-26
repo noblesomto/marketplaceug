@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Mail;
+use Illuminate\Support\Facades\Log;
 use App\Mail\NewAdMail;
 use App\Models\User;
 use App\Models\Category;
@@ -608,8 +609,6 @@ public function boost_ad(Request $request, $id)
 
         return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion'));
     }
-    
-
     public function boosted_ad(Request $request, $id)
     {
         $title = "Boosted Ad | " . config('global.site_name');

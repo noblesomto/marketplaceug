@@ -33,8 +33,12 @@
                     <li><a href="#" class="hover:text-secondary-200">Mobile Apps</a></li>
                 </ul>
                 <div class="flex flex-col gap-2 mt-1">
-                    <img class="w-24" src="{{ asset('frontend/images/app-store.svg') }}">
-                    <a href="https://apps.apple.com/us/app/marketplace-naija-buy-sell/id6753354778"><img class="w-24" src="{{ asset('frontend/images/play-store.svg') }}"></a>
+                    <a href="https://apps.apple.com/us/app/marketplace-naija-buy-sell/id6753354778">
+                        <img class="w-24" src="{{ asset('frontend/images/app-store.svg') }}">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.app.marketplacenaija">
+                        <img class="w-24" src="{{ asset('frontend/images/play-store.svg') }}">
+                    </a>
                 </div>
             </div>
 
@@ -46,6 +50,7 @@
                     <li><a href="https://www.tiktok.com/@marketplace.naija" target="_blank" class="hover:text-secondary-200">TikTok</a></li>
                     <li><a href="https://www.youtube.com/@marketplacenaija" target="_blank" class="hover:text-secondary-200">YouTube</a></li>
                     <li><a href="https://www.pinterest.com/marketplacenaija/" target="_blank" class="hover:text-secondary-200">Pinterest</a></li>
+                    <li><a href="https://whatsapp.com/channel/0029Vb73O6n0G0XmPQpNIc47" target="_blank" class="hover:text-secondary-200">Whatsapp</a></li>
                 </ul>
             </div>
 

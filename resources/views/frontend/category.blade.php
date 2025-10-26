@@ -4,13 +4,16 @@
 @include('frontend.layouts.search')
 
 
-<section class="w-full xl:w-5/6 mx-auto mt-3">
-  <div class="grid grid-cols-10 gap-3">
+<section class="w-full max-w-[95rem] mx-auto mt-3">
+  <div class="grid grid-cols-12 gap-2">
       <div class="col-span-2 hidden xl:block">
         @include('frontend.components.advert.side-advert')
       </div>
-      <div class="col-span-10 xl:col-span-6">
-        <div class="grid grid-cols-10 gap-3">
+      <div class="col-span-12 xl:col-span-8">
+        <div class="my-5 hidden md:block">
+                 @include('frontend.components.advert.banner-advert')
+              </div>
+        <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4">
               <div><h4 class="font-semibold">Categories</h4></div>
 
@@ -71,10 +74,8 @@
                 <button id="brandsButton" class="text-dark_green">Select Brand</button>
               </div>
           </div>
-           <div class="col-span-10 lg:col-span-7">
-              <div class="my-5 hidden md:block">
-                 @include('frontend.components.advert.banner-advert')
-              </div>
+           <div class="col-span-12 lg:col-span-9">
+              
               <div class="block lg:hidden">
                     @include('frontend.components.mobile.filter-category')
               </div>

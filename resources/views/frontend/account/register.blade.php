@@ -170,7 +170,7 @@
             </div>
 
             <div class="mt-6">
-                <button type="submit" class="w-full bg-secondary-200 hover:bg-secondary-100 text-sm text-dark_green font-black py-3 px-2 rounded-full flex justify-center items-center transition-colors">
+                <button type="submit" class="w-full bg-secondary_dark hover:bg-dark_green text-sm text-white font-black py-3 px-2 rounded-lg flex justify-center items-center transition-colors">
                     Register for Free
                 </button>
             </div>

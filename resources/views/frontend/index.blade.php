@@ -21,7 +21,7 @@
   <div class="flex justify-between items-center py-2 px-1">
     <!-- Vehicles -->
     <a href="/category/vehicles" class="flex-1 flex flex-col items-center group text-center px-1">
-      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+      <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-secondary_dark text-white-dark transition-colors duration-200">
         <img class="w-6 h-6" src="{{ asset('frontend/images/icons/car-100.png') }}" alt="Vehicles">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
@@ -31,7 +31,7 @@
 
     <!-- Phones & Tablets -->
     <a href="/category/mobile-phones-and-tablets" class="flex-1 flex flex-col items-center group text-center px-1">
-      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+      <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
         <img class="w-6 h-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}" alt="Phones & Tablets">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
@@ -41,7 +41,7 @@
 
     <!-- Real Estate -->
     <a href="/category/real-estate" class="flex-1 flex flex-col items-center group text-center px-1">
-      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+      <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
         <img class="w-6 h-6" src="{{ asset('frontend/images/icons/house-100.png') }}" alt="Real Estate">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
@@ -51,7 +51,7 @@
 
     <!-- Fashion & Beauty -->
     <a href="/category/fashion" class="flex-1 flex flex-col items-center group text-center px-1">
-      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+      <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
         <img class="w-6 h-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}" alt="Fashion & Beauty">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
@@ -61,7 +61,7 @@
 
     <!-- All Categories -->
     <a href="/all-categories" class="flex-1 flex flex-col items-center group text-center px-1">
-      <div class="bg-primary w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
+      <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
         <img class="w-6 h-6" src="{{ asset('frontend/images/icons/list-100.png') }}" alt="All Categories">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">

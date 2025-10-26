@@ -10,11 +10,11 @@
 }
 
 .btn-primary {
-  @apply bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  border-2 border-dark_green hover:border-dark_green rounded-full;
+  @apply bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white  border-2 border-dark_green hover:border-dark_green rounded-lg;
 }
 
 .btn-secondary {
-  @apply bg-secondary-100 hover:bg-secondary-100 text-dark_green font-bold rounded-full;
+  @apply bg-secondary_dark hover:bg-white hover:text-dark_green text-white font-bold rounded-lg;
 }
 
 .btn-danger {

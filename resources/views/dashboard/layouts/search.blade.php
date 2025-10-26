@@ -1,4 +1,4 @@
-<section class="mt-5 w-full bg-primary h-auto min-h-12 hidden lg:block">
+<section class="mt-5 w-full bg-secondary_dark h-auto min-h-12 hidden lg:block">
     <div class="w-full max-w-7xl mx-auto px-4">
         <form action="/search" method="POST" class="py-2">
             @csrf
@@ -32,6 +32,7 @@
                     </div>
                 </div>
 
+                
                 <!-- Location Section -->
                 <div class="col-span-3 xl:col-span-2">
                     <div class="relative">
@@ -72,26 +73,14 @@
                 <!-- Action Buttons Section -->
                 <div class="col-span-2 xl:col-span-4">
                     <div class="flex items-center justify-end space-x-2">
-                        <!-- Place Ad Button -->
-                        <a href="/user/post-ad"
-                           class="font-semibold px-3 py-2 text-dark_green hover:bg-white rounded-lg transition-colors duration-200 flex items-center text-sm whitespace-nowrap">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="none" class="shrink-0 fill-current w-4 h-4 mr-1">
-                                <path d="M4.65457 10.3114L13.8284 19.4853L19.4853 13.8284L18.7624 13.1056C18.3835 12.7267 18.3931 12.1146 18.7758 11.7395C19.172 11.3513 19.8166 11.3313 20.2087 11.7234L20.8995 12.4142C21.6806 13.1953 21.6806 14.4616 20.8995 15.2427L15.2427 20.8995C14.4616 21.6806 13.1953 21.6806 12.4142 20.8995L3.24035 11.7256C2.78484 11.2701 2.57662 10.6231 2.68099 9.9874L3.55647 4.65491C3.60162 4.37991 3.7319 4.12601 3.92895 3.92895C4.12601 3.7319 4.37991 3.60162 4.65491 3.55647L9.9874 2.68099C10.6231 2.57662 11.2701 2.78484 11.7256 3.24035L12.4934 4.00813C12.8856 4.4003 12.8655 5.04487 12.4773 5.441C12.1023 5.82375 11.4902 5.83334 11.1113 5.45442L10.3114 4.65457L5.45233 5.45233L4.65457 10.3114Z" fill="currentColor"/>
-                                <path d="M9.58582 9.58587C10.1716 9.00008 10.1716 8.05033 9.58582 7.46455 9.00003 6.87876 8.05029 6.87876 7.4645 7.46455 6.87871 8.05033 6.87871 9.00008 7.4645 9.58587 8.05029 10.1717 9.00003 10.1717 9.58582 9.58587ZM15.0001 4.99994C15.0001 4.44765 15.4478 3.99994 16.0001 3.99994 16.5523 3.99994 17.0001 4.44765 17.0001 4.99994V6.99994H19.0001C19.5523 6.99994 20.0001 7.44765 20.0001 7.99994 20.0001 8.55222 19.5523 8.99994 19.0001 8.99994H17.0001V10.9999C17.0001 11.5522 16.5523 11.9999 16.0001 11.9999 15.4478 11.9999 15.0001 11.5522 15.0001 10.9999V8.99994H13.0001C12.4478 8.99994 12.0001 8.55222 12.0001 7.99994 12.0001 7.44765 12.4478 6.99994 13.0001 6.99994H15.0001V4.99994Z" fill="currentColor"/>
-                            </svg>
-                            <span class="hidden xl:inline">Place Ad</span>
-                        </a>
-
-                        <!-- Divider -->
-                        <div class="h-6 border-r border-dark_green"></div>
-
+              
                         <!-- User Menu -->
                         <div class="group relative cursor-pointer">
-                            <a class="flex items-center px-2 py-2 text-sm font-semibold text-dark_green hover:bg-white rounded-lg transition-colors duration-200">
+                            <a class="flex items-center px-2 py-2 text-sm font-semibold text-white hover:bg-white hover:text-dark_green rounded-lg transition-colors duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                 </svg>
-                                <span class="hidden xl:inline">Mine</span>
+                                <span class="hidden xl:inline">My Account</span>
                             </a>
 
                             <!-- Dropdown Menu -->
@@ -135,7 +124,7 @@
                             @php
                                 $count = getUserNotificationCount();
                             @endphp
-                            <a href="/user/notifications" class="flex items-center justify-center p-2 text-dark_green hover:bg-white rounded-lg transition-colors duration-200">
+                            <a href="/user/notifications" class="flex items-center justify-center p-2 text-white hover:bg-white hover:text-dark_green rounded-lg transition-colors duration-200">
                                 @if($count >= 1)
                                     <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                                         {{ $count > 99 ? '99+' : $count }}

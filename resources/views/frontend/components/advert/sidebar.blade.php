@@ -22,7 +22,7 @@
             @if ($ad->buy_direct == 'Yes')
                 <div class="w-full">
                     <a href="/buy-direct/{{ $ad->ad_id }}"
-                        class="flex justify-center items-center bg-primary rounded-full  w-full py-2 px-4 ">
+                        class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 ">
                         <span class="mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6 accent-bg_primary">
@@ -37,7 +37,7 @@
 
             <div class="mt-2">
                 <a href="/chat/{{ $ad->id }}/{{ $ad->user_id }}"
-                    class="flex justify-center items-center w-full bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-full">
+                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
                     <span class="mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-5">
@@ -53,7 +53,7 @@
             @if($ad->show_contact=="Yes")
             <div class="mt-2">
                 <button id="showContact" 
-                    class="flex justify-center items-center w-full bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-full">
+                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
                     <span class="mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
@@ -80,7 +80,7 @@
 
     <div class="mt-2">
         <a href="/user/add-wishlist/{{ $ad->id }}" 
-            class="flex justify-center items-center w-full bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-full">
+            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
             <span class="mr-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="3" stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -93,7 +93,7 @@
 
     <div class="mt-2">
         <button id="openModalShare" 
-            class="flex justify-center items-center w-full bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-full">
+            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
             <span class="mr-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="3" stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -127,7 +127,7 @@
         <div>
             <div class="text-dark_green text-sm font-semibold"><a href="/seller/{{ $ad->owner->user_id }}">{{ $ad->owner->name }} </a> </div>
             @if($ad->owner->verified=='yes')
-                <div class="bg-green-100  flex space-x-2 py-1 px-2 rounded-full mt-2">
+                <div class="bg-green-100  flex space-x-2 py-1 px-2 rounded-lg mt-2">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
                           <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
@@ -138,7 +138,7 @@
                 </div>
             @endif
             @php $labels = feedback_rating_labels($ad->owner->user_id); @endphp
-                <div class="{{ $labels['satisfaction']['color'] }} flex justify-start items-center rounded-full px-2 py-1 text-xs mt-1">
+                <div class="{{ $labels['satisfaction']['color'] }} flex justify-start items-center rounded-lg px-2 py-1 text-xs mt-1">
                     <span class="mr-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-3">
@@ -150,7 +150,7 @@
                 </div>
 
 
-                <div class="{{ $labels['friendly']['color'] }} flex justify-start items-center rounded-full px-2 py-1 text-xs mt-1">
+                <div class="{{ $labels['friendly']['color'] }} flex justify-start items-center rounded-lg px-2 py-1 text-xs mt-1">
                     <span class="mr-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-3">
@@ -162,7 +162,7 @@
                 </div>
 
 
-                <div class="{{ $labels['reliable']['color'] }} flex justify-start items-center rounded-full px-2 py-1 text-xs mt-1">
+                <div class="{{ $labels['reliable']['color'] }} flex justify-start items-center rounded-lg px-2 py-1 text-xs mt-1">
                     <span class="mr-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-3">
@@ -173,7 +173,7 @@
                     <span>{{ $labels['reliable']['label'] }} Reliable</span>
                 </div>
 
-            <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-2">
+            <div class="flex justify-start items-center  rounded-lg px-2 py-1 text-xs mt-2">
                 @if($ad->owner->acc_type=="Private")
                 <span class="mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -193,7 +193,7 @@
                 <span>{{ $ad->owner->acc_type }} User</span>
             </div>
 
-            <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-1">
+            <div class="flex justify-start items-center  rounded-lg px-2 py-1 text-xs mt-1">
                 <span class="mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-4">
@@ -204,7 +204,7 @@
                 <span>Active since {{ date('j F Y', strtotime($ad->owner->created_at)) }}</span>
             </div>
 
-            <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-1">
+            <div class="flex justify-start items-center  rounded-lg px-2 py-1 text-xs mt-1">
                 <span class="mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -224,7 +224,7 @@
                     </span>
             </div>
 
-            <div class="flex justify-start items-center  rounded-full px-2 py-1 text-xs mt-2">
+            <div class="flex justify-start items-center  rounded-lg px-2 py-1 text-xs mt-2">
                 <span class="mr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
                       <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
@@ -248,7 +248,7 @@
             <button 
                 id="followButton"
                 data-user-id="{{ $ad->owner->user_id }}"
-                class="follow-button flex justify-start items-center w-full bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green py-1 px-2 border border-dark_green hover:border-dark_green rounded-full">
+                class="follow-button flex justify-start items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-dark_green py-1 px-2 border border-dark_green hover:border-dark_green rounded-lg">
                 <span class="mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
@@ -565,11 +565,11 @@
         `;
 
         if (isFollowing) {
-            followButton.classList.add('bg-primary', 'text-dark_green');
-            followButton.classList.remove('hover:bg-primary');
+            followButton.classList.add('bg-secondary_dark ', 'text-dark_green');
+            followButton.classList.remove('hover:bg-secondary_dark ');
         } else {
-            followButton.classList.remove('bg-primary', 'text-dark_green');
-            followButton.classList.add('hover:bg-primary');
+            followButton.classList.remove('bg-secondary_dark ', 'text-dark_green');
+            followButton.classList.add('hover:bg-secondary_dark ');
         }
     }
 });

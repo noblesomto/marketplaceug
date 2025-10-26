@@ -28,6 +28,7 @@ module.exports = {
           200: '#AFD145',
         },
         dark_green: '#326916',
+        secondary_dark: '#36B400',
         body: '#f3f2ee',
         dark: '#001e00',
       },

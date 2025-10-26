@@ -15,7 +15,7 @@
       </div>
 
       <!-- Social Login Buttons -->
-      <div class="mb-6 space-y-3 hidden">
+      <div class="mb-6 space-y-3">
         <a href="/auth/google" class="w-full bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200 ease-in-out shadow-sm hover:shadow-md">
           <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -35,7 +35,7 @@
       </div>
 
 
-      <div class="flex items-center my-6 hidden">
+      <div class="flex items-center my-6">
         <div class="flex-grow border-t border-gray-300"></div>
         <span class="flex-shrink mx-4 text-gray-600 text-sm">or continue with email</span>
         <div class="flex-grow border-t border-gray-300"></div>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="mt-8">
-          <button type="submit" class="w-full bg-secondary-200 hover:bg-secondary-100 text-lg text-dark_green font-black py-2 px-2 rounded-full flex justify-center items-center">
+          <button type="submit" class="w-full bg-secondary_dark hover:bg-dark_green text-lg text-white font-black py-2 px-2 rounded-lg flex justify-center items-center">
             <span>Login</span>
             <span class="ml-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

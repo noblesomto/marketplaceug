@@ -41,7 +41,7 @@
         <a href="/all-categories" class="block group">
             <div class="flex justify-between items-center py-4 border-b border-gray-200">
                 <div class="flex items-center">
-                    <div class="bg-primary bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                    <div class="bg-secondary_dark  bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-dark_green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -59,7 +59,7 @@
             <a href="{{ url('/category/' . $category->category_slug) }}" class="block group">
                 <div class="flex justify-between items-center py-4 border-b border-gray-200">
                     <div class="flex items-center">
-                        <div class="bg-primary bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                        <div class="bg-secondary_dark  bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center mr-3">
                             <img class="h-5 w-5" src="{{ asset('frontend/images/icons/' . $category->icon) }}" alt="{{ $category->category }}">
                         </div>
                         <span class="text-gray-800 group-hover:text-primary transition-colors">

@@ -4,13 +4,13 @@
 @include('frontend.layouts.search')
 
 
-<section class="w-full xl:w-5/6 mx-auto mt-3">
-  <div class="grid grid-cols-10 gap-3">
+<section class="w-full lg:max-w-[95rem] mx-auto mt-3">
+  <div class="grid grid-cols-12 gap-3">
       <div class="col-span-2 hidden lg:block">
         @include('frontend.components.advert.side-advert')
       </div>
-      <div class="col-span-10 lg:col-span-6">
-        <div class="grid grid-cols-10 gap-3">
+      <div class="col-span-12 lg:col-span-8">
+        <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4 pb-20">
             <div><h4 class="font-semibold">Categories</h4></div>
 
@@ -83,7 +83,7 @@
             </div>
 
            </div>
-           <div class="col-span-10 lg:col-span-7">
+           <div class="col-span-12 lg:col-span-9">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>

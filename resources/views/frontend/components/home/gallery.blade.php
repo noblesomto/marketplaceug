@@ -70,19 +70,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -213,19 +213,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -358,19 +358,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -502,19 +502,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
