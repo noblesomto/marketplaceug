@@ -8,7 +8,10 @@
     <div class="p-1 mt-4">
         @foreach ($categories as $category)
             <div class="border-b border-b-gray-300 pb-3 pt-1">
-                <a href="{{ url('/category/' . $category->category_slug) }}">
+                <a href="{{ url('/category/' . $category->category_slug) }}" class="flex items-center">
+                    <div class="bg-gray-100 rounded-md p-2 flex items-center justify-center mr-2">
+                        <img src="{{ asset('frontend/images/icons/' . $category->icon) }}" alt="{{ $category->category }}" class="w-5 h-5">
+                    </div>
                     <h2 class="font-semibold text-base">{{ $category->category }}</h2>
                 </a>
 

@@ -36,7 +36,7 @@
             <div>@include('frontend.components.advert.ad-body')</div>
         </div>
         <div class="col-span-6 lg:col-span-2">
-          <div>@include('frontend.components.advert.sidebar')</div>
+          <div class="px-2 lg:px-1">@include('frontend.components.advert.sidebar')</div>
         </div>
   </div>
 

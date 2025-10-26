@@ -84,10 +84,8 @@
 
                             <!-- Dropdown Menu -->
                             @if(session()->get('user_id') =='')
-                            <div class="absolute right-0 mt-1 w-40 bg-gray-100 text-gray-800 shadow-xl rounded-lg
-                                        opacity-0 scale-95 invisible
-                                        group-hover:opacity-100 group-hover:scale-100 group-hover:visible
-                                        transition-all duration-200 origin-top">
+                            <div class="absolute right-0 mt-1 w-40 bg-gray-100 text-gray-800 shadow-xl rounded-lg opacity-0 scale-95 invisible                                        group-hover:opacity-100 group-hover:scale-100 group-hover:visible
+                                        transition-all duration-200 origin-top z-10">
                                 <a href="/about-us" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">About Us</a>
                                 <a href="/how-it-works" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">How It Works</a>
                                 <a href="/faq" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">FAQ</a>
@@ -97,7 +95,7 @@
                             <div class="absolute right-0 mt-1 w-40 bg-gray-100 text-gray-800 shadow-xl rounded-lg
                                         opacity-0 scale-95 invisible
                                         group-hover:opacity-100 group-hover:scale-100 group-hover:visible
-                                        transition-all duration-200 origin-top">
+                                        transition-all duration-200 origin-top z-10">
                                 <a href="/user/index" class="flex items-center gap-2 border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm"><i class="bi bi-speedometer2 text-xs"></i><span>Dashboard</span></a>
                                 <a href="/user/my-ads" class="flex items-center gap-2 border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm"><i class="bi bi-badge-ad text-xs"></i><span>My Ads</span></a>
                                 <a href="/user/favourites" class="flex items-center gap-2 border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm"><i class="bi bi-heart text-xs"></i><span>Wishlists</span></a>

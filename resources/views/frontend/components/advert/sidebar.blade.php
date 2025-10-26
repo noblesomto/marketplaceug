@@ -1,9 +1,12 @@
 
+
 @if ($ad->sold == 'Yes')
    
 @else
 <div class="text-sm font-semibold lg:mt-10">
     @include('frontend.layouts.flash-message')
+    <div class="grid grid-cols-2 lg:grid-cols-1 gap-2 "> 
+    
         @if($cat->category =="Jobs")
             <div class="mt-2">
                 <button id="openModalJob"
@@ -35,9 +38,9 @@
                 </div>
             @endif
 
-            <div class="mt-2">
+            <div class="">
                 <a href="/chat/{{ $ad->id }}/{{ $ad->user_id }}"
-                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
+                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
                     <span class="mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-5">
@@ -51,9 +54,9 @@
             @endif
 
             @if($ad->show_contact=="Yes")
-            <div class="mt-2">
+            <div class="">
                 <button id="showContact" 
-                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
+                    class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
                     <span class="mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
@@ -78,9 +81,9 @@
         @endif
 
 
-    <div class="mt-2">
+    <div class="">
         <a href="/user/add-wishlist/{{ $ad->id }}" 
-            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
+            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
             <span class="mr-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="3" stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -91,9 +94,9 @@
         </a>
     </div>
 
-    <div class="mt-2">
+    <div class="">
         <button id="openModalShare" 
-            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-1 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
+            class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
             <span class="mr-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="3" stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,6 +106,7 @@
             </span>
             <span>Share Ad</span>
         </button>
+    </div>
     </div>
 </div>
 @endif
