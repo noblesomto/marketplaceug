@@ -58,19 +58,23 @@
 <div class="my-2 w-full bg-white rounded p-2 md:p-5">
     <div class="text-sm grid grid-cols-6 md:gap-20">
         <div class="col-span-6 md:col-span-3">
-            <div class="flex justify-between"><div>Brand</div><div>{{ optional($brand)->brand }}</div></div>
-            <div class="flex justify-between"><div>Model</div><div>{{ optional($model)->model }}</div></div>
-            <div class="flex justify-between"><div>Mileage</div><div>{{ $car->mileage ?? '' }}Km</div></div>
-            <div class="flex justify-between"><div>Condition</div><div>{{ $car->condition ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Registration</div><div>{{ $car->registration ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Fuel</div><div>{{ $car->fuel ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none">
+                <div>Brand</div>
+                <div>{{ optional($brand)->brand }}</div>
+            </div>
+
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Model</div><div>{{ optional($model)->model }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Mileage</div><div>{{ $car->mileage ?? '' }}Km</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Condition</div><div>{{ $car->condition ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Registration</div><div>{{ $car->registration ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Fuel</div><div>{{ $car->fuel ?? '' }}</div></div>
         </div>
         <div class="col-span-6 md:col-span-3">
-            <div class="flex justify-between"><div>Gear</div><div>{{ $car->transmission ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Type</div><div>{{ $car->vehicle_type ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Doors</div><div>{{ $car->doors ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Color</div><div>{{ $car->exterior_color ?? '' }}</div></div>
-            <div class="flex justify-between"><div>Interior</div><div>{{ $car->material_interior ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Gear</div><div>{{ $car->transmission ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Type</div><div>{{ $car->vehicle_type ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Doors</div><div>{{ $car->doors ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Color</div><div>{{ $car->exterior_color ?? '' }}</div></div>
+            <div class="flex justify-between border-b border-gray-200 border-solid mb-1 py-1 lg:border-none"><div>Interior</div><div>{{ $car->material_interior ?? '' }}</div></div>
         </div>
     </div>
 </div>
