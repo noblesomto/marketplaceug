@@ -193,7 +193,7 @@
                     @endif
                 <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value=" Local used" {{ $advert->car->condition == ' Local used' ? 'selected' : '' }}> Local used</option>
+                    <option value="Local used" {{ $advert->car->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
                     <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
                     <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
                 </select>
@@ -1095,9 +1095,9 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
-<script src="{{ asset('backend/js/edit-ad-Aa.js') }}"></script>
-<script src="{{ asset('backend/js/edit-sortable.js') }}"></script>
-<script src="{{ asset('backend/js/word-count.js') }}"></script>
+<script src="{{ asset('dashboard/js/edit-ad-Aa.js') }}"></script>
+<script src="{{ asset('dashboard/js/edit-sortable.js') }}"></script>
+<script src="{{ asset('dashboard/js/word-count.js') }}"></script>
 
 <script>
     // Pass PHP data to JavaScript

@@ -131,6 +131,11 @@
                           </a>
                         @endif
 
+                        <a href="/admin/edit-ad/{{ $row->id }}" class="btn btn-sm btn-outline-dark"
+                           data-bs-toggle="tooltip" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </a>
+
                         @if($row->sold == "No")
                           <a href="/admin/sold-status/{{ $row->id }}/Yes" class="btn btn-sm btn-outline-danger"
                              onclick="return confirm('Mark this advert as sold?')" data-bs-toggle="tooltip" title="Mark Sold">

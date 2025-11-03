@@ -8,7 +8,7 @@
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">About Marketplace Naija</h1>
         <p class="text-gray-600 mb-8">
-          Welcome to Marketplace Naija, Nigeria's trusted online marketplace where individuals and businesses come together to buy and sell a wide variety of products with ease. Whether you're looking to declutter your home, launch a small business, or find great deals on new or used items, Marketplace Naija is your go-to platform.
+          Marketplace Naija is a free classified ads platform that connects buyers and sellers across Nigeria. Whether you're selling personal items, offering services, promoting a small business, or looking for great deals near you, Marketplace Naija makes it easy. Simply post your ad for free, reach real local buyers, and close deals quickly with no listing fees or complicated steps. We focus on genuine connections, safe transactions, and giving everyday Nigerians a simple way to buy and sell online.
         </p>
       </div>
     </section>

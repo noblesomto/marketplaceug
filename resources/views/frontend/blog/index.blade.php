@@ -61,8 +61,8 @@
               <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span class="hidden sm:inline">Oct 9, 2025</span>
-              <span class="sm:hidden">Oct 9</span>
+              <span class="hidden sm:inline">{{ $blog->created_at->format('M j, Y') }}</span>
+              <span class="sm:hidden">{{ $blog->created_at->format('M j') }}</span>
             </span>
 
             <a

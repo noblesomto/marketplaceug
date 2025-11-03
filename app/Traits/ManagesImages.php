@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Traits;
 
 use App\Services\MediaImageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Support\Facades\Log;
 
 trait ManagesImages
 {
