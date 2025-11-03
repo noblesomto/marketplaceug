@@ -39,10 +39,17 @@ class AccountController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || $user->disable_account === 'yes' || $user->acc_status == 0) {
+        if (!$user || $user->disable_account === 'yes' || $user->acc_status == 1) {
             return response()->json([
                 'status'  => false,
-                'message' => 'Invalid account or not verified/disabled.'
+                'message' => 'Account Disabled.'
+            ], 401);
+        }
+
+        if (!$user || $user->disable_account === 'no' || $user->acc_status == 0) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Account not verified.'
             ], 401);
         }
 

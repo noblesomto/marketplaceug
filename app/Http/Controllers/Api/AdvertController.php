@@ -27,62 +27,253 @@ use App\Services\FeaturedAdPaginator;
 class AdvertController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/api/adverts",
-     *     summary="Get all adverts with pagination",
-     *     tags={"Adverts"},
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="current_page", type="integer"),
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Advert")),
-     *             @OA\Property(property="first_page_url", type="string"),
-     *             @OA\Property(property="from", type="integer"),
-     *             @OA\Property(property="last_page", type="integer"),
-     *             @OA\Property(property="last_page_url", type="string"),
-     *             @OA\Property(property="links", type="array", @OA\Items(ref="#/components/schemas/PaginationLink")),
-     *             @OA\Property(property="next_page_url", type="string"),
-     *             @OA\Property(property="path", type="string"),
-     *             @OA\Property(property="per_page", type="integer"),
-     *             @OA\Property(property="prev_page_url", type="string"),
-     *             @OA\Property(property="to", type="integer"),
-     *             @OA\Property(property="total", type="integer")
-     *         )
-     *     )
-     * )
-     */
-    public function index(Request $request)
-    {
-        $perPage = $request->get('per_page', 20);
+ * @OA\Get(
+ *     path="/api/adverts",
+ *     summary="Get all adverts with pagination and categorized sections",
+ *     tags={"Adverts"},
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         @OA\Schema(type="integer", default=20)
+ *     ),
+ *     @OA\Parameter(
+ *         name="section",
+ *         in="query",
+ *         description="Get specific section: all, gallery, featured, cars, phones, fashion",
+ *         @OA\Schema(type="string", enum={"all", "gallery", "featured", "cars", "phones", "fashion"})
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean"),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="gallery", type="array", @OA\Items(ref="#/components/schemas/Advert")),
+ *                 @OA\Property(property="featured", type="array", @OA\Items(ref="#/components/schemas/Advert")),
+ *                 @OA\Property(property="listings", type="object",
+ *                     @OA\Property(property="current_page", type="integer"),
+ *                     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Advert")),
+ *                     @OA\Property(property="per_page", type="integer"),
+ *                     @OA\Property(property="total", type="integer")
+ *                 ),
+ *                 @OA\Property(property="cars", type="array", @OA\Items(ref="#/components/schemas/Advert")),
+ *                 @OA\Property(property="phones", type="array", @OA\Items(ref="#/components/schemas/Advert")),
+ *                 @OA\Property(property="fashion", type="array", @OA\Items(ref="#/components/schemas/Advert"))
+ *             )
+ *         )
+ *     )
+ * )
+ */
+public function index(Request $request)
+{
+    $perPage = $request->get('per_page', 20);
+    $currentPage = $request->get('page', 1);
+    $section = $request->get('section', 'all');
 
-        $listings = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 1)
+    $response = [
+        'success' => true,
+        'data' => []
+    ];
+
+    // Gallery - Random active ads
+    if ($section === 'all' || $section === 'gallery') {
+        $response['data']['gallery'] = Advert::inRandomOrder()
+            ->where('ad_status', 'active')
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->with('firstImage', 'owner')
+            ->limit(10)
+            ->get();
+    }
+
+    // Featured ads
+    if ($section === 'all' || $section === 'featured') {
+        $featured = Advert::inRandomOrder()
+            ->where('ad_status', 'active')
+            ->where('featured', 'yes')
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->with('firstImage', 'owner')
+            ->limit(10)
+            ->get();
+        
+        $response['data']['featured'] = $featured;
+    } else {
+        $featured = collect();
+    }
+
+    // Main listings - Mixed recent and random (only if section is 'all' or not specified)
+    if ($section === 'all' || !$section) {
+        $excludeIds = $featured->pluck('id')->toArray();
+
+        // Split: 30% recent, 70% random
+        $recentCount = (int) ($perPage * 0.3);
+        $randomCount = $perPage - $recentCount;
+
+        // Get recent listings (excluding featured)
+        $recentListings = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
             ->where(function ($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function ($q) {
                           $q->where('sold', 'Yes')
                             ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
+                            ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
-            ->selectRaw('adverts.*, (featured = "yes") as is_featured')
-            ->orderByDesc('is_featured')
-            ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END')
             ->orderByDesc('created_at')
-            ->paginate($perPage);
+            ->skip(($currentPage - 1) * $recentCount)
+            ->limit($recentCount)
+            ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $listings
-        ]);
+        // Get random older listings
+        $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+
+        $randomListings = Advert::with('firstImage', 'owner')
+            ->where('ad_status', 'active')
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->inRandomOrder()
+            ->limit($randomCount)
+            ->get();
+
+        // Interleave recent and random posts
+        $mixed = collect();
+        $maxCount = max($recentListings->count(), $randomListings->count());
+
+        for ($i = 0; $i < $maxCount; $i++) {
+            if ($recentListings->has($i)) {
+                $mixed->push($recentListings->get($i));
+            }
+            if ($randomListings->has($i)) {
+                $mixed->push($randomListings->get($i));
+            }
+        }
+
+        // On first page, prepend featured posts
+        if ($currentPage == 1) {
+            $allListings = $featured->concat($mixed);
+        } else {
+            $allListings = $mixed;
+        }
+
+        // Get total count for pagination
+        $totalCount = Advert::where('ad_status', 'active')
+            ->where('featured', '!=', 'yes')
+            ->where(function ($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function ($q) {
+                          $q->where('sold', 'Yes')
+                            ->whereNotNull('sold_date')
+                            ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->count();
+
+        // Add featured count only for first page
+        if ($currentPage == 1) {
+            $totalCount += $featured->count();
+        }
+
+        $listings = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allListings,
+            $totalCount,
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        $response['data']['listings'] = $listings;
     }
+
+    // Cars section
+    if ($section === 'all' || $section === 'cars') {
+        $response['data']['cars'] = Advert::inRandomOrder()
+            ->where('ad_status', 'active')
+            ->where('sub_category', 2)
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->with('firstImage', 'owner')
+            ->orderBy('views', 'desc')
+            ->limit(10)
+            ->get();
+    }
+
+    // Phones section
+    if ($section === 'all' || $section === 'phones') {
+        $response['data']['phones'] = Advert::inRandomOrder()
+            ->where('ad_status', 'active')
+            ->where('sub_category', 6)
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->with('firstImage', 'owner')
+            ->orderBy('views', 'desc')
+            ->limit(10)
+            ->get();
+    }
+
+    // Fashion section
+    if ($section === 'all' || $section === 'fashion') {
+        $response['data']['fashion'] = Advert::inRandomOrder()
+            ->where('ad_status', 'active')
+            ->where('category', 5)
+            ->where(function($query) {
+                $query->where('sold', '!=', 'Yes')
+                      ->orWhere(function($query) {
+                          $query->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                      });
+            })
+            ->with('firstImage', 'owner')
+            ->orderBy('views', 'desc')
+            ->limit(10)
+            ->get();
+    }
+
+    return response()->json($response);
+}
 
     /**
      * @OA\Get(

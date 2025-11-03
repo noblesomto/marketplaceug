@@ -26,7 +26,6 @@ use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
 use App\Traits\ManagesImages;
-use Illuminate\Validation\ValidationException;
 
 class UserManageAdverts extends Controller
 {
@@ -73,16 +72,16 @@ class UserManageAdverts extends Controller
             $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
             $category = (int) $request->input('category');
-            
-            $rules = [
-                'ad_title' => 'required|max:75|string|regex:/^[A-Za-z0-9\s\-\.,;:()\'"!?\[\]_]+$/',
+            //dd($category);
+                $rules = [
+                'ad_title' => 'required|max:75',
                 'category'    => 'required',
                 'subcategory' => 'required',
                 'brand'       => 'required',
                 'state'       => 'required',
                 'lga'         => 'required',
                 'description' => 'required|max:3500',
-                'images.*'    => 'image|mimes:jpeg,png,jpg,gif,webp|max:21000',
+                'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
             ];
 
             if ($category != 3) {
@@ -98,7 +97,7 @@ class UserManageAdverts extends Controller
                 $rules += [
                     'expected_salary' => 'required',
                 ];
-            } elseif ($category == 11) {
+            }elseif ($category == 11) {
                 $rules += [
                     'price'      => 'nullable|numeric',
                 ];
@@ -140,22 +139,6 @@ class UserManageAdverts extends Controller
 
             $validatedData = $request->validate($rules);
 
-            // Check for duplicate post
-            $sanitizedTitle = ContentHelper::sanitizeContent($request->input('ad_title'));
-            $sanitizedDescription = ContentHelper::sanitizeContent($request->input('description'));
-            
-            $existingAd = Advert::where('ad_title', $sanitizedTitle)
-                ->where('category', $request->input('category'))
-                ->where('sub_category', $request->input('subcategory'))
-                ->where('brand', $request->input('brand'))
-                ->where('description', $sanitizedDescription)
-                ->where('user_id', $user_id) // Optional: only check for the same user
-                ->first();
-
-            if ($existingAd) {
-                return back()->withErrors(['duplicate' => 'A post with the same title, category, sub-category, brand, and description already exists.'])->withInput();
-            }
-
             if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
             }
@@ -163,14 +146,15 @@ class UserManageAdverts extends Controller
             $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
             $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
             $filteredWords = array_filter($rawWords, function ($word) {
-                return strlen($word) > 3;
+            return strlen($word) > 3;
             });
 
             $uniqueWords = array_unique($filteredWords);
+
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
 
             $advert = Advert::create([
-                'ad_title'         => $sanitizedTitle,
+                'ad_title'         => ContentHelper::sanitizeContent($request->input('ad_title')),
                 'ad_type'          => $request->input('ad_type'),
                 'category'         => $request->input('category'),
                 'sub_category'     => $request->input('subcategory'),
@@ -185,7 +169,7 @@ class UserManageAdverts extends Controller
                 'state'            => $request->input('state'),
                 'lga'              => $request->input('lga'),
                 'state_slug'       => Str::slug($request->input('lga')),
-                'description'      => $sanitizedDescription,
+                'description' => ContentHelper::sanitizeContent($request->input('description')),
                 'keyword'          => $keywords,
                 'meta_description' => $metaDescription,
                 'featured'         => "No",
@@ -203,32 +187,11 @@ class UserManageAdverts extends Controller
 
 
             if ($request->hasFile('images')) {
-            try {
-                $result = $this->handleImageUploads($request, $advert);
-                
-                // Notify user if some images were rejected
-                if ($result['rejected'] > 0) {
-                    session()->flash('warning', 
-                        "{$result['rejected']} image(s) were rejected due to watermarks. " .
-                        "{$result['accepted']} image(s) uploaded successfully."
-                    );
-                } else {
-                    session()->flash('success', 
-                        "{$result['accepted']} image(s) uploaded successfully."
-                    );
-                }
-                
-            } catch (ValidationException $e) {
-                // All images had watermarks
-                return back()
-                    ->withErrors($e->errors())
-                    ->withInput();
+            $this->handleImageUploads($request, $advert);
+            } elseif ($request->input('category') == 3) {
+                // Add default image for jobs category
+                $advert->addDefaultImage('jobs.png');
             }
-            
-        } elseif ($request->input('category') == 3) {
-            // Add default image for jobs category
-            $advert->addDefaultImage('jobs.png');
-        }
 
 
             // Store car-specific info
