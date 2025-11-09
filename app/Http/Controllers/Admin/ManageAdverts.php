@@ -32,6 +32,7 @@ class ManageAdverts extends Controller
             $q->where('ad_title', 'LIKE', "%{$searchTerm}%")
               ->orWhere('description', 'LIKE', "%{$searchTerm}%")
               ->orWhere('state', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('ad_id', 'LIKE', "%{$searchTerm}%")
               ->orWhere('price', 'LIKE', "%{$searchTerm}%")
               ->orWhere('salary', 'LIKE', "%{$searchTerm}%")
               ->orWhere('expected_salary', 'LIKE', "%{$searchTerm}%")

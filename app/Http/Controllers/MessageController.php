@@ -49,7 +49,6 @@ class MessageController extends Controller
     }
 
 
-
     public function showMessages(Request $request, $advertId, $receiverId)
     {
         $title = "User Dashboard  - " . config('global.site_name');

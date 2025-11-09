@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<section class="max-w-4xl mx-auto px-4  space-y-3 mb-20">
+<section class="max-w-4xl mx-auto  space-y-3 mb-20">
   <!-- Advertisement Banner (Desktop) -->
   <div class="hidden lg:block my-6 rounded-lg overflow-hidden shadow-md">
     @include('frontend.components.advert.banner-advert')
@@ -13,7 +13,7 @@
   <div class="bg-white rounded-xl shadow-lg overflow-hidden">
     <div class="md:flex">
       <!-- Product Image Gallery -->
-      <div class="md:w-1/2 p-6">
+      <div class="md:w-1/2 p-2">
         <div class="relative overflow-hidden rounded-lg bg-gray-100 aspect-square mb-4">
           <img src="{{ $ad->hasMedia('images') ? $ad->getFirstMediaUrl('images', 'large') : asset('frontend/images/default.png') }}"
                alt="{{ $ad->ad_title }}" 

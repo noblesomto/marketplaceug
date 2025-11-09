@@ -572,57 +572,7 @@
         </div>
     </div>
 
-    <!-- Shipment Section -->
-    <div id="shipment" class="">
-        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Shipment</div>
-            </div>
-            <div class="col-span-10 lg:col-span-5">
-                <div class="flex justify-start">
-                    <label class="flex items-center w-64">
-                        <input type="radio" name="shipment" value="Ship" class="form-radio text-dark_green accent-dark_green" onchange="toggleShipping()">
-                        <span class="ml-2">Shipping Possible</span>
-                    </label>
-                    <label class="flex items-center w-64">
-                        <input checked type="radio" name="shipment" value="Pickup" class="form-radio text-dark_green accent-dark_green" onchange="toggleShipping()">
-                        <span class="ml-2">Only Pickup</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Shipping Methods (Hidden by default) -->
-        <div id="shipping" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 hidden">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Shipping Method</div>
-            </div>
-            <div class="col-span-10 lg:col-span-5">
-                <div id="shipping-methods">
-                    @foreach($shippings as $row)
-                    <div class="flex border border-dark_green rounded-lg p-2 mt-2">
-                        <input 
-                            id="shipping-{{ $row->id }}" 
-                            name="shipping[]" 
-                            type="checkbox" 
-                            value="{{ $row->id }}" 
-                            class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-dark_green accent-primary"
-                        >
-                        <label for="shipping-{{ $row->id }}" class="ml-2 text-sm font-medium flex flex-col">
-                            <div class="flex items-center">
-                                <span><img class="w-10" src="{{ asset('uploads/shipping/'.$row->logo) }}"></span>
-                                <span class="ml-2 font-bold">{{ $row->company }}</span>
-                            </div>
-                            <p>Max. {{ $row->weight }} kg, {{ $row->description }}</p>
-                        </label>
-                    </div>
-                    @endforeach
-                </div>
-                <!-- Error message (hidden by default) -->
-                <p id="shipping-error" class="mt-2 text-red-500 hidden">Please select at least one shipping method.</p>
-            </div>
-        </div>
-    </div>
+    
 
 
 
@@ -749,13 +699,65 @@
                 @if ($errors->has('quantity'))
                     <span class="text-red-400">{{ $errors->first('quantity') }}</span>
                 @endif
-            <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1" min="1" max="100">
+                <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1" min="1" max="100">
             </div>
             <div class="col-span-10 md:col-span-3">
                 
             </div>
        </div>
        @endif
+
+       <!-- Shipment Section -->
+    <div id="shipment" class="">
+        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 lg:col-span-2">
+                <div class="font-semibold">Shipment</div>
+            </div>
+            <div class="col-span-10 lg:col-span-5">
+                <div class="flex justify-start">
+                    <label class="flex items-center w-64">
+                        <input type="radio" name="shipment" value="Ship" class="form-radio text-dark_green accent-dark_green" onchange="toggleShipping()">
+                        <span class="ml-2">Shipping Possible</span>
+                    </label>
+                    <label class="flex items-center w-64">
+                        <input checked type="radio" name="shipment" value="Pickup" class="form-radio text-dark_green accent-dark_green" onchange="toggleShipping()">
+                        <span class="ml-2">Only Pickup</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Methods (Hidden by default) -->
+        <div id="shipping" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 hidden">
+            <div class="col-span-10 lg:col-span-2">
+                <div class="font-semibold">Shipping Method</div>
+            </div>
+            <div class="col-span-10 lg:col-span-5">
+                <div id="shipping-methods">
+                    @foreach($shippings as $row)
+                    <div class="flex border border-dark_green rounded-lg p-2 mt-2">
+                        <input 
+                            id="shipping-{{ $row->id }}" 
+                            name="shipping[]" 
+                            type="checkbox" 
+                            value="{{ $row->id }}" 
+                            class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-dark_green accent-primary"
+                        >
+                        <label for="shipping-{{ $row->id }}" class="ml-2 text-sm font-medium flex flex-col">
+                            <div class="flex items-center">
+                                <span><img class="w-10" src="{{ asset('uploads/shipping/'.$row->logo) }}"></span>
+                                <span class="ml-2 font-bold">{{ $row->company }}</span>
+                            </div>
+                            <p>Max. {{ $row->weight }} kg, {{ $row->description }}</p>
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                <!-- Error message (hidden by default) -->
+                <p id="shipping-error" class="mt-2 text-red-500 hidden">Please select at least one shipping method.</p>
+            </div>
+        </div>
+    </div>
 
         <div id="buyDirect" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 lg:col-span-2">
@@ -958,10 +960,10 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-<script src="{{ asset('backend/js/post-ad-Aa.js') }}"></script>
-<script src="{{ asset('backend/js/word-count.js') }}"></script>
-<script src="{{ asset('backend/js/sortable.js') }}"></script>
-<script src="{{ asset('backend/js/submit.js') }}"></script>
+<script src="{{ asset('dashboard/js/post-ad-Aa.js') }}"></script>
+<script src="{{ asset('dashboard/js/word-count.js') }}"></script>
+<script src="{{ asset('dashboard/js/sortable.js') }}"></script>
+<script src="{{ asset('dashboard/js/submit.js') }}"></script>
 
 
 

@@ -166,6 +166,46 @@ document.getElementById('category').addEventListener('change', function () {
     });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const shipmentRadios = document.querySelectorAll('input[name="shipment"]');
+    const buyDirectRadios = document.querySelectorAll('input[name="buy_direct"]');
+    const shippingDropdown = document.getElementById("shipping");
+
+    // Show/hide dropdown when shipment changes
+    shipmentRadios.forEach(radio => {
+        radio.addEventListener("change", function () {
+            if (this.value === "Ship") {
+                shippingDropdown.classList.remove("hidden");
+            } else {
+                shippingDropdown.classList.add("hidden");
+
+                // 🟢 NEW: When user switches shipment to Pickup, force Buy Direct to "No"
+                const buyNo = document.querySelector('input[name="buy_direct"][value="No"]');
+                if (buyNo) {
+                    buyNo.checked = true;
+                }
+            }
+        });
+    });
+
+    // Auto-change shipment when Buy Direct changes
+    buyDirectRadios.forEach(radio => {
+        radio.addEventListener("change", function () {
+            if (this.value === "Yes") {
+                // Set shipment to 'Ship'
+                document.querySelector('input[name="shipment"][value="Ship"]').checked = true;
+                shippingDropdown.classList.remove("hidden");
+            } else {
+                // Reset to pickup
+                document.querySelector('input[name="shipment"][value="Pickup"]').checked = true;
+                shippingDropdown.classList.add("hidden");
+            }
+        });
+    });
+});
+
+
+
 function toggleShipping() {
         const shippingDiv = document.getElementById("shipping");
         const isShipping = document.querySelector('input[name="shipment"]:checked').value === "Ship";

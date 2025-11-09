@@ -8,7 +8,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-1 gap-2 "> 
     
         @if($cat->category =="Jobs")
-            <div class="mt-2">
+            <div class="w-full">
                 <button id="openModalJob"
                     class="flex justify-center items-center w-full btn btn-secondary font-semibold py-2">
                     <span class="mr-2">
@@ -444,7 +444,9 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+@if($cat->category == "Jobs")
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const jobOpenBtn = document.getElementById('openModalJob');
@@ -467,6 +469,7 @@
         });
     });
 </script>
+@endif
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -493,90 +496,115 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const followButton = document.getElementById('followButton');
-    
-    if (!followButton) {
-        console.error('Follow button not found');
-        return;
-    }
+        const followButton = document.getElementById('followButton');
+        if (!followButton) {
+            console.error('Follow button not found');
+            return;
+        }
 
-    const adOwnerId = followButton.dataset.userId;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        const adOwnerId = followButton.dataset.userId;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
-    // Initial check
-    checkFollowingStatus();
+        // Initial check
+        checkFollowingStatus();
+        followButton.addEventListener('click', toggleFollow);
 
-    followButton.addEventListener('click', toggleFollow);
+        async function checkFollowingStatus() {
+            try {
+                // Fixed: Added parentheses to fetch()
+                const response = await fetch(`/api/check-following/${adOwnerId}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
 
-    async function checkFollowingStatus() {
-        try {
-            const response = await fetch(`/api/check-following/${adOwnerId}`, {
-                headers: {
-                    'Accept': 'application/json',
+                if (response.ok) {
+                    const data = await response.json();
+                    updateButtonUI(data.isFollowing);
                 }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                updateButtonUI(data.isFollowing);
+            } catch (error) {
+                console.error('Error checking follow status:', error);
             }
-        } catch (error) {
-            console.error('Error checking follow status:', error);
         }
-    }
 
-    async function toggleFollow() {
-        try {
-            const response = await fetch('/api/toggle-follow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({
-                    followee_id: adOwnerId
-                })
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                updateButtonUI(data.isFollowing);
+        async function toggleFollow() {
+            try {
+                const response = await fetch('/api/toggle-follow', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        followee_id: adOwnerId
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    updateButtonUI(data.isFollowing);
+                    
+                    // Show success message with SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.isFollowing ? 'Followed!' : 'Unfollowed!',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                } else {
+                    const errorData = await response.json();
+                    
+                    // Show error message with SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: errorData.message || 'Error updating follow status',
+                        confirmButtonColor: '#d33'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Show error message with SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to update follow status',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        }
+
+        function updateButtonUI(isFollowing) {
+            const iconSvg = isFollowing ? `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+                </svg>
+            ` : `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+            `;
+
+            followButton.innerHTML = `
+                <span class="mr-2">${iconSvg}</span>
+                <span>${isFollowing ? 'Unfollow' : 'Follow'}</span>
+            `;
+
+            // Fixed: Removed trailing spaces from class names
+            if (isFollowing) {
+                followButton.classList.add('bg-secondary_dark', 'text-dark_green');
+                followButton.classList.remove('hover:bg-secondary_dark');
             } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Error updating follow status');
+                followButton.classList.remove('bg-secondary_dark', 'text-dark_green');
+                followButton.classList.add('hover:bg-secondary_dark');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to update follow status');
         }
-    }
-
-    function updateButtonUI(isFollowing) {
-        const iconSvg = isFollowing ? `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
-                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
-            </svg>
-        ` : `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-            </svg>
-        `;
-
-        followButton.innerHTML = `
-            <span class="mr-2">${iconSvg}</span>
-            <span>${isFollowing ? 'Unfollow' : 'Follow'}</span>
-        `;
-
-        if (isFollowing) {
-            followButton.classList.add('bg-secondary_dark ', 'text-dark_green');
-            followButton.classList.remove('hover:bg-secondary_dark ');
-        } else {
-            followButton.classList.remove('bg-secondary_dark ', 'text-dark_green');
-            followButton.classList.add('hover:bg-secondary_dark ');
-        }
-    }
-});
+    });
 </script>
 
 @if($ad->show_contact == 'Yes')

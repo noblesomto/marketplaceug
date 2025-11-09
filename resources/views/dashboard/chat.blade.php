@@ -166,10 +166,16 @@
                     @if($advert->sold=="Yes" && $advert->user_id != $user->user_id)
                         <div class="flex justify-between mb-4">
                             <span class="bg-green-100 rounded-lg p-2">
-                                @if($payment->buyer_status =="pending")
-                                    <a href="/payment/mark-received/{{ $payment->id }}" onclick="return confirm('Are you sure you want to confirm Received?');"><i class="bi bi-check-all"></i> Mark Received</a>
+                                @if(!isset($payment) || empty($payment))
+                                    Sold
                                 @else
-                                    <span class="capitalize">{{ $payment->buyer_status }}</span>
+                                    @if($payment->buyer_status == "pending")
+                                        <a href="/payment/mark-received/{{ $payment->id }}" onclick="return confirm('Are you sure you want to confirm Received?');">
+                                            <i class="bi bi-check-all"></i> Mark Received
+                                        </a>
+                                    @else
+                                        <span class="capitalize">{{ $payment->buyer_status }}</span>
+                                    @endif
                                 @endif
                             </span>
                             <span class="bg-yellow-100 rounded-lg p-2"><a href="/report-ad/{{ $advert->id }}"><i class="bi bi-exclamation-triangle"></i> Report an Issue</a> </span>
