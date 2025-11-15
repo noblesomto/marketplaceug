@@ -225,6 +225,7 @@ Route::middleware(['adminsession','adminrole:Advert_manager,super_admin'])->grou
     Route::any('/boost/completed', [ManageBoost::class, 'completed']);
     Route::any('/boost/unpaid', [ManageBoost::class, 'unpaid']);
     Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status']);
+    Route::any('/boost/payment-status/{id}/{status}', [ManageBoost::class, 'payment']);
 
     //Manage Adverts
     Route::any('/admin/active-adverts', [ManageAdverts::class, 'active_adverts']);

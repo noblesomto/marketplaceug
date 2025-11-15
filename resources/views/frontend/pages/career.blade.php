@@ -146,7 +146,7 @@
               </svg>
             </div>
             <div class="ml-3">
-              <p class="text-lg font-medium text-gray-900">Customer Support & Trust Officer</p>
+              <p class="text-lg font-medium text-gray-900">Customer Support Assistant</p>
             </div>
           </li>
           <li class="flex items-start">

@@ -210,27 +210,48 @@ class UserController extends Controller
     public function add_wishlist(Request $request, $id)
     {   
         $user_id = $request->session()->get('user_id');
-        $user = User::where('users.user_id', $user_id)->first();
+
+        if (!$user_id) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Please login'], 401);
+            }
+            return redirect()->back()->with('error', 'Please login to add to wishlist');
+        }
+
         $advert = Advert::where('id', $id)->first();
 
-        // Check if post exists
-        $post = Wishlist::where('advert_id',$id)->first();
-        
-        //dd($post);
-        if ($post) {
-            // Post exists - return view with message
-            return redirect()->back()->with('error','Already Added to Wishlist');
+        if (!$advert) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Advert not found'], 404);
+            }
+            return redirect()->back()->with('error', 'Advert not found');
         }
-        
-        // Post doesn't exist - create new one
-        $newpost = new Wishlist([
-                'user_id'=> $user_id,
-            ]);
+
+        $wishlist = Wishlist::where('advert_id', $id)
+                            ->where('user_id', $user_id)
+                            ->first();
+
+        if ($wishlist) {
+            $wishlist->delete();
+            $message = 'Removed from Wishlist';
+            $inWishlist = false;
+        } else {
+            $newpost = new Wishlist(['user_id' => $user_id]);
             $newpost->advert()->associate($advert);
             $newpost->save();
-        
-        return redirect()->back()->with('success','Successfully Added to Wishlist');
-        
+            $message = 'Added to Wishlist';
+            $inWishlist = true;
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'in_wishlist' => $inWishlist
+            ]);
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
     public function favourites(Request $request)

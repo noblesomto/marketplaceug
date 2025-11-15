@@ -21,7 +21,7 @@
                     <h2 class="text-lg font-semibold text-dark_green mb-4">Ad Details</h2>
                     <div class="flex flex-col md:flex-row gap-6 items-start">
                         <img class="w-full md:w-48 h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
-                             src="{{ asset('uploads/images/'.$advert->firstImage->image) }}"
+                             src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
                              alt="{{ $advert->ad_title }}">
                         <div>
                             <h3 class="font-bold text-lg text-gray-800">{{ $advert->ad_title }}</h3>

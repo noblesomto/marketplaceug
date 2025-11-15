@@ -9,6 +9,10 @@
   @apply font-bold  px-6 rounded text-dark_green;
 }
 
+.icon-semibold {
+    @apply  text-dark_green font-bold ;
+}
+
 .btn-primary {
   @apply bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white  border-2 border-dark_green hover:border-dark_green rounded-lg;
 }

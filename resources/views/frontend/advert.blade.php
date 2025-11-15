@@ -1,6 +1,6 @@
 @include('frontend.layouts.header-adverts')
 @include('frontend.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('frontend.layouts.product-nav')
 @include('frontend.layouts.search')
 
 
@@ -48,6 +48,105 @@
 
 
 
+<script>
+document.getElementById('shareBtn').addEventListener('click', async () => {
+
+    const shareTitle = {!! json_encode($ad->ad_title ?? '') !!};
+    const shareText = {!! json_encode($ad->meta_description ?? Str::limit(strip_tags($ad->description ?? ''), 160)) !!};
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            });
+        } catch (err) {
+            console.log('Share cancelled', err);
+        }
+    } else {
+        alert("Sharing is not supported on this device.");
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.wishlist-toggle').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const adId = this.dataset.adId;
+            const svg = this.querySelector('svg');
+
+            fetch(`/user/add-wishlist/${adId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle icon
+                    if (data.in_wishlist) {
+                        svg.classList.add('fill-red-500', 'text-red-500');
+                        svg.classList.remove('fill-none');
+                        this.title = 'Remove from Wishlist';
+
+                        // SweetAlert for added to wishlist
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Wishlist!',
+                            text: data.message,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            location.reload(); // Refresh page after alert
+                        });
+                    } else {
+                        svg.classList.remove('fill-red-500', 'text-red-500');
+                        svg.classList.add('fill-none');
+                        this.title = 'Add to Wishlist';
+
+                        // SweetAlert for removed from wishlist
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Removed from Wishlist',
+                            text: data.message,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            location.reload(); // Refresh page after alert
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Error SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong! Please try again.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            });
+        });
+    });
+});
+</script>
 
 @include('frontend.layouts.footer')
 

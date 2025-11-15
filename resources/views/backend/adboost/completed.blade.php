@@ -50,6 +50,7 @@
                                         <th scope="col">Status</th>
                                         <th scope="col">Boost Type</th>
                                         <th scope="col">Dates</th>
+                                        <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,6 +116,15 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td class="text-center">
+                                                @if($row->payment_status == "pending")
+                                                   
+                                                    <button class="btn btn-sm btn-outline-success"
+                                                            onclick="return confirmAction('activate', '{{ $row->advert->ad_title }}', '{{ $row->id }}')">
+                                                        <i class="bi bi-play-fill me-1"></i> Activate
+                                                    </button>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -142,7 +152,19 @@
         </div>
     </section>
 </main><!-- End #main -->
+<script>
+function confirmAction(action, adTitle, id) {
+    const message = action === 'activate'
+        ? `Are you sure you want to Confirm Ad boost for  "${adTitle}"?`
+        : `Are you sure you want to resume boosting "${adTitle}"?`;
 
+    if(confirm(message)) {
+        const url = `/boost/payment-status/${id}/activate`;
+        window.location.href = url;
+    }
+    return false;
+}
+</script>
 <style>
     .card-header {
         border-radius: 0.5rem 0.5rem 0 0 !important;

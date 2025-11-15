@@ -16,7 +16,7 @@
                 <div class="font-semibold text-lg md:text-xl text-gray-800">Ad Details</div>
 
                 <div class="mb-6 mt-4 flex flex-col md:flex-row gap-4">
-                    <img class="h-24 w-24 md:h-40 md:w-40 object-cover rounded-lg" src="{{ asset('uploads/images/'.$advert->firstImage->image) }}">
+                    <img class="h-24 w-24 md:h-40 md:w-40 object-cover rounded-lg" src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}">
                     <div class="flex flex-col justify-center">
                         <div class="font-medium text-base md:text-xl text-gray-900">{{ $advert->ad_title }}</div>
                         <div class="text-sm text-gray-500 mt-1">Ad ID: {{ $advert->ad_id }}</div>

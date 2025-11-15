@@ -95,4 +95,33 @@ class ManageBoost extends Controller
     }
 
 
+    public function payment($id, $status)
+    {
+        $advert = AdvertBoost::where('id',$id)->first();
+        $advert_id = $advert->advert_id;
+      
+        $boost_status = "active";
+        $featured = "Yes";
+     
+        //dd($featured);
+        DB::table('advert_boosts')
+                ->where('id', $id)
+                ->update([
+                    'payment_status' => 'paid',
+                    'boost_status' => 'active',
+                    'trans_id' => $id,
+                    'start_date' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        DB::table('adverts')
+                ->where('id', $advert_id)
+                ->update([
+                    'featured'=> $featured,
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        return redirect()->back()->with('status', ['text'=>'Advert Boost Updated','type'=>'success']);
+    }
+
 }

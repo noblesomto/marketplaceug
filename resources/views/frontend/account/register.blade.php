@@ -17,7 +17,7 @@
             @csrf
             
             <div class="flex justify-center w-full">
-                <h2 class="font-bold text-sm lg:text-base">How would you like to use Marketplace NG</h2>
+                <h2 class="font-bold text-sm lg:text-base">How would you like to use Marketplace Naija</h2>
             </div>
 
             <div class="flex space-x-4 my-3">
