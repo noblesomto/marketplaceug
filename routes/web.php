@@ -77,6 +77,7 @@ Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertControll
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand']);
 
 
+
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct']);
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping']);
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');

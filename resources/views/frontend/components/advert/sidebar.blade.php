@@ -80,48 +80,9 @@
             </div>
         @endif
 
- @php
-    $user_id = session('user_id');
-    $inWishlist = false;
 
-    if ($user_id) {
-        $inWishlist = \App\Models\Wishlist::where('advert_id', $ad->id)
-                                          ->where('user_id', $user_id)
-                                          ->exists();
-    }
-@endphp
-    <div class="">
-        <a href="#"
-   data-ad-id="{{ $ad->id }}"
-   data-in-wishlist="{{ $inWishlist ? 'true' : 'false' }}"
-   class="wishlist-toggle flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark text-dark_green font-semibold hover:text-white py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
 
-    <span class="mr-2 icon-container">
-        @if ($inWishlist)
-            {{-- Filled heart --}}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
-                 stroke-width="3" stroke="currentColor" class="size-4 text-dark_green">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-        @else
-            {{-- Outline heart --}}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="3" stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-        @endif
-    </span>
-
-    <span class="wishlist-text">
-        {{ $inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' }}
-    </span>
-</a>
-
-    </div>
-
-    <div class="">
+    <div class="hidden sm:block">
         <button id="openModalShare" 
             class="flex justify-center items-center w-full bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
             <span class="mr-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

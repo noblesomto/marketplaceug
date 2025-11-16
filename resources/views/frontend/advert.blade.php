@@ -148,6 +148,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+ <script>
+    const openBtn = document.getElementById('openNavModal');
+    const closeBtn = document.getElementById('closeNavModal');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+
+    function openModal() {
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        overlay.classList.add('opacity-100');
+        modal.classList.remove('translate-y-full');
+      }, 10);
+    }
+
+    function closeModal() {
+      modal.classList.add('translate-y-full');
+      overlay.classList.remove('opacity-100');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 300);
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+  </script>
 @include('frontend.layouts.footer')
 
 

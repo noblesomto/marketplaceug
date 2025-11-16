@@ -232,12 +232,26 @@ class AdvertController extends Controller
     {
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
+
         // First get the ad and check if it exists
         $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
 
         if (!$ad) {
 
             abort(404, 'Advert not found');
+        }
+
+         $sessionKey = 'back_url_for_ad_' . $id;
+
+        if (!session()->has($sessionKey)) {
+            $referer = request()->headers->get('referer');
+            // Only store if referrer exists and is from your own domain
+            if ($referer && str_starts_with($referer, url('/'))) {
+                // Don't store the current page as referrer (prevents loops)
+                if ($referer !== request()->url()) {
+                    session([$sessionKey => $referer]);
+                }
+            }
         }
 
         $data['ad'] = $ad;
