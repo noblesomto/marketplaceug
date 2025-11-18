@@ -8,31 +8,29 @@
                 <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-2 right-2 space-y-2">
                     @if($row->owner->verified=='yes')
-                        <div class="bg-green-50 opacity-8 flex space-x-2 py-1 px-2 rounded">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
-                                  <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
-                                  <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
-                                </svg>
+                        <div class="bg-green-50  px-1 rounded">
+                            <span title="verified User">
+                                <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
                             </span>
-                            <span class="text-xs">Verified</span>
                         </div>
                     @endif
                     @if($row->views >= setViews())
                     <div class="bg-white opacity-8 flex space-x-2 py-1 px-2">
-                        <span>
+                        <span title="Popuplar Ad">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                 <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                             </svg>
                         </span>
-                        <span class="text-xs">Popular</span>
                     </div>
                     @endif
                 </div>
                 <div class="absolute top-0 left-3">
                     @if ($row->featured == 'Yes')
-                        <div class="bg-gray-50 inline-block px-2 py-1 transform rotate-90 origin-left text-xs">
-                            Promoted
+                        <div class="bg-gray-50 inline-block px-2 py-1 rounded" title="Boosted Ad">
+                            <span>
+                                <i class="bi bi-rocket-takeoff"></i>
+                            </span>
+                            <span class="font-semibold">Boost</span>
                         </div>
                     @endif
                 </div>

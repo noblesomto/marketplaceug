@@ -270,7 +270,7 @@
 </div>
 
 
-<div class="mt-5 w-full rounded p-2 flex justify-center text-sm text-dark_green font-semibold">
+<div class="mt-5 w-full rounded p-2 flex justify-center text-sm text-dark_green font-semibold hidden sm:block">
     <a href="/report-ad/{{ $ad->id }}" class="flex justify-center items-center">
         <span class="mr-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"

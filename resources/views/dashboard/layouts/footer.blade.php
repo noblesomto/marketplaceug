@@ -22,13 +22,22 @@
 			</div>
 		</a>
 		
-		<a href="/user/post-ad">
-			<div class="flex flex-col items-center mx-2">
-				<div>
-                    <svg viewBox="0 0 24 24" fill="none" data-title="createAdOutline" stroke="none" role="img" aria-hidden="true" focusable="false" class="shrink-0 fill-current  block align-middle size-5"><path d="M4.65457 10.3114L13.8284 19.4853L19.4853 13.8284L18.7624 13.1056C18.3835 12.7267 18.3931 12.1146 18.7758 11.7395C19.172 11.3513 19.8166 11.3313 20.2087 11.7234L20.8995 12.4142C21.6806 13.1953 21.6806 14.4616 20.8995 15.2427L15.2427 20.8995C14.4616 21.6806 13.1953 21.6806 12.4142 20.8995L3.24035 11.7256C2.78484 11.2701 2.57662 10.6231 2.68099 9.9874L3.55647 4.65491C3.60162 4.37991 3.7319 4.12601 3.92895 3.92895C4.12601 3.7319 4.37991 3.60162 4.65491 3.55647L9.9874 2.68099C10.6231 2.57662 11.2701 2.78484 11.7256 3.24035L12.4934 4.00813C12.8856 4.4003 12.8655 5.04487 12.4773 5.441C12.1023 5.82375 11.4902 5.83334 11.1113 5.45442L10.3114 4.65457L5.45233 5.45233L4.65457 10.3114Z" fill="currentColor"></path><path d="M9.58582 9.58587C10.1716 9.00008 10.1716 8.05033 9.58582 7.46455 9.00003 6.87876 8.05029 6.87876 7.4645 7.46455 6.87871 8.05033 6.87871 9.00008 7.4645 9.58587 8.05029 10.1717 9.00003 10.1717 9.58582 9.58587ZM15.0001 4.99994C15.0001 4.44765 15.4478 3.99994 16.0001 3.99994 16.5523 3.99994 17.0001 4.44765 17.0001 4.99994V6.99994H19.0001C19.5523 6.99994 20.0001 7.44765 20.0001 7.99994 20.0001 8.55222 19.5523 8.99994 19.0001 8.99994H17.0001V10.9999C17.0001 11.5522 16.5523 11.9999 16.0001 11.9999 15.4478 11.9999 15.0001 11.5522 15.0001 10.9999V8.99994H13.0001C12.4478 8.99994 12.0001 8.55222 12.0001 7.99994 12.0001 7.44765 12.4478 6.99994 13.0001 6.99994H15.0001V4.99994Z" fill="currentColor"></path></svg>
+		<a href="/user/post-ad" class="flex flex-col items-center mx-2">
+			<div class=" relative -mt-10 w-14 h-14 bg-dark_green rounded-full flex items-center justify-center shadow-xl">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="white"
+                         viewBox="0 0 24 24"
+                         stroke="white"
+                         stroke-width="1.5"
+                         class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+
                 </div>
-				<div class="font-semibold text-xs">Post Ad</div>
-			</div>
+
+            </div>
+            <div class="font-semibold text-xs mt-1">Sell</div>
 		</a>
 		<a href="/user/messages">
 		    <div class="flex flex-col items-center mx-2 relative">

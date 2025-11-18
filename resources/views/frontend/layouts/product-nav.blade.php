@@ -75,7 +75,7 @@
                     </svg>
                 </span>
         <span>
-            Report Ad
+            Report this Ad
         </span>
             </div>
         </a>

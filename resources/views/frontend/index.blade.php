@@ -3,6 +3,10 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVDT4VHH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <section class="w-full xl:w-4/6 mx-auto bg-white md:bg-body pb-20">
   <div class="block lg:hidden bg-white pt-3 ml-2">
