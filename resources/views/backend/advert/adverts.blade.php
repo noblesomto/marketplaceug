@@ -84,7 +84,7 @@
                            data-bs-placement="top"
                            title="View image">
                     </td>
-                    <td class="fw-bold">{{ Str::limit($row->ad_title, 30) }}</td>
+                    <td class="fw-bold"><a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" target="_blank">{{ Str::limit($row->ad_title, 30) }}</a> </td>
                     <td>
                       <a href="/admin/view-user/{{ $row->user->user_id }}" class="text-primary">
                         {{ $row->user->name }}

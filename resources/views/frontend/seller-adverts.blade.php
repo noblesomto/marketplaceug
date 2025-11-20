@@ -1,6 +1,6 @@
 @include('frontend.layouts.header')
 @include('frontend.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('frontend.layouts.mobile-back-nav')
 @include('frontend.layouts.search')
 
 <section class="w-full max-w-[95rem] mx-auto mt-3">

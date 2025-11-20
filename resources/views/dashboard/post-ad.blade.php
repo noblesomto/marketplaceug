@@ -823,44 +823,50 @@
    
 
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Pictures (recommended)</div>
-            </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('images[]'))
-                    <span class="text-red-400">{{ $errors->first('images[]') }}</span>
-                @endif
-                <div class="mb-2 hidden text-sm text-red-500" id="image-error"></div>
-                <div class="flex justify-start border-dashed border-2 border-gray-300">
-                    <!-- Camera Icon for File Upload -->
-                    <div class="flex items-center">
-                        <label for="imageUpload" class="cursor-pointer">
-                            <div class="flex items-center justify-center px-3 py-1 m-2 text-gray-700 border border-gray-300 hover:bg-primary transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+        <div class="col-span-10 md:col-span-2">
+            <div class="font-semibold">Pictures (recommended)</div>
+        </div>
+
+        <div class="col-span-10 md:col-span-5">
+
+            @if ($errors->has('images'))
+                <span class="text-red-400">{{ $errors->first('images') }}</span>
+            @endif
+
+            <div id="image-error" class="mb-2 hidden text-sm text-red-500"></div>
+
+            <div class="flex justify-start border-dashed border-2 border-gray-300 p-2">
+
+                <!-- GOOD: Native Label (Android-friendly) -->
+                <label for="imageUpload" class="cursor-pointer flex items-center">
+                    <div class="flex items-center justify-center px-3 py-1 m-2 text-gray-700 border border-gray-300 hover:bg-primary transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
                                 </svg>
-                            </div>
-                            <input name="images[]" type="file" id="imageUpload" multiple class="hidden" accept="image/*">
-                            <input type="hidden" name="image_order" id="image_order">
-
-                        </label>
                     </div>
+                </label>
 
-                    <!-- Image Preview Container -->
-                    <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4 mt-4"></div>
-                </div>
-                <div class="text-xs flex justify-start items-center">
-                    <img src="{{ asset('frontend/images/swap.png') }}" class="h-6 mx-2">
-                   Move to Change the Order
-                  </div>
+                <input id="imageUpload" name="images[]" type="file" multiple accept="image/*" class="hidden">
+                <input type="hidden" name="image_order" id="image_order">
+
+                <!-- Preview -->
+                <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4 p-2 w-full"></div>
             </div>
-            <div class="col-span-10 md:col-span-3">
-                <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 20 MB. To keep listings clear, please avoid uploading images with watermarks or text.
-                  </div>
+
+            <div class="text-xs flex justify-start items-center mt-2">
+                <img src="{{ asset('frontend/images/swap.png') }}" class="h-6 mx-2">
+                Move to Change the Order
             </div>
-       </div>
+        </div>
+
+        <div class="col-span-10 md:col-span-3">
+            <div class="text-xs">
+                <span class="font-semibold">Tip:</span> Up to 20 images with a max of 20MB. Avoid watermarks or text.
+            </div>
+        </div>
+    </div>
+
 
     <div id="image-error" class="hidden mb-4 p-3 rounded-lg bg-red-100 text-red-800 text-sm font-medium"></div>
 
@@ -960,7 +966,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-<script src="{{ asset('dashboard/js/post-ad-Aa.js') }}"></script>
+<script src="{{ asset('dashboard/js/post-ad.js') }}"></script>
 <script src="{{ asset('dashboard/js/word-count.js') }}"></script>
 <script src="{{ asset('dashboard/js/sortable.js') }}"></script>
 <script src="{{ asset('dashboard/js/submit.js') }}"></script>

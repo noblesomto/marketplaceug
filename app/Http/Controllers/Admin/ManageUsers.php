@@ -177,7 +177,7 @@ class ManageUsers extends Controller
                     'verified'=> $verify,
                     'updated_at' => Carbon::now(),
                 ]);
-
+        //dd($id);
         return redirect()->back()->with('status', ['text'=>'Verification Status Changed','type'=>'success']);
     }
 }

@@ -256,8 +256,8 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
-                                                @if(!empty($row->document_file))
-                                                    <a href="{{ asset('uploads/verification/'.$row->document_file) }}"
+                                                @if($row->hasDocumentFile())
+                                                    <a href="{{ $row->document_file_url }}"
                                                        target="_blank"
                                                        class="btn btn-outline-primary btn-sm d-flex align-items-center"
                                                        data-bs-toggle="tooltip" title="View Identity Document">
@@ -271,8 +271,8 @@
                                                     </span>
                                                 @endif
 
-                                                @if(!empty($row->proof_address))
-                                                    <a href="{{ asset('uploads/verification/'.$row->proof_address) }}"
+                                                 @if($row->hasProofAddress())
+                                                    <a href="{{ $row->proof_address_url }}"
                                                        target="_blank"
                                                        class="btn btn-outline-secondary btn-sm d-flex align-items-center"
                                                        data-bs-toggle="tooltip" title="View Address Proof">

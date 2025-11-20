@@ -16,7 +16,7 @@
                   <div class="w-2/6 mr-1 relative bg-gray-50">
                    <a href="{{ isset($row->advert->state_slug, $row->advert->title_slug, $row->advert->ad_id) ? url($row->advert->state_slug . '/' . $row->advert->title_slug .'/'. $row->advert->ad_id) : '#' }}">
                      @if(isset($row->advert->firstImage->image))
-                       <img class="h-24 md:h-48 object-cover" src="{{ asset('uploads/images/'.$row->advert->firstImage->image) }}" alt="Ad image">
+                       <img class="h-24 md:h-48 object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" alt="Ad image">
                      @else
                        <img class="h-24 md:h-48 object-cover" src="{{ asset('images/default-ad.jpg') }}" alt="Default ad image">
                      @endif
@@ -101,10 +101,12 @@
             </div>
 
             <div class="w-full lg:pt-7">
-                <a href="/report-ad/{{ $row->advert->id }}" class="bg-secondary-200 px-4 py-2 rounded-lg inline-block w-full text-center">
+                <a href="{{ optional($row->advert)->ad_id ? '/report-ad/' . $row->advert->ad_id : '#' }}"
+                   class="bg-secondary-200 px-4 py-2 rounded-lg inline-block w-full text-center">
                     Report an Issue
                 </a>
             </div>
+
 
             <div class="w-full lg:pt-7">
                 @if(($row->buyer_status ?? '') == 'delivered')

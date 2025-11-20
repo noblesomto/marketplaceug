@@ -168,6 +168,7 @@ class UserProfile extends Controller
             ]
         );
 
+
         try {
             // Handle document file upload
             if ($request->hasFile('document_file')) {
@@ -196,12 +197,13 @@ class UserProfile extends Controller
 
         // Send email notification
         try {
-            \Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
-                'user_id'         => $user->user_id,
-                'name'            => $user->name,
-                'email'           => $user->email,
-                'document_number' => $request->document_number,
-            ]));
+            \Mail::to(config('global.site_email'))
+                ->queue(new VerificationRequestMail([
+                    'user_id'         => $user->user_id,
+                    'name'            => $user->name,
+                    'email'           => $user->email,
+                    'document_number' => $request->document_number,
+                ]));
         } catch (\Exception $e) {
             \Log::error('Verification email failed: ' . $e->getMessage());
         }

@@ -17,74 +17,99 @@ document.getElementById('category').addEventListener('change', function () {
                 document.querySelector('label[for="brand"]').textContent = "Select Option:";
             }
 
-        //console.log(countryId);
+
+        console.log(countryId);
         // Fetch states
         axios.get('/fetch-subcat/' + countryId)
             .then(function (response) {
                 var stateSelect = document.getElementById('subcategory');
                 stateSelect.innerHTML = '<option value="">Select Sub Category</option>'; // Reset state dropdown
                 document.getElementById('brand').innerHTML = '<option value="">Select Option</option>'; // Reset city dropdown
-                var divCar = document.getElementById("divCar");
-                var divPhone = document.getElementById("divPhone");
-                var shipment = document.getElementById("shipment");
-                var itemCondition = document.getElementById("itemCondition");
-                var buyDirect = document.getElementById("buyDirect");
-                const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
-                var price = document.getElementById("price");
-                var shipping = document.getElementById('shipping');
-                var quantity = document.getElementById('quantity');
-
-
-                // Hide all divs initially
-            divCar.classList.add("hidden");
-            divPhone.classList.add("hidden");
-            divModel.classList.add("hidden");
-
-             if (countryId === "11") {
-                services.classList.remove("hidden");
-                shipment.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                buyDirect.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
+                const COUNTRY_VISIBILITY_CONFIG = {
+                "7": {
+                    show: [],
+                    hide: ["services", "shipment", "itemCondition", "buyDirect", "quantity"]
+                },
+                "11": {
+                    show: ["services"],
+                    hide: ["shipment", "itemCondition", "buyDirect", "quantity"]
+                },
+                "3": {
+                    show: ["salary"],
+                    hide: ["price", "shipment", "itemCondition", "shipping", "buyDirect", "expectedSalary", "quantity"]
+                },
+                "18": {
+                    show: ["expectedSalary"],
+                    hide: ["price", "salary", "shipment", "shipping", "itemCondition", "buyDirect", "quantity"]
+                },
+                default: {
+                    show: ["price", "quantity", "shipment", "itemCondition", "buyDirect"],
+                    hide: ["services", "salary", "expectedSalary"]
                 }
-             }else{
-                services.classList.add("hidden");
-                shipment.classList.remove("hidden");
-                itemCondition.classList.remove("hidden");
-                buyDirect.classList.remove("hidden");
-                if (quantity) {
-                    quantity.classList.remove("hidden");
-                }
-             }
+            };
 
-            if (countryId === "3") {
-                salary.classList.remove("hidden");
-                price.classList.add("hidden");
-                shipment.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                shipping.classList.add("hidden");
-                buyDirect.classList.add("hidden");
-                expectedSalary.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
+            // Elements that should be hidden initially
+            const INITIALLY_HIDDEN = ["divCar", "divPhone", "divModel"];
+
+            class ElementVisibilityManager {
+                constructor(countryId) {
+                    this.countryId = countryId;
+                    this.elements = this.cacheElements();
                 }
-            }else if (countryId === "18") {
-                expectedSalary.classList.remove("hidden");
-                price.classList.add("hidden");
-                salary.classList.add("hidden");
-                shipment.classList.add("hidden");
-                shipping.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                buyDirect.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
+
+                // Cache all DOM elements to avoid repeated queries
+                cacheElements() {
+                    const elementIds = [
+                        "divCar", "divPhone", "divModel", "services", "shipment",
+                        "itemCondition", "buyDirect", "price", "shipping",
+                        "quantity", "salary", "expectedSalary"
+                    ];
+
+                    return elementIds.reduce((acc, id) => {
+                        const element = document.getElementById(id);
+                        if (element) {
+                            acc[id] = element;
+                        }
+                        return acc;
+                    }, {});
                 }
-            }else{
-                price.classList.remove("hidden");
-                //shipping.classList.remove("hidden");
-                if (quantity) {
-                    quantity.classList.remove("hidden");
+
+                // Show an element by removing 'hidden' class
+                show(elementId) {
+                    if (this.elements[elementId]) {
+                        this.elements[elementId].classList.remove("hidden");
+                    }
+                }
+
+                // Hide an element by adding 'hidden' class
+                hide(elementId) {
+                    if (this.elements[elementId]) {
+                        this.elements[elementId].classList.add("hidden");
+                    }
+                }
+
+                // Apply visibility rules based on country configuration
+                applyVisibilityRules() {
+                    // First, hide initially hidden elements
+                    INITIALLY_HIDDEN.forEach(id => this.hide(id));
+
+                    // Get the configuration for this country (or default)
+                    const config = COUNTRY_VISIBILITY_CONFIG[this.countryId] ||
+                                  COUNTRY_VISIBILITY_CONFIG.default;
+
+                    // Hide all elements that should be hidden
+                    config.hide.forEach(id => this.hide(id));
+
+                    // Show all elements that should be shown
+                    config.show.forEach(id => this.show(id));
+                }
+
+                // Optional: Get all inputs from divCar if needed
+                getDivCarInputs() {
+                    if (this.elements.divCar) {
+                        return this.elements.divCar.querySelectorAll('input, textarea, select, checkbox');
+                    }
+                    return [];
                 }
             }
 

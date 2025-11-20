@@ -78,7 +78,7 @@ class AdvertController extends Controller
                                     ->where('sold_date', '>=', now()->subDays(30));
                           });
                 })
-                ->limit(10)
+                ->limit(8)
                 ->get();
 
             $perPage = 20;
@@ -684,10 +684,11 @@ class AdvertController extends Controller
         return view('frontend.adverts', compact('title', 'ads', 'user', 'categories'));
     }
 
-    public function seller(Request $request, $id)
+    public function seller(Request $request, $id, $ad)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
         $ads = Advert::with('firstImage','owner')->where('user_id', $id)->activeNotRecentlySold()->orderBy('created_at', 'desc')->paginate(10);
+        $ad = Advert::with('firstImage','owner')->where('id', $ad)->first();
         $user_id = $request->session()->get('user_id');
         $owner = User::where('user_id', $id)->first();
         $user = User::where('user_id', $user_id)->first();
@@ -695,7 +696,7 @@ class AdvertController extends Controller
         $count_ads = Advert::where('user_id', $id)->count();
 
 
-        return view('frontend.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories','count_ads'));
+        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories','count_ads'));
     }
 
    
@@ -1079,6 +1080,11 @@ public function buy_direct_payment(Request $request, $id)
         $data['ad'] = $advert = Advert::with('images')->where('id', $id)->first();
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
+
+        if (!$advert) {
+
+            abort(404, 'Advert not found');
+        }
 
         if ($request->isMethod('GET')) {
             return view('frontend.report-ad', $data);

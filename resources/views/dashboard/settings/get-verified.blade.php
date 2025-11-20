@@ -83,7 +83,7 @@
 				        @endif
 				        
 
-				
+
 				        @if($user->verified=="no")
 				          <div class="mt-8">
 				            <button type="submit" class="btn btn-primary py-1 text-lg flex justify-center items-center">

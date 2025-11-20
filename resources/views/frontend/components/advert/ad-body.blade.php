@@ -121,7 +121,9 @@ $exteriors = array_filter(array_map(fn($i)=>trim(str_replace(['/', '"', '\\', '[
 <div class="my-2 bg-white rounded p-2 md:p-5">
     <div class="w-48 font-bold">Description</div>
     <div class="border border-gray-200 my-2"></div>
-    <div class="text-sm leading-relaxed">{!! $ad->description ?? '' !!}</div>
+    <div class="text-sm leading-relaxed" style="word-break: break-word; overflow-wrap: anywhere;">
+        {!! $ad->description ?? '' !!}
+    </div>
 </div>
 
 @if ($ad->sold != 'Yes')

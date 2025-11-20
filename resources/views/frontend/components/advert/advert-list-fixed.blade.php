@@ -24,7 +24,7 @@
                     </div>
                     @endif
                 </div>
-                <div class="absolute top-0 left-3">
+                <div class="absolute top-3 left-3">
                     @if ($row->featured == 'Yes')
                         <div class="bg-gray-50 inline-block px-2 py-1 rounded" title="Boosted Ad">
                             <span>

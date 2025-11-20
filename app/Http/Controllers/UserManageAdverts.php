@@ -72,6 +72,8 @@ class UserManageAdverts extends Controller
             $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
             $category = (int) $request->input('category');
+            $description = $this->removeEmojis($request->input('description'));
+            $request->merge(['description' => $description]);
             //dd($category);
                 $rules = [
                 'ad_title' => 'required|max:75',
@@ -317,6 +319,9 @@ class UserManageAdverts extends Controller
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
         $oldPrice = $advert->getOriginal('price');
+
+        $description = $this->removeEmojis($request->input('description'));
+        $request->merge(['description' => $description]);
 
         $rules = [
             'ad_title' => 'required|max:75',
@@ -654,6 +659,12 @@ public function boost_ad(Request $request, $id)
 
             return redirect()->back()->with('error', 'Failed to delete advert');
         }
+    }
+
+    private function removeEmojis($text)
+    {
+        // Remove emojis using regex
+        return preg_replace('/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1F900}-\x{1F9FF}\x{1FA00}-\x{1FA6F}\x{1FA70}-\x{1FAFF}\x{1F004}\x{1F0CF}\x{1F18E}\x{1F191}-\x{1F19A}\x{1F201}\x{1F21A}\x{1F22F}\x{1F232}-\x{1F236}\x{1F238}-\x{1F23A}\x{1F250}\x{1F251}]/u', '', $text);
     }
 
 

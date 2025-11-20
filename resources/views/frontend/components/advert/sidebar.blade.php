@@ -105,7 +105,7 @@
         <div class="border border-gray-200 my-2"></div>
     </div>
     <div class="flex justify-start ">
-        <a href="/seller/{{ $ad->owner->user_id }}">
+        <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}">
             @if($ad->owner->profile_picture == "")
             <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                 <span class="text-dark_green text-sm font-medium">
@@ -117,7 +117,7 @@
             @endif
         </a>
         <div>
-            <div class="text-dark_green text-sm font-semibold"><a href="/seller/{{ $ad->owner->user_id }}">{{ $ad->owner->name }} </a> </div>
+            <div class="text-dark_green text-sm font-semibold"><a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}">{{ $ad->owner->name }} </a> </div>
             @if($ad->owner->verified=='yes')
                 <div class="bg-green-100  flex space-x-2 py-1 px-2 rounded-lg mt-2">
                     <span>
@@ -230,7 +230,7 @@
     </div>
     <div class="border border-gray-200 my-2"></div>
     <div class="flex justify-between">
-        <a href="/seller/{{ $ad->owner->user_id }}"><div class="text-dark_green text-sm">{{ $count_ads }} ads online</div></a>
+        <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}"><div class="text-dark_green text-sm">{{ $count_ads }} ads online</div></a>
         @if(session()->get('user_id') !='')
 
         @if($ad->owner->user_id == $user->user_id)
@@ -271,7 +271,7 @@
 
 
 <div class="mt-5 w-full rounded p-2 flex justify-center text-sm text-dark_green font-semibold hidden sm:block">
-    <a href="/report-ad/{{ $ad->id }}" class="flex justify-center items-center">
+    <a href="/report-ad/{{ $ad->id }}" class="flex justify-center items-center bg-transparent hover:bg-secondary_dark  text-dark_green font-semibold hover:text-white  py-2 px-2 border-2 border-dark_green hover:border-dark_green rounded-lg">
         <span class="mr-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                 stroke="currentColor" class="size-4">
@@ -280,7 +280,7 @@
             </svg>
         </span>
         <span>
-            Report Ad
+            Report this Ad
         </span>
     </a>
 </div>

@@ -86,23 +86,7 @@ class UserVerification extends Model implements HasMedia
         }
     }
 
-    protected static function booted()
-    {
-        static::saved(function ($model) {
-            foreach (['verification_documents', 'verification_address'] as $collection) {
-                $media = $model->getFirstMedia($collection);
 
-                if ($media && $media->mime_type !== 'application/pdf') {
-                    $originalPath = $media->getPath();
-
-                    // Ensure conversions exist before deleting
-                    if ($media->hasGeneratedConversion('optimized')) {
-                        Storage::disk($media->disk)->delete($originalPath);
-                    }
-                }
-            }
-        });
-    }
 
     /** ---------------------------
      *  Custom Accessors
