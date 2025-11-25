@@ -761,13 +761,13 @@
 
         <div id="buyDirect" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Bid/request</div>
+                <div class="font-semibold">Payment option</div>
             </div>
             <div class="col-span-10 lg:col-span-6 ">
-                <div class="flex flex-col text-base">
+                <div class="flex flex-col text-sm">
                   <label class="flex items-center  w-full">
                     <input type="radio" name="buy_direct" value="Yes" class="form-radio text-dark_green accent-dark_green"  required>
-                    <span class="ml-2 ">Yes, I would like to use the benefits of “Buy Direct” for free</span>
+                    <span class="ml-2 ">Yes, I would like to sell this item using the free ‘Buy Direct’ payment option</span>
                     
                   </label>
                   <div class="my-2 w-full border border-gray-300 p-2 rounded-lg text-sm">
@@ -777,7 +777,7 @@
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                                 </svg>
                             </span>
-                            <span>This item can be paid for using the new “Buy Direct” feature. <br><a class="font-semibold text-dartk_green" href="/payments-refunds">Learn More</a> </span>
+                            <span>Selecting this option allows buyers to purchase your item using ‘Buy Direct.’ <br><a class="font-semibold text-dartk_green" href="/payments-refunds">Learn More</a> </span>
                         </div>
                         <div class="flex text-xs mt-1">
                             <span class="mr-1">
@@ -785,7 +785,7 @@
                                   <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                             </span>
-                            <span><strong class="font-semibold">No negotiation </strong>- your price is what counts. </span>
+                            <span><strong class="font-semibold">No negotiation </strong> — buyers pay the price you set. </span>
                         </div>
                         <div class="flex text-xs mt-1">
                             <span class="mr-1">
@@ -921,8 +921,8 @@
                 <span class="text-danger">{{ $errors->first('show_contact') }}</span>
             @endif
             <select name="show_contact" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                <option value="No">No</option>
                 <option value="Yes">Yes</option>
+                <option value="No">No</option>
             </select>
             </div>
             <div class="col-span-10 md:col-span-3">

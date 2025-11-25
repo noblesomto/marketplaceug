@@ -5,6 +5,10 @@
 const CONFIG = {
     // Category-based visibility rules
     categoryVisibility: {
+        "1": {
+            show: [],
+            hide: ["services", "shipment", "itemCondition", "buyDirect", "quantity"]
+        },
         "7": {
             show: [],
             hide: ["services", "shipment", "itemCondition", "buyDirect", "quantity"]

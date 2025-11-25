@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Something went wrong! Please try again.',
+                    text: 'Please login to save this item to your favorites',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,

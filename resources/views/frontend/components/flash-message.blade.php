@@ -11,6 +11,12 @@
     @if (session($type))
         <div class="{{ $classes }} border px-4 py-3 rounded my-2">
             {{ session($type) }}
+            @if (session('resend_email'))
+                <a href="{{ route('activation.resend', ['email' => session('resend_email')]) }}"
+                   class="text-blue-600 underline ml-1">
+                    Resend activation email
+                </a>
+            @endif
         </div>
     @endif
 @endforeach

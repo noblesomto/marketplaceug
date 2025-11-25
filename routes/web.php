@@ -138,6 +138,8 @@ Route::any('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->midd
 Route::any('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->middleware('usersession');
 Route::any('/reviews/seller/{id}', [UserController::class, 'reviews_seller']);
 Route::any('/user/notifications', [UserController::class, 'notifications'])->middleware('usersession');
+Route::delete('/user/delete-notification/{id}', [UserController::class, 'deleteNotification'])
+    ->name('user.delete.notification');
 Route::any('report-user/{id}', [UserController::class, 'report_user'])->middleware('usersession');
 
 //Block User

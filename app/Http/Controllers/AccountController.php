@@ -476,16 +476,17 @@ class AccountController extends Controller
             try {
                 Mail::to($email)->send(new RegisterMail($details));
                 
-                return redirect("login")->with('success',
-                    'Great, you have successfully registered. Check your email to activate your account. ' .
-                    '<a href="'.route('activation.resend', ['email' => $email]).'" class="text-blue-600 underline">Resend activation email</a>'
-                );
+                return redirect("login")->with([
+                    'success' => 'Great, you have successfully registered. Check your email to activate your account.',
+                    'resend_email' => $email
+                ]);
             } catch (Throwable $e) {
                 
                  return redirect("register")->with('error', 'Error!, Your account details could not be sent, please contact admin');
             }    
         }
     }
+
 
     public function resend_email(Request $request)
     {

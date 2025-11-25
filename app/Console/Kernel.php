@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('boosts:expire')->everySixHours();
         $schedule->command('feed:google')->everySixHours();
+        $schedule->command('queue:work --stop-when-empty --max-time=50')
+             ->everyMinute()
+             ->withoutOverlapping();
 
     }
 

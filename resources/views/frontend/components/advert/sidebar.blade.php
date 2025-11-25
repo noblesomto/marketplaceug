@@ -264,7 +264,7 @@
 <div class="my-2 w-full bg-white rounded p-5 flex justify-between text-sm text-dark_green">
     <div class="font-bold space-x-1">
         <span><i class="bi bi-chat-dots"></i></span>
-       <span> {{ get_user_feedback_averages($ad->owner->user_id)['count'] }} Feedback(s)</span>
+       <span> {{ get_user_feedback_averages($ad->owner->user_id)['count'] }} User Feedback(s)</span>
     </div>
     <div class="underline"><a href="/reviews/seller/{{ $ad->owner->user_id }}">View all</a> </div>
 </div>

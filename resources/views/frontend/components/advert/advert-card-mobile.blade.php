@@ -13,7 +13,7 @@
                 @if($row->owner->verified=='yes')
                     <div class="bg-green-50  px-1 rounded">
                         <span title="verified User">
-                            <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
+                            <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                         </span>
                     </div>
                 @endif
@@ -27,9 +27,9 @@
                     </div>
                 @endif
             </div>
-            <div class="absolute top-0 left-2">
+            <div class="absolute top-1 left-2">
                 @if ($row->featured == 'Yes')
-                    <div class="bg-gray-50 inline-block px-2 py-1 rounded" title="Boosted Ad">
+                    <div class="bg-gray-50 inline-block px-1 py-0.5 rounded" title="Boosted Ad">
                         <span>
                             <i class="bi bi-rocket-takeoff"></i>
                         </span>

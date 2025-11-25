@@ -527,33 +527,50 @@ class UserController extends Controller
         }
     }
 
-    public function notifications(Request $request)
-    {
+    public function notifications(Request $request) {
         $title = "My Notifications | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
-        $notifications = Notification::with(['advert.owner', 'advert.firstImage'])
+
+        $notifications = Notification::with([
+                'advert.owner',
+                'advert.media' // Add this to eager load Spatie media
+            ])
             ->where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
+
         $count_ads = Advert::where('user_id', $user_id)->count();
 
         $groupedNotifications = $notifications->groupBy(function ($notification) {
             $date = $notification->created_at;
-
             if ($date->isToday()) {
                 return 'Today';
             } elseif ($date->isYesterday()) {
                 return 'Yesterday';
             } elseif ($date->isCurrentWeek()) {
-                return $date->format('l'); // Monday, Tuesday, etc.
+                return $date->format('l');
             } else {
-                return $date->format('M j, Y'); // Jan 1, 2024
+                return $date->format('M j, Y');
             }
         });
-        //dd($notifications);
+
         return view('dashboard.notifications', compact('title','user', 'groupedNotifications','count_ads'));
     }
+
+    public function deleteNotification($id)
+    {
+        $notification = Notification::where('id', $id)->first();
+
+        if (! $notification) {
+            return response()->json(['status' => 'error', 'message' => 'Not found'], 404);
+        }
+
+        $notification->delete();
+
+        return response()->json(['status' => 'success']);
+    }
+
 
     public function report_user(Request $request, $id)
 {
