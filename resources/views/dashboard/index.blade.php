@@ -5,7 +5,10 @@
 
 <section class="w-full md:w-3/6 mx-auto p-3 mb-10 text-sm">
     <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2">
-        My Dashboard
+        <div class="flex justify-between">
+            <span>My Dashboard</span>
+            <span><a href="/user/boosted">Boosted Ad</a> </span>
+        </div>
         @include('frontend.components.flash-message')
     </div>
 

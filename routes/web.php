@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfile;
 use App\Http\Controllers\BlockUser;
 use App\Http\Controllers\UserManageAdverts;
+use App\Http\Controllers\UserManageBoost;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdvertController;
@@ -122,6 +123,7 @@ Route::get('/payment/mark-received/{id}', [MessageController::class, 'mark_recei
 //User Dashboard Section
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware('usersession');
 Route::any('/user/my-ads', [UserController::class, 'my_ads'])->middleware('usersession');
+Route::any('/user/boosted', [UserController::class, 'boosted_ads'])->middleware('usersession');
 Route::any('/user/payment', [UserController::class, 'payments'])->middleware('usersession');
 Route::post('/user/confirm-delivery/{id}', [UserController::class, 'confirmDelivery'])->middleware('usersession');
 Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->middleware('usersession');
@@ -157,12 +159,15 @@ Route::middleware('usersession')->group(function () {
 
 //User Manage Ads
 Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');
-Route::any('/user/post-boost-ad/{id}', [UserManageAdverts::class, 'post_boost_ad'])->middleware('usersession');
 Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
 Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
-Route::any('/user/boost-ad/{id}', [UserManageAdverts::class, 'boost_ad'])->middleware('usersession');
-Route::any('/user/boosted-ad/{id}', [UserManageAdverts::class, 'boosted_ad'])->middleware('usersession');
 Route::get('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('edit.ad')->middleware('usersession');
+//User Manage Boost
+Route::any('/user/post-boost-ad/{id}', [UserManageBoost::class, 'post_boost_ad'])->middleware('usersession');
+Route::any('/user/make-payment/{id}', [UserManageBoost::class, 'make_payment'])->middleware('usersession');
+Route::any('/user/boost-ad/{id}', [UserManageBoost::class, 'boost_ad'])->middleware('usersession');
+Route::any('/user/boosted-ad/{id}', [UserManageBoost::class, 'boosted_ad'])->middleware('usersession');
+Route::any('/boost/upload-proof', [UserManageBoost::class, 'upload_proof'])->middleware('usersession');
 
 //User Profile
 Route::any('/user/profile', [UserProfile::class, 'profile'])->middleware('usersession');
@@ -188,6 +193,7 @@ Route::get('/chat-seller/{user}/{id}', [UserController::class, 'chat_seller']);
 //Paystack User Boost Add
 Route::post('post-boost/pay', [PaystackController::class, 'initialize_post_boost'])->name('post-boost.pay')->middleware('usersession');
 Route::post('boost/pay', [PaystackController::class, 'initialize_boost'])->name('boost.pay')->middleware('usersession');
+Route::post('boost/make-payment', [PaystackController::class, 'retry_boost_payment'])->name('boost.retry-payment')->middleware('usersession');
 Route::get('/boost/callback', [PaystackController::class, 'callback_boost'])->name('boost.callback')->middleware('usersession');
 Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');
 Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('payment.failed');

@@ -301,4 +301,56 @@ class PaystackController extends Controller
     }
 
 
+    public function retry_boost_payment(Request $request)
+{
+    $boost_id = $request->boost_id;
+    $user_id = $request->session()->get('user_id');
+
+    // Find the boost record
+    $boost = AdvertBoost::where('id', $boost_id)
+        ->where('user_id', $user_id) // Ensure user owns this boost
+        ->first();
+
+    if (!$boost) {
+        return back()->with('error', 'Boost record not found.');
+    }
+
+    // Check if payment is already completed
+    if ($boost->payment_status === 'paid') {
+        return back()->with('error', 'This boost has already been paid for.');
+    }
+
+    // Get user email
+    $user = User::where('user_id', $user_id)->first();
+    $email = $user->email;
+
+    // Initialize payment with NEW reference (don't include reference parameter)
+    $response = Http::withToken(config('services.paystack.secretKey'))
+        ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
+            'email' => $email,
+            'amount' => $boost->amount * 100, // kobo
+            'callback_url' => route('boost.callback'),
+            'metadata' => [
+                'advert_id' => $boost->advert_id,
+                'user_id' => $user_id,
+                'boost_id' => $boost_id, // Add this to link back to the boost record
+            ],
+        ]);
+
+    $data = $response->json();
+
+    if ($data['status']) {
+        // Update the boost record with the new reference
+        $newReference = $data['data']['reference'];
+        $boost->update([
+            'payment_reference' => $newReference,
+        ]);
+
+        return redirect($data['data']['authorization_url']);
+    }
+
+    return back()->with('error', 'Payment initialization failed. Please try again.');
+}
+
+
 }

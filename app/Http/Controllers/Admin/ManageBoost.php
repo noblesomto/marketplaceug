@@ -91,9 +91,8 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.completed', compact('title', 'page_title', 'adverts'));
+        return view('backend.adboost.unpaid', compact('title', 'page_title', 'adverts'));
     }
-
 
     public function payment($id, $status)
     {

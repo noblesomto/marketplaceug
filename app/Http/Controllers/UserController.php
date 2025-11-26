@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\ArchivedMessage;
 use App\Models\Advert;
+use App\Models\AdvertBoost;
 use App\Models\State;
 use App\Models\Feedback;
 use App\Models\Payment;
@@ -480,13 +481,29 @@ class UserController extends Controller
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
         $price = 500;
-        $advert = Advert::with(['images', 'car', 'phone', 'boost'])
+        $advert = AdvertBoost::with(['images', 'car', 'phone', 'boost'])
                 ->where('id', $id)
                 ->where('user_id', $user_id)
                 ->firstOrFail();
 
         return view('dashboard.boosted-ad', compact('title','user','advert','count_ads', 'price'));
     }
+
+    public function boosted_ads(Request $request)
+    {
+        $title = "Boosted Ad | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+        $price = 500;
+        $ads = AdvertBoost::with(['user', 'advert.media'])
+                ->where('user_id', $user_id)
+                ->orderby('updated_at','desc')
+                ->paginate(10);
+        return view('dashboard.boosted-adverts', compact('title','user','ads','count_ads', 'price'));
+    }
+
+
 
 
     public function checkFollowing(Request $request, $userId)

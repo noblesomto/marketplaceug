@@ -77,6 +77,13 @@
       0 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
     ),
   ),
+  'spatie/laravel-backup' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Backup\\BackupServiceProvider',
+    ),
+  ),
   'spatie/laravel-ignition' => 
   array (
     'aliases' => 
@@ -93,6 +100,17 @@
     'providers' => 
     array (
       0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    ),
+  ),
+  'spatie/laravel-signal-aware-command' => 
+  array (
+    'aliases' => 
+    array (
+      'Signal' => 'Spatie\\SignalAwareCommand\\Facades\\Signal',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\SignalAwareCommand\\SignalAwareCommandServiceProvider',
     ),
   ),
 );
