@@ -70,5 +70,11 @@ class Kernel extends HttpKernel
         'shipsession' => \App\Http\Middleware\CheckShipSession::class,
         'adminpermission' => \App\Http\Middleware\AdminPermission::class,
         'adminrole' => \App\Http\Middleware\AdminRole::class,
+
+        // Add Spatie Permission Middleware
+        'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 }

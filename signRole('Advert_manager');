@@ -1,0 +1,11 @@
+[90m= [39m[34;4mApp\Models\Admin[39;24m {#6518
+    [34mid[39m: [35m2[39m,
+    [34madmin_id[39m: "[32m42718[39m",
+    [34musername[39m: "[32mcustomer[39m",
+    [34memail[39m: "[32mcustomer@marketplace.ng[39m",
+    #[33mpassword[39m: "[32m$2y$12$4fH/CZ3bUib/59Ra.N/Uq.5kf0wgoRGjnMfsZzLi1Mj2fKnKbo4A6[39m",
+    [34mstatus[39m: "[32mactive[39m",
+    [34mcreated_at[39m: "[32m2025-08-26 04:16:16[39m",
+    [34mupdated_at[39m: "[32m2025-08-26 04:16:16[39m",
+  }
+

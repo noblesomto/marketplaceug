@@ -89,6 +89,7 @@
                                 <a href="/about-us" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">About Us</a>
                                 <a href="/how-it-works" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">How It Works</a>
                                 <a href="/faq" class="block border-b border-gray-100 py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">FAQ</a>
+                                <a href="https://wa.me/2348060615691" target="_blank" class="block py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">Chat Support</a>
                                 <a href="/contact-us" class="block py-2 px-2 font-semibold text-gray-500 hover:text-black rounded text-sm">Contact Us</a>
                             </div>
                             @else

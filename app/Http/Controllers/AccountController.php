@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
 use Illuminate\Support\HtmlString;
+use App\Helpers\ContentHelper;
 
 
 class AccountController extends Controller
@@ -443,7 +444,7 @@ class AccountController extends Controller
                 'name' => 'required',
                 'phone' => [
                         'required',
-                        Rule::unique('users', 'phone'),
+                        Rule::unique('phone'),
                         new NigerianPhoneNumber(),
                     ],
                 'email' => 'required|email|unique:users',
@@ -455,7 +456,7 @@ class AccountController extends Controller
             $token  = Str::random(40);
 
             User::create([
-                'name'=> $request->input('name'),
+                'name'=> ContentHelper::sanitizeContent($request->input('name')),
                 'email'=> $request->input('email'),
                 'phone'=> $request->input('phone'),
                 'acc_type'=> $request->input('acc_type'),
@@ -629,37 +630,35 @@ class AccountController extends Controller
     }
 
     public function adminlogin(Request $request)
-    {
-        $title = "Admin Login - " . config('global.site_name');
+{
+    $title = "Admin Login - " . config('global.site_name');
 
-        if ($request->isMethod('POST')) {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|min:4',
-            ]);
+    // Handle Login POST
+    if ($request->isMethod('POST')) {
 
-            $email = $request->email;
-            $password = $request->password;
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:4',
+        ]);
 
-            // Find admin by email
-            $admin = Admin::where('email', $email)->first();
+        $admin = Admin::where('email', $request->email)->first();
 
-            // Check if admin exists and password is correct
-            if ($admin && Hash::check($password, $admin->password)) {
-                $request->session()->put('admin_id', $admin->id);
-                return redirect()->action([AdminController::class, 'index']);
-            }
+        if ($admin && Hash::check($request->password, $admin->password)) {
 
-            return redirect("admin")->with('status', [
-                'text' => 'Invalid email or password. Please try again.',
-                'type' => 'danger'
-            ]);
+            // Store admin ID in session
+            $request->session()->put('admin_id', $admin->id);
+
+            return redirect()
+                ->route('admin.dashboard')
+                ->with('success', 'Welcome back, ' . $admin->username);
         }
 
-        if ($request->isMethod('GET')) {
-            return view('frontend.account.admin', compact('title'));
-        }
+        return back()->with('error', 'Invalid email or password.');
     }
+
+    // GET: Show Login Form
+    return view('frontend.account.admin', compact('title'));
+}
 
     public function shipper(Request $request)
 {

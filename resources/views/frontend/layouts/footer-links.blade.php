@@ -22,13 +22,14 @@
                     <li><a href="/contact-us" class="hover:text-secondary-200">Contact Us</a></li>
                     <li><a href="/payments-refunds" class="hover:text-secondary-200">Payment & Refund</a></li>
                     <li><a href="/how-it-works" class="hover:text-secondary-200">How It Works</a></li>
-                    <li><a href="/faq" class="hover:text-secondary-200">FAQ</a></li>
+                    <li><a href="https://wa.me/2348060615691" target="_blank" class="hover:text-secondary-200">Chat Support</a></li>
                 </ul>
             </div>
 
             <div class="flex flex-col">
                 <h4 class="font-bold">Our Resources</h4>
                 <ul class="flex flex-col space-y-1 mt-2">
+                    <li><a href="/faq" class="hover:text-secondary-200">FAQ</a></li>
                     <li><a href="/blog" class="hover:text-secondary-200">Blog</a></li>
                     <li><a href="#" class="hover:text-secondary-200">Mobile Apps</a></li>
                 </ul>

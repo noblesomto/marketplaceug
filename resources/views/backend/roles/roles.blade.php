@@ -380,7 +380,7 @@
                                                 <input class="form-check-input form-check-input-custom"
                                                        type="checkbox"
                                                        name="permissions[]"
-                                                       value="{{ $perm->id }}"
+                                                       value="{{ $perm->name }}"
                                                        id="perm{{ $role->id }}-{{ $perm->id }}"
                                                        {{ $role->permissions->contains($perm->id) ? 'checked' : '' }}>
                                                 <label class="form-check-label fw-medium" for="perm{{ $role->id }}-{{ $perm->id }}">
@@ -473,7 +473,7 @@
                                                 <div class="input-group">
                                                     <select name="roles[]" class="form-select form-select-modern" multiple style="min-height: 45px;">
                                                         @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}"
+                                                            <option value="{{ $role->name }}"
                                                                 {{ $admin->roles->contains($role->id) ? 'selected' : '' }}>
                                                                 {{ ucfirst($role->name) }}
                                                             </option>

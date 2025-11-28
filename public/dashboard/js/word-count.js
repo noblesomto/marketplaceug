@@ -97,41 +97,58 @@ document.addEventListener('DOMContentLoaded', function() {
     const trixEditor = document.querySelector('trix-editor');
     const hiddenInput = document.getElementById('content');
     let emojisRemoved = false;
+    let linksRemoved = false;
 
     // Emoji detection regex
     const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}]/gu;
 
+    // Link detection regex
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+    const anchorTagRegex = /<a[^>]*>(.*?)<\/a>/gi;
+
     trixEditor.addEventListener('trix-change', function(e) {
         let content = hiddenInput.value;
 
+        // === REMOVE EMOJIS ===
         if (emojiRegex.test(content)) {
-            // Remove emojis
             let cleanContent = content.replace(emojiRegex, '');
             hiddenInput.value = cleanContent;
-
-            // Update Trix editor display
             trixEditor.editor.loadHTML(cleanContent);
 
-            // Show subtle notification (only once per session)
             if (!emojisRemoved) {
                 showNotification('Emojis are automatically removed from descriptions');
                 emojisRemoved = true;
             }
+            return; // prevent double rendering
         }
 
-        // Update character count
+        // === REMOVE LINKS ===
+        if (urlRegex.test(content) || anchorTagRegex.test(content)) {
+            let cleanContent = content
+                .replace(urlRegex, '')      // remove plain URLs
+                .replace(anchorTagRegex, '$1'); // keep inner text of anchor tags
+
+            hiddenInput.value = cleanContent;
+            trixEditor.editor.loadHTML(cleanContent);
+
+            if (!linksRemoved) {
+                showNotification('Links are not allowed and have been removed');
+                linksRemoved = true;
+            }
+            return;
+        }
+
+        // === UPDATE CHARACTER COUNT ===
         let text = trixEditor.editor.getDocument().toString();
         document.getElementById('word-count').textContent = text.length;
     });
 
     function showNotification(message) {
-        // Create a subtle notification
         const notification = document.createElement('div');
         notification.className = 'fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg text-sm';
         notification.textContent = message;
         document.body.appendChild(notification);
 
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transition = 'opacity 0.5s';

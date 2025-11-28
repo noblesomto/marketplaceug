@@ -11,6 +11,27 @@ use App\Models\User;
 use App\Models\Feedback;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\AdminHelper;
+
+
+
+if (!function_exists('currentAdmin')) {
+    function currentAdmin() {
+        return AdminHelper::currentAdmin();
+    }
+}
+
+if (!function_exists('adminCan')) {
+    function adminCan($permission) {
+        return AdminHelper::can($permission);
+    }
+}
+
+if (!function_exists('adminHasRole')) {
+    function adminHasRole($role) {
+        return AdminHelper::hasRole($role);
+    }
+}
 
 
 if (!function_exists('getCategories')) {

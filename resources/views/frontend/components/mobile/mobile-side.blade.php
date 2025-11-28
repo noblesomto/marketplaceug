@@ -28,6 +28,9 @@
                   <li>
                     <a href="/contact-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                   </li>
+                  <li>
+                    <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Chat Support</a>
+                  </li>
                 </ul>
 
                 @if(session()->get('user_id') =='')
