@@ -1,9 +1,8 @@
 @include('dashboard.layouts.header')
-@include('dashboard.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('dashboard.layouts.back-nav')
 @include('dashboard.layouts.search')
 
-<section class="w-full max-w-5xl mx-auto pb-20 px-4">
+<section class="w-full max-w-5xl mx-auto pb-20 pt-2">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <!-- Header Section -->
         <div class="bg-gradient-to-r from-dark_green to-green-700 text-white px-6 py-5">
@@ -16,7 +15,7 @@
         </div>
 
         <!-- Content Section -->
-        <div class="p-6 md:p-8">
+        <div class="p-2 md:p-2">
             <!-- Ad Details Section -->
             <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <h2 class="text-lg font-semibold text-dark_green mb-4 flex items-center">

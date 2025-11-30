@@ -126,8 +126,8 @@
                             @endphp
                             <a href="/user/notifications" class="flex items-center justify-center p-2 text-white hover:bg-white hover:text-dark_green rounded-lg transition-colors duration-200">
                                 @if($count >= 1)
-                                    <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                                        {{ $count > 99 ? '99+' : $count }}
+                                    <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold">
+                                        {{ $count > 9 ? '9+' : $count }}
                                     </div>
                                 @endif
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

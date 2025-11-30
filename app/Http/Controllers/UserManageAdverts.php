@@ -155,6 +155,19 @@ class UserManageAdverts extends Controller
             $uniqueWords = array_unique($filteredWords);
 
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
+            $adTitle = ContentHelper::sanitizeContent($request->ad_title);
+
+            $lga     = $request->lga;
+
+            $exists = Advert::where([
+                'user_id' => $user_id,
+                'lga'     => $lga,
+                'ad_title'=> $adTitle,
+            ])->exists();
+
+            if ($exists) {
+                return redirect('/user/my-ads')->with('error', 'Looks like you’ve already posted this item. Try changing the title or posting another product.');
+            }
 
             $advert = Advert::create([
                 'ad_title'         => ContentHelper::sanitizeContent($request->input('ad_title')),
@@ -429,52 +442,64 @@ class UserManageAdverts extends Controller
 
 
         // Handle deleted images first
-if ($request->has('deleted_images') && !empty($request->input('deleted_images'))) {
-    $deletedImages = $request->input('deleted_images');
+        if ($request->has('deleted_images') && !empty($request->input('deleted_images'))) {
+            $deletedImages = $request->input('deleted_images');
+            // Ensure it's an array
+            if (!is_array($deletedImages)) {
+                $deletedImages = explode(',', $deletedImages);
+            }
+            $deletedImages = array_filter(array_map('intval', $deletedImages));
 
-    // Ensure it's an array
-    if (!is_array($deletedImages)) {
-        $deletedImages = explode(',', $deletedImages);
-    }
+            if (!empty($deletedImages)) {
+                // Get current image count
+                $currentImageCount = $advert->getMedia('images')->count();
+                $requestedDeleteCount = count($deletedImages);
 
-    $deletedImages = array_filter(array_map('intval', $deletedImages));
+                // Validate: must have at least 1 image remaining
+                if ($currentImageCount <= 1) {
+                    return redirect()->back()->withErrors([
+                        'deleted_images' => 'Cannot delete image. Advert must have at least one image.'
+                    ]);
+                } elseif ($requestedDeleteCount >= $currentImageCount) {
+                    return redirect()->back()->withErrors([
+                        'deleted_images' => 'Cannot delete all images. At least one image must remain.'
+                    ]);
+                } else {
+                    // Proceed with deletion
+                    \Log::info('Attempting to delete images:', $deletedImages);
 
-    if (!empty($deletedImages)) {
-        \Log::info('Attempting to delete images:', $deletedImages);
+                    // Step 1: Try normal deletion
+                    $deleteResults = $this->getImageService()->deleteMultipleImages(
+                        $advert,
+                        $deletedImages,
+                        'images',
+                        true // Reorder after deletion
+                    );
+                    $deletedCount = $deleteResults['deleted'] ?? 0;
+                    if ($deletedCount > 0) {
+                        $messages[] = "{$deletedCount} image(s) deleted";
+                    }
 
-        // Step 1: Try normal deletion
-        $deleteResults = $this->getImageService()->deleteMultipleImages(
-            $advert,
-            $deletedImages,
-            'images',
-            true // Reorder after deletion
-        );
+                    // Step 2: Force delete ALL requested IDs to guarantee DB + files are gone
+                    $forceDeletedCount = 0;
+                    foreach ($deletedImages as $mediaId) {
+                        if ($this->getImageService()->forceDeleteMedia($mediaId)) {
+                            $forceDeletedCount++;
+                        }
+                    }
+                    if ($forceDeletedCount > 0) {
+                        $messages[] = "{$forceDeletedCount} image(s) force deleted (cleanup)";
+                    }
 
-        $deletedCount = $deleteResults['deleted'] ?? 0;
-        if ($deletedCount > 0) {
-            $messages[] = "{$deletedCount} image(s) deleted";
-        }
-
-        // Step 2: Force delete ALL requested IDs to guarantee DB + files are gone
-        $forceDeletedCount = 0;
-        foreach ($deletedImages as $mediaId) {
-            if ($this->getImageService()->forceDeleteMedia($mediaId)) {
-                $forceDeletedCount++;
+                    // Log any errors from step 1
+                    if (!empty($deleteResults['errors'])) {
+                        foreach ($deleteResults['errors'] as $error) {
+                            \Log::warning("Image deletion error: " . $error);
+                        }
+                    }
+                }
             }
         }
-
-        if ($forceDeletedCount > 0) {
-            $messages[] = "{$forceDeletedCount} image(s) force deleted (cleanup)";
-        }
-
-        // Log any errors from step 1
-        if (!empty($deleteResults['errors'])) {
-            foreach ($deleteResults['errors'] as $error) {
-                \Log::warning("Image deletion error: " . $error);
-            }
-        }
-    }
-}
 
 
         // Upload new images BEFORE reordering existing ones

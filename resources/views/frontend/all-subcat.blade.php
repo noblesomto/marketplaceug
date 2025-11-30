@@ -15,8 +15,9 @@
                 @foreach($brands as $brand)
                     <!-- Card style on desktop, list item on mobile -->
                     <div class="md:bg-gray-50 md:hover:bg-gray-100 md:rounded-lg md:p-4 transition duration-200 border-b border-gray-100 last:border-0 md:border-0">
-                        <a href="/brand/{{ $brand->id }}/{{ $brand->brand_slug }}" class="flex items-center justify-between py-3 md:py-0">
-                            <span class="font-medium text-gray-700">{{ $brand->brand }}</span>
+                        <a href="/category/{{ strtolower($cat->category) }}/{{ strtolower($subcat->sub_category) }}/{{ strtolower($brand->brand) }}"
+                           class="flex items-center justify-between py-3 md:py-0">
+                            <span class="font-medium text-gray-700 lowercase">{{ $brand->brand }}</span>
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {{ $brand->advert_count }}
                             </span>

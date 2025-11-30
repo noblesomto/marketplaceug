@@ -156,3 +156,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 });
+
+
+
+    const displayInput = document.getElementById('price_display');
+    const hiddenInput = document.getElementById('price_hidden');
+
+    displayInput.addEventListener('input', function(e) {
+        // Remove all non-digit characters
+        let value = e.target.value.replace(/\D/g, '');
+
+        // Update hidden input with raw value
+        hiddenInput.value = value;
+
+        // Format display value with commas
+        if (value) {
+            e.target.value = parseInt(value).toLocaleString('en-US');
+        } else {
+            e.target.value = '';
+        }
+    });

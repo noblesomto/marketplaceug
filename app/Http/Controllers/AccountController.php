@@ -416,7 +416,7 @@ class AccountController extends Controller
         ];
 
         try {
-            Mail::to($email)->send(new NotifyMail($details));
+            Mail::to($email)->send(new OTPMail($details));
             return redirect("/authenticate")->with('status', ['text'=>'Check your email for OTP to login','type'=>'success']);
         } catch (Throwable $e) {
              return redirect("/")->with('status', ['text'=>'Error!, OTP could not be sent, please try again or contact admin','type'=>'danger']);
@@ -443,14 +443,36 @@ class AccountController extends Controller
                 'state' => 'required',
                 'name' => 'required',
                 'phone' => [
-                        'required',
-                        Rule::unique('phone'),
-                        new NigerianPhoneNumber(),
-                    ],
+                    'required',
+                    new NigerianPhoneNumber(),
+                ],
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:6',
                 'g-recaptcha-response' => ['required', new ReCaptcha],
             ]);
+
+            if (empty($request->input('email'))) {
+                Log::warning('Registration attempted with empty email', [
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'all_data' => $request->except('password')
+                ]);
+
+                return redirect("register")->with('error', 'Invalid registration data. Please try again.');
+            }
+
+            if (empty($request->input('email')) || empty($request->input('name'))) {
+                Log::error('Invalid registration attempt', [
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'referer' => $request->header('referer'),
+                    'data' => $request->except('password', 'g-recaptcha-response')
+                ]);
+
+                return redirect("register")
+                    ->withInput($request->except('password'))
+                    ->with('error', 'Registration failed. Please ensure all fields are filled correctly.');
+            }
             
             $email = $request->input('email');
             $token  = Str::random(40);
@@ -487,6 +509,7 @@ class AccountController extends Controller
             }    
         }
     }
+
 
 
     public function resend_email(Request $request)

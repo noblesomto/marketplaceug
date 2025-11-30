@@ -855,7 +855,7 @@ class AdvertController extends Controller
             ->orderBy('advert_count', 'desc')
             ->get();
 
-        return view('frontend.all-subcat', compact('title','ads','user','brands','subcat','count_subcat','subcat_slug'));
+        return view('frontend.all-subcat', compact('title','ads','user','cat','brands','subcat','count_subcat','subcat_slug'));
     }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)

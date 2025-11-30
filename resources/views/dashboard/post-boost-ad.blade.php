@@ -1,6 +1,5 @@
 @include('dashboard.layouts.header')
-@include('dashboard.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('dashboard.layouts.back-nav')
 @include('dashboard.layouts.search')
 
 <section class="w-full max-w-4xl mx-auto p-4 md:p-6 pb-20">
@@ -21,7 +20,7 @@
                     <h2 class="text-lg font-semibold text-dark_green mb-4">Ad Details</h2>
                     <div class="flex flex-col md:flex-row gap-6 items-start">
                         <img class="w-full md:w-48 h-48 object-contain rounded-lg border border-gray-200"
-                             src="{{ asset('uploads/images/'.$advert->firstImage->image) }}"
+                             src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
                              alt="{{ $advert->ad_title }}">
                         <div>
                             <h3 class="font-bold text-lg text-gray-800">{{ $advert->ad_title }}</h3>

@@ -1,6 +1,5 @@
 @include('dashboard.layouts.header')
-@include('dashboard.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('dashboard.layouts.back-nav')
 @include('dashboard.layouts.search')
 
 <section class="w-full md:w-5/6 mx-auto mt-3">

@@ -48,9 +48,9 @@
                           <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                             <div class="py-1">
                               <a
-                                href="/user/delete-ad/{{ $row->id }}"
-                                onclick="return confirm('Delete this advert permanently?')"
-                                class="flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
+                                href="javascript:void(0)"
+                                data-delete-url="/user/delete-ad/{{ $row->id }}"
+                                class="delete-ad-btn flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
                               >
                                 <i class="bi bi-trash mr-3 text-red-400"></i> Delete Ad
                               </a>
@@ -178,7 +178,10 @@
                         </div>
 
                         @else
-                            <a class="flex items-center gap-2 bg-gray-100 p-1 rounded" href="/user/mark-sold/{{ $row->id }}" title="Mark Advert Sold" onclick="return confirm('Are you sure you want to Mark Advert Sold?');">
+                            <a class="flex items-center gap-2 bg-gray-100 p-1 rounded mark-sold-btn"
+                               href="javascript:void(0)"
+                               data-mark-sold-url="/user/mark-sold/{{ $row->id }}"
+                               title="Mark Advert Sold">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -217,7 +220,12 @@
 
                         <div >
                            @if($row->ad_status=='active')
-                                <a title="Click to Change Status" class="flex items-center gap-2 bg-green-200 p-1 rounded" href="/user/ad-status/disabled/{{ $row->id }}">
+                                <a title="Click to Change Status"
+                                   class="flex items-center gap-2 bg-green-200 p-1 rounded ad-status-btn"
+                                   href="javascript:void(0)"
+                                   data-status-url="/user/ad-status/disabled/{{ $row->id }}"
+                                   data-current-status="active"
+                                   data-new-status="disabled">
                                     <span>Active Ad</span>
                                     <span class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -226,7 +234,12 @@
                                 </span>
                                 </a>
                             @elseif($row->ad_status=='disabled')
-                                <a title="Click to Change Status" class="flex items-center gap-2 bg-red-200 p-1 rounded" href="/user/ad-status/active/{{ $row->id }}">
+                                <a title="Click to Change Status"
+                                   class="flex items-center gap-2 bg-red-200 p-1 rounded ad-status-btn"
+                                   href="javascript:void(0)"
+                                   data-status-url="/user/ad-status/active/{{ $row->id }}"
+                                   data-current-status="disabled"
+                                   data-new-status="active">
                                     <span>Disabled</span>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -266,7 +279,6 @@
         </div>
     @endif
 </div>
-
 
 
 <script>
@@ -309,6 +321,102 @@
       document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded','false'));
     }
   });
+
+  // SweetAlert2 Delete Confirmation
+  document.addEventListener('click', function (e) {
+    const deleteBtn = e.target.closest('.delete-ad-btn');
+
+    if (deleteBtn) {
+      e.preventDefault();
+      const deleteUrl = deleteBtn.getAttribute('data-delete-url');
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to delete this advert permanently?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to delete URL
+          window.location.href = deleteUrl;
+        }
+      });
+    }
+  });
+
+  // SweetAlert2 Mark Sold Confirmation
+  document.addEventListener('click', function (e) {
+    const markSoldBtn = e.target.closest('.mark-sold-btn');
+
+    if (markSoldBtn) {
+      e.preventDefault();
+      const markSoldUrl = markSoldBtn.getAttribute('data-mark-sold-url');
+
+      Swal.fire({
+        title: 'Mark as Sold?',
+        text: "Are you sure you want to mark this advert as sold?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, mark it sold!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to mark sold URL
+          window.location.href = markSoldUrl;
+        }
+      });
+    }
+  });
+
+  // SweetAlert2 Ad Status Change Confirmation
+  document.addEventListener('click', function (e) {
+    const statusBtn = e.target.closest('.ad-status-btn');
+
+    if (statusBtn) {
+      e.preventDefault();
+      const statusUrl = statusBtn.getAttribute('data-status-url');
+      const currentStatus = statusBtn.getAttribute('data-current-status');
+      const newStatus = statusBtn.getAttribute('data-new-status');
+
+      // Determine dialog content based on the action
+      let title, text, icon, confirmButtonColor, confirmButtonText;
+
+      if (newStatus === 'disabled') {
+        title = 'Disable Ad?';
+        text = 'This will hide your ad from public view. You can reactivate it anytime.';
+        icon = 'warning';
+        confirmButtonColor = '#ef4444';
+        confirmButtonText = 'Yes, disable it';
+      } else {
+        title = 'Activate Ad?';
+        text = 'This will make your ad visible to the public again.';
+        icon = 'question';
+        confirmButtonColor = '#10b981';
+        confirmButtonText = 'Yes, activate it';
+      }
+
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: confirmButtonColor,
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: confirmButtonText,
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to status change URL
+          window.location.href = statusUrl;
+        }
+      });
+    }
+  });
 })();
 </script>
-

@@ -21,8 +21,8 @@
             <div class="flex flex-col items-center mx-2 relative">
                 <!-- Notification badge - hidden by default if count is 0 -->
                 @if($count >= 1)
-                    <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-4 h-4 flex items-center justify-center text-xs" >
-                    {{ $count }}
+                    <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]" >
+                    {{ $count > 9 ? '9+' : $count }}
                 </div>
                 @endif
                 <div>

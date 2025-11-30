@@ -82,13 +82,16 @@
                             <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
                                 <div class="flex">
                                     <div class="w-2/5">
-                                        <img class="h-32 w-full object-cover" src="{{ $row->featured_image_thumb }}" alt="{{ $blog->title }}">
+                                        <a href="/blog/{{ $blog->slug }}">
+                                            <img class="h-32 w-full object-cover" src="{{ $row->featured_image_thumb }}" alt="{{ $blog->title }}">
+                                        </a>
+
                                     </div>
                                     <div class="p-4 w-3/5">
                                         <div class="uppercase tracking-wide text-xs text-green-600 font-semibold">{{ Str::of($row->category)->replace('-', ' ')->title() }}</div>
-                                        <h3 class="font-bold text-gray-900 mt-1">{{ Str::limit($blog->title, 50) }}</h3>
+                                        <a href="/blog/{{ $blog->slug }}"><h3 class="font-bold text-gray-900 mt-1">{{ Str::limit($blog->title, 50) }}</h3></a>
                                         <div class="mt-2">
-                                            <a href="/blog/{{ $blog->slug }}/{{ $blog->id }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <a href="/blog/{{ $blog->slug }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
                                                 Read More
                                                 <i class="fas fa-arrow-right ml-1"></i>
                                             </a>

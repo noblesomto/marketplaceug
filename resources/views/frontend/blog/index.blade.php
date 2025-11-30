@@ -26,11 +26,13 @@
 
         <!-- Image -->
         <div class="relative h-48 sm:h-56 lg:h-64">
-          <img
-            src="{{ $blog->featured_image_thumb }}"
-            alt="{{ $blog->title }}"
-            class="absolute inset-0 w-full h-full object-cover"
-          >
+          <a href="/blog/{{ $blog->slug }}">
+              <img
+                src="{{ $blog->featured_image_thumb }}"
+                alt="{{ $blog->title }}"
+                class="absolute inset-0 w-full h-full object-cover"
+              >
+          </a>
         </div>
 
         <!-- Content -->

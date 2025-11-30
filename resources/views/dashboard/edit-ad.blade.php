@@ -778,11 +778,19 @@
                     @if ($errors->has('price'))
                         <span class="text-red-400">{{ $errors->first('price') }}</span>
                     @endif
-                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->price }}">
-                  </div>
-                  <div class="text-base ml-2">
-                   Naira
-                  </div>
+                    <input
+                        type="text"
+                        name="price_display"
+                        id="price_display"
+                        placeholder="0"
+                        class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : number_format($advert->price, 0, '.', ',') }}"
+                    >
+                    <input type="hidden" name="price" id="price_hidden" value="{{ old('price', $advert->price) }}">
+                </div>
+                <div class="text-base ml-2">
+                    Naira
+                </div>
             </div>
             </div>
             <div id="services" class="col-span-10 md:col-span-2 mt-1">
