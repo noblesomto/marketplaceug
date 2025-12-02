@@ -148,7 +148,7 @@
                         <div >
                            @if($row->ad_status=='active')
                                 <a title="Click to Change Status" class="flex items-center gap-2 bg-green-200 p-1 rounded cursor-not-allowed" >
-                                    <span>Active Ad</span>
+                                    <span>Ad is Active</span>
                                     <span class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -226,7 +226,7 @@
                                    data-status-url="/user/ad-status/disabled/{{ $row->id }}"
                                    data-current-status="active"
                                    data-new-status="disabled">
-                                    <span>Active Ad</span>
+                                    <span>Ad is Active</span>
                                     <span class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />

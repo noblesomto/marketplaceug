@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Broadcast;
 
+
+
 Route::get('/', [AdvertController::class, 'index']);
 Route::any('/page', [PageController::class, 'page']);
 Route::any('/about-us', [PageController::class, 'about']);

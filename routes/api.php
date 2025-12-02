@@ -188,3 +188,4 @@ Route::get('/unread-messages-count', function() {
 
     return response()->json(['count' => $count]);
 })->middleware('web'); // Important: we need session access
+

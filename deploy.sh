@@ -9,6 +9,7 @@ PASS='NL%c?_F46?lH'
 declare -A FOLDERS=(
   ["./"]="marketplace/"
   ["./public/frontend/"]="public_html/frontend/"
+  ["./public/dashboard/"]="public_html/dashboard/"
   ["./public/backend/"]="public_html/backend/"
   ["./public/build/"]="public_html/build/"
 )

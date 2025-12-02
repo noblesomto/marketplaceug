@@ -279,6 +279,61 @@ class Advert extends Model implements HasMedia
         }
     }
 
+    /**
+ * Get social media optimized image URL (absolute URL)
+ * Uses existing 'large' conversion (1200px, WebP)
+ */
+public function getSocialImageUrl()
+{
+    if ($this->hasMedia('images')) {
+        $media = $this->getFirstMedia('images');
+
+        // Use large conversion for social media
+        if ($media->hasGeneratedConversion('large')) {
+            return $media->getFullUrl('large');
+        }
+
+        // Fallback to optimized, then original
+        if ($media->hasGeneratedConversion('optimized')) {
+            return $media->getFullUrl('optimized');
+        }
+
+        return $media->getFullUrl();
+    }
+
+    // Return default image with full URL
+    return url('frontend/images/Marketplace-Naija.png');
+}
+
+/**
+ * Get all images as absolute URLs for schema markup
+ */
+public function getAllImagesForSchema()
+{
+    if ($this->hasMedia('images')) {
+        return $this->getMedia('images')->map(function ($media) {
+            // Use large conversion for schema
+            if ($media->hasGeneratedConversion('large')) {
+                return $media->getFullUrl('large');
+            }
+            return $media->getFullUrl();
+        })->toArray();
+    }
+
+    return [url('frontend/images/Marketplace-Naija.png')];
+}
+
+/**
+ * Get image dimensions for social sharing (approximate for large conversion)
+ */
+public function getSocialImageDimensions()
+{
+    return [
+        'width' => 1200,
+        'height' => 630 // Approximate, actual depends on original aspect ratio
+    ];
+}
+
 
 
 }
