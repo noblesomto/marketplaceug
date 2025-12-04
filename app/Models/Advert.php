@@ -334,6 +334,28 @@ public function getSocialImageDimensions()
     ];
 }
 
+public function getCleanTitleAttribute()
+{
+    $title = $this->ad_title ?? '';
+    $title = html_entity_decode($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $title = strip_tags($title);
+    $title = preg_replace('/\s+/', ' ', $title);
+    return trim($title);
+}
+
+public function getCleanDescriptionAttribute()
+{
+    // Use meta_description if available, otherwise fall back to description
+    $description = $this->meta_description ?? $this->description ?? '';
+
+    // Clean the text
+    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $description = strip_tags($description);
+    $description = preg_replace('/\s+/', ' ', $description);
+
+    return trim($description);
+}
+
 
 
 }

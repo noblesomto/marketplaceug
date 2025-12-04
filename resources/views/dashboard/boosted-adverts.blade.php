@@ -15,11 +15,11 @@
       @foreach ($ads as $row)
           <div class="bg-white mb-2 border-b border-b-gray-300 shadow p-2 mb-1">
              <div class="flex w-full">
-                  <div class="w-2/6 mr-1 relative bg-gray-50">
+                  <div class="w-2/6 mr-3 relative bg-gray-50 h-24 lg:h-40 overflow-hidden">
 
                         <img src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') ?: asset('frontend/images/default.png') }}"
                              alt="{{ $row->ad_title ?? 'Image' }}"
-                             class="h-24 lg:h-40 object-cover">
+                             class="w-full h-full object-cover">
 
                     <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">
                         {{ $row->advert->getMedia('images')->count() }}
@@ -75,7 +75,7 @@
 
 
                     <div class="mt-2">
-                        <div class="flex justify-between text-base font-semibold ">
+                        <div class="flex justify-between text-sm font-semibold ">
 
                           <span class="bg-gray-100 p-1 mr-2">Boost: {{ $row->boost_type }}</span>
                           <span class="bg-gray-100 p-1 mr-2">Boost Price: ₦ {{ number_format($row->amount, 0, '.', ',') }}</span>

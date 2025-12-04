@@ -77,7 +77,6 @@ document.querySelectorAll('.deleteNotificationBtn').forEach(btn => {
         Swal.fire({
             title: "Are you sure?",
             text: "This notification will be deleted permanently.",
-            icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",

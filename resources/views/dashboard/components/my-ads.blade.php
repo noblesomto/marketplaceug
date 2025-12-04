@@ -3,15 +3,15 @@
       @foreach ($ads as $row)
           <div class="bg-white mb-2 border-b border-b-gray-300 shadow p-2 mb-1">
              <div class="flex w-full">
-                  <div class="w-2/6 mr-1 relative bg-gray-50">
+                  <div class="w-2/6 mr-3 relative bg-gray-50 h-24 lg:h-40 overflow-hidden">
                     @if($row->hasMedia('images'))
                         <img src="{{ $row->getFirstMediaUrl('images', 'thumbnail') }}"
                              alt="{{ $row->ad_title ?? 'Image' }}"
-                             class="h-24 lg:h-40 object-cover">
+                             class="w-full h-full object-cover">
                     @else
                         <img src="{{ asset('frontend/images/default.png') }}"
                              alt="Default image"
-                             class="h-24 lg:h-40 object-cover">
+                             class="w-full h-full object-cover">
                     @endif
                     <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
                   </div>
@@ -333,7 +333,6 @@
       Swal.fire({
         title: 'Are you sure?',
         text: "Do you want to delete this advert permanently?",
-        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
@@ -359,7 +358,6 @@
       Swal.fire({
         title: 'Mark as Sold?',
         text: "Are you sure you want to mark this advert as sold?",
-        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#10b981',
         cancelButtonColor: '#6b7280',
@@ -390,13 +388,11 @@
       if (newStatus === 'disabled') {
         title = 'Disable Ad?';
         text = 'This will hide your ad from public view. You can reactivate it anytime.';
-        icon = 'warning';
         confirmButtonColor = '#ef4444';
         confirmButtonText = 'Yes, disable it';
       } else {
         title = 'Activate Ad?';
         text = 'This will make your ad visible to the public again.';
-        icon = 'question';
         confirmButtonColor = '#10b981';
         confirmButtonText = 'Yes, activate it';
       }

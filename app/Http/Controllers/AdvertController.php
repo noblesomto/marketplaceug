@@ -241,6 +241,11 @@ class AdvertController extends Controller
             abort(404, 'Advert not found');
         }
 
+        if ($id== 47428) {
+
+            return redirect('/');
+        }
+
          $sessionKey = 'back_url_for_ad_' . $id;
 
         if (!session()->has($sessionKey)) {

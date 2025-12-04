@@ -146,8 +146,10 @@ class UserManageAdverts extends Controller
                 return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
             }
 
-            $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
-            $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
+            $adTitle = ContentHelper::sanitizeTitle($request->ad_title);
+            $adDescription = ContentHelper::sanitizeDescription($request->input('description'));
+            $metaDescription = Str::limit($adDescription, 150, '');
+            $rawWords = explode(' ', Str::slug($adTitle . ' ' . $metaDescription, ' '));
             $filteredWords = array_filter($rawWords, function ($word) {
             return strlen($word) > 3;
             });
@@ -155,7 +157,7 @@ class UserManageAdverts extends Controller
             $uniqueWords = array_unique($filteredWords);
 
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
-            $adTitle = ContentHelper::sanitizeContent($request->ad_title);
+
 
             $lga     = $request->lga;
 
@@ -170,7 +172,7 @@ class UserManageAdverts extends Controller
             }
 
             $advert = Advert::create([
-                'ad_title'         => ContentHelper::sanitizeContent($request->input('ad_title')),
+                'ad_title'         => $adTitle,
                 'ad_type'          => $request->input('ad_type'),
                 'category'         => $request->input('category'),
                 'sub_category'     => $request->input('subcategory'),
@@ -185,7 +187,7 @@ class UserManageAdverts extends Controller
                 'state'            => $request->input('state'),
                 'lga'              => $request->input('lga'),
                 'state_slug'       => Str::slug($request->input('lga')),
-                'description' => ContentHelper::sanitizeContent($request->input('description')),
+                'description'      => $adDescription,
                 'keyword'          => $keywords,
                 'meta_description' => $metaDescription,
                 'featured'         => "No",
@@ -399,9 +401,10 @@ class UserManageAdverts extends Controller
         }
 
         $validatedData = $request->validate($rules);
-
-        $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
-        $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
+        $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title'));
+        $adDescrition = ContentHelper::sanitizeDescription($request->input('description'));
+        $metaDescription = Str::limit($adDescrition, 150, '');
+        $rawWords = explode(' ', Str::slug($adTitle . ' ' . $adDescrition, ' '));
         $filteredWords = array_filter($rawWords, function ($word) {
         return strlen($word) > 3;
         });
@@ -413,7 +416,7 @@ class UserManageAdverts extends Controller
         //dd($keywords);
         // Update main advert
         $advert->update([
-            'ad_title'        => ContentHelper::sanitizeContent($request->input('ad_title')),
+            'ad_title'        => $adTitle,
             'ad_type'         => $request->input('ad_type'),
             'category'        => $request->input('category'),
             'sub_category'    => $request->input('subcategory'),
@@ -428,7 +431,7 @@ class UserManageAdverts extends Controller
             'state'           => $request->input('state'),
             'lga'             => $request->input('lga'),
             'state_slug'      => Str::slug($request->input('lga')),
-            'description'       => ContentHelper::sanitizeContent($request->input('description')),
+            'description'       => $adDescrition,
             'featured'         => $advert->featured,
             'keyword'         => $keywords,
             'meta_description'=> $metaDescription,
