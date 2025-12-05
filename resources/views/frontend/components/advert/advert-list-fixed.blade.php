@@ -1,10 +1,11 @@
 <section class=" space-y-2 px-1">
 
+
 @forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
       <div class="bg-white my-2 py-1 border-b border-b-gray-300 h-[154px] sm:h-[170px] md:h-[190px]">
          <div class="flex w-full h-full">
-              <div class="flex-[40%] xs-max:flex-[38%] sm:flex-[40%] lg:flex-[35%] mr-1 relative h-full p-2">
+              <div class="flex-[40%] xs-max:flex-[40%] sm:flex-[40%] lg:flex-[35%] mr-1 relative h-full p-2">
                 <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-2 right-2 space-y-2">
                     @if($row->owner->verified=='yes')
@@ -36,7 +37,7 @@
                 </div>
                 <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
               </div>
-              <div class="flex-[60%] xs:flex-[62%] sm:flex-[60%] lg:flex-[65%] relative h-full overflow-hidden">
+              <div class="flex-[60%] xs:flex-[60%] sm:flex-[60%] lg:flex-[65%] relative h-full overflow-hidden">
                 <div class="flex justify-between text-xs">
                   <div class="flex justify-start items-center text-sm md:mr-5">
                     <div class="flex gap-2">

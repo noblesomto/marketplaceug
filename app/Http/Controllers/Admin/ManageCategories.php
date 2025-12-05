@@ -15,49 +15,52 @@ class ManageCategories extends Controller
 {
 
     public function category(Request $request)
-    {
-        $title = "Category - " . config('global.site_name');
-        $category = Category::orderBy('category','asc')->get();
-        $sub_category = SubCategory::orderBy('sub_category','asc')->get();
+{
+    $title = "Category - " . config('global.site_name');
+    $category = Category::orderBy('category','asc')->get();
+    $sub_category = SubCategory::orderBy('sub_category','asc')->get();
 
-        if ($request->isMethod('POST')) {
-            $request->validate([
-                'category' => 'required',
-                'meta_title' => 'nullable|max:255',
-                'meta_description' => 'nullable|max:500',
-            ]);
+    if ($request->isMethod('POST')) {
+        $request->validate([
+            'category' => 'required',
+            'meta_title' => 'nullable|max:255',
+            'meta_description' => 'nullable|max:500',
+            'keywords' => 'nullable|max:500',
+        ]);
 
-            // Check if it's an update or create
-            if ($request->has('category_id') && $request->input('category_id')) {
-                // Update existing category
-                $category = Category::find($request->input('category_id'));
-                if ($category) {
-                    $category->update([
-                        'category' => $request->input('category'),
-                        'meta_title' => $request->input('meta_title'),
-                        'meta_description' => $request->input('meta_description'),
-                    ]);
-
-                    $message = 'Category successfully updated';
-                }
-            } else {
-                // Create new category
-                $category = Category::create([
+        // Check if it's an update or create
+        if ($request->has('category_id') && $request->input('category_id')) {
+            // Update existing category
+            $category = Category::find($request->input('category_id'));
+            if ($category) {
+                $category->update([
                     'category' => $request->input('category'),
                     'meta_title' => $request->input('meta_title'),
                     'meta_description' => $request->input('meta_description'),
+                    'keywords' => $request->input('keywords'),
                 ]);
 
-                $message = 'Category successfully published';
+                $message = 'Category successfully updated';
             }
+        } else {
+            // Create new category
+            $category = Category::create([
+                'category' => $request->input('category'),
+                'meta_title' => $request->input('meta_title'),
+                'meta_description' => $request->input('meta_description'),
+                'keywords' => $request->input('keywords'),
+            ]);
 
-            return redirect('/admin/category')->with('status', ['text' => $message, 'type' => 'success']);
+            $message = 'Category successfully published';
         }
 
-        if ($request->isMethod('GET')) {
-            return view('backend.category.category', compact('title', 'category', 'sub_category'));
-        }
+        return redirect('/admin/category')->with('status', ['text' => $message, 'type' => 'success']);
     }
+
+    if ($request->isMethod('GET')) {
+        return view('backend.category.category', compact('title', 'category', 'sub_category'));
+    }
+}
 
     public function delete_category($id)
     {
@@ -87,52 +90,55 @@ class ManageCategories extends Controller
     }
 
     public function sub_category(Request $request, $id)
-    {
-        $title = "Sub Category - " . config('global.site_name');
-        $cat = Category::where('id', $id)->first();
-        $subcat = SubCategory::where('cat_id', $id)->orderBy('sub_category','asc')->get();
+{
+    $title = "Sub Category - " . config('global.site_name');
+    $cat = Category::where('id', $id)->first();
+    $subcat = SubCategory::where('cat_id', $id)->orderBy('sub_category','asc')->get();
 
-        if ($request->isMethod('POST')) {
-            $request->validate([
-                'sub_category' => 'required',
-                'category' => 'required',
-                'meta_title' => 'nullable|max:255',
-                'meta_description' => 'nullable|max:500',
-            ]);
+    if ($request->isMethod('POST')) {
+        $request->validate([
+            'sub_category' => 'required',
+            'category' => 'required',
+            'meta_title' => 'nullable|max:255',
+            'meta_description' => 'nullable|max:500',
+            'keywords' => 'nullable|max:500',
+        ]);
 
-            // Check if it's an update or create
-            if ($request->has('subcategory_id') && $request->input('subcategory_id')) {
-                // Update existing subcategory
-                $subcategory = SubCategory::find($request->input('subcategory_id'));
-                if ($subcategory) {
-                    $subcategory->update([
-                        'cat_id' => $request->input('category'),
-                        'sub_category' => $request->input('sub_category'),
-                        'meta_title' => $request->input('meta_title'),
-                        'meta_description' => $request->input('meta_description'),
-                    ]);
-
-                    $message = 'Sub Category successfully updated';
-                }
-            } else {
-                // Create new subcategory
-                $subcategory = SubCategory::create([
+        // Check if it's an update or create
+        if ($request->has('subcategory_id') && $request->input('subcategory_id')) {
+            // Update existing subcategory
+            $subcategory = SubCategory::find($request->input('subcategory_id'));
+            if ($subcategory) {
+                $subcategory->update([
                     'cat_id' => $request->input('category'),
                     'sub_category' => $request->input('sub_category'),
                     'meta_title' => $request->input('meta_title'),
                     'meta_description' => $request->input('meta_description'),
+                    'keywords' => $request->input('keywords'),
                 ]);
 
-                $message = 'Sub Category successfully published';
+                $message = 'Sub Category successfully updated';
             }
+        } else {
+            // Create new subcategory
+            $subcategory = SubCategory::create([
+                'cat_id' => $request->input('category'),
+                'sub_category' => $request->input('sub_category'),
+                'meta_title' => $request->input('meta_title'),
+                'meta_description' => $request->input('meta_description'),
+                'keywords' => $request->input('keywords'),
+            ]);
 
-            return redirect('/admin/sub-category/'.$id)->with('status', ['text' => $message, 'type' => 'success']);
+            $message = 'Sub Category successfully published';
         }
 
-        if ($request->isMethod('GET')) {
-            return view('backend.category.sub-category', compact('title', 'cat','subcat'));
-        }
+        return redirect('/admin/sub-category/'.$id)->with('status', ['text' => $message, 'type' => 'success']);
     }
+
+    if ($request->isMethod('GET')) {
+        return view('backend.category.sub-category', compact('title', 'cat','subcat'));
+    }
+}
 
     public function delete_subcategory($id, $cat)
     {
@@ -159,21 +165,20 @@ class ManageCategories extends Controller
             'brand' => 'required',
             'meta_title' => 'nullable|max:255',
             'meta_description' => 'nullable|max:500',
+            'keywords' => 'nullable|max:500',
         ]);
-
 
         // Check if it's an update or create
         if ($request->has('brand_id') && $request->input('brand_id')) {
             // Update existing brand
             $brand = Brands::find($request->input('brand_id'));
-            //dd($brand);
-
             if ($brand) {
                 $brand->update([
                     'subcat_id' => $request->input('sub_category'),
                     'brand' => $request->input('brand'),
                     'meta_title' => $request->input('meta_title'),
                     'meta_description' => $request->input('meta_description'),
+                    'keywords' => $request->input('keywords'),
                 ]);
 
                 $message = 'Brand successfully updated';
@@ -185,6 +190,7 @@ class ManageCategories extends Controller
                 'brand' => $request->input('brand'),
                 'meta_title' => $request->input('meta_title'),
                 'meta_description' => $request->input('meta_description'),
+                'keywords' => $request->input('keywords'),
             ]);
 
             $message = 'Brand successfully published';

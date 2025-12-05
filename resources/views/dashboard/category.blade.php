@@ -1,5 +1,6 @@
 @include('dashboard.layouts.header')
 @include('dashboard.layouts.nav')
+@include('dashboard.layouts.nav')
 @include('dashboard.layouts.search')
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3">

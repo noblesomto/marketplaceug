@@ -15,6 +15,7 @@ class Brands extends Model
         'subcat_id',
         'brand_id',
         'brand',
+        'keywords',
         'meta_title',
         'meta_description'
     ];

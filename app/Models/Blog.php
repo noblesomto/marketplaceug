@@ -47,7 +47,7 @@ class Blog extends Model implements HasMedia
     /**
      * Register media conversions - specific to Blog
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('blog_thumb')
             ->format('webp')

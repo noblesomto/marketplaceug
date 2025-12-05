@@ -39,6 +39,7 @@
                                       data-subcategory="{{ $row->sub_category }}"
                                       data-meta-title="{{ $row->meta_title }}"
                                       data-meta-description="{{ $row->meta_description }}"
+                                      data-keywords="{{ $row->keywords }}"
                                       title="Edit Sub Category">
                                   <i class="fa fa-edit"></i>
                               </button>
@@ -54,13 +55,6 @@
                  @endforeach
                </div>
            </div>
-
-          <div class="row">
-            <div class="col-lg-8 offset-md-2">
-
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -113,7 +107,7 @@
                            placeholder="Meta Title (for SEO)"
                            value="{{ old('meta_title') }}"
                            maxlength="255">
-                    <small class="text-muted">Max 255 characters. Recommended: 50-60 characters</small>
+                    <small class="text-muted char-counter-title">Max 255 characters. Recommended: 50-60 characters</small>
                 </div>
             </div>
 
@@ -127,7 +121,21 @@
                               placeholder="Meta Description (for SEO)"
                               rows="3"
                               maxlength="500">{{ old('meta_description') }}</textarea>
-                    <small class="text-muted">Max 500 characters. Recommended: 150-160 characters</small>
+                    <small class="text-muted char-counter-desc">Max 500 characters. Recommended: 150-160 characters</small>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="keywords" class="col-sm-2 col-form-label">Meta Keywords</label>
+                <div class="col-sm-10">
+                    @if ($errors->has('keywords'))
+                        <span class="text-danger">{{ $errors->first('keywords') }}</span>
+                    @endif
+                    <textarea name="keywords" id="keywords" class="form-control"
+                              placeholder="Keywords (comma separated)"
+                              rows="3"
+                              maxlength="500">{{ old('keywords') }}</textarea>
+                    <small class="text-muted char-counter-keywords">Max 500 characters. Example: keyword1, keyword2, keyword3</small>
                 </div>
             </div>
 
@@ -147,7 +155,7 @@
     </div>
 
     </div>
-    </section>
+</section>
 
 </main><!-- End #main -->
 
@@ -163,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const subcategoryNameInput = document.getElementById('sub_category');
     const metaTitleInput = document.getElementById('meta_title');
     const metaDescriptionInput = document.getElementById('meta_description');
+    const keywordsInput = document.getElementById('keywords');
 
     // Edit button click handler
     editButtons.forEach(button => {
@@ -171,21 +180,30 @@ document.addEventListener('DOMContentLoaded', function() {
             const subcategoryName = this.getAttribute('data-subcategory');
             const metaTitle = this.getAttribute('data-meta-title');
             const metaDescription = this.getAttribute('data-meta-description');
+            const keywords = this.getAttribute('data-keywords');
 
             // Fill the form with subcategory data
             subcategoryIdInput.value = subcategoryId;
             subcategoryNameInput.value = subcategoryName;
             metaTitleInput.value = metaTitle || '';
             metaDescriptionInput.value = metaDescription || '';
+            keywordsInput.value = keywords || '';
 
             // Change form title and button text
             formTitle.textContent = 'Edit Sub Category for {{ $cat->category }}';
             submitBtn.textContent = 'Update Sub Category';
+            submitBtn.classList.remove('btn-primary');
+            submitBtn.classList.add('btn-success');
             cancelBtn.style.display = 'inline-block';
 
             // Scroll to form
             document.getElementById('subcategory-form').scrollIntoView({ behavior: 'smooth' });
             subcategoryNameInput.focus();
+
+            // Trigger character counters
+            metaTitleInput.dispatchEvent(new Event('input'));
+            metaDescriptionInput.dispatchEvent(new Event('input'));
+            keywordsInput.dispatchEvent(new Event('input'));
         });
     });
 
@@ -205,56 +223,80 @@ document.addEventListener('DOMContentLoaded', function() {
         subcategoryNameInput.value = '';
         metaTitleInput.value = '';
         metaDescriptionInput.value = '';
+        keywordsInput.value = '';
         formTitle.textContent = 'New Sub Category for {{ $cat->category }}';
         submitBtn.textContent = 'Add Sub Category';
+        submitBtn.classList.remove('btn-success');
+        submitBtn.classList.add('btn-primary');
         cancelBtn.style.display = 'none';
+
+        // Reset character counters
+        metaTitleInput.dispatchEvent(new Event('input'));
+        metaDescriptionInput.dispatchEvent(new Event('input'));
+        keywordsInput.dispatchEvent(new Event('input'));
     }
 
     // Character counter for meta description
     metaDescriptionInput.addEventListener('input', function() {
         const charCount = this.value.length;
-        const counter = this.parentElement.querySelector('.char-counter') ||
-                       document.createElement('small');
-        counter.className = 'text-muted char-counter';
-        counter.textContent = `${charCount}/500 characters`;
+        const counter = this.parentElement.querySelector('.char-counter-desc');
+        if (counter) {
+            counter.textContent = `${charCount}/500 characters - Recommended: 150-160 characters`;
 
-        if (!this.parentElement.querySelector('.char-counter')) {
-            this.parentElement.appendChild(counter);
-        }
-
-        if (charCount > 500) {
-            counter.classList.add('text-danger');
-        } else {
-            counter.classList.remove('text-danger');
+            if (charCount > 500) {
+                counter.classList.add('text-danger');
+                counter.classList.remove('text-muted');
+            } else if (charCount > 160) {
+                counter.classList.remove('text-danger');
+                counter.classList.add('text-warning');
+            } else {
+                counter.classList.remove('text-danger', 'text-warning');
+                counter.classList.add('text-muted');
+            }
         }
     });
 
     // Character counter for meta title
     metaTitleInput.addEventListener('input', function() {
         const charCount = this.value.length;
-        const counter = this.parentElement.querySelector('.char-counter') ||
-                       document.createElement('small');
-        counter.className = 'text-muted char-counter';
-        counter.textContent = `${charCount}/255 characters`;
+        const counter = this.parentElement.querySelector('.char-counter-title');
+        if (counter) {
+            counter.textContent = `${charCount}/255 characters - Recommended: 50-60 characters`;
 
-        if (!this.parentElement.querySelector('.char-counter')) {
-            this.parentElement.appendChild(counter);
+            if (charCount > 255) {
+                counter.classList.add('text-danger');
+                counter.classList.remove('text-muted');
+            } else if (charCount > 60) {
+                counter.classList.remove('text-danger');
+                counter.classList.add('text-warning');
+            } else {
+                counter.classList.remove('text-danger', 'text-warning');
+                counter.classList.add('text-muted');
+            }
         }
+    });
 
-        if (charCount > 255) {
-            counter.classList.add('text-danger');
-        } else {
-            counter.classList.remove('text-danger');
+    // Character counter for keywords
+    keywordsInput.addEventListener('input', function() {
+        const charCount = this.value.length;
+        const counter = this.parentElement.querySelector('.char-counter-keywords');
+        if (counter) {
+            counter.textContent = `${charCount}/500 characters`;
+
+            if (charCount > 500) {
+                counter.classList.add('text-danger');
+                counter.classList.remove('text-muted');
+            } else {
+                counter.classList.remove('text-danger');
+                counter.classList.add('text-muted');
+            }
         }
     });
 
     // Trigger initial character count display
-    if (metaDescriptionInput.value) {
-        metaDescriptionInput.dispatchEvent(new Event('input'));
-    }
-    if (metaTitleInput.value) {
-        metaTitleInput.dispatchEvent(new Event('input'));
-    }
+    metaDescriptionInput.dispatchEvent(new Event('input'));
+    metaTitleInput.dispatchEvent(new Event('input'));
+    keywordsInput.dispatchEvent(new Event('input'));
 });
 </script>
 

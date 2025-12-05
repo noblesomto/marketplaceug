@@ -16,6 +16,7 @@ class Models extends Model
         'brand_id',
         'model_id',
         'model',
+        'keywords',
         'meta_title',
         'meta_description'
     ];
