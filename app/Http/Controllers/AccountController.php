@@ -13,12 +13,15 @@ use App\Models\Shipping;
 use App\Mail\RegisterMail;
 use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
+use App\Models\AdminLoginAttempts;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
 use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 
 class AccountController extends Controller
@@ -652,7 +655,10 @@ class AccountController extends Controller
         return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     }
 
-    public function adminlogin(Request $request)
+
+
+
+    public function adminlogin2(Request $request)
 {
     $title = "Admin Login - " . config('global.site_name');
 

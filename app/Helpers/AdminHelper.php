@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Admin;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AdminHelper
 {
@@ -14,13 +14,17 @@ class AdminHelper
      */
     public static function currentAdmin()
     {
-        $adminId = Session::get('admin_id');
+        return Auth::guard('admin')->user();
+    }
 
-        if (!$adminId) {
-            return null;
-        }
-
-        return Admin::find($adminId);
+    /**
+     * Check if an admin is logged in
+     *
+     * @return bool
+     */
+    public static function check()
+    {
+        return Auth::guard('admin')->check();
     }
 
     /**
@@ -44,7 +48,7 @@ class AdminHelper
 
         // Check permission using Spatie
         if (is_array($permission)) {
-            return $admin->hasAnyPermission($permission);
+            return $admin->hasAnyPermission($permission, 'admin');
         }
 
         return $admin->hasPermissionTo($permission, 'admin');
@@ -64,10 +68,25 @@ class AdminHelper
             return false;
         }
 
-        if (is_array($role)) {
-            return $admin->hasAnyRole($role);
+        // Super admin always returns true
+        if ($admin->isSuperAdmin()) {
+            return true;
         }
 
-        return $admin->hasRole($role);
+        if (is_array($role)) {
+            return $admin->hasAnyRole($role, 'admin');
+        }
+
+        return $admin->hasRole($role, 'admin');
+    }
+
+    /**
+     * Get admin ID
+     *
+     * @return int|null
+     */
+    public static function id()
+    {
+        return Auth::guard('admin')->id();
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\Admin\AdminAccount;
 use App\Http\Controllers\Admin\ManageAdverts;
 use App\Http\Controllers\Admin\ManageBoost;
 use App\Http\Controllers\Admin\ManageCategories;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Admin\ManageAdminUsers;
 use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
 use Illuminate\Support\Facades\Broadcast;
+
 
 
 
@@ -65,8 +67,11 @@ Route::any('/authenticate', [AccountController::class, 'authenticate']);
 Route::any('/resend-otp', [AccountController::class, 'resend_otp']);
 Route::any('/forgot-password', [AccountController::class, 'forgot_password']);
 Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password']);
-Route::any('/admin', [AccountController::class, 'adminlogin'])->name('admin.login');
 Route::any('/shipper', [AccountController::class, 'shipper']);
+
+
+//Admin Login
+Route::any('/admin', [AdminAccount::class, 'adminlogin'])->name('admin.login');
 
 //Adverts
 Route::get('/listings', [AdvertController::class, 'adverts']);

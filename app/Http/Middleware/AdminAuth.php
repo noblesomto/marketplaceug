@@ -1,14 +1,14 @@
 <?php
-
+// app/Http/Middleware/AdminAuth.php
 namespace App\Http\Middleware;
-use Illuminate\Support\Facades\Auth;
 
 use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class CheckAdminSession
+class AdminAuth
 {
-
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('admin.login')
@@ -17,5 +17,4 @@ class CheckAdminSession
 
         return $next($request);
     }
-
 }

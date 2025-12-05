@@ -11,6 +11,7 @@ use App\Models\Payment;
 use Carbon\Carbon;
 use App\Models\Reports;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class AdminController extends Controller
@@ -53,10 +54,15 @@ class AdminController extends Controller
 
 
 
+
     public function logout(Request $request)
-    {   
-        $request->session()->forget('admin_id');
-        $request->session()->flush();
-        return redirect("admin")->with('status', ['text'=>'Logged out Successfully','type'=>'success']);
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login')
+            ->with('success', 'You have been logged out successfully.');
     }
 }
