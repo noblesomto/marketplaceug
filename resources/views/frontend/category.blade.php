@@ -1,4 +1,4 @@
-@include('frontend.layouts.header')
+@include('frontend.layouts.header-category')
 @include('frontend.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')

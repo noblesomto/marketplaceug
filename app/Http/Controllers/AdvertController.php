@@ -241,7 +241,7 @@ class AdvertController extends Controller
             abort(404, 'Advert not found');
         }
 
-        if ($id== 47428 || $id == 86031 || $id == 34955) {
+        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795) {
 
             return redirect('/');
         }
@@ -781,7 +781,6 @@ class AdvertController extends Controller
             ->orderBy('advert_count', 'desc')
             ->get();
          //dd($categories);
-
         return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
     }
 
@@ -962,6 +961,18 @@ class AdvertController extends Controller
 
         //dd($categories);
         return view('frontend.mobile-category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
+    }
+
+    public function location($location)
+    {
+        $title = "Adverts located at ". $location .' | '.config('global.site_title');
+        $ads = Advert::activeNotRecentlySold()
+            ->where('state_slug', $location)
+            ->paginate(20);
+
+        $categories = Category::with('subCategories')->get();
+            //dd($ads);
+        return view('frontend.location', compact('title','location', 'ads','categories'));
     }
 
 

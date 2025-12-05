@@ -15,6 +15,8 @@ class Brands extends Model
         'subcat_id',
         'brand_id',
         'brand',
+        'meta_title',
+        'meta_description'
     ];
 
     public function sluggable(): array

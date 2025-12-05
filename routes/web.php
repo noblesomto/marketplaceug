@@ -397,14 +397,23 @@ Route::get('/unread-messages-count', function () {
 
     return response()->json(['count' => $count]);
 });
-Route::get('/{location}/{slug}/{id}', [AdvertController::class, 'advert'])
-     ->where('location', '[A-Za-z0-9\-]+');
 
+// 3-segment advert page
+Route::get('/{location}/{slug}/{id}', [AdvertController::class, 'advert'])
+    ->where('location', '[A-Za-z0-9\-]+')
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->where('id', '[0-9]+');
+
+// 2-segment location filters
 Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
-    ->where([
-        'location' => '[a-zA-Z0-9\-]+',
-        'slug' => '[a-zA-Z0-9\-]+',
-    ]);
+    ->where('location', '[A-Za-z0-9\-]+')
+    ->where('slug', '[A-Za-z0-9\-]+');
+
+// 1-segment = location (LGA)
+Route::get('/{location}', [AdvertController::class, 'location'])
+    ->where('location', '[A-Za-z0-9\-]+');
+
+
 
 
 

@@ -14,6 +14,8 @@ class Category extends Model
         'cat_id',
         'category',
         'icon',
+        'meta_title',
+        'meta_description'
     ];
 
     public function sluggable(): array

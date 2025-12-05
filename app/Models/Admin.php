@@ -12,7 +12,7 @@ class Admin extends Authenticatable // Change from Model
 
     protected $guard_name = 'admin'; // Specify admin guard
 
-    protected $fillable = ['admin_id', 'username', 'email', 'password'];
+    protected $fillable = ['admin_id', 'username','remember_token', 'email', 'password'];
 
     protected $hidden = ['password', 'remember_token'];
 
