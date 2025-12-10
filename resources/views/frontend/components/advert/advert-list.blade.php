@@ -1,6 +1,4 @@
-<section class="space-y-2 px-1">
-
-@forelse($ads as $row)
+@foreach($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
       <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[154px] sm:h-[160px] md:h-[190px]">
          <div class="flex w-full h-full">
@@ -122,23 +120,8 @@
                           </div>
                     @endif
               </div>
-
-
               </div>
           </div>
       </div>
 </a>
-@empty
-  <div class="flex flex-col h-screen items-center bg-white p-10">
-        <span>
-            <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="No Adverts Currently"/>
-        </span>
-        <span>No Item here yet...</span>
-    </div>
-@endforelse
-
-<div class="mt-6 px-2">
-  {{ $ads->links('pagination::tailwind') }}
-</div>
-
-</section>
+@endforeach

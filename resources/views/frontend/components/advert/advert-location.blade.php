@@ -137,8 +137,5 @@
     </div>
 @endforelse
 
-<div class="mt-6 px-2">
-  {{ $ads->links('pagination::tailwind') }}
-</div>
 
 </section>

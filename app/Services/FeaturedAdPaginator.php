@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Advert;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class FeaturedAdPaginator
@@ -23,30 +21,39 @@ class FeaturedAdPaginator
         return $this;
     }
 
-    public function paginate(): LengthAwarePaginator
+    public function get(): array
     {
-        $featured = $this->getFeaturedAds();
-        $regular = $this->getRegularAds(0); // we no longer need featuredCount in offset logic
+        $featured = collect();
 
+        if ($this->page === 1) {
+            $featured = $this->getFeaturedAds();
+        }
+
+        $regular = $this->getRegularAds();
         $ads = $this->page === 1 ? $featured->merge($regular) : $regular;
 
-        $total = $this->getRegularAdsTotal(); // purely regular ads
+        $hasMore = $this->hasMoreAds();
 
-        return new LengthAwarePaginator(
-            $ads,
-            $total,
-            $this->perPage,
-            $this->page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+        return [
+            'ads' => $ads,
+            'hasMore' => $hasMore,
+            'nextPage' => $this->page + 1
+        ];
     }
-
 
     protected function getFeaturedAds(): Collection
     {
-        $query = Advert::with(['firstImage','car', 'brands', 'boost' => fn($q) => $q->where('boost_status', 'active')])
+        $query = Advert::with(['firstImage', 'car', 'brands', 'owner', 'boost' => fn($q) => $q->where('boost_status', 'active')])
             ->where('featured', 'Yes')
-            ->activeNotRecentlySold()
+            ->where('ad_status', 'active')
+            ->where(function ($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function ($subQ) {
+                      $subQ->where('sold', 'Yes')
+                           ->whereNotNull('sold_date')
+                           ->where('sold_date', '>=', now()->subDays(30));
+                  });
+            })
             ->whereHas('boost', fn($q) => $q->where('boost_status', 'active'));
 
         $this->applyFilters($query);
@@ -56,14 +63,21 @@ class FeaturedAdPaginator
             ->get();
     }
 
-    protected function getRegularAds(int $featuredCount): Collection
+    protected function getRegularAds(): Collection
     {
         $offset = ($this->page - 1) * $this->perPage;
         $limit = $this->perPage;
 
-        // Regular ads only
-        $query = Advert::with('firstImage','car','brands')
-            ->activeNotRecentlySold()
+        $query = Advert::with('firstImage', 'car', 'brands', 'owner')
+            ->where('ad_status', 'active')
+            ->where(function ($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function ($subQ) {
+                      $subQ->where('sold', 'Yes')
+                           ->whereNotNull('sold_date')
+                           ->where('sold_date', '>=', now()->subDays(30));
+                  });
+            })
             ->where(function ($q) {
                 $q->where('featured', '!=', 'Yes')->orWhereNull('featured');
             });
@@ -76,23 +90,34 @@ class FeaturedAdPaginator
             ->get();
     }
 
-
-    protected function getRegularAdsTotal(): int
+    protected function hasMoreAds(): bool
     {
-        $query = Advert::activeNotRecentlySold()
+        $offset = $this->page * $this->perPage;
+
+        $query = Advert::where('ad_status', 'active')
+            ->where(function ($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function ($subQ) {
+                      $subQ->where('sold', 'Yes')
+                           ->whereNotNull('sold_date')
+                           ->where('sold_date', '>=', now()->subDays(30));
+                  });
+            })
             ->where(function ($q) {
                 $q->where('featured', '!=', 'Yes')->orWhereNull('featured');
             });
 
         $this->applyFilters($query);
 
-        return $query->count();
+        $totalCount = $query->count();
+        return $totalCount > $offset;
     }
 
     protected function applyFilters($query)
     {
         foreach ($this->filters as $key => $value) {
-            if (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'city']) && $value) {
+            // Add 'state_slug' to the allowed filters
+            if (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']) && $value) {
                 $query->where($key, $value);
             }
         }

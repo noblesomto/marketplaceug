@@ -25,15 +25,57 @@ use App\Mail\ReportMail;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+        public function index(Request $request)
     {   
-        $title = "User Dashboard  - " . config('global.site_name');
+        $title = "User Dashboard - " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(20);
-        //dd($ads);
-        return view('dashboard.index', compact('title','user','ads','count_ads'));
+        $ads = Advert::with('firstImage')
+                    ->orderBy('created_at', 'desc')
+                    ->where('user_id', $user_id)
+                    ->paginate(20);
+
+        $hasMore = $ads->hasMorePages();
+
+        return view('dashboard.index', compact('title', 'user', 'ads', 'count_ads', 'hasMore'));
+    }
+
+    public function my_ads(Request $request)
+    {
+        $title = "My Ads | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('users.user_id', $user_id)->first();
+        $ads = Advert::with('firstImage')
+                    ->orderBy('created_at', 'desc')
+                    ->where('user_id', $user_id)
+                    ->paginate(20);
+        $count_ads = Advert::where('user_id', $user_id)->count();
+
+        $hasMore = $ads->hasMorePages();
+
+        return view('dashboard.my-ads', compact('title', 'user', 'ads', 'count_ads', 'hasMore'));
+    }
+
+    public function loadMoreUserAds(Request $request)
+    {
+        $user_id = $request->session()->get('user_id');
+
+        if (!$user_id) {
+            return response()->json([
+                'error' => 'Unauthorized'
+            ], 401);
+        }
+
+        $ads = Advert::with('firstImage')
+                    ->orderBy('created_at', 'desc')
+                    ->where('user_id', $user_id)
+                    ->paginate(20);
+
+        return response()->json([
+            'html' => view('dashboard.components.my-ads', ['ads' => $ads])->render(),
+            'hasMore' => $ads->hasMorePages()
+        ]);
     }
 
     public function category(Request $request)
@@ -185,15 +227,7 @@ class UserController extends Controller
     }
 
 
-    public function my_ads(Request $request)
-    {   
-        $title = "My Ads | " . config('global.site_name');
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('users.user_id', $user_id)->first();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(20);
-        $count_ads = Advert::where('user_id', $user_id)->count();
-        return view('dashboard.my-ads', compact('title','user', 'ads','count_ads'));
-    }
+
 
 
     public function ad_status($status , $id)

@@ -744,16 +744,16 @@ class AdvertController extends Controller
         return view('frontend.all-categories', compact('title','ads','user','categories','categoryCounts'));
     }
 
-    public function loadMoreAdverts(Request $request)
+    public function loadMoreAds(Request $request)
     {
         $page = $request->get('page', 1);
-        $filters = $request->only(['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']);
+        $filters = $request->only(['category', 'sub_category', 'brand', 'model', 'state', 'city']);
 
         $result = (new FeaturedAdPaginator($page))
             ->filters($filters)
             ->get();
 
-        $html = view('frontend.components.advert.advert-list', [
+        $html = view('frontend.partials.ad-items', [
             'ads' => $result['ads']
         ])->render();
 
@@ -764,25 +764,22 @@ class AdvertController extends Controller
         ]);
     }
 
-        public function category(Request $request, $category_slug)
+    public function category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $title = config('global.site_name') . ' | ' . $cat->category;
 
-
-        $result = (new FeaturedAdPaginator(1))
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
             ->filters(['category' => $cat->id])
-            ->get();
-
-        $ads = $result['ads'];
-        $hasMore = $result['hasMore'];
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
 
+        // Update count to also use the scope
         $count_cat = Advert::activeNotRecentlySold()
-            ->where('category', $cat->id)
-            ->count();
+                          ->where('category', $cat->id)
+                          ->count();
 
         $categories = DB::table('sub_categories')
             ->leftJoin('adverts', function ($join) {
@@ -803,64 +800,87 @@ class AdvertController extends Controller
             ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
-
-            $filterType = 'category';
-            $filterId = $cat->id;
-            $filterIsString = false;
-
-        return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore'));
+         //dd($categories);
+        return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
     }
 
     public function sub_category(Request $request, $category_slug, $subcat_slug)
-{
-    $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-    $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
-    $title = config('global.site_name') . ' | ' . $subcat->sub_category;
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category;
 
-    $result = (new FeaturedAdPaginator(1))
-        ->filters(['sub_category' => $subcat->id])
-        ->get();
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['sub_category' => $subcat->id])
+            ->paginate();
 
-    $ads = $result['ads'];
-    $hasMore = $result['hasMore'];
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
 
-    $user_id = $request->session()->get('user_id');
-    $user = User::where('user_id', $user_id)->first();
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
 
-    $count_subcat = Advert::activeNotRecentlySold()
-        ->where('sub_category', $subcat->id)
-        ->count();
+        // Brands query with filtering
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
 
-    $brands = DB::table('brands')
-        ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-        ->where('brands.subcat_id', $subcat->id)
-        ->where(function($query) {
-            $query->where('adverts.ad_status', 1)
-                  ->where(function($q) {
-                      $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                        ->orWhereNull('adverts.sold_date');
-                  });
-        })
-        ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-        ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-        ->orderBy('advert_count', 'desc')
-        ->get();
+        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat'));
+    }
 
-    // IMPORTANT: Set these variables for the JavaScript
-    $filterType = 'sub_category';
-    $filterId = $subcat->id;
-    $filterIsString = false;
+    public function all_subcat(Request $request, $category_slug, $subcat_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
-    // DEBUG: Verify they're set
-    \Log::info('sub_category view data', [
-        'filterType' => $filterType,
-        'filterId' => $filterId,
-        'subcat_id' => $subcat->id,
-    ]);
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
 
-    return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId'));
-}
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
+            ->filters(['sub_category' => $subcat->id])
+            ->paginate();
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        // Count with scope
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
+
+        // Brands query with filtering
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        return view('frontend.all-subcat', compact('title','ads','user','cat','brands','subcat','count_subcat','subcat_slug'));
+    }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
     {
@@ -870,23 +890,23 @@ class AdvertController extends Controller
 
         $title = config('global.site_name') . ' | ' . $brand->brand;
 
-        $result = (new FeaturedAdPaginator(1))
+        $ads = (new FeaturedAdPaginator(request()->get('page', 1)))
             ->filters(['brand' => $brand->id])
-            ->get();
-
-        $ads = $result['ads'];
-        $hasMore = $result['hasMore'];
+            ->paginate();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
 
+        // Count with scope
         $count_subcat = Advert::activeNotRecentlySold()
-            ->where('sub_category', $subcat->id)
-            ->count();
+                        ->where('sub_category', $subcat->id)
+                        ->count();
 
+        // Brands query with filtering
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
             ->where('brands.subcat_id', $subcat->id)
+            // Add active and not recently sold conditions
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
@@ -899,96 +919,8 @@ class AdvertController extends Controller
             ->orderBy('advert_count', 'desc')
             ->get();
 
-            $filterType = 'brand';
-            $filterId = $brand->id;
-            $filterIsString = false;
-
-        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat', 'hasMore'));
+        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat'));
     }
-
-        public function location($location)
-    {
-        $title = "Adverts located at ". $location .' | '.config('global.site_title');
-
-        $result = (new FeaturedAdPaginator(1))
-            ->filters(['state_slug' => $location])
-            ->get();
-
-        $ads = $result['ads'];
-        $hasMore = $result['hasMore'];
-
-        // Don't add quotes - let JavaScript handle it
-        $filterType = 'state_slug';
-        $filterId = $location; // Just the raw value
-        $filterIsString = true; // Flag to tell JS it's a string
-
-        $categories = Category::with('subCategories')->get();
-
-        return view('frontend.location', compact('title','location', 'ads','categories', 'hasMore', 'filterType', 'filterId', 'filterIsString'));
-    }
-
-    public function loadMoreLocation(Request $request)
-    {
-        $page = $request->get('page', 1);
-        $filters = $request->only(['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']);
-
-        $result = (new FeaturedAdPaginator($page))
-            ->filters($filters)
-            ->get();
-
-        $html = view('frontend.components.advert.advert-location', [
-            'ads' => $result['ads']
-        ])->render();
-
-        return response()->json([
-            'html' => $html,
-            'hasMore' => $result['hasMore'],
-            'nextPage' => $result['nextPage']
-        ]);
-    }
-
-        public function all_subcat(Request $request, $category_slug, $subcat_slug)
-    {
-        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
-
-        $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
-
-        // CHANGED: Use .get() instead of .paginate()
-        $result = (new FeaturedAdPaginator(1))
-            ->filters(['sub_category' => $subcat->id])
-            ->get();
-
-        $ads = $result['ads'];
-        $hasMore = $result['hasMore'];
-
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
-
-        $count_subcat = Advert::activeNotRecentlySold()
-            ->where('sub_category', $subcat->id)
-            ->count();
-
-        $brands = DB::table('brands')
-            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $subcat->id)
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
-            })
-            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-            ->orderBy('advert_count', 'desc')
-            ->get();
-
-        // CHANGED: Added $hasMore to compact
-        return view('frontend.all-subcat', compact('title','ads','user','cat','brands','subcat','count_subcat','subcat_slug', 'hasMore'));
-    }
-
-
 
     public function all_cateory(Request $request, $category_slug)
     {
@@ -1049,6 +981,18 @@ class AdvertController extends Controller
 
         //dd($categories);
         return view('frontend.mobile-category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat'));
+    }
+
+    public function location($location)
+    {
+        $title = "Adverts located at ". $location .' | '.config('global.site_title');
+        $ads = Advert::activeNotRecentlySold()
+            ->where('state_slug', $location)
+            ->paginate(20);
+
+        $categories = Category::with('subCategories')->get();
+            //dd($ads);
+        return view('frontend.location', compact('title','location', 'ads','categories'));
     }
 
 

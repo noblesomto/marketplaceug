@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ config('global.site_name') }} - New Registeration</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -184,7 +184,7 @@
         <!-- Header -->
         <tr>
             <td class="header">
-                <h1>Welcome to {{ config('global.site_name') }}</h1>
+                <h1>Welcome to {{ config('global.email_title') }}</h1>
             </td>
         </tr>
         
@@ -210,12 +210,12 @@
                             </div>
                             
                             <p class="message">
-                                If you have any questions, just reply to this email—we're always happy to help out.
+                                If you have any questions, just reply to this email. Our team is always ready to help.
                             </p>
                             
                             <p class="signature">
                                 Cheers,<br>
-                                The {{ config('global.site_name') }} Team
+                                The {{ config('global.email_title') }} Team
                             </p>
                         </td>
                     </tr>

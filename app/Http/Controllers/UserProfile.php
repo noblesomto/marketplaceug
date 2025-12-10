@@ -29,9 +29,31 @@ class UserProfile extends Controller
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
         $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
+        $hasMore = $ads->hasMorePages();
 
-        return view('dashboard.settings.profile', compact('title','user','count_ads','ads'));
+        return view('dashboard.settings.profile', compact('title','user','count_ads','ads','hasMore'));
 
+    }
+
+    public function loadMoreUserAds(Request $request)
+    {
+        $user_id = $request->session()->get('user_id');
+
+        if (!$user_id) {
+            return response()->json([
+                'error' => 'Unauthorized'
+            ], 401);
+        }
+
+        $ads = Advert::with('firstImage')
+                    ->orderBy('created_at', 'desc')
+                    ->where('user_id', $user_id)
+                    ->paginate(10);
+
+        return response()->json([
+            'html' => view('frontend.components.advert.advert-list', ['ads' => $ads])->render(),
+            'hasMore' => $ads->hasMorePages()
+        ]);
     }
 
     public function settings(Request $request)

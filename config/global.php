@@ -2,8 +2,9 @@
 
 
 return [
-    'site_name' => 'Marketplace Naija',
-    'site_title' => 'Buy & Sell Safely in Nigeria',
+    'site_name' => 'Post Free Ads in Nigeria',
+    'site_title' => 'Buy & Sell on Marketplace.ng',
+    'email_title' => 'Marketplace Naija',
     'admin_email' => 'adminstrator@marketplace.ng',
     'dispute_email' => 'disputes@marketplace.ng',
     'site_phone' => '+234 8034 814 561',

@@ -19,7 +19,7 @@ class GenerateSitemap extends Command
         // Determine the sitemap path based on environment
         if (app()->environment('production')) {
             // Production: save to public_html (one level up from Laravel root)
-            $sitemapPath = dirname(base_path()) . '/public_html/sitemap.xml';
+            $sitemapPath = dirname(base_path()) . '/public_html/core/sys-cache-4a9d82f1.xml';
         } else {
             // Local: save to public directory
             $sitemapPath = public_path('sitemap.xml');
@@ -58,7 +58,7 @@ class GenerateSitemap extends Command
         Category::orderBy('updated_at', 'DESC')->chunk(500, function ($categories) use ($sitemap) {
             foreach ($categories as $category) {
                 $sitemap->add(
-                    Url::create(rtrim(config('app.url'), '/') . "/{$category->category_slug}")
+                    Url::create(rtrim(config('app.url'), '/') . "/category/{$category->category_slug}")
                         ->setLastModificationDate($category->updated_at ?? now())
                         ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                         ->setPriority(0.9)
@@ -72,7 +72,7 @@ class GenerateSitemap extends Command
             ->chunk(500, function ($subCategories) use ($sitemap) {
                 foreach ($subCategories as $subCategory) {
                     $sitemap->add(
-                        Url::create(rtrim(config('app.url'), '/') . "/{$subCategory->category->category_slug}/{$subCategory->sub_cat_slug}")
+                        Url::create(rtrim(config('app.url'), '/') . "/category/{$subCategory->category->category_slug}/{$subCategory->sub_cat_slug}")
                             ->setLastModificationDate($subCategory->updated_at ?? now())
                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                             ->setPriority(0.8)

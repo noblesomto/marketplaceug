@@ -22,8 +22,6 @@ use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 
 
 class AccountController extends Controller
@@ -135,33 +133,23 @@ class AccountController extends Controller
 
     protected function loginUser(Request $request, $user)
     {
-        // ✅ FIXED: Set session with longer lifetime
         $request->session()->put('user_id', $user->user_id);
         $request->session()->put('name', $user->name);
 
-        // ✅ FIXED: Extend session lifetime to 7 days if user wants to stay logged in
-        if ($request->has('remember_device')) {
-            config(['session.lifetime' => 10080]); // 7 days in minutes
-        }
-
         // Handle "remember device" (does both: OTP skip + stay logged in)
         if ($request->has('remember_device')) {
-            // 1. Trusted device (OTP skip) - extended to 90 days
+            // 1. Trusted device (OTP skip)
             $this->storeTrustedDevice($request, $user);
-
-            // ✅ FIXED: Determine if HTTPS is being used
-            $isSecure = $request->secure();
-
             cookie()->queue(cookie(
                 'trusted_device',
                 $this->generateDeviceHash($request),
-                60 * 24 * 90,  // ✅ CHANGED: 90 days instead of 30
+                60 * 24 * 30,
                 '/',
                 null,
-                $isSecure,     // ✅ FIXED: Only true on HTTPS
-                true,          // httpOnly
-                false,         // raw
-                'Lax'          // sameSite
+                true,  // secure - set to true for HTTPS
+                true,  // httpOnly
+                false, // raw
+                'Lax' // sameSite
             ));
 
             // 2. Persistent login (stay logged in)
@@ -172,13 +160,13 @@ class AccountController extends Controller
             cookie()->queue(cookie(
                 'remember_login',
                 $token,
-                60 * 24 * 90,         // ✅ CHANGED: 90 days instead of 30
+                60 * 24 * 30,          // 30 days
                 '/',
                 null,
-                $isSecure,            // ✅ FIXED: Only true on HTTPS
-                true,                 // httpOnly
-                false,                // raw
-                'Lax'                 // sameSite
+                true,                  // secure - set to true for HTTPS
+                true,                  // httpOnly
+                false,                 // raw
+                'Lax'                  // sameSite
             ));
         }
 
@@ -191,6 +179,7 @@ class AccountController extends Controller
             ]);
 
         // Redirect to intended URL or default profile page
+        // This automatically pulls and clears 'url.intended' from session
         return redirect()->intended(action([UserProfile::class, 'profile']));
     }
 
@@ -199,19 +188,9 @@ class AccountController extends Controller
         $otp = rand(111111, 999999);
         $request->session()->put('acc_id', $user->id);
 
-        // ✅ ADDED: Flag to prevent auto-login during OTP verification
-        $request->session()->put('otp_pending', true);
-
-        // ✅ SECURITY: Store IP address for validation during OTP verification
-        $request->session()->put('otp_ip', $request->ip());
-
         $request->session()->put('remember_device', $request->has('remember_device'));
 
         $this->storeOtp($user, $otp);
-
-        // ✅ CRITICAL FIX: Clear any existing remember_login cookie to prevent OTP bypass
-        // This ensures the auto-login middleware won't log them in while waiting for OTP
-        cookie()->queue(cookie()->forget('remember_login'));
 
         return $this->sendOtpEmail($user, $otp);
     }
@@ -220,10 +199,7 @@ class AccountController extends Controller
     {
         DB::table('users')
             ->where('user_id', $user->user_id)
-            ->update([
-                'otp' => $otp,
-                'otp_expires_at' => now()->addMinutes(10), // ✅ SECURITY: OTP expires in 10 minutes
-            ]);
+            ->update(['otp' => $otp]);
     }
 
     protected function sendOtpEmail($user, $otp)
@@ -239,12 +215,6 @@ class AccountController extends Controller
             Mail::to($user->email)->send(new OTPMail($details));
             return redirect('/authenticate')->with('success', 'Check your email for OTP to login.');
         } catch (\Throwable $e) {
-            // ✅ ADDED: Log the error for debugging
-            Log::error('OTP Email Failed', [
-                'user_id' => $user->user_id,
-                'email' => $user->email,
-                'error' => $e->getMessage()
-            ]);
             return redirect('/login')->with('error', 'Error! OTP could not be sent. Try again or contact admin.');
         }
     }
@@ -264,67 +234,34 @@ class AccountController extends Controller
                 'ip_address' => $this->getIp(),
                 'user_agent' => $request->userAgent(),
                 'last_used_at' => now(),
-                'expires_at' => now()->addDays(90), // ✅ CHANGED: 90 days instead of 30
+                'expires_at' => now()->addDays(30),
             ]
         );
     }
 
-    // ✅ IMPROVED: Auto-login from remember cookie with better security
+    // Auto-login from remember cookie
     public static function autoLoginFromCookie(Request $request)
     {
-        // Skip if already logged in
-        if ($request->session()->has('user_id')) {
-            return null;
-        }
-
-        // ✅ ADDED: Skip if waiting for OTP verification
-        if ($request->session()->has('acc_id') || $request->session()->has('otp_pending')) {
-            return null;
-        }
-
-        if ($request->hasCookie('remember_login')) {
+        if (!$request->session()->has('user_id') && $request->hasCookie('remember_login')) {
             $token = $request->cookie('remember_login');
-            $user = User::where('remember_token', hash('sha256', $token))
-                ->where('acc_status', 1)
-                ->where(function($query) {
-                    $query->whereNull('disable_account')
-                          ->orWhere('disable_account', '!=', 'yes');
-                })
-                ->first();
+            $user = User::where('remember_token', hash('sha256', $token))->first();
 
             if ($user) {
                 $request->session()->put('user_id', $user->user_id);
                 $request->session()->put('name', $user->name);
 
-                // ✅ FIXED: Set longer session lifetime
-                config(['session.lifetime' => 10080]); // 7 days
-
-                // Update last login
-                DB::table('users')
-                    ->where('user_id', $user->user_id)
-                    ->update([
-                        'last_login_at' => now(),
-                        'last_login_ip' => $request->ip(),
-                    ]);
-
-                // ✅ FIXED: Refresh cookie with proper secure flag
-                $isSecure = $request->secure();
+                // refresh cookie validity
                 cookie()->queue(cookie(
-                    'remember_login',
-                    $token,
-                    60 * 24 * 90,         // 90 days
-                    '/',
-                    null,
-                    $isSecure,            // Dynamic based on HTTPS
-                    true,                 // httpOnly
-                    false,                // raw
-                    'Lax'                 // sameSite
+                    'remember_login',      // name
+                    $token,                // value
+                    60 * 24 * 30,          // minutes (30 days)
+                    '/',                   // path
+                    null,                  // domain (current host)
+                    false,                 // secure (true if https)
+                    true                   // httpOnly
                 ));
 
                 return $user;
-            } else {
-                // ✅ ADDED: Clear invalid cookie
-                cookie()->queue(cookie()->forget('remember_login'));
             }
         }
         return null;
@@ -376,9 +313,6 @@ class AccountController extends Controller
         session()->put('user_id', $user->user_id);
         session()->put('name', $user->name);
 
-        // ✅ ADDED: Set longer session lifetime for social login too
-        config(['session.lifetime' => 10080]); // 7 days
-
         // Update login activity
         DB::table('users')
             ->where('user_id', $user->user_id)
@@ -396,104 +330,39 @@ class AccountController extends Controller
     public function authenticate(Request $request)
     {
         $title = "OTP Authentication | " . config('global.site_name');
-
+        
 
         if ($request->isMethod('POST')) {
             $request->validate([
                 'otp' => 'required|numeric|min:4',
             ]);
-
+            
             $user_id = $request->session()->get('acc_id');
 
             if($user_id ==''){
                 return redirect("/login")->with('error','Sorry, Your Session has expired. Refresh');
             }
 
-            // ✅ SECURITY 1: IP Address Validation - verify IP hasn't changed
-            $otpIp = $request->session()->get('otp_ip');
-            if ($otpIp && $otpIp !== $request->ip()) {
-                $request->session()->forget(['acc_id', 'otp_pending', 'otp_ip']);
-                return redirect('/login')->with('error', 'Security error: Your IP address changed. Please login again.');
-            }
-
-            // ✅ SECURITY 2: Rate Limit OTP Attempts (max 5 attempts)
-            $cacheKey = 'otp_attempts:' . $user_id;
-            $attempts = Cache::get($cacheKey, 0);
-
-            if ($attempts >= 5) {
-                return redirect("/authenticate")->with('error', 'Too many failed attempts. Please request a new OTP.');
-            }
-
             $otp = $request->otp;
 
-            // ✅ SECURITY 3: Check OTP expiration
             $login = User::where('otp', $otp)
                         ->where('id', $user_id)
-                        ->where('otp_expires_at', '>=', now()) // Check expiration
                         ->first();
-
+            //dd($login);
             if ($login) {
                 $request->session()->put('user_id', $login->user_id);
                 $request->session()->put('name', $login->name);
 
-                // ✅ Clear OTP pending flag after successful verification
-                $request->session()->forget('otp_pending');
-                $request->session()->forget('acc_id');
-                $request->session()->forget('otp_ip');
-
-                // ✅ SECURITY 4: Clear OTP from database after successful use
                 DB::table('users')
                     ->where('user_id', $login->user_id)
                     ->update([
-                        'otp' => null,
-                        'otp_expires_at' => null,
                         'last_login_ip' => $this->getIp(),
                         'last_login_at' => now(),
                     ]);
 
-                // ✅ Clear failed attempt counter on success
-                Cache::forget($cacheKey);
-
-                // ✅ Set longer session lifetime
-                if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
-                    config(['session.lifetime' => 10080]); // 7 days
-                }
-
-                // ✅ Store trusted device and set cookies after OTP verification
+                // ✅ Use $login instead of refetching
                 if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
                     $this->storeTrustedDevice($request, $login);
-
-                    $isSecure = $request->secure();
-
-                    // Set trusted device cookie
-                    cookie()->queue(cookie(
-                        'trusted_device',
-                        $this->generateDeviceHash($request),
-                        60 * 24 * 90,
-                        '/',
-                        null,
-                        $isSecure,
-                        true,
-                        false,
-                        'Lax'
-                    ));
-
-                    // Set remember login cookie
-                    $token = Str::random(60);
-                    DB::table('users')->where('user_id', $login->user_id)
-                        ->update(['remember_token' => hash('sha256', $token)]);
-
-                    cookie()->queue(cookie(
-                        'remember_login',
-                        $token,
-                        60 * 24 * 90,
-                        '/',
-                        null,
-                        $isSecure,
-                        true,
-                        false,
-                        'Lax'
-                    ));
                 }
 
                 if ($request->session()->has('previous_url')) {
@@ -502,20 +371,11 @@ class AccountController extends Controller
                 } else {
                     return redirect()->action([UserController::class, 'index']);
                 }
-            } else {
-                // ✅ SECURITY 2: Increment failed attempt counter
-                Cache::put($cacheKey, $attempts + 1, now()->addHour()); // 1 hour expiry
-
-                $remainingAttempts = 5 - $attempts - 1;
-
-                if ($remainingAttempts > 0) {
-                    return redirect("/authenticate")->with('error', 'Invalid or expired OTP. ' . $remainingAttempts . ' attempt(s) remaining.');
-                } else {
-                    return redirect("/authenticate")->with('error', 'Too many failed attempts. Please request a new OTP.');
-                }
+            }else{
+                return redirect("/authenticate")->with('error','Opps! You have entered invalid OTP ');
             }
-
-
+      
+            
         }
 
         if ($request->isMethod('GET')) {
@@ -525,52 +385,31 @@ class AccountController extends Controller
 
 
     public function account_status(Request $request)
-    {
+    {   
         $title = "Account Status  " . config('global.site_title');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-
+               
         return view('frontend.account.account-status', compact('title','user'));
     }
 
 
     public function resend_otp(Request $request)
     {
+         
         $user_id = $request->session()->get('acc_id');
-
-        if (!$user_id) {
-            return redirect("/login")->with('error', 'Session expired. Please login again.');
-        }
-
-        // ✅ SECURITY: Rate limit OTP resend requests (max 3 per hour)
-        $rateLimitKey = 'resend-otp:' . $user_id;
-
-        if (Cache::has($rateLimitKey) && Cache::get($rateLimitKey) >= 3) {
-            return redirect("/authenticate")->with('error', 'Too many OTP requests. Please try again in 1 hour.');
-        }
-
-        $login = User::where('id', $user_id)->first();
-
-        if (!$login) {
-            return redirect("/login")->with('error', 'User not found. Please login again.');
-        }
-
-        $otp = rand(111111, 999999);
+        $login = User::where('id', $user_id)
+                        ->first();
+        //dd($login);
+        $otp = rand(111111,999999);
         $email = $login->email;
-        $name = $login->name;
+        $name = $login->first_name;
+
         DB::table('users')
             ->where('id', $user_id)
             ->update([
-                'otp' => $otp,
-                'otp_expires_at' => now()->addMinutes(10), // ✅ SECURITY: OTP expires in 10 minutes
+                'otp'=> $otp,
             ]);
-
-        // ✅ SECURITY: Clear failed OTP attempts when new OTP is sent
-        Cache::forget('otp_attempts:' . $user_id);
-
-        // ✅ SECURITY: Increment resend counter
-        $currentCount = Cache::get($rateLimitKey, 0);
-        Cache::put($rateLimitKey, $currentCount + 1, now()->addHour());
 
         $details = [
             'user_id' => $user_id,
@@ -581,18 +420,16 @@ class AccountController extends Controller
 
         try {
             Mail::to($email)->send(new OTPMail($details));
-            return redirect("/authenticate")->with('success', 'New OTP sent! Check your email. Code expires in 10 minutes.');
-        } catch (\Throwable $e) {
-            Log::error('Resend OTP failed', [
-                'user_id' => $user_id,
-                'error' => $e->getMessage()
-            ]);
-            return redirect("/authenticate")->with('error', 'Error! OTP could not be sent. Please try again or contact admin.');
+            return redirect("/authenticate")->with('status', ['text'=>'Check your email for OTP to login','type'=>'success']);
+        } catch (Throwable $e) {
+             return redirect("/")->with('status', ['text'=>'Error!, OTP could not be sent, please try again or contact admin','type'=>'danger']);
         }
+      
+            
     }
 
     public function register(Request $request, $id = null)
-    {
+    {   
         $title = "Create an Account | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -603,89 +440,76 @@ class AccountController extends Controller
 
         if ($request->isMethod('POST')) {
 
-            try {
-                $validatedData = $request->validate([
-                    'acc_type' => 'required',
-                    'address' => 'required',
-                    'state' => 'required',
-                    'name' => 'required|min:2',
-                    'phone' => [
-                        'required',
-                        new NigerianPhoneNumber(),
-                    ],
-                    'email' => 'required|email|unique:users,email',
-                    'password' => 'required|min:6',
-                    'g-recaptcha-response' => ['required', new ReCaptcha],
+            $request->validate([
+                'acc_type' => 'required',
+                'address' => 'required',
+                'state' => 'required',
+                'name' => 'required',
+                'phone' => [
+                    'required',
+                    new NigerianPhoneNumber(),
+                ],
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+                'g-recaptcha-response' => ['required', new ReCaptcha],
+            ]);
+
+            if (empty($request->input('email'))) {
+                Log::warning('Registration attempted with empty email', [
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'all_data' => $request->except('password')
                 ]);
-            } catch (ValidationException $e) {
 
-
-                throw $e;
+                return redirect("register")->with('error', 'Invalid registration data. Please try again.');
             }
 
-
-
-            $email = $validatedData['email'];
-            $token = Str::random(40);
-
-
-            DB::beginTransaction();
-
-            try {
-                $user = User::create([
-                    'name'=> ContentHelper::sanitizeContent($validatedData['name']),
-                    'email'=> $validatedData['email'],
-                    'phone'=> $validatedData['phone'],
-                    'acc_type'=> $validatedData['acc_type'],
-                    'address'=> $validatedData['address'],
-                    'city'=> $request->input('city'),
-                    'state'=> $validatedData['state'],
-                    'token'=> $token,
-                    'acc_status'=> 0,
-                    'password'=> Hash::make($validatedData['password']),
+            if (empty($request->input('email')) || empty($request->input('name'))) {
+                Log::error('Invalid registration attempt', [
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'referer' => $request->header('referer'),
+                    'data' => $request->except('password', 'g-recaptcha-response')
                 ]);
 
-                $details = [
-                    'user_id' => $email,
-                    'token' => $token,
-                    'name' => $validatedData['name'],
-                ];
+                return redirect("register")
+                    ->withInput($request->except('password'))
+                    ->with('error', 'Registration failed. Please ensure all fields are filled correctly.');
+            }
+            
+            $email = $request->input('email');
+            $token  = Str::random(40);
 
+            User::create([
+                'name'=> ContentHelper::sanitizeContent($request->input('name')),
+                'email'=> $request->input('email'),
+                'phone'=> $request->input('phone'),
+                'acc_type'=> $request->input('acc_type'),
+                'address'=> $request->input('address'),
+                'city'=> $request->input('city'),
+                'state'=> $request->input('state'),
+                'token'=> $token,
+                'acc_status'=> 0,
+                'password'=> Hash::make($request->input('password')),
+            ]);
 
+            $details = [
+                'user_id' => $email,
+                'token' => $token,
+                'name' =>  $request->input('name'),
+            ];
+            
+            try {
                 Mail::to($email)->queue(new RegisterMail($details));
-
-
-
-                DB::commit();
-
+                
                 return redirect("login")->with([
                     'success' => 'Great, you have successfully registered. Check your email to activate your account. Please also check your spam folder',
                     'resend_email' => $email
                 ]);
-
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                //  Better error logging and user feedback
-                Log::error('Registration failed', [
-                    'email' => $email,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                    'ip' => $request->ip()
-                ]);
-
-                // Check if it's an email sending error
-                if ($e instanceof \Swift_TransportException ||
-                    stripos($e->getMessage(), 'mail') !== false) {
-                    return redirect("register")
-                        ->withInput($request->except('password'))
-                        ->with('error', 'Your account was created but the activation email could not be sent. Please contact admin.');
-                }
-
-                return redirect("register")
-                    ->withInput($request->except('password'))
-                    ->with('error', 'Registration failed. Please try again or contact admin if the problem persists.');
-            }
+            } catch (Throwable $e) {
+                
+                 return redirect("register")->with('error', 'Error!, Your account details could not be sent, please contact admin');
+            }    
         }
     }
 
@@ -710,47 +534,30 @@ class AccountController extends Controller
             'name'    => $user->name,
         ];
 
-        try {
+        Mail::to($user->email)->queue(new RegisterMail($details));
 
-            Mail::to($user->email)->queue(new RegisterMail($details));
-
-            return redirect('login')->with('success', 'We have resent your activation email. Please check your inbox and spam folder');
-        } catch (\Exception $e) {
-            Log::error('Resend email failed', [
-                'email' => $email,
-                'error' => $e->getMessage()
-            ]);
-
-            return redirect('login')->with('error', 'Failed to resend activation email. Please try again or contact admin.');
-        }
+        return redirect('login')->with('success', 'We have resent your activation email. Please check your inbox and spam folder');
     }
 
     public function verifyaccount($user_id, $token)
-    {
+    {       
         $user = User::where('email', $user_id)->first();
-
-        if (!$user) {
-            return redirect("/login")->with('error','Invalid verification link');
-        }
-
         $token2 = $user->token;
-
         if($token == $token2){
             $post = DB::table('users')
             ->where('email', $user_id)
             ->update([
                 'acc_status'=> 1,
-                'token' => null,
             ]);
-
-            return redirect("/login")->with('success','Your Email Is verified, Please Login!');
+            return redirect("/login")->with('success','Your Email Is verified, Pease Login!');
         }else{
+
             return redirect("/login")->with('error','Error!, the token does not match');
         }
-
+ 
     }
 
-
+    
 
     public function forgot_password(Request $request)
     {
@@ -760,7 +567,7 @@ class AccountController extends Controller
             $request->validate([
                 'email' => 'required|email',
             ]);
-
+            
             $email = $request->email;
 
             $login = User::where('email', $email)
@@ -782,10 +589,10 @@ class AccountController extends Controller
                     return redirect("login")->with('success','Please check your email for link to change password');
 
                 } catch (Throwable $e) {
-
+                
                     return redirect()->back()->with('error','Sorry!, Email Could not be Sent now, Try again later');
                 }
-
+      
             }else{
                 return redirect()->back()->with('error','Sorry!, This email does not exit on our system... Please register');
 
@@ -798,7 +605,7 @@ class AccountController extends Controller
     }
 
     public function reset_password(Request $request, $user_id, $token)
-    {
+    {    
         $title = "Reset Password" . config('global.site_title');
         $user = User::where('user_id', $user_id)->first();
         $token2 = $user->token;
@@ -821,16 +628,16 @@ class AccountController extends Controller
             $request->validate([
                 'password' => 'required|min:6|confirmed',
             ]);
-
+            
             $user = DB::table('users')
             ->where('user_id', $user_id)
             ->update([
                 'password'=> Hash::make($request->input('password')),
             ]);
-
+      
             return redirect("login")->with('success','Your password was successfully updated, Please Login');
         }
-
+       
     }
 
     protected function getIp(?Request $request = null)
@@ -899,7 +706,7 @@ class AccountController extends Controller
            ->first();
         if ($login) {
             if(Hash::check($password, $login->password)){
-                $request->session()->put('ship_id', $login->ship_id);
+                $request->session()->put('ship_id', $login->ship_id); // Using the login object's id
 
                 return redirect()->action([ShipperController::class, 'index']);
             }else{

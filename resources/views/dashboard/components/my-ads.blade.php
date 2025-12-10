@@ -1,4 +1,4 @@
-<div class="pb-10 mb-10">
+<div class="">
     @if (!$ads->isEmpty())
       @foreach ($ads as $row)
           <div class="bg-white mb-2 border-b border-b-gray-300 shadow p-2 mb-1">
@@ -278,6 +278,8 @@
 
         </div>
     @endif
+
+
 </div>
 
 

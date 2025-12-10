@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ config('global.site_name') }} - OTP Verification</title>
+    <title>{{ config('global.email_title') }} - OTP Verification</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -164,7 +164,7 @@
 <body style="background-color: #f4f4f4; margin: 0; padding: 0;">
     <!-- Hidden Preheader Text -->
     <div style="display: none; max-height: 0; overflow: hidden;">
-        Dear {{ $details['name'] }}, here is your one time password for {{ config('global.site_name') }}
+        Dear {{ $details['name'] }}, here is your one time password for {{ config('global.email_title') }}
     </div>
 
     <!-- Email Container -->
@@ -185,7 +185,7 @@
                            
                             <p class="message">
                                 Hi {{ $details['name'] }},<br><br>
-                                Here is your {{ config('global.site_name') }} One Time Password (OTP):
+                                Here is your {{ config('global.email_title') }} One Time Password (OTP):
                             </p>
                             
                             <div class="otp-container">
@@ -204,7 +204,7 @@
                             
                             <p class="signature">
                                 Cheers,<br>
-                                The {{ config('global.site_name') }} Team
+                                The {{ config('global.email_title') }} Team
                             </p>
                         </td>
                     </tr>

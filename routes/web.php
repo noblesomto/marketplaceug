@@ -150,6 +150,8 @@ Route::any('/user/notifications', [UserController::class, 'notifications'])->mid
 Route::delete('/user/delete-notification/{id}', [UserController::class, 'deleteNotification'])
     ->name('user.delete.notification');
 Route::any('report-user/{id}', [UserController::class, 'report_user'])->middleware('usersession');
+Route::get('/user/ads/load-more', [UserController::class, 'loadMoreUserAds'])->name('user.ads.loadMore');
+
 
 //Block User
 Route::middleware('usersession')->group(function () {
@@ -192,6 +194,7 @@ Route::any('/user/profile-notification', [UserProfile::class, 'profile_notificat
 Route::post('/update-notifications', [UserProfile::class, 'updateNotifications'])
     ->middleware('usersession')
     ->name('user.update-notifications');
+Route::get('/user/myads/load-more', [UserProfile::class, 'loadMoreUserAds'])->name('user.myads.loadMore');
 
 //Chat Section
 Route::any('/user/chat-buyer/{user}/{id}', [UserController::class, 'chat_buyer'])->middleware('usersession');
@@ -379,6 +382,10 @@ Route::get('/fetch-model/{cat_id}', [ManageCategories::class, 'fetch_model']);
 
 Route::get('/api/check-following/{userId}', [UserController::class, 'checkFollowing']);
 Route::post('/api/toggle-follow', [UserController::class, 'toggleFollow'])->middleware('usersession');
+
+Route::get('/load-more-ads', [AdvertController::class, 'loadMoreAdverts'])->name('adverts.loadMore');
+Route::get('/load-ads-location', [AdvertController::class, 'loadMoreLocation'])->name('location.loadMore');
+Route::get('/adverts/load-more', [SearchFilter::class, 'loadMore'])->name('search.loadMore');
 
 
 Route::post('/broadcasting/auth', function (Illuminate\Http\Request $request) {

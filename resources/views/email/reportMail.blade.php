@@ -72,7 +72,7 @@
 
     <div class="footer">
         <p>Thank you,</p>
-        <b>{{ config('global.site_name') }}</b>
+        <b>{{ config('global.email_title') }}</b>
     </div>
 </body>
 </html>

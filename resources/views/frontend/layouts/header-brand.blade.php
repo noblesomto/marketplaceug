@@ -10,7 +10,7 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $brand->meta_description ?? 'Buy and sell in ' . $brand->brand . ' on Marketplace Naija – Nigeria’s trusted online marketplace. Post free ads and trade safely today.' }}">
 
-    <meta name="keywords" content="{{ $brand->meta_keywords ?? 'Marketplace Naija, Buy & Sell Nigeria, ' . $brand->brand . ', Nigeria classifieds, Online marketplace Nigeria' }}">
+    <meta name="keywords" content="{{ $brand->keywords ?? 'Marketplace Naija, Buy & Sell Nigeria, ' . $brand->brand . ', Nigeria classifieds, Online marketplace Nigeria' }}">
 
     <meta name="author" content="Marketplace Naija">
 

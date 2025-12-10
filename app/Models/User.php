@@ -43,7 +43,8 @@ class User extends Authenticatable implements HasMedia
         'bank_code',
         'account_name',
         'account_number',
-        'remember_token'
+        'remember_token',
+        'otp_expires_at'
     ];
 
     /**

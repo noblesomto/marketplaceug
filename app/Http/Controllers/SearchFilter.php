@@ -24,7 +24,6 @@ class SearchFilter extends Controller
             'category' => 'nullable',
         ]);
 
-
         // Start with active ads
         $query = Advert::with('firstImage')
                     ->activeNotRecentlySold();
@@ -51,7 +50,7 @@ class SearchFilter extends Controller
         }
 
         if ($request->filled('buydirect')) {
-            $query->where('buy_direct', $request->brand);
+            $query->where('buy_direct', $request->buydirect); // Fixed: was using $request->brand
         }
 
         // Order and paginate results
@@ -59,12 +58,24 @@ class SearchFilter extends Controller
              ->paginate(10)
              ->appends($request->except('page'));
 
-
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
 
-        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories'));
+        // Add hasMore for load more functionality
+        $hasMore = $ads->hasMorePages();
+
+        // Get search parameters to pass to view
+        $searchParams = [
+            'product' => $request->input('product'),
+            'location' => $request->input('location'),
+            'category' => $request->input('category'),
+            'sub_category' => $request->input('sub_category'),
+            'brand' => $request->input('brand'),
+            'buydirect' => $request->input('buydirect'),
+        ];
+
+        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams'));
     }
 
     public function location_router($location, $slug)
@@ -93,7 +104,6 @@ class SearchFilter extends Controller
                     ->orderWithFeatured()
                     ->paginate(10);
 
-
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
@@ -101,9 +111,10 @@ class SearchFilter extends Controller
                           ->where('category', $cat->id)
                           ->count();
 
-        return view('frontend.location-category', compact('title', 'ads', 'user', 'cat', 'categories','count_cat'));
-    }
+        $hasMore = $ads->hasMorePages(); // Add this line
 
+        return view('frontend.location-category', compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore'));
+    }
 
     public function location_subcat(Request $request, $location, $slug)
     {
@@ -125,9 +136,10 @@ class SearchFilter extends Controller
                             ->where('sub_category', $subcat->id)
                             ->count();
 
-        return view('frontend.location-subcat', compact('title', 'ads', 'user', 'categories','subcat','count_subcat'));
-    }
+        $hasMore = $ads->hasMorePages(); // Add this line
 
+        return view('frontend.location-subcat', compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore'));
+    }
 
     public function location_brand(Request $request, $location, $slug)
     {
@@ -148,7 +160,9 @@ class SearchFilter extends Controller
                         ->where('brand', $brand->id)
                         ->count();
 
-        return view('frontend.location-brand', compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand'));
+        $hasMore = $ads->hasMorePages(); // Add this line
+
+        return view('frontend.location-brand', compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore'));
     }
 
     public function filter(Request $request)
@@ -302,6 +316,51 @@ class SearchFilter extends Controller
 
         return response()->json([
             'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
+        ]);
+    }
+
+    public function loadMore(Request $request)
+    {
+        $query = Advert::with('firstImage')
+                    ->activeNotRecentlySold();
+
+        // Product search
+        if ($request->filled('product')) {
+            $query->where('ad_title', 'LIKE', '%' . $request->product . '%');
+        }
+
+        // Category context
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        // Subcategory context
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        // Brand context
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        // Location context
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        // Buy direct filter
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
+        }
+
+        // Get paginated results
+        $ads = $query->orderWithFeatured()
+                     ->paginate(10);
+
+        return response()->json([
+            'html' => view('frontend.components.advert.advert-list', ['ads' => $ads])->render(),
+            'hasMore' => $ads->hasMorePages()
         ]);
     }
 
