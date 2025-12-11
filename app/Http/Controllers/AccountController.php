@@ -562,7 +562,7 @@ class AccountController extends Controller
             ->where('id', $user_id)
             ->update([
                 'otp' => $otp,
-                'otp_expires_at' => now()->addMinutes(10), // ✅ SECURITY: OTP expires in 10 minutes
+                'otp_expires_at' => now()->addMinutes(15), // ✅ SECURITY: OTP expires in 10 minutes
             ]);
 
         // ✅ SECURITY: Clear failed OTP attempts when new OTP is sent

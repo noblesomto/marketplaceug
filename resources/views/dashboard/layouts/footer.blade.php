@@ -1,4 +1,4 @@
-<section class="bg-white py-3 fixed bottom-0 left-0 w-full block lg:hidden">
+<section class="bg-white py-3 border-t border-t-gray-300 fixed bottom-0 left-0 w-full block lg:hidden">
 	<div class="flex justify-between">
 		<a href="/">
 			<div class="flex flex-col items-center mx-2">

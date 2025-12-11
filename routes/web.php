@@ -179,6 +179,7 @@ Route::any('/user/boosted-ad/{id}', [UserManageBoost::class, 'boosted_ad'])->mid
 Route::any('/boost/upload-proof', [UserManageBoost::class, 'upload_proof'])->middleware('usersession');
 
 //User Profile
+Route::any('/user/about-account', [UserProfile::class, 'about_account'])->middleware('usersession');
 Route::any('/user/profile', [UserProfile::class, 'profile'])->middleware('usersession');
 Route::any('/user/settings', [UserProfile::class, 'settings'])->middleware('usersession');
 Route::any('/user/profile-address', [UserProfile::class, 'profile_address'])->middleware('usersession');
