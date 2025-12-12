@@ -241,7 +241,7 @@ class AdvertController extends Controller
             abort(404, 'Advert not found');
         }
 
-        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795) {
+        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795 || $id == 44956) {
 
             return redirect('/');
         }

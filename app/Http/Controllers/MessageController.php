@@ -87,66 +87,62 @@ class MessageController extends Controller
     }
 
     public function sendMessage(Request $request, $advertId, $receiverId)
-    {
-        $request->validate([
-            'message'   => 'nullable|string|max:1000',
-            'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'message'   => 'nullable|string|max:1000',
+        'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12048',
+    ]);
 
-        $senderId = $request->session()->get('user_id');
-        // Check if sender is blocked
-        $isBlocked = BlockedUser::where('blocker_id', $receiverId)
-            ->where('blocked_id', $senderId)
-            ->where(function($query) use ($advertId) {
-                $query->where('advert_id', $advertId)
-                      ->orWhereNull('advert_id');
-            })
-            ->exists();
-        //dd($isBlocked);
-        if ($isBlocked) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You cannot send messages to this user'
-            ], 462);
-        }
+    $senderId = $request->session()->get('user_id');
 
-        // Create the message
-        $message = new Message();
-        $message->advert_id = $advertId;
-        $message->sender_id = $senderId;
-        $message->receiver_id = $receiverId;
-        $message->message_content = $request->message;
-        $message->is_read = false;
-        $message->save();
+    // Check if sender is blocked
+    $isBlocked = BlockedUser::where('blocker_id', $receiverId)
+        ->where('blocked_id', $senderId)
+        ->where(function($query) use ($advertId) {
+            $query->where('advert_id', $advertId)
+                  ->orWhereNull('advert_id');
+        })
+        ->exists();
 
-
-        // Handle image uploads if present
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $imageFile) {
-                $messageImage = MessageImage::create([
-                    'message_id' => $message->id,
-                ]);
-
-                // Add media
-                $media = $messageImage->addMedia($imageFile)
-                    ->toMediaCollection('message_images');
-
-                // Manually delete original after conversion (most reliable way)
-                $originalPath = $media->getPath();
-                $conversionPath = $media->getPath('webp');
-
-                // Wait a moment for conversion to complete if using queued conversions
-                if (file_exists($conversionPath) && file_exists($originalPath)) {
-                    unlink($originalPath);
-                }
-            }
-        }
-
-        // Fire event
-        event(new NewMessageNotification($message));
-
-        return redirect()->back()->with('success', 'Message sent successfully!');
+    if ($isBlocked) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You cannot send messages to this user'
+        ], 462);
     }
+
+    // Create the message
+    $message = new Message();
+    $message->advert_id = $advertId;
+    $message->sender_id = $senderId;
+    $message->receiver_id = $receiverId;
+    $message->message_content = $request->message;
+    $message->is_read = false;
+    $message->save();
+
+    // Handle image uploads if present
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $imageFile) {
+            $messageImage = MessageImage::create([
+                'message_id' => $message->id,
+            ]);
+
+            // Add media - conversions will be created automatically
+            // Since you're using nonQueued(), they'll be created immediately
+            $messageImage->addMedia($imageFile)
+                ->toMediaCollection('message_images');
+
+            // Original file deletion is already handled in conversionCompleted() method
+            // No need to manually delete here
+        }
+    }
+
+    // Fire event
+    event(new NewMessageNotification($message));
+
+    return redirect()->back()->with('success', 'Message sent successfully!');
+}
+
 
 
 

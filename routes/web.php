@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchFilter;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,8 @@ Route::any('/advertise-with-us', [PageController::class, 'advertise']);
 Route::any('/contact-us', [PageController::class, 'contact']);
 Route::any('/shipping', [PageController::class, 'shipping']);
 Route::any('/email', [PageController::class, 'email']);
+
+Route::get('/robots.txt', [RobotsController::class, 'index']);
 
 
 // Social Login

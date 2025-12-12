@@ -37,7 +37,7 @@
                 </div>
                 <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
               </div>
-              <div class="flex-[58%] xs:flex-[48%] sm:flex-[58%] lg:flex-[65%] relative h-full overflow-hidden">
+              <div class="flex-[58%] xs:flex-[58%] sm:flex-[58%] lg:flex-[65%] relative h-full overflow-hidden">
                 <div class="flex justify-between text-xs">
                   <div class="flex justify-start items-center text-sm md:mr-5">
                     <div class="flex gap-2">
