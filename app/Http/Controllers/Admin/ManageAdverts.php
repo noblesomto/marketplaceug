@@ -455,6 +455,18 @@ if ($request->has('deleted_images') && !empty($request->input('deleted_images'))
         return redirect()->back()->with('status', ['text'=>'Advert Status Changed','type'=>'success']);
     }
 
+    public function redirect_status($id, $status)
+    {
+        DB::table('adverts')
+                ->where('id', $id)
+                ->update([
+                    'redirect'=> $status,
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        return redirect()->back()->with('status', ['text'=>'Advert Status Changed','type'=>'success']);
+    }
+
 
 
     public function delete_advert($id)

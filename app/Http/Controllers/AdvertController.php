@@ -233,18 +233,24 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
 
+        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795 || $id == 44956) {
+
+            return redirect('/');
+        }
         // First get the ad and check if it exists
         $ad = Advert::with('images','owner')->where('title_slug', $slug)->first();
+
+        if ($ad->redirect =="Yes") {
+
+            return redirect('/');
+        }
 
         if (!$ad) {
 
             abort(404, 'Advert not found');
         }
 
-        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795) {
 
-            return redirect('/');
-        }
 
          $sessionKey = 'back_url_for_ad_' . $id;
 

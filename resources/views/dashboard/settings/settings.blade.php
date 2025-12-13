@@ -4,12 +4,9 @@
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm pb-20">
     <div class="border-b-2 border-b-gray-200 pt-4 px-2 font-bold text-dark_green mb-2 flex justify-between">
-        <span>Profile Section</span>
+        <span>Account Section</span>
         <div class="space-x-4">
-        	<a title="My Ad" href="/user/my-ads" ><i class="bi bi-badge-ad text-lg lg:text-2xl"></i></a>
-            <a title="Purchase" href="/user/payment" ><i class="bi bi-box2 text-lg lg:text-2xl"></i></a>
-            <a title="Feedbacks" href="/user/feedbacks" ><i class="bi bi-chat-right-dots text-lg lg:text-2xl"></i></a>
-            <a title="Settings" href="/user/settings"><i class="bi bi-gear text-lg lg:text-2xl"></i></a>
+
             <a title="Logout" href="/user/logout" ><i class="bi bi-box-arrow-right text-lg lg:text-2xl"></i></a>
         </div>
     </div>

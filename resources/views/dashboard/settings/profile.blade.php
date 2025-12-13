@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('dashboard.layouts.search')
 
-<section class="w-full md:w-3/6  mx-auto p-3 text-sm ">
+<section class="w-full md:w-3/6  mx-auto  text-sm ">
 
 
     <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 flex justify-between items-center rounded-lg">
@@ -14,45 +14,60 @@
         </div>
     </div>
 
-    <div class="w-full space-y-2">
+    <div class="w-full space-y-2 p-2">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <a href="/user/my-ads"
-            class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 text-lg ">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
                 <i class="bi bi-badge-ad "></i>
             </span>
-            <span>My Ads</span>
+            <div class="flex flex-col">
+                <span class="font-semibold">My Adverts</span>
+                <span class="text-sm">Manage Adverts</span>
+            </div>
         </a>
 
         <a href="/user/payment"
-            class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 text-lg ">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
                 <i class="bi bi-box2 "></i>
             </span>
-            <span>Orders</span>
+            <div class="flex flex-col">
+                <span class="font-semibold">Orders</span>
+                <span class="text-sm">Items you have ordered</span>
+            </div>
         </a>
 
         <a href="/user/feedbacks"
-            class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 text-lg ">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
                 <i class="bi bi-chat-right-dots"></i>
             </span>
-            <span>Reviews</span>
+            <div class="flex flex-col">
+                <span class="font-semibold">Reviews</span>
+                <span class="text-sm">Give Seller Reviews</span>
+            </div>
         </a>
         <a href="/user/settings"
-            class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 text-lg ">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
                 <i class="bi bi-gear"></i>
             </span>
-            <span>Account Setting</span>
+           <div class="flex flex-col">
+                <span class="font-semibold">Account Settings</span>
+                <span class="text-sm">Verify phone number and address</span>
+            </div>
         </a>
 
         <a href="/user/about-account"
-            class="flex justify-center items-center bg-secondary_dark text-white rounded-lg  w-full py-2 px-4 text-lg ">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
                 <i class="bi bi-person-gear"></i>
             </span>
-            <span>About Account</span>
+            <div class="flex flex-col">
+                <span class="font-semibold">About Account</span>
+                <span class="text-sm">More about my account</span>
+            </div>
         </a>
         </div>
     </div>

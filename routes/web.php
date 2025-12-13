@@ -258,6 +258,7 @@ Route::middleware(['adminsession'])->group(function () {
         Route::any('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts']);
         Route::any('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status']);
         Route::any('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status']);
+        Route::any('/admin/redirect-status/{id}/{status}', [ManageAdverts::class, 'redirect_status']);
         Route::any('/admin/edit-ad/{id}', [ManageAdverts::class, 'edit_advert']);
         Route::any('/admin/delete-ad/{id}', [ManageAdverts::class, 'delete_advert']);
     });

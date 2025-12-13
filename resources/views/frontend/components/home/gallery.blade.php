@@ -36,7 +36,7 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -68,19 +68,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -177,7 +177,7 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -209,19 +209,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -320,7 +320,7 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -352,19 +352,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif
@@ -462,7 +462,7 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -494,19 +494,19 @@
 
                   <!-- Price badge - positioned absolutely within image container -->
                   @if($row->category==3)
-                      <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                      <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                           {{ $row->salary }}
                       </div>
                       @elseif($row->category==18)
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               {{ $row->expected_salary }}
                           </div>
                       @elseif($row->contact_price=="yes")
-                          <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                          <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                               Contact For Price
                           </div>
                       @else
-                  <div class="bg-secondary_dark text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                  <div class="bg-dark_green text-white h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
                     ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
                   </div>
                   @endif

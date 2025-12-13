@@ -148,6 +148,18 @@
                           </a>
                         @endif
 
+                        @if($row->redirect == "No")
+                          <a href="/admin/redirect-status/{{ $row->id }}/Yes" class="btn btn-sm btn-outline-info"
+                             onclick="return confirm('Redirect to Home page?')" data-bs-toggle="tooltip" title="Redirect Home Page">
+                            <i class="bi bi-link"></i>
+                          </a>
+                        @else
+                          <a href="/admin/redirect-status/{{ $row->id }}/No" class="btn btn-sm btn-outline-warning"
+                             onclick="return confirm('Redirect to Ad Page?')" data-bs-toggle="tooltip" title="Redirect Ad Page">
+                            <i class="bi bi-link-45deg"></i>
+                          </a>
+                        @endif
+
                         <a href="/admin/delete-ad/{{ $row->id }}" class="btn btn-sm btn-outline-dark"
                            onclick="return confirm('Delete this advert permanently?')" data-bs-toggle="tooltip" title="Delete">
                           <i class="bi bi-trash"></i>
