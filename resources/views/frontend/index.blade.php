@@ -26,7 +26,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Vehicles -->
     <a href="/category/vehicles" class="flex-1 flex flex-col items-center group text-center px-1">
       <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-secondary_dark text-white-dark transition-colors duration-200">
-        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/car-100.png') }}" alt="Vehicles">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/car-100.png') }}" alt="Category Vehicles">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
         Vehicles
@@ -36,7 +36,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Phones & Tablets -->
     <a href="/category/mobile-phones-and-tablets" class="flex-1 flex flex-col items-center group text-center px-1">
       <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
-        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}" alt="Phones & Tablets">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/mobile-100.png') }}" alt="Category Phones and Tablets">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
         Phones &amp; Tablets
@@ -46,7 +46,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Real Estate -->
     <a href="/category/real-estate" class="flex-1 flex flex-col items-center group text-center px-1">
       <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
-        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/house-100.png') }}" alt="Real Estate">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/house-100.png') }}" alt="Category Real Estate">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
         Real Estate
@@ -56,7 +56,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Fashion & Beauty -->
     <a href="/category/fashion" class="flex-1 flex flex-col items-center group text-center px-1">
       <div class="bg-secondary_dark text-white w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-primary-dark transition-colors duration-200">
-        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}" alt="Fashion & Beauty">
+        <img class="w-6 h-6" src="{{ asset('frontend/images/icons/fashion-100.png') }}" alt="Category Fashion and Beauty">
       </div>
       <span class="text-[10px] sm:text-xs mt-1 text-gray-700 group-hover:text-primary transition-colors duration-200 whitespace-nowrap truncate">
         Fashion &amp; Beauty
@@ -88,7 +88,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
   </div>
 
-<div class="block lg:hidden mt-6 pb-20">
+<div class="block lg:hidden mt-6 pb-5">
     <h4 class="font-semibold text-lg px-4 mb-3 text-gray-800">Recent Listings</h4>
     <div id="listings-container-mobile"
          class="grid grid-cols-2 md:grid-cols-3 gap-2 px-2"
@@ -111,7 +111,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <div id="no-more-ads-mobile" class="hidden text-center py-4 text-gray-500">
+    <div id="no-more-ads-mobile" class="hidden text-center py-4 text-gray-500 pb-20">
         <p class="font-medium">No more listings to show</p>
     </div>
 </div>

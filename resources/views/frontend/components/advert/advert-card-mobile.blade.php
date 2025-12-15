@@ -68,22 +68,22 @@
             </h2>
 
             @if($row->category==3)
-            <span class="text-sm font-bold text-green-600">
+            <span class="text-sm font-bold text-green-800">
                 {{ $row->salary }}
             </span>
             @elseif($row->category==18)
-                <span class="text-sm font-bold text-green-600">
+                <span class="text-sm font-bold text-green-800">
                     {{ $row->expected_salary }}
                 </span>
             @elseif($row->contact_price=="yes")
-                <span class="text-sm font-bold text-green-600">
+                <span class="text-sm font-bold text-green-800">
                     Contact For Price
                 </span>
             @else
                 <!-- Price -->
                 <div class="mt-auto">
                     <div class="flex justify-between items-center gap-4 mb-1">
-                        <span class="text-sm font-bold text-green-600">
+                        <span class="text-sm font-bold text-green-800">
                             ₦{{ number_format($row->price, 0, '.', ',') }}
                         </span>
                         <span class="text-xs text-gray-500 truncate">

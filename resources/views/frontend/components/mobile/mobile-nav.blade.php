@@ -8,7 +8,7 @@
         @include('frontend.components.mobile.mobile-side')
       </div>
       <div class="mx-1 md:mx-4">
-        <a href="/"><img class="w-6 md:w-10" src="{{ asset('frontend/images/mobile-logo.png') }}"></a>
+        <a href="/"><img class="w-6 md:w-10" src="{{ asset('frontend/images/mobile-logo.png') }}" alt="Go to homepage"></a>
       </div>
 
       <div class="h-8 border-l-2 border-l-gray-400 pl-3 0 ml-2 pt-2">
@@ -17,7 +17,7 @@
   </div>
 
   <div class="">
-        <a href="/user/notifications">
+        <a href="/user/notifications" aria-label="Notification Button">
             <div class="flex flex-col items-center mx-2 relative">
                 <!-- Notification badge - hidden by default if count is 0 -->
                 @if($count >= 1)

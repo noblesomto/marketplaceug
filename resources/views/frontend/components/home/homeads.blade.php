@@ -32,7 +32,7 @@
         </div>
 
         <!-- End of results message for Desktop -->
-        <div id="no-more-ads-desktop" class="hidden text-center py-6 text-gray-500">
+        <div id="no-more-ads-desktop" class="hidden text-center py-6 text-gray-500 pb-20">
             <p class="font-medium text-lg">You've reached the end of listings</p>
             <p class="text-sm mt-2">Check back later for new items!</p>
         </div>

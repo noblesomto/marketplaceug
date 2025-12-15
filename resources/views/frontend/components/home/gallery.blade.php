@@ -8,12 +8,12 @@
       <div>
         <!-- Navigation Buttons -->
         <div class="flex justify-center mt-5 text-sm">
-          <button class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
+          <button aria-label="Navigate Trending ads left" class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3 font-bold">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <button class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
+          <button aria-label="Navigate Trending ads right" class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -150,12 +150,12 @@
       <div>
         <!-- Navigation Buttons -->
         <div class="flex justify-center mt-5 text-sm">
-          <button class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
+          <button aria-label="Navigate vehicles ads left" class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3 font-bold">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <button class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
+          <button aria-label="Navigate vehicles ads right" class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -293,12 +293,12 @@
       <div>
         <!-- Navigation Buttons -->
         <div class="flex justify-center mt-5 text-sm">
-          <button class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
+          <button aria-label="Navigate Phone and tablets ads left" class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3 font-bold">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <button class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
+          <button aria-label="Navigate Phone and tablets ads right" class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -435,12 +435,12 @@
       <div>
         <!-- Navigation Buttons -->
         <div class="flex justify-center mt-5 text-sm">
-          <button class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
+          <button aria-label="Navigate fashion and beauty ads left" class="prevButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green mr-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3 font-bold">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <button class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
+          <button aria-label="Navigate fashion and beauty ads right" class="nextButton text-dark_green px-3 py-1 rounded-full border-2 border-dark_green">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-3">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>

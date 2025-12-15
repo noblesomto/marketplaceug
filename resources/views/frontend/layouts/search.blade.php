@@ -15,6 +15,7 @@
                         </div>
                         <div class="w-full lg:flex-1">
                             <div class="relative">
+                                <label for="category" class="sr-only">Category</label>
                                 <select name="category"
                                         class="block appearance-none w-full h-10 bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded-lg lg:rounded-l-none leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 text-sm">
                                     <option value="">Select Category</option>
@@ -43,7 +44,7 @@
                                 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
                             ];
                         @endphp
-
+                        <label for="location" class="sr-only">Location</label>
                         <select name="location"
                                 class="block appearance-none w-full h-10 bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 text-sm">
                             <option value="" selected="selected">Location</option>
@@ -122,7 +123,7 @@
                             @php
                                 $count = getUserNotificationCount();
                             @endphp
-                            <a href="/user/notifications" class="flex items-center justify-center p-2 text-white hover:bg-white hover:text-dark_green rounded-lg transition-colors duration-200">
+                            <a aria-label="Notifications" href="/user/notifications" class="flex items-center justify-center p-2 text-white hover:bg-white hover:text-dark_green rounded-lg transition-colors duration-200">
                                 @if($count >= 1)
                                     <div class="absolute -top-1 -right-1 bg-dark_green text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold">
                                         {{ $count > 9 ? '9+' : $count }}

@@ -4,6 +4,7 @@
     <title>{{ $brand->meta_title ?? $brand->brand . ' | Marketplace Naija' }}</title>
 
     <meta charset="utf-8">
+    <html lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css','resources/js/app.js'])
 

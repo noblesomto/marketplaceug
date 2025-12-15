@@ -69,7 +69,7 @@
 </section>
 
 @include('frontend.layouts.footer-links')
-
+<main id="main-content">
 <script>
 	const openSearchButton = document.getElementById('openSearch');
 

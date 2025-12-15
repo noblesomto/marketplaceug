@@ -34,11 +34,11 @@
                     <li><a href="#" class="hover:text-secondary-200">Mobile Apps</a></li>
                 </ul>
                 <div class="flex flex-col gap-2 mt-1">
-                    <a href="https://apps.apple.com/us/app/marketplace-naija-buy-sell/id6753354778">
-                        <img class="w-24" src="{{ asset('frontend/images/app-store.svg') }}">
+                    <a href="https://apps.apple.com/us/app/marketplace-naija-buy-sell/id6753354778" aria-label="Mobile app download">
+                        <img class="w-24" alt="Mobile app download app store" src="{{ asset('frontend/images/app-store.svg') }}">
                     </a>
-                    <a href="https://play.google.com/store/apps/details?id=com.app.marketplacenaija">
-                        <img class="w-24" src="{{ asset('frontend/images/play-store.svg') }}">
+                    <a href="https://play.google.com/store/apps/details?id=com.app.marketplacenaija" aria-label="Mobile app download">
+                        <img class="w-24" alt="Mobile app download play store" src="{{ asset('frontend/images/play-store.svg') }}">
                     </a>
                 </div>
             </div>

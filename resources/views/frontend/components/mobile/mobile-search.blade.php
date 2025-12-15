@@ -1,6 +1,6 @@
 <div class="relative bg-white">
 <!-- Button to open the search -->
-    <button id="openSearch" class="text-gray-700 rounded flex justify-start items-center">
+    <button aria-label="Search Modal" id="openSearch" class="text-gray-700 rounded flex justify-start items-center">
         <span class="text-gray-400 mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -67,7 +67,7 @@
                     </div>
                   </div>
                   <div class="mt-3">
-                      <button class="bg-dark_green hover:bg-white hover:text-dark_green font-semibold text-white w-full py-4 px-4 rounded-full text-sm">
+                      <button aria-label="Search Button" class="bg-dark_green hover:bg-white hover:text-dark_green font-semibold text-white w-full py-4 px-4 rounded-full text-sm">
                           <i class="fa fa-search"></i> <span class="px-1">Search</span>
                         </button>
                   </div>

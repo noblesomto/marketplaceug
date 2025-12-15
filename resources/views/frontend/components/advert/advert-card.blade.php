@@ -69,7 +69,7 @@
 
             <!-- Content -->
             <div class="p-3 flex flex-col flex-grow space-y-2">
-                <h4 class="font-bold text-sm">{{ Str::limit($row->ad_title, 20) }}</h4>
+                <h1 class="font-bold text-sm">{{ Str::limit($row->ad_title, 20) }}</h1>
                 <div class="flex items-center justify-between text-xs mt-auto">
                     <div class="text-gray-500 truncate flex">
                         <span>
@@ -78,7 +78,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
                         </span>
-                        <span>{{ $row->state }}</span>
+                        <span><h4>{{ $row->state }}</h4></span>
                     </div>
 
                 </div>

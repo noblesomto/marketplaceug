@@ -1,7 +1,7 @@
 <div class="relative ">
 
     <!-- Button to open the modal -->
-    <button id="openModal" class="m-1 md:m-4 px-4 py-2 text-gray-700 rounded">
+    <button aria-label="Menu Button" id="openModal" class="m-1 md:m-4 px-4 py-2 text-gray-700 rounded">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
       </svg>
