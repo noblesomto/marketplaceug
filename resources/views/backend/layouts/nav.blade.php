@@ -158,6 +158,11 @@
           </a>
         </li>
         <li>
+          <a href="/boost/paid">
+            <i class="bi bi-circle"></i><span>Confirm Payment</span>
+          </a>
+        </li>
+        <li>
           <a href="/boost/unpaid">
             <i class="bi bi-circle"></i><span>Unpaid Boost</span>
           </a>

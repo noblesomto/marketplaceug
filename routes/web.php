@@ -78,8 +78,8 @@ Route::any('/admin', [AdminAccount::class, 'adminlogin'])->name('admin.login');
 
 //Adverts
 Route::get('/listings', [AdvertController::class, 'adverts']);
-Route::get('/listings/fetchDesktop', [AdvertController::class, 'loadMoreAds'])->name('ads.loadMore');
-Route::get('/listings/fetchMobile', [AdvertController::class, 'loadMoreAdsMobile'])->name('ads.loadMore');
+Route::get('/load-more-ads-desktop', [AdvertController::class, 'loadMoreAds'])->name('load.more.ads.desktop');
+Route::get('/load-more-ads-mobile', [AdvertController::class, 'loadMoreAdsMobile'])->name('load.more.ads.mobile');
 Route::get('/all-categories', [AdvertController::class, 'all_categories']);
 Route::get('/category/{category_slug}', [AdvertController::class, 'category']);
 Route::get('/category/all-{slug}', [AdvertController::class, 'all_category']);
@@ -173,7 +173,7 @@ Route::middleware('usersession')->group(function () {
 Route::any('/user/post-ad', [UserManageAdverts::class, 'post_ad'])->middleware('usersession');
 Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
 Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
-Route::get('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('edit.ad')->middleware('usersession');
+Route::get('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('delete.ad')->middleware('usersession');
 //User Manage Boost
 Route::any('/user/post-boost-ad/{id}', [UserManageBoost::class, 'post_boost_ad'])->middleware('usersession');
 Route::any('/user/make-payment/{id}', [UserManageBoost::class, 'make_payment'])->middleware('usersession');
@@ -273,6 +273,7 @@ Route::middleware(['adminsession'])->group(function () {
         Route::any('/boost/active', [ManageBoost::class, 'active']);
         Route::any('/boost/completed', [ManageBoost::class, 'completed']);
         Route::any('/boost/unpaid', [ManageBoost::class, 'unpaid']);
+        Route::any('/boost/paid', [ManageBoost::class, 'paid']);
         Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status']);
         Route::any('/boost/payment-status/{id}/{status}', [ManageBoost::class, 'payment']);
     });

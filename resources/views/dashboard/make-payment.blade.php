@@ -95,6 +95,12 @@
                 </div>
             </div>
 
+             <div class="flex items-center my-6">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="flex-shrink mx-4 text-gray-600 text-sm">or</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+              </div>
+
             <!-- Online Payment Section -->
             <div class="border border-gray-200 rounded-lg overflow-hidden">
                 <div class="bg-gray-100 px-6 py-4 border-b">

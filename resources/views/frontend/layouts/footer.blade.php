@@ -104,14 +104,7 @@
         const userId = {!! json_encode(session('user_id')) !!};
         const notificationSound = document.getElementById('notificationSound');
         const notificationIcon = "{{ asset('frontend/images/message-icon.png') }}";
-        let previousCount = null; // Changed from 0 to null
-
-        // Request notification permission
-        if ("Notification" in window && Notification.permission !== 'granted') {
-            Notification.requestPermission().then(permission => {
-                console.log("Notification permission:", permission);
-            });
-        }
+        let previousCount = null;
 
         // Listen for real-time messages via Pusher
         if (userId) {
@@ -125,7 +118,7 @@
                         notificationSound.play().catch(err => console.warn("Sound failed:", err));
                     }
 
-                    // Show browser notification
+                    // Show browser notification (only if already granted)
                     showNotification("📩 New Message", "You received a new message!");
 
                     // Update unread message badge
@@ -166,22 +159,12 @@
         }
 
         function showNotification(title, body) {
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification(title, {
-                        body: body,
-                        icon: notificationIcon
-                    });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification(title, {
-                                body: body,
-                                icon: notificationIcon
-                            });
-                        }
-                    });
-                }
+            // Only show notification if permission was already granted (no requests)
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, {
+                    body: body,
+                    icon: notificationIcon
+                });
             }
         }
 

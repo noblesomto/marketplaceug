@@ -111,6 +111,7 @@ class PageController extends Controller
          $title = $blog->title . " | " . config('global.site_name');
         //dd($slug);
         $blog->increment('views');
+
         $similar = Blog::where('category', $blog->category)
             ->where('slug', '!=', $slug)
             ->where('status','published')

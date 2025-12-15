@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\AdvertBoost;
 use Carbon\Carbon;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ManageBoost extends Controller
 {
@@ -93,6 +94,28 @@ class ManageBoost extends Controller
 
         return view('backend.adboost.unpaid', compact('title', 'page_title', 'adverts'));
     }
+
+    public function paid(Request $request)
+    {
+        $title = "Unpaid Boost Adverts | " . config('global.site_name');
+        $page_title = "Unpaid Boost Adverts";
+
+        $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
+            ->whereHas('advert', function ($query) {
+                $query->where('ad_status', 1)
+                      ->where('sold', 'No');
+            })
+            ->where('payment_status', 'pending')
+            ->where('boost_status', 'pending')
+            ->whereHas('media', function ($query) {
+                $query->where('collection_name', 'payment_proof');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('backend.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+    }
+
 
     public function payment($id, $status)
     {

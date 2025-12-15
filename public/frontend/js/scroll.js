@@ -1,75 +1,123 @@
-let desktopPage = 2; // first page already rendered
-let mobilePage = 2; // first page already rendered
-let desktopLoading = false;
-let mobileLoading = false;
+document.addEventListener('DOMContentLoaded', function() {
+    // ==================== DESKTOP LOAD MORE ====================
+    let currentPageDesktop = 2;
+    let isLoadingDesktop = false;
+    let hasMorePagesDesktop = true;
 
-// Desktop Part
-const loadMoreAdsDesktop = () => {
-    if (desktopLoading) return;
-    desktopLoading = true;
-    document.getElementById('loading').classList.remove('hidden');
-    fetch(`/listings/fetchDesktop?page=${desktopPage}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('loading').classList.add('hidden');
-            if (data.html.trim()) {
-                document.getElementById('listings-container').insertAdjacentHTML('beforeend', data.html);
-                if (data.next_page) {
-                    desktopPage = data.next_page;
-                    desktopLoading = false;
-                } else {
-                    document.getElementById('load-more-trigger')?.remove();
+    const loadMoreBtnDesktop = document.getElementById('load-more-btn-desktop');
+    const loadingDesktop = document.getElementById('loading-desktop');
+    const containerDesktop = document.getElementById('listings-container');
+    const noMoreAdsDesktop = document.getElementById('no-more-ads-desktop');
+
+    if (loadMoreBtnDesktop) {
+        loadMoreBtnDesktop.addEventListener('click', function() {
+            if (isLoadingDesktop || !hasMorePagesDesktop) return;
+
+
+            isLoadingDesktop = true;
+            loadMoreBtnDesktop.classList.add('hidden');
+            loadingDesktop.classList.remove('hidden');
+            loadingDesktop.classList.add('flex');
+
+            fetch(`/load-more-ads-desktop?page=${currentPageDesktop}`, {  // ✅ Changed from /load-more-desktop
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading desktop listings:', error);
-            document.getElementById('loading').classList.add('hidden');
-            desktopLoading = false;
-        });
-};
+            })
+            .then(response => {
 
-const desktopObserver = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-        loadMoreAdsDesktop();
+                return response.json();
+            })
+            .then(data => {
+
+
+                if (data.html && data.html.trim() !== '') {
+                    containerDesktop.insertAdjacentHTML('beforeend', data.html);
+
+                    if (data.next_page) {
+                        currentPageDesktop = data.next_page;
+                        loadMoreBtnDesktop.classList.remove('hidden');
+                    } else {
+                        hasMorePagesDesktop = false;
+                        noMoreAdsDesktop.classList.remove('hidden');
+                    }
+                } else {
+                    hasMorePagesDesktop = false;
+                    noMoreAdsDesktop.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+
+                loadMoreBtnDesktop.classList.remove('hidden');
+                alert('Failed to load more listings. Please try again.');
+            })
+            .finally(() => {
+                loadingDesktop.classList.add('hidden');
+                loadingDesktop.classList.remove('flex');
+                isLoadingDesktop = false;
+            });
+        });
+    }
+
+    // ==================== MOBILE LOAD MORE ====================
+    let currentPageMobile = 2;
+    let isLoadingMobile = false;
+    let hasMorePagesMobile = true;
+
+    const loadMoreBtnMobile = document.getElementById('load-more-btn-mobile');
+    const loadingMobile = document.getElementById('loading-mobile');
+    const containerMobile = document.getElementById('listings-container-mobile');
+    const noMoreAdsMobile = document.getElementById('no-more-ads-mobile');
+
+    if (loadMoreBtnMobile) {
+        loadMoreBtnMobile.addEventListener('click', function() {
+            if (isLoadingMobile || !hasMorePagesMobile) return;
+
+
+            isLoadingMobile = true;
+            loadMoreBtnMobile.classList.add('hidden');
+            loadingMobile.classList.remove('hidden');
+
+            fetch(`/load-more-ads-mobile?page=${currentPageMobile}`, {  // ✅ Changed from /load-more-mobile
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+
+                return response.json();
+            })
+            .then(data => {
+
+
+                if (data.html && data.html.trim() !== '') {
+                    containerMobile.insertAdjacentHTML('beforeend', data.html);
+
+                    if (data.next_page) {
+                        currentPageMobile = data.next_page;
+                        loadMoreBtnMobile.classList.remove('hidden');
+                    } else {
+                        hasMorePagesMobile = false;
+                        noMoreAdsMobile.classList.remove('hidden');
+                    }
+                } else {
+                    hasMorePagesMobile = false;
+                    noMoreAdsMobile.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+
+                loadMoreBtnMobile.classList.remove('hidden');
+                alert('Failed to load more listings. Please try again.');
+            })
+            .finally(() => {
+                loadingMobile.classList.add('hidden');
+                isLoadingMobile = false;
+            });
+        });
     }
 });
-
-const desktopTrigger = document.getElementById('load-more-trigger');
-if (desktopTrigger) desktopObserver.observe(desktopTrigger);
-
-
-// Mobile Part
-const loadMoreAdsMobile = () => {
-    if (mobileLoading) return;
-    mobileLoading = true;
-    document.getElementById('loading-mobile').classList.remove('hidden');
-    fetch(`/listings/fetchMobile?page=${mobilePage}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('loading-mobile').classList.add('hidden');
-            if (data.html.trim()) {
-                document.getElementById('listings-container-mobile').insertAdjacentHTML('beforeend', data.html);
-                if (data.next_page) {
-                    mobilePage = data.next_page;
-                    mobileLoading = false;
-                } else {
-                    document.getElementById('load-more-trigger-mobile')?.remove();
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading mobile listings:', error);
-            document.getElementById('loading-mobile').classList.add('hidden');
-            mobileLoading = false;
-        });
-};
-
-const mobileObserver = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-        loadMoreAdsMobile();
-    }
-});
-
-const mobileTrigger = document.getElementById('load-more-trigger-mobile');
-if (mobileTrigger) mobileObserver.observe(mobileTrigger);

@@ -45,7 +45,7 @@
             </span>
             <div class="flex flex-col">
                 <span class="font-semibold">Reviews</span>
-                <span class="text-sm">Give Seller Reviews</span>
+                <span class="text-sm">View and get more Reviews</span>
             </div>
         </a>
         <a href="/user/settings"
@@ -77,7 +77,7 @@
 
 <section class="w-full md:w-3/6  mx-auto py-3 text-sm">
     <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 rounded-lg">
-        Recent Listing
+        Recent Listings
         @include('frontend.components.flash-message')
     </div>
     <div id="ads-container">
@@ -87,7 +87,7 @@
         <div class="mt-3 mb-4 px-2 flex justify-center pb-20">
             <button id="load-more-btn"
                     class="bg-secondary_dark hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
-                <span id="load-more-text">See More</span>
+                <span id="load-more-text">Show More</span>
                 <span id="load-more-spinner" class="hidden">
                     <svg class="animate-spin h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

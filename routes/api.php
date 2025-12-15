@@ -15,19 +15,19 @@ use App\Http\Controllers\Api\UserManageAdverts;
 use App\Http\Controllers\Api\UserProfile;
 
 
-Route::post('/register', [Api\AccountController::class, 'register']);
-Route::post('/login', [Api\AccountController::class, 'login']);
-Route::post('/verify-otp', [Api\AccountController::class, 'verifyOTP']);
-Route::post('/resend-otp', [Api\AccountController::class, 'resendOTP']);
-Route::get('/verify/{email}/{token}', [Api\AccountController::class, 'verifyAccount']);
-Route::post('/resend-verification', [Api\AccountController::class, 'resendVerification']);
-Route::post('/forgot-password', [Api\AccountController::class, 'forgotPassword']);
-Route::post('/reset-password/{user_id}/{token}', [Api\AccountController::class, 'resetPassword']);
+Route::post('/register', [AccountController::class, 'register']);
+Route::post('/login', [AccountController::class, 'login']);
+Route::post('/verify-otp', [AccountController::class, 'verifyOTP']);
+Route::post('/resend-otp', [AccountController::class, 'resendOTP']);
+Route::get('/verify/{email}/{token}', [AccountController::class, 'verifyAccount']);
+Route::post('/resend-verification', [AccountController::class, 'resendVerification']);
+Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
+Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [Api\AccountController::class, 'user']);
-    Route::post('/logout', [Api\AccountController::class, 'logout']);
-    Route::delete('/trusted-device/{device_id}', [Api\AccountController::class, 'removeTrustedDevice']);
+    Route::get('/user', [AccountController::class, 'user']);
+    Route::post('/logout', [AccountController::class, 'logout']);
+    Route::delete('/trusted-device/{device_id}', [AccountController::class, 'removeTrustedDevice']);
 });
 
 

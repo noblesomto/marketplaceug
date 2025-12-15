@@ -26,11 +26,11 @@
 
         <!-- Blog Content -->
         <section class="pb-12 pt-2">
-            <div class="container mx-auto px-2">
+            <div class="container mx-auto">
                 <div class="max-w-4xl mx-auto">
                     <!-- Article Header -->
                     <article class="bg-white rounded-xl shadow-md overflow-hidden">
-                        <div class="p-2">
+                        <div class="px-4 md:px-6 py-2 md:py-1">
                             <div class="mb-6">
                                 <div class="uppercase tracking-wide text-sm text-blue-600 font-semibold">{{ Str::of($blog->category)->replace('-', ' ')->title() }}</div>
                                 <h1 class="mt-2 text-3xl md:text-4xl font-bold text-gray-900">{{ $blog->title }}</h1>
@@ -82,16 +82,16 @@
                             <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
                                 <div class="flex">
                                     <div class="w-2/5">
-                                        <a href="/blog/{{ $blog->slug }}">
+                                        <a href="/blog/{{ $row->slug }}">
                                             <img class="h-32 w-full object-cover" src="{{ $row->featured_image_thumb }}" alt="{{ $blog->title }}">
                                         </a>
 
                                     </div>
                                     <div class="p-4 w-3/5">
                                         <div class="uppercase tracking-wide text-xs text-green-600 font-semibold">{{ Str::of($row->category)->replace('-', ' ')->title() }}</div>
-                                        <a href="/blog/{{ $blog->slug }}"><h3 class="font-bold text-gray-900 mt-1">{{ Str::limit($blog->title, 50) }}</h3></a>
+                                        <a href="/blog/{{ $row->slug }}"><h3 class="font-bold text-gray-900 mt-1">{{ Str::limit($row->title, 50) }}</h3></a>
                                         <div class="mt-2">
-                                            <a href="/blog/{{ $blog->slug }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <a href="/blog/{{ $row->slug }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
                                                 Read More
                                                 <i class="fas fa-arrow-right ml-1"></i>
                                             </a>
