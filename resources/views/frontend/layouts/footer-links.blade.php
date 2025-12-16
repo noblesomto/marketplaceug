@@ -61,7 +61,7 @@
     <!--Copy Rights -->
     <div class="flex justify-center gap-2 mt-5 pb-10 text-sm text-center border-t-2 border-t-gray-300 pt-4">
         <div class=" ">
-            <span class="font-semibold px-2">{{ config('global.site_name') }}. {{ date('Y ') }}</span>
+            <span class="font-semibold px-2">Marketplace Naija. {{ date('Y ') }}</span>
         </div>
         <div class="">
             All rights reserved

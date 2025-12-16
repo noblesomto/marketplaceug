@@ -11,7 +11,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="w-full xl:w-4/6 mx-auto bg-white md:bg-body pb-20">
   <div class="block lg:hidden bg-white pt-3 ml-2">
     <div>
-        <span class="text-base"><strong>Marketplace Naija</strong> - Buy. Sell. Secure Deals.</span>
+        <span class="text-base"><strong>Marketplace Naija</strong> - Buy. Sell. Discover Deals.</span>
     </div>
 
   </div>
@@ -120,7 +120,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 
-<script src="{{ asset('frontend/js/scroll.js') }}"></script>
 @include('frontend.layouts.footer')
 
 

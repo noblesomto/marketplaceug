@@ -1,4 +1,8 @@
 import './bootstrap';
-import "trix/dist/trix.css"
-import "trix"
+import './scroll';
+import './lga';
+import './message-notification';
+import 'trix';
+import Swal from 'sweetalert2';
 
+window.Swal = Swal;

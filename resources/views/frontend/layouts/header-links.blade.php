@@ -1,10 +1,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('frontend/images/favicon.png') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/fontawesome/css/all.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
 
-    <!-- Include SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

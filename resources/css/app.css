@@ -1,5 +1,10 @@
+@import "sweetalert2/dist/sweetalert2.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 @import './chat.css';
+@import 'trix/dist/trix.css';
 @import './trix-editor.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
