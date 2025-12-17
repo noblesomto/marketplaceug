@@ -82,7 +82,7 @@ class AdvertController extends Controller
                 ->limit(8)
                 ->get();
 
-            $perPage = 23;
+            $perPage = 20;
             $currentPage = request()->get('page', 1);
 
             // Get IDs to exclude (featured posts)
@@ -249,7 +249,7 @@ class AdvertController extends Controller
 
         // 1. If ad does not exist → 404
         if (!$ad) {
-            abort(404, 'Advert not found');
+            return redirect('/');
         }
 
         // 2. If ad exists and redirect is Yes → redirect
@@ -676,21 +676,40 @@ class AdvertController extends Controller
         return view('frontend.adverts', compact('title', 'ads', 'user', 'categories'));
     }
 
-    public function seller(Request $request, $id, $ad)
+   public function seller(Request $request, $id, $ad)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
-        $ads = Advert::with('firstImage','owner')->where('user_id', $id)->activeNotRecentlySold()->orderBy('created_at', 'desc')->paginate(10);
-        $ad = Advert::with('firstImage','owner')->where('id', $ad)->first();
-        $user_id = $request->session()->get('user_id');
+        // Check if owner exists
         $owner = User::where('user_id', $id)->first();
+        if (!$owner) {
+            return redirect('/');
+        }
+
+        // Check if ad exists and belongs to this seller
+        $ad = Advert::with('firstImage', 'owner')
+            ->where('id', $ad)
+            ->where('user_id', $id)
+            ->first();
+
+        if (!$ad) {
+            return redirect('/');
+        }
+
+        // Fetch seller's other ads
+        $ads = Advert::with('firstImage', 'owner')
+            ->where('user_id', $id)
+            ->where('id', '!=', $ad->id)
+            ->activeNotRecentlySold()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $title = config('global.site_name') . ' | ' . config('global.site_title');
+        $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->count();
 
-
-        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories','count_ads'));
+        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories', 'count_ads'));
     }
-
    
 
     public function all_categories(Request $request)

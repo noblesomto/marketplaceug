@@ -222,7 +222,7 @@ class Advert extends Model implements HasMedia
         // New – mobile optimized
         $this->addMediaConversion('thumb-sm')
             ->format('webp')
-            ->quality(70)
+            ->quality(60)
             ->width(300)
             ->height(225)
             ->fit(Fit::Crop)
@@ -233,7 +233,7 @@ class Advert extends Model implements HasMedia
         // New – desktop optimized
         $this->addMediaConversion('thumb-md')
             ->format('webp')
-            ->quality(70)
+            ->quality(60)
             ->width(400)
             ->height(300)
             ->fit(Fit::Crop)

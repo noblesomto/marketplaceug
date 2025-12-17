@@ -4,7 +4,13 @@
     <title>{{ $title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css'])
+    <script type="module" src="{{ Vite::asset('resources/js/app.js') }}" defer></script>
+     {{-- Preload critical font --}}
+<link rel="preload" href="{{ asset('assets/bootstrap-icons.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+{{-- Preload LCP image if you know it --}}
+<link rel="preload" href="{{ asset('images/logo.png') }}" as="image">
 
 
      <!-- SEO Meta Tags -->
@@ -28,5 +34,27 @@
 
      <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
-
+    <!-- Preload LCP Image - Add this to your <head> section -->
+@if(isset($gallery[0]))
+    @php
+        $firstMedia = $gallery[0]->getFirstMedia('images');
+    @endphp
+    @if($firstMedia)
+        <link rel="preload" as="image"
+              href="{{ $firstMedia->hasGeneratedConversion('thumb-sm') ? $firstMedia->getUrl('thumb-sm') : $firstMedia->getUrl('thumbnail') }}"
+              fetchpriority="high">
+    @endif
+@endif
+@if(isset($listings[0]))
+    @php
+        $firstImage = $listings[0]->getFirstMedia('images');
+    @endphp
+    @if($firstImage)
+        <link rel="preload" as="image"
+              href="{{ $firstImage->hasGeneratedConversion('thumb-sm') ? $firstImage->getUrl('thumb-sm') : $firstImage->getUrl('thumbnail') }}"
+              fetchpriority="high"
+              media="(max-width: 640px)">
+    @endif
+@endif
   @include('frontend.layouts.header-links')
+

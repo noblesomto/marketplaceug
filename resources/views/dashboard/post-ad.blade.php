@@ -546,7 +546,7 @@
             <div class="p-6 md:p-8 space-y-8">
 
                 <!-- Description -->
-                <div>
+                <div data-has-editor>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Detailed Description <span class="text-red-500">*</span></label>
                     <input id="content" type="hidden" name="description" value="{{ old('description') }}" required>
                     <div class="prose max-w-none">
@@ -654,7 +654,7 @@
 
     </form>
 </section>
-
+<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

@@ -511,7 +511,7 @@
             </div>
             <div class="p-6 md:p-8 space-y-8">
                 <!-- Description -->
-                <div>
+                <div data-has-editor>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Detailed Description *</label>
                      <input id="content" type="hidden" name="description" value="{{ old('description', $advert->description ?? '') }}" required>
                      <div class="prose max-w-none">
@@ -619,7 +619,7 @@
 
     </form>
 </section>
-
+<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
 <!-- Scripts maintained -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>

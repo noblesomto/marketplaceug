@@ -92,6 +92,10 @@ Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertContro
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct']);
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping']);
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');
+Route::get('/seller/{id}', function() {
+    return redirect('/');
+});
+
 Route::get('/seller/{id}/{ad}', [AdvertController::class, 'seller']);
 Route::any('/report-ad/{id}', [AdvertController::class, 'report_advert'])->middleware('usersession');
 Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession');

@@ -4,31 +4,58 @@
         <div class="aspect-[4/3] w-full overflow-hidden relative">
             @php
                 $image = $row->getFirstMedia('images');
+                $thumbSmUrl = $image && $image->hasGeneratedConversion('thumb-sm')
+                    ? $image->getUrl('thumb-sm')
+                    : ($image ? $image->getUrl('thumbnail') : asset('frontend/images/default.png'));
+                $thumbnailUrl = $image ? $image->getUrl('thumbnail') : asset('frontend/images/default.png');
+
+                // Mobile optimization: First 4 items (2 rows) are above the fold
+                $isAboveFold = isset($loop) && $loop->index < 4;
             @endphp
 
-            <img
-                src="{{ $image
-                    ? ($image->hasGeneratedConversion('thumb-sm')
-                        ? $image->getUrl('thumb-sm')
-                        : $image->getUrl('thumbnail'))
-                    : asset('frontend/images/default.png') }}"
-                alt="{{ $row->ad_title }}"
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
-            />
-
+            @if($isAboveFold)
+                {{-- Above-the-fold images on mobile: Eager load with priority --}}
+                <img
+                    src="{{ $thumbSmUrl }}"
+                    alt="{{ $row->ad_title }}"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    width="200"
+                    height="150"
+                    @if($loop->index < 2)
+                        fetchpriority="high"
+                    @endif
+                    @if($image)
+                        srcset="{{ $thumbnailUrl }} 200w, {{ $thumbSmUrl }} 400w"
+                        sizes="50vw"
+                    @endif
+                />
+            @else
+                {{-- Below-the-fold images: Lazy load --}}
+                <img
+                    src="{{ $thumbSmUrl }}"
+                    alt="{{ $row->ad_title }}"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    width="200"
+                    height="150"
+                    loading="lazy"
+                    @if($image)
+                        srcset="{{ $thumbnailUrl }} 200w, {{ $thumbSmUrl }} 400w"
+                        sizes="50vw"
+                    @endif
+                />
+            @endif
 
             <div class="absolute top-1 right-1 space-y-1">
                 @if($row->owner->verified=='yes')
-                    <div class="bg-green-50  px-0.5 rounded text-[14px]">
+                    <div class="bg-green-50 px-0.5 rounded text-[14px]">
                         <span title="verified User">
                             <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                         </span>
                     </div>
                 @endif
                 @if($row->views >= setViews())
-                <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
-                        <span title="Popuplar Ad">
+                    <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
+                        <span title="Popular Ad">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                 <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                             </svg>
@@ -116,7 +143,6 @@
                 </div>
 
             @endif
-
 
         </div>
     </a>

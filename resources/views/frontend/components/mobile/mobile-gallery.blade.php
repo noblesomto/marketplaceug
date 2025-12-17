@@ -1,3 +1,6 @@
+
+
+<!-- Discover what's trending Section -->
 <section class="bg-white px-2">
     <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
         <span>
@@ -9,30 +12,55 @@
     </div>
 
     <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
-        <!-- Card 1 -->
         @foreach ($gallery as $row)
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
                     @php
                         $media = $row->getFirstMedia('images');
+                        $thumbSmUrl = $media && $media->hasGeneratedConversion('thumb-sm')
+                            ? $media->getUrl('thumb-sm')
+                            : ($media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png'));
+                        $thumbnailUrl = $media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png');
                     @endphp
 
-                    <img
-                        alt="{{ $row->ad_title }}"
-                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
-                        loading="lazy"
-                        src="{{ $media
-                            ? ($media->hasGeneratedConversion('thumb-sm')
-                                ? $media->getUrl('thumb-sm')
-                                : $media->getUrl('thumbnail'))
-                            : asset('frontend/images/default.png') }}"
-                        onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
-                    />
+                    @if($loop->index < 3)
+                        {{-- First 3 images: Eager load with high priority --}}
+                        <img
+                            alt="{{ $row->ad_title }}"
+                            class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            width="300"
+                            height="112"
+                            @if($loop->first)
+                                fetchpriority="high"
+                            @endif
+                            @if($media)
+                                srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                                sizes="(max-width: 768px) 45vw, 25vw"
+                            @endif
+                            src="{{ $thumbSmUrl }}"
+                            onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                        />
+                    @else
+                        {{-- Remaining images: Lazy load --}}
+                        <img
+                            alt="{{ $row->ad_title }}"
+                            class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            width="300"
+                            height="112"
+                            loading="lazy"
+                            @if($media)
+                                srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                                sizes="(max-width: 768px) 45vw, 25vw"
+                            @endif
+                            src="{{ $thumbSmUrl }}"
+                            onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                        />
+                    @endif
 
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
-                            <div class="bg-green-50  px-1 rounded text-[14px]">
+                            <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
                                 </span>
@@ -40,7 +68,7 @@
                         @endif
                         @if($row->views >= setViews())
                         <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
-                            <span title="Popuplar Ad">
+                            <span title="Popular Ad">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
@@ -70,7 +98,7 @@
                             {{ $row->expected_salary }}
                         </span>
                     @elseif($row->contact_price=="yes")
-                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold">
                             Contact For Price
                         </div>
                     @else
@@ -119,30 +147,36 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
-        <!-- Card 1 -->
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
         @foreach ($cars as $row)
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
                     @php
                         $media = $row->getFirstMedia('images');
+                        $thumbSmUrl = $media && $media->hasGeneratedConversion('thumb-sm')
+                            ? $media->getUrl('thumb-sm')
+                            : ($media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png'));
+                        $thumbnailUrl = $media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png');
                     @endphp
 
                     <img
                         alt="{{ $row->ad_title }}"
                         class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        width="300"
+                        height="112"
                         loading="lazy"
-                        src="{{ $media
-                            ? ($media->hasGeneratedConversion('thumb-sm')
-                                ? $media->getUrl('thumb-sm')
-                                : $media->getUrl('thumbnail'))
-                            : asset('frontend/images/default.png') }}"
+                        @if($media)
+                            srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                            sizes="(max-width: 768px) 45vw, 25vw"
+                        @endif
+                        src="{{ $thumbSmUrl }}"
                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
                     />
+
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
-                            <div class="bg-green-50  px-1 rounded text-[14px]">
+                            <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
                                 </span>
@@ -150,7 +184,7 @@
                         @endif
                         @if($row->views >= setViews())
                         <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
-                            <span title="Popuplar Ad">
+                            <span title="Popular Ad">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
@@ -161,11 +195,11 @@
                     <div class="absolute top-2 left-2">
                         @if ($row->featured == 'Yes')
                             <div class="bg-gray-50 inline-block px-2 py-1 rounded text-[12px]" title="Boosted Ad">
-                            <span>
-                                <i class="bi bi-rocket-takeoff"></i>
-                            </span>
-                            <span class="font-semibold">Boost</span>
-                        </div>
+                                <span>
+                                    <i class="bi bi-rocket-takeoff"></i>
+                                </span>
+                                <span class="font-semibold">Boost</span>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -180,7 +214,7 @@
                             {{ $row->expected_salary }}
                         </span>
                     @elseif($row->contact_price=="yes")
-                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold">
                             Contact For Price
                         </div>
                     @else
@@ -204,11 +238,9 @@
         </div>
         @endforeach
     </div>
-
 </section>
 
-
- <!-- Phone Section -->
+<!-- Phone Section -->
 <section class="bg-white px-2">
     <div class="flex justify-between">
         <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
@@ -231,30 +263,36 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
-        <!-- Card 1 -->
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
         @foreach ($phones as $row)
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
                     @php
                         $media = $row->getFirstMedia('images');
+                        $thumbSmUrl = $media && $media->hasGeneratedConversion('thumb-sm')
+                            ? $media->getUrl('thumb-sm')
+                            : ($media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png'));
+                        $thumbnailUrl = $media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png');
                     @endphp
 
                     <img
                         alt="{{ $row->ad_title }}"
                         class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        width="300"
+                        height="112"
                         loading="lazy"
-                        src="{{ $media
-                            ? ($media->hasGeneratedConversion('thumb-sm')
-                                ? $media->getUrl('thumb-sm')
-                                : $media->getUrl('thumbnail'))
-                            : asset('frontend/images/default.png') }}"
+                        @if($media)
+                            srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                            sizes="(max-width: 768px) 45vw, 25vw"
+                        @endif
+                        src="{{ $thumbSmUrl }}"
                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
                     />
+
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
-                            <div class="bg-green-50  px-1 rounded text-[14px]">
+                            <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
                                 </span>
@@ -262,7 +300,7 @@
                         @endif
                         @if($row->views >= setViews())
                         <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
-                            <span title="Popuplar Ad">
+                            <span title="Popular Ad">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
@@ -292,7 +330,7 @@
                             {{ $row->expected_salary }}
                         </span>
                     @elseif($row->contact_price=="yes")
-                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold">
                             Contact For Price
                         </div>
                     @else
@@ -316,11 +354,9 @@
         </div>
         @endforeach
     </div>
-
 </section>
 
-
-<!-- Fashion &amp; Beauty -->
+<!-- Fashion & Beauty -->
 <section class="bg-white px-2">
     <div class="flex justify-between">
         <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
@@ -343,30 +379,36 @@
         </a>
     </div>
 
-<div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
-        <!-- Card 1 -->
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
         @foreach ($fashion as $row)
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
                     @php
                         $media = $row->getFirstMedia('images');
+                        $thumbSmUrl = $media && $media->hasGeneratedConversion('thumb-sm')
+                            ? $media->getUrl('thumb-sm')
+                            : ($media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png'));
+                        $thumbnailUrl = $media ? $media->getUrl('thumbnail') : asset('frontend/images/default.png');
                     @endphp
 
                     <img
                         alt="{{ $row->ad_title }}"
                         class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        width="300"
+                        height="112"
                         loading="lazy"
-                        src="{{ $media
-                            ? ($media->hasGeneratedConversion('thumb-sm')
-                                ? $media->getUrl('thumb-sm')
-                                : $media->getUrl('thumbnail'))
-                            : asset('frontend/images/default.png') }}"
+                        @if($media)
+                            srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                            sizes="(max-width: 768px) 45vw, 25vw"
+                        @endif
+                        src="{{ $thumbSmUrl }}"
                         onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
                     />
+
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
-                            <div class="bg-green-50  px-1 rounded text-[14px]">
+                            <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
                                 </span>
@@ -374,7 +416,7 @@
                         @endif
                         @if($row->views >= setViews())
                         <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[12px]">
-                            <span title="Popuplar Ad">
+                            <span title="Popular Ad">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
@@ -404,7 +446,7 @@
                             {{ $row->expected_salary }}
                         </span>
                     @elseif($row->contact_price=="yes")
-                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold ">
+                        <div class="bg-primary h-6 absolute bottom-0 right-0 pl-2 pr-2 text-sm font-semibold">
                             Contact For Price
                         </div>
                     @else
@@ -428,5 +470,4 @@
         </div>
         @endforeach
     </div>
-
 </section>
