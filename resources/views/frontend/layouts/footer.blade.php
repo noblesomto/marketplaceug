@@ -97,81 +97,12 @@
 	});        
 </script>
 
-<audio id="notificationSound" src="{{ asset('frontend/sound/new-message.mp3') }}" preload="auto"></audio>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userId = {!! json_encode(session('user_id')) !!};
-        const notificationSound = document.getElementById('notificationSound');
-        const notificationIcon = "{{ asset('frontend/images/message-icon.png') }}";
-        let previousCount = null;
-
-        // Listen for real-time messages via Pusher
-        if (userId) {
-            Echo.private(`user.${userId}`)
-                .listen('.new.message', (e) => {
-                    console.log("📩 New message received:", e.message);
-                    console.log("Subscribing to: user." + userId);
-
-                    // Play sound
-                    if (notificationSound) {
-                        notificationSound.play().catch(err => console.warn("Sound failed:", err));
-                    }
-
-                    // Show browser notification (only if already granted)
-                    showNotification("📩 New Message", "You received a new message!");
-
-                    // Update unread message badge
-                    updateUnreadMessages();
-                });
-        }
-
-        // Polling fallback for unread count
-        function updateUnreadMessages() {
-            fetch("{{ url('/unread-messages-count') }}")
-                .then(response => response.json())
-                .then(data => {
-                    const badges = document.querySelectorAll('.unread-badge');
-
-                    // Update UI
-                    badges.forEach(badge => {
-                        if (data.count > 0) {
-                            badge.style.display = 'flex';
-                            badge.textContent = data.count;
-                        } else {
-                            badge.style.display = 'none';
-                        }
-                    });
-
-                    // Notify only if count increased
-                    if (previousCount !== null && data.count > previousCount) {
-                        showNotification("📩 New Message", `You have ${data.count} unread message(s).`);
-                        if (notificationSound) {
-                            notificationSound.play().catch(e => console.warn('Sound failed:', e));
-                        }
-                    }
-
-                    previousCount = data.count;
-                })
-                .catch(error => {
-                    console.error("Unread message check failed:", error);
-                });
-        }
-
-        function showNotification(title, body) {
-            // Only show notification if permission was already granted (no requests)
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, {
-                    body: body,
-                    icon: notificationIcon
-                });
-            }
-        }
-
-        // Initial call + polling every 10 seconds
-        updateUnreadMessages();
-        setInterval(updateUnreadMessages, 10000);
-    });
+    window.Laravel = window.Laravel || {};
+    window.Laravel.userId = {!! json_encode(session('user_id')) !!};
+    window.Laravel.soundUrl = "{{ asset('frontend/sound/new-message.mp3') }}";
+    window.Laravel.iconUrl = "{{ asset('frontend/images/message-icon.png') }}";
+    window.Laravel.unreadUrl = "{{ url('/unread-messages-count') }}";
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {

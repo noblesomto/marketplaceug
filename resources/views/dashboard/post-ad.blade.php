@@ -84,7 +84,7 @@
                                name="ad_title"
                                id="ad_title"
                                placeholder="e.g. iPhone 14 Pro Max - 256GB - Deep Purple"
-                               class="block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-dark_green focus:border-transparent transition-colors text-base"
+                               class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-dark_green focus:border-transparent transition-colors text-base"
                                value="{{ old('ad_title') }}"
                                maxlength="75"
                                required>
@@ -100,7 +100,7 @@
                     <!-- Category -->
                     <div>
                         <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Category <span class="text-red-500">*</span></label>
-                        <select id="category" name="category" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required>
+                        <select id="category" name="category" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required>
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category }}</option>
@@ -111,7 +111,7 @@
                     <!-- Subcategory -->
                     <div>
                         <label for="subcategory" class="block text-sm font-semibold text-gray-700 mb-2">Sub Category <span class="text-red-500">*</span></label>
-                        <select id="subcategory" name="subcategory" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" onchange="showHideDiv()" required>
+                        <select id="subcategory" name="subcategory" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" onchange="showHideDiv()" required>
                             <option value="">Select Subcategory</option>
                         </select>
                     </div>
@@ -119,7 +119,7 @@
                     <!-- Brand -->
                     <div>
                         <label for="brand" class="block text-sm font-semibold text-gray-700 mb-2">Brand <span class="text-red-500">*</span></label>
-                        <select id="brand" name="brand" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required>
+                        <select id="brand" name="brand" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required>
                             <option value="">Select Options</option>
                         </select>
                     </div>
@@ -127,7 +127,7 @@
                     <!-- Model (Hidden by default) -->
                     <div id="divModel" class="hidden">
                         <label for="model" class="block text-sm font-semibold text-gray-700 mb-2">Model</label>
-                        <select id="model" name="model" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select id="model" name="model" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Select Model</option>
                         </select>
                     </div>
@@ -135,7 +135,7 @@
                     <!-- Item Condition -->
                     <div id="itemCondition">
                         <label for="pr" class="block text-sm font-semibold text-gray-700 mb-2">Item Condition <span class="text-red-500">*</span></label>
-                        <select id="pr" name="item_condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select id="pr" name="item_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="New">New</option>
                             <option value="Foreign Used">Foreign Used</option>
@@ -159,15 +159,15 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Mileage (Km) <span class="text-red-500">*</span></label>
                         <div class="flex">
-                            <input type="text" name="mileage" placeholder="0" value="{{ old('mileage') }}" class="block w-full px-4 py-3 rounded-l-lg border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
-                            <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
+                            <input type="text" name="mileage" placeholder="0" value="{{ old('mileage') }}" class="block w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
+                            <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
                         </div>
                     </div>
 
                     <!-- Vehicle Condition -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Condition <span class="text-red-500">*</span></label>
-                        <select name="condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Local used">Local used</option>
                             <option value="Foreign used">Foreign used</option>
@@ -178,7 +178,7 @@
                     <!-- Registration -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Registration</label>
-                        <select name="registration" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="registration" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">--Select Type--</option>
                             <option value="Registered">Registered</option>
                             <option value="Unregistered">Unregistered</option>
@@ -188,7 +188,7 @@
                     <!-- Fuel -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Fuel Type <span class="text-red-500">*</span></label>
-                        <select name="fuel" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="fuel" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Petrol">Petrol</option>
                             <option value="Diesel">Diesel</option>
@@ -202,7 +202,7 @@
                     <!-- Transmission -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Transmission <span class="text-red-500">*</span></label>
-                        <select name="transmission" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="transmission" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Automatic">Automatic</option>
                             <option value="Manual">Manual</option>
@@ -212,7 +212,7 @@
                     <!-- Vehicle Type -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type <span class="text-red-500">*</span></label>
-                        <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Small Car">Small Car</option>
                             <option value="Station Wagon">Station Wagon</option>
@@ -229,7 +229,7 @@
                     <!-- Color -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Exterior Color</label>
-                        <select id="Carcolor" name="exterior_color" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select id="Carcolor" name="exterior_color" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Choose Color</option>
                             @php
                                 $carColors = ['Black' => 'Black','White' => 'White','Gray' => 'Gray','Silver' => 'Silver','Blue' => 'Blue','Red' => 'Red','Gold' => 'Gold','Green' => 'Green','Beige' => 'Beige','Brown' => 'Brown','Yellow' => 'Yellow','Orange' => 'Orange','Purple' => 'Purple','Maroon' => 'Maroon','Burgundy' => 'Burgundy','Bronze' => 'Bronze','Champagne' => 'Champagne','Pearl White' => 'Pearl White','Gunmetal' => 'Gunmetal Gray','Midnight Blue' => 'Midnight Blue','Navy Blue' => 'Navy Blue','Olive Green' => 'Olive Green','Charcoal' => 'Charcoal','Matte Black' => 'Matte Black','Two Tone' => 'Two-Tone','Gradient' => 'Gradient','Chameleon' => 'Chameleon','Custom Wrap' => 'Custom Wrap','Chrome' => 'Chrome','Camo' => 'Camouflage','Others' => 'Others'];
@@ -243,7 +243,7 @@
                     <!-- Doors -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Doors <span class="text-red-500">*</span></label>
-                        <select name="doors" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="doors" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="1 Door">1 Door</option>
                             <option value="2 Doors">2 Doors</option>
@@ -255,7 +255,7 @@
                     <!-- Interior Material -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Interior Material</label>
-                        <select name="material_interior" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <select name="material_interior" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Full Grain Leather">Full Grain Leather</option>
                             <option value="Partial Leather">Partial Leather</option>
@@ -327,7 +327,7 @@
                     <!-- Phone Color -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Color <span class="text-red-500">*</span></label>
-                        <select name="phone_color" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select name="phone_color" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Choose Color</option>
                             <option>Black</option><option>White</option><option>Gray</option><option>Silver</option><option>Gold</option><option>Blue</option><option>Red</option><option>Green</option><option>Yellow</option><option>Orange</option><option>Purple</option><option>Pink</option><option>Rose Gold</option><option>Bronze</option><option>Copper</option><option>Midnight</option><option>Space Gray</option><option>Midnight Green</option><option>Lavender</option><option>Aqua</option><option>Teal</option><option>Turquoise</option><option>Coral</option><option>Champagne</option><option>Graphite</option><option>Starlight</option><option>Twilight</option><option>Gradient</option><option>Transparent</option><option>Others</option>
                         </select>
@@ -337,7 +337,7 @@
                     <!-- Device Type -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Device Type <span class="text-red-500">*</span></label>
-                        <select name="device" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select name="device" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Device">Device</option>
                             <option value="Accessories">Accessories</option>
@@ -349,7 +349,7 @@
                     <!-- Condition -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Condition <span class="text-red-500">*</span></label>
-                        <select name="phone_condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select name="phone_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="New - Unboxed">New (Unboxed)</option>
                             <option value="Foreign Used - No Packaging">Foreign Used (No Packaging)</option>
@@ -397,7 +397,7 @@
                         <div id="services" class="flex items-center h-full pt-1">
                              <input type="hidden" name="contact_price" value="no">
                              <label class="flex items-center cursor-pointer select-none">
-                                <input type="checkbox" name="contact_price" value="yes" class="w-5 h-5 text-dark_green rounded border-gray-300 focus:ring-dark_green">
+                                <input type="checkbox" name="contact_price" value="yes" class="w-5 h-5 text-dark_green rounded border border-gray-300 focus:ring-dark_green">
                                 <span class="ml-2 text-sm text-gray-700">Contact for Price</span>
                             </label>
                         </div>
@@ -407,7 +407,7 @@
                 <!-- Salary (Hidden/Shown via JS) -->
                 <div id="salary">
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Salary</label>
-                     <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
+                     <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Salary--</option>
                         <option value="Commission">Commission</option>
                         <option value="Below ₦20,000">Below ₦20,000</option>
@@ -434,7 +434,7 @@
                 <!-- Expected Salary (Hidden/Shown via JS) -->
                 <div id="expectedSalary">
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Expected Salary</label>
-                     <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
+                     <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Expected Salary--</option>
                         <option value="Below ₦50,000">Below ₦50,000</option>
                         <option value="₦50,000 - ₦75,000">₦50,000 - ₦75,000</option>
@@ -459,7 +459,7 @@
                 @if($user->acc_type=="Commercial")
                 <div id="quantity">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Item Quantity</label>
-                    <input type="number" name="quantity" placeholder="Item Quantity" class="block w-full md:w-1/3 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base" value="1" min="1" max="100">
+                    <input type="number" name="quantity" placeholder="Item Quantity" class="block w-full md:w-1/3 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base" value="1" min="1" max="100">
                 </div>
                 @endif
             </div>
@@ -601,7 +601,7 @@
                     <!-- State -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
-                        <select onchange="toggleLGA(this);" name="state" id="state" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select onchange="toggleLGA(this);" name="state" id="state" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="" selected="selected">-- Select State --</option>
                             @foreach ($states as $state)
                                 <option value="{{ $state->name }}">{{ $state->name }}</option>
@@ -612,7 +612,7 @@
                     <!-- LGA -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">LGA</label>
-                        <select name="lga" id="lga" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white select-lga text-base" required>
+                        <select name="lga" id="lga" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white select-lga text-base" required>
                              <!-- Populated by JS -->
                         </select>
                     </div>
@@ -620,14 +620,14 @@
                     <!-- Name -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Profile Name</label>
-                        <input type="text" id="name" name="name" value="{{ $user->name }}" readonly class="block w-full px-4 py-3 rounded-lg border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed text-base">
+                        <input type="text" id="name" name="name" value="{{ $user->name }}" readonly class="block w-full px-4 py-3 rounded-lg border  border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed text-base">
                         <p class="text-xs text-gray-400 mt-1">To change this, please edit your profile settings.</p>
                     </div>
 
                     <!-- Show Contact -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Show Phone Number on Ad?</label>
-                        <select name="show_contact" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                        <select name="show_contact" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
                         </select>

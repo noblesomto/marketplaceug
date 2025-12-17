@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\SetCacheHeaders::class,
     ];
 
     /**
@@ -72,6 +73,7 @@ class Kernel extends HttpKernel
         'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         'adminpermission' => \App\Http\Middleware\AdminPermission::class,
         'adminrole' => \App\Http\Middleware\AdminRole::class,
+
 
         // Add Spatie Permission Middleware
         'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,

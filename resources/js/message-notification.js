@@ -1,18 +1,14 @@
 // resources/js/message-notification.js
 
-// This will be lazy-loaded only when needed
 export async function initializeMessageNotifications() {
     // Lazy load Echo and Pusher
     const Echo = (await import('laravel-echo')).default;
     const Pusher = (await import('pusher-js')).default;
 
-    // Setup Pusher
     window.Pusher = Pusher;
 
-    // Get CSRF token
     let token = document.querySelector('meta[name="csrf-token"]');
 
-    // Setup Echo
     window.Echo = new Echo({
         broadcaster: 'pusher',
         key: import.meta.env.VITE_PUSHER_APP_KEY || '41a30e61ffd80a89fc68',
@@ -27,52 +23,48 @@ export async function initializeMessageNotifications() {
         }
     });
 
-    // Now initialize notifications
     setupNotifications();
 }
 
 function setupNotifications() {
-    if (!window.Laravel) {
-        console.warn("window.Laravel is not defined yet.");
+    if (!window.Laravel?.userId) {
+        console.log("User not logged in, skipping notifications");
         return;
     }
 
-    const userId = window.Laravel?.userId;
-    const notificationSound = new Audio(window.Laravel?.soundUrl || '');
-    const notificationIcon = window.Laravel?.iconUrl || '';
-    const UNREAD_URL = window.Laravel.unreadUrl ?? '/unread-messages-count';
+    const userId = window.Laravel.userId;
+    const notificationSound = new Audio(window.Laravel.soundUrl);
+    const notificationIcon = window.Laravel.iconUrl;
+    const UNREAD_URL = window.Laravel.unreadUrl;
 
-    let previousCount = 0;
+    let previousCount = null;
 
-    console.log('User ID:', userId);
+    console.log('Initializing notifications for user:', userId);
 
-    // Request notification permission
-    if ("Notification" in window && Notification.permission !== 'granted') {
+    // Request notification permission (non-blocking)
+    if ("Notification" in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission().then(permission => {
             console.log("Notification permission:", permission);
         });
     }
 
-    // Listen for real-time messages
+    // ✅ Listen for real-time messages (immediate - important for UX)
     if (userId) {
-        window.Echo.private(`user.${userId}`) // ✅ Fixed syntax error (was missing opening quote)
+        window.Echo.private(`user.${userId}`)
             .listen('.new.message', (e) => {
                 console.log("📩 New message received:", e.message);
 
-                // Play sound
                 if (notificationSound) {
                     notificationSound.play().catch(err => console.warn("Sound failed:", err));
                 }
 
-                // Show browser notification
                 showNotification("📩 New Message", "You received a new message!");
 
-                // Refresh badge count
+                // Immediately update badge
                 updateUnreadMessages();
             });
     }
 
-    // Polling fallback for unread count
     function updateUnreadMessages() {
         fetch(UNREAD_URL)
             .then(response => response.json())
@@ -87,7 +79,8 @@ function setupNotifications() {
                     }
                 });
 
-                if (data.count > 0 && previousCount === 0) {
+                // Only show notification if count increased
+                if (previousCount !== null && data.count > previousCount) {
                     showNotification("📩 New Message", `You have ${data.count} unread message(s).`);
                     if (notificationSound) {
                         notificationSound.play().catch(e => console.warn('Sound failed:', e));
@@ -102,29 +95,25 @@ function setupNotifications() {
     }
 
     function showNotification(title, body) {
-        if ("Notification" in window) {
-            if (Notification.permission === "granted") {
-                new Notification(title, {
-                    body: body,
-                    icon: notificationIcon
-                });
-            } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        new Notification(title, {
-                            body: body,
-                            icon: notificationIcon
-                        });
-                    }
-                });
-            }
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(title, {
+                body: body,
+                icon: notificationIcon
+            });
         }
     }
 
-    // Start polling every 10 seconds
-    updateUnreadMessages();
+    // ✅ DEFERRED: Wait until page is loaded before first API call
+    if (document.readyState === 'complete') {
+        // Page already loaded
+        setTimeout(updateUnreadMessages, 500);
+    } else {
+        // Wait for page load
+        window.addEventListener('load', () => {
+            setTimeout(updateUnreadMessages, 500);
+        });
+    }
+
+    // Continue polling every 10 seconds
     setInterval(updateUnreadMessages, 10000);
 }
-
-// Auto-initialize when this module is imported
-initializeMessageNotifications();

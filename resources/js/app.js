@@ -1,9 +1,9 @@
+// resources/js/app.js
+
 // ✅ Keep lightweight essentials
 import './bootstrap';
 import './scroll';
 import './lga';
-
-
 
 // ✅ Lazy load SweetAlert2
 window.Swal = {
@@ -49,11 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load message notifications only if user is logged in
-    // Check for auth user indicator on page
+    // ✅ UPDATED: Defer message notifications to prevent blocking
     if (window.Laravel?.userId) {
-        import('./message-notification.js').then(() => {
-            console.log('✅ Message notifications initialized');
-        });
+        // Use requestIdleCallback for optimal performance (loads when browser is idle)
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                import('./message-notification.js').then((module) => {
+                    module.initializeMessageNotifications();
+                    console.log('✅ Message notifications initialized');
+                });
+            }, { timeout: 2000 }); // Fallback: force load after 2s max
+        } else {
+            // Fallback for Safari and older browsers
+            setTimeout(() => {
+                import('./message-notification.js').then((module) => {
+                    module.initializeMessageNotifications();
+                    console.log('✅ Message notifications initialized');
+                });
+            }, 1000); // Load after 1 second
+        }
+    } else {
+        console.log('ℹ️ User not logged in, skipping message notifications');
     }
 });
