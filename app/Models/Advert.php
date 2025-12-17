@@ -219,6 +219,29 @@ class Advert extends Model implements HasMedia
             ->performOnCollections('images')
             ->nonQueued();
 
+        // New – mobile optimized
+        $this->addMediaConversion('thumb-sm')
+            ->format('webp')
+            ->quality(70)
+            ->width(300)
+            ->height(225)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->performOnCollections('images')
+            ->nonQueued(); // Add this
+
+        // New – desktop optimized
+        $this->addMediaConversion('thumb-md')
+            ->format('webp')
+            ->quality(70)
+            ->width(400)
+            ->height(300)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->performOnCollections('images')
+            ->nonQueued(); // Add this
+
+
     }
 
     /**

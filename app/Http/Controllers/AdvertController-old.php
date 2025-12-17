@@ -28,6 +28,7 @@ use App\Mail\ReportMail;
 use Mail;
 
 
+
 class AdvertController extends Controller
 {
     public function index(Request $request)
@@ -225,8 +226,10 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
 
         //dd($categories);
-        return view('frontend.index', compact('title','gallery','listings','featured','user','categories','cars','phones','fashion'));
+        return view('frontend.index', compact('title','gallery','listings','featured','user','categories','cars','phones','fashion','isMobile'));
     }
+
+
 
     public function advert(Request $request, $location, $slug, $id)
     {

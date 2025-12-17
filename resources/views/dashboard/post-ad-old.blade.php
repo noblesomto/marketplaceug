@@ -1,12 +1,12 @@
 @include('dashboard.layouts.header')
 @include('dashboard.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('dashboard.layouts.back-nav')
 @include('dashboard.layouts.search')
 
 <section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
     <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
         Ad Details
-        @include('frontend.components.flash-message')
+
         @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
                 <p>There were some issues with your submission:</p>
@@ -50,7 +50,21 @@
                 @if ($errors->has('ad_title'))
                     <span class="text-red-400">{{ $errors->first('ad_title') }}</span>
                 @endif
-            <input type="text" name="ad_title" placeholder="Ad Title" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('ad_title') }}" required>
+            <div class="relative">
+                <input type="text"
+                       name="ad_title"
+                       id="ad_title"
+                       placeholder="Ad Title"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       value="{{ old('ad_title') }}"
+                       maxlength="75"
+                       required>
+                <div class="text-sm text-gray-500 mt-1">
+                    <span id="char-count">0</span>/75 characters
+                </div>
+            </div>
+
+
             </div>
             <div class="col-span-10 md:col-span-3">
                 <div class="text-xs">
@@ -67,7 +81,7 @@
             </div>
             <div class="col-span-10 md:col-span-8">
 
-                <div class="grid grid-cols-6 gap-2">
+                <div class="grid grid-cols-6 gap-2 space-y-3">
                     <div class="col-span-6 md:col-span-2">
                         @if ($errors->has('category'))
                             <span class="text-red-400">{{ $errors->first('category') }}</span>
@@ -96,10 +110,10 @@
                         @endif
                         <label for="brand" class="block text-gray-700">Select Brand:</label>
                         <select id="brand" name="brand" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white" required>
-                            <option value="">Select Brand</option>
+                            <option value="">Select Options</option>
                         </select>
                     </div>
-                    <!--
+
                     <div id="divModel" class="col-span-6 md:col-span-2 hidden">
                         @if ($errors->has('model'))
                             <span class="text-red-400">{{ $errors->first('model') }}</span>
@@ -109,11 +123,28 @@
                             <option value="">Select Model</option>
                         </select>
                     </div>
-                    -->
+
 
                 </div>
             </div>
     
+       </div>
+
+       <div id="itemCondition" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Item Condition *</div>
+            </div>
+            <div class="col-span-10 md:col-span-6">
+                @if ($errors->has('item_condition'))
+                    <span class="text-red-400">{{ $errors->first('item_condition') }}</span>
+                @endif
+            <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">Please Choose</option>
+                <option value="New">New</option>
+                <option value="Foreign Used">Foreign Used</option>
+                <option value="Locally Used">Locally Used</option>
+            </select>
+            </div>
        </div>
 
         <!-- Div 1 (Initially Hidden) -->
@@ -144,40 +175,29 @@
                     @endif
                 <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
-                    <option value="Damaged Car">Damaged Car</option>
-                    <option value="Undamaged Car">Undamaged Car</option>
+                    <option value="Local used">Local used</option>
+                    <option value="Foreign used">Foreign used</option>
+                    <option value="Brand new">Brand new</option>
                 </select>
                 </div>
            </div>
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">First Registration *</div>
+                    <div class="font-semibold">Registration</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('month'))
-                        <span class="text-red-400">{{ $errors->first('month') }}</span>
+                    @if ($errors->has('registration'))
+                        <span class="text-red-400">{{ $errors->first('registration') }}</span>
                     @endif
-                    @if ($errors->has('year'))
-                        <span class="text-red-400">{{ $errors->first('year') }}</span>
-                    @endif
+
                     <div class="flex w-2/4">
-                        <select id="pr" name="month" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                            <option value="">Month</option>
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
+                        <select id="pr" name="registration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                            <option value="">--Select Type--</option>
+                            <option value="Registered">Registered</option>
+                            <option value="Unregistered">Unregistered</option>
                         </select>
-                        <input type="text" name="year" placeholder="year" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('year') }}">
+
                     </div>
                 </div>
            </div>
@@ -213,7 +233,7 @@
                 <select id="pr" name="transmission" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Please Choose</option>
                     <option value="Automatic">Automatic</option>
-                    <option value="Manually">Manually</option>
+                    <option value="Manual">Manual</option>
                 </select>
                 </div>
            </div>
@@ -243,22 +263,62 @@
 
             <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Color *</div>
+                    <div class="font-semibold">Exterior Color</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('exterior_color'))
                         <span class="text-red-400">{{ $errors->first('exterior_color') }}</span>
                     @endif
-                <select id="Phonecolor" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <select id="Carcolor" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
                     <option value="">Choose Color</option>
-                    <option value="black">Black</option>
-                      <option value="white">White</option>
-                      <option value="gray">Gray</option>
-                      <option value="silver">Silver</option>
-                      <option value="blue">Blue</option>
-                      <option value="red">Red</option>
-                      <option value="gold">Gold</option>
-                      <option value="green">Green</option>
+                    @php
+                        $carColors = [
+                            // Basic colors
+                            'Black' => 'Black',
+                            'White' => 'White',
+                            'Gray' => 'Gray',
+                            'Silver' => 'Silver',
+                            'Blue' => 'Blue',
+                            'Red' => 'Red',
+                            'Gold' => 'Gold',
+                            'Green' => 'Green',
+
+                            // Common extras
+                            'Beige' => 'Beige',
+                            'Brown' => 'Brown',
+                            'Yellow' => 'Yellow',
+                            'Orange' => 'Orange',
+                            'Purple' => 'Purple',
+                            'Maroon' => 'Maroon',
+                            'Burgundy' => 'Burgundy',
+                            'Bronze' => 'Bronze',
+                            'Champagne' => 'Champagne',
+
+                            // Premium & luxury shades
+                            'Pearl White' => 'Pearl White',
+                            'Gunmetal' => 'Gunmetal Gray',
+                            'Midnight Blue' => 'Midnight Blue',
+                            'Navy Blue' => 'Navy Blue',
+                            'Olive Green' => 'Olive Green',
+                            'Charcoal' => 'Charcoal',
+                            'Matte Black' => 'Matte Black',
+
+                            // Special finishes
+                            'Two Tone' => 'Two-Tone',
+                            'Gradient' => 'Gradient',
+                            'Chameleon' => 'Chameleon',
+                            'Custom Wrap' => 'Custom Wrap',
+                            'Chrome' => 'Chrome',
+                            'Camo' => 'Camouflage',
+                            'Others' => 'Others',
+                        ];
+                    @endphp
+
+                    @foreach($carColors as $value => $label)
+                        <option value="{{ $value }}">
+                            {{ $label }}
+                        </option>
+                    @endforeach
                 </select>
                 </div>
            </div>
@@ -282,7 +342,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Material Interior *</div>
+                    <div class="font-semibold">Material Interior</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('material_interior'))
@@ -300,7 +360,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Equipment *</div>
+                    <div class="font-semibold">Exterior Equipment</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -333,7 +393,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Interior Equipment *</div>
+                    <div class="font-semibold">Interior Equipment</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -386,7 +446,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Security *</div>
+                    <div class="font-semibold">Security</div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -414,73 +474,269 @@
     </div>
 
     <!-- Div 2 (Initially Hidden) -->
-    <div id="divPhone" class="mt-4 p-4 hidden">
-        <div class="w-1/4">
+<div id="divPhone" class="mt-6 hidden">
+    <div class="bg-white space-y-3">
 
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Phone Color *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('phone_color'))
-                        <span class="text-red-400">{{ $errors->first('phone_color') }}</span>
-                    @endif
-                <select id="Phonecolor" name="phone_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+        <!-- Phone Color -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center border-b pb-5">
+            <label class="font-semibold text-gray-700">
+                Phone Color <span class="text-red-500">*</span>
+            </label>
+
+            <div class="md:col-span-2">
+                @if ($errors->has('phone_color'))
+                    <p class="text-sm text-red-500 mb-1">
+                        {{ $errors->first('phone_color') }}
+                    </p>
+                @endif
+
+                <select
+                    name="phone_color"
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white shadow-sm
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">Choose Color</option>
-                    <option value="black">Black</option>
-                      <option value="white">White</option>
-                      <option value="gray">Gray</option>
-                      <option value="silver">Silver</option>
-                      <option value="blue">Blue</option>
-                      <option value="red">Red</option>
-                      <option value="gold">Gold</option>
-                      <option value="green">Green</option>
-                </select>
-                </div>
-           </div>
 
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Device *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('device'))
-                        <span class="text-red-400">{{ $errors->first('device') }}</span>
-                    @endif
-                <select id="pr" name="device" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                    <!-- Basic -->
+                    <option>Black</option>
+                    <option>White</option>
+                    <option>Gray</option>
+                    <option>Silver</option>
+                    <option>Gold</option>
+
+                    <!-- Vibrant -->
+                    <option>Blue</option>
+                    <option>Red</option>
+                    <option>Green</option>
+                    <option>Yellow</option>
+                    <option>Orange</option>
+                    <option>Purple</option>
+                    <option>Pink</option>
+
+                    <!-- Premium -->
+                    <option>Rose Gold</option>
+                    <option>Bronze</option>
+                    <option>Copper</option>
+                    <option>Midnight</option>
+                    <option>Space Gray</option>
+                    <option>Midnight Green</option>
+
+                    <!-- Unique -->
+                    <option>Lavender</option>
+                    <option>Aqua</option>
+                    <option>Teal</option>
+                    <option>Turquoise</option>
+                    <option>Coral</option>
+                    <option>Champagne</option>
+                    <option>Graphite</option>
+                    <option>Starlight</option>
+                    <option>Twilight</option>
+                    <option>Gradient</option>
+                    <option>Transparent</option>
+                    <option>Others</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Device -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center border-b pb-5">
+            <label class="font-semibold text-gray-700">
+                Device <span class="text-red-500">*</span>
+            </label>
+
+            <div class="md:col-span-2">
+                @if ($errors->has('device'))
+                    <p class="text-sm text-red-500 mb-1">
+                        {{ $errors->first('device') }}
+                    </p>
+                @endif
+
+                <select
+                    name="device"
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white shadow-sm
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">Please Choose</option>
                     <option value="Device">Device</option>
                     <option value="Accessories">Accessories</option>
                     <option value="Device & Accessories">Device & Accessories</option>
                 </select>
-                </div>
-           </div>
-
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Condition *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('phone_condition'))
-                        <span class="text-red-400">{{ $errors->first('phone_condition') }}</span>
-                    @endif
-                <select id="pr" name="phone_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    <option value="New">New <span class="text-xs" > (Unused item with or without original packaging)</span>  </option>
-                    <option value="Very Good">Very Good (Well-maintained item with barely visible signs of wear  )</option>
-                    <option value="Good">Good (Used item with visible signs of wear )</option>
-                    <option value="In Order">In Order (Used item with clearly visible signs of wear, but still usable)</option>
-                    <option value="Defect">Defect (Defective item suitable for repair or spare parts)</option>
-                </select>
-                </div>
-             
-           </div>
-
-
+            </div>
         </div>
-    </div>
 
-    <!-- Shipment Section -->
+        <!-- Condition -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <label class="font-semibold text-gray-700">
+                Condition <span class="text-red-500">*</span>
+            </label>
+
+            <div class="md:col-span-2">
+                @if ($errors->has('phone_condition'))
+                    <p class="text-sm text-red-500 mb-1">
+                        {{ $errors->first('phone_condition') }}
+                    </p>
+                @endif
+
+                <select
+                    name="phone_condition"
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white shadow-sm
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Please Choose</option>
+                    <option value="New - Unboxed">New (Unboxed)</option>
+                    <option value="Foreign Used - No Packaging">Foreign Used (No Packaging)</option>
+                    <option value="Used - Very Good">Very Good</option>
+                    <option value="Used - Good">Good</option>
+                    <option value="Used - In Order">In Order</option>
+                    <option value="Used - Defect">Defect</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    
+
+
+
+       <div id="price" class="grid grid-cols-10 gap-2 md:gap-5 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Price</div>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+               
+            <div class="flex justify-start items-center">
+                <div class="">
+                    @if ($errors->has('price'))
+                        <span class="text-red-400">{{ $errors->first('price') }}</span>
+                    @endif
+                    <input
+                        type="text"
+                        name="price_display"
+                        id="price_display"
+                        placeholder="0"
+                        class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : '' }}"
+                    >
+                    <input type="hidden" name="price" id="price_hidden" value="{{ old('price') }}">
+                </div>
+                <div class="text-base ml-2">
+                    Naira
+                </div>
+            </div>
+            </div>
+            <div id="services" class="col-span-10 md:col-span-2 mt-1">
+                <label class="text-base flex items-center gap-1">
+                    <input
+                        type="hidden"
+                        name="contact_price"
+                        value="no"
+                    >
+                    <input
+                        type="checkbox"
+                        class="default:ring-2 w-6 h-6"
+                        name="contact_price"
+                        value="yes"
+
+                    >
+                    Contact For Price
+                </label>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+                <select id="price" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                    <option value="Fixed">Fixed Price</option>
+                    <option value="Negotiable">Negotiable</option>
+                    <option value="Give Away">Give Away</option>
+                </select>
+            </div>
+
+       </div>
+
+       <div id="salary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Salary</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('salary'))
+                    <span class="text-red-400">{{ $errors->first('salary') }}</span>
+                @endif
+            <select id="salary" name="salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">--Select Salary--</option>
+                <option value="Commission">Commission</option>
+                <option value="Below ₦20,000">Below ₦20,000</option>
+                <option value="₦20,000 - ₦40,000">₦20,000 - ₦40,000</option>
+                <option value="₦40,000 - ₦60,000">₦40,000 - ₦60,000</option>
+                <option value="₦60,000 - ₦80,000">₦60,000 - ₦80,000</option>
+                <option value="₦80,000 - ₦100,000">₦80,000 - ₦100,000</option>
+                <option value="₦100,000 - ₦120,000">₦100,000 - ₦120,000</option>
+                <option value="₦120,000 - ₦140,000">₦120,000 - ₦140,000</option>
+                <option value="₦140,000 - ₦160,000">₦140,000 - ₦160,000</option>
+                <option value="₦160,000 - ₦180,000">₦160,000 - ₦180,000</option>
+                <option value="₦180,000 - ₦200,000">₦180,000 - ₦200,000</option>
+                <option value="₦200,000 - ₦220,000">₦200,000 - ₦220,000</option>
+                <option value="₦220,000 - ₦250,000">₦220,000 - ₦250,000</option>
+                <option value="₦250,000 - ₦300,000">₦250,000 - ₦300,000</option>
+                <option value="₦300,000 - ₦350,000">₦300,000 - ₦350,000</option>
+                <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
+                <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
+                <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
+                <option value="Above ₦500,000">Above ₦500,000</option>
+            </select>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+
+            </div>
+       </div>
+
+       <div id="expectedSalary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Expected Salary</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('expected_salary'))
+                    <span class="text-red-400">{{ $errors->first('expected_salary') }}</span>
+                @endif
+            <select id="expected_salary" name="expected_salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="">--Select Expected Salary--</option>
+                <option value="Below ₦50,000">Below ₦50,000</option>
+                <option value="₦50,000 - ₦75,000">₦50,000 - ₦75,000</option>
+                <option value="₦75,000 - ₦100,000">₦75,000 - ₦100,000</option>
+                <option value="₦100,000 - ₦120,000">₦100,000 - ₦120,000</option>
+                <option value="₦120,000 - ₦140,000">₦120,000 - ₦140,000</option>
+                <option value="₦140,000 - ₦160,000">₦140,000 - ₦160,000</option>
+                <option value="₦160,000 - ₦180,000">₦160,000 - ₦180,000</option>
+                <option value="₦180,000 - ₦200,000">₦180,000 - ₦200,000</option>
+                <option value="₦200,000 - ₦220,000">₦200,000 - ₦220,000</option>
+                <option value="₦220,000 - ₦250,000">₦220,000 - ₦250,000</option>
+                <option value="₦250,000 - ₦300,000">₦250,000 - ₦300,000</option>
+                <option value="₦300,000 - ₦350,000">₦300,000 - ₦350,000</option>
+                <option value="₦350,000 - ₦400,000">₦350,000 - ₦400,000</option>
+                <option value="₦400,000 - ₦450,000">₦400,000 - ₦450,000</option>
+                <option value="₦450,000 - ₦500,000">₦450,000 - ₦500,000</option>
+                <option value="Above ₦500,000">Above ₦500,000</option>
+            </select>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+
+            </div>
+       </div>
+
+       @if($user->acc_type=="Commercial")
+       <div id="quantity" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Item Quantity</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('quantity'))
+                    <span class="text-red-400">{{ $errors->first('quantity') }}</span>
+                @endif
+                <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1" min="1" max="100">
+            </div>
+            <div class="col-span-10 md:col-span-3">
+                
+            </div>
+       </div>
+       @endif
+
+       <!-- Shipment Section -->
     <div id="shipment" class="">
         <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 lg:col-span-2">
@@ -488,7 +744,7 @@
             </div>
             <div class="col-span-10 lg:col-span-5">
                 <div class="flex justify-start">
-                    <label class="flex items-center w-full">
+                    <label class="flex items-center w-64">
                         <input type="radio" name="shipment" value="Ship" class="form-radio text-dark_green accent-dark_green" onchange="toggleShipping()">
                         <span class="ml-2">Shipping Possible</span>
                     </label>
@@ -532,45 +788,15 @@
         </div>
     </div>
 
-
-
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Price</div>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-               
-            <div class="flex justify-start items-center">
-                <div class="">
-                    @if ($errors->has('price'))
-                        <span class="text-red-400">{{ $errors->first('price') }}</span>
-                    @endif
-                    <input type="text" name="price" placeholder="" class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ old('price') }}" required>
-                  </div>
-                  <div class="text-base">
-                   .00 Naira
-                  </div>
-            </div>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <select id="price" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="Fixed">Fixed Price</option>
-                    <option value="Negotiable">Negotiable</option>
-                    <option value="Give Away">Give Away</option>
-                </select>
-            </div>
-       </div>
-       
-
-        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+        <div id="buyDirect" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Bid/request</div>
+                <div class="font-semibold">Payment option</div>
             </div>
             <div class="col-span-10 lg:col-span-6 ">
-                <div class="flex flex-col text-base">
+                <div class="flex flex-col text-sm">
                   <label class="flex items-center  w-full">
                     <input type="radio" name="buy_direct" value="Yes" class="form-radio text-dark_green accent-dark_green"  required>
-                    <span class="ml-2 ">Yes, I would like to use the benefits of “Buy Direct” for free</span>
+                    <span class="ml-2 ">Yes, I would like to sell this item using the free ‘Buy Direct’ payment option</span>
                     
                   </label>
                   <div class="my-2 w-full border border-gray-300 p-2 rounded-lg text-sm">
@@ -580,7 +806,7 @@
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                                 </svg>
                             </span>
-                            <span>This item can be paid for using the new “Buy Now” feature. <br><a class="font-semibold text-dartk_green" href="">Learn More</a> </span>
+                            <span>Selecting this option allows buyers to purchase your item using ‘Buy Direct.’ <br><a class="font-semibold text-dartk_green" href="/payments-refunds">Learn More</a> </span>
                         </div>
                         <div class="flex text-xs mt-1">
                             <span class="mr-1">
@@ -588,7 +814,7 @@
                                   <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                             </span>
-                            <span><strong class="font-semibold">No negotiation </strong>- your price is what counts. </span>
+                            <span><strong class="font-semibold">No negotiation </strong> — buyers pay the price you set. </span>
                         </div>
                         <div class="flex text-xs mt-1">
                             <span class="mr-1">
@@ -609,58 +835,70 @@
       </div>
 
      <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Description</div>
+        <div class="col-span-10 md:col-span-2">
+            <div class="font-semibold">Description</div>
+        </div>
+        <div class="col-span-10 md:col-span-7">
+            @if ($errors->has('description'))
+                <span class="text-red-400">{{ $errors->first('description') }}</span>
+            @endif
+            <input id="content" type="hidden" name="description" value="{{ old('description') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <trix-editor input="content" style="min-height: 80px;"></trix-editor>
+            <div class="text-sm text-gray-500 mt-1">
+                <span id="word-count">0</span>/3500 characters
             </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('description'))
-                    <span class="text-red-400">{{ $errors->first('description') }}</span>
-                @endif
-            <textarea name="description" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ old('description') }}</textarea>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                
-            </div>
-       </div>
+        </div>
+    </div>
    
 
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Pictures (recommended)</div>
-            </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('images[]'))
-                    <span class="text-red-400">{{ $errors->first('images[]') }}</span>
-                @endif
-                <div class="flex justify-start border-dashed border-2 border-gray-300">
-                    <!-- Camera Icon for File Upload -->
-                    <div class="flex items-center">
-                        <label for="imageUpload" class="cursor-pointer">
-                            <div class="flex items-center justify-center px-3 py-1 m-2 text-gray-700 border border-gray-300 hover:bg-primary transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+        <div class="col-span-10 md:col-span-2">
+            <div class="font-semibold">Pictures (recommended)</div>
+        </div>
+
+        <div class="col-span-10 md:col-span-5">
+
+            @if ($errors->has('images'))
+                <span class="text-red-400">{{ $errors->first('images') }}</span>
+            @endif
+
+            <div id="image-error" class="mb-2 hidden text-sm text-red-500"></div>
+
+            <div class="flex justify-start border-dashed border-2 border-gray-300 p-2">
+
+                <!-- GOOD: Native Label (Android-friendly) -->
+                <label for="imageUpload" class="cursor-pointer flex items-center">
+                    <div class="flex items-center justify-center px-3 py-1 m-2 text-gray-700 border border-gray-300 hover:bg-primary transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
                                 </svg>
-                            </div>
-                            <input name="images[]"  type="file" id="imageUpload" multiple class="hidden" accept="image/*">
-                        </label>
                     </div>
+                </label>
+
+                <input id="imageUpload" name="images[]" type="file" multiple accept="image/*" class="hidden">
+                <input type="hidden" name="image_order" id="image_order">
+
+                <!-- Preview -->
+                <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4 p-2 w-full"></div>
+            </div>
+
+            <div class="text-xs flex justify-start items-center mt-2">
+                <img src="{{ asset('frontend/images/swap.png') }}" class="h-6 mx-2">
+                Move to Change the Order
+            </div>
+        </div>
+
+        <div class="col-span-10 md:col-span-3">
+            <div class="text-xs">
+                <span class="font-semibold">Tip:</span> Up to 20 images with a max of 20MB. Avoid watermarks or text.
+            </div>
+        </div>
+    </div>
 
 
-                    <!-- Image Preview Container -->
-                    <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4"></div>
-                </div>
-                <div class="text-xs flex justify-start items-center">
-                    <img src="{{ asset('frontend/images/swap.png') }}" class="h-6 mx-2">
-                   Move to Change the Order
-                  </div>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 12 MB. Your pictures become perfect with our photo tips.
-                  </div>
-            </div>
-       </div>
+    <div id="image-error" class="hidden mb-4 p-3 rounded-lg bg-red-100 text-red-800 text-sm font-medium"></div>
+
 
     <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
             <div class="col-span-10 md:col-span-2">
@@ -671,44 +909,10 @@
                 <span class="text-danger">{{ $errors->first('state') }}</span>
             @endif
             <select onchange="toggleLGA(this);" name="state" id="state" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                <option value="" selected="selected">- Select State -</option>
-                    <option value="Abia">Abia</option>
-                    <option value="Adamawa">Adamawa</option>
-                    <option value="AkwaIbom">AkwaIbom</option>
-                    <option value="Anambra">Anambra</option>
-                    <option value="Bauchi">Bauchi</option>
-                    <option value="Bayelsa">Bayelsa</option>
-                    <option value="Benue">Benue</option>
-                    <option value="Borno">Borno</option>
-                    <option value="Cross River">Cross River</option>
-                    <option value="Delta">Delta</option>
-                    <option value="Ebonyi">Ebonyi</option>
-                    <option value="Edo">Edo</option>
-                    <option value="Ekiti">Ekiti</option>
-                    <option value="Enugu">Enugu</option>
-                    <option value="FCT">FCT</option>
-                    <option value="Gombe">Gombe</option>
-                    <option value="Imo">Imo</option>
-                    <option value="Jigawa">Jigawa</option>
-                    <option value="Kaduna">Kaduna</option>
-                    <option value="Kano">Kano</option>
-                    <option value="Katsina">Katsina</option>
-                    <option value="Kebbi">Kebbi</option>
-                    <option value="Kogi">Kogi</option>
-                    <option value="Kwara">Kwara</option>
-                    <option value="Lagos">Lagos</option>
-                    <option value="Nasarawa">Nasarawa</option>
-                    <option value="Niger">Niger</option>
-                    <option value="Ogun">Ogun</option>
-                    <option value="Ondo">Ondo</option>
-                    <option value="Osun">Osun</option>
-                    <option value="Oyo">Oyo</option>
-                    <option value="Plateau">Plateau</option>
-                    <option value="Rivers">Rivers</option>
-                    <option value="Sokoto">Sokoto</option>
-                    <option value="Taraba">Taraba</option>
-                    <option value="Yobe">Yobe</option>
-                    <option value="Zamfara">Zamafara</option>
+                <option value="" selected="selected">-- Select State --</option>
+                        @foreach ($states as $state)
+                            <option value="{{ $state->name }}">{{ $state->name }}</option>
+                        @endforeach
             </select>
             </div>
             <div class="col-span-10 md:col-span-3">
@@ -737,240 +941,47 @@
             </div>
        </div>
 
+       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+            <div class="col-span-10 md:col-span-2">
+                <div class="font-semibold">Show Contact?</div>
+            </div>
+            <div class="col-span-10 md:col-span-5">
+                @if ($errors->has('show_contact'))
+                <span class="text-danger">{{ $errors->first('show_contact') }}</span>
+            @endif
+            <select name="show_contact" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            </div>
+            <div class="col-span-10 md:col-span-3">
+                <div class="text-xs">
+                   <span class="font-semibold"> Tip:</span>Do you want users to see your contact details on the advert page?
+                  </div>
+            </div>
+       </div>
+
        <div class="mt-5 py-3 border-b border-b-gray-200">
            <div class="font-semibold">Publish your ad</div>        
        </div>
 
-       <div class="text-xs my-3">
+       <div class="my-3">
+           @include('backend.components.post-boost')
+       </div>
+
+       <div class="text-xs mt-5 mb-3">
            Our terms of use apply. Information about processing You can find your data in our privacy policy.
        </div>
 
        <div class="flex justify-start mb-10">
-            <button type="submit" class="btn btn-secondary py-2 px-6">Submit</button>
+            <button type="submit" class="btn btn-secondary py-2 px-6">Post Ad</button>
        </div>
 
 
     </form>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    document.getElementById('category').addEventListener('change', function () {
-        var countryId = this.value;
-        
-        //console.log(countryId);
-        // Fetch states
-        axios.get('/fetch-subcat/' + countryId)
-            .then(function (response) {
-                var stateSelect = document.getElementById('subcategory');
-                stateSelect.innerHTML = '<option value="">Select Sub Category</option>'; // Reset state dropdown
-                document.getElementById('brand').innerHTML = '<option value="">Select Brand</option>'; // Reset city dropdown
-                 var divCar = document.getElementById("divCar");
-                var divPhone = document.getElementById("divPhone");
-                var shipment = document.getElementById("shipment");
-                const inputs = divCar.querySelectorAll('input, textarea, select, checkbox');
-
-                // Hide all divs initially
-            divCar.classList.add("hidden");
-            divPhone.classList.add("hidden");
-            //divModel.classList.add("hidden");
-            
-
-                response.data.forEach(function (subcat) {
-                    var option = document.createElement('option');
-                    option.value = subcat.id;
-                    option.text = subcat.sub_category;
-                    stateSelect.appendChild(option);
-            
-
-                });
-            })
-            .catch(function (error) {
-                console.error(error);
-            });
-    });
-
-    document.getElementById('subcategory').addEventListener('change', function () {
-        var stateId = this.value;
-
-        //onsole.log(stateId);
-        // Fetch cities
-        axios.get('/fetch-brand/' + stateId)
-            .then(function (response) {
-                var citySelect = document.getElementById('brand');
-                citySelect.innerHTML = '<option value="">Select Brand</option>'; // Reset city dropdown
-                
-                response.data.forEach(function (brand) {
-                    var option = document.createElement('option');
-                    option.value = brand.id;
-                    option.text = brand.brand;
-                    citySelect.appendChild(option);
-
-                    // Show the relevant div based on the selection
-                    if (stateId === "2") {
-                        divCar.classList.remove("hidden");
-                        //divModel.classList.remove("hidden");
-                        shipment.classList.add("hidden");
-                    } else if (stateId === "6") {
-                        divPhone.classList.remove("hidden");
-                        //divModel.classList.remove("hidden");
-                    }else{
-                        shipment.classList.remove("hidden");
-                    }
-                });
-            })
-            .catch(function (error) {
-                console.error(error);
-            });
-    });
-
-/**
-    document.getElementById('brand').addEventListener('change', function () {
-        var brandId = this.value;
-
-        // Fetch Model
-        //console.log(brandId);
-        axios.get('/fetch-model/' + brandId)
-            .then(function (response) {
-                var modelSelect = document.getElementById('model');
-                modelSelect.innerHTML = '<option value="">Select Model</option>'; // Reset city dropdown
-                
-                response.data.forEach(function (model) {
-                    var option = document.createElement('option');
-                    option.value = model.id;
-                    option.text = model.model;
-                    modelSelect.appendChild(option);
-
-                });
-            })
-            .catch(function (error) {
-                console.error(error);
-            });
-    });
-
-**/
-</script>
-
-<!-- JavaScript for Image Upload, Sorting, and Deleting -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageUpload = document.getElementById('imageUpload');
-            const previewContainer = document.getElementById('preview');
-            let imagesArray = [];
-
-            // Handle file input change
-            imageUpload.addEventListener('change', function(event) {
-                const files = Array.from(event.target.files);
-                imagesArray.push(...files);
-                renderPreview();
-            });
-
-            // Render image previews
-            function renderPreview() {
-                previewContainer.innerHTML = ''; // Clear previous content
-
-                imagesArray.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const div = document.createElement('div');
-                        div.classList.add('relative', 'group', 'cursor-move');
-                        div.setAttribute('draggable', true); // Enable drag
-
-                        div.innerHTML = `
-                            <img src="${e.target.result}" class="w-full h-auto rounded-lg shadow">
-                            <button class="absolute top-0 right-0 w-4 h-4 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center" data-index="${index}">&times;</button>
-                        `;
-                        previewContainer.appendChild(div);
-
-                        // Handle delete button
-                        const deleteButton = div.querySelector('.delete-image');
-                        deleteButton.addEventListener('click', function() {
-                            deleteImage(index);
-                        });
-
-                        // Drag-and-drop functionality
-                        div.addEventListener('dragstart', (e) => dragStart(e, index));
-                        div.addEventListener('dragover', (e) => dragOver(e));
-                        div.addEventListener('drop', (e) => drop(e, index));
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            // Delete image function
-            function deleteImage(index) {
-                imagesArray.splice(index, 1); // Remove from array
-                renderPreview(); // Re-render the previews
-            }
-
-            // Drag and drop functionality
-            let draggedItemIndex = null;
-            
-            function dragStart(e, index) {
-                draggedItemIndex = index;
-                e.target.classList.add('opacity-50');
-            }
-
-            function dragOver(e) {
-                e.preventDefault(); // Allow drop by preventing default behavior
-            }
-
-            function drop(e, index) {
-                e.preventDefault();
-                const draggedItem = imagesArray.splice(draggedItemIndex, 1)[0];
-                imagesArray.splice(index, 0, draggedItem); // Reorder the array
-                renderPreview(); // Re-render the previews
-            }
-        });
-    </script>
-
-<script>
-    function toggleShipping() {
-        const shippingDiv = document.getElementById("shipping");
-        const isShipping = document.querySelector('input[name="shipment"]:checked').value === "Ship";
-
-        // Show or hide the shipping section
-        shippingDiv.classList.toggle("hidden", !isShipping);
-
-        // Clear error if switching back to Pickup
-        if (!isShipping) {
-            document.getElementById("shipping-error").classList.add("hidden");
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        toggleShipping(); // On page load
-
-        // Attach onchange manually in case inline one fails
-        const shipmentRadios = document.querySelectorAll('input[name="shipment"]');
-        shipmentRadios.forEach(radio => {
-            radio.addEventListener('change', toggleShipping);
-        });
-
-        const form = document.querySelector('form');
-
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                const isShipping = document.querySelector('input[name="shipment"]:checked').value === "Ship";
-                const selectedMethods = document.querySelectorAll('input[name="shipping[]"]:checked');
-                const errorMsg = document.getElementById("shipping-error");
-
-                // If shipping selected but no shipping method checked
-                if (isShipping && selectedMethods.length === 0) {
-                    e.preventDefault(); // Prevent form submission
-                    errorMsg.classList.remove("hidden"); // Show error
-                    document.getElementById('shipping').scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    errorMsg.classList.add("hidden"); // Hide error if valid
-                }
-            });
-        }
-    });
-</script>
-
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -979,6 +990,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
-
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
+<script src="{{ asset('dashboard/js/post-ad.js') }}"></script>
+<script src="{{ asset('dashboard/js/word-count.js') }}"></script>
+<script src="{{ asset('dashboard/js/sortable.js') }}"></script>
+<script src="{{ asset('dashboard/js/submit.js') }}"></script>
+
+
+
 @include('dashboard.layouts.footer')

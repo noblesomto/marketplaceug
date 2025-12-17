@@ -26,6 +26,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\FeaturedAdPaginator;
 use App\Mail\ReportMail;
 use Mail;
+use Jenssegers\Agent\Agent;
 
 
 class AdvertController extends Controller
@@ -223,9 +224,14 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
-
+        $agent = new Agent();
+        if (request()->has('view')) {
+            $isMobile = request()->get('view') === 'mobile';
+        } else {
+            $isMobile = $agent->isMobile() || $agent->isTablet();
+        }
         //dd($categories);
-        return view('frontend.index', compact('title','gallery','listings','featured','user','categories','cars','phones','fashion'));
+        return view('frontend.index', compact('title','gallery','listings','featured','user','categories','cars','phones','fashion','isMobile'));
     }
 
     public function advert(Request $request, $location, $slug, $id)

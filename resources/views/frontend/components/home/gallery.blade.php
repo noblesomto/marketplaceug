@@ -36,7 +36,19 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  @php
+                        $image = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        src="{{ $image
+                            ? ($image->hasGeneratedConversion('thumb-md')
+                                ? $image->getUrl('thumb-md')
+                                : $image->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-full object-cover"
+                    />
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -177,7 +189,19 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  @php
+                        $image = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        src="{{ $image
+                            ? ($image->hasGeneratedConversion('thumb-md')
+                                ? $image->getUrl('thumb-md')
+                                : $image->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-full object-cover"
+                    />
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -320,7 +344,19 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  @php
+                        $image = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        src="{{ $image
+                            ? ($image->hasGeneratedConversion('thumb-md')
+                                ? $image->getUrl('thumb-md')
+                                : $image->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-full object-cover"
+                    />
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -462,7 +498,19 @@
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
                 <div class="relative h-32 md:h-36 overflow-hidden">
-                  <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                  @php
+                        $image = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        src="{{ $image
+                            ? ($image->hasGeneratedConversion('thumb-md')
+                                ? $image->getUrl('thumb-md')
+                                : $image->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-full object-cover"
+                    />
                   <div class="absolute top-1 right-1 space-y-1">
                       @if($row->owner->verified=='yes')
                           <div class="bg-green-50  px-1 rounded text-[14px]">

@@ -15,7 +15,6 @@ use App\Models\User;
 use App\Models\Reports;
 use App\Models\State;
 use App\Models\Message;
-use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -27,282 +26,198 @@ use App\Services\FeaturedAdPaginator;
 class AdvertController extends Controller
 {
     /**
- * @OA\Get(
- *     path="/api/adverts",
- *     summary="Get all adverts with pagination and categorized sections",
- *     tags={"Adverts"},
- *     @OA\Parameter(
- *         name="page",
- *         in="query",
- *         description="Page number",
- *         @OA\Schema(type="integer", default=1)
- *     ),
- *     @OA\Parameter(
- *         name="per_page",
- *         in="query",
- *         description="Items per page",
- *         @OA\Schema(type="integer", default=20)
- *     ),
- *     @OA\Parameter(
- *         name="section",
- *         in="query",
- *         description="Get specific section: all, gallery, featured, cars, phones, fashion",
- *         @OA\Schema(type="string", enum={"all", "gallery", "featured", "cars", "phones", "fashion"})
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             @OA\Property(property="success", type="boolean"),
- *             @OA\Property(property="data", type="object",
- *                 @OA\Property(property="gallery", type="array", @OA\Items(ref="#/components/schemas/Advert")),
- *                 @OA\Property(property="featured", type="array", @OA\Items(ref="#/components/schemas/Advert")),
- *                 @OA\Property(property="listings", type="object",
- *                     @OA\Property(property="current_page", type="integer"),
- *                     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Advert")),
- *                     @OA\Property(property="per_page", type="integer"),
- *                     @OA\Property(property="total", type="integer")
- *                 ),
- *                 @OA\Property(property="cars", type="array", @OA\Items(ref="#/components/schemas/Advert")),
- *                 @OA\Property(property="phones", type="array", @OA\Items(ref="#/components/schemas/Advert")),
- *                 @OA\Property(property="fashion", type="array", @OA\Items(ref="#/components/schemas/Advert"))
- *             )
- *         )
- *     )
- * )
- */
-public function index(Request $request)
-{
-    $perPage = $request->get('per_page', 20);
-    $currentPage = $request->get('page', 1);
-    $section = $request->get('section', 'all');
+     * Get all adverts with pagination and categorized sections
+     * GET /api/adverts
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->get('per_page', 20);
+        $currentPage = $request->get('page', 1);
+        $section = $request->get('section', 'all');
 
-    $response = [
-        'success' => true,
-        'data' => []
-    ];
+        $response = ['success' => true, 'data' => []];
 
-    // Gallery - Random active ads
-    if ($section === 'all' || $section === 'gallery') {
-        $response['data']['gallery'] = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->with('firstImage', 'owner')
-            ->limit(10)
-            ->get();
-    }
-
-    // Featured ads
-    if ($section === 'all' || $section === 'featured') {
-        $featured = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where('featured', 'yes')
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->with('firstImage', 'owner')
-            ->limit(10)
-            ->get();
-        
-        $response['data']['featured'] = $featured;
-    } else {
-        $featured = collect();
-    }
-
-    // Main listings - Mixed recent and random (only if section is 'all' or not specified)
-    if ($section === 'all' || !$section) {
-        $excludeIds = $featured->pluck('id')->toArray();
-
-        // Split: 30% recent, 70% random
-        $recentCount = (int) ($perPage * 0.3);
-        $randomCount = $perPage - $recentCount;
-
-        // Get recent listings (excluding featured)
-        $recentListings = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
-            ->whereNotIn('id', $excludeIds)
-            ->where('featured', '!=', 'yes')
-            ->where(function ($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function ($q) {
-                          $q->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->orderByDesc('created_at')
-            ->skip(($currentPage - 1) * $recentCount)
-            ->limit($recentCount)
-            ->get();
-
-        // Get random older listings
-        $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
-
-        $randomListings = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
-            ->whereNotIn('id', $excludeIds)
-            ->where('featured', '!=', 'yes')
-            ->where(function ($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function ($q) {
-                          $q->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->inRandomOrder()
-            ->limit($randomCount)
-            ->get();
-
-        // Interleave recent and random posts
-        $mixed = collect();
-        $maxCount = max($recentListings->count(), $randomListings->count());
-
-        for ($i = 0; $i < $maxCount; $i++) {
-            if ($recentListings->has($i)) {
-                $mixed->push($recentListings->get($i));
-            }
-            if ($randomListings->has($i)) {
-                $mixed->push($randomListings->get($i));
-            }
+        // Gallery - Random active ads
+        if ($section === 'all' || $section === 'gallery') {
+            $response['data']['gallery'] = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->with('firstImage', 'owner')
+                ->limit(10)
+                ->get();
         }
 
-        // On first page, prepend featured posts
-        if ($currentPage == 1) {
-            $allListings = $featured->concat($mixed);
+        // Featured ads
+        if ($section === 'all' || $section === 'featured') {
+            $featured = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('featured', 'yes')
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->with('firstImage', 'owner')
+                ->limit(10)
+                ->get();
+
+            $response['data']['featured'] = $featured;
         } else {
-            $allListings = $mixed;
+            $featured = collect();
         }
 
-        // Get total count for pagination
-        $totalCount = Advert::where('ad_status', 'active')
-            ->where('featured', '!=', 'yes')
-            ->where(function ($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function ($q) {
-                          $q->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->count();
+        // Main listings
+        if ($section === 'all' || !$section) {
+            $excludeIds = $featured->pluck('id')->toArray();
+            $recentCount = (int) ($perPage * 0.3);
+            $randomCount = $perPage - $recentCount;
 
-        // Add featured count only for first page
-        if ($currentPage == 1) {
-            $totalCount += $featured->count();
+            $recentListings = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->whereNotIn('id', $excludeIds)
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->orderByDesc('created_at')
+                ->skip(($currentPage - 1) * $recentCount)
+                ->limit($recentCount)
+                ->get();
+
+            $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+
+            $randomListings = Advert::with('firstImage', 'owner')
+                ->where('ad_status', 'active')
+                ->whereNotIn('id', $excludeIds)
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->inRandomOrder()
+                ->limit($randomCount)
+                ->get();
+
+            $mixed = collect();
+            $maxCount = max($recentListings->count(), $randomListings->count());
+
+            for ($i = 0; $i < $maxCount; $i++) {
+                if ($recentListings->has($i)) $mixed->push($recentListings->get($i));
+                if ($randomListings->has($i)) $mixed->push($randomListings->get($i));
+            }
+
+            $allListings = $currentPage == 1 ? $featured->concat($mixed) : $mixed;
+
+            $totalCount = Advert::where('ad_status', 'active')
+                ->where('featured', '!=', 'yes')
+                ->where(function ($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function ($q) {
+                              $q->where('sold', 'Yes')
+                                ->whereNotNull('sold_date')
+                                ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->count();
+
+            if ($currentPage == 1) $totalCount += $featured->count();
+
+            $response['data']['listings'] = [
+                'data' => $allListings,
+                'current_page' => $currentPage,
+                'per_page' => $perPage,
+                'total' => $totalCount,
+                'last_page' => ceil($totalCount / $perPage),
+                'has_more' => ($currentPage * $perPage) < $totalCount
+            ];
         }
 
-        $listings = new \Illuminate\Pagination\LengthAwarePaginator(
-            $allListings,
-            $totalCount,
-            $perPage,
-            $currentPage,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
+        // Cars section
+        if ($section === 'all' || $section === 'cars') {
+            $response['data']['cars'] = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('sub_category', 2)
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->with('firstImage', 'owner')
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+        }
 
-        $response['data']['listings'] = $listings;
+        // Phones section
+        if ($section === 'all' || $section === 'phones') {
+            $response['data']['phones'] = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('sub_category', 6)
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->with('firstImage', 'owner')
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+        }
+
+        // Fashion section
+        if ($section === 'all' || $section === 'fashion') {
+            $response['data']['fashion'] = Advert::inRandomOrder()
+                ->where('ad_status', 'active')
+                ->where('category', 5)
+                ->where(function($query) {
+                    $query->where('sold', '!=', 'Yes')
+                          ->orWhere(function($query) {
+                              $query->where('sold', 'Yes')
+                                    ->whereNotNull('sold_date')
+                                    ->where('sold_date', '>=', now()->subDays(30));
+                          });
+                })
+                ->with('firstImage', 'owner')
+                ->orderBy('views', 'desc')
+                ->limit(10)
+                ->get();
+        }
+
+        return response()->json($response);
     }
-
-    // Cars section
-    if ($section === 'all' || $section === 'cars') {
-        $response['data']['cars'] = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where('sub_category', 2)
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->with('firstImage', 'owner')
-            ->orderBy('views', 'desc')
-            ->limit(10)
-            ->get();
-    }
-
-    // Phones section
-    if ($section === 'all' || $section === 'phones') {
-        $response['data']['phones'] = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where('sub_category', 6)
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->with('firstImage', 'owner')
-            ->orderBy('views', 'desc')
-            ->limit(10)
-            ->get();
-    }
-
-    // Fashion section
-    if ($section === 'all' || $section === 'fashion') {
-        $response['data']['fashion'] = Advert::inRandomOrder()
-            ->where('ad_status', 'active')
-            ->where('category', 5)
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($query) {
-                          $query->where('sold', 'Yes')
-                                ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(30));
-                      });
-            })
-            ->with('firstImage', 'owner')
-            ->orderBy('views', 'desc')
-            ->limit(10)
-            ->get();
-    }
-
-    return response()->json($response);
-}
 
     /**
-     * @OA\Get(
-     *     path="/api/adverts/{id}",
-     *     summary="Get advert details",
-     *     tags={"Adverts"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Advert details",
-     *         @OA\JsonContent(ref="#/components/schemas/AdvertDetail")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Advert not found"
-     *     )
-     * )
+     * Get advert details
+     * GET /api/adverts/{id}
      */
     public function show($id)
     {
-        $ad = Advert::with(['images', 'owner'])
-            ->where('id', $id)
-            ->first();
+        $ad = Advert::with(['images', 'owner'])->find($id);
 
         if (!$ad) {
             return response()->json([
@@ -311,7 +226,7 @@ public function index(Request $request)
             ], 404);
         }
 
-        // Process images
+        // Process images for portrait detection
         if ($ad->images) {
             foreach ($ad->images as $img) {
                 $path = public_path('uploads/images/' . $img->image);
@@ -324,37 +239,31 @@ public function index(Request $request)
             }
         }
 
-        $cat_id = $ad->category;
-        $brand_id = $ad->brand;
-        $ad_owner = $ad->user_id;
-        $subcat_id = $ad->sub_category;
-
         $data = [
             'ad' => $ad,
-            'ad_owner' => User::where('user_id', $ad_owner)->first(),
-            'cat' => Category::where('id', $cat_id)->first(),
-            'brand' => Brands::where('id', $brand_id)->first(),
-            'count_ads' => Advert::where('user_id', $ad_owner)->count()
+            'ad_owner' => User::where('user_id', $ad->user_id)->first(),
+            'cat' => Category::find($ad->category),
+            'sub_cat' => SubCategory::find($ad->sub_category),
+            'brand' => Brands::find($ad->brand),
+            'count_ads' => Advert::where('user_id', $ad->user_id)->count()
         ];
 
         // Car details
         $data['car'] = CarDetail::where('advert_id', $id)->first();
         if ($data['car']) {
-            $model_id = $data['car']->model;
-            $data['model'] = Models::where('id', $model_id)->first();
+            $data['model'] = Models::find($data['car']->model);
         }
 
         // Phone details
         $data['phone'] = PhoneDetail::where('advert_id', $id)->first();
         if ($data['phone']) {
-            $model_id = $data['phone']->model;
-            $data['model'] = Models::where('id', $model_id)->first();
+            $data['model'] = Models::find($data['phone']->model);
         }
 
         // Related adverts
         $data['adverts'] = Advert::with('images')
             ->inRandomOrder()
-            ->where('user_id', $ad_owner)
+            ->where('user_id', $ad->user_id)
             ->activeNotRecentlySold()
             ->where('id', '!=', $id)
             ->limit(6)
@@ -369,7 +278,7 @@ public function index(Request $request)
             })
             ->where('id', '!=', $id)
             ->activeNotRecentlySold()
-            ->where('user_id', '!=', $ad_owner)
+            ->where('user_id', '!=', $ad->user_id)
             ->limit(3)
             ->get();
 
@@ -383,43 +292,26 @@ public function index(Request $request)
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/adverts/seller/{seller_id}",
-     *     summary="Get adverts by seller",
-     *     tags={"Adverts"},
-     *     @OA\Parameter(
-     *         name="seller_id",
-     *         in="path",
-     *         required=true,
-     *         description="Seller ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
-     *             @OA\Property(property="owner", ref="#/components/schemas/User"),
-     *             @OA\Property(property="count_ads", type="integer")
-     *         )
-     *     )
-     * )
+     * Get adverts by seller
+     * GET /api/adverts/seller/{seller_id}
      */
     public function sellerAdverts($seller_id, Request $request)
     {
+        $owner = User::where('user_id', $seller_id)->first();
+
+        if (!$owner) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Seller not found'
+            ], 404);
+        }
+
         $ads = Advert::with('firstImage', 'owner')
             ->where('user_id', $seller_id)
             ->activeNotRecentlySold()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        $owner = User::where('user_id', $seller_id)->first();
         $count_ads = Advert::where('user_id', $seller_id)->count();
 
         return response()->json([
@@ -433,18 +325,8 @@ public function index(Request $request)
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/categories",
-     *     summary="Get all categories with counts",
-     *     tags={"Categories"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="categories", type="array", @OA\Items(ref="#/components/schemas/CategoryWithCount"))
-     *         )
-     *     )
-     * )
+     * Get all categories with counts
+     * GET /api/categories
      */
     public function categories()
     {
@@ -452,7 +334,7 @@ public function index(Request $request)
                 $join->on('categories.id', '=', 'adverts.category')
                      ->where('adverts.ad_status', 1)
                      ->where(function($q) {
-                         $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                         $q->where('adverts.sold_date', '>=', now()->subDays(30))
                            ->orWhereNull('adverts.sold_date');
                      });
             })
@@ -474,42 +356,24 @@ public function index(Request $request)
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/categories/{category_slug}",
-     *     summary="Get adverts by category",
-     *     tags={"Categories"},
-     *     @OA\Parameter(
-     *         name="category_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Category slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
-     *             @OA\Property(property="cat", ref="#/components/schemas/Category"),
-     *             @OA\Property(property="count_cat", type="integer"),
-     *             @OA\Property(property="subcategories", type="array", @OA\Items(ref="#/components/schemas/SubCategoryWithCount"))
-     *         )
-     *     )
-     * )
+     * Get adverts by category
+     * GET /api/categories/{category_slug}
      */
     public function categoryAdverts($category_slug, Request $request)
     {
-        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $cat = Category::where('category_slug', $category_slug)->first();
 
-        $ads = (new FeaturedAdPaginator($request->get('page', 1)))
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $page = $request->get('page', 1);
+        $result = (new FeaturedAdPaginator($page))
             ->filters(['category' => $cat->id])
-            ->paginate();
+            ->get();
 
         $count_cat = Advert::activeNotRecentlySold()
                           ->where('category', $cat->id)
@@ -520,7 +384,7 @@ public function index(Request $request)
                 $join->on('sub_categories.id', '=', 'adverts.sub_category')
                     ->where('adverts.ad_status', 1)
                     ->where(function ($q) {
-                        $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
                           ->orWhereNull('adverts.sold_date');
                     });
             })
@@ -538,59 +402,46 @@ public function index(Request $request)
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $ads,
+                'ads' => $result['ads'],
                 'cat' => $cat,
                 'count_cat' => $count_cat,
-                'subcategories' => $subcategories
+                'subcategories' => $subcategories,
+                'has_more' => $result['hasMore'],
+                'next_page' => $result['nextPage']
             ]
         ]);
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/categories/{category_slug}/{subcat_slug}",
-     *     summary="Get adverts by subcategory",
-     *     tags={"Categories"},
-     *     @OA\Parameter(
-     *         name="category_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Category slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="subcat_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Subcategory slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
-     *             @OA\Property(property="subcat", ref="#/components/schemas/SubCategory"),
-     *             @OA\Property(property="count_subcat", type="integer"),
-     *             @OA\Property(property="brands", type="array", @OA\Items(ref="#/components/schemas/BrandWithCount"))
-     *         )
-     *     )
-     * )
+     * Get adverts by subcategory
+     * GET /api/categories/{category_slug}/{subcat_slug}
      */
     public function subcategoryAdverts($category_slug, $subcat_slug, Request $request)
     {
-        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+        $cat = Category::where('category_slug', $category_slug)->first();
 
-        $ads = (new FeaturedAdPaginator($request->get('page', 1)))
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)
+                             ->where('cat_id', $cat->id)
+                             ->first();
+
+        if (!$subcat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Subcategory not found'
+            ], 404);
+        }
+
+        $page = $request->get('page', 1);
+        $result = (new FeaturedAdPaginator($page))
             ->filters(['sub_category' => $subcat->id])
-            ->paginate();
+            ->get();
 
         $count_subcat = Advert::activeNotRecentlySold()
                             ->where('sub_category', $subcat->id)
@@ -602,7 +453,7 @@ public function index(Request $request)
             ->where(function($query) {
                 $query->where('adverts.ad_status', 1)
                       ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(7))
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                             ->orWhereNull('adverts.sold_date');
                       });
             })
@@ -614,67 +465,57 @@ public function index(Request $request)
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $ads,
+                'ads' => $result['ads'],
                 'subcat' => $subcat,
                 'count_subcat' => $count_subcat,
-                'brands' => $brands
+                'brands' => $brands,
+                'has_more' => $result['hasMore'],
+                'next_page' => $result['nextPage']
             ]
         ]);
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/brands/{category_slug}/{subcat_slug}/{brand_slug}",
-     *     summary="Get adverts by brand",
-     *     tags={"Brands"},
-     *     @OA\Parameter(
-     *         name="category_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Category slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="subcat_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Subcategory slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="brand_slug",
-     *         in="path",
-     *         required=true,
-     *         description="Brand slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
-     *             @OA\Property(property="brand", ref="#/components/schemas/Brand"),
-     *             @OA\Property(property="subcat", ref="#/components/schemas/SubCategory"),
-     *             @OA\Property(property="count_subcat", type="integer")
-     *         )
-     *     )
-     * )
+     * Get adverts by brand
+     * GET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}
      */
     public function brandAdverts($category_slug, $subcat_slug, $brand_slug, Request $request)
     {
-        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
-        $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
+        $cat = Category::where('category_slug', $category_slug)->first();
 
-        $ads = (new FeaturedAdPaginator($request->get('page', 1)))
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)
+                             ->where('cat_id', $cat->id)
+                             ->first();
+
+        if (!$subcat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Subcategory not found'
+            ], 404);
+        }
+
+        $brand = Brands::where('brand_slug', $brand_slug)
+                       ->where('subcat_id', $subcat->id)
+                       ->first();
+
+        if (!$brand) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Brand not found'
+            ], 404);
+        }
+
+        $page = $request->get('page', 1);
+        $result = (new FeaturedAdPaginator($page))
             ->filters(['brand' => $brand->id])
-            ->paginate();
+            ->get();
 
         $count_subcat = Advert::activeNotRecentlySold()
                         ->where('sub_category', $subcat->id)
@@ -683,50 +524,47 @@ public function index(Request $request)
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $ads,
+                'ads' => $result['ads'],
                 'brand' => $brand,
                 'subcat' => $subcat,
-                'count_subcat' => $count_subcat
+                'count_subcat' => $count_subcat,
+                'has_more' => $result['hasMore'],
+                'next_page' => $result['nextPage']
             ]
         ]);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/adverts/{id}/report",
-     *     summary="Report an advert",
-     *     tags={"Adverts"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"subject", "message"},
-     *             @OA\Property(property="subject", type="string"),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Report submitted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
-     * )
+     * Get adverts by location
+     * GET /api/location/{state_slug}
+     */
+    public function locationAdverts($state_slug, Request $request)
+    {
+        $page = $request->get('page', 1);
+        $result = (new FeaturedAdPaginator($page))
+            ->filters(['state_slug' => $state_slug])
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'ads' => $result['ads'],
+                'location' => $state_slug,
+                'has_more' => $result['hasMore'],
+                'next_page' => $result['nextPage']
+            ]
+        ]);
+    }
+
+    /**
+     * Report an advert
+     * POST /api/adverts/{id}/report
      */
     public function reportAdvert($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'subject' => 'required',
-            'message' => 'required',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -736,13 +574,21 @@ public function index(Request $request)
             ], 422);
         }
 
-        $advert = Advert::findOrFail($id);
-        $user_id = auth()->id();
+        $advert = Advert::find($id);
 
-        $message = Reports::updateOrCreate(
+        if (!$advert) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found'
+            ], 404);
+        }
+
+        $user = auth()->user();
+
+        Reports::updateOrCreate(
             [
                 'advert_id' => $id,
-                'user_id' => $user_id,
+                'user_id' => $user->id,
             ],
             [
                 'subject' => $request->subject,
@@ -750,7 +596,6 @@ public function index(Request $request)
             ]
         );
 
-        $user = auth()->user();
         $details = [
             'advert' => $advert->ad_title,
             'name' => $user->name,
@@ -760,7 +605,12 @@ public function index(Request $request)
             'message' => $request->message,
         ];
 
-        Mail::to(config('global.admin_email'))->send(new ReportMail($details));
+        try {
+            Mail::to(config('global.admin_email'))->send(new ReportMail($details));
+        } catch (\Exception $e) {
+            // Log but don't fail the request
+            \Log::error('Report email failed', ['error' => $e->getMessage()]);
+        }
 
         return response()->json([
             'success' => true,
@@ -769,39 +619,13 @@ public function index(Request $request)
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/adverts/{id}/apply",
-     *     summary="Apply for a job advert",
-     *     tags={"Adverts"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"message"},
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Application submitted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
-     * )
+     * Apply for a job advert
+     * POST /api/adverts/{id}/apply
      */
     public function applyJob($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'message' => 'required',
+            'message' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -811,14 +635,21 @@ public function index(Request $request)
             ], 422);
         }
 
-        $advert = Advert::findOrFail($id);
-        $user_id = auth()->id();
-        $receiver_id = $advert->user_id;
+        $advert = Advert::find($id);
 
-        $message = Message::create([
+        if (!$advert) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found'
+            ], 404);
+        }
+
+        $user = auth()->user();
+
+        Message::create([
             'advert_id' => $id,
-            'sender_id' => $user_id,
-            'receiver_id' => $receiver_id,
+            'sender_id' => $user->id,
+            'receiver_id' => $advert->user_id,
             'message_content' => $request->message,
             'is_read' => false,
         ]);
@@ -830,38 +661,53 @@ public function index(Request $request)
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/adverts/featured",
-     *     summary="Get featured adverts",
-     *     tags={"Adverts"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="featured", type="array", @OA\Items(ref="#/components/schemas/Advert"))
-     *         )
-     *     )
-     * )
+     * Get featured adverts
+     * GET /api/adverts/featured
      */
     public function featuredAdverts()
     {
         $featured = Advert::inRandomOrder()
-            ->where('ad_status', 1)
+            ->where('ad_status', 'active')
+            ->where('featured', 'yes')
             ->where(function($query) {
                 $query->where('sold', '!=', 'Yes')
                       ->orWhere(function($query) {
                           $query->where('sold', 'Yes')
                                 ->whereNotNull('sold_date')
-                                ->where('sold_date', '>=', now()->subDays(7));
+                                ->where('sold_date', '>=', now()->subDays(30));
                       });
             })
+            ->with('firstImage', 'owner')
             ->orderBy('views', 'desc')
-            ->limit(10)
+            ->limit(20)
             ->get();
 
         return response()->json([
             'success' => true,
             'data' => $featured
+        ]);
+    }
+
+    /**
+     * Load more adverts (pagination helper)
+     * GET /api/adverts/load-more
+     */
+    public function loadMore(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $filters = $request->only(['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']);
+
+        $result = (new FeaturedAdPaginator($page))
+            ->filters($filters)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'ads' => $result['ads'],
+                'has_more' => $result['hasMore'],
+                'next_page' => $result['nextPage']
+            ]
         ]);
     }
 }

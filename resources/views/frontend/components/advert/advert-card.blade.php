@@ -4,11 +4,20 @@
         <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
             <!-- Image wrapper with fixed aspect ratio -->
             <div class="w-full aspect-[4/3] overflow-hidden rounded-t-lg relative">
+                @php
+                    $image = $row->getFirstMedia('images');
+                @endphp
+
                 <img
-                    src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}"
+                    src="{{ $image
+                        ? ($image->hasGeneratedConversion('thumb-md')
+                            ? $image->getUrl('thumb-md')
+                            : $image->getUrl('thumbnail'))
+                        : asset('frontend/images/default.png') }}"
                     alt="{{ $row->ad_title }}"
                     class="w-full h-full object-cover"
                 />
+
                 <div class="absolute top-1 right-1 flex space-x-2">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50  px-1 rounded text-[14px]">

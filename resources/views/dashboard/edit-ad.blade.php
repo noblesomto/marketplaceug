@@ -1,1105 +1,626 @@
 @include('dashboard.layouts.header')
 @include('dashboard.layouts.nav')
-@include('dashboard.layouts.nav')
+@include('dashboard.layouts.back-nav')
 @include('dashboard.layouts.search')
 
+<!-- Custom CSS for consistent iOS Dropdowns -->
+<style>
+    /* Removes the ugly default iOS gradient/gloss and adds a custom arrow */
+    .custom-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 1rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
+    /* Prevents iOS from zooming in on focus */
+    input, select, textarea {
+        font-size: 16px !important;
+    }
 
-<section class="w-full md:w-3/6 bg-white mx-auto p-3 text-sm mb-10">
-    <div class="border-b-2 border-b-gray-200 pt-10 px-2 font-bold text-dark_green mb-2">
-        Ad Details
-        @include('frontend.components.flash-message')
-        @if ($errors->any())
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                <p>There were some issues with your submission:</p>
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    /* Edit Page Specific: Image Container for Sortable */
+    .image-container {
+        position: relative;
+    }
+</style>
 
+<section class="max-w-4xl mx-auto my-8 px-1 sm:px-1 pb-20">
+
+    <!-- Page Title -->
+    <div class="mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-dark_green">Edit Ad Details</h1>
+        <p class="text-gray-500 mt-1">Update the information below to modify your advertisement.</p>
     </div>
 
-    <form action="/user/edit-ad/{{ $advert->id }}" id="advertForm" method="POST" role="form" class="" enctype="multipart/form-data">
-             @csrf 
-        <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Bid/request</div>
-            </div>
-            <div class="col-span-10 lg:col-span-6 ">
-                <div class="flex justify-start w-64">
-                  <label class="flex items-center  w-full">
-                    <input type="radio" {{ $advert->ad_type === 'Private' ? 'checked' : '' }} name="ad_type" value="Private" class="form-radio text-dark_green accent-dark_green"  required>
-                    <span class="ml-2 ">I offer</span>
-                  </label>
+    @include('frontend.components.flash-message')
 
-                  <label class="flex items-center w-64">
-                    <input type="radio" {{ $advert->ad_type === 'Commercial' ? 'checked' : '' }} name="ad_type" value="Commercial" class="form-radio text-dark_green accent-dark_green" >
-                    <span class="ml-2 ">I'm looking for</span>
-                  </label>
+    <!-- Error Alert -->
+    @if ($errors->any())
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-r-lg shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">There were issues with your submission:</h3>
+                    <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
-      </div>
-
-
-      <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Title</div>
-            </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('ad_title'))
-                    <span class="text-red-400">{{ $errors->first('ad_title') }}</span>
-                @endif
-            <div class="relative">
-                <input type="text"
-                       name="ad_title"
-                       id="ad_title"
-                       placeholder="Ad Title"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       value="{{ $advert->ad_title }}"
-                       maxlength="75"
-                       required>
-                <div class="text-sm text-gray-500 mt-1">
-                    <span id="char-count">0</span>/75 characters
-                </div>
-            </div>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span> With a meaningful title, you sell better.
-                  </div>
-            </div>
-       </div>
-
-
-
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-    <div class="col-span-10 md:col-span-2">
-        <div class="font-semibold">Select Category</div>
-    </div>
-    <div class="col-span-10 md:col-span-8">
-        <div class="grid grid-cols-6 gap-2">
-            <!-- Category Dropdown -->
-            <div class="col-span-6 md:col-span-2">
-                <select id="category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white" required
-                        data-selected="{{ $advert->category }}">
-                    <option value="">Select Category</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ $advert->category == $category->id ? 'selected' : '' }}>
-                            {{ $category->category }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Subcategory Dropdown -->
-            <div class="col-span-6 md:col-span-2">
-                <select id="subcategory" name="subcategory" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white" required
-                        data-selected="{{ $advert->sub_category }}">
-                    <option value="">Select Subcategory</option>
-                    @foreach($subcategories as $subcategory)
-                        <option value="{{ $subcategory->id }}" {{ $advert->sub_category == $subcategory->id ? 'selected' : '' }}>
-                            {{ $subcategory->sub_category }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Brand Dropdown -->
-            <div class="col-span-6 md:col-span-2">
-                <select id="brand" name="brand" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white" required
-                        data-selected="{{ $advert->brand }}">
-                    <option value="">Select Brand</option>
-                    @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ $advert->brand == $brand->id ? 'selected' : '' }}>
-                            {{ $brand->brand }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-
-            <!-- Model Dropdown (conditionally shown) -->
-            <div id="divModel" class="col-span-6 md:col-span-2 {{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
-                <select id="model" name="model" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white"
-        data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}" >
-
-                    <option value="">Select Model</option>
-                    @foreach($models as $model)
-                        <option value="{{ $model->id }}" 
-                            {{
-                                ($advert->sub_category == 2 && optional($advert->car)->model == $model->id) ||
-                                ($advert->sub_category == 6 && optional($advert->phone)->model == $model->id)
-                                    ? 'selected' : ''
-                            }}
-                        >
-                            {{ $model->model }}
-                        </option>
-
-                    @endforeach
-                </select>
-            </div>
-
         </div>
-    </div>
-</div>
+    @endif
 
+    <form action="/user/edit-ad/{{ $advert->id }}" id="advertForm" method="POST" role="form" enctype="multipart/form-data" class="space-y-6">
+        @csrf
 
+        <!-- CARD 1: Basic Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Basic Information</h2>
+            </div>
+            <div class="p-6 md:p-8 space-y-6">
 
-        <div id="itemCondition" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 {{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
-        <div class="col-span-10 md:col-span-2">
-            <div class="font-semibold">Item Condition *</div>
-        </div>
-        <div class="col-span-10 md:col-span-6">
-            @if ($errors->has('item_condition'))
-                <span class="text-red-400">{{ $errors->first('item_condition') }}</span>
-            @endif
-            <select id="pr" name="item_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                <option value="">Please Choose</option>
-                <option value="New" {{ $advert->item_condition == 'New' ? 'selected' : '' }}>New</option>
-                <option value="Foreign Used" {{ $advert->item_condition == 'Foreign Used' ? 'selected' : '' }}>Foreign Used</option>
-                <option value="Locally Used" {{ $advert->item_condition == 'Locally Used' ? 'selected' : '' }}>Locally Used</option>
-            </select>
-        </div>
-    </div>
-
-        <!-- Div 1 (Initially Hidden) -->
-    <div id="divCar" class="p-2 {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
-        @if($advert->car)
-        <div class="">
-
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Mileage *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('mileage'))
-                        <span class="text-red-400">{{ $errors->first('mileage') }}</span>
-                    @endif
-                    <div class="flex w-2/4">
-                        <input type="text" name="mileage" placeholder="mileage" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->car->mileage }}">
-                        <span class="mt-3">Km</span>
+                <!-- Ad Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">What do you want to do?</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-green-50 hover:border-dark_green transition-all has-[:checked]:border-dark_green has-[:checked]:bg-green-50 has-[:checked]:ring-1 has-[:checked]:ring-dark_green">
+                            <input type="radio" name="ad_type" value="Private" {{ $advert->ad_type === 'Private' ? 'checked' : '' }} class="w-5 h-5 text-dark_green border-gray-300 focus:ring-dark_green" required>
+                            <span class="ml-3 block text-gray-900 font-medium">I offer (Selling)</span>
+                        </label>
+                        <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-green-50 hover:border-dark_green transition-all has-[:checked]:border-dark_green has-[:checked]:bg-green-50 has-[:checked]:ring-1 has-[:checked]:ring-dark_green">
+                            <input type="radio" name="ad_type" value="Commercial" {{ $advert->ad_type === 'Commercial' ? 'checked' : '' }} class="w-5 h-5 text-dark_green border-gray-300 focus:ring-dark_green">
+                            <span class="ml-3 block text-gray-900 font-medium">I'm looking for (Request)</span>
+                        </label>
                     </div>
                 </div>
-           </div>
 
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Vehicle Condition *</div>
+                <!-- Title -->
+                <div>
+                    <label for="ad_title" class="block text-sm font-semibold text-gray-700 mb-2">Ad Title <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text"
+                               name="ad_title"
+                               id="ad_title"
+                               placeholder="Ad Title"
+                               class="block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-dark_green focus:border-transparent transition-colors text-base"
+                               value="{{ $advert->ad_title }}"
+                               maxlength="75"
+                               required>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-xs text-gray-400 bg-white pl-1"><span id="char-count">0</span>/75</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('condition'))
-                        <span class="text-red-400">{{ $errors->first('condition') }}</span>
-                    @endif
-                <select id="pr" name="condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    <option value="Local used" {{ $advert->car->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
-                    <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
-                    <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
-                </select>
-                </div>
-           </div>
 
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Registration</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('registration'))
-                        <span class="text-red-400">{{ $errors->first('registration') }}</span>
-                    @endif
+                <!-- Categories Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Category -->
+                    <div>
+                        <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+                        <select id="category" name="category" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required data-selected="{{ $advert->category }}">
+                            <option value="">Select Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $advert->category == $category->id ? 'selected' : '' }}>
+                                    {{ $category->category }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                    <div class="flex w-2/4">
-                        <select id="pr" name="registration" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
+                    <!-- Subcategory -->
+                    <div>
+                        <label for="subcategory" class="block text-sm font-semibold text-gray-700 mb-2">Sub Category</label>
+                        <select id="subcategory" name="subcategory" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required data-selected="{{ $advert->sub_category }}">
+                            <option value="">Select Subcategory</option>
+                            @foreach($subcategories as $subcategory)
+                                <option value="{{ $subcategory->id }}" {{ $advert->sub_category == $subcategory->id ? 'selected' : '' }}>
+                                    {{ $subcategory->sub_category }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Brand -->
+                    <div>
+                        <label for="brand" class="block text-sm font-semibold text-gray-700 mb-2">Brand</label>
+                        <select id="brand" name="brand" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" required data-selected="{{ $advert->brand }}">
+                            <option value="">Select Brand</option>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand->id }}" {{ $advert->brand == $brand->id ? 'selected' : '' }}>
+                                    {{ $brand->brand }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Model (Conditional) -->
+                    <div id="divModel" class="{{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
+                        <label for="model" class="block text-sm font-semibold text-gray-700 mb-2">Model</label>
+                        <select id="model" name="model" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base"
+                            data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}">
+                            <option value="">Select Model</option>
+                            @foreach($models as $model)
+                                <option value="{{ $model->id }}"
+                                    {{ ($advert->sub_category == 2 && optional($advert->car)->model == $model->id) || ($advert->sub_category == 6 && optional($advert->phone)->model == $model->id) ? 'selected' : '' }}>
+                                    {{ $model->model }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Item Condition -->
+                    <div id="itemCondition" class="{{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
+                        <label for="pr" class="block text-sm font-semibold text-gray-700 mb-2">Item Condition <span class="text-red-500">*</span></label>
+                        <select id="pr" name="item_condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
+                            <option value="">Please Choose</option>
+                            <option value="New" {{ $advert->item_condition == 'New' ? 'selected' : '' }}>New</option>
+                            <option value="Foreign Used" {{ $advert->item_condition == 'Foreign Used' ? 'selected' : '' }}>Foreign Used</option>
+                            <option value="Locally Used" {{ $advert->item_condition == 'Locally Used' ? 'selected' : '' }}>Locally Used</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Vehicle Specifics (Conditional) -->
+        <div id="divCar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
+            </div>
+
+            @if($advert->car)
+            <div class="p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Mileage -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mileage *</label>
+                        <div class="flex">
+                            <input type="text" name="mileage" placeholder="0" value="{{ $advert->car->mileage }}" class="block w-full px-4 py-3 rounded-l-lg border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
+                            <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
+                        </div>
+                    </div>
+
+                    <!-- Condition -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Condition *</label>
+                        <select name="condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Please Choose</option>
+                            <option value="Local used" {{ $advert->car->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
+                            <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
+                            <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
+                        </select>
+                    </div>
+
+                    <!-- Registration -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Registration</label>
+                        <select name="registration" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">--Select Type--</option>
                             <option value="Registered" {{ $advert->car->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
                             <option value="Unregistered" {{ $advert->car->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                         </select>
+                    </div>
 
+                    <!-- Fuel -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fuel Type *</label>
+                        <select name="fuel" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Please Choose</option>
+                            @foreach(['Petrol','Diesel','Natural gas CNG','LPG','Hybrid','Electric'] as $fuelType)
+                                <option value="{{ $fuelType }}" {{ $advert->car->fuel === $fuelType ? 'selected' : '' }}>{{ $fuelType }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Transmission -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Transmission *</label>
+                        <select name="transmission" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Please Choose</option>
+                            <option value="Automatic" {{ $advert->car->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
+                            <option value="Manually" {{ $advert->car->transmission == 'Manually' ? 'selected' : '' }}>Manual</option>
+                        </select>
+                    </div>
+
+                    <!-- Vehicle Type -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type *</label>
+                        <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Please Choose</option>
+                            @foreach(['Small Car','Station Wagon','Limousine','Convertible','SUV/Off Road Vehicle','Van/Bus','Coupe','Truck','Others'] as $vType)
+                                <option value="{{ $vType }}" {{ $advert->car->vehicle_type === $vType ? 'selected' : '' }}>{{ $vType }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Exterior Color -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Exterior Color *</label>
+                        <select id="exterior_color" name="exterior_color" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Choose Color</option>
+                            @php $carColors = ['Black' => 'Black','White' => 'White','Gray' => 'Gray','Silver' => 'Silver','Blue' => 'Blue','Red' => 'Red','Other' => 'Other']; @endphp
+                             @foreach($carColors as $value => $label)
+                                <option value="{{ $value }}" {{ optional($advert->car)->exterior_color === $value ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Doors -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Doors *</label>
+                        <select name="doors" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                             <option value="">Please Choose</option>
+                            @foreach(['1 Door','2 Doors','3 Doors','4 Doors'] as $door)
+                                <option value="{{ $door }}" {{ $advert->car->doors == $door ? 'selected' : '' }}>{{ $door }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Interior Material -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Interior Material *</label>
+                        <select name="material_interior" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                             <option value="">Please Choose</option>
+                            @foreach(['Full Grain Leather','Partial Leather','Material','Velour', 'Alcantara'] as $mat)
+                                <option value="{{ $mat }}" {{ $advert->car->material_interior == $mat ? 'selected' : '' }}>{{ $mat }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
-           </div>
 
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Fuel Type *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('fuel'))
-                        <span class="text-red-400">{{ $errors->first('fuel') }}</span>
-                    @endif
-                <select id="pr" name="fuel" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    @foreach([
-                        'Petrol',
-                        'Diesel',
-                        'Natural gas CNG',
-                        'LPG',
-                        'Hybrid',
-                        'Electric'
-                    ] as $fuelType)
-                        <option 
-                            value="{{ $fuelType }}" 
-                            {{ $advert->car->fuel === $fuelType ? 'selected' : '' }}
-                        >
-                            {{ $fuelType }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
+                <!-- Equipment -->
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-md font-bold text-gray-800 mb-4">Features & Equipment</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Transmission *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('transmission'))
-                        <span class="text-red-400">{{ $errors->first('transmission') }}</span>
-                    @endif
-                <select id="pr" name="transmission" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    <option value="Automatic" {{ $advert->car->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
-                    <option value="Manually" {{ $advert->car->transmission == 'Manually' ? 'selected' : '' }}>Manually</option>
-                </select>
-                </div>
-           </div>
-
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Vehicle Type *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('vehicle_type'))
-                        <span class="text-red-400">{{ $errors->first('vehicle_type') }}</span>
-                    @endif
-                <select id="pr" name="vehicle_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    @foreach([
-                        'Small Car',
-                        'Station Wagon',
-                        'Limousine',
-                        'Convertible',
-                        'SUV/Off Road Vehicle',
-                        'Van/Bus',
-                        'Coupe',
-                        'Truck',
-                        'Others'
-                    ] as $vehicleType)
-                        <option 
-                            value="{{ $vehicleType }}"
-                            {{ $advert->car->vehicle_type === $vehicleType ? 'selected' : '' }}
-                        >
-                            {{ $vehicleType }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
-
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Color *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('exterior_color'))
-                        <span class="text-red-400">{{ $errors->first('exterior_color') }}</span>
-                    @endif
-                <select id="exterior_color" name="exterior_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Choose Color</option>
-                    @php
-                        $carColors = [
-                            // Basic colors
-                            'Black' => 'Black',
-                            'White' => 'White',
-                            'Gray' => 'Gray',
-                            'Silver' => 'Silver',
-                            'Blue' => 'Blue',
-                            'Red' => 'Red',
-                            'Gold' => 'Gold',
-                            'Green' => 'Green',
-
-                            // Common extras
-                            'Beige' => 'Beige',
-                            'Brown' => 'Brown',
-                            'Yellow' => 'Yellow',
-                            'Orange' => 'Orange',
-                            'Purple' => 'Purple',
-                            'Maroon' => 'Maroon',
-                            'Burgundy' => 'Burgundy',
-                            'Bronze' => 'Bronze',
-                            'Champagne' => 'Champagne',
-
-                            // Premium & luxury shades
-                            'Pearl White' => 'Pearl White',
-                            'Gunmetal' => 'Gunmetal Gray',
-                            'Midnight Blue' => 'Midnight Blue',
-                            'Navy Blue' => 'Navy Blue',
-                            'Olive Green' => 'Olive Green',
-                            'Charcoal' => 'Charcoal',
-                            'Matte Black' => 'Matte Black',
-
-                            // Special finishes
-                            'Two Tone' => 'Two-Tone',
-                            'Gradient' => 'Gradient',
-                            'Chameleon' => 'Chameleon',
-                            'Custom Wrap' => 'Custom Wrap',
-                            'Chrome' => 'Chrome',
-                            'Camo' => 'Camouflage',
-                            'Others' => 'Others',
-                        ];
-                    @endphp
-
-                    @foreach($carColors as $value => $label)
-                        <option value="{{ $value }}"
-                                {{ optional($advert->car)->exterior_color === $value ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Number of Doors *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('doors'))
-                        <span class="text-red-400">{{ $errors->first('doors') }}</span>
-                    @endif
-                <select id="pr" name="doors" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    <option value="1 Door" {{ $advert->car->doors == '1 Door' ? 'selected' : '' }}>1 Door</option>
-                    <option value="2 Doors" {{ $advert->car->doors == '2 Doors' ? 'selected' : '' }}>2 Doors</option>
-                    <option value="3 Doors" {{ $advert->car->doors == '3 Doors' ? 'selected' : '' }}>3 Doors</option>
-                    <option value="4 Doors" {{ $advert->car->doors == '4 Doors' ? 'selected' : '' }}>4 Doors</option>
-                </select>
-                </div>
-           </div>
-
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Material Interior *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('material_interior'))
-                        <span class="text-red-400">{{ $errors->first('material_interior') }}</span>
-                    @endif
-                <select id="pr" name="material_interior" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    @php
-                        $interiorMaterials = [
-                            'Full Grain Leather',
-                            'Partial Leather',
-                            'Material',
-                            'Velour', 
-                            'Alcantara'
-                        ];
-                    @endphp
-                    
-                    @foreach($interiorMaterials as $material)
-                        <option value="{{ $material }}" 
-                            @if($advert->car->material_interior == $material) selected @endif>
-                            {{ $material }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
-
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Equipment *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    <div class="grid grid-cols-10">
-                        <div class="col-span-5">
-                            <div>
-                                @php
-                                    $exteriorEquipment = [
-                                        'Trailer hitch',
-                                        'Parking assistance',
-                                        'Alloy wheels',
-                                        'Xenon/LED headlights'
-                                    ];
-                                    $selectedEquipment = json_decode($advert->car->exterior_equipment) ?? [];
-                                @endphp
-
-                                @foreach(array_slice($exteriorEquipment, 0, 2) as $equipment)
-                                    <div class="flex items-center">
-                                        <input id="exterior-{{ Str::slug($equipment) }}" 
-                                               type="checkbox" 
-                                               name="exterior_equipment[]" 
-                                               value="{{ $equipment }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($equipment, $selectedEquipment) ? 'checked' : '' }}>
-                                        <label for="exterior-{{ Str::slug($equipment) }}" class="ms-2 font-medium">
-                                            {{ $equipment }}
-                                        </label>
-                                    </div>
+                        <!-- Exterior Eq -->
+                        <div>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Exterior</span>
+                            @php $selExt = json_decode($advert->car->exterior_equipment) ?? []; @endphp
+                            <div class="space-y-3">
+                                @foreach(['Trailer hitch', 'Parking assistance', 'Alloy wheels', 'Xenon/LED headlights'] as $item)
+                                <label class="flex items-center group cursor-pointer">
+                                    <input type="checkbox" name="exterior_equipment[]" value="{{ $item }}" class="w-5 h-5 text-dark_green rounded border-gray-300 focus:ring-dark_green" {{ in_array($item, $selExt) ? 'checked' : '' }}>
+                                    <span class="ml-3 text-sm text-gray-700">{{ $item }}</span>
+                                </label>
                                 @endforeach
                             </div>
                         </div>
-                        <div class="col-span-5">
-                            <div>
-                                @foreach(array_slice($exteriorEquipment, 2) as $equipment)
-                                    <div class="flex items-center">
-                                        <input id="exterior-{{ Str::slug($equipment) }}" 
-                                               type="checkbox" 
-                                               name="exterior_equipment[]" 
-                                               value="{{ $equipment }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($equipment, $selectedEquipment) ? 'checked' : '' }}>
-                                        <label for="exterior-{{ Str::slug($equipment) }}" class="ms-2 font-medium">
-                                            {{ $equipment }}
-                                        </label>
-                                    </div>
+
+                        <!-- Interior Eq -->
+                        <div>
+                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Interior</span>
+                             @php $selInt = json_decode($advert->car->interior) ?? []; @endphp
+                             <div class="space-y-3">
+                                 @foreach(['Air conditioning', 'Navigation system', 'Radio/tuner', 'Bluetooth', 'Seat heating', 'Cruise control', 'Sunroof/panoramic roof'] as $item)
+                                <label class="flex items-center group cursor-pointer">
+                                    <input type="checkbox" name="interior[]" value="{{ $item }}" class="w-5 h-5 text-dark_green rounded border-gray-300 focus:ring-dark_green" {{ in_array($item, $selInt) ? 'checked' : '' }}>
+                                    <span class="ml-3 text-sm text-gray-700">{{ $item }}</span>
+                                </label>
                                 @endforeach
-                            </div>
+                             </div>
                         </div>
+
+                        <!-- Security -->
+                         <div>
+                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Security</span>
+                             @php $selSec = json_decode($advert->car->security) ?? []; @endphp
+                             <div class="space-y-3">
+                                 @foreach(['Anti-lock braking system (ABS)', 'Service history maintained', 'Airbags', 'Alarm system'] as $item)
+                                <label class="flex items-center group cursor-pointer">
+                                    <input type="checkbox" name="security[]" value="{{ $item }}" class="w-5 h-5 text-dark_green rounded border-gray-300 focus:ring-dark_green" {{ in_array($item, $selSec) ? 'checked' : '' }}>
+                                    <span class="ml-3 text-sm text-gray-700">{{ $item }}</span>
+                                </label>
+                                @endforeach
+                             </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Interior Equipment *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    <div class="grid grid-cols-10">
-                        @php
-                            $interiorEquipment = [
-                                'Air conditioning',
-                                'Navigation system',
-                                'Radio/tuner',
-                                'Bluetooth',
-                                'Hands-free system',
-                                'Sunroof/panoramic roof',
-                                'Seat heating',
-                                'Cruise control',
-                                'Non-smoking vehicle'
-                            ];
-                            $selectedInterior = json_decode($advert->car->interior) ?? [];
-                        @endphp
-                        
-                        <div class="col-span-5">
-                            <div>
-                                @foreach(array_slice($interiorEquipment, 0, 5) as $equipment)
-                                    <div class="flex items-center">
-                                        <input id="interior-{{ Str::slug($equipment) }}" 
-                                               type="checkbox" 
-                                               name="interior[]" 
-                                               value="{{ $equipment }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($equipment, $selectedInterior) ? 'checked' : '' }}>
-                                        <label for="interior-{{ Str::slug($equipment) }}" class="ms-2 font-medium">
-                                            {{ $equipment }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="col-span-5">
-                            <div>
-                                @foreach(array_slice($interiorEquipment, 5) as $equipment)
-                                    <div class="flex items-center">
-                                        <input id="interior-{{ Str::slug($equipment) }}" 
-                                               type="checkbox" 
-                                               name="interior[]" 
-                                               value="{{ $equipment }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($equipment, $selectedInterior) ? 'checked' : '' }}>
-                                        <label for="interior-{{ Str::slug($equipment) }}" class="ms-2 font-medium">
-                                            {{ $equipment }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Security *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    <div class="grid grid-cols-10">
-                        @php
-                            $securityFeatures = [
-                                'Anti-lock braking system (ABS)',
-                                'Service history maintained',
-                                'Electronic Stability Control',
-                                'Airbags',
-                                'Alarm system',
-                                'Immobilizer',
-                                'Traction control',
-                                'ISOFIX child seat mounts'
-                            ];
-                            $selectedSecurity = json_decode($advert->car->security) ?? [];
-                        @endphp
-                        
-                        <div class="col-span-5">
-                            <div>
-                                @foreach(array_slice($securityFeatures, 0, ceil(count($securityFeatures)/2)) as $feature)
-                                    <div class="flex items-center">
-                                        <input id="security-{{ Str::slug($feature) }}" 
-                                               type="checkbox" 
-                                               name="security[]" 
-                                               value="{{ $feature }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($feature, $selectedSecurity) ? 'checked' : '' }}>
-                                        <label for="security-{{ Str::slug($feature) }}" class="ms-2 font-medium">
-                                            {{ $feature }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="col-span-5">
-                            <div>
-                                @foreach(array_slice($securityFeatures, ceil(count($securityFeatures)/2)) as $feature)
-                                    <div class="flex items-center">
-                                        <input id="security-{{ Str::slug($feature) }}" 
-                                               type="checkbox" 
-                                               name="security[]" 
-                                               value="{{ $feature }}" 
-                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                               {{ in_array($feature, $selectedSecurity) ? 'checked' : '' }}>
-                                        <label for="security-{{ Str::slug($feature) }}" class="ms-2 font-medium">
-                                            {{ $feature }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        @endif
-    </div>
-
-    <!-- Div 2 (Initially Hidden) -->
-    <div id="divPhone" class="mt-4 p-4 {{ $advert->sub_category == 6 ? '' : 'hidden' }}">
-        @if($advert->phone)
-        <div class="w-1/4">
-
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Phone Color *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('phone_color'))
-                        <span class="text-red-400">{{ $errors->first('phone_color') }}</span>
-                    @endif
-                <select id="Phonecolor" name="phone_color" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Choose Color</option>
-                    @php
-                        $phoneColors = [
-                            // Basic colors
-                            'Black' => 'Black',
-                            'White' => 'White',
-                            'Gray' => 'Gray',
-                            'Silver' => 'Silver',
-                            'Gold' => 'Gold',
-
-                            // Standard vibrant colors
-                            'Blue' => 'Blue',
-                            'Red' => 'Red',
-                            'Green' => 'Green',
-                            'Yellow' => 'Yellow',
-                            'Orange' => 'Orange',
-                            'Purple' => 'Purple',
-                            'Pink' => 'Pink',
-
-                            // Premium shades
-                            'Rose Gold' => 'Rose Gold',
-                            'Bronze' => 'Bronze',
-                            'Copper' => 'Copper',
-                            'Midnight' => 'Midnight',
-                            'Space Gray' => 'Space Gray',
-                            'Midnight Green' => 'Midnight Green',
-
-                            // Trendy / unique finishes
-                            'Lavender' => 'Lavender',
-                            'Aqua' => 'Aqua',
-                            'Teal' => 'Teal',
-                            'Turquoise' => 'Turquoise',
-                            'Coral' => 'Coral',
-                            'Champagne' => 'Champagne',
-                            'Graphite' => 'Graphite',
-                            'Starlight' => 'Starlight',
-                            'Twilight' => 'Twilight',
-                            'Gradient' => 'Gradient',
-                            'Transparent' => 'Transparent',
-                            'Others' => 'Others',
-                        ];
-                    @endphp
-
-                    @foreach($phoneColors as $value => $label)
-                        <option value="{{ $value }}"
-                                {{ optional($advert->phone)->color === $value ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
-
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Device *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('device'))
-                        <span class="text-red-400">{{ $errors->first('device') }}</span>
-                    @endif
-                <select id="pr" name="device" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    @php
-                        $deviceTypes = [
-                            'Device' => 'Device',
-                            'Accessories' => 'Accessories',
-                            'Device & Accessories' => 'Device & Accessories'
-                        ];
-                    @endphp
-                    
-                    @foreach($deviceTypes as $value => $label)
-                        <option value="{{ $value }}" 
-                                {{ $advert->phone->device == $value ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-           </div>
-
-           <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-4">
-                    <div class="font-semibold">Condition *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('phone_condition'))
-                        <span class="text-red-400">{{ $errors->first('phone_condition') }}</span>
-                    @endif
-                <select id="pr" name="phone_condition" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="">Please Choose</option>
-                    @php
-                        $phoneConditions = [
-                            'New - Unboxed' => 'New <span class="text-xs">(New and Unboxed)</span>',
-                            'Foreign Used - No Packaging' => 'Foreign Used <span class="text-xs">(Without original packaging)</span>',
-                            'Used - Very Good' => 'Very Good (Well-maintained item with barely visible signs of wear)',
-                            'Used - Good' => 'Good (Used item with visible signs of wear)',
-                            'Used - In Order' => 'In Order (Used item with clearly visible signs of wear, but still usable)',
-                            'Used -Defect' => 'Defect (Defective item suitable for repair or spare parts)'
-                        ];
-                    @endphp
-                    
-                    @foreach($phoneConditions as $value => $label)
-                        <option value="{{ $value }}" 
-                                {{ $advert->phone->condition == $value ? 'selected' : '' }}
-                                {!! $value !== 'New - Unboxed' ? 'data-description="'.htmlspecialchars($label).'"' : '' !!}>
-                            {!! $label !!}
-                        </option>
-                    @endforeach
-                </select>
-                </div>
-             
-           </div>
-
-
-        </div>
-        @endif
-    </div>
-
-    <!-- Shippment -->
-    <div id="shipment" class="">
-         <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Shipment</div>
-            </div>
-            <div class="col-span-10 lg:col-span-5 ">
-                <div class="flex justify-start ">
-                  <label class="flex items-center  w-full">
-                    <input type="radio" {{ $advert->shipment === 'Ship' ? 'checked' : '' }} name="shipment" value="Ship" class="form-radio text-dark_green accent-dark_green" onclick="toggleDiv()">
-                    <span class="ml-2 ">Shipping Possible</span>
-                  </label>
-
-                  <label class="flex items-center w-64">
-                    <input {{ $advert->shipment === 'Pickup' ? 'checked' : '' }} type="radio" name="shipment" value="Pickup" class="form-radio text-dark_green accent-dark_green" onclick="toggleDiv()">
-                    <span class="ml-2 ">Only Pickup</span>
-                  </label>
-                </div>
-            </div>
-      </div>
-
-       <!-- Shipping Methods (Hidden by default) -->
-        <div id="shipping" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 ">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Shipping Method</div>
-            </div>
-            <div class="col-span-10 lg:col-span-5">
-                <div id="shipping-methods">
-                    @foreach($shippings as $row)
-                    <div class="flex border border-dark_green rounded-lg p-2 mt-2">
-                        <input
-                            id="shipping-{{ $row->id }}"
-                            name="shipping[]"
-                            type="checkbox"
-                            value="{{ $row->id }}"
-                            class="w-6 h-6 text-dark_green bg-gray-100 rounded border-dark_green focus:ring-dark_green accent-primary"
-                        >
-                        <label for="shipping-{{ $row->id }}" class="ml-2 text-sm font-medium flex flex-col">
-                            <div class="flex items-center">
-                                <span><img class="w-10" src="{{ asset('uploads/shipping/'.$row->logo) }}"></span>
-                                <span class="ml-2 font-bold">{{ $row->company }}</span>
-                            </div>
-                            <p>Max. {{ $row->weight }} kg, {{ $row->description }}</p>
-                        </label>
-                    </div>
-                    @endforeach
-                </div>
-                <!-- Error message (hidden by default) -->
-                <p id="shipping-error" class="mt-2 text-red-500 hidden">Please select at least one shipping method.</p>
-            </div>
-        </div>
-    </div>
-
-
-       <div id="price" class="grid grid-cols-10 gap-2 md:gap-5 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Price</div>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-               
-            <div class="flex justify-start items-center">
-                <div class="">
-                    @if ($errors->has('price'))
-                        <span class="text-red-400">{{ $errors->first('price') }}</span>
-                    @endif
-                    <input
-                        type="text"
-                        name="price_display"
-                        id="price_display"
-                        placeholder="0"
-                        class="w-36 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : number_format($advert->price, 0, '.', ',') }}"
-                    >
-                    <input type="hidden" name="price" id="price_hidden" value="{{ old('price', $advert->price) }}">
-                </div>
-                <div class="text-base ml-2">
-                    Naira
-                </div>
-            </div>
-            </div>
-            <div id="services" class="col-span-10 md:col-span-2 mt-1">
-                <label class="text-base flex items-center gap-1">
-                    <input
-                        type="hidden"
-                        name="contact_price"
-                        value="no"
-                    >
-                    <input
-                        type="checkbox"
-                        class="default:ring-2 w-6 h-6"
-                        name="contact_price"
-                        value="yes"
-                        {{ $advert->contact_price == 'yes' ? 'checked' : '' }}
-                    >
-                    Contact For Price
-                </label>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <select id="price_type" name="price_type" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                    <option value="Fixed" {{ ($advert->price_type =='Fixed') ? "selected" : ""; }}>Fixed Price</option>
-                    <option value="Negotiable" {{ ($advert->price_type =='Negotiable') ? "selected" : ""; }}>Negotiable</option>
-                    <option value="Give Away" {{ ($advert->price_type =='Give Away') ? "selected" : ""; }}>Give Away</option>
-                </select>
-            </div>
-       </div>
-
-       <div id="salary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-    <div class="col-span-10 md:col-span-2">
-        <div class="font-semibold">Salary</div>
-    </div>
-    <div class="col-span-10 md:col-span-5">
-        @if ($errors->has('salary'))
-            <span class="text-red-400">{{ $errors->first('salary') }}</span>
-        @endif
-        <select id="salary" name="salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-            <option value="">--Select Salary--</option>
-            <option value="Commission" {{ $advert->salary == 'Commission' ? 'selected' : '' }}>Commission</option>
-            <option value="Below ₦20,000" {{ $advert->salary == 'Below ₦20,000' ? 'selected' : '' }}>Below ₦20,000</option>
-            <option value="₦20,000 - ₦40,000" {{ $advert->salary == '₦20,000 - ₦40,000' ? 'selected' : '' }}>₦20,000 - ₦40,000</option>
-            <option value="₦40,000 - ₦60,000" {{ $advert->salary == '₦40,000 - ₦60,000' ? 'selected' : '' }}>₦40,000 - ₦60,000</option>
-            <option value="₦60,000 - ₦80,000" {{ $advert->salary == '₦60,000 - ₦80,000' ? 'selected' : '' }}>₦60,000 - ₦80,000</option>
-            <option value="₦80,000 - ₦100,000" {{ $advert->salary == '₦80,000 - ₦100,000' ? 'selected' : '' }}>₦80,000 - ₦100,000</option>
-            <option value="₦100,000 - ₦120,000" {{ $advert->salary == '₦100,000 - ₦120,000' ? 'selected' : '' }}>₦100,000 - ₦120,000</option>
-            <option value="₦120,000 - ₦140,000" {{ $advert->salary == '₦120,000 - ₦140,000' ? 'selected' : '' }}>₦120,000 - ₦140,000</option>
-            <option value="₦140,000 - ₦160,000" {{ $advert->salary == '₦140,000 - ₦160,000' ? 'selected' : '' }}>₦140,000 - ₦160,000</option>
-            <option value="₦160,000 - ₦180,000" {{ $advert->salary == '₦160,000 - ₦180,000' ? 'selected' : '' }}>₦160,000 - ₦180,000</option>
-            <option value="₦180,000 - ₦200,000" {{ $advert->salary == '₦180,000 - ₦200,000' ? 'selected' : '' }}>₦180,000 - ₦200,000</option>
-            <option value="₦200,000 - ₦220,000" {{ $advert->salary == '₦200,000 - ₦220,000' ? 'selected' : '' }}>₦200,000 - ₦220,000</option>
-            <option value="₦220,000 - ₦250,000" {{ $advert->salary == '₦220,000 - ₦250,000' ? 'selected' : '' }}>₦220,000 - ₦250,000</option>
-            <option value="₦250,000 - ₦300,000" {{ $advert->salary == '₦250,000 - ₦300,000' ? 'selected' : '' }}>₦250,000 - ₦300,000</option>
-            <option value="₦300,000 - ₦350,000" {{ $advert->salary == '₦300,000 - ₦350,000' ? 'selected' : '' }}>₦300,000 - ₦350,000</option>
-            <option value="₦350,000 - ₦400,000" {{ $advert->salary == '₦350,000 - ₦400,000' ? 'selected' : '' }}>₦350,000 - ₦400,000</option>
-            <option value="₦400,000 - ₦450,000" {{ $advert->salary == '₦400,000 - ₦450,000' ? 'selected' : '' }}>₦400,000 - ₦450,000</option>
-            <option value="₦450,000 - ₦500,000" {{ $advert->salary == '₦450,000 - ₦500,000' ? 'selected' : '' }}>₦450,000 - ₦500,000</option>
-            <option value="Above ₦500,000" {{ $advert->salary == 'Above ₦500,000' ? 'selected' : '' }}>Above ₦500,000</option>
-        </select>
-    </div>
-    <div class="col-span-10 md:col-span-3">
-    </div>
-</div>
-
-       <div id="expectedSalary" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-    <div class="col-span-10 md:col-span-2">
-        <div class="font-semibold">Expected Salary</div>
-    </div>
-    <div class="col-span-10 md:col-span-5">
-        @if ($errors->has('expected_salary'))
-            <span class="text-red-400">{{ $errors->first('expected_salary') }}</span>
-        @endif
-        <select id="expected_salary" name="expected_salary" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-            <option value="">--Select Expected Salary--</option>
-            <option value="Below ₦50,000" {{ $advert->expected_salary == 'Below ₦50,000' ? 'selected' : '' }}>Below ₦50,000</option>
-            <option value="₦50,000 - ₦75,000" {{ $advert->expected_salary == '₦50,000 - ₦75,000' ? 'selected' : '' }}>₦50,000 - ₦75,000</option>
-            <option value="₦75,000 - ₦100,000" {{ $advert->expected_salary == '₦75,000 - ₦100,000' ? 'selected' : '' }}>₦75,000 - ₦100,000</option>
-            <option value="₦100,000 - ₦120,000" {{ $advert->expected_salary == '₦100,000 - ₦120,000' ? 'selected' : '' }}>₦100,000 - ₦120,000</option>
-            <option value="₦120,000 - ₦140,000" {{ $advert->expected_salary == '₦120,000 - ₦140,000' ? 'selected' : '' }}>₦120,000 - ₦140,000</option>
-            <option value="₦140,000 - ₦160,000" {{ $advert->expected_salary == '₦140,000 - ₦160,000' ? 'selected' : '' }}>₦140,000 - ₦160,000</option>
-            <option value="₦160,000 - ₦180,000" {{ $advert->expected_salary == '₦160,000 - ₦180,000' ? 'selected' : '' }}>₦160,000 - ₦180,000</option>
-            <option value="₦180,000 - ₦200,000" {{ $advert->expected_salary == '₦180,000 - ₦200,000' ? 'selected' : '' }}>₦180,000 - ₦200,000</option>
-            <option value="₦200,000 - ₦220,000" {{ $advert->expected_salary == '₦200,000 - ₦220,000' ? 'selected' : '' }}>₦200,000 - ₦220,000</option>
-            <option value="₦220,000 - ₦250,000" {{ $advert->expected_salary == '₦220,000 - ₦250,000' ? 'selected' : '' }}>₦220,000 - ₦250,000</option>
-            <option value="₦250,000 - ₦300,000" {{ $advert->expected_salary == '₦250,000 - ₦300,000' ? 'selected' : '' }}>₦250,000 - ₦300,000</option>
-            <option value="₦300,000 - ₦350,000" {{ $advert->expected_salary == '₦300,000 - ₦350,000' ? 'selected' : '' }}>₦300,000 - ₦350,000</option>
-            <option value="₦350,000 - ₦400,000" {{ $advert->expected_salary == '₦350,000 - ₦400,000' ? 'selected' : '' }}>₦350,000 - ₦400,000</option>
-            <option value="₦400,000 - ₦450,000" {{ $advert->expected_salary == '₦400,000 - ₦450,000' ? 'selected' : '' }}>₦400,000 - ₦450,000</option>
-            <option value="₦450,000 - ₦500,000" {{ $advert->expected_salary == '₦450,000 - ₦500,000' ? 'selected' : '' }}>₦450,000 - ₦500,000</option>
-            <option value="Above ₦500,000" {{ $advert->expected_salary == 'Above ₦500,000' ? 'selected' : '' }}>Above ₦500,000</option>
-        </select>
-    </div>
-    <div class="col-span-10 md:col-span-3">
-    </div>
-</div>
-
-       @if($user->acc_type=="Commercial")
-       <div id="quantity" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Item Quantity</div>
-            </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('quantity'))
-                    <span class="text-red-400">{{ $errors->first('quantity') }}</span>
-                @endif
-            <input type="number" id="name" name="quantity" placeholder="Item Quantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->quantity }}" min="1" max="100">
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                
-            </div>
-       </div>
-       @endif
-
-        <div id="buyDirect" class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200 {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
-            <div class="col-span-10 lg:col-span-2">
-                <div class="font-semibold">Payment option</div>
-            </div>
-            <div class="col-span-10 lg:col-span-6 ">
-                <div class="flex flex-col text-sm">
-                  <label class="flex items-center  w-full">
-                    <input type="radio" {{ $advert->buy_direct === 'Yes' ? 'checked' : '' }} name="buy_direct" value="Yes" class="form-radio text-dark_green accent-dark_green"  required>
-                    <span class="ml-2 ">Yes, I would like to sell this item using the free ‘Buy Direct’ payment option</span>
-                    
-                  </label>
-                  <div class="my-2 w-full border border-gray-300 p-2 rounded-lg text-sm">
-                        <div class="flex">
-                            <span class="mr-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                                </svg>
-                            </span>
-                            <span>Selecting this option allows buyers to purchase your item using ‘Buy Direct.’ <br><a class="font-semibold text-dartk_green" href="">Learn More</a> </span>
-                        </div>
-                        <div class="flex text-xs mt-1">
-                            <span class="mr-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                </svg>
-                            </span>
-                            <span><strong class="font-semibold">No negotiation </strong> — buyers pay the price you set. </span>
-                        </div>
-                        <div class="flex text-xs mt-1">
-                            <span class="mr-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                </svg>
-                            </span>
-                            <span>Our buyer protection provides security, creates trust and <strong class="font-semibold">increases your chances of selling.</strong> </span>
-                        </div>
-                    </div>
-
-                  <label class="flex items-center w-64">
-                    <input {{ $advert->buy_direct === 'No' ? 'checked' : '' }} type="radio" name="buy_direct" value="No" class="form-radio text-dark_green accent-dark_green" >
-                    <span class="ml-2 ">No, do not use “Buy direct”</span>
-                  </label>
-                </div>
-            </div>
-      </div>
-
-
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Description</div>
-            </div>
-            <div class="col-span-10 md:col-span-7">
-                @if ($errors->has('description'))
-                    <span class="text-red-400">{{ $errors->first('description') }}</span>
-                @endif
-                <input id="content" type="hidden" name="description" value="{{ old('description', $advert->description ?? '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                <trix-editor input="content" style="min-height: 80px;"></trix-editor>
-                <div class="text-sm text-gray-500 mt-1">
-                    <span id="word-count">0</span>/3500 characters
-                </div>
-            </div>
-        </div>
-   
-
-
-    <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-        <div class="col-span-10 md:col-span-2">
-            <div class="font-semibold">Pictures (recommended)</div>
-        </div>
-        <div class="col-span-10 md:col-span-5">
-            @if ($errors->has('images[]'))
-                <span class="text-red-400">{{ $errors->first('images[]') }}</span>
             @endif
-            <div class="flex justify-start border-dashed border-2 border-gray-300">
-                <!-- Camera Icon for File Upload -->
-                <div class="flex items-center">
-                    <label for="imageUpload" class="cursor-pointer">
-                        <div class="flex items-center justify-center px-3 py-1 m-2 text-gray-700 border border-gray-300 hover:bg-primary transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
-                            </svg>
+        </div>
+
+        <!-- CARD 3: Phone Details (Conditional) -->
+        <div id="divPhone" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ $advert->sub_category == 6 ? '' : 'hidden' }}">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Device Details</h2>
+            </div>
+             @if($advert->phone)
+            <div class="p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Phone Color -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Color *</label>
+                        <select name="phone_color" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Choose Color</option>
+                             @foreach(['Black','White','Gray','Silver','Gold','Blue','Red','Green'] as $pColor)
+                                <option value="{{ $pColor }}" {{ optional($advert->phone)->color === $pColor ? 'selected' : '' }}>{{ $pColor }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Device -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Device Type *</label>
+                        <select name="device" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                             <option value="">Please Choose</option>
+                            @foreach(['Device','Accessories','Device & Accessories'] as $dType)
+                                <option value="{{ $dType }}" {{ $advert->phone->device == $dType ? 'selected' : '' }}>{{ $dType }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Condition -->
+                    <div class="md:col-span-2">
+                         <label class="block text-sm font-semibold text-gray-700 mb-2">Condition *</label>
+                         <select name="phone_condition" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="">Please Choose</option>
+                            @foreach(['New - Unboxed', 'Foreign Used - No Packaging', 'Used - Very Good', 'Used - Good', 'Used - In Order', 'Used -Defect'] as $pCond)
+                                <option value="{{ $pCond }}" {{ $advert->phone->condition == $pCond ? 'selected' : '' }}>{{ $pCond }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <!-- CARD 4: Financials -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Financials</h2>
+            </div>
+            <div class="p-6 md:p-8 space-y-6">
+                <!-- Price -->
+                <div id="price">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Price</label>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-base">₦</span>
+                            </div>
+                             <input type="text" name="price_display" id="price_display" class="block w-full pl-8 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-dark_green focus:border-dark_green text-base" placeholder="0.00" value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : number_format($advert->price, 0, '.', ',') }}">
+                             <input type="hidden" name="price" id="price_hidden" value="{{ old('price', $advert->price) }}">
                         </div>
+                        <div>
+                            <select name="price_type" class="custom-select block w-full px-4 py-3 border border-gray-300 bg-white rounded-lg shadow-sm focus:ring-dark_green focus:border-transparent text-base">
+                                <option value="Fixed" {{ ($advert->price_type =='Fixed') ? "selected" : ""; }}>Fixed Price</option>
+                                <option value="Negotiable" {{ ($advert->price_type =='Negotiable') ? "selected" : ""; }}>Negotiable</option>
+                                <option value="Give Away" {{ ($advert->price_type =='Give Away') ? "selected" : ""; }}>Give Away</option>
+                            </select>
+                        </div>
+                        <div id="services" class="flex items-center h-full pt-1">
+                             <input type="hidden" name="contact_price" value="no">
+                             <label class="flex items-center cursor-pointer select-none">
+                                <input type="checkbox" name="contact_price" value="yes" class="w-5 h-5 text-dark_green rounded border-gray-300 focus:ring-dark_green" {{ $advert->contact_price == 'yes' ? 'checked' : '' }}>
+                                <span class="ml-2 text-sm text-gray-700">Contact for Price</span>
+                            </label>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Salaries -->
+                <div id="salary">
+                     <label class="block text-sm font-semibold text-gray-700 mb-2">Salary</label>
+                     <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
+                        <option value="">--Select Salary--</option>
+                        @foreach(['Commission', 'Below ₦20,000', '₦20,000 - ₦40,000', 'Above ₦500,000'] as $sal)
+                            <option value="{{ $sal }}" {{ $advert->salary == $sal ? 'selected' : '' }}>{{ $sal }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                 <div id="expectedSalary">
+                     <label class="block text-sm font-semibold text-gray-700 mb-2">Expected Salary</label>
+                     <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
+                        <option value="">--Select Expected Salary--</option>
+                        @foreach(['Below ₦50,000', '₦50,000 - ₦75,000', 'Above ₦500,000'] as $expSal)
+                            <option value="{{ $expSal }}" {{ $advert->expected_salary == $expSal ? 'selected' : '' }}>{{ $expSal }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                @if($user->acc_type=="Commercial")
+                <div id="quantity">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Item Quantity</label>
+                    <input type="number" name="quantity" class="block w-full md:w-1/3 px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green text-base" value="{{ $advert->quantity }}" min="1" max="100">
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- CARD 5: Logistics & Payment -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Logistics & Payment</h2>
+            </div>
+            <div class="p-6 md:p-8 space-y-8">
+                <!-- Shipment -->
+                <div id="shipment">
+                     <label class="block text-sm font-semibold text-gray-700 mb-3">Delivery Options</label>
+                     <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                        <label class="inline-flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-dark_green has-[:checked]:bg-green-50">
+                            <input type="radio" name="shipment" value="Ship" class="text-dark_green border-gray-300 focus:ring-dark_green h-4 w-4" {{ $advert->shipment === 'Ship' ? 'checked' : '' }} onclick="toggleDiv()">
+                            <span class="ml-2 text-gray-700 font-medium">Shipping Possible</span>
+                        </label>
+                        <label class="inline-flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-dark_green has-[:checked]:bg-green-50">
+                            <input type="radio" name="shipment" value="Pickup" class="text-dark_green border-gray-300 focus:ring-dark_green h-4 w-4" {{ $advert->shipment === 'Pickup' ? 'checked' : '' }} onclick="toggleDiv()">
+                            <span class="ml-2 text-gray-700 font-medium">Only Pickup</span>
+                        </label>
+                     </div>
+
+                     <!-- Shipping Methods (Hidden by default based on JS) -->
+                    <div id="shipping" class="hidden pl-0 sm:pl-4 sm:border-l-2 sm:border-gray-200 space-y-2">
+                        <p class="text-sm font-semibold text-gray-800 mb-2">Select Carriers:</p>
+                        @foreach($shippings as $row)
+                        <label class="flex items-start p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                             <input id="shipping-{{ $row->id }}" name="shipping[]" type="checkbox" value="{{ $row->id }}" class="mt-1 h-5 w-5 text-dark_green border-gray-300 rounded focus:ring-dark_green">
+                             <div class="ml-3">
+                                <div class="flex items-center">
+                                    <img class="w-8 h-auto mr-2" src="{{ asset('uploads/shipping/'.$row->logo) }}" alt="Logo">
+                                    <span class="font-bold text-gray-900">{{ $row->company }}</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Max. {{ $row->weight }} kg, {{ $row->description }}</p>
+                            </div>
+                        </label>
+                        @endforeach
+                        <p id="shipping-error" class="text-red-500 text-sm hidden">Please select at least one shipping method.</p>
+                    </div>
+                </div>
+
+                <!-- Buy Direct -->
+                <div id="buyDirect" class="bg-blue-50 border border-blue-100 rounded-xl p-5 {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
+                    <label class="block text-md font-semibold text-blue-900 mb-4">Payment Method</label>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input type="radio" name="buy_direct" value="Yes" {{ $advert->buy_direct === 'Yes' ? 'checked' : '' }} class="h-4 w-4 text-dark_green border-gray-300 focus:ring-dark_green" required>
+                            </div>
+                            <div class="ml-3">
+                                <span class="block text-sm font-medium text-gray-900">Enable "Buy Direct"</span>
+                                <div class="mt-2 text-xs text-gray-600">Secure payment, fixed price, no negotiation.</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                             <div class="flex items-center h-5">
+                                <input type="radio" name="buy_direct" value="No" {{ $advert->buy_direct === 'No' ? 'checked' : '' }} class="h-4 w-4 text-dark_green border-gray-300 focus:ring-dark_green">
+                            </div>
+                            <div class="ml-3">
+                                <span class="block text-sm font-medium text-gray-900">No, do not use "Buy direct"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 6: Visuals & Description -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Visuals & Description</h2>
+            </div>
+            <div class="p-6 md:p-8 space-y-8">
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Detailed Description *</label>
+                     <input id="content" type="hidden" name="description" value="{{ old('description', $advert->description ?? '') }}" required>
+                     <div class="prose max-w-none">
+                         <trix-editor input="content" class="min-h-[150px] border-gray-300 rounded-lg focus:border-dark_green focus:ring-dark_green"></trix-editor>
+                    </div>
+                     <div class="flex justify-end mt-1">
+                        <span class="text-xs text-gray-400"><span id="word-count">0</span>/3500 characters</span>
+                    </div>
+                </div>
+
+                <!-- IMAGES (EDIT MODE) -->
+                <div>
+                     <label class="block text-sm font-semibold text-gray-700 mb-2">Product Photos</label>
+
+                     <!-- Dropzone -->
+                     <div class="border-2 border-dashed border-gray-300 rounded-xl hover:bg-gray-50 hover:border-dark_green transition-colors relative group mb-6">
+                        <label for="imageUpload" class="cursor-pointer flex flex-col items-center justify-center py-8 w-full h-full z-10">
+                            <div class="p-4 rounded-full bg-blue-50 text-dark_green mb-3 group-hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-gray-900">Add more photos</span>
+                        </label>
                         <input name="images[]" type="file" id="imageUpload" multiple class="hidden" accept="image/*">
                         <input type="hidden" name="existing_image_order" id="existing_image_order">
+                    </div>
 
-                    </label>
-                </div>
-
-                <!-- Image Preview Container -->
-                <div id="preview" class="grid grid-cols-4 md:grid-cols-4 gap-4">
-                    <!-- Display existing images -->
-
-                   @foreach($advert->getMedia('images') as $media)
-                        <div class="relative group cursor-move image-container" draggable="true" data-id="{{ $media->id }}">
-                            <img src="{{ $media->getUrl('thumbnail') }}" class="w-full h-auto rounded-lg shadow">
-                            <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center" data-id="{{ $media->id }}">&times;</button>
+                    <!-- Existing & New Preview Grid -->
+                    <div id="preview" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                        @foreach($advert->getMedia('images') as $media)
+                        <div class="relative group cursor-move image-container rounded-lg overflow-hidden shadow-sm border border-gray-200" draggable="true" data-id="{{ $media->id }}">
+                            <img src="{{ $media->getUrl('thumbnail') }}" class="w-full h-32 object-cover">
+                            <button type="button" class="absolute top-1 right-1 w-6 h-6 text-white bg-red-500 rounded-full hover:bg-red-600 flex items-center justify-center delete-image shadow-md transition-colors" data-id="{{ $media->id }}">&times;</button>
                             <input type="hidden" name="existing_images[]" value="{{ $media->id }}">
                         </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                     <div class="flex items-center text-xs text-gray-500 mt-3">
+                         <img src="{{ asset('frontend/images/swap.png') }}" class="h-5 w-auto mr-2 opacity-60">
+                         <span>Drag and drop to reorder images.</span>
+                    </div>
                 </div>
             </div>
-            <div class="text-xs flex justify-start items-center">
-                <img src="{{ asset('frontend/images/swap.png') }}" class="h-6 mx-2">
-               Move to Change the Order
-              </div>
         </div>
-        <div class="col-span-10 md:col-span-3">
-            <div class="text-xs">
-               <span class="font-semibold"> Tip:</span>  Up to 20 images with a maximum size of 12 MB. To keep listings clear, please avoid uploading images with watermarks or text.
-              </div>
+
+        <!-- CARD 7: Location & Contact -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Location & Contact</h2>
+            </div>
+             <div class="p-6 md:p-8">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <!-- State -->
+                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
+                        <select onchange="toggleLGA(this);" name="state" id="state" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="" selected="selected">- Select State -</option>
+                            @foreach($states as $state)
+                            <option value="{{ $state->name }}" {{ ($advert->state == $state->name) ? "selected" : "" }}>{{ $state->name }}</option>
+                            @endforeach
+                        </select>
+                     </div>
+
+                     <!-- LGA -->
+                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">LGA</label>
+                        <select name="lga" id="lga" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base select-lga" required>
+                            @if($advert->state && $advert->lga)
+                                <option value="{{ $advert->lga }}" selected>{{ $advert->lga }}</option>
+                            @endif
+                        </select>
+                     </div>
+
+                     <!-- Name -->
+                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Profile Name</label>
+                        <input type="text" id="name" name="name" value="{{ $user->name }}" readonly class="block w-full px-4 py-3 rounded-lg border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed text-base">
+                     </div>
+
+                     <!-- Show Contact -->
+                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Show Phone Number?</label>
+                        <select name="show_contact" class="custom-select block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                            <option value="Yes" {{ $advert->show_contact == 'Yes' ? 'selected' : '' }}>Yes</option>
+                            <option value="No" {{ $advert->show_contact == 'No' ? 'selected' : '' }}>No</option>
+                        </select>
+                     </div>
+                 </div>
+             </div>
         </div>
-    </div>
-    <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-    <div class="col-span-10 md:col-span-2">
-        <div class="font-semibold">Location</div>
-    </div>
-    <div class="col-span-10 md:col-span-3">
-        @if ($errors->has('state'))
-            <span class="text-danger">{{ $errors->first('state') }}</span>
-        @endif
-        <select onchange="toggleLGA(this);" name="state" id="state" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-            <option value="" selected="selected">- Select State -</option>
-            @foreach($states as $state)
-            <option value="{{ $state->name }}" {{ ($advert->state == $state->name) ? "selected" : "" }}>{{ $state->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="col-span-10 md:col-span-3">
-        @if ($errors->has('lga'))
-            <span class="text-red-400">{{ $errors->first('lga') }}</span>
-        @endif
-        <select name="lga" id="lga" class="w-48 px-3 py-2 border border-gray-300 rounded shadow-sm bg-white select-lga" required>
-            @if($advert->state && $advert->lga)
-                <option value="{{ $advert->lga }}" selected>{{ $advert->lga }}</option>
-            @endif
-        </select>
-    </div>
-</div>
 
-
-
-    <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Name</div>
+        <!-- Submit Section -->
+        <div class="pt-6">
+            <div class="flex flex-col items-center space-y-4">
+                <p class="text-xs text-center text-gray-500 max-w-lg">
+                    By clicking "Update", you agree to our Terms of Use and Privacy Policy.
+                </p>
+                <button type="submit" class="w-full md:w-auto bg-dark_green hover:bg-green-700 text-white font-bold py-3 px-12 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 duration-200 text-lg">
+                    Update Ad
+                </button>
             </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('name'))
-                <span class="text-danger">{{ $errors->first('name') }}</span>
-            @endif
-            <input type="text" id="name" name="name" placeholder="Profile Name" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $user->name }}" readonly>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span> Enter your name so that you increase the reliability of your ad.
-                  </div>
-            </div>
-       </div>
-
-       <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-            <div class="col-span-10 md:col-span-2">
-                <div class="font-semibold">Show Contact?</div>
-            </div>
-            <div class="col-span-10 md:col-span-5">
-                @if ($errors->has('show_contact'))
-                <span class="text-danger">{{ $errors->first('show_contact') }}</span>
-            @endif
-            <select name="show_contact" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm bg-white">
-                <option value="Yes" {{ $advert->show_contact == 'Yes' ? 'selected' : '' }}>Yes</option>
-                <option value="No" {{ $advert->show_contact == 'No' ? 'selected' : '' }}>No</option>
-            </select>
-            </div>
-            <div class="col-span-10 md:col-span-3">
-                <div class="text-xs">
-                   <span class="font-semibold"> Tip:</span>Do you want users to see your contact details on the advert page?
-                  </div>
-            </div>
-       </div>
-
-       <div class="mt-5 py-3 border-b border-b-gray-200">
-           <div class="font-semibold">Publish your ad</div>        
-       </div>
-
-       <div class="text-xs my-3">
-           Our terms of use apply. Information about processing You can find your data in our privacy policy.
-       </div>
-
-       <div class="flex justify-start mb-10">
-            <button type="submit" class="btn btn-secondary py-2 px-6">Update</button>
-       </div>
-
+        </div>
 
     </form>
 </section>
 
-
+<!-- Scripts maintained -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

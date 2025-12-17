@@ -14,7 +14,22 @@
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
-                    <img alt="{{ $row->ad_title }}" class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                    @php
+                        $media = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        loading="lazy"
+                        src="{{ $media
+                            ? ($media->hasGeneratedConversion('thumb-sm')
+                                ? $media->getUrl('thumb-sm')
+                                : $media->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                    />
+
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -110,7 +125,21 @@
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
-                    <img alt="{{ $row->ad_title }}" class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                    @php
+                        $media = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        loading="lazy"
+                        src="{{ $media
+                            ? ($media->hasGeneratedConversion('thumb-sm')
+                                ? $media->getUrl('thumb-sm')
+                                : $media->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                    />
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -208,7 +237,21 @@
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
-                    <img alt="{{ $row->ad_title }}" class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                    @php
+                        $media = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        loading="lazy"
+                        src="{{ $media
+                            ? ($media->hasGeneratedConversion('thumb-sm')
+                                ? $media->getUrl('thumb-sm')
+                                : $media->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                    />
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50  px-1 rounded text-[14px]">
@@ -306,7 +349,21 @@
         <div class="flex-none w-[45%] md:w-1/4 snap-start">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
                 <div class="relative overflow-hidden">
-                    <img alt="{{ $row->ad_title }}" class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
+                    @php
+                        $media = $row->getFirstMedia('images');
+                    @endphp
+
+                    <img
+                        alt="{{ $row->ad_title }}"
+                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        loading="lazy"
+                        src="{{ $media
+                            ? ($media->hasGeneratedConversion('thumb-sm')
+                                ? $media->getUrl('thumb-sm')
+                                : $media->getUrl('thumbnail'))
+                            : asset('frontend/images/default.png') }}"
+                        onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';"
+                    />
                     <div class="absolute top-2 right-2 space-y-1">
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50  px-1 rounded text-[14px]">

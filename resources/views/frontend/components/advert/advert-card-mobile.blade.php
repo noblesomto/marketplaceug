@@ -2,12 +2,21 @@
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="block group h-full flex flex-col">
         <!-- Image -->
         <div class="aspect-[4/3] w-full overflow-hidden relative">
+            @php
+                $image = $row->getFirstMedia('images');
+            @endphp
+
             <img
-                src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}"
+                src="{{ $image
+                    ? ($image->hasGeneratedConversion('thumb-sm')
+                        ? $image->getUrl('thumb-sm')
+                        : $image->getUrl('thumbnail'))
+                    : asset('frontend/images/default.png') }}"
                 alt="{{ $row->ad_title }}"
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
             />
+
 
             <div class="absolute top-1 right-1 space-y-1">
                 @if($row->owner->verified=='yes')

@@ -30,8 +30,12 @@ class SearchFilter extends Controller
 
         // Add conditions only if the parameter is provided
         if ($request->filled('product')) {
-            $query->where('ad_title', 'LIKE', '%' . $request->product . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+            });
         }
+
 
         if ($request->filled('category')) {
             $query->where('category', $request->category);
@@ -326,7 +330,10 @@ class SearchFilter extends Controller
 
         // Product search
         if ($request->filled('product')) {
-            $query->where('ad_title', 'LIKE', '%' . $request->product . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+            });
         }
 
         // Category context
