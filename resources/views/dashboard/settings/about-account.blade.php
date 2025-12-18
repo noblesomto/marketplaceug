@@ -102,7 +102,7 @@
 		    	<div class="text-dark_green text-sm">{{ $count_ads }} ads online</div>
 		    </a>
 		    @else
-		    <div class="flex-col items-center justify-center text-center ">
+		    <div class="flex-col items-center justify-center text-center pb-20">
 			    <img src="{{ asset('frontend/images/empty-box.png') }}" class="mx-auto mb-4">
 			    <p class="font-semibold mb-2">No Ads at the moment</p>
 			    <p class="text-gray-600 mb-4">

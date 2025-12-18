@@ -270,7 +270,7 @@
 
       @endforeach
       @else
-        <div class="flex flex-col items-center bg-white">
+        <div class="flex flex-col items-center bg-white pb-20">
             <span>
                 <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="external-Empty-empty-state-(outline)-outline-andi-nur-abdillah"/>
             </span>

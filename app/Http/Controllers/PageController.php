@@ -96,7 +96,7 @@ class PageController extends Controller
     public function blog()
     {
         $title = "Our Blog  | " . config('global.site_name');
-        $blogs = Blog::where('status', 'published')->latest()->paginate(10);
+        $blogs = Blog::where('status', 'published')->latest()->paginate(12);
         return view('frontend.blog.index', compact('title','blogs'));
     }
 

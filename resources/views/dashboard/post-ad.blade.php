@@ -83,7 +83,7 @@
                         <input type="text"
                                name="ad_title"
                                id="ad_title"
-                               placeholder="e.g. iPhone 14 Pro Max - 256GB - Deep Purple"
+                               placeholder="e.g. iPhone 14 Pro Max 256GB"
                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-dark_green focus:border-transparent transition-colors text-base"
                                value="{{ old('ad_title') }}"
                                maxlength="75"

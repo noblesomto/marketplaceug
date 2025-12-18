@@ -1,30 +1,25 @@
 # ------------------------------------------------------
-# PERFORMANCE: CACHE STATIC ASSETS (GOOGLE LIGHTHOUSE)
+# LITESPEED CACHE HEADERS
 # ------------------------------------------------------
-
-# Enable headers module
 <IfModule mod_headers.c>
-    # Cache static assets immutably for 1 year
-    <FilesMatch "\.(js|css|woff2?|ttf|otf|eot)$">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-        Header set Expires "Thu, 31 Dec 2037 23:55:55 GMT"
+    # For JS and CSS files
+    <FilesMatch "\.(js|css)$">
+        Header always set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
+    # For fonts
+    <FilesMatch "\.(woff2?|ttf|otf|eot)$">
+        Header always set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # For images
     <FilesMatch "\.(png|jpe?g|webp|avif|svg|gif|ico)$">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-        Header set Expires "Thu, 31 Dec 2037 23:55:55 GMT"
+        Header always set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
+    # For audio/video
     <FilesMatch "\.(mp3|mp4|webm)$">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-        Header set Expires "Thu, 31 Dec 2037 23:55:55 GMT"
-    </FilesMatch>
-
-    # Prevent caching of HTML files
-    <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "no-cache, no-store, must-revalidate"
-        Header set Pragma "no-cache"
-        Header set Expires "0"
+        Header always set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 </IfModule>
 
@@ -49,7 +44,7 @@
     RewriteCond %{REQUEST_URI} ^/assets/ [OR]
     RewriteCond %{REQUEST_URI} ^/images/ [OR]
     RewriteCond %{REQUEST_URI} ^/sound/
-    RewriteRule ^ - [L]
+    RewriteRule ^ - [L,E=CACHE_CONTROL:max-age=31536000]
 
     # Force HTTPS + www
     RewriteCond %{HTTPS} off [OR]
@@ -61,11 +56,11 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    # Handle Authorization Header (for API requests)
+    # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Remove trailing slash (if not a directory)
+    # Remove trailing slash
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
@@ -74,4 +69,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+# Set environment variables for LiteSpeed
+<IfModule mod_env.c>
+    SetEnv CACHE-CONTROL "public, max-age=31536000, immutable"
 </IfModule>
