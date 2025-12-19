@@ -145,10 +145,35 @@
                 <div class="border border-gray-200 my-2"></div>
 
             </div>
-            <div class="pb-20">
+            <div class="pb-2" id="ads-container">
                 @include('frontend.components.advert.advert-list', ['ads' => $ads])
             </div>
+            @if($ads->isEmpty())
+                <div class="flex flex-col h-screen items-center bg-white p-10">
+                    <span>
+                        <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="No Adverts Currently"/>
+                    </span>
+                    <span>No Item here yet...</span>
+                </div>
+            @endif
 
+
+            @if(isset($hasMore) && $hasMore)
+                <div class="mt-3 mb-4 px-2 flex justify-center">
+                    <button id="load-more-btn"
+                            class="bg-dark_green hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
+                        <span id="load-more-text">Show More</span>
+                        <span id="load-more-spinner" class="hidden">
+                            <svg class="animate-spin h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Loading...
+                        </span>
+                    </button>
+                </div>
+            @endif
+            <div class="pb-5"></div>
            </div>
         </div>
       </div>
@@ -266,7 +291,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentPage = 2;
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const loadMoreText = document.getElementById('load-more-text');
+    const loadMoreSpinner = document.getElementById('load-more-spinner');
+    const adsContainer = document.getElementById('ads-container');
 
+    const sellerId = '{{ $owner->user_id }}';
+    const currentAdId = '{{ $ad->id }}';
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            loadMoreBtn.disabled = true;
+            loadMoreText.classList.add('hidden');
+            loadMoreSpinner.classList.remove('hidden');
+
+            fetch(`/seller/${sellerId}/${currentAdId}/load-more?page=${currentPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    adsContainer.insertAdjacentHTML('beforeend', data.html);
+                    currentPage++;
+
+                    if (!data.hasMore) {
+                        loadMoreBtn.style.display = 'none';
+                    }
+
+                    loadMoreBtn.disabled = false;
+                    loadMoreText.classList.remove('hidden');
+                    loadMoreSpinner.classList.add('hidden');
+                })
+                .catch(error => {
+                    console.error('Error loading more ads:', error);
+                    alert('Failed to load more ads. Please try again.');
+
+                    loadMoreBtn.disabled = false;
+                    loadMoreText.classList.remove('hidden');
+                    loadMoreSpinner.classList.add('hidden');
+                });
+        });
+    }
+});
+</script>
 @include('frontend.layouts.footer')
 
 

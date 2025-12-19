@@ -16,6 +16,7 @@ use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
+use App\Rules\NotForbiddenName;
 use App\Helpers\ContentHelper;
 
 class AccountController extends Controller
@@ -94,6 +95,14 @@ class AccountController extends Controller
             ], 404);
         }
 
+        // ✅ FIX: Check if OTP exists
+        if (!$user->otp || !$user->otp_expires_at) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No OTP found. Please request a new OTP.'
+            ], 400);
+        }
+
         // Rate limiting
         $cacheKey = 'otp_attempts:' . $user->id;
         $attempts = Cache::get($cacheKey, 0);
@@ -105,14 +114,22 @@ class AccountController extends Controller
             ], 429);
         }
 
-        // Verify OTP
-        if ($user->otp != $request->otp || !$user->otp_expires_at || now()->isAfter($user->otp_expires_at)) {
+        // ✅ FIX: Check expiry first, then compare OTP
+        if (now()->isAfter($user->otp_expires_at)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'OTP has expired. Please request a new one.'
+            ], 401);
+        }
+
+        // ✅ FIX: Compare OTP as strings
+        if ($user->otp != $request->otp) {
             Cache::put($cacheKey, $attempts + 1, now()->addHour());
             $remaining = 5 - $attempts - 1;
 
             return response()->json([
                 'status' => false,
-                'message' => "Invalid or expired OTP. {$remaining} attempt(s) remaining."
+                'message' => "Invalid OTP. {$remaining} attempt(s) remaining."
             ], 401);
         }
 
@@ -181,7 +198,7 @@ class AccountController extends Controller
             'acc_type' => 'required',
             'address' => 'required',
             'state' => 'required',
-            'name' => 'required|min:2',
+            'name' => ['required', 'min:5', new NotForbiddenName],
             'phone' => [
                 'required',
                 Rule::unique('users', 'phone'),

@@ -18,6 +18,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
+use App\Rules\NotForbiddenName;
 use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
 use Illuminate\Support\Facades\RateLimiter;
@@ -608,7 +609,7 @@ class AccountController extends Controller
                     'acc_type' => 'required',
                     'address' => 'required',
                     'state' => 'required',
-                    'name' => 'required|min:2',
+                    'name' => ['required', 'min:5', new NotForbiddenName],
                     'phone' => [
                         'required',
                         new NigerianPhoneNumber(),

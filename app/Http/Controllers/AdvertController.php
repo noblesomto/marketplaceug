@@ -702,13 +702,37 @@ class AdvertController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        $hasMore = $ads->hasMorePages(); // Add this line
+
         $title = config('global.site_name') . ' | ' . config('global.site_title');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->count();
 
-        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories', 'count_ads'));
+        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories', 'count_ads', 'hasMore')); // Add hasMore to compact
+    }
+
+    public function loadMoreSellerAds(Request $request, $id, $ad)
+    {
+        // Check if owner exists
+        $owner = User::where('user_id', $id)->first();
+        if (!$owner) {
+            return response()->json(['error' => 'Seller not found'], 404);
+        }
+
+        // Fetch seller's other ads (excluding the current ad)
+        $ads = Advert::with('firstImage', 'owner')
+            ->where('user_id', $id)
+            ->where('id', '!=', $ad)
+            ->activeNotRecentlySold()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return response()->json([
+            'html' => view('frontend.components.advert.advert-list', ['ads' => $ads])->render(),
+            'hasMore' => $ads->hasMorePages()
+        ]);
     }
    
 

@@ -97,6 +97,7 @@ Route::get('/seller/{id}', function() {
 });
 
 Route::get('/seller/{id}/{ad}', [AdvertController::class, 'seller']);
+Route::get('/seller/{id}/{ad}/load-more', [AdvertController::class, 'loadMoreSellerAds'])->name('seller.ads.loadMore');
 Route::any('/report-ad/{id}', [AdvertController::class, 'report_advert'])->middleware('usersession');
 Route::any('/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession');
 
