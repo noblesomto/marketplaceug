@@ -27,6 +27,13 @@ Route::post('/resend-verification', [AccountController::class, 'resendVerificati
 Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'resetPassword']);
 
+// Method 1: Token-based (Recommended for mobile apps)
+Route::post('/auth/social', [AccountController::class, 'socialLogin']);
+
+// Method 2: WebView flow (Alternative)
+Route::get('/auth/{provider}/redirect', [AccountController::class, 'socialRedirect']);
+Route::get('/auth/{provider}/callback', [AccountController::class, 'socialCallback']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AccountController::class, 'user']);
     Route::post('/logout', [AccountController::class, 'logout']);
@@ -154,26 +161,53 @@ Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::
 Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'getModels']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    // User profile routes
-    Route::get('/user/profile', [UserProfile::class, 'getProfile']);
-    Route::get('/user/settings', [UserProfile::class, 'getSettings']);
-    Route::put('/user/profile/address', [UserProfile::class, 'updateAddress']);
-    Route::put('/user/profile/phone', [UserProfile::class, 'updatePhone']);
 
-    // Verification routes
-    Route::get('/user/verification', [UserProfile::class, 'getVerificationStatus']);
-    Route::post('/user/verification', [UserProfile::class, 'submitVerification']);
 
-    // Payment info routes
-    Route::get('/user/payment-info', [UserProfile::class, 'getPaymentInfo']);
-    Route::put('/user/payment-info', [UserProfile::class, 'updatePaymentInfo']);
+/*
+|--------------------------------------------------------------------------
+| User Profile API Routes
+|--------------------------------------------------------------------------
+|
+| These routes are protected by Sanctum authentication middleware.
+| All routes require a valid Bearer token.
+|
+*/
 
-    // Security routes
-    Route::put('/user/password', [UserProfile::class, 'changePassword']);
-    Route::put('/user/notifications', [UserProfile::class, 'updateNotifications']);
-    Route::delete('/user/account', [UserProfile::class, 'disableAccount']);
-    Route::post('/user/logout', [UserProfile::class, 'logout']);
+Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+
+    // Profile endpoints
+    Route::get('/profile', [UserProfile::class, 'getProfile'])->name('api.user.profile');
+    Route::get('/about-account', [UserProfile::class, 'aboutAccount'])->name('api.user.about-account');
+    Route::get('/profile-info', [UserProfile::class, 'getProfileInfo'])->name('api.user.profile-info');
+
+    // User ads
+    Route::get('/ads', [UserProfile::class, 'loadMoreUserAds'])->name('api.user.ads');
+
+    // Profile updates
+    Route::put('/profile/address', [UserProfile::class, 'updateAddress'])->name('api.user.profile.address');
+    Route::post('/profile/address', [UserProfile::class, 'updateAddress'])->name('api.user.profile.address.post'); // For form-data
+    Route::put('/profile/phone', [UserProfile::class, 'updatePhone'])->name('api.user.profile.phone');
+
+    // Verification
+    Route::get('/verification', [UserProfile::class, 'getVerificationStatus'])->name('api.user.verification');
+    Route::post('/verification', [UserProfile::class, 'submitVerification'])->name('api.user.verification.submit');
+
+    // Payment information
+    Route::get('/payment-info', [UserProfile::class, 'getPaymentInfo'])->name('api.user.payment-info');
+    Route::put('/payment-info', [UserProfile::class, 'updatePaymentInfo'])->name('api.user.payment-info.update');
+
+    // Password change
+    Route::put('/password', [UserProfile::class, 'changePassword'])->name('api.user.password');
+
+    // Notification preferences
+    Route::put('/notifications', [UserProfile::class, 'updateNotifications'])->name('api.user.notifications');
+
+    // Settings
+    Route::get('/settings', [UserProfile::class, 'getSettings'])->name('api.user.settings');
+
+    // Account management
+    Route::delete('/account', [UserProfile::class, 'disableAccount'])->name('api.user.account.disable');
+    Route::post('/logout', [UserProfile::class, 'logout'])->name('api.user.logout');
 });
 
 

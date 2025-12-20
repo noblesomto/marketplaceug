@@ -82,7 +82,7 @@ class AdvertController extends Controller
                 ->limit(8)
                 ->get();
 
-            $perPage = 20;
+            $perPage = 24;
             $currentPage = request()->get('page', 1);
 
             // Get IDs to exclude (featured posts)
@@ -223,7 +223,7 @@ class AdvertController extends Controller
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $categories = Category::with('subCategories')->get();
+        $categories = Category::with('subCategories')->where('id', '!=', 18)->get();
         $agent = new Agent();
         if (request()->has('view')) {
             $isMobile = request()->get('view') === 'mobile';
@@ -324,7 +324,7 @@ class AdvertController extends Controller
             ->where('id', '!=', $ad_id);
 
         $data['advertsCount'] = $query->count();
-        $data['adverts'] = $query->limit(6)->get();
+        $data['adverts'] = $query->limit(4)->get();
 
         //Similar Adverts
         $data['similar_ads'] = Advert::with('images')
@@ -336,7 +336,7 @@ class AdvertController extends Controller
             ->where('id', '!=', $ad_id)
             ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad_owner)
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         \DB::table('adverts')
@@ -352,7 +352,8 @@ class AdvertController extends Controller
                 $notification->update(['is_read' => true]);
             }
         }
-
+        $agent = new Agent();
+        $data['isMobile'] = $agent->isMobile();
 
         return view('frontend.advert', $data);
     }

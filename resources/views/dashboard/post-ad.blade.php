@@ -22,12 +22,12 @@
     }
 </style>
 
-<section class="max-w-4xl mx-auto my-8 px-1 sm:px-1 pb-20">
+<section class="max-w-4xl mx-auto my-4 px-1 sm:px-1 pb-20">
 
     <!-- Page Title -->
-    <div class="mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-dark_green">Post an Ad</h1>
-        <p class="text-gray-500 mt-1">Fill in the details below to publish your advertisement.</p>
+    <div class="mb-4">
+        <h1 class="text-xl md:text-2xl font-bold text-dark_green">Create a New Ad</h1>
+        <p class="text-gray-500 mt-1">Fill in the details below to publish your Ad.</p>
     </div>
 
     <!-- Error Alert -->
@@ -56,10 +56,10 @@
 
         <!-- CARD 1: Basic Information -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Basic Information</h2>
+            <div class="bg-gray-50 px-3 py-4 border-b border-gray-200">
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Basic Information</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-6">
+            <div class="p-3 md:p-4 space-y-6">
 
                 <!-- Ad Type -->
                 <div>
@@ -150,9 +150,9 @@
         <!-- Logic Note: ID "divCar" is required for JS to toggle visibility -->
         <div id="divCar" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
             </div>
-            <div class="p-6 md:p-8">
+            <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                     <!-- Mileage -->
@@ -319,9 +319,9 @@
         <!-- Logic Note: ID "divPhone" is required for JS -->
         <div id="divPhone" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Device Details</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Device Details</h2>
             </div>
-            <div class="p-6 md:p-8">
+            <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     <!-- Phone Color -->
@@ -367,9 +367,9 @@
         <!-- CARD 4: Pricing & Salary -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Financials</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Financials</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-6">
+            <div class="p-3 md:p-4 space-y-6">
 
                 <!-- Price Section (Logic controlled by JS via #price ID) -->
                 <div id="price">
@@ -468,9 +468,9 @@
         <!-- CARD 5: Shipment & Buy Direct -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
              <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Logistics & Payment</h2>
+                <h2 class="text-base lg:text-lgfont-semibold text-gray-800">Logistics & Payment</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-8">
+            <div class="p-3 md:p-4 space-y-8">
 
                 <!-- Shipment Section -->
                 <div id="shipment">
@@ -515,9 +515,18 @@
                             <div class="flex items-center h-5">
                                 <input type="radio" name="buy_direct" value="Yes" class="h-4 w-4 text-dark_green border-gray-300 focus:ring-dark_green" required>
                             </div>
+
                             <div class="ml-3">
                                 <span class="block text-sm font-medium text-gray-900">Enable "Buy Direct"</span>
-                                <div class="mt-2 text-xs text-gray-600 space-y-1">
+                                <div class="mt-2 text-xs text-gray-600 space-y-2">
+                                    <div class="flex">
+                                        <span class="mr-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-blue-600">
+                                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                                            </svg>
+                                        </span>
+                                        <span>Selecting this option allows buyers to purchase your item using ‘Buy Direct.’ <br><a class="font-semibold text-dartk_green" href="/payments-refunds">Learn More</a> </span>
+                                    </div>
                                     <p class="flex items-center"><svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Secure payment processing</p>
                                     <p class="flex items-center"><svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Fixed price (no negotiation)</p>
                                 </div>
@@ -541,9 +550,9 @@
         <!-- CARD 6: Description & Images -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
              <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Visuals & Description</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Visuals & Description</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-8">
+            <div class="p-3 md:p-4 space-y-8">
 
                 <!-- Description -->
                 <div data-has-editor>
@@ -564,7 +573,7 @@
 
                     <!-- Dropzone -->
                     <div class="border-2 border-dashed border-gray-300 rounded-xl hover:bg-gray-50 hover:border-dark_green transition-colors relative group">
-                        <label for="imageUpload" class="cursor-pointer flex flex-col items-center justify-center py-12 w-full h-full z-10">
+                        <label for="imageUpload" class="cursor-pointer flex flex-col items-center justify-center py-6 w-full h-full z-10">
                             <div class="p-4 rounded-full bg-blue-50 text-dark_green mb-3 group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
@@ -594,9 +603,9 @@
         <!-- CARD 7: Location & Contact -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
              <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Location & Contact</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Location & Contact</h2>
             </div>
-            <div class="p-6 md:p-8">
+            <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- State -->
                     <div>

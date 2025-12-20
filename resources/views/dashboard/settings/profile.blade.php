@@ -6,7 +6,7 @@
 <section class="w-full md:w-3/6  mx-auto  text-sm ">
 
 
-    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 flex justify-between items-center rounded-lg">
+    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green flex justify-between items-center rounded-lg">
         <span>My Dashboard</span>
         <div class="flex items-center space-x-4">
 
@@ -14,10 +14,10 @@
         </div>
     </div>
 
-    <div class="w-full space-y-2 p-2">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+    <div class="w-full space-y-2 px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <a href="/user/my-ads"
-            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300 ">
             <span class="mr-2">
                 <i class="bi bi-badge-ad "></i>
             </span>
@@ -86,7 +86,7 @@
     @if(isset($hasMore) && $hasMore)
         <div class="mt-3 mb-4 px-2 flex justify-center pb-20">
             <button id="load-more-btn"
-                    class="bg-secondary_dark hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
+                    class="bg-dark_green hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
                 <span id="load-more-text">Show More</span>
                 <span id="load-more-spinner" class="hidden">
                     <svg class="animate-spin h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

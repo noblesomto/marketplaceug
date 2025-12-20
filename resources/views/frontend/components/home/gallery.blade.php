@@ -1,6 +1,6 @@
 <div class="gallery-container">
-  <div class="flex justify-between h-16 px-5 -mb-4">
-    <div class="flex items-center font-bold">
+  <div class="flex justify-between h-16 px-2 -mb-4">
+    <div class="flex items-center font-bold text-xl text-gray-800">
      Discover what’s trending
     </div>
     <div class="flex justify-end">
@@ -31,11 +31,11 @@
       <div class="cardSlider flex transition-transform duration-500">
         <!-- Cards -->
         @foreach ( $gallery as $row )
-          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/4 xl:w-1/4 2xl:w-1/4 p-1">
+          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 p-1">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative h-32 md:h-36 overflow-hidden">
+                <div class="relative aspect-[4/3] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -153,8 +153,8 @@
 
 <!-- Car Container -->
 <div class="gallery-container">
-  <div class="flex justify-between h-16 px-5 -mb-4">
-    <div class="flex items-center font-bold">
+  <div class="flex justify-between h-16 px-2 -mb-4">
+    <div class="flex items-center font-bold text-xl text-gray-800">
       Vehicles
     </div>
     <div class="flex justify-end">
@@ -184,11 +184,11 @@
       <div class="cardSlider flex transition-transform duration-500">
         <!-- Cards -->
         @foreach ( $cars as $row )
-          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/4 xl:w-1/4 2xl:w-1/4 p-1">
+          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 p-1">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative h-32 md:h-36 overflow-hidden">
+                <div class="relative aspect-[4/3] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -308,8 +308,8 @@
 
 <!-- Phones Container -->
 <div class="gallery-container">
-  <div class="flex justify-between h-16 px-5 -mb-4">
-    <div class="flex items-center font-bold">
+  <div class="flex justify-between h-16 px-2 -mb-4">
+    <div class="flex items-center font-bold text-xl text-gray-800">
       Phones &amp; Tablets
     </div>
     <div class="flex justify-end">
@@ -339,11 +339,11 @@
       <div class="cardSlider flex transition-transform duration-500">
         <!-- Cards -->
         @foreach ( $phones as $row )
-          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/4 xl:w-1/4 2xl:w-1/4 p-1">
+          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 p-1">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative h-32 md:h-36 overflow-hidden">
+                <div class="relative aspect-[4/3] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -462,8 +462,8 @@
 
 <!-- Fashion Container -->
 <div class="gallery-container">
-  <div class="flex justify-between h-16 px-5 -mb-4">
-    <div class="flex items-center font-bold">
+  <div class="flex justify-between h-16 px-2 -mb-4">
+    <div class="flex items-center font-bold text-xl text-gray-800">
       Fashion &amp; Beauty
     </div>
     <div class="flex justify-end">
@@ -493,11 +493,11 @@
       <div class="cardSlider flex transition-transform duration-500">
         <!-- Cards -->
         @foreach ( $fashion as $row )
-          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/4 xl:w-1/4 2xl:w-1/4 p-1">
+          <div class="flex-none w-2/4 md:w-2/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 p-1">
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative h-32 md:h-36 overflow-hidden">
+                <div class="relative aspect-[4/3] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp

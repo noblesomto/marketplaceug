@@ -64,9 +64,9 @@
         <!-- CARD 1: Basic Information -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Basic Information</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Basic Information</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-6">
+            <div class="p-3 md:p-4 space-y-6">
 
                 <!-- Ad Type -->
                 <div>
@@ -174,11 +174,11 @@
         <!-- CARD 2: Vehicle Specifics (Conditional) -->
         <div id="divCar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
             </div>
 
             @if($advert->car)
-            <div class="p-6 md:p-8">
+            <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Mileage -->
                     <div>
@@ -333,10 +333,10 @@
         <!-- CARD 3: Phone Details (Conditional) -->
         <div id="divPhone" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ $advert->sub_category == 6 ? '' : 'hidden' }}">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Device Details</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Device Details</h2>
             </div>
              @if($advert->phone)
-            <div class="p-6 md:p-8">
+            <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Phone Color -->
                     <div>
@@ -378,9 +378,9 @@
         <!-- CARD 4: Financials -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
              <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Financials</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Financials</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-6">
+            <div class="p-3 md:p-4 space-y-6">
                 <!-- Price -->
                 <div id="price">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Price</label>
@@ -442,9 +442,9 @@
         <!-- CARD 5: Logistics & Payment -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Logistics & Payment</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Logistics & Payment</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-8">
+            <div class="p-3 md:p-4 space-y-8">
                 <!-- Shipment -->
                 <div id="shipment">
                      <label class="block text-sm font-semibold text-gray-700 mb-3">Delivery Options</label>
@@ -507,9 +507,9 @@
         <!-- CARD 6: Visuals & Description -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Visuals & Description</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Visuals & Description</h2>
             </div>
-            <div class="p-6 md:p-8 space-y-8">
+            <div class="p-3 md:p-4 space-y-8">
                 <!-- Description -->
                 <div data-has-editor>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Detailed Description *</label>
@@ -562,9 +562,9 @@
         <!-- CARD 7: Location & Contact -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
              <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Location & Contact</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Location & Contact</h2>
             </div>
-             <div class="p-6 md:p-8">
+             <div class="p-3 md:p-4">
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <!-- State -->
                      <div>

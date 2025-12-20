@@ -1,16 +1,16 @@
-<div class="flex justify-between h-16 px-5 -mb-4 ">
-	<div class="flex items-center font-bold">
+<div class="flex justify-between h-16  -mb-2 px-2">
+	<div class="flex items-center font-bold text-xl">
 		Recent Listings
 	</div>
 	<div class="flex justify-end">
-		<div class="text-dark_green text-sm font-semibold mr-3 flex items-center"><a href="/user/post-ad">Place Ad Here</a> </div>
+		<div class="text-dark_green text-xl  font-semibold mr-3 flex items-center"><a href="/user/post-ad">Place Ad Here</a> </div>
 	
 	</div>
 </div>
 
 <div class="container mx-auto">
     <div class="container mx-auto">
-        <div id="listings-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+        <div id="listings-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
             @foreach ($listings as $row)
                 @include('frontend.components.advert.advert-card', ['row' => $row])
             @endforeach
@@ -19,7 +19,7 @@
         <!-- Load More Button for Desktop -->
         <div class="flex justify-center m-3">
             <button id="load-more-btn-desktop"
-                    class="bg-dark_green hover:bg-green-700 text-white font-semibold py-3 px-10 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 w-full">
+                    class="bg-dark_green hover:bg-green-700 text-white font-semibold py-3 px-20 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
                 Show more
             </button>
             <div id="loading-desktop" class="hidden flex items-center">

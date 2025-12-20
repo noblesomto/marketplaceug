@@ -118,10 +118,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="grid grid-cols-8 gap-3">
-      <div class="col-span-2">
-        @include('frontend.components.home.categories')
-      </div>
-      <div class="col-span-6">
+
+      <div class="col-span-8">
+        <div>
+            @include('frontend.components.home.categories')
+        </div>
         <div class="bg-white p-2">
           @include('frontend.components.home.gallery')
         </div>

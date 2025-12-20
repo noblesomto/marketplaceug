@@ -9,10 +9,12 @@ use App\Models\Bank;
 use App\Models\UserVerification;
 use App\Helpers\FileUploadHelper;
 use App\Mail\VerificationRequestMail;
+use App\Rules\NigerianPhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
 class UserProfile extends Controller
@@ -52,6 +54,103 @@ class UserProfile extends Controller
                 'user' => $user,
                 'ads_count' => $adsCount,
                 'recent_ads' => $recentAds
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/about-account",
+     *     summary="Get user about account information",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User about account data",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
+     *                 @OA\Property(property="ads_count", type="integer"),
+     *                 @OA\Property(property="recent_ads", ref="#/components/schemas/AdvertList")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function aboutAccount()
+    {
+        $user = auth()->user();
+        $adsCount = Advert::where('user_id', $user->user_id)->count();
+        $recentAds = Advert::with('firstImage')
+            ->where('user_id', $user->user_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'ads_count' => $adsCount,
+                'recent_ads' => $recentAds
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/ads",
+     *     summary="Load more user ads (paginated)",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User ads list",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
+     *                 @OA\Property(property="has_more", type="boolean")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
+    public function loadMoreUserAds()
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $ads = Advert::with('firstImage')
+            ->orderBy('created_at', 'desc')
+            ->where('user_id', $user->user_id)
+            ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'ads' => $ads->items(),
+                'has_more' => $ads->hasMorePages(),
+                'current_page' => $ads->currentPage(),
+                'total' => $ads->total(),
+                'per_page' => $ads->perPage()
             ]
         ]);
     }
@@ -98,7 +197,7 @@ class UserProfile extends Controller
             'address' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12048'
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:12048'
         ]);
 
         if ($validator->fails()) {
@@ -109,20 +208,33 @@ class UserProfile extends Controller
         }
 
         $user = auth()->user();
-        $updateData = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state
-        ];
+        $updateData = $request->only(['name', 'address', 'city', 'state']);
 
-        if ($request->hasFile('profile_image')) {
-            $imageName = FileUploadHelper::upload(
-                $request->file('profile_image'),
-                'profile',
-                $user->profile_picture
-            );
-            $updateData['profile_picture'] = $imageName;
+        try {
+            // Handle profile image upload using Media Library
+            if ($request->hasFile('profile_image')) {
+                $fileName = now()->format('YmdHis') . '_profile.' . $request->file('profile_image')->getClientOriginalExtension();
+
+                $user->addMediaFromRequest('profile_image')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('profile_image');
+
+                $media = $user->getFirstMedia('profile_image');
+
+                // After conversions finish, delete original
+                if ($media && $media->hasGeneratedConversion('optimized') && $media->hasGeneratedConversion('thumbnail')) {
+                    $originalPath = $media->getPath();
+                    if (file_exists($originalPath)) {
+                        unlink($originalPath);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Profile image upload failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Profile image upload failed. Please try again.'
+            ], 500);
         }
 
         $user->update($updateData);
@@ -164,8 +276,14 @@ class UserProfile extends Controller
      */
     public function updatePhone(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:20'
+            'phone' => [
+                'required',
+                new NigerianPhoneNumber(),
+                Rule::unique('users', 'phone')->ignore($user->user_id, 'user_id'),
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -175,7 +293,6 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
         $user->update(['phone' => $request->phone]);
 
         return response()->json([
@@ -255,8 +372,8 @@ class UserProfile extends Controller
         $validator = Validator::make($request->all(), [
             'document_number' => 'required|string|max:255',
             'document_type' => 'nullable|string|max:255',
-            'document_file' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
-            'proof_address' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:12048'
+            'document_file' => 'required|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
+            'proof_address' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048'
         ]);
 
         if ($validator->fails()) {
@@ -267,57 +384,59 @@ class UserProfile extends Controller
         }
 
         $user = auth()->user();
-        $existingVerification = UserVerification::where('user_id', $user->user_id)->first();
+
+        $verification = UserVerification::updateOrCreate(
+            ['user_id' => $user->user_id],
+            [
+                'document_number' => $request->document_number,
+                'document_type' => $request->document_type,
+            ]
+        );
 
         try {
-            // Upload document
-            $filename = FileUploadHelper::upload(
-                $request->file('document_file'),
-                'verification',
-                $existingVerification?->document_file
-            );
+            // Handle document file upload using Media Library
+            if ($request->hasFile('document_file')) {
+                $fileName = now()->format('YmdHis') . '_document.' . $request->file('document_file')->getClientOriginalExtension();
 
-            // Upload proof address if provided
-            $proof_address = $existingVerification?->proof_address;
-            if ($request->hasFile('proof_address')) {
-                $proof_address = FileUploadHelper::upload(
-                    $request->file('proof_address'),
-                    'verification',
-                    $existingVerification?->proof_address
-                );
+                $verification->addMediaFromRequest('document_file')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_documents');
             }
 
-            UserVerification::updateOrCreate(
-                ['user_id' => $user->user_id],
-                [
-                    'document_number' => $request->document_number,
-                    'document_type' => $request->document_type,
-                    'document_file' => $filename,
-                    'proof_address' => $proof_address,
-                    'status' => 'pending'
-                ]
-            );
+            // Handle proof of address upload (optional)
+            if ($request->hasFile('proof_address')) {
+                $fileName = now()->format('YmdHis') . '_address.' . $request->file('proof_address')->getClientOriginalExtension();
 
-            // Send email notification
-            Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
-                'user_id' => $user->user_id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'document_number' => $request->document_number,
-            ]));
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Verification information submitted successfully'
-            ]);
+                $verification->addMediaFromRequest('proof_address')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_address');
+            }
 
         } catch (\Exception $e) {
+            \Log::error('Verification file upload failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to submit verification documents',
-                'error' => $e->getMessage()
+                'message' => 'File upload failed. Please try again.'
             ], 500);
         }
+
+        // Send email notification
+        try {
+            \Mail::to(config('global.site_email'))
+                ->queue(new VerificationRequestMail([
+                    'user_id' => $user->user_id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'document_number' => $request->document_number,
+                ]));
+        } catch (\Exception $e) {
+            \Log::error('Verification email failed: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Verification information submitted successfully'
+        ]);
     }
 
     /**
@@ -549,7 +668,6 @@ class UserProfile extends Controller
         $user = auth()->user();
 
         $user->update([
-            'acc_status' => 0,
             'disable_account' => "yes",
             'disable_account_date' => Carbon::now()
         ]);
@@ -610,6 +728,39 @@ class UserProfile extends Controller
      * )
      */
     public function getSettings()
+    {
+        $user = auth()->user();
+        $adsCount = Advert::where('user_id', $user->user_id)->count();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'ads_count' => $adsCount
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/profile-info",
+     *     summary="Get user profile information",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User profile info",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
+     *                 @OA\Property(property="ads_count", type="integer")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function getProfileInfo()
     {
         $user = auth()->user();
         $adsCount = Advert::where('user_id', $user->user_id)->count();

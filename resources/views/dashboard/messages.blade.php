@@ -85,7 +85,7 @@
         </div>
         
         <!-- Sidebar -->
-        <div class="w-full lg:w-1/3">
+        <div class="w-full lg:w-1/3 hidden xl:block">
             @include('dashboard.components.user-sidebar')
         </div>
     </div>

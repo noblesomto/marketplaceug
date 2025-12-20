@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Mail\RegisterMail;
 use App\Mail\OTPMail;
@@ -96,7 +95,7 @@ class AccountController extends Controller
             ], 404);
         }
 
-        // Check if OTP exists
+        // ✅ FIX: Check if OTP exists
         if (!$user->otp || !$user->otp_expires_at) {
             return response()->json([
                 'status' => false,
@@ -115,7 +114,7 @@ class AccountController extends Controller
             ], 429);
         }
 
-        // Check expiry first
+        // ✅ FIX: Check expiry first, then compare OTP
         if (now()->isAfter($user->otp_expires_at)) {
             return response()->json([
                 'status' => false,
@@ -123,7 +122,7 @@ class AccountController extends Controller
             ], 401);
         }
 
-        // Compare OTP
+        // ✅ FIX: Compare OTP as strings
         if ($user->otp != $request->otp) {
             Cache::put($cacheKey, $attempts + 1, now()->addHour());
             $remaining = 5 - $attempts - 1;
@@ -441,169 +440,16 @@ class AccountController extends Controller
         ]);
     }
 
-    // ==================== SOCIAL LOGIN METHODS ====================
-
-    /**
-     * Social Login - Mobile sends provider token
-     * POST /api/auth/social
-     *
-     * Mobile app gets token from provider (Google/Facebook SDK)
-     * then sends it to this endpoint for verification
-     */
-    public function socialLogin(Request $request)
-    {
-        $request->validate([
-            'provider' => 'required|in:google,facebook',
-            'access_token' => 'required|string',
-            'device_name' => 'nullable|string',
-        ]);
-
-        try {
-            // Verify token with provider and get user info
-            $socialUser = $this->verifyProviderToken(
-                $request->provider,
-                $request->access_token
-            );
-
-            if (!$socialUser) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Invalid social login token.'
-                ], 401);
-            }
-
-            // Find or create user
-            $user = $this->findOrCreateSocialUser($socialUser, $request->provider);
-
-            // Update login activity
-            $user->update([
-                'last_login_ip' => $request->ip(),
-                'last_login_at' => now(),
-            ]);
-
-            // Create API token (no OTP needed for social login)
-            $deviceName = $request->device_name ?? 'mobile-device';
-            $token = $user->createToken($deviceName, ['*'], now()->addDays(90))->plainTextToken;
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Social login successful.',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Social login failed', [
-                'provider' => $request->provider,
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Social login failed. Please try again.'
-            ], 500);
-        }
-    }
-
-    /**
-     * Get Social Login URL - For WebView flow
-     * GET /api/auth/{provider}/redirect
-     */
-    public function socialRedirect($provider)
-    {
-        if (!in_array($provider, ['google', 'facebook'])) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid provider.'
-            ], 400);
-        }
-
-        try {
-            $redirectUrl = \Laravel\Socialite\Facades\Socialite::driver($provider)
-                ->stateless()
-                ->redirect()
-                ->getTargetUrl();
-
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'redirect_url' => $redirectUrl
-                ]
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to generate redirect URL.'
-            ], 500);
-        }
-    }
-
-    /**
-     * Social Login Callback - For WebView flow
-     * GET /api/auth/{provider}/callback
-     */
-    public function socialCallback($provider)
-    {
-        if (!in_array($provider, ['google', 'facebook'])) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid provider.'
-            ], 400);
-        }
-
-        try {
-            $socialUser = \Laravel\Socialite\Facades\Socialite::driver($provider)->stateless()->user();
-
-            // Find or create user
-            $user = $this->findOrCreateSocialUser($socialUser, $provider);
-
-            // Update login activity
-            $user->update([
-                'last_login_ip' => request()->ip(),
-                'last_login_at' => now(),
-            ]);
-
-            // Create token
-            $token = $user->createToken('mobile-device', ['*'], now()->addDays(90))->plainTextToken;
-
-            // Return JSON with token (mobile app will extract this)
-            return response()->json([
-                'status' => true,
-                'message' => 'Social login successful.',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Social callback failed', [
-                'provider' => $provider,
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Social login failed.'
-            ], 500);
-        }
-    }
-
     // ==================== HELPER METHODS ====================
 
     protected function sendOTP($user, Request $request)
     {
         $otp = rand(111111, 999999);
 
-        // Use direct DB update to ensure it saves
-        DB::table('users')
-            ->where('id', $user->id)
-            ->update([
-                'otp' => $otp,
-                'otp_expires_at' => now()->addMinutes(10),
-            ]);
+        $user->update([
+            'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+        ]);
 
         Cache::forget('otp_attempts:' . $user->id);
 
@@ -685,106 +531,5 @@ class AccountController extends Controller
     protected function generateDeviceHash(Request $request)
     {
         return sha1($request->userAgent());
-    }
-
-    // ==================== SOCIAL LOGIN HELPER METHODS ====================
-
-    /**
-     * Verify provider token and get user info
-     */
-    protected function verifyProviderToken($provider, $token)
-    {
-        try {
-            if ($provider === 'google') {
-                return $this->verifyGoogleToken($token);
-            } elseif ($provider === 'facebook') {
-                return $this->verifyFacebookToken($token);
-            }
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Token verification failed', [
-                'provider' => $provider,
-                'error' => $e->getMessage()
-            ]);
-            return null;
-        }
-    }
-
-    /**
-     * Verify Google token
-     */
-    protected function verifyGoogleToken($token)
-    {
-        $response = Http::get('https://www.googleapis.com/oauth2/v3/userinfo', [
-            'access_token' => $token
-        ]);
-
-        if (!$response->successful()) {
-            return null;
-        }
-
-        $data = $response->json();
-
-        return (object) [
-            'id' => $data['sub'] ?? null,
-            'email' => $data['email'] ?? null,
-            'name' => $data['name'] ?? null,
-            'avatar' => $data['picture'] ?? null,
-        ];
-    }
-
-    /**
-     * Verify Facebook token
-     */
-    protected function verifyFacebookToken($token)
-    {
-        $response = Http::get('https://graph.facebook.com/me', [
-            'fields' => 'id,name,email,picture',
-            'access_token' => $token
-        ]);
-
-        if (!$response->successful()) {
-            return null;
-        }
-
-        $data = $response->json();
-
-        return (object) [
-            'id' => $data['id'] ?? null,
-            'email' => $data['email'] ?? null,
-            'name' => $data['name'] ?? null,
-            'avatar' => $data['picture']['data']['url'] ?? null,
-        ];
-    }
-
-    /**
-     * Find or create user from social login
-     */
-    protected function findOrCreateSocialUser($socialUser, $provider)
-    {
-        // Try to find user by email
-        $user = User::where('email', $socialUser->email)->first();
-
-        if (!$user) {
-            // Create new user
-            $user = User::create([
-                'name' => $socialUser->name ?? 'User',
-                'email' => $socialUser->email,
-                $provider . '_id' => $socialUser->id,
-                'acc_status' => 1, // Auto-verified for social login
-                'acc_type' => 'Private',
-                'password' => Hash::make(Str::random(16)), // Random password
-                'avatar' => $socialUser->avatar ?? null,
-            ]);
-        } else {
-            // Update provider ID if missing
-            if (!$user->{$provider . '_id'}) {
-                $user->update([
-                    $provider . '_id' => $socialUser->id,
-                ]);
-            }
-        }
-
-        return $user;
     }
 }

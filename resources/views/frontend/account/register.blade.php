@@ -3,235 +3,208 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<section class="w-full md:w-4/6 mx-auto bg-white pb-20">
-    <div class="border-b-2 border-b-gray-400 h-20 flex justify-center items-center">
-        <h2 class="font-bold text-base lg:text-lg">Register in 30 seconds</h2>
-    </div>
-    
-    <div class="w-full md:w-[35%] mx-auto px-4">
-        <div class="p-2">
-            @include('frontend.components.flash-message')
+<section class="min-h-screen bg-gray-50 py-10 px-1 sm:px-6 lg:px-8 font-sans">
+
+    <!-- Main Card Container -->
+    <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-white border-b border-gray-100 px-2 py-2 text-center">
+            <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Register in less than a minute</h2>
+            <p class="mt-2 text-sm text-gray-500">Create your account to start buying and selling.</p>
         </div>
-        
-        <form method="POST" action="/register" class="mt-4">
-            @csrf
-            
-            <div class="flex justify-center w-full">
-                <h2 class="font-bold text-sm lg:text-base">How would you like to use Marketplace Naija</h2>
-            </div>
 
-            <div class="flex space-x-4 my-3">
-                <label class="flex items-center border border-gray-400 py-2 px-4 rounded-lg w-full">
-                    <input type="radio" name="acc_type" value="Private" class="form-radio text-dark_green" id="showDivRadio" onclick="showDiv('Profile Name')" required>
-                    <span class="ml-2 font-semibold">Private</span>
-                </label>
+        <div class="px-2 lg:px-8 py-4">
+            <!-- Flash Message -->
+            @include('frontend.components.flash-message')
 
-                <label class="flex items-center border border-gray-400 py-2 px-4 rounded-lg w-full">
-                    <input type="radio" name="acc_type" value="Commercial" class="form-radio text-dark_green" onclick="showDiv('Company Name')">
-                    <span class="ml-2 font-semibold">Commercial</span>
-                </label>
-            </div>
+            <!-- Added ID 'register-form' for JS targeting -->
+            <form id="register-form" method="POST" action="/register" class="space-y-2">
+                @csrf
 
-            <span class="mt-4">
-                <a class="font-bold text-sm text-dark_green cursor-pointer" id="showModalRadio" onclick="showModal()">
-                    When do I act commercially?
-                </a>
-            </span>
+                <!-- Account Type Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3 text-center">
+                        How would you like to use Marketplace Naija?
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Private Option -->
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="acc_type" value="Private" class="peer sr-only" id="showDivRadio" onclick="showDiv('Profile Name')" required>
+                            <div class="p-2 rounded-xl border-2 border-gray-200 hover:border-dark_green/50 peer-checked:border-dark_green peer-checked:bg-green-50 transition-all duration-200 flex  items-center justify-center text-center space-x-2">
+                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <span class="block text-base font-bold text-gray-900 peer-checked:text-dark_green">Private</span>
+                            </div>
+                        </label>
 
-            <!-- Name Field (Shown for both Private and Commercial Users) -->
-            <div id="myDiv" class="hidden mt-4">
-                <div class="mb-4">
+                        <!-- Commercial Option -->
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="acc_type" value="Commercial" class="peer sr-only" onclick="showDiv('Company Name')">
+                            <div class="p-2 rounded-xl border-2 border-gray-200 hover:border-dark_green/50 peer-checked:border-dark_green peer-checked:bg-green-50 transition-all duration-200 flex items-center justify-center text-center space-x-2">
+                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                <span class="block text-base font-bold text-gray-900 peer-checked:text-dark_green">Commercial</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="text-xs font-medium text-dark_green hover:text-green-700 underline transition-colors" onclick="showModal()">
+                            When do I act commercially?
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Name Field -->
+                <div id="myDiv" class="hidden transition-all duration-300 ease-in-out">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}"
+                           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-dark_green focus:border-transparent outline-none transition-all"
+                           placeholder="Profile Name">
                     @if ($errors->has('name'))
-                        <span class="text-red-700 py-1 text-sm">{{ $errors->first('name') }}</span>
+                        <p class="mt-1 text-xs text-red-600">{{ $errors->first('name') }}</p>
                     @endif
-                    <input type="text" id="name" name="name" placeholder="Profile Name" value="{{ old('name') }}" 
-                           class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
-            </div>
 
-                <div class="mb-4">
+                <!-- Phone Field -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+                           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-dark_green focus:border-transparent outline-none transition-all"
+                           placeholder="080..." inputmode="numeric">
                     @if ($errors->has('phone'))
-                        <span class="text-red-700 py-1 text-sm">{{ $errors->first('phone') }}</span>
+                        <p class="mt-1 text-xs text-red-600">{{ $errors->first('phone') }}</p>
                     @endif
-                    <input type="text" id="phone" name="phone" placeholder="Phone Number" value="{{ old('phone') }}" 
-                           class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
-            
 
-            
 
-            <div class="mb-4">
-                @if ($errors->has('address'))
-                    <span class="text-red-700 py-1 text-sm">{{ $errors->first('address') }}</span>
-                @endif
-                <input type="text" id="name" name="address" placeholder="Street Address" value="{{ old('address') }}"  
-                       class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-            </div>
 
-            <div class="mb-4">
-                @if ($errors->has('city'))
-                    <span class="text-red-700 py-1 text-sm">{{ $errors->first('city') }}</span>
-                @endif
-                <input type="text" id="name" name="city" placeholder="City" value="{{ old('city') }}"  
-                       class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-            </div>
+                <hr class="border-gray-100 my-6">
 
-             <div class="mb-4">
-                @if ($errors->has('state'))
-                    <span class="text-red-700 py-1 text-sm">{{ $errors->first('state') }}</span>
-                @endif
-                <select name="state" id="state" class="w-full bg-body-100 px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <option value="" selected="selected">- Select State -</option>
-                        <option value="Abia">Abia</option>
-                        <option value="Adamawa">Adamawa</option>
-                        <option value="AkwaIbom">AkwaIbom</option>
-                        <option value="Anambra">Anambra</option>
-                        <option value="Bauchi">Bauchi</option>
-                        <option value="Bayelsa">Bayelsa</option>
-                        <option value="Benue">Benue</option>
-                        <option value="Borno">Borno</option>
-                        <option value="Cross River">Cross River</option>
-                        <option value="Delta">Delta</option>
-                        <option value="Ebonyi">Ebonyi</option>
-                        <option value="Edo">Edo</option>
-                        <option value="Ekiti">Ekiti</option>
-                        <option value="Enugu">Enugu</option>
-                        <option value="FCT">FCT</option>
-                        <option value="Gombe">Gombe</option>
-                        <option value="Imo">Imo</option>
-                        <option value="Jigawa">Jigawa</option>
-                        <option value="Kaduna">Kaduna</option>
-                        <option value="Kano">Kano</option>
-                        <option value="Katsina">Katsina</option>
-                        <option value="Kebbi">Kebbi</option>
-                        <option value="Kogi">Kogi</option>
-                        <option value="Kwara">Kwara</option>
-                        <option value="Lagos">Lagos</option>
-                        <option value="Nasarawa">Nasarawa</option>
-                        <option value="Niger">Niger</option>
-                        <option value="Ogun">Ogun</option>
-                        <option value="Ondo">Ondo</option>
-                        <option value="Osun">Osun</option>
-                        <option value="Oyo">Oyo</option>
-                        <option value="Plateau">Plateau</option>
-                        <option value="Rivers">Rivers</option>
-                        <option value="Sokoto">Sokoto</option>
-                        <option value="Taraba">Taraba</option>
-                        <option value="Yobe">Yobe</option>
-                        <option value="Zamfara">Zamafara</option>
-                    </select>
-            </div>
+                <!-- Login Details -->
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Login Details</h3>
 
-            <div class="mt-6">
-                <h2 class="font-bold text-base">Your login details</h2>
-            </div>
-            
-            <div class="mb-4 mt-3">
-                @if ($errors->has('email'))
-                    <span class="text-red-900 text-sm">{{ $errors->first('email') }}</span>
-                @endif
-                <input type="email" id="email" name="email" placeholder="Enter your email" 
-                       class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                       value="{{ old('email') }}" required>
-            </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-dark_green focus:border-transparent outline-none transition-all"
+                                   placeholder="you@example.com" required>
+                            @if ($errors->has('email'))
+                                <p class="mt-1 text-xs text-red-600">{{ $errors->first('email') }}</p>
+                            @endif
+                        </div>
 
-            <!-- Password Field -->
-            <div class="mb-4 relative">
-                @if ($errors->has('password'))
-                    <span class="text-red-900 text-sm">{{ $errors->first('password') }}</span>
-                @endif
-                <input type="password" id="password" name="password" placeholder="Enter your password" 
-                       class="w-full px-3 py-2 text-base border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                       required>
-                
-                <!-- Show/Hide Button -->
-                <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500" aria-label="Toggle password visibility">
-                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 3C5.4 3 1.73 6.11.4 10c1.33 3.89 5 7 9.6 7s8.27-3.11 9.6-7C18.27 6.11 14.6 3 10 3zM10 15a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z" />
-                    </svg>
-                </button>
-            </div>
+                        <div class="relative">
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <div class="relative">
+                                <input type="password" id="password" name="password"
+                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-dark_green focus:border-transparent outline-none transition-all pr-12"
+                                       placeholder="••••••••" required>
+                                <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 3C5.4 3 1.73 6.11.4 10c1.33 3.89 5 7 9.6 7s8.27-3.11 9.6-7C18.27 6.11 14.6 3 10 3zM10 15a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            @if ($errors->has('password'))
+                                <p class="mt-1 text-xs text-red-600">{{ $errors->first('password') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
-            <div class="my-4">
-                <label class="text-sm font-semibold">ReCaptcha *</label>
-                @if ($errors->has('g-recaptcha-response'))
-                    <span class="text-danger text-sm">{{ $errors->first('g-recaptcha-response') }}</span>
-                @endif
-                <div class="g-recaptcha mt-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>   
-            </div>
-
-            <div class="my-4">
+                <!-- Terms -->
                 <div class="flex items-start">
-                    <input id="terms-checkbox" type="checkbox" class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" required>
-                    <label for="terms-checkbox" class="ml-2 text-sm text-gray-900">
+                    <input id="terms-checkbox" type="checkbox" class="h-4 w-4 text-dark_green border-gray-300 rounded focus:ring-dark_green mt-1" required>
+                    <label for="terms-checkbox" class="ml-2 text-sm text-gray-600 leading-snug">
                         Yes, I’d like to receive email updates. You can unsubscribe at any time.
                     </label>
                 </div>
-            </div>
 
-            <div class="mt-6">
-                <button type="submit" class="w-full bg-secondary_dark hover:bg-dark_green text-sm text-white font-black py-3 px-2 rounded-lg flex justify-center items-center transition-colors">
+                <!-- Recaptcha Error Display -->
+                @if ($errors->has('g-recaptcha-response'))
+                    <div class="rounded-md bg-red-50 p-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">Security Check Failed. Please try again.</h3>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Submit Button with Invisible Recaptcha Binding -->
+                <button class="g-recaptcha w-full bg-secondary_dark hover:bg-dark_green text-white font-bold py-4 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"
+                        data-callback='onSubmit'
+                        data-action='submit'>
                     Register for Free
                 </button>
-            </div>
 
-            <div class="mt-4 mb-6 text-sm text-gray-700">
-                <a class="text-dark_green hover:underline" href="">Our terms of use</a> apply. Information on how we process your data can be found in our <a class="text-dark_green hover:underline" href="">privacy policy</a>.
-            </div>
-        </form>
+                <!-- Legal Text (Updated for Hidden Badge Compliance) -->
+                <p class="text-xs text-center text-gray-500 mt-4 leading-relaxed">
+                    By registering, you agree to our <a class="text-dark_green font-semibold hover:underline" href="/our-terms">Terms of Use</a>.
+                    This site is protected by reCAPTCHA and the Google
+                    <a href="https://policies.google.com/privacy" class="text-dark_green hover:underline">Privacy Policy</a> and
+                    <a href="https://policies.google.com/terms" class="text-dark_green hover:underline">Terms of Service</a> apply.
+                </p>
+            </form>
+        </div>
     </div>
 </section>
 
-<!-- Commercial Use Modal -->
-<div id="myModal" class="fixed inset-0 hidden bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between items-center pb-4 border-b border-gray-200">
-            <h4 class="font-semibold text-lg">Information on commercial use</h4>
-            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-        
-        <div class="mt-4">
-            <p>In Marketplace Naija, we separate private from business: private and commercial users must meet different requirements.</p>
-        </div>
-
-        <div class="mt-6">
-            <!-- Accordion Items -->
-            <div class="accordion-item border-b border-gray-200">
-                <button class="w-full px-0 py-3 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion('accordion1')">
-                    <span class="font-semibold">When am I a commercial user?</span>
-                    <svg id="icon1" class="h-5 w-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <div id="accordion1" class="max-h-0 overflow-hidden transition-all duration-300">
-                    <div class="pb-4">
-                        <p>You are trading commercially on Marketplace Naija if you:</p>
-                        <ul class="list-disc pl-5 mt-2 space-y-1">
-                            <li>Buy or create items to sell</li>
-                            <li>Offer services</li>
-                            <li>Regularly offer large quantities of items</li>
-                            <li>Sell similar goods over a longer period of time</li>
-                            <li>Buy or sell for your company</li>
-                        </ul>
-                    </div>
+<!-- Commercial Use Modal (Same as before) -->
+<div id="myModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-100">
+                    <h3 class="text-lg font-bold leading-6 text-gray-900" id="modal-title">Information on commercial use</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-200">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
-            </div>
-
-            <div class="accordion-item border-b border-gray-200">
-                <button class="w-full px-0 py-3 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion('accordion2')">
-                    <span class="font-semibold">Does this cost me anything?</span>
-                    <svg id="icon2" class="h-5 w-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <div id="accordion2" class="max-h-0 overflow-hidden transition-all duration-300">
-                    <div class="pb-4">
-                        <p class="mt-2">Posting Ad on Marketplace Naija is basically free. Both commercial and private users can place ads free of charge.</p>
-
+                <div class="px-4 py-5 sm:p-6">
+                    <p class="text-sm text-gray-600 mb-6">In Marketplace Naija, we separate private from business: private and commercial users must meet different requirements.</p>
+                    <div class="space-y-2">
+                        <div class="border rounded-lg overflow-hidden">
+                            <button class="w-full px-4 py-3 bg-white hover:bg-gray-50 text-left flex justify-between items-center transition-colors" onclick="toggleAccordion('accordion1')">
+                                <span class="font-semibold text-gray-800 text-sm">When am I a commercial user?</span>
+                                <svg id="icon1" class="h-5 w-5 text-gray-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="accordion1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50">
+                                <div class="px-4 py-3 text-sm text-gray-600">
+                                    <p class="mb-2">You are trading commercially on Marketplace Naija if you:</p>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Buy or create items to sell</li>
+                                        <li>Offer services</li>
+                                        <li>Regularly offer large quantities of items</li>
+                                        <li>Sell similar goods over a longer period of time</li>
+                                        <li>Buy or sell for your company</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded-lg overflow-hidden">
+                            <button class="w-full px-4 py-3 bg-white hover:bg-gray-50 text-left flex justify-between items-center transition-colors" onclick="toggleAccordion('accordion2')">
+                                <span class="font-semibold text-gray-800 text-sm">Does this cost me anything?</span>
+                                <svg id="icon2" class="h-5 w-5 text-gray-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="accordion2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50">
+                                <div class="px-4 py-3 text-sm text-gray-600">
+                                    <p>Posting Ad on Marketplace Naija is basically free. Both commercial and private users can place ads free of charge.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,61 +212,34 @@
     </div>
 </div>
 
-<style>
-    /* Prevent zooming on input fields in mobile */
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        font-size: 16px !important;
-        min-height: 44px; /* Better touch target */
-    }
-    
-    /* Remove number input spinners */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    
-    /* Better accordion transitions */
-    .accordion-item {
-        transition: all 0.3s ease;
-    }
-    
-    /* Rotate accordion icons when expanded */
-    .transform.rotate-180 {
-        transform: rotate(180deg);
-    }
-</style>
+<div class="pb-10"></div>
 
 <script>
-  
     function showDiv(placeholderText) {
         document.getElementById('myDiv').classList.remove('hidden');
         document.getElementById('name').placeholder = placeholderText;
     }
-    
+
     function hideDiv() {
         document.getElementById('myDiv').classList.add('hidden');
     }
 
-    
     // Modal functions
     function showModal() {
         document.getElementById('myModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
-    
+
     function closeModal() {
         document.getElementById('myModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
-    
+
     // Toggle password visibility
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
-        
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             eyeIcon.innerHTML = '<path fill-rule="evenodd" d="M10 3C5.4 3 1.73 6.11.4 10c1.33 3.89 5 7 9.6 7s8.27-3.11 9.6-7C18.27 6.11 14.6 3 10 3zM10 15a5 5 0 110-10 5 5 0 010 10zm-7.5-5a8.24 8.24 0 017.5-5 8.24 8.24 0 017.5 5 8.24 8.24 0 01-7.5 5 8.24 8.24 0 01-7.5-5z" clip-rule="evenodd"/>';
@@ -302,12 +248,12 @@
             eyeIcon.innerHTML = '<path d="M10 3C5.4 3 1.73 6.11.4 10c1.33 3.89 5 7 9.6 7s8.27-3.11 9.6-7C18.27 6.11 14.6 3 10 3zM10 15a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/>';
         }
     }
-    
+
     // Toggle accordion items
     function toggleAccordion(id) {
         const content = document.getElementById(id);
         const icon = document.getElementById('icon' + id.slice(-1));
-        
+
         if (content.style.maxHeight) {
             content.style.maxHeight = null;
             icon.classList.remove('rotate-180');
@@ -316,6 +262,25 @@
             icon.classList.add('rotate-180');
         }
     }
+
+    // Recaptcha submit callback
+    function onSubmit(token) {
+        var form = document.getElementById("register-form");
+        if (form.checkValidity()) {
+            form.submit();
+        } else {
+            grecaptcha.reset();
+            form.reportValidity();
+        }
+    }
 </script>
+
+<style>
+    /* Hides the floating Google Recaptcha Badge */
+    /* Only allowed because we added the legal text in the footer manually */
+    .grecaptcha-badge {
+        visibility: hidden;
+    }
+</style>
 
 @include('frontend.layouts.footer')

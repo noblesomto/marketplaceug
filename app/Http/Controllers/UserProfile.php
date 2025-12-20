@@ -374,8 +374,23 @@ class UserProfile extends Controller
     }
 
     public function logout(Request $request)
-    {
-        $request->session()->forget('user_id');
-        return redirect("login")->with('success', 'Logged Out successfully!');
+{
+    $user_id = $request->session()->get('user_id');
+
+    if ($user_id) {
+        $user = User::where('user_id', $user_id)->first();
+
+        if ($user) {
+            // Clear remember token
+            $user->update(['remember_token' => null]);
+
+        }
     }
+
+    $request->session()->flush();
+    cookie()->queue(cookie()->forget('remember_login'));
+    cookie()->queue(cookie()->forget('trusted_device'));
+
+    return redirect("login")->with('success', 'Logged out successfully!');
+}
 }
