@@ -3,177 +3,75 @@
 @include('frontend.layouts.product-nav')
 @include('frontend.layouts.search')
 
+<section class="bg-gray-50 min-h-screen pb-20 font-sans">
 
-<section class="w-full lg:w-4/6 mx-auto mb-20">
-  <div class=" my-5 hidden lg:block">
-   @include('frontend.components.advert.banner-advert')
-  </div>
+    <!-- Top Banner (Hidden on Mobile) -->
+    <div class="container mx-auto max-w-7xl px-4 pt-6 hidden lg:block">
+        @include('frontend.components.advert.banner-advert')
+    </div>
 
+    <div class="container mx-auto max-w-7xl px-1 mt-2 pt-1">
 
-  <div class="grid grid-cols-6 gap-3">
-        
-        <div class="col-span-6 lg:col-span-4">
-            <div class="hidden lg:block">
-                <div class="my-2 flex justify-start gap-4 font-semibold ml-1 ">
-                <span class="flex items-center space-x-2">
-                    <a href="/">Home</a>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                </span>
-                <span class="flex items-center space-x-2">
-                    <a href="{{ url('/category/'.$cat->category_slug) }}">{{ $cat->category }}</a>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                </span>
-                <span class="flex items-center space-x-2">
-                    <a href="{{ url('/category/' . $cat->category_slug . '/' . $sub_cat->sub_cat_slug) }}">{{ $sub_cat->sub_category }}</a>
-                </span>
+        <!-- Breadcrumbs -->
+        <nav class="flex text-sm text-gray-500 mb-2 overflow-x-auto whitespace-nowrap no-scrollbar" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="/" class="inline-flex items-center hover:text-dark_green transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <a href="{{ url('/category/'.$cat->category_slug) }}" class="ml-1 hover:text-dark_green md:ml-2">{{ $cat->category }}</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <span class="ml-1 text-gray-700 md:ml-2 font-medium">{{ $sub_cat->sub_category }}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- LEFT COLUMN: Slider & Ad Details (8 Cols) -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- Image Slider Card -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    @include('frontend.components.advert.slider')
+                </div>
+
+                <!-- Ad Body (Title, Specs, Description) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+                    @include('frontend.components.advert.ad-body')
+                </div>
+
             </div>
-            </div>
-            <div class="bg-white p-2">@include('frontend.components.advert.slider')</div>
-            <div>@include('frontend.components.advert.ad-body')</div>
-        </div>
-        <div class="col-span-6 lg:col-span-2">
-          <div class="px-2 lg:px-1">@include('frontend.components.advert.sidebar')</div>
-        </div>
-  </div>
 
-  <div class="max-w-4xl">
-    <div>@include('frontend.components.advert.similar-ad')</div>
-  </div>
+            <!-- RIGHT COLUMN: Sidebar (4 Cols) -->
+            <div class="lg:col-span-4">
+                <div class="sticky top-24 space-y-6">
+                    @include('frontend.components.advert.sidebar')
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Similar Ads Section -->
+        <div class="mt-16">
+            @include('frontend.components.advert.similar-ad')
+        </div>
+
+    </div>
 </section>
 
-
-
-
-<script>
-document.getElementById('shareBtn').addEventListener('click', async () => {
-
-    const shareTitle = {!! json_encode($ad->ad_title ?? '') !!};
-    const shareText = {!! json_encode($ad->meta_description ?? Str::limit(strip_tags($ad->description ?? ''), 160)) !!};
-    const shareUrl = window.location.href;
-
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: shareTitle,
-                text: shareText,
-                url: shareUrl
-            });
-        } catch (err) {
-            console.log('Share cancelled', err);
-        }
-    } else {
-        alert("Sharing is not supported on this device.");
-    }
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.wishlist-toggle').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const adId = this.dataset.adId;
-            const svg = this.querySelector('svg');
-
-            fetch(`/user/add-wishlist/${adId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Toggle icon
-                    if (data.in_wishlist) {
-                        svg.classList.add('fill-red-500', 'text-red-500');
-                        svg.classList.remove('fill-none');
-                        this.title = 'Remove from Wishlist';
-
-                        // SweetAlert for added to wishlist
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Added to Wishlist!',
-                            text: data.message,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                        }).then(() => {
-                            location.reload(); // Refresh page after alert
-                        });
-                    } else {
-                        svg.classList.remove('fill-red-500', 'text-red-500');
-                        svg.classList.add('fill-none');
-                        this.title = 'Add to Wishlist';
-
-                        // SweetAlert for removed from wishlist
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Removed from Wishlist',
-                            text: data.message,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                        }).then(() => {
-                            location.reload(); // Refresh page after alert
-                        });
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Error SweetAlert
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Please login to save this item to your favorites',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                });
-            });
-        });
-    });
-});
-</script>
-
- <script>
-    const openBtn = document.getElementById('openNavModal');
-    const closeBtn = document.getElementById('closeNavModal');
-    const modal = document.getElementById('modal');
-    const overlay = document.getElementById('overlay');
-
-    function openModal() {
-      overlay.classList.remove('hidden');
-      setTimeout(() => {
-        overlay.classList.add('opacity-100');
-        modal.classList.remove('translate-y-full');
-      }, 10);
-    }
-
-    function closeModal() {
-      modal.classList.add('translate-y-full');
-      overlay.classList.remove('opacity-100');
-      setTimeout(() => {
-        overlay.classList.add('hidden');
-      }, 300);
-    }
-
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', closeModal);
-  </script>
+<!-- Footer -->
 @include('frontend.layouts.footer')
 
-
+<!-- Modals & Scripts included at the bottom of the structure -->
+@include('frontend.components.advert.scripts')

@@ -90,9 +90,16 @@
               <div class="block lg:hidden">
                     @include('frontend.components.mobile.filter-subcategory')
               </div>
-            <div id="ads-container" class="">
-                @include('frontend.components.advert.advert-list', ['ads' => $ads])
-            </div>
+                <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
+                    @foreach ($ads as $row)
+                        @if($isMobile)
+                            @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
+                        @else
+                            @include('frontend.components.advert.advert-card', ['row' => $row])
+                        @endif
+                    @endforeach
+                </div>
+
             @if($ads->isEmpty())
                 <div class="flex flex-col h-screen items-center bg-white p-10">
                     <span>

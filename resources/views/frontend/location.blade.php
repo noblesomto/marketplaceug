@@ -11,7 +11,7 @@
       <div class="col-span-12 xl:col-span-8">
         <div class="grid grid-cols-12 gap-3">
            <div class="col-span-4 hidden sm:block p-2 ">
-             @include('frontend.components.home.categories')
+             @include('frontend.components.home.side-categories')
            </div>
            <div class="col-span-12 md:col-span-8">
               <div class=" my-5 hidden lg:block">
@@ -19,9 +19,15 @@
               </div>
 
               <!-- Loading the Ads from Components -->
-            <div id="ads-container" class="">
-                @include('frontend.components.advert.advert-location', ['ads' => $ads])
-            </div>
+            <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
+                    @foreach ($ads as $row)
+                        @if($isMobile)
+                            @include('frontend.components.advert.advert-location-mobile', ['row' => $row])
+                        @else
+                            @include('frontend.components.advert.advert-location', ['ads' => $row])
+                        @endif
+                    @endforeach
+                </div>
             @if($ads->isEmpty())
                 <div class="flex flex-col h-screen items-center bg-white p-10">
                     <span>

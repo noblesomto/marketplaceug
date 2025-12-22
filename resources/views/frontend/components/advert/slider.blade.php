@@ -3,33 +3,36 @@
     $imageUrls = $mediaItems->map(fn($media) => $media->getUrl('optimized'))->toArray();
 @endphp
 
-<div class="bg-gray-100 flex items-center justify-center py-1">
-    <div class="relative w-full max-w-screen-lg overflow-hidden rounded-lg shadow-md group">
-        <!-- Slider Container -->
-        <div id="slider" class="flex transition-transform duration-500 ease-out">
-            @foreach($mediaItems as $index => $media)
-                <div class="flex-none w-full">
-                    <img src="{{ $media->getUrl('large') }}"
-                        alt="Image"
-                        loading="lazy"
-                        class="w-full h-full max-h-[60vh] object-cover rounded-lg bg-white cursor-pointer"
-                        onclick="openLightbox({{ $index }})">
-                </div>
-            @endforeach
-        </div>
+<div class="relative w-full group bg-black md:bg-gray-100 md:rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] ">
 
-        <!-- Navigation Arrows -->
-        <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block"><i class="bi bi-chevron-left text-2xl"></i></button>
-        <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-200 z-10 hidden group-hover:block"><i class="bi bi-chevron-right text-2xl"></i></button>
-
-        <!-- Indicators -->
-        <div id="indicators" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-            @foreach ($mediaItems as $index => $media)
-                <button data-index="{{ $index }}"
-                    class="w-3 h-3 rounded-full bg-white border border-gray-400 opacity-70 hover:opacity-100 focus:outline-none"></button>
-            @endforeach
-        </div>
+    <!-- Main Slider -->
+    <div id="slider" class="flex h-full transition-transform duration-500 ease-out">
+        @foreach($mediaItems as $index => $media)
+            <div class="flex-none w-full h-full flex items-center justify-center">
+                <img src="{{ $media->getUrl('large') }}"
+                     alt="{{ $ad->ad_title }} - Image {{ $index + 1 }}"
+                     class="w-full h-full object-contain md:object-cover cursor-zoom-in"
+                     onclick="openLightbox({{ $index }})">
+            </div>
+        @endforeach
     </div>
+
+    <!-- Controls -->
+    @if(count($mediaItems) > 1)
+    <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover:opacity-100 focus:opacity-100">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+    </button>
+    <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover:opacity-100 focus:opacity-100">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    </button>
+
+    <!-- Indicators -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+        @foreach ($mediaItems as $index => $media)
+            <button data-index="{{ $index }}" class="w-2.5 h-2.5 rounded-full bg-white transition-opacity {{ $index == 0 ? 'opacity-100 scale-110' : 'opacity-50 hover:opacity-100' }} shadow-sm"></button>
+        @endforeach
+    </div>
+    @endif
 </div>
 
 <!-- Lightbox -->

@@ -1,44 +1,37 @@
-<div class="flex justify-between bg-white border-b border-b-gray-400 mt-2 py-3 pb-1 px-3">
-    <div class="font-bold text-base">Other Ads from this Seller</div>
-    <div class="text-dark_green hidden lg:block"><a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}">All Ads from this Poster</a> </div>
-
-</div>
-
-<div class="mt-2  px-2">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-        @foreach ($adverts as $row)
-            @if($isMobile)
-                @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
-            @else
-                @include('frontend.components.advert.advert-card', ['ads' => $row])
-            @endif
-        @endforeach
-    </div>
-
-    @if($advertsCount > 6)
-        <span class="my-4  w-full flex justify-end">
-            <a class="text-dark_green font-semibold" href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}">View all ads from this seller  ({{ $advertsCount }} Ads)</a>
-        </span>
-    @endif
-</div>
-
-
-
-<div class="md:flex justify-between mt-2 border-b border-b-gray-400 bg-white py-4 md:pb-1 px-3">
-  <div class="font-bold text-base">Similar Ads</div>
-</div>
-
-<div class="mt-2 md:mt-0 p-2">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-        @foreach ($similar_ads as $row)
-            @if($isMobile)
+@if($advertsCount > 0 || count($similar_ads) > 0)
+    <!-- More from Seller -->
+    @if($advertsCount > 0)
+    <div class="mb-10 bg-white rounded-xl p-1 shadow-sm border border-gray-100">
+        <div class="flex justify-between items-end mb-4 px-1 border-b pb-2">
+            <h3 class="font-bold text-base lg:text-xl text-gray-900 ">More from {{ $ad->owner->name }}</h3>
+            <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="text-sm font-semibold text-dark_green hover:underline">View All</a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            @foreach ($adverts as $row)
+                @if($isMobile)
                     @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
                 @else
-                    @include('frontend.components.advert.advert-card', ['ads' => $row])
+                    @include('frontend.components.advert.advert-card', ['row' => $row])
                 @endif
-
-        @endforeach
+            @endforeach
+        </div>
     </div>
+    @endif
 
-</div>
-<div class="pb-5"></div>
+    <!-- Similar Items -->
+    @if(count($similar_ads) > 0)
+    <div class="bg-white rounded-xl p-1 shadow-sm border border-gray-100">
+        <h3 class="font-bold text-base lg:text-xl text-gray-900 mb-6 border-b pb-2">Recommended for you</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            @foreach ($similar_ads as $row)
+                @if($isMobile)
+                        @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
+                    @else
+                        @include('frontend.components.advert.advert-card', ['row' => $row])
+                    @endif
+
+            @endforeach
+        </div>
+    </div>
+    @endif
+@endif

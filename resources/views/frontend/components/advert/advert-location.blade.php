@@ -1,12 +1,26 @@
-<section class="space-y-2 px-1">
 
-@forelse($ads as $row)
-    <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
-      <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[154px] sm:h-[160px] md:h-[190px]">
-         <div class="flex w-full h-full">
-              <div class="flex-[40%] xs-max:flex-[38%] sm:flex-[40%] lg:flex-[35%] mr-1 relative h-full p-2">
-                <img class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
-                <div class="absolute top-3 right-3 flex space-x-1">
+<a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="group">
+    <div class="h-full flex flex-col">
+        <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
+            <!-- Image wrapper with fixed aspect ratio -->
+            <div class="w-full aspect-[4/3] overflow-hidden rounded-t-lg relative">
+                @php
+                    $image = $row->getFirstMedia('images');
+                @endphp
+
+                <img
+                    src="{{ $image
+                        ? ($image->hasGeneratedConversion('thumb-md')
+                            ? $image->getUrl('thumb-md')
+                            : $image->getUrl('thumbnail'))
+                        : asset('frontend/images/default.png') }}"
+                    alt="{{ $row->ad_title }}"
+                    fetchpriority="high"
+                    loading="lazy"
+                    class="w-full h-full object-cover"
+                />
+
+                <div class="absolute top-1 right-1 flex space-x-2">
                     @if($row->owner->verified=='yes')
                         <div class="bg-green-50  px-1 rounded text-[14px]">
                             <span title="verified User">
@@ -24,7 +38,7 @@
                     </div>
                     @endif
                 </div>
-                <div class="absolute top-3 left-3">
+                <div class="absolute top-1 left-2">
                     @if ($row->featured == 'Yes')
                         <div class="bg-gray-50 inline-block px-1 py-0.5 rounded text-[12px]" title="Boosted Ad">
                             <span>
@@ -34,108 +48,79 @@
                         </div>
                     @endif
                 </div>
-                <div class="absolute bottom-3 right-3 bg-black w-6 h-5 text-xs text-white flex justify-center items-center">{{ $row->getMedia('images')->count() }}</div>
-              </div>
-              <div class="flex-[60%] xs:flex-[62%] sm:flex-[60%] lg:flex-[65%] relative h-full overflow-hidden space-y-1">
-                <div class="flex justify-between text-xs">
-                  <div class="flex justify-start items-center text-sm md:mr-5">
-                    <div class="flex gap-2">
+
+            </div>
+
+            <!-- Price tag -->
+            @if($row->category==3)
+            <div class="relative -mt-6 mb-2 mr-2 w-full">
+                <div class="bg-secondary_dark text-white h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                {{ $row->salary }}
+            </div>
+            </div>
+            @elseif($row->category==18)
+                <div class="relative -mt-6 mb-2 mr-2 w-full">
+                    <div class="bg-secondary_dark text-white h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                    {{ $row->expected_salary }}
+                    </div>
+                </div>
+            @elseif($row->contact_price=="yes")
+                <div class="relative -mt-6 mb-2 mr-2 w-full">
+                    <div class="bg-secondary_dark text-white h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                    Contact For Price
+                    </div>
+                </div>
+            @else
+            <div class="relative -mt-6 mb-2 mr-2 w-full">
+                <div class="bg-secondary_dark text-white h-8 px-2 text-sm font-semibold inline-flex items-center float-right">
+                    ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
+                </div>
+            </div>
+            @endif
+
+            <!-- Content -->
+            <div class="p-3 flex flex-col flex-grow space-y-2">
+                <h1 class="font-bold text-sm">{{ Str::limit($row->ad_title, 20) }}</h1>
+                <div class="flex items-center justify-between text-xs mt-auto">
+                    <div class="text-gray-500 truncate flex">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
                         </span>
-                      <span class="text-xs">{{ $row->lga }}</span>
+                        <span><h4>{{ $row->lga }}</h4></span>
                     </div>
-                    </div>
-                  <div>
-                    <div class="flex justify-start mr-5 text-xs md:mt-2">
-                      <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                    </svg>
-                    </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
-                  </div>
+
                 </div>
-                <div class="font-semibold leading-5 md:font-bold text-sm md:text-base mt-1 line-clamp-2"> {{ Str::limit($row->ad_title, 50) }}</div>
 
-                <div class="text-xs mt-1 hidden lg:block line-clamp-2">{!! Str::limit(strip_tags($row->description), 80) !!}</div>
-                @if($row->category==3)
-                    <div class="text-dark_green font-bold text-sm my-1">
-                        {{ $row->salary }}
+
+
+                <div class="flex items-center justify-between">
+                    @if($row->buy_direct=="Yes")
+                    <div class="flex items-center  bg-blue-50 rounded-full px-2 py-1 w-fit">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                        </svg>
+                        <span class="text-xs text-blue-600">Buy Direct</span>
                     </div>
-                    @elseif($row->category==18)
-                        <div class="text-dark_green font-bold text-sm my-1">
-                            {{ $row->expected_salary }}
-                        </div>
-                    @elseif($row->contact_price=="yes")
-                        <div class="text-dark_green font-bold text-sm my-1">
-                            Contact For Price
-                        </div>
-                    @else
-                <div class="flex items-center justify-between text-xs mt-1">
-                    <div class="flex justify-start text-dark_green font-bold text-sm my-1">
-                      <div class="mr-2">₦ {{ number_format($row->price, 0, '.', ',') }} </div>
-                      <div>{{ $row->price_type }}</div>
-                    </div>
-                </div>
-                @endif
+                    @endif
 
-                <div class="mb-2 pb-4">
-                    <div class="flex justify-between">
-                        <div class="flex-col space-y-2 pb-2">
-                            @if($row->sub_category == 2)
-                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }}</span>
-                                <div class="flex items-center">
-                                    <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }}</span>
-                                </div>
-                            @elseif($row->sub_category == 6)
-                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }}</span>
-                            @elseif(!empty($row->item_condition))
-                                <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->item_condition }}</span>
-                            @endif
-                        </div>
-
-                        @if($row->sold == "Yes")
-                            <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed mr-1 lg:mr-4 text-xs h-fit whitespace-nowrap " title="This advert is already sold">
+                    @if($row->sold=="Yes")
+                    <span class="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded cursor-not-allowed" title="This advert is already sold">
+                        <span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-                            <span class="font-semibold">Sold</span>
                         </span>
-                        @endif
-                    </div>
+                        <span class="font-semibold text-xs">Sold</span>
+                    </span>
+                    @endif
+
                 </div>
-
-                <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between text-xs">
-                    @if($row->shipment=="Ship")
-                        <span class="bg-gray-100 p-1 text-xs">Shipping Possible</span>
-                    @endif
-                    @if($row->buy_direct=="Yes")
-                          <div class="flex items-center bg-blue-50 rounded-full px-2 py-1 w-fit mr-1 lg:mr-4">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                  stroke="currentColor" class="w-3 h-3 text-blue-600 mr-1">
-                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                              </svg>
-                              <span class="text-xs text-blue-600">Buy Direct</span>
-                          </div>
-                    @endif
-              </div>
-
-
-              </div>
-          </div>
-      </div>
-</a>
-@empty
-  <div class="flex flex-col h-screen items-center bg-white p-10">
-        <span>
-            <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="No Adverts Currently"/>
-        </span>
-        <span>No Item here yet...</span>
+            </div>
+        </div>
     </div>
-@endforelse
-
-
-</section>
+</a>

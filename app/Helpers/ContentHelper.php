@@ -163,4 +163,59 @@ class ContentHelper
 
         return $keywords;
     }
+
+    public static function sanitizeName($name)
+    {
+        if (empty($name)) {
+            return '';
+        }
+
+        // Step 1: Remove emojis (all emoji Unicode ranges)
+        $name = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $name); // Emoticons
+        $name = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $name); // Misc Symbols and Pictographs
+        $name = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $name); // Transport and Map
+        $name = preg_replace('/[\x{1F1E0}-\x{1F1FF}]/u', '', $name); // Flags
+        $name = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $name);   // Misc symbols
+        $name = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $name);   // Dingbats
+        $name = preg_replace('/[\x{1F900}-\x{1F9FF}]/u', '', $name); // Supplemental Symbols and Pictographs
+        $name = preg_replace('/[\x{1FA00}-\x{1FA6F}]/u', '', $name); // Chess Symbols
+        $name = preg_replace('/[\x{1FA70}-\x{1FAFF}]/u', '', $name); // Symbols and Pictographs Extended-A
+        $name = preg_replace('/[\x{FE00}-\x{FE0F}]/u', '', $name);   // Variation Selectors
+        $name = preg_replace('/[\x{1F000}-\x{1F02F}]/u', '', $name); // Mahjong Tiles
+        $name = preg_replace('/[\x{1F0A0}-\x{1F0FF}]/u', '', $name); // Playing Cards
+
+        // Step 2: Check for banned names/words (case-insensitive)
+        $bannedNames = [
+            'market',
+            'marketplace',
+            'marketplace naija',
+            'marketplace ng',
+            'admin',
+            'administrator',
+            'moderator',
+            'support',
+            'system',
+            'official',
+        ];
+
+        foreach ($bannedNames as $banned) {
+            // Replace whole words or the entire string
+            $name = preg_replace('/\b' . preg_quote($banned, '/') . '\b/i', '', $name);
+        }
+
+        // Step 3: Apply general content sanitization
+        $name = self::sanitizeContent($name);
+
+        // Step 4: Remove any remaining special characters that shouldn't be in names
+        $name = preg_replace('/[^\p{L}\p{N}\s\-\'\.]/u', '', $name);
+
+        // Step 5: Clean up extra spaces
+        $name = preg_replace('/\s+/', ' ', $name);
+        $name = trim($name);
+
+        // Step 6: Limit name length
+        $name = mb_substr($name, 0, 100);
+
+        return $name;
+    }
 }

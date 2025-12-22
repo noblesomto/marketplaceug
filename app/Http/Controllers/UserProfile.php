@@ -95,9 +95,6 @@ class UserProfile extends Controller
         if ($request->isMethod('PUT')) {
             $request->validate([
                 'name'          => 'required',
-                'address'       => 'required',
-                'city'          => 'required',
-                'state'         => 'required',
                 'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
             ]);
 

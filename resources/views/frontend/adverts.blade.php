@@ -11,7 +11,7 @@
       <div class="col-span-12 md:col-span-8">
         <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden sm:block bg-white p-2">
-             @include('frontend.components.home.categories')
+             @include('frontend.components.home.side-categories')
            </div>
            <div class="col-span-12 md:col-span-9">
               <div class=" my-5 hidden lg:block">
@@ -19,9 +19,16 @@
               </div>
 
               <!-- Loading the Ads from Components -->
-            <div id="advert-results" class="">
-                @include('frontend.components.advert.advert-list', ['ads' => $ads])
-            </div>
+                <div id="advert-results" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
+                    @foreach ($ads as $row)
+                        @if($isMobile)
+                            @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
+                        @else
+                            @include('frontend.components.advert.advert-card', ['row' => $row])
+                        @endif
+                    @endforeach
+                </div>
+
             @if($ads->isEmpty())
                 <div class="flex flex-col h-screen items-center bg-white p-10">
                     <span>
@@ -33,7 +40,7 @@
 
 
             @if(isset($hasMore) && $hasMore)
-                <div class="mt-3 mb-4 px-2 flex justify-center pb-20">
+                <div class="mt-3 mb-4 px-2 flex justify-center">
                     <button id="load-more-btn"
                             class="bg-dark_green hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
                         <span id="load-more-text">Show More</span>

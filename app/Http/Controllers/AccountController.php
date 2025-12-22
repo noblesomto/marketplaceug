@@ -18,7 +18,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
-use App\Rules\NotForbiddenName;
+use App\Rules\AllowedName;
 use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
 use Illuminate\Support\Facades\RateLimiter;
@@ -607,16 +607,13 @@ class AccountController extends Controller
             try {
                 $validatedData = $request->validate([
                     'acc_type' => 'required',
-                    'address' => 'required',
-                    'state' => 'required',
-                    'name' => ['required', 'min:5', new NotForbiddenName],
+                    'name' => ['required', 'string', 'max:100', new AllowedName],
                     'phone' => [
                         'required',
                         new NigerianPhoneNumber(),
                     ],
                     'email' => 'required|email|unique:users,email',
                     'password' => 'required|min:6',
-                    'g-recaptcha-response' => ['required', new ReCaptcha],
                 ]);
             } catch (ValidationException $e) {
 
@@ -629,18 +626,14 @@ class AccountController extends Controller
             $email = $validatedData['email'];
             $token = Str::random(40);
 
-
             DB::beginTransaction();
 
             try {
                 $user = User::create([
-                    'name'=> ContentHelper::sanitizeContent($validatedData['name']),
+                    'name' => ContentHelper::sanitizeName($validatedData['name']),
                     'email'=> $validatedData['email'],
                     'phone'=> $validatedData['phone'],
                     'acc_type'=> $validatedData['acc_type'],
-                    'address'=> $validatedData['address'],
-                    'city'=> $request->input('city'),
-                    'state'=> $validatedData['state'],
                     'token'=> $token,
                     'acc_status'=> 0,
                     'password'=> Hash::make($validatedData['password']),

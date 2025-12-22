@@ -17,7 +17,7 @@ use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
 use Illuminate\Validation\Rule;
 use App\Rules\NigerianPhoneNumber;
-use App\Rules\NotForbiddenName;
+use App\Rules\AllowedName;
 use App\Helpers\ContentHelper;
 
 class AccountController extends Controller
@@ -199,7 +199,7 @@ class AccountController extends Controller
             'acc_type' => 'required',
             'address' => 'required',
             'state' => 'required',
-            'name' => ['required', 'min:5', new NotForbiddenName],
+            'name' => ['required', 'string', 'max:100', new AllowedName],
             'phone' => [
                 'required',
                 Rule::unique('users', 'phone'),
@@ -215,7 +215,7 @@ class AccountController extends Controller
 
         try {
             $user = User::create([
-                'name' => ContentHelper::sanitizeContent($request->name),
+                'name' => ContentHelper::sanitizeName($request->name),
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'acc_type' => $request->acc_type,

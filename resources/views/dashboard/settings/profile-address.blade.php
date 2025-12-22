@@ -24,28 +24,28 @@
 				        </div>
 
 				        <div class="mb-4 mt-4">
-				            <label class="text-sm font-semibold">Address *</label>
+				            <label class="text-sm font-semibold">Address</label>
 				            @if ($errors->has('address'))
 				                <span class="text-red-700 py-1">{{ $errors->first('address') }}</span>
 				            @endif
-				            <input type="text" id="name" name="address" placeholder="Address" value="{{ $user->address }}" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+				            <input type="text" id="name" name="address" placeholder="Address" value="{{ $user->address }}" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
 				        </div>
 
 				        <div class="mb-4 mt-4">
-				            <label class="text-sm font-semibold">City *</label>
+				            <label class="text-sm font-semibold">City</label>
 				            @if ($errors->has('city'))
 				                <span class="text-red-700 py-1">{{ $errors->first('city') }}</span>
 				            @endif
-				            <input type="text" id="name" name="city" placeholder="City" value="{{ $user->city }}" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+				            <input type="text" id="name" name="city" placeholder="City" value="{{ $user->city }}" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" >
 				        </div>
 
 
 				        <div class="mb-4 mt-4">
-				            <label class="text-sm font-semibold">State *</label>
+				            <label class="text-sm font-semibold">State</label>
 				            @if ($errors->has('state'))
 				                <span class="text-red-700 py-1">{{ $errors->first('state') }}</span>
 				            @endif
-<select name="state" id="state" class="w-full bg-body-100 px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+<select name="state" id="state" class="w-full bg-body-100 px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     <option value="" {{ old('state', $user->state ?? '') == '' ? 'selected' : '' }}>- Select State -</option>
     <option value="Abia" {{ old('state', $user->state ?? '') == 'Abia' ? 'selected' : '' }}>Abia</option>
     <option value="Adamawa" {{ old('state', $user->state ?? '') == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>

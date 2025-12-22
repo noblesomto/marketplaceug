@@ -79,10 +79,10 @@ class AdvertController extends Controller
                                     ->where('sold_date', '>=', now()->subDays(30));
                           });
                 })
-                ->limit(8)
+                ->limit(10)
                 ->get();
 
-            $perPage = 24;
+            $perPage = 25;
             $currentPage = request()->get('page', 1);
 
             // Get IDs to exclude (featured posts)
@@ -223,7 +223,8 @@ class AdvertController extends Controller
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $categories = Category::with('subCategories')->where('id', '!=', 18)->get();
+        $categories = Category::with('subCategories')->get();
+
         $agent = new Agent();
         if (request()->has('view')) {
             $isMobile = request()->get('view') === 'mobile';
@@ -315,8 +316,16 @@ class AdvertController extends Controller
         }
 
         $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
 
-        //Related Adverts
+        $data['isMobile'] = $isMobile;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Related Adverts
+        |--------------------------------------------------------------------------
+        */
         $query = Advert::with('images')
             ->inRandomOrder()
             ->where('user_id', $ad_owner)
@@ -324,20 +333,28 @@ class AdvertController extends Controller
             ->where('id', '!=', $ad_id);
 
         $data['advertsCount'] = $query->count();
-        $data['adverts'] = $query->limit(4)->get();
 
-        //Similar Adverts
+        $data['adverts'] = $query
+            ->limit($isMobile ? 4 : 5)
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Similar Adverts
+        |--------------------------------------------------------------------------
+        */
         $data['similar_ads'] = Advert::with('images')
             ->inRandomOrder()
-            ->where(function($q) use ($title, $cat_id) {
+            ->where(function ($q) use ($title, $cat_id) {
                 $q->where('ad_title', 'LIKE', '%' . $title . '%')
                   ->orWhere('category', $cat_id);
             })
             ->where('id', '!=', $ad_id)
             ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad_owner)
-            ->limit(4)
+            ->limit($isMobile ? 4 : 5)
             ->get();
+
 
         \DB::table('adverts')
             ->where('id', $ad_id)
@@ -352,8 +369,7 @@ class AdvertController extends Controller
                 $notification->update(['is_read' => true]);
             }
         }
-        $agent = new Agent();
-        $data['isMobile'] = $agent->isMobile();
+
 
         return view('frontend.advert', $data);
     }
@@ -784,9 +800,18 @@ class AdvertController extends Controller
             ->filters($filters)
             ->get();
 
-        $html = view('frontend.components.advert.advert-list', [
-            'ads' => $result['ads']
-        ])->render();
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($result['ads'] as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($result['ads'] as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
 
         return response()->json([
             'html' => $html,
@@ -794,6 +819,7 @@ class AdvertController extends Controller
             'nextPage' => $result['nextPage']
         ]);
     }
+
 
         public function category(Request $request, $category_slug)
     {
@@ -839,59 +865,57 @@ class AdvertController extends Controller
             $filterId = $cat->id;
             $filterIsString = false;
 
-        return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore'));
+            $agent = new Agent();
+            $isMobile = $agent->isMobile();
+
+        return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore','isMobile'));
     }
 
     public function sub_category(Request $request, $category_slug, $subcat_slug)
-{
-    $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-    $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
-    $title = config('global.site_name') . ' | ' . $subcat->sub_category;
+        $title = config('global.site_name') . ' | ' . $subcat->sub_category;
 
-    $result = (new FeaturedAdPaginator(1))
-        ->filters(['sub_category' => $subcat->id])
-        ->get();
+        $result = (new FeaturedAdPaginator(1))
+            ->filters(['sub_category' => $subcat->id])
+            ->get();
 
-    $ads = $result['ads'];
-    $hasMore = $result['hasMore'];
+        $ads = $result['ads'];
+        $hasMore = $result['hasMore'];
 
-    $user_id = $request->session()->get('user_id');
-    $user = User::where('user_id', $user_id)->first();
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
 
-    $count_subcat = Advert::activeNotRecentlySold()
-        ->where('sub_category', $subcat->id)
-        ->count();
+        $count_subcat = Advert::activeNotRecentlySold()
+            ->where('sub_category', $subcat->id)
+            ->count();
 
-    $brands = DB::table('brands')
-        ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-        ->where('brands.subcat_id', $subcat->id)
-        ->where(function($query) {
-            $query->where('adverts.ad_status', 1)
-                  ->where(function($q) {
-                      $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                        ->orWhereNull('adverts.sold_date');
-                  });
-        })
-        ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-        ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-        ->orderBy('advert_count', 'desc')
-        ->get();
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
 
-    // IMPORTANT: Set these variables for the JavaScript
-    $filterType = 'sub_category';
-    $filterId = $subcat->id;
-    $filterIsString = false;
+        // IMPORTANT: Set these variables for the JavaScript
+        $filterType = 'sub_category';
+        $filterId = $subcat->id;
+        $filterIsString = false;
 
-    // DEBUG: Verify they're set
-    \Log::info('sub_category view data', [
-        'filterType' => $filterType,
-        'filterId' => $filterId,
-        'subcat_id' => $subcat->id,
-    ]);
-
-    return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId'));
-}
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId','isMobile'));
+    }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
     {
@@ -933,8 +957,10 @@ class AdvertController extends Controller
             $filterType = 'brand';
             $filterId = $brand->id;
             $filterIsString = false;
+            $agent = new Agent();
+            $isMobile = $agent->isMobile();
 
-        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat', 'hasMore'));
+        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat', 'hasMore','filterType', 'filterId','isMobile'));
     }
 
         public function location($location)
@@ -948,14 +974,16 @@ class AdvertController extends Controller
         $ads = $result['ads'];
         $hasMore = $result['hasMore'];
 
-        // Don't add quotes - let JavaScript handle it
+
         $filterType = 'state_slug';
         $filterId = $location; // Just the raw value
         $filterIsString = true; // Flag to tell JS it's a string
 
         $categories = Category::with('subCategories')->get();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
 
-        return view('frontend.location', compact('title','location', 'ads','categories', 'hasMore', 'filterType', 'filterId', 'filterIsString'));
+        return view('frontend.location', compact('title','location', 'ads','categories', 'hasMore', 'filterType', 'filterId', 'filterIsString','isMobile'));
     }
 
     public function loadMoreLocation(Request $request)
@@ -967,9 +995,18 @@ class AdvertController extends Controller
             ->filters($filters)
             ->get();
 
-        $html = view('frontend.components.advert.advert-location', [
-            'ads' => $result['ads']
-        ])->render();
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($result['ads'] as $row) {
+                $html .= view('frontend.components.advert.advert-location-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($result['ads'] as $row) {
+                $html .= view('frontend.components.advert.advert-location', compact('row'))->render();
+            }
+        }
 
         return response()->json([
             'html' => $html,

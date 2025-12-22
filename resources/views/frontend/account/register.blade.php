@@ -10,7 +10,7 @@
 
         <!-- Header -->
         <div class="bg-white border-b border-gray-100 px-2 py-2 text-center">
-            <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Register in less than a minute</h2>
+            <h2 class="text-xl font-semibold text-gray-900 tracking-tight">Register in less than a minute</h2>
             <p class="mt-2 text-sm text-gray-500">Create your account to start buying and selling.</p>
         </div>
 
@@ -136,12 +136,11 @@
                 @endif
 
                 <!-- Submit Button with Invisible Recaptcha Binding -->
-                <button class="g-recaptcha w-full bg-secondary_dark hover:bg-dark_green text-white font-bold py-4 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"
-                        data-callback='onSubmit'
-                        data-action='submit'>
-                    Register for Free
-                </button>
+                <button type="button"
+                    id="register-btn"
+                    class="w-full bg-secondary_dark hover:bg-dark_green text-white font-bold py-4 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                Register for Free
+            </button>
 
                 <!-- Legal Text (Updated for Hidden Badge Compliance) -->
                 <p class="text-xs text-center text-gray-500 mt-4 leading-relaxed">
@@ -213,7 +212,7 @@
 </div>
 
 <div class="pb-10"></div>
-
+<script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
 <script>
     function showDiv(placeholderText) {
         document.getElementById('myDiv').classList.remove('hidden');
@@ -263,16 +262,46 @@
         }
     }
 
+
     // Recaptcha submit callback
-    function onSubmit(token) {
-        var form = document.getElementById("register-form");
-        if (form.checkValidity()) {
-            form.submit();
-        } else {
-            grecaptcha.reset();
+    document.addEventListener('DOMContentLoaded', function() {
+    const registerBtn = document.getElementById('register-btn');
+    const form = document.getElementById('register-form');
+
+    registerBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Validate form first
+        if (!form.checkValidity()) {
             form.reportValidity();
+            return;
         }
-    }
+
+        // Check if reCAPTCHA is loaded
+        if (typeof grecaptcha === 'undefined') {
+            alert('Security check is loading. Please wait a moment and try again.');
+            return;
+        }
+
+        // Execute reCAPTCHA
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_KEY') }}', {action: 'submit'})
+                .then(function(token) {
+                    // Add token to form
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'g-recaptcha-response';
+                    input.value = token;
+                    form.appendChild(input);
+
+                    // Submit form
+                    form.submit();
+                });
+        });
+    });
+});
+
+
 </script>
 
 <style>

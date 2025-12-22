@@ -12,25 +12,52 @@
         </div>
     </div>
 
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+        @foreach ($categories as $category)
+        <!-- Category Item -->
+        <a href="{{ url('/category/' . $category->category_slug) }}"
+           class="group block h-full">
+
+            <div class="h-full flex flex-col items-center justify-center bg-gray-100 rounded-xl p-4 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg group-hover:bg-white border border-transparent group-hover:border-gray-100">
+
+                <!-- Icon Container (Fixed height for alignment) -->
+                <div class="w-16 h-16 mb-3 flex items-center justify-center">
+                    <img src="{{ asset('frontend/images/icons/' . $category->icon) }}"
+                         alt="{{ $category->category }}"
+                         class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+
+                <!-- Text (Centered & clamped to 2 lines) -->
+                <h2 class="text-sm font-semibold text-gray-700 text-center leading-tight group-hover:text-green-600 line-clamp-2">
+                    {{ $category->category }}
+                </h2>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</div>
+
+
     <!-- Grid Container -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 pb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 pb-10 hidden">
         @foreach ($categories as $category)
             <!-- Individual Category Card -->
             <div class="">
                 <!-- Category Title & Icon -->
                 <a href="{{ url('/category/' . $category->category_slug) }}" class="flex items-center mb-2 group">
-                    <div class="bg-white rounded-lg p-2.5 shadow-sm flex items-center justify-center mr-1 group-hover:bg-dark_green group-hover:text-white transition-colors duration-200">
+                    <div class="bg-white rounded-lg shadow-sm flex items-center justify-center mr-1  transition-colors duration-200">
 
                         <img src="{{ asset('frontend/images/icons/' . $category->icon) }}"
                              alt="{{ $category->category }}"
-                             class="w-4 h-4 object-contain group-hover:brightness-0 group-hover:invert transition-all duration-200">
+                             class="w-4 h-4 object-contain duration-200">
                     </div>
-                    <h2 class="font-bold text-gray-900 text-base group-hover:text-dark_green transition-colors">{{ Str::limit($category->category, 20) }}</h2>
+                    <h2 class="font-bold text-gray-900 text-sm group-hover:text-dark_green transition-colors">{{ $category->category }}</h2>
                 </a>
 
                 @php
                     $subCategories = $category->subCategories;
-                    $limit = 5;
+                    $limit = 3;
                 @endphp
 
                 <!-- Subcategories List -->
@@ -39,7 +66,7 @@
                         <li class="text-sm text-gray-600 hover:text-dark_green transition-colors pl-1">
                             <a href="{{ url('/category/' . $category->category_slug . '/' . $subCategory->sub_cat_slug) }}" class="flex items-center">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-2"></span>
-                                {{ Str::limit($subCategory->sub_category, 20) }}
+                                {{ $subCategory->sub_category }}
                             </a>
                         </li>
                     @endforeach
@@ -57,16 +84,16 @@
 
                         <!-- Toggle Button -->
                         <li class="pt-1 pl-1">
-                            <button
-                                onclick="toggleExtra('{{ $category->id }}', this)"
+                            <a href="/category/{{ $category->category_slug }}"
+
                                 class="text-xs font-bold text-dark_green hover:text-green-700  tracking-wide focus:outline-none flex items-center"
                             >
-                                See all in {{ Str::limit($category->category, 20) }}
+                                See all in {{ $category->category }}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 font-semibold">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                                 </svg>
 
-                            </button>
+                            </a>
                         </li>
                     @endif
                 </ul>
@@ -75,26 +102,5 @@
     </div>
 </section>
 
-<!-- Banner Section
-<section class="mt-8">
-    <div class="rounded-xl overflow-hidden shadow-sm">
-        <img class="w-full object-cover" src="{{ asset('frontend/images/download-app.png') }}" alt="Download our App">
-    </div>
-</section>
--->
-<script>
-    function toggleExtra(categoryId, button) {
-        const items = document.querySelectorAll('.extra-' + categoryId);
-        // Check if currently hidden based on the first item
-        const isHidden = items[0]?.classList.contains('hidden');
 
-        items.forEach(item => item.classList.toggle('hidden'));
 
-        // Update button text and icon rotation
-        if (isHidden) {
-            button.innerHTML = `Show less <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 ml-1 rotate-180"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
-        } else {
-            button.innerHTML = `Show more <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 ml-1"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
-        }
-    }
-</script>

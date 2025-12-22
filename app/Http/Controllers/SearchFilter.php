@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Brands;
 use App\Models\User;
 use App\Models\State;
+use Jenssegers\Agent\Agent;
 
 class SearchFilter extends Controller
 {
@@ -78,8 +79,9 @@ class SearchFilter extends Controller
             'brand' => $request->input('brand'),
             'buydirect' => $request->input('buydirect'),
         ];
-
-        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams'));
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams','isMobile'));
     }
 
     public function location_router($location, $slug)
@@ -324,52 +326,66 @@ class SearchFilter extends Controller
     }
 
     public function loadMore(Request $request)
-    {
-        $query = Advert::with('firstImage')
-                    ->activeNotRecentlySold();
+{
+    $query = Advert::with('firstImage')
+                ->activeNotRecentlySold();
 
-        // Product search
-        if ($request->filled('product')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
-                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
-            });
-        }
-
-        // Category context
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
-        }
-
-        // Subcategory context
-        if ($request->filled('sub_category')) {
-            $query->where('sub_category', $request->sub_category);
-        }
-
-        // Brand context
-        if ($request->filled('brand')) {
-            $query->where('brand', $request->brand);
-        }
-
-        // Location context
-        if ($request->filled('location')) {
-            $query->where('state', $request->location);
-        }
-
-        // Buy direct filter
-        if ($request->filled('buydirect')) {
-            $query->where('buy_direct', $request->buydirect);
-        }
-
-        // Get paginated results
-        $ads = $query->orderWithFeatured()
-                     ->paginate(10);
-
-        return response()->json([
-            'html' => view('frontend.components.advert.advert-list', ['ads' => $ads])->render(),
-            'hasMore' => $ads->hasMorePages()
-        ]);
+    // Product search
+    if ($request->filled('product')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+              ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+        });
     }
+
+    // Category context
+    if ($request->filled('category')) {
+        $query->where('category', $request->category);
+    }
+
+    // Subcategory context
+    if ($request->filled('sub_category')) {
+        $query->where('sub_category', $request->sub_category);
+    }
+
+    // Brand context
+    if ($request->filled('brand')) {
+        $query->where('brand', $request->brand);
+    }
+
+    // Location context
+    if ($request->filled('location')) {
+        $query->where('state', $request->location);
+    }
+
+    // Buy direct filter
+    if ($request->filled('buydirect')) {
+        $query->where('buy_direct', $request->buydirect);
+    }
+
+    // Get paginated results
+    $ads = $query->orderWithFeatured()
+                 ->paginate(10);
+
+    // Render based on device type
+    $agent = new Agent();
+    $html = '';
+
+    if ($agent->isMobile()) {
+        foreach ($ads as $row) {
+            $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+        }
+    } else {
+        foreach ($ads as $row) {
+            $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+        }
+    }
+
+    return response()->json([
+        'html' => $html,
+        'hasMore' => $ads->hasMorePages()
+    ]);
+}
 
 
 }

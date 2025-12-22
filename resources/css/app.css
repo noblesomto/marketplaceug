@@ -23,7 +23,7 @@
 }
 
 .btn-secondary {
-  @apply bg-secondary_dark hover:bg-white hover:text-dark_green  hover:border-2 hover:border-dark_green text-white font-bold rounded-lg;
+  @apply bg-secondary_dark hover:bg-white hover:text-white  hover:bg-dark_green text-white font-bold rounded-lg;
 }
 
 .btn-danger {

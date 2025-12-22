@@ -1,4 +1,4 @@
-<div class="my-2 space-y-6">
+<div class="my-2 space-y-6 text-sm">
     <div class="flex  text-sm font-bold text-dark_green">
         <h5 class="">Boost Ad to get more views & sell faster (Optional)</h5>
 

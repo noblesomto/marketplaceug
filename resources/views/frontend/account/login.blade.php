@@ -7,7 +7,7 @@
         <a href="/" class="inline-block">
             <img src="{{ asset('frontend/images/logo.png') }}" class="h-12 w-auto mx-auto" alt="Marketplace NG Logo">
         </a>
-        <h2 class="mt-3 text-2xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h2>
+
         <p class="mt-2 text-sm text-gray-600">
             Log in to manage your account and ads.
         </p>
