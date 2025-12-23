@@ -352,7 +352,7 @@ class AdvertController extends Controller
             ->where('id', '!=', $ad_id)
             ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad_owner)
-            ->limit($isMobile ? 4 : 5)
+            ->limit($isMobile ? 20 : 25)
             ->get();
 
 
@@ -825,7 +825,6 @@ class AdvertController extends Controller
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $title = config('global.site_name') . ' | ' . $cat->category;
-
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['category' => $cat->id])

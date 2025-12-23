@@ -1,4 +1,3 @@
-// app/Rules/AllowedName.php
 <?php
 
 namespace App\Rules;

@@ -69,7 +69,7 @@
                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                     <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-dark_green focus:border-transparent outline-none transition-all"
-                           placeholder="080..." inputmode="numeric">
+                           placeholder="08012345678" inputmode="numeric">
                     @if ($errors->has('phone'))
                         <p class="mt-1 text-xs text-red-600">{{ $errors->first('phone') }}</p>
                     @endif
@@ -113,13 +113,6 @@
                     </div>
                 </div>
 
-                <!-- Terms -->
-                <div class="flex items-start">
-                    <input id="terms-checkbox" type="checkbox" class="h-4 w-4 text-dark_green border-gray-300 rounded focus:ring-dark_green mt-1" required>
-                    <label for="terms-checkbox" class="ml-2 text-sm text-gray-600 leading-snug">
-                        Yes, I’d like to receive email updates. You can unsubscribe at any time.
-                    </label>
-                </div>
 
                 <!-- Recaptcha Error Display -->
                 @if ($errors->has('g-recaptcha-response'))

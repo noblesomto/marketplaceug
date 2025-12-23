@@ -9,7 +9,7 @@
         @include('frontend.components.flash-message')
     </div>
 
-    <div>
+    <div class="pb-20">
         @include('frontend.components.advert.advert-list', ['ads' => $favoriteAds])
 
     </div>

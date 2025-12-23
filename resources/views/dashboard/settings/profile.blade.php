@@ -84,7 +84,7 @@
         @include('frontend.components.advert.advert-list', ['ads' => $ads])
     </div>
     @if(isset($hasMore) && $hasMore)
-        <div class="mt-3 mb-4 px-2 flex justify-center pb-20">
+        <div class="mt-3 mb-4 px-2 flex justify-center">
             <button id="load-more-btn"
                     class="bg-dark_green hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
                 <span id="load-more-text">Show More</span>
@@ -100,7 +100,7 @@
     @endif
 
 </section>
-<div class="pb-20"></div>
+<div class="pb-10"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 2; // Start from page 2 since page 1 is already loaded

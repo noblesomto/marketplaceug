@@ -22,8 +22,32 @@ use App\Helpers\ContentHelper;
 class AccountController extends Controller
 {
     /**
-     * API Login - Step 1: Validate credentials
-     * POST /api/login
+     * User login
+     *
+     * Authenticate user and return access token for API requests.
+     *
+     * @bodyParam email string required User's email address. Example: john@example.com
+     * @bodyParam password string required User's password. Example: secret123
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Login successful",
+     *   "data": {
+     *     "user": {
+     *       "id": 1,
+     *       "name": "John Doe",
+     *       "email": "john@example.com"
+     *     },
+     *     "token": "1|abc123xyz..."
+     *   }
+     * }
+     *
+     * @response 401 {
+     *   "success": false,
+     *   "message": "Invalid credentials"
+     * }
+     *
+     * @authenticated
      */
     public function login(Request $request)
     {
@@ -189,8 +213,41 @@ class AccountController extends Controller
     }
 
     /**
-     * Register
-     * POST /api/register
+     * Register a new user
+     *
+     * Create a new user account with the provided details.
+     *
+     * @bodyParam name string required The user's full name. Example: John Doe
+     * @bodyParam email string required Valid email address. Example: john@example.com
+     * @bodyParam phone string required Nigerian phone number. Example: 08012345678
+     * @bodyParam password string required Minimum 8 characters. Example: secret123
+     * @bodyParam password_confirmation string required Must match password. Example: secret123
+     * @bodyParam acc_type string required Account type (Private or Business). Example: Private
+     * @bodyParam address string required User's address. Example: 123 Herbert Macaulay Way
+     * @bodyParam city string required City name. Example: Yaba
+     * @bodyParam state string required State name. Example: Lagos
+     *
+     * @response 201 {
+     *   "success": true,
+     *   "message": "Registration successful. Please verify your email.",
+     *   "data": {
+     *     "user": {
+     *       "id": 1,
+     *       "name": "John Doe",
+     *       "email": "john@example.com",
+     *       "phone": "08012345678"
+     *     },
+     *     "token": "1|abc123xyz..."
+     *   }
+     * }
+     *
+     * @response 422 {
+     *   "success": false,
+     *   "message": "Validation failed",
+     *   "errors": {
+     *     "email": ["The email has already been taken."]
+     *   }
+     * }
      */
     public function register(Request $request)
     {

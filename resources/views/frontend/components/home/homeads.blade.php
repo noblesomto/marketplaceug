@@ -20,7 +20,7 @@
         <div class="flex justify-center m-3">
             <button id="load-more-btn-desktop"
                     class="bg-dark_green hover:bg-green-700 text-white font-semibold py-3 px-20 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
-                Show more
+                Show More
             </button>
             <div id="loading-desktop" class="hidden flex items-center">
                 <svg class="animate-spin h-8 w-8 text-dark_green mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

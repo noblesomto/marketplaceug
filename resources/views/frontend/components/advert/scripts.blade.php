@@ -19,7 +19,105 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('shareBtn').addEventListener('click', async () => {
 
+    const shareTitle = {!! json_encode($ad->ad_title ?? '') !!};
+    const shareText = {!! json_encode($ad->meta_description ?? Str::limit(strip_tags($ad->description ?? ''), 160)) !!};
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            });
+        } catch (err) {
+            console.log('Share cancelled', err);
+        }
+    } else {
+        alert("Sharing is not supported on this device.");
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.wishlist-toggle').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const adId = this.dataset.adId;
+            const svg = this.querySelector('svg');
+
+            fetch(`/user/add-wishlist/${adId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle icon
+                    if (data.in_wishlist) {
+                        svg.classList.add('fill-red-500', 'text-red-500');
+                        svg.classList.remove('fill-none');
+                        this.title = 'Remove from Wishlist';
+
+                        // SweetAlert for added to wishlist
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Wishlist!',
+                            text: data.message,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            location.reload(); // Refresh page after alert
+                        });
+                    } else {
+                        svg.classList.remove('fill-red-500', 'text-red-500');
+                        svg.classList.add('fill-none');
+                        this.title = 'Add to Wishlist';
+
+                        // SweetAlert for removed from wishlist
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Removed from Wishlist',
+                            text: data.message,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            location.reload(); // Refresh page after alert
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Error SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please login to save this item to your favorites',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            });
+        });
+    });
+});
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
@@ -65,9 +163,9 @@
 
             function updateFollowUI(isFollowing) {
                 if(isFollowing) {
-                    followBtn.innerHTML = 'Unfollow';
+                    followBtn.innerHTML = 'Unfollow Seller';
                     followBtn.classList.replace('bg-transparent', 'bg-dark_green');
-                    followBtn.classList.replace('text-dark_green', 'text-white');
+                    followBtn.classList.replace('text-dark_green', 'text-dark_green');
                 } else {
                     followBtn.innerHTML = 'Follow Seller';
                     followBtn.classList.replace('bg-dark_green', 'bg-transparent');
@@ -87,3 +185,29 @@
         }
     });
 </script>
+<script>
+    const openBtn = document.getElementById('openNavModal');
+    const closeBtn = document.getElementById('closeNavModal');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+
+    function openModal() {
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        overlay.classList.add('opacity-100');
+        modal.classList.remove('translate-y-full');
+      }, 10);
+    }
+
+    function closeModal() {
+      modal.classList.add('translate-y-full');
+      overlay.classList.remove('opacity-100');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 300);
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+  </script>

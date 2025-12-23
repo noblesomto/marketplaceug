@@ -3,7 +3,7 @@
     @if($advertsCount > 0)
     <div class="mb-10 bg-white rounded-xl p-1 shadow-sm border border-gray-100">
         <div class="flex justify-between items-end mb-4 px-1 border-b pb-2">
-            <h3 class="font-bold text-base lg:text-xl text-gray-900 ">More from {{ $ad->owner->name }}</h3>
+            <h3 class="font-bold text-base lg:text-xl text-gray-900 ">More Ads from {{ $ad->owner->name }}</h3>
             <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="text-sm font-semibold text-dark_green hover:underline">View All</a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">

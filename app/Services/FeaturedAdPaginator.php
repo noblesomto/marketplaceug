@@ -3,16 +3,26 @@ namespace App\Services;
 
 use App\Models\Advert;
 use Illuminate\Support\Collection;
+use Jenssegers\Agent\Agent;
 
 class FeaturedAdPaginator
 {
-    protected int $perPage = 20;
-    protected int $featuredLimit = 6;
+    protected int $perPage;
+    protected int $featuredLimit;
     protected array $filters = [];
+    protected bool $isMobile;
 
     public function __construct(protected int $page = 1)
     {
         $this->page = max(1, $page);
+
+        // Detect device type
+        $agent = new Agent();
+        $this->isMobile = $agent->isMobile();
+
+        // Set different values for mobile and desktop
+        $this->perPage = $this->isMobile ? 18 : 24;
+        $this->featuredLimit = $this->isMobile ? 6 : 6;
     }
 
     public function filters(array $filters): self
@@ -24,14 +34,12 @@ class FeaturedAdPaginator
     public function get(): array
     {
         $featured = collect();
-
         if ($this->page === 1) {
             $featured = $this->getFeaturedAds();
         }
 
         $regular = $this->getRegularAds();
         $ads = $this->page === 1 ? $featured->merge($regular) : $regular;
-
         $hasMore = $this->hasMoreAds();
 
         return [
@@ -116,7 +124,6 @@ class FeaturedAdPaginator
     protected function applyFilters($query)
     {
         foreach ($this->filters as $key => $value) {
-            // Add 'state_slug' to the allowed filters
             if (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']) && $value) {
                 $query->where($key, $value);
             }

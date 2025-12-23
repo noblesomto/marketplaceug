@@ -16,7 +16,7 @@
                     </span>
                 </div>
 
-                <h1 itemprop="name" class="text-xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-2">
+                <h1 itemprop="name" class="text-lg md:text-2xl font-semibold text-gray-900 leading-tight mb-2">
                     {{ $ad->ad_title ?? '' }}
                 </h1>
 
@@ -48,11 +48,11 @@
                     </div>
                 <div class="flex items-center text-sm text-gray-500 gap-4 mt-2">
 
-                    <div class="flex items-center">
+                    <div class="flex items-center" data-nosnippet>
                         <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <time datetime="{{ $ad->created_at }}">{{ $ad->created_at ? date('j M Y', strtotime($ad->created_at)) : '' }}</time>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center" data-nosnippet>
                         <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         <span>{{ $ad->views ?? 0 }} views</span>
                     </div>
@@ -63,15 +63,15 @@
             @if(!$isMobile)
             <div class="mt-4 md:mt-0 md:text-right">
                 @if($ad->category==3)
-                    <p class="text-3xl font-bold text-dark_green">{{ $ad->salary ?? '' }}</p>
+                    <p class="text-xl font-bold text-dark_green">{{ $ad->salary ?? '' }}</p>
                     <p class="text-sm text-gray-500">Salary</p>
                 @elseif($ad->category==18)
-                    <p class="text-3xl font-bold text-dark_green">{{ $ad->expected_salary ?? '' }}</p>
+                    <p class="text-xl font-bold text-dark_green">{{ $ad->expected_salary ?? '' }}</p>
                 @elseif($ad->contact_price=="yes")
-                    <p class="text-2xl font-bold text-dark_green">Contact for Price</p>
+                    <p class="text-xl font-bold text-dark_green">Contact for Price</p>
                 @else
                     <div class="flex flex-col md:items-end">
-                        <p class="text-3xl font-bold text-dark_green tracking-tight">
+                        <p class="text-xl font-bold text-dark_green tracking-tight">
                             ₦{{ number_format($ad->price ?? 0, 0, '.', ',') }}
                         </p>
                         @if($ad->price_type)

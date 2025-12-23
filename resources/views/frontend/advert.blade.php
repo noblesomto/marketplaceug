@@ -13,7 +13,7 @@
     <div class="container mx-auto max-w-7xl px-1 mt-2 pt-1">
 
         <!-- Breadcrumbs -->
-        <nav class="flex text-sm text-gray-500 mb-2 overflow-x-auto whitespace-nowrap no-scrollbar" aria-label="Breadcrumb">
+        <nav class="flex text-sm text-gray-500 mb-2 overflow-x-auto whitespace-nowrap no-scrollbar hidden lg:block" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <a href="/" class="inline-flex items-center hover:text-dark_green transition-colors">

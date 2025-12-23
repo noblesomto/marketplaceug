@@ -501,7 +501,7 @@ class AccountController extends Controller
                     $previous_url = $request->session()->get('previous_url');
                     return redirect($previous_url);
                 } else {
-                    return redirect()->action([UserController::class, 'index']);
+                    return redirect()->action([UserProfile::class, 'profile']);
                 }
             } else {
                 // ✅ SECURITY 2: Increment failed attempt counter
