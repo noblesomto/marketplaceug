@@ -45,7 +45,6 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
     ];
 
     /**
@@ -73,12 +72,22 @@ class Kernel extends HttpKernel
         'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         'adminpermission' => \App\Http\Middleware\AdminPermission::class,
         'adminrole' => \App\Http\Middleware\AdminRole::class,
-
-
         // Add Spatie Permission Middleware
         'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+
+        // ✅ API Documentation Authentication
+        'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
+    ];
+
+    /**
+     * @deprecated Use $middlewareAliases instead
+     */
+    protected $routeMiddleware = [
+        // This is deprecated in Laravel 11+
+        // Keeping for backwards compatibility
+        'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
     ];
 }

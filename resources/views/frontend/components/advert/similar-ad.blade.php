@@ -6,7 +6,7 @@
             <h3 class="font-bold text-base lg:text-xl text-gray-900 ">More Ads from {{ $ad->owner->name }}</h3>
             <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="text-sm font-semibold text-dark_green hover:underline">View All</a>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             @foreach ($adverts as $row)
                 @if($isMobile)
                     @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
@@ -22,7 +22,7 @@
     @if(count($similar_ads) > 0)
     <div class="bg-white rounded-xl p-1 shadow-sm border border-gray-100">
         <h3 class="font-bold text-base lg:text-xl text-gray-900 mb-6 border-b pb-2">Recommended for you</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             @foreach ($similar_ads as $row)
                 @if($isMobile)
                         @include('frontend.components.advert.advert-card-mobile', ['row' => $row])

@@ -197,8 +197,6 @@ class AccountController extends Controller
     {
         $request->validate([
             'acc_type' => 'required',
-            'address' => 'required',
-            'state' => 'required',
             'name' => ['required', 'string', 'max:100', new AllowedName],
             'phone' => [
                 'required',
@@ -219,9 +217,6 @@ class AccountController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'acc_type' => $request->acc_type,
-                'address' => $request->address,
-                'city' => $request->city,
-                'state' => $request->state,
                 'token' => $token,
                 'acc_status' => 0,
                 'password' => Hash::make($request->password),

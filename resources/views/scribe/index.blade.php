@@ -395,7 +395,7 @@ POST /api/adverts/{id}/apply</a>
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: December 23, 2025</li>
+        <li>Last updated: December 24, 2025</li>
     </ul>
 </div>
 
@@ -583,13 +583,11 @@ POST /api/register</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"acc_type\": \"veniam\",
-    \"address\": \"natus\",
-    \"state\": \"possimus\",
-    \"name\": \"tswnhwjlspfmyauxebuuiu\",
-    \"phone\": \"qui\",
-    \"email\": \"makenna87@example.com\",
-    \"password\": \"I.;n*i)KsIU]wIQ\"
+    \"acc_type\": \"sint\",
+    \"name\": \"jsuxrldgfebjhir\",
+    \"phone\": \"soluta\",
+    \"email\": \"rosendo.goyette@example.com\",
+    \"password\": \"^^G3YMH\'gTDjo4VxSxIb\"
 }"
 </code></pre></div>
 
@@ -606,13 +604,11 @@ const headers = {
 };
 
 let body = {
-    "acc_type": "veniam",
-    "address": "natus",
-    "state": "possimus",
-    "name": "tswnhwjlspfmyauxebuuiu",
-    "phone": "qui",
-    "email": "makenna87@example.com",
-    "password": "I.;n*i)KsIU]wIQ"
+    "acc_type": "sint",
+    "name": "jsuxrldgfebjhir",
+    "phone": "soluta",
+    "email": "rosendo.goyette@example.com",
+    "password": "^^G3YMH'gTDjo4VxSxIb"
 };
 
 fetch(url, {
@@ -716,34 +712,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="acc_type"                data-endpoint="POSTapi-register"
-               value="veniam"
+               value="sint"
                data-component="body">
     <br>
-<p>Example: <code>veniam</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="address"                data-endpoint="POSTapi-register"
-               value="natus"
-               data-component="body">
-    <br>
-<p>Example: <code>natus</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="state"                data-endpoint="POSTapi-register"
-               value="possimus"
-               data-component="body">
-    <br>
-<p>Example: <code>possimus</code></p>
+<p>Example: <code>sint</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -752,10 +724,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-register"
-               value="tswnhwjlspfmyauxebuuiu"
+               value="jsuxrldgfebjhir"
                data-component="body">
     <br>
-<p>Must not be greater than 100 characters. Example: <code>tswnhwjlspfmyauxebuuiu</code></p>
+<p>Must not be greater than 100 characters. Example: <code>jsuxrldgfebjhir</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
@@ -764,10 +736,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone"                data-endpoint="POSTapi-register"
-               value="qui"
+               value="soluta"
                data-component="body">
     <br>
-<p>Example: <code>qui</code></p>
+<p>Example: <code>soluta</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -776,10 +748,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-register"
-               value="makenna87@example.com"
+               value="rosendo.goyette@example.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>makenna87@example.com</code></p>
+<p>Must be a valid email address. Example: <code>rosendo.goyette@example.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -788,10 +760,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-register"
-               value="I.;n*i)KsIU]wIQ"
+               value="^^G3YMH'gTDjo4VxSxIb"
                data-component="body">
     <br>
-<p>Must be at least 6 characters. Example: <code>I.;n*i)KsIU]wIQ</code></p>
+<p>Must be at least 6 characters. Example: <code>^^G3YMH'gTDjo4VxSxIb</code></p>
         </div>
         </form>
 
@@ -815,8 +787,8 @@ POST /api/login</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"leda90@example.org\",
-    \"password\": \"$qXI85qO-u\"
+    \"email\": \"walter.gladyce@example.org\",
+    \"password\": \"dm=ZeR\"
 }"
 </code></pre></div>
 
@@ -833,8 +805,8 @@ const headers = {
 };
 
 let body = {
-    "email": "leda90@example.org",
-    "password": "$qXI85qO-u"
+    "email": "walter.gladyce@example.org",
+    "password": "dm=ZeR"
 };
 
 fetch(url, {
@@ -938,10 +910,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-login"
-               value="leda90@example.org"
+               value="walter.gladyce@example.org"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>leda90@example.org</code></p>
+<p>Must be a valid email address. Example: <code>walter.gladyce@example.org</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -950,10 +922,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-login"
-               value="$qXI85qO-u"
+               value="dm=ZeR"
                data-component="body">
     <br>
-<p>Must be at least 4 characters. Example: <code>$qXI85qO-u</code></p>
+<p>Must be at least 4 characters. Example: <code>dm=ZeR</code></p>
         </div>
         </form>
 
@@ -977,9 +949,9 @@ POST /api/verify-otp</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"katarina.kuhlman@example.net\",
-    \"otp\": \"020852\",
-    \"trust_device\": true
+    \"email\": \"orohan@example.org\",
+    \"otp\": \"117258\",
+    \"trust_device\": false
 }"
 </code></pre></div>
 
@@ -996,9 +968,9 @@ const headers = {
 };
 
 let body = {
-    "email": "katarina.kuhlman@example.net",
-    "otp": "020852",
-    "trust_device": true
+    "email": "orohan@example.org",
+    "otp": "117258",
+    "trust_device": false
 };
 
 fetch(url, {
@@ -1102,10 +1074,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-verify-otp"
-               value="katarina.kuhlman@example.net"
+               value="orohan@example.org"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>katarina.kuhlman@example.net</code></p>
+<p>Must be a valid email address. Example: <code>orohan@example.org</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>otp</code></b>&nbsp;&nbsp;
@@ -1114,10 +1086,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="otp"                data-endpoint="POSTapi-verify-otp"
-               value="020852"
+               value="117258"
                data-component="body">
     <br>
-<p>Must be 6 digits. Example: <code>020852</code></p>
+<p>Must be 6 digits. Example: <code>117258</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>trust_device</code></b>&nbsp;&nbsp;
@@ -1139,7 +1111,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 
@@ -1163,7 +1135,7 @@ POST /api/resend-otp</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"hal14@example.com\"
+    \"email\": \"williamson.wanda@example.net\"
 }"
 </code></pre></div>
 
@@ -1180,7 +1152,7 @@ const headers = {
 };
 
 let body = {
-    "email": "hal14@example.com"
+    "email": "williamson.wanda@example.net"
 };
 
 fetch(url, {
@@ -1284,10 +1256,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-resend-otp"
-               value="hal14@example.com"
+               value="williamson.wanda@example.net"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>hal14@example.com</code></p>
+<p>Must be a valid email address. Example: <code>williamson.wanda@example.net</code></p>
         </div>
         </form>
 
@@ -1306,7 +1278,7 @@ GET /api/verify/{email}/{token}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/verify/fbartell@example.net/corporis" \
+    --get "http://127.0.0.1:8030/api/verify/tremblay.haleigh@example.net/itaque" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1314,7 +1286,7 @@ GET /api/verify/{email}/{token}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/verify/fbartell@example.net/corporis"
+    "http://127.0.0.1:8030/api/verify/tremblay.haleigh@example.net/itaque"
 );
 
 const headers = {
@@ -1442,10 +1414,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="GETapi-verify--email---token-"
-               value="fbartell@example.net"
+               value="tremblay.haleigh@example.net"
                data-component="url">
     <br>
-<p>Example: <code>fbartell@example.net</code></p>
+<p>Example: <code>tremblay.haleigh@example.net</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>token</code></b>&nbsp;&nbsp;
@@ -1454,10 +1426,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="token"                data-endpoint="GETapi-verify--email---token-"
-               value="corporis"
+               value="itaque"
                data-component="url">
     <br>
-<p>Example: <code>corporis</code></p>
+<p>Example: <code>itaque</code></p>
             </div>
                     </form>
 
@@ -1481,7 +1453,7 @@ POST /api/resend-verification</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"kunde.estell@example.com\"
+    \"email\": \"ubreitenberg@example.com\"
 }"
 </code></pre></div>
 
@@ -1498,7 +1470,7 @@ const headers = {
 };
 
 let body = {
-    "email": "kunde.estell@example.com"
+    "email": "ubreitenberg@example.com"
 };
 
 fetch(url, {
@@ -1602,10 +1574,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-resend-verification"
-               value="kunde.estell@example.com"
+               value="ubreitenberg@example.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>kunde.estell@example.com</code></p>
+<p>Must be a valid email address. Example: <code>ubreitenberg@example.com</code></p>
         </div>
         </form>
 
@@ -1629,7 +1601,7 @@ POST /api/forgot-password</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"walsh.johnpaul@example.com\"
+    \"email\": \"fisher.beaulah@example.com\"
 }"
 </code></pre></div>
 
@@ -1646,7 +1618,7 @@ const headers = {
 };
 
 let body = {
-    "email": "walsh.johnpaul@example.com"
+    "email": "fisher.beaulah@example.com"
 };
 
 fetch(url, {
@@ -1750,10 +1722,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-forgot-password"
-               value="walsh.johnpaul@example.com"
+               value="fisher.beaulah@example.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>walsh.johnpaul@example.com</code></p>
+<p>Must be a valid email address. Example: <code>fisher.beaulah@example.com</code></p>
         </div>
         </form>
 
@@ -1772,19 +1744,19 @@ POST /api/reset-password/{user_id}/{token}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://127.0.0.1:8030/api/reset-password/omnis/velit" \
+    "http://127.0.0.1:8030/api/reset-password/ducimus/cum" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"password\": \"A-_0-%LbC`e\"
+    \"password\": \"!cl[Z\\/e{^W9&gt;qsj?\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/reset-password/omnis/velit"
+    "http://127.0.0.1:8030/api/reset-password/ducimus/cum"
 );
 
 const headers = {
@@ -1794,7 +1766,7 @@ const headers = {
 };
 
 let body = {
-    "password": "A-_0-%LbC`e"
+    "password": "!cl[Z\/e{^W9&gt;qsj?"
 };
 
 fetch(url, {
@@ -1898,10 +1870,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_id"                data-endpoint="POSTapi-reset-password--user_id---token-"
-               value="omnis"
+               value="ducimus"
                data-component="url">
     <br>
-<p>The ID of the user. Example: <code>omnis</code></p>
+<p>The ID of the user. Example: <code>ducimus</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>token</code></b>&nbsp;&nbsp;
@@ -1910,10 +1882,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="token"                data-endpoint="POSTapi-reset-password--user_id---token-"
-               value="velit"
+               value="cum"
                data-component="url">
     <br>
-<p>Example: <code>velit</code></p>
+<p>Example: <code>cum</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -1923,10 +1895,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-reset-password--user_id---token-"
-               value="A-_0-%LbC`e"
+               value="!cl[Z/e{^W9>qsj?"
                data-component="body">
     <br>
-<p>Must be at least 6 characters. Example: <code>A-_0-%LbC</code>e`</p>
+<p>Must be at least 6 characters. Example: <code>!cl[Z/e{^W9&gt;qsj?</code></p>
         </div>
         </form>
 
@@ -1952,8 +1924,8 @@ then sends it to this endpoint for verification</p>
     --header "Accept: application/json" \
     --data "{
     \"provider\": \"google\",
-    \"access_token\": \"ab\",
-    \"device_name\": \"sunt\"
+    \"access_token\": \"voluptatum\",
+    \"device_name\": \"neque\"
 }"
 </code></pre></div>
 
@@ -1971,8 +1943,8 @@ const headers = {
 
 let body = {
     "provider": "google",
-    "access_token": "ab",
-    "device_name": "sunt"
+    "access_token": "voluptatum",
+    "device_name": "neque"
 };
 
 fetch(url, {
@@ -2090,10 +2062,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="access_token"                data-endpoint="POSTapi-auth-social"
-               value="ab"
+               value="voluptatum"
                data-component="body">
     <br>
-<p>Example: <code>ab</code></p>
+<p>Example: <code>voluptatum</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>device_name</code></b>&nbsp;&nbsp;
@@ -2102,10 +2074,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="device_name"                data-endpoint="POSTapi-auth-social"
-               value="sunt"
+               value="neque"
                data-component="body">
     <br>
-<p>Example: <code>sunt</code></p>
+<p>Example: <code>neque</code></p>
         </div>
         </form>
 
@@ -2124,7 +2096,7 @@ GET /api/auth/{provider}/redirect</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/auth/aut/redirect" \
+    --get "http://127.0.0.1:8030/api/auth/dignissimos/redirect" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2132,7 +2104,7 @@ GET /api/auth/{provider}/redirect</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/auth/aut/redirect"
+    "http://127.0.0.1:8030/api/auth/dignissimos/redirect"
 );
 
 const headers = {
@@ -2260,10 +2232,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="provider"                data-endpoint="GETapi-auth--provider--redirect"
-               value="aut"
+               value="dignissimos"
                data-component="url">
     <br>
-<p>Example: <code>aut</code></p>
+<p>Example: <code>dignissimos</code></p>
             </div>
                     </form>
 
@@ -2282,7 +2254,7 @@ GET /api/auth/{provider}/callback</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/auth/eos/callback" \
+    --get "http://127.0.0.1:8030/api/auth/quo/callback" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2290,7 +2262,7 @@ GET /api/auth/{provider}/callback</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/auth/eos/callback"
+    "http://127.0.0.1:8030/api/auth/quo/callback"
 );
 
 const headers = {
@@ -2418,10 +2390,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="provider"                data-endpoint="GETapi-auth--provider--callback"
-               value="eos"
+               value="quo"
                data-component="url">
     <br>
-<p>Example: <code>eos</code></p>
+<p>Example: <code>quo</code></p>
             </div>
                     </form>
 
@@ -2707,7 +2679,7 @@ DELETE /api/trusted-device/{device_id}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://127.0.0.1:8030/api/trusted-device/corporis" \
+    "http://127.0.0.1:8030/api/trusted-device/cum" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2715,7 +2687,7 @@ DELETE /api/trusted-device/{device_id}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/trusted-device/corporis"
+    "http://127.0.0.1:8030/api/trusted-device/cum"
 );
 
 const headers = {
@@ -2824,10 +2796,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="device_id"                data-endpoint="DELETEapi-trusted-device--device_id-"
-               value="corporis"
+               value="cum"
                data-component="url">
     <br>
-<p>The ID of the device. Example: <code>corporis</code></p>
+<p>The ID of the device. Example: <code>cum</code></p>
             </div>
                     </form>
 
@@ -2890,56 +2862,56 @@ access-control-allow-origin: *
     &quot;data&quot;: {
         &quot;gallery&quot;: [
             {
-                &quot;id&quot;: 304,
-                &quot;user_id&quot;: &quot;73707&quot;,
-                &quot;ad_id&quot;: &quot;20904&quot;,
+                &quot;id&quot;: 306,
+                &quot;user_id&quot;: &quot;16063&quot;,
+                &quot;ad_id&quot;: &quot;81144&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;1_3 months female mixed breed mongrel( no breed)&quot;,
-                &quot;title_slug&quot;: &quot;1-3-months-female-mixed-breed-mongrel-no-breed&quot;,
-                &quot;category&quot;: &quot;14&quot;,
-                &quot;sub_category&quot;: &quot;17&quot;,
-                &quot;brand&quot;: &quot;349&quot;,
-                &quot;price&quot;: &quot;25000&quot;,
+                &quot;ad_title&quot;: &quot;Used wheelchair for sale in Lagos&quot;,
+                &quot;title_slug&quot;: &quot;used-wheelchair-for-sale-in-lagos&quot;,
+                &quot;category&quot;: &quot;12&quot;,
+                &quot;sub_category&quot;: &quot;99&quot;,
+                &quot;brand&quot;: &quot;2121&quot;,
+                &quot;price&quot;: &quot;100000&quot;,
                 &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: &quot;New&quot;,
+                &quot;item_condition&quot;: &quot;Locally Used&quot;,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;This is a young tamed female kitten that looking for a good home, it sad to see her go but finances are low right now, I hope u can treat her right&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Still in very solid condition&amp;nbsp;&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Shomolu&quot;,
+                &quot;lga&quot;: &quot;Surulere&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;12&quot;,
-                &quot;keyword&quot;: &quot;months, female, mixed, breed, mongrel, block, this, young, tamed, kitten&quot;,
-                &quot;meta_description&quot;: &quot;This is a young tamed female kitten that looking for a good home, it sad to see her go but finances are low right now, I hope u can treat her right&amp;nb&quot;,
-                &quot;created_at&quot;: &quot;2025-09-27T22:21:55.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-27T22:21:55.000000Z&quot;,
+                &quot;views&quot;: &quot;4&quot;,
+                &quot;keyword&quot;: &quot;used, wheelchair, sale, lagos, block, still, very, solid, conditionnbspdiv&quot;,
+                &quot;meta_description&quot;: &quot;Still in very solid condition&amp;nbsp;&quot;,
+                &quot;created_at&quot;: &quot;2025-09-28T11:52:17.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-28T11:52:17.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;shomolu&quot;,
+                &quot;state_slug&quot;: &quot;surulere&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 1002,
+                    &quot;id&quot;: 1010,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 304,
-                    &quot;uuid&quot;: &quot;40c1e7fb-effa-44c3-89af-560b363b36f9&quot;,
+                    &quot;model_id&quot;: 306,
+                    &quot;uuid&quot;: &quot;204502ce-f49d-48ff-8583-811006ce0564&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d85573477ff.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d85573477ff.webp&quot;,
+                    &quot;name&quot;: &quot;68d9136152110.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d9136152110.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 169210,
+                    &quot;size&quot;: 112100,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 1065
+                        &quot;migrated_from_id&quot;: 1073
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -2948,16 +2920,16 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:25:22.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:25:23.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1002/68d85573477ff.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:25:42.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:25:45.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1010/68d9136152110.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 281,
-                    &quot;user_id&quot;: &quot;73707&quot;,
-                    &quot;name&quot;: &quot;Bundox 1&quot;,
-                    &quot;email&quot;: &quot;nduchinedu14@gmail.com&quot;,
+                    &quot;id&quot;: 286,
+                    &quot;user_id&quot;: &quot;16063&quot;,
+                    &quot;name&quot;: &quot;Victor Vincent&quot;,
+                    &quot;email&quot;: &quot;floprodigyvincent@gmail.com&quot;,
                     &quot;phone&quot;: null,
                     &quot;address&quot;: null,
                     &quot;city&quot;: null,
@@ -2969,10 +2941,10 @@ access-control-allow-origin: *
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-27T22:14:43.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-27T22:14:43.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.89.42.190&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 17:03:52&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-28T11:47:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-28T11:47:14.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2c0f:f5c0:b02:fe7:d8c6:daff:fef0:f88a&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 12:47:14&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -2986,32 +2958,224 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 282,
-                &quot;user_id&quot;: &quot;74199&quot;,
-                &quot;ad_id&quot;: &quot;96571&quot;,
+                &quot;id&quot;: 142,
+                &quot;user_id&quot;: &quot;09206&quot;,
+                &quot;ad_id&quot;: &quot;85076&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Sinocare glucometer&quot;,
-                &quot;title_slug&quot;: &quot;sinocare-glucometer-2&quot;,
+                &quot;ad_title&quot;: &quot;Mac Book Pro = 2014&quot;,
+                &quot;title_slug&quot;: &quot;mac-book-pro-2014&quot;,
+                &quot;category&quot;: &quot;2&quot;,
+                &quot;sub_category&quot;: &quot;27&quot;,
+                &quot;brand&quot;: &quot;2349&quot;,
+                &quot;price&quot;: &quot;250000&quot;,
+                &quot;price_type&quot;: &quot;Give Away&quot;,
+                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Foreign Used MacBook Pro 2014. In good condition. Contact &lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Surulere&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;69&quot;,
+                &quot;keyword&quot;: &quot;book, 2014, block, foreign, used, macbook, good, condition, contact, 08034805968&quot;,
+                &quot;meta_description&quot;: &quot;Foreign Used MacBook Pro 2014. In good condition. Contact 08034805968 07055340775&quot;,
+                &quot;created_at&quot;: &quot;2025-09-13T10:37:38.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-15T15:05:18.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;surulere&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 449,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 142,
+                    &quot;uuid&quot;: &quot;7eb12f76-5f98-4849-8b39-07c074e4b8b0&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68c53b62b78fd.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c53b62b78fd.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 34747,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 534
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:54.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/449/68c53b62b78fd.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 84,
+                    &quot;user_id&quot;: &quot;09206&quot;,
+                    &quot;name&quot;: &quot;taste chop&quot;,
+                    &quot;email&quot;: &quot;tnc.spicyfoods@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;state&quot;: null,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.34.205&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-23 10:37:31&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 276,
+                &quot;user_id&quot;: &quot;46355&quot;,
+                &quot;ad_id&quot;: &quot;19111&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Oppo A3s for sale or swap&quot;,
+                &quot;title_slug&quot;: &quot;oppo-a3s-for-sale-or-swap&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1599&quot;,
+                &quot;price&quot;: &quot;60000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The phones fairly used, no crack, spark clean with awesome camera and battery span&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Osun&quot;,
+                &quot;lga&quot;: &quot;Osogbo&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;71&quot;,
+                &quot;keyword&quot;: &quot;oppo, sale, swap, 07034237985, block, phones, fairly, used, crack, spark&quot;,
+                &quot;meta_description&quot;: &quot;The phones fairly used, no crack, spark clean with awesome camera and battery span&quot;,
+                &quot;created_at&quot;: &quot;2025-09-25T04:00:49.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-25T04:07:47.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;osogbo&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 885,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 276,
+                    &quot;uuid&quot;: &quot;cff4e4c5-6837-4701-bee2-789642d50a18&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68d4b06160134.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d4b06160134.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 8450,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 943
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:21:50.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:21:51.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/885/68d4b06160134.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 219,
+                    &quot;user_id&quot;: &quot;46355&quot;,
+                    &quot;name&quot;: &quot;Adeyemi Abiodun&quot;,
+                    &quot;email&quot;: &quot;abioduna143@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: &quot;Surulere area&quot;,
+                    &quot;city&quot;: &quot;Oshogbo&quot;,
+                    &quot;state&quot;: &quot;Osun&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-25T03:54:45.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-25T03:54:45.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;197.211.59.62&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-25 17:39:48&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 268,
+                &quot;user_id&quot;: &quot;74199&quot;,
+                &quot;ad_id&quot;: &quot;24459&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Medical equipments&quot;,
+                &quot;title_slug&quot;: &quot;medical-equipments-2&quot;,
                 &quot;category&quot;: &quot;12&quot;,
                 &quot;sub_category&quot;: &quot;99&quot;,
-                &quot;brand&quot;: &quot;2074&quot;,
-                &quot;price&quot;: &quot;15000&quot;,
+                &quot;brand&quot;: &quot;2072&quot;,
+                &quot;price&quot;: &quot;45000&quot;,
                 &quot;price_type&quot;: &quot;Negotiable&quot;,
                 &quot;item_condition&quot;: &quot;New&quot;,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;&lt;br&gt;Sinocare Glucometer &ndash; Accurate &amp;amp; Easy Blood Sugar Monitoring&amp;nbsp;&lt;br&gt;&lt;br&gt;📌 Features:&lt;br&gt;&lt;br&gt;Quick results in just 5&ndash;10 seconds&lt;br&gt;&lt;br&gt;Requires only a small blood sample (0.6&micro;L)&lt;br&gt;&lt;br&gt;No coding needed &ndash; simple to use&lt;br&gt;&lt;br&gt;Stores up to 200&ndash;500 test results with averages&lt;br&gt;&lt;br&gt;Voice &amp;amp; visual alerts for easy reading&lt;br&gt;&lt;br&gt;Compact &amp;amp; portable design for home or travel&lt;br&gt;&lt;br&gt;Color indicator shows if result is normal, high, or low&lt;br&gt;&lt;br&gt;&lt;br&gt;📦 Package Includes:&lt;br&gt;✅ Sinocare Glucometer&lt;br&gt;✅ Test Strips&lt;br&gt;✅ Lancets &amp;amp; Lancing Device&lt;br&gt;✅ Carrying Case&lt;br&gt;✅ User Manual&lt;br&gt;&lt;br&gt;🔥 Perfect for diabetic care, home use &amp;amp; clinics.&lt;br&gt;&lt;br&gt;💰 Affordable Price &ndash; Available Now!&lt;br&gt;&lt;br&gt;📞 Call/: &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;&lt;br&gt;&amp;nbsp;Digital Baby Weighing Scale &ndash; Accurate &amp;amp; Easy to Use&lt;br&gt;&lt;br&gt;Keep track of your baby&rsquo;s growth from the comfort of your home! This baby scale is designed with precision and comfort in mind, making it perfect for newborns and toddlers.&lt;br&gt;&lt;br&gt;✅ Features:&lt;br&gt;&lt;br&gt;Accurate weight readings (in kg, g, lb, oz)&lt;br&gt;&lt;br&gt;Tare function &ndash; weigh with blanket or diaper&lt;br&gt;&lt;br&gt;Hold function &ndash; locks reading even if baby moves&lt;br&gt;&lt;br&gt;Large easy-to-read LCD display&lt;br&gt;&lt;br&gt;Comfortable curved tray for baby&rsquo;s safety&lt;br&gt;&lt;br&gt;Lightweight &amp;amp; portable (up to 20&ndash;30kg capacity)&lt;br&gt;&lt;br&gt;&amp;nbsp;Perfect for parents, hospitals, and clinics.&lt;br&gt;Available for fast delivery nationwide.&lt;br&gt;&lt;br&gt;Order now and monitor your baby&rsquo;s growth with ease!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
                 &quot;lga&quot;: &quot;Ikeja&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;41&quot;,
-                &quot;keyword&quot;: &quot;sinocare, glucometer, block, brsinocare, accurate, easy, blood, sugar, monitoringnbspbrbr, featuresbrbrquick&quot;,
-                &quot;meta_description&quot;: &quot;Sinocare Glucometer &ndash; Accurate &amp;amp; Easy Blood Sugar Monitoring&amp;nbsp;📌 Features:Quick results in just 5&ndash;10 secondsRequires only a small blood sample&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T09:41:40.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T09:41:40.000000Z&quot;,
+                &quot;views&quot;: &quot;21&quot;,
+                &quot;keyword&quot;: &quot;medical, equipments, block, brnbspdigital, baby, weighing, scale, accurate, easy, usebrbrkeep&quot;,
+                &quot;meta_description&quot;: &quot;&amp;nbsp;Digital Baby Weighing Scale &ndash; Accurate &amp;amp; Easy to UseKeep track of your baby&rsquo;s growth from the comfort of your home! This baby scale is desig&quot;,
+                &quot;created_at&quot;: &quot;2025-09-24T16:17:18.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-24T16:17:18.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
@@ -3021,21 +3185,21 @@ access-control-allow-origin: *
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 903,
+                    &quot;id&quot;: 870,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 282,
-                    &quot;uuid&quot;: &quot;e6a99824-e9dd-4f76-9741-bfec4200b5b9&quot;,
+                    &quot;model_id&quot;: 268,
+                    &quot;uuid&quot;: &quot;f12f8d15-5107-4a04-9903-ea7320c4b77f&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d50044d5557.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d50044d5557.webp&quot;,
+                    &quot;name&quot;: &quot;68d40b7eaf9da.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d40b7eaf9da.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 58420,
+                    &quot;size&quot;: 5496,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 961
+                        &quot;migrated_from_id&quot;: 923
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -3044,9 +3208,9 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:22:19.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:21.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/903/68d50044d5557.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:21:24.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:21:25.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/870/68d40b7eaf9da.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -3082,608 +3246,32 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 253,
-                &quot;user_id&quot;: &quot;41637&quot;,
-                &quot;ad_id&quot;: &quot;95307&quot;,
+                &quot;id&quot;: 83,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;29147&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Ultrasonic scaler&quot;,
-                &quot;title_slug&quot;: &quot;ultrasonic-scaler&quot;,
-                &quot;category&quot;: &quot;12&quot;,
-                &quot;sub_category&quot;: &quot;99&quot;,
-                &quot;brand&quot;: &quot;2067&quot;,
-                &quot;price&quot;: &quot;180000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: &quot;New&quot;,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The piezoelectric working way ensures that the machine always work on a steady power, high efficiency and generates little heat.&lt;br&gt;Digitally controlled, automatic frequency tracking ensures that the machine always work on the best frequency and more steadily.&lt;br&gt;The design of automatic amplitude compensation function reduces patients&rsquo; discomfort.&lt;br&gt;The scaler tip is made of high strength stainless steel.&lt;br&gt;The atomized spraying design forms the cavitation, and in conditions of water it will form oxygenated water to release the new eco-pure oxygen, which can efficiently inhibit periodontal anaerobic bacteria against periodontal diseases.&lt;br&gt;Ergonomic design of handpiece makes it easy for long time use.&lt;br&gt;Cable of the handpiece is made of imported silica gel tube, soft and durable.&lt;br&gt;Axis of the handpiece is made of high-quality titanium alloy, strong and durable.&lt;br&gt;Wide range power offers more convenience for operation.&lt;br&gt;Beautiful appearance, small and light, exquisite craft.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;28&quot;,
-                &quot;keyword&quot;: &quot;ultrasonic, scaler, block, piezoelectric, working, ensures, that, machine, always, work&quot;,
-                &quot;meta_description&quot;: &quot;The piezoelectric working way ensures that the machine always work on a steady power, high efficiency and generates little heat.Digitally controlled,&quot;,
-                &quot;created_at&quot;: &quot;2025-09-24T12:53:42.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-24T12:53:42.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 806,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 253,
-                    &quot;uuid&quot;: &quot;93ce7346-b0cd-4441-9402-6ce85ba7468f&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d3dbc6364cb.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d3dbc6364cb.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 16094,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 859
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:19:49.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:19:52.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/806/68d3dbc6364cb.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 182,
-                    &quot;user_id&quot;: &quot;41637&quot;,
-                    &quot;name&quot;: &quot;Medical Equipment Nigeria Limited&quot;,
-                    &quot;email&quot;: &quot;ezegbulam.elizabeth123@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09135547811&quot;,
-                    &quot;address&quot;: &quot;Fadeyi Aladura Street off Balogun Bus stop Ikeja Lagos&quot;,
-                    &quot;city&quot;: &quot;Lagos&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: null,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: &quot;1758715439.jpg&quot;,
-                    &quot;verified&quot;: &quot;yes&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-23T10:23:06.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-23T13:25:30.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;105.113.64.245&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 23:00:23&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: &quot;Zenith Bank&quot;,
-                    &quot;bank_code&quot;: &quot;057&quot;,
-                    &quot;account_name&quot;: &quot;www medical Equipment Nigeria Limited&quot;,
-                    &quot;account_number&quot;: &quot;1016817244&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 286,
-                &quot;user_id&quot;: &quot;80522&quot;,
-                &quot;ad_id&quot;: &quot;32544&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;2017 Toyota Corolla&quot;,
-                &quot;title_slug&quot;: &quot;2017-toyota-corolla&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;14500000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;2017 Toyota Corolla&lt;br&gt;All components working well&lt;br&gt;Neat interior&amp;nbsp;&lt;br&gt;First body&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Enugu&quot;,
-                &quot;lga&quot;: &quot;Uzo Uwani&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;20&quot;,
-                &quot;keyword&quot;: &quot;2017, toyota, corolla, block, corollabrall, components, working, wellbrneat, interiornbspbrfirst, bodynbspdiv&quot;,
-                &quot;meta_description&quot;: &quot;2017 Toyota CorollaAll components working wellNeat interior&amp;nbsp;First body&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T10:52:08.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T10:52:08.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;uzo-uwani&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 907,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 286,
-                    &quot;uuid&quot;: &quot;d3128131-6b37-4ce8-b132-b8a3ac95a680&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d510c874c79.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d510c874c79.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 98546,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 970
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:22:28.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:29.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/907/68d510c874c79.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 207,
-                    &quot;user_id&quot;: &quot;80522&quot;,
-                    &quot;name&quot;: &quot;Uche Chidiebere&quot;,
-                    &quot;email&quot;: &quot;chiddorz@yahoo.co.uk&quot;,
-                    &quot;phone&quot;: &quot;08037660814&quot;,
-                    &quot;address&quot;: &quot;A3 Ojukwu Brown Avenue By 1st Bus Stop Irete Owerri&quot;,
-                    &quot;city&quot;: &quot;Owerri&quot;,
-                    &quot;state&quot;: &quot;Imo&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;QU338qL01GrO2ADZ18VvPM1Ox0IskG0ZDpZsNZXF&quot;,
-                    &quot;otp&quot;: 503803,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-24T16:23:34.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T16:23:34.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.90.81.12&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 11:40:21&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 27,
-                &quot;user_id&quot;: &quot;82248&quot;,
-                &quot;ad_id&quot;: &quot;28612&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;MacBook Pro 13\&quot; (2015) &ndash; Functional &amp; well-maintained&quot;,
-                &quot;title_slug&quot;: &quot;macbook-pro-13-2015-functional-well-maintained&quot;,
-                &quot;category&quot;: &quot;2&quot;,
-                &quot;sub_category&quot;: &quot;27&quot;,
-                &quot;brand&quot;: &quot;2349&quot;,
-                &quot;price&quot;: &quot;250000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;For sale here is a MacBook Pro from 2015, which has served reliably ever since. Device details: &bull; Intel Core i5 processor &bull; 8 GB RAM &bull; 256 GB SSD &bull; 13.3-inch Retina display &bull; 2x Thunderbolt &bull; 2x USB 3.0 &bull; HDMI &bull; SD card reader **Condition:** &bull; Very well-preserved casing &bull; Slight signs of wear on the lower corners of the display (does not affect functionality) &bull; Battery with \&quot;service recommended\&quot; message (but still holds a charge) &bull; Original charging cable included . A reliable work tool for daily use. If you have any questions, please contact us.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;185&quot;,
-                &quot;keyword&quot;: &quot;macbook, 2015, functional, well, maintained, divfor, sale, here, from, which&quot;,
-                &quot;meta_description&quot;: &quot;For sale here is a MacBook Pro from 2015, which has served reliably ever since. Device details: &bull; Intel Core i5 processor &bull; 8 GB RAM &bull; 256 GB SSD &bull; 13&quot;,
-                &quot;created_at&quot;: &quot;2025-08-10T08:39:35.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-05T18:20:44.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 22,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 27,
-                    &quot;uuid&quot;: &quot;c6396ba9-9b42-4a0d-bf05-213de32734d6&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68985ac7560e7.png&quot;,
-                    &quot;file_name&quot;: &quot;68985ac7560e7.png&quot;,
-                    &quot;mime_type&quot;: &quot;image/png&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 347310,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 77
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:50:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:50:01.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/22/68985ac7560e7.png&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 14,
-                    &quot;user_id&quot;: &quot;82248&quot;,
-                    &quot;name&quot;: &quot;Jayson&quot;,
-                    &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08137254596&quot;,
-                    &quot;address&quot;: &quot;Ikeja Lagos&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
-                    &quot;otp&quot;: 256937,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
-                    &quot;bank_code&quot;: &quot;058&quot;,
-                    &quot;account_name&quot;: &quot;Jerry okoro&quot;,
-                    &quot;account_number&quot;: &quot;0023453459&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 58,
-                &quot;user_id&quot;: &quot;82248&quot;,
-                &quot;ad_id&quot;: &quot;80815&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Customer Support Representative&quot;,
-                &quot;title_slug&quot;: &quot;customer-support-representative&quot;,
-                &quot;category&quot;: &quot;3&quot;,
-                &quot;sub_category&quot;: &quot;213&quot;,
-                &quot;brand&quot;: &quot;147&quot;,
-                &quot;price&quot;: null,
+                &quot;ad_title&quot;: &quot;Apple iPhone SE, 64 GB, Black - TOP condition with original packaging&quot;,
+                &quot;title_slug&quot;: &quot;apple-iphone-se-64-gb-black-top-condition-with-original-packaging&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;128000&quot;,
                 &quot;price_type&quot;: &quot;Fixed&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;We&rsquo;re a growing company dedicated to delivering excellent service &mdash; and we&rsquo;re looking for a friendly, reliable Customer Support Rep to join our team.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;strong&gt;What You&rsquo;ll Do:&lt;/strong&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;Assist customers via email, chat, and &lt;/li&gt;&lt;li&gt;Resolve inquiries and provide product/service guidance&lt;/li&gt;&lt;li&gt;Track and escalate issues when needed&lt;/li&gt;&lt;li&gt;Ensure every customer has a positive experience&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;br&gt;&lt;strong&gt;What We&rsquo;re Looking For:&lt;/strong&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;Strong communication and problem-solving skills&lt;/li&gt;&lt;li&gt;Empathy and patience in handling customer needs&lt;/li&gt;&lt;li&gt;Tech-savvy and comfortable with support tools&lt;/li&gt;&lt;li&gt;Previous experience in customer support is a plus&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;br&gt;&lt;strong&gt;Perks:&lt;/strong&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;Flexible work arrangements&lt;/li&gt;&lt;li&gt;Competitive salary&lt;/li&gt;&lt;li&gt;Supportive team culture and growth opportunities&lt;/li&gt;&lt;/ul&gt;&quot;,
+                &quot;description&quot;: &quot;Selling this fantastic iPhone SE in black with 64 GB in its original packaging. The is fully functional, in excellent condition, almost like new, with no scratches or anything similar. See pictures. The display always had a film on it, which is still in place. Battery capacity: 86% The is unlocked and completely reset. See photo for details.&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;178&quot;,
-                &quot;keyword&quot;: &quot;customer, support, representative, divwere, growing, company, dedicated, delivering, excellent, service&quot;,
-                &quot;meta_description&quot;: &quot;We&rsquo;re a growing company dedicated to delivering excellent service &mdash; and we&rsquo;re looking for a friendly, reliable Customer Support Rep to join our team.W&quot;,
-                &quot;created_at&quot;: &quot;2025-08-18T09:11:35.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-08-18T12:04:35.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: &quot;2025-08-18 12:58:15&quot;,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: &quot;₦60,000 - ₦80,000&quot;,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 7,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 58,
-                    &quot;uuid&quot;: &quot;835b704e-58db-45e0-aefc-f811b0854b02&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;jobs.png&quot;,
-                    &quot;file_name&quot;: &quot;jobs.png&quot;,
-                    &quot;mime_type&quot;: &quot;image/png&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 9566,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 242
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-23T13:04:07.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-23T13:04:07.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/7/jobs.png&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 14,
-                    &quot;user_id&quot;: &quot;82248&quot;,
-                    &quot;name&quot;: &quot;Jayson&quot;,
-                    &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08137254596&quot;,
-                    &quot;address&quot;: &quot;Ikeja Lagos&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
-                    &quot;otp&quot;: 256937,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
-                    &quot;bank_code&quot;: &quot;058&quot;,
-                    &quot;account_name&quot;: &quot;Jerry okoro&quot;,
-                    &quot;account_number&quot;: &quot;0023453459&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 289,
-                &quot;user_id&quot;: &quot;84178&quot;,
-                &quot;ad_id&quot;: &quot;93695&quot;,
-                &quot;ad_type&quot;: &quot;Commercial&quot;,
-                &quot;ad_title&quot;: &quot;Clean Toyota highlander model&quot;,
-                &quot;title_slug&quot;: &quot;clean-toyota-highlander-model&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;6850000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Cross River&quot;,
-                &quot;lga&quot;: &quot;Ikom&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
                 &quot;views&quot;: &quot;63&quot;,
-                &quot;keyword&quot;: &quot;clean, toyota, highlander, model, block, affordable, neat, sells, good, working&quot;,
-                &quot;meta_description&quot;: &quot;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T13:01:21.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T13:01:21.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikom&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 924,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 289,
-                    &quot;uuid&quot;: &quot;ce55c376-e9b9-4884-9030-3e4b35bf43bd&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d52f11e0078.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d52f11e0078.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 55866,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 987
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:23:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:23:02.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/924/68d52f11e0078.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 211,
-                    &quot;user_id&quot;: &quot;84178&quot;,
-                    &quot;name&quot;: &quot;Clifford Eze&quot;,
-                    &quot;email&quot;: &quot;cliffordolowojaye@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09031933213&quot;,
-                    &quot;address&quot;: &quot;+234&quot;,
-                    &quot;city&quot;: &quot;Ikom&quot;,
-                    &quot;state&quot;: &quot;Cross River&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;qevOdBWRcbSFyW68DFMEqRoVnTC9or2chf0jPvAK&quot;,
-                    &quot;otp&quot;: 429481,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-24T21:41:12.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-25T08:42:48.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.90.79.96&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 19:40:46&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 155,
-                &quot;user_id&quot;: &quot;16735&quot;,
-                &quot;ad_id&quot;: &quot;46289&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Big Elepaq&quot;,
-                &quot;title_slug&quot;: &quot;big-elepaq&quot;,
-                &quot;category&quot;: &quot;2&quot;,
-                &quot;sub_category&quot;: &quot;40&quot;,
-                &quot;brand&quot;: &quot;2300&quot;,
-                &quot;price&quot;: &quot;700000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: &quot;Locally Used&quot;,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Comes with a voltmeter, key start (electric start), multiple AC outlets, and a Firman battery.&lt;br&gt;👉 This gen is heavy-duty &mdash; strong enough to comfortably power appliances like fridge, freezer, TV, fans, pumping machine, and even small AC units at the same time.&lt;br&gt;&lt;br&gt;Comes with a voltmeter, key start (electric start), multiple AC outlets, and a Firman battery.&lt;br&gt;👉 This gen is heavy-duty &mdash; strong enough to comfortably power appliances like fridge, freezer, TV, fans, pumping machine, and even small AC units at the same time.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Ogun&quot;,
-                &quot;lga&quot;: &quot;Ifo&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Ship&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;127&quot;,
-                &quot;keyword&quot;: &quot;elepaq, block, comes, with, voltmeter, start, electric, multiple, outlets, firman&quot;,
-                &quot;meta_description&quot;: &quot;Comes with a voltmeter, key start (electric start), multiple AC outlets, and a Firman battery.👉 This gen is heavy-duty &mdash; strong enough to comfortably&quot;,
-                &quot;created_at&quot;: &quot;2025-09-14T15:25:52.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-14T15:25:52.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ifo&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 482,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 155,
-                    &quot;uuid&quot;: &quot;dac6299c-6141-4a64-9fbb-9c7345aec3ae&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c6d070e971c.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c6d070e971c.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 568656,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 569
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:56:50.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:56:53.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/482/68c6d070e971c.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 99,
-                    &quot;user_id&quot;: &quot;16735&quot;,
-                    &quot;name&quot;: &quot;Emmanuel victor Ajao&quot;,
-                    &quot;email&quot;: &quot;emmanuelvictor6440@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08124057263&quot;,
-                    &quot;address&quot;: &quot;Ifo iyana Coker&quot;,
-                    &quot;city&quot;: &quot;Ifo&quot;,
-                    &quot;state&quot;: &quot;Ogun&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;isEQh9WRZMwvAs19JpRQrs19wYp5oMkKDcW9rRgB&quot;,
-                    &quot;otp&quot;: 980157,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-14T15:21:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-14T15:21:01.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.88.109.194&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-14 18:37:21&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 105,
-                &quot;user_id&quot;: &quot;84123&quot;,
-                &quot;ad_id&quot;: &quot;36373&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Samsung Galaxy A35 5G&quot;,
-                &quot;title_slug&quot;: &quot;samsung-galaxy-a35-5g&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;13&quot;,
-                &quot;price&quot;: &quot;320000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Selling due to new upgrade, no damage and fully functional, with charger and leather case.&lt;br&gt;&lt;br&gt;The device can also be inspected on-site&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;85&quot;,
-                &quot;keyword&quot;: &quot;samsung, galaxy, block, selling, upgrade, damage, fully, functional, with, charger&quot;,
-                &quot;meta_description&quot;: &quot;Selling due to new upgrade, no damage and fully functional, with charger and leather case.The device can also be inspected on-site&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-04T14:32:09.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-04T14:32:09.000000Z&quot;,
+                &quot;keyword&quot;: &quot;apple, iphone, black, condition, with, original, packaging, selling, this, fantastic&quot;,
+                &quot;meta_description&quot;: &quot;Selling this fantastic iPhone SE in black with 64 GB in its original packaging.\r\nThe phone is fully functional, in excellent condition, almost like ne&quot;,
+                &quot;created_at&quot;: &quot;2025-09-03T13:07:49.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-03T13:07:49.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;No&quot;,
@@ -3693,21 +3281,21 @@ access-control-allow-origin: *
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 310,
+                    &quot;id&quot;: 258,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 105,
-                    &quot;uuid&quot;: &quot;f06ffa6a-5874-4516-857f-4de00b621e01&quot;,
+                    &quot;model_id&quot;: 83,
+                    &quot;uuid&quot;: &quot;1a8e0c54-df17-4840-8296-f3144a6f836d&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68b994d9cede4.webp&quot;,
-                    &quot;file_name&quot;: &quot;68b994d9cede4.webp&quot;,
+                    &quot;name&quot;: &quot;68b82f95455de.webp&quot;,
+                    &quot;file_name&quot;: &quot;68b82f95455de.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 31364,
+                    &quot;size&quot;: 16564,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 377
+                        &quot;migrated_from_id&quot;: 325
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -3716,9 +3304,9 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:53:17.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:53:17.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/310/68b994d9cede4.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:52:47.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:52:48.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/258/68b82f95455de.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -3754,56 +3342,56 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 182,
-                &quot;user_id&quot;: &quot;49175&quot;,
-                &quot;ad_id&quot;: &quot;98051&quot;,
+                &quot;id&quot;: 307,
+                &quot;user_id&quot;: &quot;20758&quot;,
+                &quot;ad_id&quot;: &quot;79565&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Window Blinds&quot;,
-                &quot;title_slug&quot;: &quot;window-blinds&quot;,
-                &quot;category&quot;: &quot;9&quot;,
-                &quot;sub_category&quot;: &quot;48&quot;,
-                &quot;brand&quot;: &quot;2917&quot;,
-                &quot;price&quot;: &quot;12000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                &quot;ad_title&quot;: &quot;Veterinary services in lekki,aja axis&quot;,
+                &quot;title_slug&quot;: &quot;veterinary-services-in-lekki-aja-axis&quot;,
+                &quot;category&quot;: &quot;14&quot;,
+                &quot;sub_category&quot;: &quot;18&quot;,
+                &quot;brand&quot;: &quot;413&quot;,
+                &quot;price&quot;: &quot;15000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: &quot;New&quot;,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;7 Window Blinds Different Sizes And Designs&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I treat all kinds of animal.&lt;br&gt;Vaccination of all kinds of animal&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Eti Osa&quot;,
+                &quot;lga&quot;: &quot;Lagos Island&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;37&quot;,
-                &quot;keyword&quot;: &quot;window, blinds, block, different, sizes, designsnbspdiv&quot;,
-                &quot;meta_description&quot;: &quot;7 Window Blinds Different Sizes And Designs&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-16T18:02:24.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-16T18:02:24.000000Z&quot;,
+                &quot;views&quot;: &quot;9&quot;,
+                &quot;keyword&quot;: &quot;veterinary, services, lekkiaja, axis, block, treat, kinds, animalbrvaccination, animaldiv&quot;,
+                &quot;meta_description&quot;: &quot;I treat all kinds of animal.Vaccination of all kinds of animal&quot;,
+                &quot;created_at&quot;: &quot;2025-09-28T18:02:51.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-28T18:02:51.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;eti-osa&quot;,
+                &quot;state_slug&quot;: &quot;lagos-island&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 541,
+                    &quot;id&quot;: 1012,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 182,
-                    &quot;uuid&quot;: &quot;fff7e77e-a2ee-451f-99fa-9abd7210eb38&quot;,
+                    &quot;model_id&quot;: 307,
+                    &quot;uuid&quot;: &quot;b21b079b-f413-4309-a221-12e8829cdaaf&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c9982076f40.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c9982076f40.webp&quot;,
+                    &quot;name&quot;: &quot;68d96a3bb96c6.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d96a3bb96c6.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 159786,
+                    &quot;size&quot;: 73630,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 641
+                        &quot;migrated_from_id&quot;: 1075
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -3812,20 +3400,20 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:58:18.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:58:20.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/541/68c9982076f40.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:25:48.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:25:52.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1012/68d96a3bb96c6.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 134,
-                    &quot;user_id&quot;: &quot;49175&quot;,
-                    &quot;name&quot;: &quot;Ndiana Attai&quot;,
-                    &quot;email&quot;: &quot;attaindiana1@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09031116819&quot;,
-                    &quot;address&quot;: &quot;B27 Victoria Bay 1 Annex&quot;,
-                    &quot;city&quot;: &quot;Lekki&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;id&quot;: 289,
+                    &quot;user_id&quot;: &quot;20758&quot;,
+                    &quot;name&quot;: &quot;Chukwudi Obinna&quot;,
+                    &quot;email&quot;: &quot;slaggycat@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;state&quot;: null,
                     &quot;email_verified_at&quot;: null,
                     &quot;acc_type&quot;: &quot;Private&quot;,
                     &quot;token&quot;: null,
@@ -3833,17 +3421,401 @@ access-control-allow-origin: *
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-16T16:38:38.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-16T16:38:38.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.89.47.216&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 13:25:49&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-28T17:57:45.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-28T17:57:45.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.88.107.96&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 18:57:45&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: &quot;OPay Digital Services Limited (OPay)&quot;,
-                    &quot;bank_code&quot;: &quot;999992&quot;,
-                    &quot;account_name&quot;: &quot;Attai Ndiana&quot;,
-                    &quot;account_number&quot;: &quot;9031116819&quot;,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 283,
+                &quot;user_id&quot;: &quot;93337&quot;,
+                &quot;ad_id&quot;: &quot;70452&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Original Honey 5L&quot;,
+                &quot;title_slug&quot;: &quot;original-honey-5l&quot;,
+                &quot;category&quot;: &quot;17&quot;,
+                &quot;sub_category&quot;: &quot;86&quot;,
+                &quot;brand&quot;: &quot;2777&quot;,
+                &quot;price&quot;: &quot;39500&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: &quot;New&quot;,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Essence original Honey is pure natural and Unadulterated, rich in antioxidants and packed with lots of essential benefits.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Shomolu&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;19&quot;,
+                &quot;keyword&quot;: &quot;original, honey, block, essence, pure, natural, unadulterated, rich, antioxidants, packed&quot;,
+                &quot;meta_description&quot;: &quot;Essence original Honey is pure natural and Unadulterated, rich in antioxidants and packed with lots of essential benefits.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-25T09:44:46.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-25T09:44:46.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;shomolu&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 904,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 283,
+                    &quot;uuid&quot;: &quot;3e714e41-3446-4b00-b4b7-6a95aa3ebccc&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68d500fe591ab.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d500fe591ab.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 405004,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 962
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:22:21.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:24.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/904/68d500fe591ab.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 226,
+                    &quot;user_id&quot;: &quot;93337&quot;,
+                    &quot;name&quot;: &quot;adeshola omolade&quot;,
+                    &quot;email&quot;: &quot;yoyeensolaone1@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;state&quot;: null,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-25T09:24:33.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-25T09:24:33.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.22.180&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-25 10:35:27&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 285,
+                &quot;user_id&quot;: &quot;92136&quot;,
+                &quot;ad_id&quot;: &quot;30577&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Very neat iPhone 7 plus for sale&quot;,
+                &quot;title_slug&quot;: &quot;very-neat-iphone-7-plus-for-sale-2&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;105&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;iPhone 7 plus available for sale&amp;nbsp;&lt;br&gt;Touch ID is working&lt;br&gt;Battery percent is 100&lt;br&gt;Everything is working perfectly&lt;br&gt;The volume button is stiff but the power button is working well&lt;br&gt;The screen is neat you just have to remove the screen guide&amp;nbsp;&lt;br&gt;I&#039;m selling with the pouch&lt;br&gt;Location:Igando&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Alimosho&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;41&quot;,
+                &quot;keyword&quot;: &quot;very, neat, iphone, plus, sale, block, available, salenbspbrtouch, workingbrbattery, percent&quot;,
+                &quot;meta_description&quot;: &quot;iPhone 7 plus available for sale&amp;nbsp;Touch ID is workingBattery percent is 100Everything is working perfectlyThe volume button is stiff but the power&quot;,
+                &quot;created_at&quot;: &quot;2025-09-25T10:37:22.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-25T10:37:22.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;alimosho&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 905,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 285,
+                    &quot;uuid&quot;: &quot;81f0932a-a496-4a0e-83ec-af573b6b19bf&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68d50d522a6fe.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d50d522a6fe.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 36828,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 968
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:22:24.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:26.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/905/68d50d522a6fe.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 158,
+                    &quot;user_id&quot;: &quot;92136&quot;,
+                    &quot;name&quot;: &quot;Folasade Soboyede Olusesi Soboyede Olusesi&quot;,
+                    &quot;email&quot;: &quot;folasade39yahoo.com@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;state&quot;: null,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-20T13:13:23.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-20T13:13:23.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.22.206&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 15:09:28&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 117,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;17072&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Apple Watch Series 3 Silver/Black&quot;,
+                &quot;title_slug&quot;: &quot;apple-watch-series-3-silver-black&quot;,
+                &quot;category&quot;: &quot;5&quot;,
+                &quot;sub_category&quot;: &quot;238&quot;,
+                &quot;brand&quot;: &quot;3741&quot;,
+                &quot;price&quot;: &quot;95000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;The watch is in a very good condition&lt;br&gt;Incl. original box, cable and bracelet.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;73&quot;,
+                &quot;keyword&quot;: &quot;apple, watch, series, silverblack, divthe, very, good, conditionbrincl, original, cable&quot;,
+                &quot;meta_description&quot;: &quot;The watch is in a very good conditionIncl. original box, cable and bracelet.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-07T13:58:18.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-07T13:58:28.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 351,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 117,
+                    &quot;uuid&quot;: &quot;1373b795-7871-4dc3-a6cc-bf1a34a80038&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68bd816aa5a5c.webp&quot;,
+                    &quot;file_name&quot;: &quot;68bd816aa5a5c.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 85014,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 424
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:54:07.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:54:08.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/351/68bd816aa5a5c.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 34,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08033332401&quot;,
+                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                    &quot;otp&quot;: 602971,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 140,
+                &quot;user_id&quot;: &quot;78606&quot;,
+                &quot;ad_id&quot;: &quot;26082&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;iPhone 13 128gb&quot;,
+                &quot;title_slug&quot;: &quot;iphone-13&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;408000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;No, replaced parts. No cracks, bh 88, neatly used.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Rivers&quot;,
+                &quot;lga&quot;: &quot;Oyigbo&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;76&quot;,
+                &quot;keyword&quot;: &quot;iphone, 128gb, block, replaced, parts, cracks, neatly, useddiv&quot;,
+                &quot;meta_description&quot;: &quot;No, replaced parts. No cracks, bh 88, neatly used.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-13T09:00:19.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-13T09:04:48.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;oyigbo&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 431,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 140,
+                    &quot;uuid&quot;: &quot;de9b0fce-13ab-4543-be74-f2533f524715&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68c5249306b0b.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c5249306b0b.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 70778,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 516
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:38.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:39.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/431/68c5249306b0b.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 82,
+                    &quot;user_id&quot;: &quot;78606&quot;,
+                    &quot;name&quot;: &quot;Chris Emmanuel&quot;,
+                    &quot;email&quot;: &quot;seminarcinema303@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08147360271&quot;,
+                    &quot;address&quot;: &quot;Oyigbo&quot;,
+                    &quot;city&quot;: &quot;Oyigbo&quot;,
+                    &quot;state&quot;: &quot;Rivers&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T08:55:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-13T08:55:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.90.101.199&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-13 09:55:01&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
                     &quot;google_id&quot;: null,
                     &quot;facebook_id&quot;: null,
                     &quot;otp_expires_at&quot;: null
@@ -3851,6 +3823,102 @@ access-control-allow-origin: *
             }
         ],
         &quot;featured&quot;: [
+            {
+                &quot;id&quot;: 330,
+                &quot;user_id&quot;: &quot;82261&quot;,
+                &quot;ad_id&quot;: &quot;74414&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Samsung Galaxy A16&quot;,
+                &quot;title_slug&quot;: &quot;samsung-galaxy-a16&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;13&quot;,
+                &quot;price&quot;: &quot;1000000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I have a new for sale&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Abia&quot;,
+                &quot;lga&quot;: &quot;Aba South&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;Yes&quot;,
+                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;2&quot;,
+                &quot;keyword&quot;: &quot;samsung, galaxy, block, have, phone, salediv&quot;,
+                &quot;meta_description&quot;: &quot;I have a new phone for sale&quot;,
+                &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-11-30T07:47:29.000000Z&quot;,
+                &quot;sold&quot;: &quot;Yes&quot;,
+                &quot;sold_date&quot;: &quot;2025-11-30 08:47:29&quot;,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;aba-south&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 1107,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 330,
+                    &quot;uuid&quot;: &quot;db7a49c4-4603-4215-aeed-51fa070dcb35&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;Winter is coming chinese&quot;,
+                    &quot;file_name&quot;: &quot;691e022a615a4.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 314067,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;original_name&quot;: &quot;Winter is coming chinese.jpg&quot;
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-11-19T17:45:15.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1107/691e022a615a4.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 2,
+                    &quot;user_id&quot;: &quot;82261&quot;,
+                    &quot;name&quot;: &quot;Noble&quot;,
+                    &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;07031525788&quot;,
+                    &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
+                    &quot;city&quot;: &quot;Abakaliki&quot;,
+                    &quot;state&quot;: &quot;Enugu&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
+                    &quot;notification&quot;: &quot;yes&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
+                    &quot;bank_name&quot;: &quot;veritas&quot;,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: &quot;Noble Somto&quot;,
+                    &quot;account_number&quot;: &quot;030454545&quot;,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
             {
                 &quot;id&quot;: 334,
                 &quot;user_id&quot;: &quot;82261&quot;,
@@ -3936,103 +4004,7 @@ access-control-allow-origin: *
                     &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
                     &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
                     &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
-                    &quot;bank_name&quot;: &quot;veritas&quot;,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: &quot;Noble Somto&quot;,
-                    &quot;account_number&quot;: &quot;030454545&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 328,
-                &quot;user_id&quot;: &quot;82261&quot;,
-                &quot;ad_id&quot;: &quot;81404&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Toyota Highlander for sale&quot;,
-                &quot;title_slug&quot;: &quot;toyota-highlander-for-sale&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;1000000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;FCT - Abuja&quot;,
-                &quot;lga&quot;: &quot;Gwagwalada&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;Yes&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;83&quot;,
-                &quot;keyword&quot;: &quot;toyota, highlander, sale, block, affordable, clean, neat, model, sells, good&quot;,
-                &quot;meta_description&quot;: &quot;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-11-02T17:34:22.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-12-12T14:13:02.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;gwagwalada&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 1102,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 328,
-                    &quot;uuid&quot;: &quot;8986e5fb-9dc7-4543-b5dc-75f5667cb234&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d52f121818a-large&quot;,
-                    &quot;file_name&quot;: &quot;690796242394a.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 101674,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;original_name&quot;: &quot;68d52f121818a-large.webp&quot;
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-11-02T17:34:28.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-11-03T04:54:43.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1102/690796242394a.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 2,
-                    &quot;user_id&quot;: &quot;82261&quot;,
-                    &quot;name&quot;: &quot;Noble&quot;,
-                    &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;07031525788&quot;,
-                    &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
-                    &quot;city&quot;: &quot;Abakaliki&quot;,
-                    &quot;state&quot;: &quot;Enugu&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
                     &quot;notification&quot;: &quot;yes&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
@@ -4142,102 +4114,6 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 314,
-                &quot;user_id&quot;: &quot;82261&quot;,
-                &quot;ad_id&quot;: &quot;19583&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;New 2025 Toyota Corolla LE FWD 4dr Car&quot;,
-                &quot;title_slug&quot;: &quot;new-2025-toyota-corolla-le-fwd-4dr-car&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;4000000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The car is a new and forieng used&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Anambra&quot;,
-                &quot;lga&quot;: &quot;Idemili South&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;Yes&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;48&quot;,
-                &quot;keyword&quot;: &quot;2025, toyota, corolla, block, forieng, useddiv&quot;,
-                &quot;meta_description&quot;: &quot;The car is a new and forieng used&quot;,
-                &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-11-30T11:30:36.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;idemili-south&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 1063,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 314,
-                    &quot;uuid&quot;: &quot;b7a75deb-fd92-4b36-ba47-d7fff74f1a75&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5&quot;,
-                    &quot;file_name&quot;: &quot;68db5c7e6ded4.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 119862,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;original_name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5.jpg&quot;
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-30T04:28:47.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1063/68db5c7e6ded4.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 2,
-                    &quot;user_id&quot;: &quot;82261&quot;,
-                    &quot;name&quot;: &quot;Noble&quot;,
-                    &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;07031525788&quot;,
-                    &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
-                    &quot;city&quot;: &quot;Abakaliki&quot;,
-                    &quot;state&quot;: &quot;Enugu&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
-                    &quot;bank_name&quot;: &quot;veritas&quot;,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: &quot;Noble Somto&quot;,
-                    &quot;account_number&quot;: &quot;030454545&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
                 &quot;id&quot;: 136,
                 &quot;user_id&quot;: &quot;28352&quot;,
                 &quot;ad_id&quot;: &quot;82078&quot;,
@@ -4334,56 +4210,56 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 330,
+                &quot;id&quot;: 314,
                 &quot;user_id&quot;: &quot;82261&quot;,
-                &quot;ad_id&quot;: &quot;74414&quot;,
+                &quot;ad_id&quot;: &quot;19583&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Samsung Galaxy A16&quot;,
-                &quot;title_slug&quot;: &quot;samsung-galaxy-a16&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;13&quot;,
-                &quot;price&quot;: &quot;1000000&quot;,
+                &quot;ad_title&quot;: &quot;New 2025 Toyota Corolla LE FWD 4dr Car&quot;,
+                &quot;title_slug&quot;: &quot;new-2025-toyota-corolla-le-fwd-4dr-car&quot;,
+                &quot;category&quot;: &quot;1&quot;,
+                &quot;sub_category&quot;: &quot;2&quot;,
+                &quot;brand&quot;: &quot;832&quot;,
+                &quot;price&quot;: &quot;4000000&quot;,
                 &quot;price_type&quot;: &quot;Fixed&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I have a new for sale&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Abia&quot;,
-                &quot;lga&quot;: &quot;Aba South&quot;,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The car is a new and forieng used&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Anambra&quot;,
+                &quot;lga&quot;: &quot;Idemili South&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;Yes&quot;,
-                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;2&quot;,
-                &quot;keyword&quot;: &quot;samsung, galaxy, block, have, phone, salediv&quot;,
-                &quot;meta_description&quot;: &quot;I have a new phone for sale&quot;,
-                &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-11-30T07:47:29.000000Z&quot;,
-                &quot;sold&quot;: &quot;Yes&quot;,
-                &quot;sold_date&quot;: &quot;2025-11-30 08:47:29&quot;,
+                &quot;views&quot;: &quot;48&quot;,
+                &quot;keyword&quot;: &quot;2025, toyota, corolla, block, forieng, useddiv&quot;,
+                &quot;meta_description&quot;: &quot;The car is a new and forieng used&quot;,
+                &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-11-30T11:30:36.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;aba-south&quot;,
+                &quot;state_slug&quot;: &quot;idemili-south&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 1107,
+                    &quot;id&quot;: 1063,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 330,
-                    &quot;uuid&quot;: &quot;db7a49c4-4603-4215-aeed-51fa070dcb35&quot;,
+                    &quot;model_id&quot;: 314,
+                    &quot;uuid&quot;: &quot;b7a75deb-fd92-4b36-ba47-d7fff74f1a75&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;Winter is coming chinese&quot;,
-                    &quot;file_name&quot;: &quot;691e022a615a4.webp&quot;,
+                    &quot;name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5&quot;,
+                    &quot;file_name&quot;: &quot;68db5c7e6ded4.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 314067,
+                    &quot;size&quot;: 119862,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;original_name&quot;: &quot;Winter is coming chinese.jpg&quot;
+                        &quot;original_name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5.jpg&quot;
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -4392,9 +4268,9 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-11-19T17:45:15.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1107/691e022a615a4.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-30T04:28:47.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1063/68db5c7e6ded4.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -4416,7 +4292,103 @@ access-control-allow-origin: *
                     &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
                     &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
                     &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
+                    &quot;notification&quot;: &quot;yes&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
+                    &quot;bank_name&quot;: &quot;veritas&quot;,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: &quot;Noble Somto&quot;,
+                    &quot;account_number&quot;: &quot;030454545&quot;,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 328,
+                &quot;user_id&quot;: &quot;82261&quot;,
+                &quot;ad_id&quot;: &quot;81404&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Toyota Highlander for sale&quot;,
+                &quot;title_slug&quot;: &quot;toyota-highlander-for-sale&quot;,
+                &quot;category&quot;: &quot;1&quot;,
+                &quot;sub_category&quot;: &quot;2&quot;,
+                &quot;brand&quot;: &quot;832&quot;,
+                &quot;price&quot;: &quot;1000000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;FCT - Abuja&quot;,
+                &quot;lga&quot;: &quot;Gwagwalada&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;Yes&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;84&quot;,
+                &quot;keyword&quot;: &quot;toyota, highlander, sale, block, affordable, clean, neat, model, sells, good&quot;,
+                &quot;meta_description&quot;: &quot;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&quot;,
+                &quot;created_at&quot;: &quot;2025-11-02T17:34:22.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-12-12T14:13:02.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;gwagwalada&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 1102,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 328,
+                    &quot;uuid&quot;: &quot;8986e5fb-9dc7-4543-b5dc-75f5667cb234&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68d52f121818a-large&quot;,
+                    &quot;file_name&quot;: &quot;690796242394a.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 101674,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;original_name&quot;: &quot;68d52f121818a-large.webp&quot;
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-11-02T17:34:28.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-11-03T04:54:43.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1102/690796242394a.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 2,
+                    &quot;user_id&quot;: &quot;82261&quot;,
+                    &quot;name&quot;: &quot;Noble&quot;,
+                    &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;07031525788&quot;,
+                    &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
+                    &quot;city&quot;: &quot;Abakaliki&quot;,
+                    &quot;state&quot;: &quot;Enugu&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
                     &quot;notification&quot;: &quot;yes&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
@@ -4432,6 +4404,102 @@ access-control-allow-origin: *
         ],
         &quot;listings&quot;: {
             &quot;data&quot;: [
+                {
+                    &quot;id&quot;: 330,
+                    &quot;user_id&quot;: &quot;82261&quot;,
+                    &quot;ad_id&quot;: &quot;74414&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;Samsung Galaxy A16&quot;,
+                    &quot;title_slug&quot;: &quot;samsung-galaxy-a16&quot;,
+                    &quot;category&quot;: &quot;4&quot;,
+                    &quot;sub_category&quot;: &quot;6&quot;,
+                    &quot;brand&quot;: &quot;13&quot;,
+                    &quot;price&quot;: &quot;1000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
+                    &quot;item_condition&quot;: null,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;Yes&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I have a new for sale&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Abia&quot;,
+                    &quot;lga&quot;: &quot;Aba South&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;Yes&quot;,
+                    &quot;shipment&quot;: &quot;Ship&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;2&quot;,
+                    &quot;keyword&quot;: &quot;samsung, galaxy, block, have, phone, salediv&quot;,
+                    &quot;meta_description&quot;: &quot;I have a new phone for sale&quot;,
+                    &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-11-30T07:47:29.000000Z&quot;,
+                    &quot;sold&quot;: &quot;Yes&quot;,
+                    &quot;sold_date&quot;: &quot;2025-11-30 08:47:29&quot;,
+                    &quot;show_contact&quot;: &quot;No&quot;,
+                    &quot;state_slug&quot;: &quot;aba-south&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 1107,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 330,
+                        &quot;uuid&quot;: &quot;db7a49c4-4603-4215-aeed-51fa070dcb35&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;Winter is coming chinese&quot;,
+                        &quot;file_name&quot;: &quot;691e022a615a4.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/jpeg&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 314067,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;original_name&quot;: &quot;Winter is coming chinese.jpg&quot;
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-11-19T17:45:15.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1107/691e022a615a4.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 2,
+                        &quot;user_id&quot;: &quot;82261&quot;,
+                        &quot;name&quot;: &quot;Noble&quot;,
+                        &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;07031525788&quot;,
+                        &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
+                        &quot;city&quot;: &quot;Abakaliki&quot;,
+                        &quot;state&quot;: &quot;Enugu&quot;,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
+                        &quot;otp&quot;: null,
+                        &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
+                        &quot;notification&quot;: &quot;yes&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
+                        &quot;bank_name&quot;: &quot;veritas&quot;,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: &quot;Noble Somto&quot;,
+                        &quot;account_number&quot;: &quot;030454545&quot;,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
                 {
                     &quot;id&quot;: 334,
                     &quot;user_id&quot;: &quot;82261&quot;,
@@ -4517,103 +4585,7 @@ access-control-allow-origin: *
                         &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
                         &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
                         &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
-                        &quot;notification&quot;: &quot;yes&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
-                        &quot;bank_name&quot;: &quot;veritas&quot;,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: &quot;Noble Somto&quot;,
-                        &quot;account_number&quot;: &quot;030454545&quot;,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 328,
-                    &quot;user_id&quot;: &quot;82261&quot;,
-                    &quot;ad_id&quot;: &quot;81404&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Toyota Highlander for sale&quot;,
-                    &quot;title_slug&quot;: &quot;toyota-highlander-for-sale&quot;,
-                    &quot;category&quot;: &quot;1&quot;,
-                    &quot;sub_category&quot;: &quot;2&quot;,
-                    &quot;brand&quot;: &quot;832&quot;,
-                    &quot;price&quot;: &quot;1000000&quot;,
-                    &quot;price_type&quot;: &quot;Fixed&quot;,
-                    &quot;item_condition&quot;: null,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;FCT - Abuja&quot;,
-                    &quot;lga&quot;: &quot;Gwagwalada&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;Yes&quot;,
-                    &quot;shipment&quot;: &quot;Pickup&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;83&quot;,
-                    &quot;keyword&quot;: &quot;toyota, highlander, sale, block, affordable, clean, neat, model, sells, good&quot;,
-                    &quot;meta_description&quot;: &quot;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&quot;,
-                    &quot;created_at&quot;: &quot;2025-11-02T17:34:22.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-12-12T14:13:02.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;gwagwalada&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 1102,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 328,
-                        &quot;uuid&quot;: &quot;8986e5fb-9dc7-4543-b5dc-75f5667cb234&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68d52f121818a-large&quot;,
-                        &quot;file_name&quot;: &quot;690796242394a.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 101674,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;original_name&quot;: &quot;68d52f121818a-large.webp&quot;
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-11-02T17:34:28.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-11-03T04:54:43.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1102/690796242394a.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 2,
-                        &quot;user_id&quot;: &quot;82261&quot;,
-                        &quot;name&quot;: &quot;Noble&quot;,
-                        &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;07031525788&quot;,
-                        &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
-                        &quot;city&quot;: &quot;Abakaliki&quot;,
-                        &quot;state&quot;: &quot;Enugu&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Private&quot;,
-                        &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
-                        &quot;otp&quot;: null,
-                        &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
                         &quot;notification&quot;: &quot;yes&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
@@ -4723,102 +4695,6 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 314,
-                    &quot;user_id&quot;: &quot;82261&quot;,
-                    &quot;ad_id&quot;: &quot;19583&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;New 2025 Toyota Corolla LE FWD 4dr Car&quot;,
-                    &quot;title_slug&quot;: &quot;new-2025-toyota-corolla-le-fwd-4dr-car&quot;,
-                    &quot;category&quot;: &quot;1&quot;,
-                    &quot;sub_category&quot;: &quot;2&quot;,
-                    &quot;brand&quot;: &quot;832&quot;,
-                    &quot;price&quot;: &quot;4000000&quot;,
-                    &quot;price_type&quot;: &quot;Fixed&quot;,
-                    &quot;item_condition&quot;: null,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The car is a new and forieng used&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Anambra&quot;,
-                    &quot;lga&quot;: &quot;Idemili South&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;Yes&quot;,
-                    &quot;shipment&quot;: &quot;Pickup&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;48&quot;,
-                    &quot;keyword&quot;: &quot;2025, toyota, corolla, block, forieng, useddiv&quot;,
-                    &quot;meta_description&quot;: &quot;The car is a new and forieng used&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-11-30T11:30:36.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;idemili-south&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 1063,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 314,
-                        &quot;uuid&quot;: &quot;b7a75deb-fd92-4b36-ba47-d7fff74f1a75&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5&quot;,
-                        &quot;file_name&quot;: &quot;68db5c7e6ded4.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/jpeg&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 119862,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;original_name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5.jpg&quot;
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-30T04:28:47.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1063/68db5c7e6ded4.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 2,
-                        &quot;user_id&quot;: &quot;82261&quot;,
-                        &quot;name&quot;: &quot;Noble&quot;,
-                        &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;07031525788&quot;,
-                        &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
-                        &quot;city&quot;: &quot;Abakaliki&quot;,
-                        &quot;state&quot;: &quot;Enugu&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Private&quot;,
-                        &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
-                        &quot;otp&quot;: null,
-                        &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
-                        &quot;notification&quot;: &quot;yes&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
-                        &quot;bank_name&quot;: &quot;veritas&quot;,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: &quot;Noble Somto&quot;,
-                        &quot;account_number&quot;: &quot;030454545&quot;,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
                     &quot;id&quot;: 136,
                     &quot;user_id&quot;: &quot;28352&quot;,
                     &quot;ad_id&quot;: &quot;82078&quot;,
@@ -4915,56 +4791,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 330,
+                    &quot;id&quot;: 314,
                     &quot;user_id&quot;: &quot;82261&quot;,
-                    &quot;ad_id&quot;: &quot;74414&quot;,
+                    &quot;ad_id&quot;: &quot;19583&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Samsung Galaxy A16&quot;,
-                    &quot;title_slug&quot;: &quot;samsung-galaxy-a16&quot;,
-                    &quot;category&quot;: &quot;4&quot;,
-                    &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;13&quot;,
-                    &quot;price&quot;: &quot;1000000&quot;,
+                    &quot;ad_title&quot;: &quot;New 2025 Toyota Corolla LE FWD 4dr Car&quot;,
+                    &quot;title_slug&quot;: &quot;new-2025-toyota-corolla-le-fwd-4dr-car&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;832&quot;,
+                    &quot;price&quot;: &quot;4000000&quot;,
                     &quot;price_type&quot;: &quot;Fixed&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;Yes&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I have a new for sale&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Abia&quot;,
-                    &quot;lga&quot;: &quot;Aba South&quot;,
+                    &quot;buy_direct&quot;: &quot;No&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The car is a new and forieng used&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Anambra&quot;,
+                    &quot;lga&quot;: &quot;Idemili South&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;Yes&quot;,
-                    &quot;shipment&quot;: &quot;Ship&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;2&quot;,
-                    &quot;keyword&quot;: &quot;samsung, galaxy, block, have, phone, salediv&quot;,
-                    &quot;meta_description&quot;: &quot;I have a new phone for sale&quot;,
-                    &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-11-30T07:47:29.000000Z&quot;,
-                    &quot;sold&quot;: &quot;Yes&quot;,
-                    &quot;sold_date&quot;: &quot;2025-11-30 08:47:29&quot;,
+                    &quot;views&quot;: &quot;48&quot;,
+                    &quot;keyword&quot;: &quot;2025, toyota, corolla, block, forieng, useddiv&quot;,
+                    &quot;meta_description&quot;: &quot;The car is a new and forieng used&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-11-30T11:30:36.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;aba-south&quot;,
+                    &quot;state_slug&quot;: &quot;idemili-south&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 1107,
+                        &quot;id&quot;: 1063,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 330,
-                        &quot;uuid&quot;: &quot;db7a49c4-4603-4215-aeed-51fa070dcb35&quot;,
+                        &quot;model_id&quot;: 314,
+                        &quot;uuid&quot;: &quot;b7a75deb-fd92-4b36-ba47-d7fff74f1a75&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;Winter is coming chinese&quot;,
-                        &quot;file_name&quot;: &quot;691e022a615a4.webp&quot;,
+                        &quot;name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5&quot;,
+                        &quot;file_name&quot;: &quot;68db5c7e6ded4.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 314067,
+                        &quot;size&quot;: 119862,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;original_name&quot;: &quot;Winter is coming chinese.jpg&quot;
+                            &quot;original_name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5.jpg&quot;
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -4973,9 +4849,9 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-11-19T17:45:14.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-11-19T17:45:15.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1107/691e022a615a4.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-30T04:28:47.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1063/68db5c7e6ded4.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
@@ -4997,7 +4873,103 @@ access-control-allow-origin: *
                         &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
                         &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
                         &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
+                        &quot;notification&quot;: &quot;yes&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
+                        &quot;bank_name&quot;: &quot;veritas&quot;,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: &quot;Noble Somto&quot;,
+                        &quot;account_number&quot;: &quot;030454545&quot;,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 328,
+                    &quot;user_id&quot;: &quot;82261&quot;,
+                    &quot;ad_id&quot;: &quot;81404&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;Toyota Highlander for sale&quot;,
+                    &quot;title_slug&quot;: &quot;toyota-highlander-for-sale&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;832&quot;,
+                    &quot;price&quot;: &quot;1000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
+                    &quot;item_condition&quot;: null,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;No&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;FCT - Abuja&quot;,
+                    &quot;lga&quot;: &quot;Gwagwalada&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;Yes&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;84&quot;,
+                    &quot;keyword&quot;: &quot;toyota, highlander, sale, block, affordable, clean, neat, model, sells, good&quot;,
+                    &quot;meta_description&quot;: &quot;Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&amp;nbsp;&quot;,
+                    &quot;created_at&quot;: &quot;2025-11-02T17:34:22.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-12-12T14:13:02.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;No&quot;,
+                    &quot;state_slug&quot;: &quot;gwagwalada&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 1102,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 328,
+                        &quot;uuid&quot;: &quot;8986e5fb-9dc7-4543-b5dc-75f5667cb234&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;68d52f121818a-large&quot;,
+                        &quot;file_name&quot;: &quot;690796242394a.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 101674,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;original_name&quot;: &quot;68d52f121818a-large.webp&quot;
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-11-02T17:34:28.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-11-03T04:54:43.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1102/690796242394a.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 2,
+                        &quot;user_id&quot;: &quot;82261&quot;,
+                        &quot;name&quot;: &quot;Noble&quot;,
+                        &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;07031525788&quot;,
+                        &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
+                        &quot;city&quot;: &quot;Abakaliki&quot;,
+                        &quot;state&quot;: &quot;Enugu&quot;,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
+                        &quot;otp&quot;: null,
+                        &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
                         &quot;notification&quot;: &quot;yes&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
@@ -5093,7 +5065,7 @@ access-control-allow-origin: *
                         &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
                         &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
                         &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-12-21 14:55:58&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
                         &quot;notification&quot;: &quot;yes&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
@@ -5107,56 +5079,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 95,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;ad_id&quot;: &quot;81988&quot;,
+                    &quot;id&quot;: 45,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;ad_id&quot;: &quot;13352&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;iphone 11 Pro 256 GB battery 94% approx. 1 year old, as good as new&quot;,
-                    &quot;title_slug&quot;: &quot;iphone-11-pro-256-gb-battery-94-approx-1-year-old-as-good-as-new&quot;,
-                    &quot;category&quot;: &quot;4&quot;,
-                    &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;1542&quot;,
-                    &quot;price&quot;: &quot;345000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;ad_title&quot;: &quot;Toyota Raw4&quot;,
+                    &quot;title_slug&quot;: &quot;toyota-raw4-2&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;832&quot;,
+                    &quot;price&quot;: &quot;24000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;THE DEVICE IS APPROXIMATELY 1 YEAR OLD AND IN MINT CONDITION. EVERYTHING IS ORIGINAL. IT WAS USED AS A SECOND .&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;Toyota Rav4 limited&lt;br&gt;2015 Model&lt;br&gt;fullest&amp;nbsp; option&lt;br&gt;thumb start and power boot&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Ikeja&quot;,
+                    &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;96&quot;,
-                    &quot;keyword&quot;: &quot;iphone, battery, approx, year, good, device, approximately, mint, condition, everything&quot;,
-                    &quot;meta_description&quot;: &quot;THE DEVICE IS APPROXIMATELY 1 YEAR OLD AND IN MINT CONDITION. EVERYTHING IS ORIGINAL. IT WAS USED AS A SECOND PHONE.&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-03T16:58:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-03T16:58:01.000000Z&quot;,
+                    &quot;views&quot;: &quot;129&quot;,
+                    &quot;keyword&quot;: null,
+                    &quot;meta_description&quot;: null,
+                    &quot;created_at&quot;: &quot;2025-08-15T08:10:18.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-15T08:10:18.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;ikeja&quot;,
+                    &quot;show_contact&quot;: &quot;Yes&quot;,
+                    &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 286,
+                        &quot;id&quot;: 134,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 95,
-                        &quot;uuid&quot;: &quot;b7f24bbd-c4b3-4e31-8181-6326095f599e&quot;,
+                        &quot;model_id&quot;: 45,
+                        &quot;uuid&quot;: &quot;0c82562f-dd37-4f2e-817d-3ae42270c197&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68b86589f3f40.webp&quot;,
-                        &quot;file_name&quot;: &quot;68b86589f3f40.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;name&quot;: &quot;689eeb6a04db3.webp&quot;,
+                        &quot;file_name&quot;: &quot;689eeb6a04db3.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 5838,
+                        &quot;size&quot;: 79967,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 353
+                            &quot;migrated_from_id&quot;: 193
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -5165,31 +5137,31 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:53:04.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:53:04.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/286/68b86589f3f40.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:51:17.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:51:18.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/134/689eeb6a04db3.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 34,
-                        &quot;user_id&quot;: &quot;84123&quot;,
-                        &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                        &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;08033332401&quot;,
-                        &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                        &quot;city&quot;: &quot;Ikeja&quot;,
+                        &quot;id&quot;: 24,
+                        &quot;user_id&quot;: &quot;15058&quot;,
+                        &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                        &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                        &quot;phone&quot;: &quot;08036016320&quot;,
+                        &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
+                        &quot;city&quot;: &quot;Lagos&quot;,
                         &quot;state&quot;: &quot;Lagos&quot;,
                         &quot;email_verified_at&quot;: null,
                         &quot;acc_type&quot;: &quot;Commercial&quot;,
-                        &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                        &quot;otp&quot;: 602971,
+                        &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                        &quot;otp&quot;: 835656,
                         &quot;profile_picture&quot;: null,
                         &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                        &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
                         &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
@@ -5299,32 +5271,32 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 108,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;ad_id&quot;: &quot;15707&quot;,
+                    &quot;id&quot;: 85,
+                    &quot;user_id&quot;: &quot;82248&quot;,
+                    &quot;ad_id&quot;: &quot;61693&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Samsung Galaxy A52s 5G&quot;,
-                    &quot;title_slug&quot;: &quot;samsung-galaxy-a52s-5g&quot;,
+                    &quot;ad_title&quot;: &quot;Apple iPhone 11 (Turquoise) 64GB&quot;,
+                    &quot;title_slug&quot;: &quot;apple-iphone-11-turquoise-64gb&quot;,
                     &quot;category&quot;: &quot;4&quot;,
                     &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;13&quot;,
+                    &quot;brand&quot;: &quot;1542&quot;,
                     &quot;price&quot;: &quot;210000&quot;,
                     &quot;price_type&quot;: &quot;Fixed&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Samsung Galaxy A52s 5G &ndash; 128 GB&lt;br&gt;&lt;br&gt;The smartphone is in good condition.&lt;/div&gt;&quot;,
+                    &quot;description&quot;: &quot;Hello, I&#039;m selling an Apple iPhone 11 in turquoise. The iPhone shows slight signs of wear and tear, and its battery capacity is at 73%. Feel free to ask any questions!&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;lga&quot;: &quot;Ikeja&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;106&quot;,
-                    &quot;keyword&quot;: &quot;samsung, galaxy, a52s, block, gbbrbrthe, smartphone, good, conditiondiv&quot;,
-                    &quot;meta_description&quot;: &quot;Samsung Galaxy A52s 5G &ndash; 128 GBThe smartphone is in good condition.&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-04T15:32:30.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-04T15:32:30.000000Z&quot;,
+                    &quot;views&quot;: &quot;76&quot;,
+                    &quot;keyword&quot;: &quot;apple, iphone, turquoise, 64gb, hello, selling, shows, slight, signs, wear&quot;,
+                    &quot;meta_description&quot;: &quot;Hello,\r\n\r\nI&#039;m selling an Apple iPhone 11 in turquoise. The iPhone shows slight signs of wear and tear, and its battery capacity is at 73%.\r\n\r\nFeel fre&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T13:44:30.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T13:44:30.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;No&quot;,
@@ -5334,21 +5306,21 @@ access-control-allow-origin: *
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 316,
+                        &quot;id&quot;: 262,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 108,
-                        &quot;uuid&quot;: &quot;c5914f91-3f88-4911-befe-d7b15ec9824a&quot;,
+                        &quot;model_id&quot;: 85,
+                        &quot;uuid&quot;: &quot;f37439c7-7729-45b7-8551-257a17ca167b&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68b9a2fec0920.webp&quot;,
-                        &quot;file_name&quot;: &quot;68b9a2fec0920.webp&quot;,
+                        &quot;name&quot;: &quot;68b8382e6d89a.webp&quot;,
+                        &quot;file_name&quot;: &quot;68b8382e6d89a.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 23160,
+                        &quot;size&quot;: 36168,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 383
+                            &quot;migrated_from_id&quot;: 329
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -5357,38 +5329,38 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:53:21.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:53:21.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/316/68b9a2fec0920.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:52:50.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:52:50.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/262/68b8382e6d89a.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 34,
-                        &quot;user_id&quot;: &quot;84123&quot;,
-                        &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                        &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;08033332401&quot;,
-                        &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                        &quot;id&quot;: 14,
+                        &quot;user_id&quot;: &quot;82248&quot;,
+                        &quot;name&quot;: &quot;Jayson&quot;,
+                        &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;08137254596&quot;,
+                        &quot;address&quot;: &quot;Ikeja Lagos&quot;,
                         &quot;city&quot;: &quot;Ikeja&quot;,
                         &quot;state&quot;: &quot;Lagos&quot;,
                         &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Commercial&quot;,
-                        &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                        &quot;otp&quot;: 602971,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
+                        &quot;otp&quot;: 256937,
                         &quot;profile_picture&quot;: null,
                         &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
-                        &quot;notification&quot;: &quot;no&quot;,
+                        &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
+                        &quot;notification&quot;: &quot;yes&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: null,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: null,
-                        &quot;account_number&quot;: null,
+                        &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
+                        &quot;bank_code&quot;: &quot;058&quot;,
+                        &quot;account_name&quot;: &quot;Jerry okoro&quot;,
+                        &quot;account_number&quot;: &quot;0023453459&quot;,
                         &quot;google_id&quot;: null,
                         &quot;facebook_id&quot;: null,
                         &quot;otp_expires_at&quot;: null
@@ -5491,32 +5463,32 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 75,
+                    &quot;id&quot;: 80,
                     &quot;user_id&quot;: &quot;15058&quot;,
-                    &quot;ad_id&quot;: &quot;29580&quot;,
+                    &quot;ad_id&quot;: &quot;27265&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Mercedes Benz GLk350&quot;,
-                    &quot;title_slug&quot;: &quot;mercedes-benz-glk350&quot;,
+                    &quot;ad_title&quot;: &quot;Mercedes Benz&quot;,
+                    &quot;title_slug&quot;: &quot;mercedes-benz-3&quot;,
                     &quot;category&quot;: &quot;1&quot;,
                     &quot;sub_category&quot;: &quot;2&quot;,
                     &quot;brand&quot;: &quot;266&quot;,
-                    &quot;price&quot;: &quot;24000000&quot;,
+                    &quot;price&quot;: &quot;45000000&quot;,
                     &quot;price_type&quot;: &quot;Negotiable&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;Mercedes Benz&lt;br&gt;GLK350 Benz&lt;br&gt;2015 model&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;Mercedes Benz&lt;br&gt;GLC300 Benz&lt;br&gt;2019 Model&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;350&quot;,
-                    &quot;keyword&quot;: &quot;mercedes, benz, glk350, divmercedes, benzbrglk350, benzbr2015, modelbrbrdiv&quot;,
-                    &quot;meta_description&quot;: &quot;Mercedes BenzGLK350 Benz2015 model&quot;,
-                    &quot;created_at&quot;: &quot;2025-08-23T12:13:22.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-08-23T12:13:22.000000Z&quot;,
+                    &quot;views&quot;: &quot;305&quot;,
+                    &quot;keyword&quot;: &quot;mercedes, benz, divmercedes, benzbrglc300, benzbr2019, modelbrbrdiv&quot;,
+                    &quot;meta_description&quot;: &quot;Mercedes BenzGLC300 Benz2019 Model&quot;,
+                    &quot;created_at&quot;: &quot;2025-08-29T19:10:41.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-29T19:10:41.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;Yes&quot;,
@@ -5526,21 +5498,21 @@ access-control-allow-origin: *
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 213,
+                        &quot;id&quot;: 243,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 75,
-                        &quot;uuid&quot;: &quot;64b37008-27a6-4036-b605-ce07de5e5975&quot;,
+                        &quot;model_id&quot;: 80,
+                        &quot;uuid&quot;: &quot;45e3ef4e-1c16-4e49-b0d4-844891a7671a&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68a9a2524eaa0.webp&quot;,
-                        &quot;file_name&quot;: &quot;68a9a2524eaa0.webp&quot;,
+                        &quot;name&quot;: &quot;68b1ed21eaabd.webp&quot;,
+                        &quot;file_name&quot;: &quot;68b1ed21eaabd.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 161786,
+                        &quot;size&quot;: 113310,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 278
+                            &quot;migrated_from_id&quot;: 308
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -5549,9 +5521,9 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:52:04.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:52:05.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/213/68a9a2524eaa0.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:52:36.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:52:37.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/243/68b1ed21eaabd.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
@@ -5683,56 +5655,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 233,
-                    &quot;user_id&quot;: &quot;41637&quot;,
-                    &quot;ad_id&quot;: &quot;61668&quot;,
+                    &quot;id&quot;: 211,
+                    &quot;user_id&quot;: &quot;51149&quot;,
+                    &quot;ad_id&quot;: &quot;50788&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Nebulizer&quot;,
-                    &quot;title_slug&quot;: &quot;nebulizer&quot;,
-                    &quot;category&quot;: &quot;12&quot;,
-                    &quot;sub_category&quot;: &quot;99&quot;,
-                    &quot;brand&quot;: &quot;2092&quot;,
-                    &quot;price&quot;: &quot;40000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;ad_title&quot;: &quot;Warehouses available for rent at Ojo alaba international.&quot;,
+                    &quot;title_slug&quot;: &quot;warehouses-available-for-rent-at-ojo-alaba-international&quot;,
+                    &quot;category&quot;: &quot;7&quot;,
+                    &quot;sub_category&quot;: &quot;104&quot;,
+                    &quot;brand&quot;: &quot;1464&quot;,
+                    &quot;price&quot;: &quot;2000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
                     &quot;item_condition&quot;: &quot;New&quot;,
                     &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;Yes&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Plug socket of nebulization unit, plug socket of tube and O/L button are set on the obverse side, and it is convenient to operate.&lt;br&gt;Convenient to replace the dust screen. Open the cover of dust screen, then take out of the dust screen to clean and replace.&lt;/div&gt;&quot;,
+                    &quot;buy_direct&quot;: &quot;No&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Warehouses available for rent at Ojo alaba international. The stated price is just the annual rent. Agency and agreement will be discussed.&amp;nbsp;&lt;/div&gt;&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Ikeja&quot;,
+                    &quot;lga&quot;: &quot;Ojo&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;27&quot;,
-                    &quot;keyword&quot;: &quot;nebulizer, block, plug, socket, nebulization, unit, tube, button, obverse, side&quot;,
-                    &quot;meta_description&quot;: &quot;Plug socket of nebulization unit, plug socket of tube and O/L button are set on the obverse side, and it is convenient to operate.Convenient to replac&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-23T13:57:38.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-23T13:57:38.000000Z&quot;,
+                    &quot;views&quot;: &quot;18&quot;,
+                    &quot;keyword&quot;: &quot;warehouses, available, rent, alaba, international, block, stated, price, just, annual&quot;,
+                    &quot;meta_description&quot;: &quot;Warehouses available for rent at Ojo alaba international. The stated price is just the annual rent. Agency and agreement will be discussed.&amp;nbsp;&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-22T10:52:11.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-22T10:52:11.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;Yes&quot;,
-                    &quot;state_slug&quot;: &quot;ikeja&quot;,
+                    &quot;state_slug&quot;: &quot;ojo&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 770,
+                        &quot;id&quot;: 632,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 233,
-                        &quot;uuid&quot;: &quot;40243107-ab1c-479a-9828-ee6e65f7503b&quot;,
+                        &quot;model_id&quot;: 211,
+                        &quot;uuid&quot;: &quot;855b7295-16fa-454a-ad24-3ed4dbdc44fd&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68d29942a571f.webp&quot;,
-                        &quot;file_name&quot;: &quot;68d29942a571f.webp&quot;,
+                        &quot;name&quot;: &quot;68d11c4b05989.webp&quot;,
+                        &quot;file_name&quot;: &quot;68d11c4b05989.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 7878,
+                        &quot;size&quot;: 74478,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 824
+                            &quot;migrated_from_id&quot;: 745
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -5741,38 +5713,38 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-29T02:15:06.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-29T02:15:07.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/770/68d29942a571f.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:59:47.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:59:49.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/632/68d11c4b05989.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 182,
-                        &quot;user_id&quot;: &quot;41637&quot;,
-                        &quot;name&quot;: &quot;Medical Equipment Nigeria Limited&quot;,
-                        &quot;email&quot;: &quot;ezegbulam.elizabeth123@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;09135547811&quot;,
-                        &quot;address&quot;: &quot;Fadeyi Aladura Street off Balogun Bus stop Ikeja Lagos&quot;,
-                        &quot;city&quot;: &quot;Lagos&quot;,
-                        &quot;state&quot;: &quot;Lagos&quot;,
+                        &quot;id&quot;: 174,
+                        &quot;user_id&quot;: &quot;51149&quot;,
+                        &quot;name&quot;: &quot;Tyrone Chibuzor Ohaegbu&quot;,
+                        &quot;email&quot;: &quot;tyronechibuzor@gmail.com&quot;,
+                        &quot;phone&quot;: null,
+                        &quot;address&quot;: null,
+                        &quot;city&quot;: null,
+                        &quot;state&quot;: null,
                         &quot;email_verified_at&quot;: null,
                         &quot;acc_type&quot;: &quot;Private&quot;,
                         &quot;token&quot;: null,
                         &quot;otp&quot;: null,
-                        &quot;profile_picture&quot;: &quot;1758715439.jpg&quot;,
-                        &quot;verified&quot;: &quot;yes&quot;,
+                        &quot;profile_picture&quot;: null,
+                        &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-23T10:23:06.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-23T13:25:30.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;105.113.64.245&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-28 23:00:23&quot;,
-                        &quot;notification&quot;: &quot;yes&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-22T10:25:15.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-22T10:25:15.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.89.33.55&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-24 12:27:50&quot;,
+                        &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: &quot;Zenith Bank&quot;,
-                        &quot;bank_code&quot;: &quot;057&quot;,
-                        &quot;account_name&quot;: &quot;www medical Equipment Nigeria Limited&quot;,
-                        &quot;account_number&quot;: &quot;1016817244&quot;,
+                        &quot;bank_name&quot;: null,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: null,
+                        &quot;account_number&quot;: null,
                         &quot;google_id&quot;: null,
                         &quot;facebook_id&quot;: null,
                         &quot;otp_expires_at&quot;: null
@@ -5800,7 +5772,7 @@ access-control-allow-origin: *
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;8&quot;,
+                    &quot;views&quot;: &quot;16&quot;,
                     &quot;keyword&quot;: &quot;foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident&quot;,
                     &quot;meta_description&quot;: &quot;Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.&quot;,
                     &quot;created_at&quot;: &quot;2025-09-28T21:21:20.000000Z&quot;,
@@ -5875,56 +5847,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 243,
-                    &quot;user_id&quot;: &quot;23431&quot;,
-                    &quot;ad_id&quot;: &quot;71696&quot;,
+                    &quot;id&quot;: 141,
+                    &quot;user_id&quot;: &quot;09206&quot;,
+                    &quot;ad_id&quot;: &quot;98401&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Neat full set of chairs&quot;,
-                    &quot;title_slug&quot;: &quot;neat-full-set-of-chairs&quot;,
-                    &quot;category&quot;: &quot;9&quot;,
-                    &quot;sub_category&quot;: &quot;46&quot;,
-                    &quot;brand&quot;: &quot;2778&quot;,
-                    &quot;price&quot;: &quot;250000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: &quot;Locally Used&quot;,
+                    &quot;ad_title&quot;: &quot;Foreign Used Hyundai Sante Fe&quot;,
+                    &quot;title_slug&quot;: &quot;foreign-used-hyundai-sante-fe&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;835&quot;,
+                    &quot;price&quot;: &quot;16000000&quot;,
+                    &quot;price_type&quot;: &quot;Give Away&quot;,
+                    &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Neat used chair available for serious buyer&amp;nbsp;&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Oyo&quot;,
-                    &quot;lga&quot;: &quot;Lagelu&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Very clean direct Tokunbo Hydundai santa fe 2014 four cylinder turbo engine available for sale. The features are stated below:&lt;br&gt;It is a 4cylinder turbo engine.&lt;br&gt;It has a reversed camera&lt;br&gt;Air-conditioning&amp;nbsp;&lt;br&gt;Leather seat&lt;br&gt;Cruise control&lt;br&gt;GPS screen&lt;br&gt;Bluetooth&lt;br&gt;3 seater&lt;br&gt;Keyless entry/thumb start&lt;br&gt;High quality surround speakers&lt;br&gt;Alloy wheels&lt;br&gt;&lt;br&gt;Call or if interested.&amp;nbsp;&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;lga&quot;: &quot;Surulere&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;34&quot;,
-                    &quot;keyword&quot;: &quot;neat, full, chairs, block, used, chair, available, serious, buyernbspdiv&quot;,
-                    &quot;meta_description&quot;: &quot;Neat used chair available for serious buyer&amp;nbsp;&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-23T18:39:16.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-23T18:39:16.000000Z&quot;,
+                    &quot;views&quot;: &quot;203&quot;,
+                    &quot;keyword&quot;: &quot;foreign, used, hyundai, sante, block, very, clean, direct, tokunbo, hydundai&quot;,
+                    &quot;meta_description&quot;: &quot;Very clean direct Tokunbo Hydundai santa fe 2014 four cylinder turbo engine available for sale. The features are stated below:It is a 4cylinder turbo&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T10:17:44.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-23T09:39:53.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;Yes&quot;,
-                    &quot;state_slug&quot;: &quot;lagelu&quot;,
+                    &quot;state_slug&quot;: &quot;surulere&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 789,
+                        &quot;id&quot;: 447,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 243,
-                        &quot;uuid&quot;: &quot;4c785233-7f97-428d-abbf-28863d2b1a9f&quot;,
+                        &quot;model_id&quot;: 141,
+                        &quot;uuid&quot;: &quot;32ccf1a9-5e68-460c-b3a8-0242972d6768&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68d2db44b9c0f.webp&quot;,
-                        &quot;file_name&quot;: &quot;68d2db44b9c0f.webp&quot;,
+                        &quot;name&quot;: &quot;68c536b90ccf6.webp&quot;,
+                        &quot;file_name&quot;: &quot;68c536b90ccf6.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 33910,
+                        &quot;size&quot;: 94934,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 843
+                            &quot;migrated_from_id&quot;: 532
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -5933,16 +5905,16 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-29T02:15:38.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-29T02:15:39.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/789/68d2db44b9c0f.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:55:52.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:55:52.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/447/68c536b90ccf6.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 192,
-                        &quot;user_id&quot;: &quot;23431&quot;,
-                        &quot;name&quot;: &quot;Benji Dara&quot;,
-                        &quot;email&quot;: &quot;benjidara10@gmail.com&quot;,
+                        &quot;id&quot;: 84,
+                        &quot;user_id&quot;: &quot;09206&quot;,
+                        &quot;name&quot;: &quot;taste chop&quot;,
+                        &quot;email&quot;: &quot;tnc.spicyfoods@gmail.com&quot;,
                         &quot;phone&quot;: null,
                         &quot;address&quot;: null,
                         &quot;city&quot;: null,
@@ -5954,10 +5926,10 @@ access-control-allow-origin: *
                         &quot;profile_picture&quot;: null,
                         &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-23T18:27:55.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-23T18:27:55.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;102.89.75.158&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-25 20:27:57&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.89.34.205&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-23 10:37:31&quot;,
                         &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
@@ -6067,32 +6039,32 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 115,
+                    &quot;id&quot;: 97,
                     &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;ad_id&quot;: &quot;21300&quot;,
+                    &quot;ad_id&quot;: &quot;17542&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;iPhone 12 Mini 64GB, Top Condition&quot;,
-                    &quot;title_slug&quot;: &quot;iphone-12-mini-64gb-top-condition&quot;,
+                    &quot;ad_title&quot;: &quot;Samsung Galaxy S21 FE 5G 128GB&quot;,
+                    &quot;title_slug&quot;: &quot;samsung-galaxy-s21-fe-5g-128gb&quot;,
                     &quot;category&quot;: &quot;4&quot;,
                     &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;1542&quot;,
-                    &quot;price&quot;: &quot;280000&quot;,
-                    &quot;price_type&quot;: &quot;Fixed&quot;,
+                    &quot;brand&quot;: &quot;13&quot;,
+                    &quot;price&quot;: &quot;240000&quot;,
+                    &quot;price_type&quot;: &quot;Negotiable&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;Selling iPhone 12 Mini with 64 GB in Black.&lt;br&gt;Foreign used device in very good condition, with no signs of wear, scratches, or damage.&lt;br&gt;&lt;br&gt;- Battery still has 97% of its maximum capacity&lt;br&gt;- Original condition, never replaced or fixed anything&lt;br&gt;- in original packaging.&lt;/div&gt;&quot;,
+                    &quot;description&quot;: &quot;Selling my Samsung Galaxy S21 FE 5G 128 GB because I recently purchased it. The is in good used condition. You are welcome to inspect the in person. Feel free to with any questions.&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;lga&quot;: &quot;Ikeja&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
                     &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;120&quot;,
-                    &quot;keyword&quot;: &quot;iphone, mini, 64gb, condition, divselling, with, blackbrforeign, used, device, very&quot;,
-                    &quot;meta_description&quot;: &quot;Selling iPhone 12 Mini with 64 GB in Black.Foreign used device in very good condition, with no signs of wear, scratches, or damage.- Battery still has&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-07T13:24:49.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-07T13:25:03.000000Z&quot;,
+                    &quot;views&quot;: &quot;95&quot;,
+                    &quot;keyword&quot;: &quot;samsung, galaxy, 128gb, selling, because, recently, purchased, phone, good, used&quot;,
+                    &quot;meta_description&quot;: &quot;Selling my Samsung Galaxy S21 FE 5G 128 GB because I recently purchased it.\r\nThe phone is in good used condition.\r\nYou are welcome to inspect the phon&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T17:13:02.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T17:13:02.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;No&quot;,
@@ -6102,21 +6074,21 @@ access-control-allow-origin: *
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 347,
+                        &quot;id&quot;: 292,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 115,
-                        &quot;uuid&quot;: &quot;e06ab9b9-d586-499d-bbf4-7ef97c48ea3b&quot;,
+                        &quot;model_id&quot;: 97,
+                        &quot;uuid&quot;: &quot;2fd9f92b-b944-4c21-a5ee-381d4b5e75c7&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68bd7991b68ba.webp&quot;,
-                        &quot;file_name&quot;: &quot;68bd7991b68ba.webp&quot;,
+                        &quot;name&quot;: &quot;68b8690e5f096.webp&quot;,
+                        &quot;file_name&quot;: &quot;68b8690e5f096.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 215982,
+                        &quot;size&quot;: 10756,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 420
+                            &quot;migrated_from_id&quot;: 359
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -6125,9 +6097,9 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:54:04.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:54:05.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/347/68bd7991b68ba.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:53:07.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:53:08.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/292/68b8690e5f096.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
@@ -6150,6 +6122,486 @@ access-control-allow-origin: *
                         &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
                         &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
                         &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                        &quot;notification&quot;: &quot;no&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: null,
+                        &quot;bank_name&quot;: null,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: null,
+                        &quot;account_number&quot;: null,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 300,
+                    &quot;user_id&quot;: &quot;80203&quot;,
+                    &quot;ad_id&quot;: &quot;41242&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;Motorcycle&quot;,
+                    &quot;title_slug&quot;: &quot;motorcycle&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;22&quot;,
+                    &quot;brand&quot;: &quot;986&quot;,
+                    &quot;price&quot;: &quot;400&quot;,
+                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;item_condition&quot;: &quot;Locally Used&quot;,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;Yes&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Very clean kymco bike. Black agilty&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;lga&quot;: &quot;Agege&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;No&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;22&quot;,
+                    &quot;keyword&quot;: &quot;motorcycle, block, very, clean, kymco, bike, black, agiltydiv&quot;,
+                    &quot;meta_description&quot;: &quot;Very clean kymco bike. Black agilty&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-27T06:22:13.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-27T06:22:13.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;Yes&quot;,
+                    &quot;state_slug&quot;: &quot;agege&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 992,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 300,
+                        &quot;uuid&quot;: &quot;1b551aee-1f7a-471a-be01-52378b5041a0&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;68d77485c5422.webp&quot;,
+                        &quot;file_name&quot;: &quot;68d77485c5422.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 285262,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;migrated_from_id&quot;: 1055
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-29T02:25:02.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-29T02:25:05.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/992/68d77485c5422.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 269,
+                        &quot;user_id&quot;: &quot;80203&quot;,
+                        &quot;name&quot;: &quot;abdulwaha abdulateef&quot;,
+                        &quot;email&quot;: &quot;abdulwahaab798@gmail.com&quot;,
+                        &quot;phone&quot;: null,
+                        &quot;address&quot;: null,
+                        &quot;city&quot;: null,
+                        &quot;state&quot;: null,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: null,
+                        &quot;otp&quot;: null,
+                        &quot;profile_picture&quot;: null,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-27T06:14:49.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-27T06:14:49.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.88.115.1&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-27 07:14:49&quot;,
+                        &quot;notification&quot;: &quot;no&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: null,
+                        &quot;bank_name&quot;: null,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: null,
+                        &quot;account_number&quot;: null,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 99,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;ad_id&quot;: &quot;62799&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;HP ProBook 430 G7 i5-10210u 8GB 256GB SSD 1920x1080 Windows 11&quot;,
+                    &quot;title_slug&quot;: &quot;hp-probook-430-g7-i5-10210u-8gb-256gb-ssd-1920x1080-windows-11&quot;,
+                    &quot;category&quot;: &quot;2&quot;,
+                    &quot;sub_category&quot;: &quot;27&quot;,
+                    &quot;brand&quot;: &quot;2349&quot;,
+                    &quot;price&quot;: &quot;260000&quot;,
+                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;No&quot;,
+                    &quot;description&quot;: &quot;HP ProBook 430 G7 &ndash; Intel Core i5 &ndash; Top condition! I am selling my HP ProBook 430 G7 in very good condition. The device is reliable, fast and ideal for work, study or home office. Technical data: &bull; Model: HP ProBook 430 G7 &bull; Processor: Intel Core i5-10210u (10th Gen) &bull; Display: 13.3 inch Full HD &bull; Memory: 8 GB RAM &bull; Hard drive: 256 GB SSD (fast &amp; quiet) &bull; Operating system: Windows 11 (licensed) &bull; Ports: USB-C, USB 3.0, HDMI, headphone jack &bull; Additional features: backlit keyboard, webcam Condition: &bull; Fully functional &bull; Clean and well-maintained (see pictures) &bull; Battery still holds up well &bull; Slight signs of wear, but overall very good condition&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;lga&quot;: &quot;Ikeja&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;No&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;72&quot;,
+                    &quot;keyword&quot;: &quot;probook, 10210u, 256gb, 1920x1080, windows, intel, core, condition, selling, very&quot;,
+                    &quot;meta_description&quot;: &quot;HP ProBook 430 G7 &ndash; Intel Core i5 &ndash; Top condition!\r\n\r\nI am selling my HP ProBook 430 G7 in very good condition. The device is reliable, fast and ideal&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-04T00:02:18.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-04T00:02:18.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;No&quot;,
+                    &quot;state_slug&quot;: &quot;ikeja&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 297,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 99,
+                        &quot;uuid&quot;: &quot;ac4a407c-b852-4ba8-869e-7aec8830ffab&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;68b8c8faa1b76.webp&quot;,
+                        &quot;file_name&quot;: &quot;68b8c8faa1b76.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 19784,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;migrated_from_id&quot;: 364
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:53:10.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:53:10.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/297/68b8c8faa1b76.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 34,
+                        &quot;user_id&quot;: &quot;84123&quot;,
+                        &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                        &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;08033332401&quot;,
+                        &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                        &quot;city&quot;: &quot;Ikeja&quot;,
+                        &quot;state&quot;: &quot;Lagos&quot;,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Commercial&quot;,
+                        &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                        &quot;otp&quot;: 602971,
+                        &quot;profile_picture&quot;: null,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                        &quot;notification&quot;: &quot;no&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: null,
+                        &quot;bank_name&quot;: null,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: null,
+                        &quot;account_number&quot;: null,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 183,
+                    &quot;user_id&quot;: &quot;50431&quot;,
+                    &quot;ad_id&quot;: &quot;66973&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;C of O&quot;,
+                    &quot;title_slug&quot;: &quot;c-of-o-3&quot;,
+                    &quot;category&quot;: &quot;7&quot;,
+                    &quot;sub_category&quot;: &quot;103&quot;,
+                    &quot;brand&quot;: &quot;1459&quot;,
+                    &quot;price&quot;: &quot;25000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
+                    &quot;item_condition&quot;: &quot;New&quot;,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;Yes&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;*New Site Alert*&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;Introducing...&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;Goldmark City, Kyami&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;250sqm: 4bedrooms terrace duplex &mdash;- *25m*&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;300sqm: 5 bedroom terrace duplex with attached bq &mdash;- *30m*&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;850sqm:&amp;nbsp; 6units of 2 bedroom blocks of flat&amp;nbsp; &mdash;- *80m*&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;1000sqm: 6 units of 3bedroom blocks of flat &mdash;- *90m*&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;*Payment options*&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;1.Outright payment.&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;2.*Intalmental payment: 50% initial deposit and above*&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;3.Duration: 3 Months&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;!--block--&gt;&lrm;&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;FCT - Abuja&quot;,
+                    &quot;lga&quot;: &quot;Municipal Area Council&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;No&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;88&quot;,
+                    &quot;keyword&quot;: &quot;block, site, alertbrbrdivdiv, brbrdivdiv, introducingbrbrdivdiv, goldmark, city, kyaminbspbrbrdivdiv, 250sqm, 4bedrooms&quot;,
+                    &quot;meta_description&quot;: &quot;*New Site Alert*&lrm;&lrm;Introducing...&lrm;&lrm;Goldmark City, Kyami&amp;nbsp;&lrm;&lrm;250sqm: 4bedrooms terrace duplex &mdash;- *25m*&amp;nbsp;&lrm;&lrm;300sqm: 5 bedroom terrace duplex with a&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-16T21:52:31.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:00:02.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;Yes&quot;,
+                    &quot;state_slug&quot;: &quot;municipal-area-council&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 547,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 183,
+                        &quot;uuid&quot;: &quot;b44372d4-2594-434e-bf44-72878f9a4ac4&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;68c9ce0f59792.webp&quot;,
+                        &quot;file_name&quot;: &quot;68c9ce0f59792.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 60658,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;migrated_from_id&quot;: 647
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:58:26.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:58:27.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/547/68c9ce0f59792.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 133,
+                        &quot;user_id&quot;: &quot;50431&quot;,
+                        &quot;name&quot;: &quot;Igwe Nkechi&quot;,
+                        &quot;email&quot;: &quot;nikkisculture99@gmail.com&quot;,
+                        &quot;phone&quot;: null,
+                        &quot;address&quot;: null,
+                        &quot;city&quot;: null,
+                        &quot;state&quot;: null,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: null,
+                        &quot;otp&quot;: null,
+                        &quot;profile_picture&quot;: null,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-16T15:35:25.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-16T15:35:25.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;105.112.227.194&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-18 14:33:43&quot;,
+                        &quot;notification&quot;: &quot;no&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: null,
+                        &quot;bank_name&quot;: null,
+                        &quot;bank_code&quot;: null,
+                        &quot;account_name&quot;: null,
+                        &quot;account_number&quot;: null,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 251,
+                    &quot;user_id&quot;: &quot;41637&quot;,
+                    &quot;ad_id&quot;: &quot;71532&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;Health scale&quot;,
+                    &quot;title_slug&quot;: &quot;health-scale&quot;,
+                    &quot;category&quot;: &quot;12&quot;,
+                    &quot;sub_category&quot;: &quot;99&quot;,
+                    &quot;brand&quot;: &quot;2123&quot;,
+                    &quot;price&quot;: &quot;15000&quot;,
+                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;item_condition&quot;: &quot;New&quot;,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;Yes&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Weight Measurement: Measures body weight in units such as kilograms or pounds.&lt;br&gt;Body Fat Percentage: Estimates body fat percentage using bioelectrical impedance analysis (BIA).&lt;br&gt;Muscle Mass Measurement: Estimates muscle mass, helping track changes in body composition.&lt;br&gt;Water Percentage Measurement: Estimates body water percentage, which can be useful for athletes or individuals with specific hydration needs.&lt;br&gt;Bone Density Measurement: estimate bone density, which can be useful for monitoring bone health.&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;lga&quot;: &quot;Ikeja&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;No&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;31&quot;,
+                    &quot;keyword&quot;: &quot;health, scale, block, weight, measurement, measures, body, units, such, kilograms&quot;,
+                    &quot;meta_description&quot;: &quot;Weight Measurement: Measures body weight in units such as kilograms or pounds.Body Fat Percentage: Estimates body fat percentage using bioelectrical i&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T12:37:57.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T12:37:57.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;Yes&quot;,
+                    &quot;state_slug&quot;: &quot;ikeja&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 804,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 251,
+                        &quot;uuid&quot;: &quot;a729702a-bcc3-427c-82d1-0c0503ec190e&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;68d3d8159f514.webp&quot;,
+                        &quot;file_name&quot;: &quot;68d3d8159f514.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 96480,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;migrated_from_id&quot;: 857
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-29T02:19:46.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-29T02:19:48.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/804/68d3d8159f514.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 182,
+                        &quot;user_id&quot;: &quot;41637&quot;,
+                        &quot;name&quot;: &quot;Medical Equipment Nigeria Limited&quot;,
+                        &quot;email&quot;: &quot;ezegbulam.elizabeth123@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;09135547811&quot;,
+                        &quot;address&quot;: &quot;Fadeyi Aladura Street off Balogun Bus stop Ikeja Lagos&quot;,
+                        &quot;city&quot;: &quot;Lagos&quot;,
+                        &quot;state&quot;: &quot;Lagos&quot;,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Private&quot;,
+                        &quot;token&quot;: null,
+                        &quot;otp&quot;: null,
+                        &quot;profile_picture&quot;: &quot;1758715439.jpg&quot;,
+                        &quot;verified&quot;: &quot;yes&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-23T10:23:06.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-23T13:25:30.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;105.113.64.245&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-28 23:00:23&quot;,
+                        &quot;notification&quot;: &quot;yes&quot;,
+                        &quot;disable_account&quot;: &quot;no&quot;,
+                        &quot;disable_account_date&quot;: null,
+                        &quot;bank_name&quot;: &quot;Zenith Bank&quot;,
+                        &quot;bank_code&quot;: &quot;057&quot;,
+                        &quot;account_name&quot;: &quot;www medical Equipment Nigeria Limited&quot;,
+                        &quot;account_number&quot;: &quot;1016817244&quot;,
+                        &quot;google_id&quot;: null,
+                        &quot;facebook_id&quot;: null,
+                        &quot;otp_expires_at&quot;: null
+                    }
+                },
+                {
+                    &quot;id&quot;: 37,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;ad_id&quot;: &quot;21102&quot;,
+                    &quot;ad_type&quot;: &quot;Private&quot;,
+                    &quot;ad_title&quot;: &quot;Mercedes Benz&quot;,
+                    &quot;title_slug&quot;: &quot;mercedes-benz&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;266&quot;,
+                    &quot;price&quot;: &quot;16000000&quot;,
+                    &quot;price_type&quot;: &quot;Negotiable&quot;,
+                    &quot;item_condition&quot;: null,
+                    &quot;quantity&quot;: 1,
+                    &quot;buy_direct&quot;: &quot;No&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;Mercedes Benz&lt;br&gt;ML350&lt;br&gt;2013 Model&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;lga&quot;: &quot;Lagos Mainland&quot;,
+                    &quot;ad_status&quot;: &quot;active&quot;,
+                    &quot;featured&quot;: &quot;No&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
+                    &quot;shipping&quot;: null,
+                    &quot;views&quot;: &quot;169&quot;,
+                    &quot;keyword&quot;: null,
+                    &quot;meta_description&quot;: null,
+                    &quot;created_at&quot;: &quot;2025-08-14T14:50:34.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-14T14:50:34.000000Z&quot;,
+                    &quot;sold&quot;: &quot;No&quot;,
+                    &quot;sold_date&quot;: null,
+                    &quot;show_contact&quot;: &quot;Yes&quot;,
+                    &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
+                    &quot;contact_price&quot;: &quot;no&quot;,
+                    &quot;salary&quot;: null,
+                    &quot;expected_salary&quot;: null,
+                    &quot;redirect&quot;: &quot;No&quot;,
+                    &quot;first_image&quot;: {
+                        &quot;id&quot;: 67,
+                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                        &quot;model_id&quot;: 37,
+                        &quot;uuid&quot;: &quot;0029f477-fa5d-42e5-84e9-d9186a7eab8c&quot;,
+                        &quot;collection_name&quot;: &quot;images&quot;,
+                        &quot;name&quot;: &quot;689df7ba9fbd8.webp&quot;,
+                        &quot;file_name&quot;: &quot;689df7ba9fbd8.webp&quot;,
+                        &quot;mime_type&quot;: &quot;image/webp&quot;,
+                        &quot;disk&quot;: &quot;spatie&quot;,
+                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                        &quot;size&quot;: 156988,
+                        &quot;manipulations&quot;: [],
+                        &quot;custom_properties&quot;: {
+                            &quot;position&quot;: 1,
+                            &quot;migrated_from_id&quot;: 126
+                        },
+                        &quot;generated_conversions&quot;: {
+                            &quot;optimized&quot;: true,
+                            &quot;large&quot;: true,
+                            &quot;thumbnail&quot;: true
+                        },
+                        &quot;responsive_images&quot;: [],
+                        &quot;order_column&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-24T00:50:30.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T00:50:31.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/67/689df7ba9fbd8.webp&quot;,
+                        &quot;preview_url&quot;: &quot;&quot;
+                    },
+                    &quot;owner&quot;: {
+                        &quot;id&quot;: 24,
+                        &quot;user_id&quot;: &quot;15058&quot;,
+                        &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                        &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                        &quot;phone&quot;: &quot;08036016320&quot;,
+                        &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
+                        &quot;city&quot;: &quot;Lagos&quot;,
+                        &quot;state&quot;: &quot;Lagos&quot;,
+                        &quot;email_verified_at&quot;: null,
+                        &quot;acc_type&quot;: &quot;Commercial&quot;,
+                        &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                        &quot;otp&quot;: 835656,
+                        &quot;profile_picture&quot;: null,
+                        &quot;verified&quot;: &quot;no&quot;,
+                        &quot;acc_status&quot;: &quot;1&quot;,
+                        &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
                         &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
@@ -6259,440 +6711,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 137,
-                    &quot;user_id&quot;: &quot;28352&quot;,
-                    &quot;ad_id&quot;: &quot;55418&quot;,
+                    &quot;id&quot;: 216,
+                    &quot;user_id&quot;: &quot;93209&quot;,
+                    &quot;ad_id&quot;: &quot;74533&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;iPhone X 64gb&quot;,
-                    &quot;title_slug&quot;: &quot;iphone-x-64gb&quot;,
+                    &quot;ad_title&quot;: &quot;Oppo Smartphone&quot;,
+                    &quot;title_slug&quot;: &quot;oppo-smartphone&quot;,
                     &quot;category&quot;: &quot;4&quot;,
                     &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;1542&quot;,
-                    &quot;price&quot;: &quot;78000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: null,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;Yes&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;iPhone X 64gb&amp;nbsp;&lt;br&gt;No True Tone&amp;nbsp;&lt;br&gt;No Face ID&amp;nbsp;&lt;br&gt;Cracked back&amp;nbsp;&lt;br&gt;No back camera&amp;nbsp;&lt;br&gt;Only WiFi&amp;nbsp;&lt;br&gt;Working perfectly&amp;nbsp;&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Alimosho&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Ship&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;131&quot;,
-                    &quot;keyword&quot;: &quot;iphone, 64gb, block, 64gbnbspbrno, true, tonenbspbrno, face, idnbspbrcracked, backnbspbrno, back&quot;,
-                    &quot;meta_description&quot;: &quot;iPhone X 64gb&amp;nbsp;No True Tone&amp;nbsp;No Face ID&amp;nbsp;Cracked back&amp;nbsp;No back camera&amp;nbsp;Only WiFi&amp;nbsp;Working perfectly&amp;nbsp;&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-11T17:05:13.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-11T17:05:13.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;Yes&quot;,
-                    &quot;state_slug&quot;: &quot;alimosho&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 423,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 137,
-                        &quot;uuid&quot;: &quot;c4d86913-2297-45f5-9494-aa11f5dfe35f&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68c2f339936d6.webp&quot;,
-                        &quot;file_name&quot;: &quot;68c2f339936d6.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 55872,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 508
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:55:22.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:55:23.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/423/68c2f339936d6.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 69,
-                        &quot;user_id&quot;: &quot;28352&quot;,
-                        &quot;name&quot;: &quot;Kenny&quot;,
-                        &quot;email&quot;: &quot;taiwokehinde492@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;07072473990&quot;,
-                        &quot;address&quot;: &quot;No 11 Gegelose&quot;,
-                        &quot;city&quot;: &quot;Ikotun&quot;,
-                        &quot;state&quot;: &quot;Lagos&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Private&quot;,
-                        &quot;token&quot;: &quot;YYsGTaxpvyLRpzSzcVLGt9C5wgx8FNYpDQuNHJNx&quot;,
-                        &quot;otp&quot;: 750169,
-                        &quot;profile_picture&quot;: null,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;154.120.87.135&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-12 01:52:08&quot;,
-                        &quot;notification&quot;: &quot;no&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: null,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: null,
-                        &quot;account_number&quot;: null,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 139,
-                    &quot;user_id&quot;: &quot;15755&quot;,
-                    &quot;ad_id&quot;: &quot;28766&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Bedstand &amp; foam&quot;,
-                    &quot;title_slug&quot;: &quot;bedstand-foam&quot;,
-                    &quot;category&quot;: &quot;9&quot;,
-                    &quot;sub_category&quot;: &quot;46&quot;,
-                    &quot;brand&quot;: &quot;2796&quot;,
-                    &quot;price&quot;: &quot;195000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: &quot;Foreign Used&quot;,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;Yes&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Very clean and stand&lt;br&gt;&lt;br&gt; for the video +234 707 622 6286&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Anambra&quot;,
-                    &quot;lga&quot;: &quot;Aguata&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Pickup&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;56&quot;,
-                    &quot;keyword&quot;: &quot;bedstand, foam, block, very, clean, standbrbrwhatsapp, video, 6286div&quot;,
-                    &quot;meta_description&quot;: &quot;Very clean and standWhatsApp for the video +234 707 622 6286&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-12T14:31:47.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-12T14:31:47.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;aguata&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 429,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 139,
-                        &quot;uuid&quot;: &quot;bcd71563-21e6-4fe4-aefe-27c0ec2aecde&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68c420c3a2495.webp&quot;,
-                        &quot;file_name&quot;: &quot;68c420c3a2495.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 22494,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 514
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:55:36.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:55:37.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/429/68c420c3a2495.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 76,
-                        &quot;user_id&quot;: &quot;15755&quot;,
-                        &quot;name&quot;: &quot;Kess&quot;,
-                        &quot;email&quot;: &quot;kessvow@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;07076226286&quot;,
-                        &quot;address&quot;: &quot;Nnewi&quot;,
-                        &quot;city&quot;: &quot;Nnewi&quot;,
-                        &quot;state&quot;: &quot;Anambra&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Commercial&quot;,
-                        &quot;token&quot;: &quot;e73iaqkJ5TBZZH1iH6QqZ3auZvnEvAGc0NT42oCN&quot;,
-                        &quot;otp&quot;: 591740,
-                        &quot;profile_picture&quot;: null,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-12T14:21:21.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-12T14:21:21.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;102.90.118.103&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-13 19:19:31&quot;,
-                        &quot;notification&quot;: &quot;no&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: null,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: null,
-                        &quot;account_number&quot;: null,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 101,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;ad_id&quot;: &quot;18534&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;HP Laptop 250 G5 i5&quot;,
-                    &quot;title_slug&quot;: &quot;hp-laptop-250-g5-i5&quot;,
-                    &quot;category&quot;: &quot;2&quot;,
-                    &quot;sub_category&quot;: &quot;27&quot;,
-                    &quot;brand&quot;: &quot;2349&quot;,
-                    &quot;price&quot;: &quot;145000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: &quot;Foreign Used&quot;,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;The Laptop is well maintained&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Ikeja&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Pickup&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;71&quot;,
-                    &quot;keyword&quot;: &quot;laptop, well, maintained&quot;,
-                    &quot;meta_description&quot;: &quot;The Laptop is well maintained&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-04T00:24:22.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-04T00:24:22.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;ikeja&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 300,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 101,
-                        &quot;uuid&quot;: &quot;8800fafa-b77a-4515-b4d7-8303cd6073d9&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68b8ce26da7c2.webp&quot;,
-                        &quot;file_name&quot;: &quot;68b8ce26da7c2.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 20476,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 367
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:53:11.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:53:12.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/300/68b8ce26da7c2.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 34,
-                        &quot;user_id&quot;: &quot;84123&quot;,
-                        &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                        &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;08033332401&quot;,
-                        &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                        &quot;city&quot;: &quot;Ikeja&quot;,
-                        &quot;state&quot;: &quot;Lagos&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Commercial&quot;,
-                        &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                        &quot;otp&quot;: 602971,
-                        &quot;profile_picture&quot;: null,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
-                        &quot;notification&quot;: &quot;no&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: null,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: null,
-                        &quot;account_number&quot;: null,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 124,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;ad_id&quot;: &quot;87283&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;HP laptop with Ryzen 5 16GB DDR4 512SSD&quot;,
-                    &quot;title_slug&quot;: &quot;hp-laptop-with-ryzen-5-16gb-ddr4-512ssd&quot;,
-                    &quot;category&quot;: &quot;2&quot;,
-                    &quot;sub_category&quot;: &quot;27&quot;,
-                    &quot;brand&quot;: &quot;2349&quot;,
-                    &quot;price&quot;: &quot;420000&quot;,
-                    &quot;price_type&quot;: &quot;Fixed&quot;,
-                    &quot;item_condition&quot;: &quot;Foreign Used&quot;,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;The Laptop works very well.&amp;nbsp;&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Ikeja&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Pickup&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;85&quot;,
-                    &quot;keyword&quot;: &quot;laptop, with, ryzen, 16gb, ddr4, 512ssd, divthe, works, very, wellnbspdiv&quot;,
-                    &quot;meta_description&quot;: &quot;The Laptop works very well.&amp;nbsp;&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-07T15:17:31.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-07T15:17:47.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;ikeja&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 364,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 124,
-                        &quot;uuid&quot;: &quot;8b28f1c5-7353-4c43-a8e4-7a3e57a97d7b&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68bd93fb2f48c.webp&quot;,
-                        &quot;file_name&quot;: &quot;68bd93fb2f48c.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 134614,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 443
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:54:20.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:54:21.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/364/68bd93fb2f48c.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 34,
-                        &quot;user_id&quot;: &quot;84123&quot;,
-                        &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                        &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;08033332401&quot;,
-                        &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                        &quot;city&quot;: &quot;Ikeja&quot;,
-                        &quot;state&quot;: &quot;Lagos&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Commercial&quot;,
-                        &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                        &quot;otp&quot;: 602971,
-                        &quot;profile_picture&quot;: null,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
-                        &quot;notification&quot;: &quot;no&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: null,
-                        &quot;bank_code&quot;: null,
-                        &quot;account_name&quot;: null,
-                        &quot;account_number&quot;: null,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 154,
-                    &quot;user_id&quot;: &quot;87518&quot;,
-                    &quot;ad_id&quot;: &quot;56619&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;iPhone 16 plus&quot;,
-                    &quot;title_slug&quot;: &quot;iphone-16-plus&quot;,
-                    &quot;category&quot;: &quot;4&quot;,
-                    &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;1542&quot;,
-                    &quot;price&quot;: &quot;1300000&quot;,
+                    &quot;brand&quot;: &quot;1599&quot;,
+                    &quot;price&quot;: &quot;180000&quot;,
                     &quot;price_type&quot;: &quot;Fixed&quot;,
                     &quot;item_condition&quot;: null,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;Yes&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Brand new sealed iPhone 16+&amp;nbsp;&lt;br&gt;Pink colour&lt;br&gt;128gb&lt;/div&gt;&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&lt;/div&gt;&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Lagos Island&quot;,
+                    &quot;lga&quot;: &quot;Surulere&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Ship&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;54&quot;,
-                    &quot;keyword&quot;: &quot;iphone, plus, block, brand, sealed, 16nbspbrpink, colourbr128gbdiv&quot;,
-                    &quot;meta_description&quot;: &quot;Brand new sealed iPhone 16+&amp;nbsp;Pink colour128gb&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-14T14:18:51.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-14T14:18:51.000000Z&quot;,
+                    &quot;views&quot;: &quot;26&quot;,
+                    &quot;keyword&quot;: &quot;oppo, smartphone, block, second, hand, uses, reno, with, ram258gb, some&quot;,
+                    &quot;meta_description&quot;: &quot;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;Yes&quot;,
-                    &quot;state_slug&quot;: &quot;lagos-island&quot;,
+                    &quot;state_slug&quot;: &quot;surulere&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 478,
+                        &quot;id&quot;: 675,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 154,
-                        &quot;uuid&quot;: &quot;7cfd5e02-534a-4038-a15c-0bea8f285303&quot;,
+                        &quot;model_id&quot;: 216,
+                        &quot;uuid&quot;: &quot;406ea14e-ed45-480b-977b-9cecad91c9eb&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68c6c0bb07f35.webp&quot;,
-                        &quot;file_name&quot;: &quot;68c6c0bb07f35.webp&quot;,
+                        &quot;name&quot;: &quot;68d1f77207d4e.webp&quot;,
+                        &quot;file_name&quot;: &quot;68d1f77207d4e.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 25010,
+                        &quot;size&quot;: 95654,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 565
+                            &quot;migrated_from_id&quot;: 788
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -6701,16 +6769,16 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:56:39.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:56:40.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/478/68c6c0bb07f35.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-24T01:00:38.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-24T01:00:39.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/675/68d1f77207d4e.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 98,
-                        &quot;user_id&quot;: &quot;87518&quot;,
-                        &quot;name&quot;: &quot;Miu Miu&quot;,
-                        &quot;email&quot;: &quot;miumiucat23@gmail.com&quot;,
+                        &quot;id&quot;: 178,
+                        &quot;user_id&quot;: &quot;93209&quot;,
+                        &quot;name&quot;: &quot;Chukwuka Ekwuonu&quot;,
+                        &quot;email&quot;: &quot;ekwuonuchukwuka@gmail.com&quot;,
                         &quot;phone&quot;: null,
                         &quot;address&quot;: null,
                         &quot;city&quot;: null,
@@ -6722,10 +6790,10 @@ access-control-allow-origin: *
                         &quot;profile_picture&quot;: null,
                         &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-14T14:13:15.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-14T14:13:15.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;197.211.59.123&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-14 15:13:15&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-23T02:16:07.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-23T02:16:07.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;102.89.83.165&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-28 22:19:14&quot;,
                         &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
@@ -6739,56 +6807,56 @@ access-control-allow-origin: *
                     }
                 },
                 {
-                    &quot;id&quot;: 280,
-                    &quot;user_id&quot;: &quot;93337&quot;,
-                    &quot;ad_id&quot;: &quot;28749&quot;,
+                    &quot;id&quot;: 294,
+                    &quot;user_id&quot;: &quot;62851&quot;,
+                    &quot;ad_id&quot;: &quot;86811&quot;,
                     &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;Original Honey&quot;,
-                    &quot;title_slug&quot;: &quot;original-honey&quot;,
-                    &quot;category&quot;: &quot;17&quot;,
-                    &quot;sub_category&quot;: &quot;86&quot;,
-                    &quot;brand&quot;: &quot;2777&quot;,
-                    &quot;price&quot;: &quot;9000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: &quot;New&quot;,
+                    &quot;ad_title&quot;: &quot;FOREIGN USED LEXUS LX570 2019&quot;,
+                    &quot;title_slug&quot;: &quot;foreign-used-lexus-lx570-2019&quot;,
+                    &quot;category&quot;: &quot;1&quot;,
+                    &quot;sub_category&quot;: &quot;2&quot;,
+                    &quot;brand&quot;: &quot;833&quot;,
+                    &quot;price&quot;: &quot;105000000&quot;,
+                    &quot;price_type&quot;: &quot;Fixed&quot;,
+                    &quot;item_condition&quot;: &quot;Foreign Used&quot;,
                     &quot;quantity&quot;: 1,
                     &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Essence Honey is pure natural and Unadulterated Honey, Rich in antioxidants and packed with lots of essential benefits.&lt;/div&gt;&quot;,
+                    &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;*Distress sale dealers deal*&lt;br&gt;Foreign used 2019 LX570 with tan interior, 360&deg; camera going for:*#105M*&lt;br&gt;Note:*no duty*&lt;br&gt;&lt;br&gt;&lt;br&gt; or &amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Mide&lt;/div&gt;&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Shomolu&quot;,
+                    &quot;lga&quot;: &quot;Eti Osa&quot;,
                     &quot;ad_status&quot;: &quot;active&quot;,
                     &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Ship&quot;,
+                    &quot;shipment&quot;: &quot;Pickup&quot;,
                     &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;21&quot;,
-                    &quot;keyword&quot;: &quot;original, honey, block, essence, pure, natural, unadulterated, rich, antioxidants, packed&quot;,
-                    &quot;meta_description&quot;: &quot;Essence Honey is pure natural and Unadulterated Honey, Rich in antioxidants and packed with lots of essential benefits.&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-25T09:37:24.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-25T09:37:24.000000Z&quot;,
+                    &quot;views&quot;: &quot;41&quot;,
+                    &quot;keyword&quot;: &quot;foreign, used, lexus, lx570, 2019, block, distress, sale, dealers, dealbrforeign&quot;,
+                    &quot;meta_description&quot;: &quot;*Distress sale dealers deal*Foreign used 2019 LX570 with tan interior, 360&deg; camera going for:*#105M*Note:*no duty*08156549071Call me or WhatsApp&amp;nbsp;&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-25T23:00:43.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-25T23:00:43.000000Z&quot;,
                     &quot;sold&quot;: &quot;No&quot;,
                     &quot;sold_date&quot;: null,
                     &quot;show_contact&quot;: &quot;Yes&quot;,
-                    &quot;state_slug&quot;: &quot;shomolu&quot;,
+                    &quot;state_slug&quot;: &quot;eti-osa&quot;,
                     &quot;contact_price&quot;: &quot;no&quot;,
                     &quot;salary&quot;: null,
                     &quot;expected_salary&quot;: null,
                     &quot;redirect&quot;: &quot;No&quot;,
                     &quot;first_image&quot;: {
-                        &quot;id&quot;: 901,
+                        &quot;id&quot;: 952,
                         &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 280,
-                        &quot;uuid&quot;: &quot;0052e1ab-836c-4a79-8549-16e04efbf90e&quot;,
+                        &quot;model_id&quot;: 294,
+                        &quot;uuid&quot;: &quot;b5ff649c-d783-4516-9990-06b4064453fd&quot;,
                         &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68d4ff440ee04.webp&quot;,
-                        &quot;file_name&quot;: &quot;68d4ff440ee04.webp&quot;,
+                        &quot;name&quot;: &quot;68d5bb8b9d9cd.webp&quot;,
+                        &quot;file_name&quot;: &quot;68d5bb8b9d9cd.webp&quot;,
                         &quot;mime_type&quot;: &quot;image/webp&quot;,
                         &quot;disk&quot;: &quot;spatie&quot;,
                         &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 85058,
+                        &quot;size&quot;: 95472,
                         &quot;manipulations&quot;: [],
                         &quot;custom_properties&quot;: {
                             &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 959
+                            &quot;migrated_from_id&quot;: 1015
                         },
                         &quot;generated_conversions&quot;: {
                             &quot;optimized&quot;: true,
@@ -6797,31 +6865,31 @@ access-control-allow-origin: *
                         },
                         &quot;responsive_images&quot;: [],
                         &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-29T02:22:16.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-29T02:22:18.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/901/68d4ff440ee04.webp&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-29T02:23:58.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-29T02:23:59.000000Z&quot;,
+                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/952/68d5bb8b9d9cd.webp&quot;,
                         &quot;preview_url&quot;: &quot;&quot;
                     },
                     &quot;owner&quot;: {
-                        &quot;id&quot;: 226,
-                        &quot;user_id&quot;: &quot;93337&quot;,
-                        &quot;name&quot;: &quot;adeshola omolade&quot;,
-                        &quot;email&quot;: &quot;yoyeensolaone1@gmail.com&quot;,
-                        &quot;phone&quot;: null,
-                        &quot;address&quot;: null,
-                        &quot;city&quot;: null,
-                        &quot;state&quot;: null,
+                        &quot;id&quot;: 245,
+                        &quot;user_id&quot;: &quot;62851&quot;,
+                        &quot;name&quot;: &quot;KELZ &Auml;&Uuml;T&Oslash;&Scaron;&quot;,
+                        &quot;email&quot;: &quot;kellyemmy053@gmail.com&quot;,
+                        &quot;phone&quot;: &quot;08156549071&quot;,
+                        &quot;address&quot;: &quot;No 2, Supo gbabe str, ekoro road, Abuleegba&quot;,
+                        &quot;city&quot;: &quot;Lagos&quot;,
+                        &quot;state&quot;: &quot;Lagos&quot;,
                         &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Private&quot;,
-                        &quot;token&quot;: null,
-                        &quot;otp&quot;: null,
+                        &quot;acc_type&quot;: &quot;Commercial&quot;,
+                        &quot;token&quot;: &quot;ZOa9g0WQGDdicaVnkAjFogvqdNKHNGsIUb3MKJ3q&quot;,
+                        &quot;otp&quot;: 426377,
                         &quot;profile_picture&quot;: null,
                         &quot;verified&quot;: &quot;no&quot;,
                         &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-09-25T09:24:33.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-25T09:24:33.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;102.89.22.180&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-25 10:35:27&quot;,
+                        &quot;created_at&quot;: &quot;2025-09-25T20:13:32.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-25T20:13:32.000000Z&quot;,
+                        &quot;last_login_ip&quot;: &quot;197.211.59.112&quot;,
+                        &quot;last_login_at&quot;: &quot;2025-09-26 00:02:58&quot;,
                         &quot;notification&quot;: &quot;no&quot;,
                         &quot;disable_account&quot;: &quot;no&quot;,
                         &quot;disable_account_date&quot;: null,
@@ -6829,102 +6897,6 @@ access-control-allow-origin: *
                         &quot;bank_code&quot;: null,
                         &quot;account_name&quot;: null,
                         &quot;account_number&quot;: null,
-                        &quot;google_id&quot;: null,
-                        &quot;facebook_id&quot;: null,
-                        &quot;otp_expires_at&quot;: null
-                    }
-                },
-                {
-                    &quot;id&quot;: 73,
-                    &quot;user_id&quot;: &quot;82248&quot;,
-                    &quot;ad_id&quot;: &quot;33083&quot;,
-                    &quot;ad_type&quot;: &quot;Private&quot;,
-                    &quot;ad_title&quot;: &quot;iPhone 11 128 GB&quot;,
-                    &quot;title_slug&quot;: &quot;iphone-11-128-gb&quot;,
-                    &quot;category&quot;: &quot;4&quot;,
-                    &quot;sub_category&quot;: &quot;6&quot;,
-                    &quot;brand&quot;: &quot;1542&quot;,
-                    &quot;price&quot;: &quot;310000&quot;,
-                    &quot;price_type&quot;: &quot;Negotiable&quot;,
-                    &quot;item_condition&quot;: null,
-                    &quot;quantity&quot;: 1,
-                    &quot;buy_direct&quot;: &quot;No&quot;,
-                    &quot;description&quot;: &quot;&lt;div&gt;Offering a well-maintained iPhone 11 128 GB&lt;br&gt;&lt;br&gt;Liquid Retina HD display,&lt;br&gt;6.1\&quot; all-screen LCD multi-touch display (15.5 cm diagonal) with IPS technology,&lt;br&gt;1792 x 828 pixels at 326 ppi&lt;br&gt;, 1400:1 typical contrast ratio,&lt;br&gt;True Tone display,&lt;br&gt;wide color gamut (P3) display,&lt;br&gt;Haptic Touch,&lt;br&gt;625 nits maximum typical brightness, oleophobic coating, support for multiple languages ​​and characters simultaneously.&lt;br&gt;&lt;br&gt;Normal signs of wear, fully functional. Available&lt;br&gt;with screen protectors and a case upon request.&lt;br&gt;&lt;br&gt;Feel free to contact us with any questions.&lt;/div&gt;&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;lga&quot;: &quot;Lagos Mainland&quot;,
-                    &quot;ad_status&quot;: &quot;active&quot;,
-                    &quot;featured&quot;: &quot;No&quot;,
-                    &quot;shipment&quot;: &quot;Ship&quot;,
-                    &quot;shipping&quot;: null,
-                    &quot;views&quot;: &quot;119&quot;,
-                    &quot;keyword&quot;: &quot;iphone, divoffering, well, maintained, gbbrbrliquid, retina, displaybr61, screen, multi, touch&quot;,
-                    &quot;meta_description&quot;: &quot;Offering a well-maintained iPhone 11 128 GBLiquid Retina HD display,6.1\&quot; all-screen LCD multi-touch display (15.5 cm diagonal) with IPS technology,179&quot;,
-                    &quot;created_at&quot;: &quot;2025-08-23T09:27:17.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-05T18:19:05.000000Z&quot;,
-                    &quot;sold&quot;: &quot;No&quot;,
-                    &quot;sold_date&quot;: null,
-                    &quot;show_contact&quot;: &quot;No&quot;,
-                    &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
-                    &quot;contact_price&quot;: &quot;no&quot;,
-                    &quot;salary&quot;: null,
-                    &quot;expected_salary&quot;: null,
-                    &quot;redirect&quot;: &quot;No&quot;,
-                    &quot;first_image&quot;: {
-                        &quot;id&quot;: 200,
-                        &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                        &quot;model_id&quot;: 73,
-                        &quot;uuid&quot;: &quot;9fcab042-03d2-4443-86eb-8fc1139734f9&quot;,
-                        &quot;collection_name&quot;: &quot;images&quot;,
-                        &quot;name&quot;: &quot;68a97b659507b.webp&quot;,
-                        &quot;file_name&quot;: &quot;68a97b659507b.webp&quot;,
-                        &quot;mime_type&quot;: &quot;image/webp&quot;,
-                        &quot;disk&quot;: &quot;spatie&quot;,
-                        &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                        &quot;size&quot;: 9318,
-                        &quot;manipulations&quot;: [],
-                        &quot;custom_properties&quot;: {
-                            &quot;position&quot;: 1,
-                            &quot;migrated_from_id&quot;: 265
-                        },
-                        &quot;generated_conversions&quot;: {
-                            &quot;optimized&quot;: true,
-                            &quot;large&quot;: true,
-                            &quot;thumbnail&quot;: true
-                        },
-                        &quot;responsive_images&quot;: [],
-                        &quot;order_column&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-24T00:51:55.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-24T00:51:56.000000Z&quot;,
-                        &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/200/68a97b659507b.webp&quot;,
-                        &quot;preview_url&quot;: &quot;&quot;
-                    },
-                    &quot;owner&quot;: {
-                        &quot;id&quot;: 14,
-                        &quot;user_id&quot;: &quot;82248&quot;,
-                        &quot;name&quot;: &quot;Jayson&quot;,
-                        &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
-                        &quot;phone&quot;: &quot;08137254596&quot;,
-                        &quot;address&quot;: &quot;Ikeja Lagos&quot;,
-                        &quot;city&quot;: &quot;Ikeja&quot;,
-                        &quot;state&quot;: &quot;Lagos&quot;,
-                        &quot;email_verified_at&quot;: null,
-                        &quot;acc_type&quot;: &quot;Private&quot;,
-                        &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
-                        &quot;otp&quot;: 256937,
-                        &quot;profile_picture&quot;: null,
-                        &quot;verified&quot;: &quot;no&quot;,
-                        &quot;acc_status&quot;: &quot;1&quot;,
-                        &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
-                        &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
-                        &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
-                        &quot;notification&quot;: &quot;yes&quot;,
-                        &quot;disable_account&quot;: &quot;no&quot;,
-                        &quot;disable_account_date&quot;: null,
-                        &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
-                        &quot;bank_code&quot;: &quot;058&quot;,
-                        &quot;account_name&quot;: &quot;Jerry okoro&quot;,
-                        &quot;account_number&quot;: &quot;0023453459&quot;,
                         &quot;google_id&quot;: null,
                         &quot;facebook_id&quot;: null,
                         &quot;otp_expires_at&quot;: null
@@ -6939,56 +6911,56 @@ access-control-allow-origin: *
         },
         &quot;cars&quot;: [
             {
-                &quot;id&quot;: 263,
-                &quot;user_id&quot;: &quot;71984&quot;,
-                &quot;ad_id&quot;: &quot;62240&quot;,
+                &quot;id&quot;: 141,
+                &quot;user_id&quot;: &quot;09206&quot;,
+                &quot;ad_id&quot;: &quot;98401&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Toyota corolla for sale&quot;,
-                &quot;title_slug&quot;: &quot;toyota-corolla-for-sale&quot;,
+                &quot;ad_title&quot;: &quot;Foreign Used Hyundai Sante Fe&quot;,
+                &quot;title_slug&quot;: &quot;foreign-used-hyundai-sante-fe&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;2000000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;brand&quot;: &quot;835&quot;,
+                &quot;price&quot;: &quot;16000000&quot;,
+                &quot;price_type&quot;: &quot;Give Away&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;+&lt;br&gt;Tokumbo standard&amp;nbsp; Toyota corolla&lt;br&gt;Foreign used&amp;nbsp;&lt;br&gt;FIRST BODY&amp;nbsp;&lt;br&gt;AVAILABLE for sale&amp;nbsp;&lt;br&gt;Year: 2006&lt;br&gt;No mechanical issue&amp;nbsp;&lt;br&gt;Good perfect condition&lt;br&gt;Papers available&lt;br&gt;Ac&amp;amp; Engine ☑️&lt;br&gt;PRICES :₦2Million Naira&lt;br&gt;For more enquiry&lt;br&gt;Contact JOHNSON FELIX AUTOS On: For Inspection And Purchase&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Very clean direct Tokunbo Hydundai santa fe 2014 four cylinder turbo engine available for sale. The features are stated below:&lt;br&gt;It is a 4cylinder turbo engine.&lt;br&gt;It has a reversed camera&lt;br&gt;Air-conditioning&amp;nbsp;&lt;br&gt;Leather seat&lt;br&gt;Cruise control&lt;br&gt;GPS screen&lt;br&gt;Bluetooth&lt;br&gt;3 seater&lt;br&gt;Keyless entry/thumb start&lt;br&gt;High quality surround speakers&lt;br&gt;Alloy wheels&lt;br&gt;&lt;br&gt;Call or if interested.&amp;nbsp;&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;lga&quot;: &quot;Surulere&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;35&quot;,
-                &quot;keyword&quot;: &quot;toyota, corolla, sale, 08161410450, block, 2348161410450brtokumbo, standardnbsp, corollabrforeign, usednbspbrfirst, bodynbspbravailable&quot;,
-                &quot;meta_description&quot;: &quot;+2348161410450Tokumbo standard&amp;nbsp; Toyota corollaForeign used&amp;nbsp;FIRST BODY&amp;nbsp;AVAILABLE for sale&amp;nbsp;Year: 2006No mechanical issue&amp;nbsp;Good p&quot;,
-                &quot;created_at&quot;: &quot;2025-09-24T15:17:16.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-24T15:17:16.000000Z&quot;,
+                &quot;views&quot;: &quot;203&quot;,
+                &quot;keyword&quot;: &quot;foreign, used, hyundai, sante, block, very, clean, direct, tokunbo, hydundai&quot;,
+                &quot;meta_description&quot;: &quot;Very clean direct Tokunbo Hydundai santa fe 2014 four cylinder turbo engine available for sale. The features are stated below:It is a 4cylinder turbo&quot;,
+                &quot;created_at&quot;: &quot;2025-09-13T10:17:44.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-23T09:39:53.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;state_slug&quot;: &quot;surulere&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 841,
+                    &quot;id&quot;: 447,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 263,
-                    &quot;uuid&quot;: &quot;bb11b728-4c33-4bf0-be46-652b10cddf19&quot;,
+                    &quot;model_id&quot;: 141,
+                    &quot;uuid&quot;: &quot;32ccf1a9-5e68-460c-b3a8-0242972d6768&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d3fd6c03baf.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d3fd6c03baf.webp&quot;,
+                    &quot;name&quot;: &quot;68c536b90ccf6.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c536b90ccf6.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 67494,
+                    &quot;size&quot;: 94934,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 894
+                        &quot;migrated_from_id&quot;: 532
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -6997,16 +6969,16 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:20:43.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:20:44.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/841/68d3fd6c03baf.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:52.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:52.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/447/68c536b90ccf6.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 201,
-                    &quot;user_id&quot;: &quot;71984&quot;,
-                    &quot;name&quot;: &quot;Johnson Felix&quot;,
-                    &quot;email&quot;: &quot;johnsonfelixauto2024@gmail.com&quot;,
+                    &quot;id&quot;: 84,
+                    &quot;user_id&quot;: &quot;09206&quot;,
+                    &quot;name&quot;: &quot;taste chop&quot;,
+                    &quot;email&quot;: &quot;tnc.spicyfoods@gmail.com&quot;,
                     &quot;phone&quot;: null,
                     &quot;address&quot;: null,
                     &quot;city&quot;: null,
@@ -7018,10 +6990,10 @@ access-control-allow-origin: *
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.90.99.61&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 00:46:31&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-13T09:36:14.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.34.205&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-23 10:37:31&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -7035,152 +7007,56 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 288,
-                &quot;user_id&quot;: &quot;75389&quot;,
-                &quot;ad_id&quot;: &quot;48728&quot;,
+                &quot;id&quot;: 238,
+                &quot;user_id&quot;: &quot;12151&quot;,
+                &quot;ad_id&quot;: &quot;22602&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;2015 Toyota Highlander Registered&quot;,
-                &quot;title_slug&quot;: &quot;2015-toyota-highlander-registered&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;20000000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;2015 clean Registered Toyota Highlander Buy and drive&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Eti Osa&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;29&quot;,
-                &quot;keyword&quot;: &quot;2015, toyota, highlander, registered, block, clean, drivediv&quot;,
-                &quot;meta_description&quot;: &quot;2015 clean Registered Toyota Highlander Buy and drive&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T12:37:40.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T12:37:40.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;eti-osa&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 918,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 288,
-                    &quot;uuid&quot;: &quot;c6cc3e2c-eb75-4f41-83ac-496958768516&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d5298430ae8.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d5298430ae8.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 112240,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 981
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:22:47.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:49.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/918/68d5298430ae8.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 233,
-                    &quot;user_id&quot;: &quot;75389&quot;,
-                    &quot;name&quot;: &quot;Stephen Mustapha&quot;,
-                    &quot;email&quot;: &quot;expozee30@gmail.com&quot;,
-                    &quot;phone&quot;: null,
-                    &quot;address&quot;: null,
-                    &quot;city&quot;: null,
-                    &quot;state&quot;: null,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: null,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-25T12:29:05.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-25T12:29:05.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.89.32.225&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 13:29:05&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 262,
-                &quot;user_id&quot;: &quot;71984&quot;,
-                &quot;ad_id&quot;: &quot;23095&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Honda Civic for sale&quot;,
-                &quot;title_slug&quot;: &quot;honda-civic-for-sale&quot;,
+                &quot;ad_title&quot;: &quot;Honda Accord&quot;,
+                &quot;title_slug&quot;: &quot;honda-accord&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
                 &quot;brand&quot;: &quot;834&quot;,
-                &quot;price&quot;: &quot;1500000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;price&quot;: &quot;5500000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;+&lt;br&gt;Tokumbo standard Honda Civic&lt;br&gt;Foreign used&amp;nbsp;&lt;br&gt;FIRST BODY&amp;nbsp;&lt;br&gt;AVAILABLE for sale&amp;nbsp;&lt;br&gt;Year: 2002&lt;br&gt;No mechanical issue&amp;nbsp;&lt;br&gt;Good perfect condition&lt;br&gt;Papers available&lt;br&gt;Ac&amp;amp; Engine ☑️&lt;br&gt;PRICES :₦1.5Million Naira&lt;br&gt;For more enquiry&lt;br&gt;Contact JOHNSON FELIX AUTOS On: For Inspection And Purchase&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Used Honda Accord 2010 model&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;lga&quot;: &quot;Ikorodu&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;49&quot;,
-                &quot;keyword&quot;: &quot;honda, civic, sale, 08161410450, block, brtokumbo, standard, civicbrforeign, usednbspbrfirst, bodynbspbravailable&quot;,
-                &quot;meta_description&quot;: &quot;+Tokumbo standard Honda CivicForeign used&amp;nbsp;FIRST BODY&amp;nbsp;AVAILABLE for sale&amp;nbsp;Year: 2002No mechanical issue&amp;nbsp;Good perfect conditionPapers&quot;,
-                &quot;created_at&quot;: &quot;2025-09-24T15:08:57.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-24T15:09:27.000000Z&quot;,
+                &quot;views&quot;: &quot;45&quot;,
+                &quot;keyword&quot;: &quot;honda, accord, block, used, 2010, modeldiv&quot;,
+                &quot;meta_description&quot;: &quot;Used Honda Accord 2010 model&quot;,
+                &quot;created_at&quot;: &quot;2025-09-23T15:17:38.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-23T15:17:38.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;state_slug&quot;: &quot;ikorodu&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 840,
+                    &quot;id&quot;: 775,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 262,
-                    &quot;uuid&quot;: &quot;e8045879-4be3-47c8-8a39-0effa5f1560d&quot;,
+                    &quot;model_id&quot;: 238,
+                    &quot;uuid&quot;: &quot;e8ab5ba1-b5ba-4b44-a984-0f7368b00452&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d3fb797501d.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d3fb797501d.webp&quot;,
+                    &quot;name&quot;: &quot;68d2ac0218259.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d2ac0218259.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 56912,
+                    &quot;size&quot;: 113138,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 893
+                        &quot;migrated_from_id&quot;: 829
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7189,17 +7065,17 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:20:42.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:20:43.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/840/68d3fb797501d.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:15:11.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:15:13.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/775/68d2ac0218259.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 201,
-                    &quot;user_id&quot;: &quot;71984&quot;,
-                    &quot;name&quot;: &quot;Johnson Felix&quot;,
-                    &quot;email&quot;: &quot;johnsonfelixauto2024@gmail.com&quot;,
-                    &quot;phone&quot;: null,
+                    &quot;id&quot;: 189,
+                    &quot;user_id&quot;: &quot;12151&quot;,
+                    &quot;name&quot;: &quot;michael adeyemi&quot;,
+                    &quot;email&quot;: &quot;yemzzy4sure@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;09131518398&quot;,
                     &quot;address&quot;: null,
                     &quot;city&quot;: null,
                     &quot;state&quot;: null,
@@ -7208,75 +7084,75 @@ access-control-allow-origin: *
                     &quot;token&quot;: null,
                     &quot;otp&quot;: null,
                     &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;verified&quot;: &quot;yes&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.90.99.61&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 00:46:31&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-23T15:12:54.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-23T18:00:17.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.32.149&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-24 19:00:30&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
+                    &quot;bank_name&quot;: &quot;OPay Digital Services Limited (OPay)&quot;,
+                    &quot;bank_code&quot;: &quot;999992&quot;,
+                    &quot;account_name&quot;: &quot;Akinsanya Adeyemi Michael&quot;,
+                    &quot;account_number&quot;: &quot;8093587097&quot;,
                     &quot;google_id&quot;: null,
                     &quot;facebook_id&quot;: null,
                     &quot;otp_expires_at&quot;: null
                 }
             },
             {
-                &quot;id&quot;: 260,
-                &quot;user_id&quot;: &quot;71984&quot;,
-                &quot;ad_id&quot;: &quot;55408&quot;,
+                &quot;id&quot;: 314,
+                &quot;user_id&quot;: &quot;82261&quot;,
+                &quot;ad_id&quot;: &quot;19583&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Volkswagen sharon for sale&quot;,
-                &quot;title_slug&quot;: &quot;volkswagen-sharon-for-sale&quot;,
+                &quot;ad_title&quot;: &quot;New 2025 Toyota Corolla LE FWD 4dr Car&quot;,
+                &quot;title_slug&quot;: &quot;new-2025-toyota-corolla-le-fwd-4dr-car&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;929&quot;,
-                &quot;price&quot;: &quot;1800000&quot;,
+                &quot;brand&quot;: &quot;832&quot;,
+                &quot;price&quot;: &quot;4000000&quot;,
                 &quot;price_type&quot;: &quot;Fixed&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;+&lt;br&gt;Tokumbo standard&amp;nbsp;&lt;br&gt;Foreign used Volkswagen Sharon&amp;nbsp;&lt;br&gt;FIRST BODY&amp;nbsp;&lt;br&gt;AVAILABLE for sale&amp;nbsp;&lt;br&gt;Year: 2005&lt;br&gt;No mechanical issue&amp;nbsp;&lt;br&gt;Good perfect condition&lt;br&gt;Papers available&lt;br&gt;Ac&amp;amp; Engine ☑️&lt;br&gt;PRICES :₦1.8Million Naira&lt;br&gt;For more enquiry&lt;br&gt;Contact JOHNSON FELIX AUTOS On: For Inspection And Purchase&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;The car is a new and forieng used&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Anambra&quot;,
+                &quot;lga&quot;: &quot;Idemili South&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
+                &quot;featured&quot;: &quot;Yes&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;36&quot;,
-                &quot;keyword&quot;: &quot;volkswagen, sharon, sale, 08161410450, block, 2348161410450brtokumbo, standardnbspbrforeign, used, sharonnbspbrfirst, bodynbspbravailable&quot;,
-                &quot;meta_description&quot;: &quot;+2348161410450Tokumbo standard&amp;nbsp;Foreign used Volkswagen Sharon&amp;nbsp;FIRST BODY&amp;nbsp;AVAILABLE for sale&amp;nbsp;Year: 2005No mechanical issue&amp;nbsp;Goo&quot;,
-                &quot;created_at&quot;: &quot;2025-09-24T14:55:38.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-24T14:55:38.000000Z&quot;,
+                &quot;views&quot;: &quot;48&quot;,
+                &quot;keyword&quot;: &quot;2025, toyota, corolla, block, forieng, useddiv&quot;,
+                &quot;meta_description&quot;: &quot;The car is a new and forieng used&quot;,
+                &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-11-30T11:30:36.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;idemili-south&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 825,
+                    &quot;id&quot;: 1063,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 260,
-                    &quot;uuid&quot;: &quot;c7e4821c-5e39-4b11-a3ab-8be6361bfa1e&quot;,
+                    &quot;model_id&quot;: 314,
+                    &quot;uuid&quot;: &quot;b7a75deb-fd92-4b36-ba47-d7fff74f1a75&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d3f85a48abf.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d3f85a48abf.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5&quot;,
+                    &quot;file_name&quot;: &quot;68db5c7e6ded4.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 28478,
+                    &quot;size&quot;: 119862,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 878
+                        &quot;original_name&quot;: &quot;d2e28f69361fd659185e76017ece2ad5.jpg&quot;
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7285,50 +7161,50 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:20:18.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:20:20.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/825/68d3f85a48abf.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-30T04:28:46.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-30T04:28:47.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1063/68db5c7e6ded4.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 201,
-                    &quot;user_id&quot;: &quot;71984&quot;,
-                    &quot;name&quot;: &quot;Johnson Felix&quot;,
-                    &quot;email&quot;: &quot;johnsonfelixauto2024@gmail.com&quot;,
-                    &quot;phone&quot;: null,
-                    &quot;address&quot;: null,
-                    &quot;city&quot;: null,
-                    &quot;state&quot;: null,
+                    &quot;id&quot;: 2,
+                    &quot;user_id&quot;: &quot;82261&quot;,
+                    &quot;name&quot;: &quot;Noble&quot;,
+                    &quot;email&quot;: &quot;noblesomto1@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;07031525788&quot;,
+                    &quot;address&quot;: &quot;47 Causton Street , SW1P4AT&quot;,
+                    &quot;city&quot;: &quot;Abakaliki&quot;,
+                    &quot;state&quot;: &quot;Enugu&quot;,
                     &quot;email_verified_at&quot;: null,
                     &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: null,
+                    &quot;token&quot;: &quot;kh8dlHqsIY79pzg36Bk3YGpyLSPTxFIZnacMLOfL&quot;,
                     &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: null,
+                    &quot;profile_picture&quot;: &quot;1753423171.jpg&quot;,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T14:41:15.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.90.99.61&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 00:46:31&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;created_at&quot;: &quot;2024-11-04T08:59:57.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-12-20T06:34:06.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-12-23 05:19:39&quot;,
+                    &quot;notification&quot;: &quot;yes&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
+                    &quot;disable_account_date&quot;: &quot;2025-10-08 05:49:15&quot;,
+                    &quot;bank_name&quot;: &quot;veritas&quot;,
                     &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
+                    &quot;account_name&quot;: &quot;Noble Somto&quot;,
+                    &quot;account_number&quot;: &quot;030454545&quot;,
                     &quot;google_id&quot;: null,
                     &quot;facebook_id&quot;: null,
                     &quot;otp_expires_at&quot;: null
                 }
             },
             {
-                &quot;id&quot;: 47,
+                &quot;id&quot;: 35,
                 &quot;user_id&quot;: &quot;15058&quot;,
-                &quot;ad_id&quot;: &quot;38105&quot;,
+                &quot;ad_id&quot;: &quot;18962&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Toyota Camry&quot;,
-                &quot;title_slug&quot;: &quot;toyota-camry-2014&quot;,
+                &quot;ad_title&quot;: &quot;Toyota Highlander&quot;,
+                &quot;title_slug&quot;: &quot;toyota-highlander&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
                 &quot;brand&quot;: &quot;832&quot;,
@@ -7337,18 +7213,18 @@ access-control-allow-origin: *
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;Toyota Camry&lt;br&gt;2018 New Edition&lt;br&gt;thumb start&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;Super clean❤️&lt;br&gt;Tokunbo Standard&lt;br&gt;Toyota Highlander&lt;br&gt;2018 model&lt;br&gt;Distress sale&lt;br&gt;Price 27m&lt;br&gt;WhatsApp 08036016320&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
                 &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;129&quot;,
+                &quot;views&quot;: &quot;138&quot;,
                 &quot;keyword&quot;: null,
                 &quot;meta_description&quot;: null,
-                &quot;created_at&quot;: &quot;2025-08-15T08:27:13.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-08-15T08:27:13.000000Z&quot;,
+                &quot;created_at&quot;: &quot;2025-08-14T13:24:08.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-08-14T13:24:08.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
@@ -7358,21 +7234,21 @@ access-control-allow-origin: *
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 152,
+                    &quot;id&quot;: 46,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 47,
-                    &quot;uuid&quot;: &quot;c70ab78d-b40f-47d1-a792-286ef83a4958&quot;,
+                    &quot;model_id&quot;: 35,
+                    &quot;uuid&quot;: &quot;f7c3ce89-0184-40be-993c-36ded1f1252c&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;689eef6115fed.webp&quot;,
-                    &quot;file_name&quot;: &quot;689eef6115fed.webp&quot;,
+                    &quot;name&quot;: &quot;689de3787653d.webp&quot;,
+                    &quot;file_name&quot;: &quot;689de3787653d.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 96990,
+                    &quot;size&quot;: 77989,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 211
+                        &quot;migrated_from_id&quot;: 105
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7381,105 +7257,9 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:51:27.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:28.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/152/689eef6115fed.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 24,
-                    &quot;user_id&quot;: &quot;15058&quot;,
-                    &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
-                    &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
-                    &quot;phone&quot;: &quot;08036016320&quot;,
-                    &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
-                    &quot;city&quot;: &quot;Lagos&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
-                    &quot;otp&quot;: 835656,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 42,
-                &quot;user_id&quot;: &quot;15058&quot;,
-                &quot;ad_id&quot;: &quot;54867&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Lexus rx350&quot;,
-                &quot;title_slug&quot;: &quot;lexus-rx350&quot;,
-                &quot;category&quot;: &quot;1&quot;,
-                &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;833&quot;,
-                &quot;price&quot;: &quot;9200000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;LEXUS RX350&lt;br&gt;2008 MODEL&lt;br&gt;FIRST BODY&lt;br&gt;FULL OPTION&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;436&quot;,
-                &quot;keyword&quot;: null,
-                &quot;meta_description&quot;: null,
-                &quot;created_at&quot;: &quot;2025-08-15T07:48:34.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-08-15T07:48:34.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 116,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 42,
-                    &quot;uuid&quot;: &quot;c3e29766-76c1-4306-ad59-41d0d44a3540&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;689ee652a5f48.webp&quot;,
-                    &quot;file_name&quot;: &quot;689ee652a5f48.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 101416,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 175
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:51:06.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:06.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/116/689ee652a5f48.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:50:16.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:50:16.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/46/689de3787653d.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -7611,32 +7391,32 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 45,
+                &quot;id&quot;: 41,
                 &quot;user_id&quot;: &quot;15058&quot;,
-                &quot;ad_id&quot;: &quot;13352&quot;,
+                &quot;ad_id&quot;: &quot;56233&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Toyota Raw4&quot;,
-                &quot;title_slug&quot;: &quot;toyota-raw4-2&quot;,
+                &quot;ad_title&quot;: &quot;Toyota Camry&quot;,
+                &quot;title_slug&quot;: &quot;toyota-camry-2012&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
                 &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;24000000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;price&quot;: &quot;16000000&quot;,
+                &quot;price_type&quot;: &quot;Give Away&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;Toyota Rav4 limited&lt;br&gt;2015 Model&lt;br&gt;fullest&amp;nbsp; option&lt;br&gt;thumb start and power boot&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;Toyota Camry Sport&lt;br&gt;Full Option&lt;br&gt;V6 Keyless&lt;br&gt;Accident Free&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
                 &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;129&quot;,
+                &quot;views&quot;: &quot;148&quot;,
                 &quot;keyword&quot;: null,
                 &quot;meta_description&quot;: null,
-                &quot;created_at&quot;: &quot;2025-08-15T08:10:18.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-08-15T08:10:18.000000Z&quot;,
+                &quot;created_at&quot;: &quot;2025-08-15T07:39:06.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-08-15T07:39:06.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
@@ -7646,21 +7426,21 @@ access-control-allow-origin: *
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 134,
+                    &quot;id&quot;: 102,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 45,
-                    &quot;uuid&quot;: &quot;0c82562f-dd37-4f2e-817d-3ae42270c197&quot;,
+                    &quot;model_id&quot;: 41,
+                    &quot;uuid&quot;: &quot;726f7196-8f32-419e-b9ed-8379ff62ed7d&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;689eeb6a04db3.webp&quot;,
-                    &quot;file_name&quot;: &quot;689eeb6a04db3.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
+                    &quot;name&quot;: &quot;689ee41ab967f.webp&quot;,
+                    &quot;file_name&quot;: &quot;689ee41ab967f.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 79967,
+                    &quot;size&quot;: 99654,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 193
+                        &quot;migrated_from_id&quot;: 161
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7669,9 +7449,9 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:51:17.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:18.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/134/689eeb6a04db3.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:50:55.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:50:56.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/102/689ee41ab967f.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -7707,56 +7487,56 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 310,
-                &quot;user_id&quot;: &quot;82151&quot;,
-                &quot;ad_id&quot;: &quot;97443&quot;,
+                &quot;id&quot;: 111,
+                &quot;user_id&quot;: &quot;15058&quot;,
+                &quot;ad_id&quot;: &quot;17728&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Foreign Used 2017 Toyota camry&quot;,
-                &quot;title_slug&quot;: &quot;foreign-used-2017-toyota-camry&quot;,
+                &quot;ad_title&quot;: &quot;Toyota Corolla&quot;,
+                &quot;title_slug&quot;: &quot;toyota-corolla-2&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
                 &quot;brand&quot;: &quot;832&quot;,
-                &quot;price&quot;: &quot;19500000&quot;,
+                &quot;price&quot;: &quot;12700000&quot;,
                 &quot;price_type&quot;: &quot;Negotiable&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Foreign Used.&lt;br&gt;Reverse camera.&lt;br&gt;V4 engine.&lt;br&gt;Leather seat.&lt;br&gt;Accident free.&lt;br&gt;Duty paid.&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;TOYOTA COROLLA&lt;br&gt;2011 model&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Apapa&quot;,
+                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;8&quot;,
-                &quot;keyword&quot;: &quot;foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident&quot;,
-                &quot;meta_description&quot;: &quot;Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.&quot;,
-                &quot;created_at&quot;: &quot;2025-09-28T21:21:20.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-28T21:21:20.000000Z&quot;,
+                &quot;views&quot;: &quot;400&quot;,
+                &quot;keyword&quot;: &quot;toyota, corolla, block, corollabr2011, modelbrbrdiv&quot;,
+                &quot;meta_description&quot;: &quot;TOYOTA COROLLA2011 model&quot;,
+                &quot;created_at&quot;: &quot;2025-09-05T12:44:25.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-05T12:44:25.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;apapa&quot;,
+                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 1034,
+                    &quot;id&quot;: 329,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 310,
-                    &quot;uuid&quot;: &quot;615d49d8-ffde-441c-a0ac-14dd40995339&quot;,
+                    &quot;model_id&quot;: 111,
+                    &quot;uuid&quot;: &quot;f2a6b9e7-80b4-4e55-8ca8-a554d6615b1e&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d998c04673f.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d998c04673f.webp&quot;,
+                    &quot;name&quot;: &quot;68bacd19ac297.webp&quot;,
+                    &quot;file_name&quot;: &quot;68bacd19ac297.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 238710,
+                    &quot;size&quot;: 85708,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 1097
+                        &quot;migrated_from_id&quot;: 396
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7765,31 +7545,31 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:26:37.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:26:39.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1034/68d998c04673f.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:53:30.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:53:31.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/329/68bacd19ac297.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 291,
-                    &quot;user_id&quot;: &quot;82151&quot;,
-                    &quot;name&quot;: &quot;Rowliz Global Ventures&quot;,
-                    &quot;email&quot;: &quot;rowlizglobal@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09019964974&quot;,
-                    &quot;address&quot;: &quot;Lagos mainland&quot;,
+                    &quot;id&quot;: 24,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                    &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                    &quot;phone&quot;: &quot;08036016320&quot;,
+                    &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
                     &quot;city&quot;: &quot;Lagos&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;email_verified_at&quot;: null,
                     &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;bBCMxv1RtB4f0gR0K7qu7CV7Esaj7EDMZuq3cOvV&quot;,
-                    &quot;otp&quot;: 514030,
+                    &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                    &quot;otp&quot;: 835656,
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-28T21:08:16.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-28T21:08:16.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;105.113.78.128&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 22:10:35&quot;,
+                    &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -7803,56 +7583,56 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 313,
-                &quot;user_id&quot;: &quot;82151&quot;,
-                &quot;ad_id&quot;: &quot;97920&quot;,
+                &quot;id&quot;: 42,
+                &quot;user_id&quot;: &quot;15058&quot;,
+                &quot;ad_id&quot;: &quot;54867&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Foreign Used 2019 Mercedes Benz Gle350&quot;,
-                &quot;title_slug&quot;: &quot;foreign-used-2019-mercedes-benz-gle350&quot;,
+                &quot;ad_title&quot;: &quot;Lexus rx350&quot;,
+                &quot;title_slug&quot;: &quot;lexus-rx350&quot;,
                 &quot;category&quot;: &quot;1&quot;,
                 &quot;sub_category&quot;: &quot;2&quot;,
-                &quot;brand&quot;: &quot;266&quot;,
-                &quot;price&quot;: &quot;56500000&quot;,
+                &quot;brand&quot;: &quot;833&quot;,
+                &quot;price&quot;: &quot;9200000&quot;,
                 &quot;price_type&quot;: &quot;Negotiable&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Foreign Used.&lt;br&gt;Reverse camera.&lt;br&gt;V6 engine.&lt;br&gt;Leather seat.&lt;br&gt;Collision sensor.&lt;br&gt;Accident free.&lt;br&gt;Power booth.&lt;br&gt;360 camera.&lt;br&gt;Duty paid.&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;LEXUS RX350&lt;br&gt;2008 MODEL&lt;br&gt;FIRST BODY&lt;br&gt;FULL OPTION&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Apapa&quot;,
+                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;4&quot;,
-                &quot;keyword&quot;: &quot;foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather&quot;,
-                &quot;meta_description&quot;: &quot;Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.&quot;,
-                &quot;created_at&quot;: &quot;2025-09-28T21:32:01.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-28T21:32:01.000000Z&quot;,
+                &quot;views&quot;: &quot;436&quot;,
+                &quot;keyword&quot;: null,
+                &quot;meta_description&quot;: null,
+                &quot;created_at&quot;: &quot;2025-08-15T07:48:34.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-08-15T07:48:34.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;apapa&quot;,
+                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 1054,
+                    &quot;id&quot;: 116,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 313,
-                    &quot;uuid&quot;: &quot;1425cace-0d95-4a49-94bc-096ed104946e&quot;,
+                    &quot;model_id&quot;: 42,
+                    &quot;uuid&quot;: &quot;c3e29766-76c1-4306-ad59-41d0d44a3540&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d99b4142e49.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d99b4142e49.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;name&quot;: &quot;689ee652a5f48.webp&quot;,
+                    &quot;file_name&quot;: &quot;689ee652a5f48.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 337178,
+                    &quot;size&quot;: 101416,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 1117
+                        &quot;migrated_from_id&quot;: 175
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -7861,31 +7641,223 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:27:17.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:27:19.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/1054/68d99b4142e49.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:51:06.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:06.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/116/689ee652a5f48.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 291,
-                    &quot;user_id&quot;: &quot;82151&quot;,
-                    &quot;name&quot;: &quot;Rowliz Global Ventures&quot;,
-                    &quot;email&quot;: &quot;rowlizglobal@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09019964974&quot;,
-                    &quot;address&quot;: &quot;Lagos mainland&quot;,
+                    &quot;id&quot;: 24,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                    &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                    &quot;phone&quot;: &quot;08036016320&quot;,
+                    &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
                     &quot;city&quot;: &quot;Lagos&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;email_verified_at&quot;: null,
                     &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;bBCMxv1RtB4f0gR0K7qu7CV7Esaj7EDMZuq3cOvV&quot;,
-                    &quot;otp&quot;: 514030,
+                    &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                    &quot;otp&quot;: 835656,
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-28T21:08:16.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-28T21:08:16.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;105.113.78.128&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 22:10:35&quot;,
+                    &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 74,
+                &quot;user_id&quot;: &quot;15058&quot;,
+                &quot;ad_id&quot;: &quot;23980&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Lexus Fsport 350&quot;,
+                &quot;title_slug&quot;: &quot;lexus-fsport-350&quot;,
+                &quot;category&quot;: &quot;1&quot;,
+                &quot;sub_category&quot;: &quot;2&quot;,
+                &quot;brand&quot;: &quot;833&quot;,
+                &quot;price&quot;: &quot;44000000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;LEXUS RX350, FSPORTS,&lt;br&gt;2017 model&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;351&quot;,
+                &quot;keyword&quot;: &quot;lexus, fsport, divlexus, rx350, fsportsbr2017, modelbrbrbrdiv&quot;,
+                &quot;meta_description&quot;: &quot;LEXUS RX350, FSPORTS,2017 model&quot;,
+                &quot;created_at&quot;: &quot;2025-08-23T11:54:37.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-08-23T11:54:37.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 202,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 74,
+                    &quot;uuid&quot;: &quot;1ed6bef2-5304-48cb-b89a-b03f7bcd21b6&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68a99dedcf69c.webp&quot;,
+                    &quot;file_name&quot;: &quot;68a99dedcf69c.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 151932,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 267
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:51:56.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:57.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/202/68a99dedcf69c.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 24,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                    &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                    &quot;phone&quot;: &quot;08036016320&quot;,
+                    &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
+                    &quot;city&quot;: &quot;Lagos&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                    &quot;otp&quot;: 835656,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 44,
+                &quot;user_id&quot;: &quot;15058&quot;,
+                &quot;ad_id&quot;: &quot;20922&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Lexus rx330&quot;,
+                &quot;title_slug&quot;: &quot;lexus-rx330&quot;,
+                &quot;category&quot;: &quot;1&quot;,
+                &quot;sub_category&quot;: &quot;2&quot;,
+                &quot;brand&quot;: &quot;833&quot;,
+                &quot;price&quot;: &quot;9000000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;Lexus rx330&lt;br&gt;2005 model&lt;br&gt;&lt;br&gt;&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;322&quot;,
+                &quot;keyword&quot;: null,
+                &quot;meta_description&quot;: null,
+                &quot;created_at&quot;: &quot;2025-08-15T07:58:58.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-08-15T07:58:58.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 129,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 44,
+                    &quot;uuid&quot;: &quot;cf1cb97b-7043-4cbc-812e-ed2396d215b9&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;689ee8c289cc6.webp&quot;,
+                    &quot;file_name&quot;: &quot;689ee8c289cc6.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 88658,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 188
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:51:14.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:14.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/129/689ee8c289cc6.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 24,
+                    &quot;user_id&quot;: &quot;15058&quot;,
+                    &quot;name&quot;: &quot;BRIGHTKACHEZ AUTO CONCEPT LTD&quot;,
+                    &quot;email&quot;: &quot;brightkachezauto_conceptltd@yahoo.com&quot;,
+                    &quot;phone&quot;: &quot;08036016320&quot;,
+                    &quot;address&quot;: &quot;No. 2 Isolo road behide Isolo general Hospital Lagos Nigeria&#039;&quot;,
+                    &quot;city&quot;: &quot;Lagos&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;6uDubnaGOPiIxGTSOqvt1enHobAXmEa8erH372ao&quot;,
+                    &quot;otp&quot;: 835656,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-14T11:16:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.88.113.29&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-05 13:24:15&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -7901,152 +7873,56 @@ access-control-allow-origin: *
         ],
         &quot;phones&quot;: [
             {
-                &quot;id&quot;: 73,
-                &quot;user_id&quot;: &quot;82248&quot;,
-                &quot;ad_id&quot;: &quot;33083&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;iPhone 11 128 GB&quot;,
-                &quot;title_slug&quot;: &quot;iphone-11-128-gb&quot;,
+                &quot;id&quot;: 274,
+                &quot;user_id&quot;: &quot;51911&quot;,
+                &quot;ad_id&quot;: &quot;41593&quot;,
+                &quot;ad_type&quot;: &quot;Commercial&quot;,
+                &quot;ad_title&quot;: &quot;iphone6s plus&quot;,
+                &quot;title_slug&quot;: &quot;iphone6s-plus&quot;,
                 &quot;category&quot;: &quot;4&quot;,
                 &quot;sub_category&quot;: &quot;6&quot;,
                 &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;310000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;Offering a well-maintained iPhone 11 128 GB&lt;br&gt;&lt;br&gt;Liquid Retina HD display,&lt;br&gt;6.1\&quot; all-screen LCD multi-touch display (15.5 cm diagonal) with IPS technology,&lt;br&gt;1792 x 828 pixels at 326 ppi&lt;br&gt;, 1400:1 typical contrast ratio,&lt;br&gt;True Tone display,&lt;br&gt;wide color gamut (P3) display,&lt;br&gt;Haptic Touch,&lt;br&gt;625 nits maximum typical brightness, oleophobic coating, support for multiple languages ​​and characters simultaneously.&lt;br&gt;&lt;br&gt;Normal signs of wear, fully functional. Available&lt;br&gt;with screen protectors and a case upon request.&lt;br&gt;&lt;br&gt;Feel free to contact us with any questions.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Ship&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;119&quot;,
-                &quot;keyword&quot;: &quot;iphone, divoffering, well, maintained, gbbrbrliquid, retina, displaybr61, screen, multi, touch&quot;,
-                &quot;meta_description&quot;: &quot;Offering a well-maintained iPhone 11 128 GBLiquid Retina HD display,6.1\&quot; all-screen LCD multi-touch display (15.5 cm diagonal) with IPS technology,179&quot;,
-                &quot;created_at&quot;: &quot;2025-08-23T09:27:17.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-05T18:19:05.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 200,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 73,
-                    &quot;uuid&quot;: &quot;9fcab042-03d2-4443-86eb-8fc1139734f9&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68a97b659507b.webp&quot;,
-                    &quot;file_name&quot;: &quot;68a97b659507b.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 9318,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 265
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:51:55.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:51:56.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/200/68a97b659507b.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 14,
-                    &quot;user_id&quot;: &quot;82248&quot;,
-                    &quot;name&quot;: &quot;Jayson&quot;,
-                    &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08137254596&quot;,
-                    &quot;address&quot;: &quot;Ikeja Lagos&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
-                    &quot;otp&quot;: 256937,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
-                    &quot;notification&quot;: &quot;yes&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
-                    &quot;bank_code&quot;: &quot;058&quot;,
-                    &quot;account_name&quot;: &quot;Jerry okoro&quot;,
-                    &quot;account_number&quot;: &quot;0023453459&quot;,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 137,
-                &quot;user_id&quot;: &quot;28352&quot;,
-                &quot;ad_id&quot;: &quot;55418&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;iPhone X 64gb&quot;,
-                &quot;title_slug&quot;: &quot;iphone-x-64gb&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;78000&quot;,
+                &quot;price&quot;: &quot;65000&quot;,
                 &quot;price_type&quot;: &quot;Negotiable&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;iPhone X 64gb&amp;nbsp;&lt;br&gt;No True Tone&amp;nbsp;&lt;br&gt;No Face ID&amp;nbsp;&lt;br&gt;Cracked back&amp;nbsp;&lt;br&gt;No back camera&amp;nbsp;&lt;br&gt;Only WiFi&amp;nbsp;&lt;br&gt;Working perfectly&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Working perfectly but has a rough back&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Alimosho&quot;,
+                &quot;lga&quot;: &quot;Kosofe&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;131&quot;,
-                &quot;keyword&quot;: &quot;iphone, 64gb, block, 64gbnbspbrno, true, tonenbspbrno, face, idnbspbrcracked, backnbspbrno, back&quot;,
-                &quot;meta_description&quot;: &quot;iPhone X 64gb&amp;nbsp;No True Tone&amp;nbsp;No Face ID&amp;nbsp;Cracked back&amp;nbsp;No back camera&amp;nbsp;Only WiFi&amp;nbsp;Working perfectly&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-11T17:05:13.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-11T17:05:13.000000Z&quot;,
+                &quot;views&quot;: &quot;31&quot;,
+                &quot;keyword&quot;: &quot;iphone6s, plus, block, working, perfectly, rough, backdiv&quot;,
+                &quot;meta_description&quot;: &quot;Working perfectly but has a rough back&quot;,
+                &quot;created_at&quot;: &quot;2025-09-25T00:18:00.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-25T00:18:00.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;alimosho&quot;,
+                &quot;state_slug&quot;: &quot;kosofe&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 423,
+                    &quot;id&quot;: 883,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 137,
-                    &quot;uuid&quot;: &quot;c4d86913-2297-45f5-9494-aa11f5dfe35f&quot;,
+                    &quot;model_id&quot;: 274,
+                    &quot;uuid&quot;: &quot;6400813b-7453-4c80-9458-b97e74ec4d2e&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c2f339936d6.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c2f339936d6.webp&quot;,
+                    &quot;name&quot;: &quot;68d47c285fc6f.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d47c285fc6f.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 55872,
+                    &quot;size&quot;: 46994,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 508
+                        &quot;migrated_from_id&quot;: 937
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -8055,31 +7931,31 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:55:22.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:23.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/423/68c2f339936d6.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-29T02:21:47.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-29T02:21:48.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/883/68d47c285fc6f.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 69,
-                    &quot;user_id&quot;: &quot;28352&quot;,
-                    &quot;name&quot;: &quot;Kenny&quot;,
-                    &quot;email&quot;: &quot;taiwokehinde492@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;07072473990&quot;,
-                    &quot;address&quot;: &quot;No 11 Gegelose&quot;,
-                    &quot;city&quot;: &quot;Ikotun&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;id&quot;: 215,
+                    &quot;user_id&quot;: &quot;51911&quot;,
+                    &quot;name&quot;: &quot;phobia fortune&quot;,
+                    &quot;email&quot;: &quot;phobiapdf@gmail.com&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;state&quot;: null,
                     &quot;email_verified_at&quot;: null,
                     &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;YYsGTaxpvyLRpzSzcVLGt9C5wgx8FNYpDQuNHJNx&quot;,
-                    &quot;otp&quot;: 750169,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;154.120.87.135&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-12 01:52:08&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-25T00:13:44.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-25T00:13:44.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;129.205.124.250&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-25 01:13:44&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -8154,6 +8030,390 @@ access-control-allow-origin: *
                     &quot;created_at&quot;: &quot;2025-09-24T00:53:05.000000Z&quot;,
                     &quot;updated_at&quot;: &quot;2025-09-24T00:53:06.000000Z&quot;,
                     &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/289/68b866fd2585f.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 34,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08033332401&quot;,
+                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                    &quot;otp&quot;: 602971,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 136,
+                &quot;user_id&quot;: &quot;28352&quot;,
+                &quot;ad_id&quot;: &quot;82078&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;iPhone 11 Pro&quot;,
+                &quot;title_slug&quot;: &quot;iphone-11-pro&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;269000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;11 pro 64gb&amp;nbsp;&lt;br&gt;Face ID active&amp;nbsp;&lt;br&gt;True Tone active&amp;nbsp;&lt;br&gt;Battery 100&amp;nbsp;&lt;br&gt;No crack&amp;nbsp;&lt;br&gt;Back camera shaking&amp;nbsp;&lt;br&gt;+234 &lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Alimosho&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;Yes&quot;,
+                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;178&quot;,
+                &quot;keyword&quot;: &quot;iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234&quot;,
+                &quot;meta_description&quot;: &quot;11 pro 64gb&amp;nbsp;Face ID active&amp;nbsp;True Tone active&amp;nbsp;Battery 100&amp;nbsp;No crack&amp;nbsp;Back camera shaking&amp;nbsp;+234 7072473990&quot;,
+                &quot;created_at&quot;: &quot;2025-09-11T17:00:15.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-11-13T09:35:24.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;alimosho&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: &quot;₦200,000 - ₦220,000&quot;,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 414,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 136,
+                    &quot;uuid&quot;: &quot;8b48d764-dcb2-47bc-a3b2-fd798dbcbebc&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68c2f20f99ac0.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c2f20f99ac0.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 52572,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 499
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:12.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:12.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/414/68c2f20f99ac0.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 69,
+                    &quot;user_id&quot;: &quot;28352&quot;,
+                    &quot;name&quot;: &quot;Kenny&quot;,
+                    &quot;email&quot;: &quot;taiwokehinde492@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;07072473990&quot;,
+                    &quot;address&quot;: &quot;No 11 Gegelose&quot;,
+                    &quot;city&quot;: &quot;Ikotun&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: &quot;YYsGTaxpvyLRpzSzcVLGt9C5wgx8FNYpDQuNHJNx&quot;,
+                    &quot;otp&quot;: 750169,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-11T16:50:50.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;154.120.87.135&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-12 01:52:08&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 97,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;17542&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Samsung Galaxy S21 FE 5G 128GB&quot;,
+                &quot;title_slug&quot;: &quot;samsung-galaxy-s21-fe-5g-128gb&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;13&quot;,
+                &quot;price&quot;: &quot;240000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;Selling my Samsung Galaxy S21 FE 5G 128 GB because I recently purchased it. The is in good used condition. You are welcome to inspect the in person. Feel free to with any questions.&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;95&quot;,
+                &quot;keyword&quot;: &quot;samsung, galaxy, 128gb, selling, because, recently, purchased, phone, good, used&quot;,
+                &quot;meta_description&quot;: &quot;Selling my Samsung Galaxy S21 FE 5G 128 GB because I recently purchased it.\r\nThe phone is in good used condition.\r\nYou are welcome to inspect the phon&quot;,
+                &quot;created_at&quot;: &quot;2025-09-03T17:13:02.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-03T17:13:02.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 292,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 97,
+                    &quot;uuid&quot;: &quot;2fd9f92b-b944-4c21-a5ee-381d4b5e75c7&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68b8690e5f096.webp&quot;,
+                    &quot;file_name&quot;: &quot;68b8690e5f096.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 10756,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 359
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:53:07.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:53:08.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/292/68b8690e5f096.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 34,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08033332401&quot;,
+                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                    &quot;otp&quot;: 602971,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 85,
+                &quot;user_id&quot;: &quot;82248&quot;,
+                &quot;ad_id&quot;: &quot;61693&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Apple iPhone 11 (Turquoise) 64GB&quot;,
+                &quot;title_slug&quot;: &quot;apple-iphone-11-turquoise-64gb&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;210000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;Hello, I&#039;m selling an Apple iPhone 11 in turquoise. The iPhone shows slight signs of wear and tear, and its battery capacity is at 73%. Feel free to ask any questions!&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;76&quot;,
+                &quot;keyword&quot;: &quot;apple, iphone, turquoise, 64gb, hello, selling, shows, slight, signs, wear&quot;,
+                &quot;meta_description&quot;: &quot;Hello,\r\n\r\nI&#039;m selling an Apple iPhone 11 in turquoise. The iPhone shows slight signs of wear and tear, and its battery capacity is at 73%.\r\n\r\nFeel fre&quot;,
+                &quot;created_at&quot;: &quot;2025-09-03T13:44:30.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-03T13:44:30.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 262,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 85,
+                    &quot;uuid&quot;: &quot;f37439c7-7729-45b7-8551-257a17ca167b&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68b8382e6d89a.webp&quot;,
+                    &quot;file_name&quot;: &quot;68b8382e6d89a.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 36168,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 329
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:52:50.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:52:50.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/262/68b8382e6d89a.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 14,
+                    &quot;user_id&quot;: &quot;82248&quot;,
+                    &quot;name&quot;: &quot;Jayson&quot;,
+                    &quot;email&quot;: &quot;jayson4growth@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08137254596&quot;,
+                    &quot;address&quot;: &quot;Ikeja Lagos&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: &quot;9SGYy4suTQ7rR2ybpVVWsP10QKcwV13z80LnhHXU&quot;,
+                    &quot;otp&quot;: 256937,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-06-19T14:32:35.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-08-04T22:53:09.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;92.117.131.234&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-17 12:46:15&quot;,
+                    &quot;notification&quot;: &quot;yes&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: &quot;Guaranty Trust Bank&quot;,
+                    &quot;bank_code&quot;: &quot;058&quot;,
+                    &quot;account_name&quot;: &quot;Jerry okoro&quot;,
+                    &quot;account_number&quot;: &quot;0023453459&quot;,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 83,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;29147&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Apple iPhone SE, 64 GB, Black - TOP condition with original packaging&quot;,
+                &quot;title_slug&quot;: &quot;apple-iphone-se-64-gb-black-top-condition-with-original-packaging&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;128000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;Selling this fantastic iPhone SE in black with 64 GB in its original packaging. The is fully functional, in excellent condition, almost like new, with no scratches or anything similar. See pictures. The display always had a film on it, which is still in place. Battery capacity: 86% The is unlocked and completely reset. See photo for details.&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;63&quot;,
+                &quot;keyword&quot;: &quot;apple, iphone, black, condition, with, original, packaging, selling, this, fantastic&quot;,
+                &quot;meta_description&quot;: &quot;Selling this fantastic iPhone SE in black with 64 GB in its original packaging.\r\nThe phone is fully functional, in excellent condition, almost like ne&quot;,
+                &quot;created_at&quot;: &quot;2025-09-03T13:07:49.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-03T13:07:49.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 258,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 83,
+                    &quot;uuid&quot;: &quot;1a8e0c54-df17-4840-8296-f3144a6f836d&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68b82f95455de.webp&quot;,
+                    &quot;file_name&quot;: &quot;68b82f95455de.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 16564,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 325
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:52:47.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:52:48.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/258/68b82f95455de.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
@@ -8285,56 +8545,248 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 274,
-                &quot;user_id&quot;: &quot;51911&quot;,
-                &quot;ad_id&quot;: &quot;41593&quot;,
-                &quot;ad_type&quot;: &quot;Commercial&quot;,
-                &quot;ad_title&quot;: &quot;iphone6s plus&quot;,
-                &quot;title_slug&quot;: &quot;iphone6s-plus&quot;,
+                &quot;id&quot;: 140,
+                &quot;user_id&quot;: &quot;78606&quot;,
+                &quot;ad_id&quot;: &quot;26082&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;iPhone 13 128gb&quot;,
+                &quot;title_slug&quot;: &quot;iphone-13&quot;,
                 &quot;category&quot;: &quot;4&quot;,
                 &quot;sub_category&quot;: &quot;6&quot;,
                 &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;65000&quot;,
+                &quot;price&quot;: &quot;408000&quot;,
                 &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;No, replaced parts. No cracks, bh 88, neatly used.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Rivers&quot;,
+                &quot;lga&quot;: &quot;Oyigbo&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;76&quot;,
+                &quot;keyword&quot;: &quot;iphone, 128gb, block, replaced, parts, cracks, neatly, useddiv&quot;,
+                &quot;meta_description&quot;: &quot;No, replaced parts. No cracks, bh 88, neatly used.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-13T09:00:19.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-13T09:04:48.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;oyigbo&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 431,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 140,
+                    &quot;uuid&quot;: &quot;de9b0fce-13ab-4543-be74-f2533f524715&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68c5249306b0b.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c5249306b0b.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 70778,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 516
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:38.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:39.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/431/68c5249306b0b.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 82,
+                    &quot;user_id&quot;: &quot;78606&quot;,
+                    &quot;name&quot;: &quot;Chris Emmanuel&quot;,
+                    &quot;email&quot;: &quot;seminarcinema303@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08147360271&quot;,
+                    &quot;address&quot;: &quot;Oyigbo&quot;,
+                    &quot;city&quot;: &quot;Oyigbo&quot;,
+                    &quot;state&quot;: &quot;Rivers&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: null,
+                    &quot;otp&quot;: null,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T08:55:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-13T08:55:01.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.90.101.199&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-13 09:55:01&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 90,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;31234&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;iPhone 12 Pro Blue 128GB Battery 87% Top Condition&quot;,
+                &quot;title_slug&quot;: &quot;iphone-12-pro-blue-128gb-battery-87-top-condition&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;520000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;Selling iPhone 12 Pro Blue 128GB Optically top condition Technically everything works 100% iOS 18.6.2 installed Front screen protector Everything original condition Nothing repaired Nothing replaced&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;85&quot;,
+                &quot;keyword&quot;: &quot;iphone, blue, 128gb, battery, condition, selling, optically, technically, everything, works&quot;,
+                &quot;meta_description&quot;: &quot;Selling iPhone 12 Pro Blue 128GB\r\nOptically top condition\r\nTechnically everything works 100%\r\niOS 18.6.2 installed\r\nFront screen protector\r\nEverything&quot;,
+                &quot;created_at&quot;: &quot;2025-09-03T16:21:04.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-03T16:21:04.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 274,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 90,
+                    &quot;uuid&quot;: &quot;bb44803c-ab43-48c1-aa5e-b2eb4693da1b&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68b85ce05d637.webp&quot;,
+                    &quot;file_name&quot;: &quot;68b85ce05d637.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 22666,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 341
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:52:57.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:52:57.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/274/68b85ce05d637.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 34,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08033332401&quot;,
+                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                    &quot;otp&quot;: 602971,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 216,
+                &quot;user_id&quot;: &quot;93209&quot;,
+                &quot;ad_id&quot;: &quot;74533&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Oppo Smartphone&quot;,
+                &quot;title_slug&quot;: &quot;oppo-smartphone&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1599&quot;,
+                &quot;price&quot;: &quot;180000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
                 &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
                 &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Working perfectly but has a rough back&lt;/div&gt;&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Kosofe&quot;,
+                &quot;lga&quot;: &quot;Surulere&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;31&quot;,
-                &quot;keyword&quot;: &quot;iphone6s, plus, block, working, perfectly, rough, backdiv&quot;,
-                &quot;meta_description&quot;: &quot;Working perfectly but has a rough back&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T00:18:00.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T00:18:00.000000Z&quot;,
+                &quot;views&quot;: &quot;26&quot;,
+                &quot;keyword&quot;: &quot;oppo, smartphone, block, second, hand, uses, reno, with, ram258gb, some&quot;,
+                &quot;meta_description&quot;: &quot;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;kosofe&quot;,
+                &quot;state_slug&quot;: &quot;surulere&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 883,
+                    &quot;id&quot;: 675,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 274,
-                    &quot;uuid&quot;: &quot;6400813b-7453-4c80-9458-b97e74ec4d2e&quot;,
+                    &quot;model_id&quot;: 216,
+                    &quot;uuid&quot;: &quot;406ea14e-ed45-480b-977b-9cecad91c9eb&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d47c285fc6f.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d47c285fc6f.webp&quot;,
+                    &quot;name&quot;: &quot;68d1f77207d4e.webp&quot;,
+                    &quot;file_name&quot;: &quot;68d1f77207d4e.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 46994,
+                    &quot;size&quot;: 95654,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 937
+                        &quot;migrated_from_id&quot;: 788
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -8343,16 +8795,16 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:21:47.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:21:48.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/883/68d47c285fc6f.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T01:00:38.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T01:00:39.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/675/68d1f77207d4e.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 215,
-                    &quot;user_id&quot;: &quot;51911&quot;,
-                    &quot;name&quot;: &quot;phobia fortune&quot;,
-                    &quot;email&quot;: &quot;phobiapdf@gmail.com&quot;,
+                    &quot;id&quot;: 178,
+                    &quot;user_id&quot;: &quot;93209&quot;,
+                    &quot;name&quot;: &quot;Chukwuka Ekwuonu&quot;,
+                    &quot;email&quot;: &quot;ekwuonuchukwuka@gmail.com&quot;,
                     &quot;phone&quot;: null,
                     &quot;address&quot;: null,
                     &quot;city&quot;: null,
@@ -8364,490 +8816,10 @@ access-control-allow-origin: *
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-25T00:13:44.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-25T00:13:44.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;129.205.124.250&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-25 01:13:44&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 131,
-                &quot;user_id&quot;: &quot;55227&quot;,
-                &quot;ad_id&quot;: &quot;47401&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;REDMI 13C, 256GIG ROM N 16GIG RAM&quot;,
-                &quot;title_slug&quot;: &quot;redmi-13c-256gig-rom-n-16gig-ram&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1607&quot;,
-                &quot;price&quot;: &quot;145000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;REDMI 13c very nice , the speed soo lovely. Selling cos I want to settle some bills soon&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Imo&quot;,
-                &quot;lga&quot;: &quot;Owerri Municipal&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;79&quot;,
-                &quot;keyword&quot;: &quot;redmi, 256gig, 16gig, block, very, nice, phone, speed, lovely, selling&quot;,
-                &quot;meta_description&quot;: &quot;REDMI 13c very nice phone, the speed soo lovely. Selling cos I want to settle some bills soon&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-09T17:07:07.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-09T17:07:07.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;owerri-municipal&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 402,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 131,
-                    &quot;uuid&quot;: &quot;226887b7-c13e-429c-80b4-259403e706a9&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c050abcd123.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c050abcd123.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/jpeg&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 30424,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 487
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:54:56.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:54:57.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/402/68c050abcd123.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 56,
-                    &quot;user_id&quot;: &quot;55227&quot;,
-                    &quot;name&quot;: &quot;Ugwoh Osinachi&quot;,
-                    &quot;email&quot;: &quot;ugwohosinachi@yahoo.com&quot;,
-                    &quot;phone&quot;: &quot;08038920825&quot;,
-                    &quot;address&quot;: &quot;Fire Service Station&quot;,
-                    &quot;city&quot;: &quot;Owerri&quot;,
-                    &quot;state&quot;: &quot;Imo&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;Abw9NneO6Jcu35GZQmW9AMR136u2LFPMM2lN4vDl&quot;,
-                    &quot;otp&quot;: 584910,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-09T16:56:18.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-09T16:56:18.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.89.23.171&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-09 17:58:21&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 201,
-                &quot;user_id&quot;: &quot;99749&quot;,
-                &quot;ad_id&quot;: &quot;43138&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;iPhone 11 Pro max&quot;,
-                &quot;title_slug&quot;: &quot;iphone-11-pro-max&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;230000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;iPhone 11 Pro Max with bad screen and no face ID&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikorodu&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;50&quot;,
-                &quot;keyword&quot;: &quot;iphone, block, with, screen, face, iddiv&quot;,
-                &quot;meta_description&quot;: &quot;iPhone 11 Pro Max with bad screen and no face ID&quot;,
-                &quot;created_at&quot;: &quot;2025-09-21T10:35:36.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-21T10:35:36.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ikorodu&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 582,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 201,
-                    &quot;uuid&quot;: &quot;4cdda564-a4fd-4fe1-93ef-c532f37fccc7&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68cfc6e84d303.webp&quot;,
-                    &quot;file_name&quot;: &quot;68cfc6e84d303.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 84026,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 682
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:58:58.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:59:00.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/582/68cfc6e84d303.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 166,
-                    &quot;user_id&quot;: &quot;99749&quot;,
-                    &quot;name&quot;: &quot;Victor Femi&quot;,
-                    &quot;email&quot;: &quot;femivictor24@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09052868765&quot;,
-                    &quot;address&quot;: null,
-                    &quot;city&quot;: null,
-                    &quot;state&quot;: null,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: null,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-21T10:24:39.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-21T10:24:39.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;197.211.63.158&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-27 11:56:42&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 107,
-                &quot;user_id&quot;: &quot;84123&quot;,
-                &quot;ad_id&quot;: &quot;69050&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Samsung Galaxy S22&quot;,
-                &quot;title_slug&quot;: &quot;samsung-galaxy-s22&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;13&quot;,
-                &quot;price&quot;: &quot;355000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;I&#039;m selling my Samsung with 128 GB and a matching screen protector, as well as a used black protective case and another new protective case. The original packaging is also included. There are only scratches on the sides. The display, however, is in perfect condition.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;120&quot;,
-                &quot;keyword&quot;: &quot;samsung, galaxy, block, selling, phone, with, matching, screen, protector, well&quot;,
-                &quot;meta_description&quot;: &quot;I&#039;m selling my Samsung phone with 128 GB and a matching screen protector, as well as a used black protective case and another new protective case. The&quot;,
-                &quot;created_at&quot;: &quot;2025-09-04T15:05:02.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-04T15:05:02.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 314,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 107,
-                    &quot;uuid&quot;: &quot;292518ae-1574-45a8-a25c-e9433d0e6b19&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68b99c8e53ae2.webp&quot;,
-                    &quot;file_name&quot;: &quot;68b99c8e53ae2.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 15888,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 381
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:53:19.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:53:20.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/314/68b99c8e53ae2.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 34,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08033332401&quot;,
-                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                    &quot;otp&quot;: 602971,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 285,
-                &quot;user_id&quot;: &quot;92136&quot;,
-                &quot;ad_id&quot;: &quot;30577&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Very neat iPhone 7 plus for sale&quot;,
-                &quot;title_slug&quot;: &quot;very-neat-iphone-7-plus-for-sale-2&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;105&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;iPhone 7 plus available for sale&amp;nbsp;&lt;br&gt;Touch ID is working&lt;br&gt;Battery percent is 100&lt;br&gt;Everything is working perfectly&lt;br&gt;The volume button is stiff but the power button is working well&lt;br&gt;The screen is neat you just have to remove the screen guide&amp;nbsp;&lt;br&gt;I&#039;m selling with the pouch&lt;br&gt;Location:Igando&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Alimosho&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;41&quot;,
-                &quot;keyword&quot;: &quot;very, neat, iphone, plus, sale, block, available, salenbspbrtouch, workingbrbattery, percent&quot;,
-                &quot;meta_description&quot;: &quot;iPhone 7 plus available for sale&amp;nbsp;Touch ID is workingBattery percent is 100Everything is working perfectlyThe volume button is stiff but the power&quot;,
-                &quot;created_at&quot;: &quot;2025-09-25T10:37:22.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-25T10:37:22.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;alimosho&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 905,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 285,
-                    &quot;uuid&quot;: &quot;81f0932a-a496-4a0e-83ec-af573b6b19bf&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68d50d522a6fe.webp&quot;,
-                    &quot;file_name&quot;: &quot;68d50d522a6fe.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 36828,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 968
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-29T02:22:24.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-29T02:22:26.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/905/68d50d522a6fe.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 158,
-                    &quot;user_id&quot;: &quot;92136&quot;,
-                    &quot;name&quot;: &quot;Folasade Soboyede Olusesi Soboyede Olusesi&quot;,
-                    &quot;email&quot;: &quot;folasade39yahoo.com@gmail.com&quot;,
-                    &quot;phone&quot;: null,
-                    &quot;address&quot;: null,
-                    &quot;city&quot;: null,
-                    &quot;state&quot;: null,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: null,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-20T13:13:23.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-20T13:13:23.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;102.89.22.206&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 15:09:28&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 94,
-                &quot;user_id&quot;: &quot;84123&quot;,
-                &quot;ad_id&quot;: &quot;94578&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;iPhone 13 Pro Max 128gb&quot;,
-                &quot;title_slug&quot;: &quot;iphone-13-pro-max-128gb&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;590000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;Selling my iPhone 13 Pro Max. The battery is at 84%, and the glass and screen are in good condition with minimal signs of wear. The camera works, but the lens needs to be replaced, as the images on one camera appear slightly \&quot;dirty.\&quot;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;79&quot;,
-                &quot;keyword&quot;: &quot;iphone, 128gb, selling, battery, glass, screen, good, condition, with, minimal&quot;,
-                &quot;meta_description&quot;: &quot;Selling my iPhone 13 Pro Max.\r\nThe battery is at 84%,\r\nand the glass and screen are in good condition with minimal signs of wear.\r\nThe camera works, b&quot;,
-                &quot;created_at&quot;: &quot;2025-09-03T16:49:42.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-03T16:49:42.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 284,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 94,
-                    &quot;uuid&quot;: &quot;8dd91e04-55fc-406d-8651-ac4204ec5181&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68b863963d5d9.webp&quot;,
-                    &quot;file_name&quot;: &quot;68b863963d5d9.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 7920,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 351
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:53:03.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:53:03.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/284/68b863963d5d9.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 34,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08033332401&quot;,
-                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                    &quot;otp&quot;: 602971,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-23T02:16:07.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-23T02:16:07.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;102.89.83.165&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 22:19:14&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -8863,56 +8835,56 @@ access-control-allow-origin: *
         ],
         &quot;fashion&quot;: [
             {
-                &quot;id&quot;: 117,
-                &quot;user_id&quot;: &quot;84123&quot;,
-                &quot;ad_id&quot;: &quot;17072&quot;,
+                &quot;id&quot;: 150,
+                &quot;user_id&quot;: &quot;85816&quot;,
+                &quot;ad_id&quot;: &quot;15847&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Apple Watch Series 3 Silver/Black&quot;,
-                &quot;title_slug&quot;: &quot;apple-watch-series-3-silver-black&quot;,
+                &quot;ad_title&quot;: &quot;Baggie jacket and trousers&quot;,
+                &quot;title_slug&quot;: &quot;baggie-jacket-and-trousers&quot;,
                 &quot;category&quot;: &quot;5&quot;,
-                &quot;sub_category&quot;: &quot;238&quot;,
-                &quot;brand&quot;: &quot;3741&quot;,
-                &quot;price&quot;: &quot;95000&quot;,
-                &quot;price_type&quot;: &quot;Negotiable&quot;,
-                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                &quot;sub_category&quot;: &quot;234&quot;,
+                &quot;brand&quot;: &quot;3540&quot;,
+                &quot;price&quot;: &quot;37000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: &quot;New&quot;,
                 &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;The watch is in a very good condition&lt;br&gt;Incl. original box, cable and bracelet.&lt;/div&gt;&quot;,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;You will love it&lt;/div&gt;&quot;,
                 &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
                 &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;73&quot;,
-                &quot;keyword&quot;: &quot;apple, watch, series, silverblack, divthe, very, good, conditionbrincl, original, cable&quot;,
-                &quot;meta_description&quot;: &quot;The watch is in a very good conditionIncl. original box, cable and bracelet.&quot;,
-                &quot;created_at&quot;: &quot;2025-09-07T13:58:18.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-07T13:58:28.000000Z&quot;,
+                &quot;views&quot;: &quot;81&quot;,
+                &quot;keyword&quot;: &quot;baggie, jacket, trousers, block, will, love, itdiv&quot;,
+                &quot;meta_description&quot;: &quot;You will love it&quot;,
+                &quot;created_at&quot;: &quot;2025-09-13T21:32:36.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-13T21:32:36.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;first_image&quot;: {
-                    &quot;id&quot;: 351,
+                    &quot;id&quot;: 466,
                     &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 117,
-                    &quot;uuid&quot;: &quot;1373b795-7871-4dc3-a6cc-bf1a34a80038&quot;,
+                    &quot;model_id&quot;: 150,
+                    &quot;uuid&quot;: &quot;aa0e1f5b-c0ec-474e-b4ba-6f49ed9ee7ce&quot;,
                     &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68bd816aa5a5c.webp&quot;,
-                    &quot;file_name&quot;: &quot;68bd816aa5a5c.webp&quot;,
+                    &quot;name&quot;: &quot;68c5d4e43adf5.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c5d4e43adf5.webp&quot;,
                     &quot;mime_type&quot;: &quot;image/webp&quot;,
                     &quot;disk&quot;: &quot;spatie&quot;,
                     &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 85014,
+                    &quot;size&quot;: 58236,
                     &quot;manipulations&quot;: [],
                     &quot;custom_properties&quot;: {
                         &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 424
+                        &quot;migrated_from_id&quot;: 553
                     },
                     &quot;generated_conversions&quot;: {
                         &quot;optimized&quot;: true,
@@ -8921,31 +8893,127 @@ access-control-allow-origin: *
                     },
                     &quot;responsive_images&quot;: [],
                     &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:54:07.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:54:08.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/351/68bd816aa5a5c.webp&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:56:27.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:56:28.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/466/68c5d4e43adf5.webp&quot;,
                     &quot;preview_url&quot;: &quot;&quot;
                 },
                 &quot;owner&quot;: {
-                    &quot;id&quot;: 34,
-                    &quot;user_id&quot;: &quot;84123&quot;,
-                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
-                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;08033332401&quot;,
-                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
-                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;id&quot;: 93,
+                    &quot;user_id&quot;: &quot;85816&quot;,
+                    &quot;name&quot;: &quot;Style by savvy&quot;,
+                    &quot;email&quot;: &quot;hamedolamiji236@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;07089187949&quot;,
+                    &quot;address&quot;: &quot;84a jebba street&quot;,
+                    &quot;city&quot;: &quot;Epe&quot;,
                     &quot;state&quot;: &quot;Lagos&quot;,
                     &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
-                    &quot;otp&quot;: 602971,
+                    &quot;acc_type&quot;: &quot;Private&quot;,
+                    &quot;token&quot;: &quot;IzW4eOTFrrcwIUgoD5Rl24R95KdwRQuizT7OpSyL&quot;,
+                    &quot;otp&quot;: null,
                     &quot;profile_picture&quot;: null,
                     &quot;verified&quot;: &quot;no&quot;,
                     &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-13T21:25:15.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-14T07:33:22.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;105.115.9.61&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-15 09:42:12&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 135,
+                &quot;user_id&quot;: &quot;24629&quot;,
+                &quot;ad_id&quot;: &quot;37143&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Crotchet wears&quot;,
+                &quot;title_slug&quot;: &quot;crotchet-wears&quot;,
+                &quot;category&quot;: &quot;5&quot;,
+                &quot;sub_category&quot;: &quot;230&quot;,
+                &quot;brand&quot;: &quot;3386&quot;,
+                &quot;price&quot;: &quot;20000&quot;,
+                &quot;price_type&quot;: &quot;Give Away&quot;,
+                &quot;item_condition&quot;: &quot;New&quot;,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;It&rsquo;s a new crotchet wear&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Ogun&quot;,
+                &quot;lga&quot;: &quot;Ijebu North East&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;43&quot;,
+                &quot;keyword&quot;: &quot;crotchet, wears, block, wearnbspdiv&quot;,
+                &quot;meta_description&quot;: &quot;It&rsquo;s a new crotchet wear&amp;nbsp;&quot;,
+                &quot;created_at&quot;: &quot;2025-09-11T15:19:13.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-11T15:19:13.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;ijebu-north-east&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 410,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 135,
+                    &quot;uuid&quot;: &quot;39b0577d-c3ec-4036-bf2b-6b0d11741f2f&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68c2da6190423.webp&quot;,
+                    &quot;file_name&quot;: &quot;68c2da6190423.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 182574,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 495
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:55:03.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:05.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/410/68c2da6190423.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 68,
+                    &quot;user_id&quot;: &quot;24629&quot;,
+                    &quot;name&quot;: &quot;Orey&rsquo;s artistry&quot;,
+                    &quot;email&quot;: &quot;olukoyadeborah07@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;09044098347&quot;,
+                    &quot;address&quot;: &quot;Ijebu ode&quot;,
+                    &quot;city&quot;: &quot;Ijebu ode&quot;,
+                    &quot;state&quot;: &quot;Ogun&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;Qy6hmGa7mEmeKGo8PfLceShrccb8aO81mKTNgxv2&quot;,
+                    &quot;otp&quot;: 280832,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-11T15:10:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-11T15:13:46.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;105.113.58.43&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-11 16:14:56&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -9151,198 +9219,6 @@ access-control-allow-origin: *
                 }
             },
             {
-                &quot;id&quot;: 150,
-                &quot;user_id&quot;: &quot;85816&quot;,
-                &quot;ad_id&quot;: &quot;15847&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Baggie jacket and trousers&quot;,
-                &quot;title_slug&quot;: &quot;baggie-jacket-and-trousers&quot;,
-                &quot;category&quot;: &quot;5&quot;,
-                &quot;sub_category&quot;: &quot;234&quot;,
-                &quot;brand&quot;: &quot;3540&quot;,
-                &quot;price&quot;: &quot;37000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: &quot;New&quot;,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;Yes&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;You will love it&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Lagos Mainland&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;81&quot;,
-                &quot;keyword&quot;: &quot;baggie, jacket, trousers, block, will, love, itdiv&quot;,
-                &quot;meta_description&quot;: &quot;You will love it&quot;,
-                &quot;created_at&quot;: &quot;2025-09-13T21:32:36.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-13T21:32:36.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;lagos-mainland&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 466,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 150,
-                    &quot;uuid&quot;: &quot;aa0e1f5b-c0ec-474e-b4ba-6f49ed9ee7ce&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c5d4e43adf5.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c5d4e43adf5.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 58236,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 553
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:56:27.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:56:28.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/466/68c5d4e43adf5.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 93,
-                    &quot;user_id&quot;: &quot;85816&quot;,
-                    &quot;name&quot;: &quot;Style by savvy&quot;,
-                    &quot;email&quot;: &quot;hamedolamiji236@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;07089187949&quot;,
-                    &quot;address&quot;: &quot;84a jebba street&quot;,
-                    &quot;city&quot;: &quot;Epe&quot;,
-                    &quot;state&quot;: &quot;Lagos&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Private&quot;,
-                    &quot;token&quot;: &quot;IzW4eOTFrrcwIUgoD5Rl24R95KdwRQuizT7OpSyL&quot;,
-                    &quot;otp&quot;: null,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-13T21:25:15.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-14T07:33:22.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;105.115.9.61&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-15 09:42:12&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
-                &quot;id&quot;: 135,
-                &quot;user_id&quot;: &quot;24629&quot;,
-                &quot;ad_id&quot;: &quot;37143&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;Crotchet wears&quot;,
-                &quot;title_slug&quot;: &quot;crotchet-wears&quot;,
-                &quot;category&quot;: &quot;5&quot;,
-                &quot;sub_category&quot;: &quot;230&quot;,
-                &quot;brand&quot;: &quot;3386&quot;,
-                &quot;price&quot;: &quot;20000&quot;,
-                &quot;price_type&quot;: &quot;Give Away&quot;,
-                &quot;item_condition&quot;: &quot;New&quot;,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;It&rsquo;s a new crotchet wear&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Ogun&quot;,
-                &quot;lga&quot;: &quot;Ijebu North East&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;43&quot;,
-                &quot;keyword&quot;: &quot;crotchet, wears, block, wearnbspdiv&quot;,
-                &quot;meta_description&quot;: &quot;It&rsquo;s a new crotchet wear&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-11T15:19:13.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-11T15:19:13.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;ijebu-north-east&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;first_image&quot;: {
-                    &quot;id&quot;: 410,
-                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
-                    &quot;model_id&quot;: 135,
-                    &quot;uuid&quot;: &quot;39b0577d-c3ec-4036-bf2b-6b0d11741f2f&quot;,
-                    &quot;collection_name&quot;: &quot;images&quot;,
-                    &quot;name&quot;: &quot;68c2da6190423.webp&quot;,
-                    &quot;file_name&quot;: &quot;68c2da6190423.webp&quot;,
-                    &quot;mime_type&quot;: &quot;image/webp&quot;,
-                    &quot;disk&quot;: &quot;spatie&quot;,
-                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
-                    &quot;size&quot;: 182574,
-                    &quot;manipulations&quot;: [],
-                    &quot;custom_properties&quot;: {
-                        &quot;position&quot;: 1,
-                        &quot;migrated_from_id&quot;: 495
-                    },
-                    &quot;generated_conversions&quot;: {
-                        &quot;optimized&quot;: true,
-                        &quot;large&quot;: true,
-                        &quot;thumbnail&quot;: true
-                    },
-                    &quot;responsive_images&quot;: [],
-                    &quot;order_column&quot;: 1,
-                    &quot;created_at&quot;: &quot;2025-09-24T00:55:03.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-24T00:55:05.000000Z&quot;,
-                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/410/68c2da6190423.webp&quot;,
-                    &quot;preview_url&quot;: &quot;&quot;
-                },
-                &quot;owner&quot;: {
-                    &quot;id&quot;: 68,
-                    &quot;user_id&quot;: &quot;24629&quot;,
-                    &quot;name&quot;: &quot;Orey&rsquo;s artistry&quot;,
-                    &quot;email&quot;: &quot;olukoyadeborah07@gmail.com&quot;,
-                    &quot;phone&quot;: &quot;09044098347&quot;,
-                    &quot;address&quot;: &quot;Ijebu ode&quot;,
-                    &quot;city&quot;: &quot;Ijebu ode&quot;,
-                    &quot;state&quot;: &quot;Ogun&quot;,
-                    &quot;email_verified_at&quot;: null,
-                    &quot;acc_type&quot;: &quot;Commercial&quot;,
-                    &quot;token&quot;: &quot;Qy6hmGa7mEmeKGo8PfLceShrccb8aO81mKTNgxv2&quot;,
-                    &quot;otp&quot;: 280832,
-                    &quot;profile_picture&quot;: null,
-                    &quot;verified&quot;: &quot;no&quot;,
-                    &quot;acc_status&quot;: &quot;1&quot;,
-                    &quot;created_at&quot;: &quot;2025-09-11T15:10:01.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2025-09-11T15:13:46.000000Z&quot;,
-                    &quot;last_login_ip&quot;: &quot;105.113.58.43&quot;,
-                    &quot;last_login_at&quot;: &quot;2025-09-11 16:14:56&quot;,
-                    &quot;notification&quot;: &quot;no&quot;,
-                    &quot;disable_account&quot;: &quot;no&quot;,
-                    &quot;disable_account_date&quot;: null,
-                    &quot;bank_name&quot;: null,
-                    &quot;bank_code&quot;: null,
-                    &quot;account_name&quot;: null,
-                    &quot;account_number&quot;: null,
-                    &quot;google_id&quot;: null,
-                    &quot;facebook_id&quot;: null,
-                    &quot;otp_expires_at&quot;: null
-                }
-            },
-            {
                 &quot;id&quot;: 29,
                 &quot;user_id&quot;: &quot;11845&quot;,
                 &quot;ad_id&quot;: &quot;78192&quot;,
@@ -9426,6 +9302,102 @@ access-control-allow-origin: *
                     &quot;updated_at&quot;: &quot;2025-08-11T22:31:21.000000Z&quot;,
                     &quot;last_login_ip&quot;: &quot;197.211.63.160&quot;,
                     &quot;last_login_at&quot;: &quot;2025-08-11 23:32:51&quot;,
+                    &quot;notification&quot;: &quot;no&quot;,
+                    &quot;disable_account&quot;: &quot;no&quot;,
+                    &quot;disable_account_date&quot;: null,
+                    &quot;bank_name&quot;: null,
+                    &quot;bank_code&quot;: null,
+                    &quot;account_name&quot;: null,
+                    &quot;account_number&quot;: null,
+                    &quot;google_id&quot;: null,
+                    &quot;facebook_id&quot;: null,
+                    &quot;otp_expires_at&quot;: null
+                }
+            },
+            {
+                &quot;id&quot;: 117,
+                &quot;user_id&quot;: &quot;84123&quot;,
+                &quot;ad_id&quot;: &quot;17072&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Apple Watch Series 3 Silver/Black&quot;,
+                &quot;title_slug&quot;: &quot;apple-watch-series-3-silver-black&quot;,
+                &quot;category&quot;: &quot;5&quot;,
+                &quot;sub_category&quot;: &quot;238&quot;,
+                &quot;brand&quot;: &quot;3741&quot;,
+                &quot;price&quot;: &quot;95000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: &quot;Foreign Used&quot;,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;No&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;The watch is in a very good condition&lt;br&gt;Incl. original box, cable and bracelet.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Ikeja&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;73&quot;,
+                &quot;keyword&quot;: &quot;apple, watch, series, silverblack, divthe, very, good, conditionbrincl, original, cable&quot;,
+                &quot;meta_description&quot;: &quot;The watch is in a very good conditionIncl. original box, cable and bracelet.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-07T13:58:18.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-07T13:58:28.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;No&quot;,
+                &quot;state_slug&quot;: &quot;ikeja&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;first_image&quot;: {
+                    &quot;id&quot;: 351,
+                    &quot;model_type&quot;: &quot;App\\Models\\Advert&quot;,
+                    &quot;model_id&quot;: 117,
+                    &quot;uuid&quot;: &quot;1373b795-7871-4dc3-a6cc-bf1a34a80038&quot;,
+                    &quot;collection_name&quot;: &quot;images&quot;,
+                    &quot;name&quot;: &quot;68bd816aa5a5c.webp&quot;,
+                    &quot;file_name&quot;: &quot;68bd816aa5a5c.webp&quot;,
+                    &quot;mime_type&quot;: &quot;image/webp&quot;,
+                    &quot;disk&quot;: &quot;spatie&quot;,
+                    &quot;conversions_disk&quot;: &quot;spatie&quot;,
+                    &quot;size&quot;: 85014,
+                    &quot;manipulations&quot;: [],
+                    &quot;custom_properties&quot;: {
+                        &quot;position&quot;: 1,
+                        &quot;migrated_from_id&quot;: 424
+                    },
+                    &quot;generated_conversions&quot;: {
+                        &quot;optimized&quot;: true,
+                        &quot;large&quot;: true,
+                        &quot;thumbnail&quot;: true
+                    },
+                    &quot;responsive_images&quot;: [],
+                    &quot;order_column&quot;: 1,
+                    &quot;created_at&quot;: &quot;2025-09-24T00:54:07.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-24T00:54:08.000000Z&quot;,
+                    &quot;original_url&quot;: &quot;http://127.0.0.1:8030/uploads/351/68bd816aa5a5c.webp&quot;,
+                    &quot;preview_url&quot;: &quot;&quot;
+                },
+                &quot;owner&quot;: {
+                    &quot;id&quot;: 34,
+                    &quot;user_id&quot;: &quot;84123&quot;,
+                    &quot;name&quot;: &quot;Jay Gadgets&quot;,
+                    &quot;email&quot;: &quot;dondizzy88@gmail.com&quot;,
+                    &quot;phone&quot;: &quot;08033332401&quot;,
+                    &quot;address&quot;: &quot;Awolowo Way Computer Villa&quot;,
+                    &quot;city&quot;: &quot;Ikeja&quot;,
+                    &quot;state&quot;: &quot;Lagos&quot;,
+                    &quot;email_verified_at&quot;: null,
+                    &quot;acc_type&quot;: &quot;Commercial&quot;,
+                    &quot;token&quot;: &quot;RHxcUyIvHEsWnZ9iGvAilWxABn1Vh30wq33eJFgx&quot;,
+                    &quot;otp&quot;: 602971,
+                    &quot;profile_picture&quot;: null,
+                    &quot;verified&quot;: &quot;no&quot;,
+                    &quot;acc_status&quot;: &quot;1&quot;,
+                    &quot;created_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2025-09-03T12:43:40.000000Z&quot;,
+                    &quot;last_login_ip&quot;: &quot;2a09:bac5:2809:1e1::30:4c&quot;,
+                    &quot;last_login_at&quot;: &quot;2025-09-28 23:31:02&quot;,
                     &quot;notification&quot;: &quot;no&quot;,
                     &quot;disable_account&quot;: &quot;no&quot;,
                     &quot;disable_account_date&quot;: null,
@@ -9757,14 +9729,14 @@ access-control-allow-origin: *
                 &quot;email_verified_at&quot;: null,
                 &quot;acc_type&quot;: &quot;Private&quot;,
                 &quot;token&quot;: &quot;IgA7T06wZUCXSDY9ViwYvaaVI3CfIWaQWL5wfzXb&quot;,
-                &quot;otp&quot;: 157821,
+                &quot;otp&quot;: null,
                 &quot;profile_picture&quot;: null,
                 &quot;verified&quot;: &quot;no&quot;,
                 &quot;acc_status&quot;: &quot;1&quot;,
                 &quot;created_at&quot;: &quot;2024-11-04T09:04:39.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-05-05T08:02:38.000000Z&quot;,
-                &quot;last_login_ip&quot;: &quot;102.135.207.203&quot;,
-                &quot;last_login_at&quot;: &quot;2025-08-19 20:27:07&quot;,
+                &quot;updated_at&quot;: &quot;2025-12-23T04:29:01.000000Z&quot;,
+                &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+                &quot;last_login_at&quot;: &quot;2025-12-23 05:28:28&quot;,
                 &quot;notification&quot;: &quot;no&quot;,
                 &quot;disable_account&quot;: &quot;no&quot;,
                 &quot;disable_account_date&quot;: null,
@@ -9789,14 +9761,14 @@ access-control-allow-origin: *
             &quot;email_verified_at&quot;: null,
             &quot;acc_type&quot;: &quot;Private&quot;,
             &quot;token&quot;: &quot;IgA7T06wZUCXSDY9ViwYvaaVI3CfIWaQWL5wfzXb&quot;,
-            &quot;otp&quot;: 157821,
+            &quot;otp&quot;: null,
             &quot;profile_picture&quot;: null,
             &quot;verified&quot;: &quot;no&quot;,
             &quot;acc_status&quot;: &quot;1&quot;,
             &quot;created_at&quot;: &quot;2024-11-04T09:04:39.000000Z&quot;,
-            &quot;updated_at&quot;: &quot;2025-05-05T08:02:38.000000Z&quot;,
-            &quot;last_login_ip&quot;: &quot;102.135.207.203&quot;,
-            &quot;last_login_at&quot;: &quot;2025-08-19 20:27:07&quot;,
+            &quot;updated_at&quot;: &quot;2025-12-23T04:29:01.000000Z&quot;,
+            &quot;last_login_ip&quot;: &quot;127.0.0.1&quot;,
+            &quot;last_login_at&quot;: &quot;2025-12-23 05:28:28&quot;,
             &quot;notification&quot;: &quot;no&quot;,
             &quot;disable_account&quot;: &quot;no&quot;,
             &quot;disable_account_date&quot;: null,
@@ -9916,64 +9888,134 @@ access-control-allow-origin: *
         ],
         &quot;similar_ads&quot;: [
             {
-                &quot;id&quot;: 217,
-                &quot;user_id&quot;: &quot;79895&quot;,
-                &quot;ad_id&quot;: &quot;86672&quot;,
+                &quot;id&quot;: 208,
+                &quot;user_id&quot;: &quot;21957&quot;,
+                &quot;ad_id&quot;: &quot;81820&quot;,
                 &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;SAMSUNG GALAXY BUDS 3&quot;,
-                &quot;title_slug&quot;: &quot;samsung-galaxy-buds-3&quot;,
+                &quot;ad_title&quot;: &quot;iPhone 12promax 512GB direct UK used&quot;,
+                &quot;title_slug&quot;: &quot;iphone-12promax-512gb-direct-uk-used&quot;,
                 &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;44&quot;,
-                &quot;brand&quot;: &quot;1707&quot;,
-                &quot;price&quot;: &quot;160&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: &quot;New&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1542&quot;,
+                &quot;price&quot;: &quot;600000&quot;,
+                &quot;price_type&quot;: &quot;Negotiable&quot;,
+                &quot;item_condition&quot;: null,
                 &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;Samsung galaxy buds 3 brand new white color&amp;nbsp;&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Eti Osa&quot;,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;This is very good with a high quality camera and battery 89 percent battery health not boosted&amp;nbsp;&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;FCT - Abuja&quot;,
+                &quot;lga&quot;: &quot;Municipal Area Council&quot;,
                 &quot;ad_status&quot;: &quot;active&quot;,
                 &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Ship&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
                 &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;40&quot;,
-                &quot;keyword&quot;: &quot;samsung, galaxy, buds, block, brand, white, colornbspdiv&quot;,
-                &quot;meta_description&quot;: &quot;Samsung galaxy buds 3 brand new white color&amp;nbsp;&quot;,
-                &quot;created_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;,
+                &quot;views&quot;: &quot;30&quot;,
+                &quot;keyword&quot;: &quot;iphone, 12promax, 512gb, direct, used, block, this, very, good, phone&quot;,
+                &quot;meta_description&quot;: &quot;This is very good phone with a high quality camera and battery 89 percent battery health not boosted&amp;nbsp;&quot;,
+                &quot;created_at&quot;: &quot;2025-09-22T00:38:49.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-22T00:38:49.000000Z&quot;,
                 &quot;sold&quot;: &quot;No&quot;,
                 &quot;sold_date&quot;: null,
                 &quot;show_contact&quot;: &quot;Yes&quot;,
-                &quot;state_slug&quot;: &quot;eti-osa&quot;,
+                &quot;state_slug&quot;: &quot;municipal-area-council&quot;,
                 &quot;contact_price&quot;: &quot;no&quot;,
                 &quot;salary&quot;: null,
                 &quot;expected_salary&quot;: null,
                 &quot;redirect&quot;: &quot;No&quot;,
                 &quot;images&quot;: [
                     {
-                        &quot;id&quot;: 791,
-                        &quot;advert_id&quot;: 217,
-                        &quot;image&quot;: &quot;68d22ede3f9cb.webp&quot;,
+                        &quot;id&quot;: 738,
+                        &quot;advert_id&quot;: 208,
+                        &quot;image&quot;: &quot;68d08c8967ad6.webp&quot;,
                         &quot;position&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;
+                        &quot;created_at&quot;: &quot;2025-09-22T00:38:50.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-22T00:38:50.000000Z&quot;
                     },
                     {
-                        &quot;id&quot;: 792,
-                        &quot;advert_id&quot;: 217,
-                        &quot;image&quot;: &quot;68d22edec18db.webp&quot;,
+                        &quot;id&quot;: 739,
+                        &quot;advert_id&quot;: 208,
+                        &quot;image&quot;: &quot;68d08c8a4a927.webp&quot;,
                         &quot;position&quot;: 2,
-                        &quot;created_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-23T06:23:42.000000Z&quot;
+                        &quot;created_at&quot;: &quot;2025-09-22T00:38:51.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-22T00:38:51.000000Z&quot;
                     },
                     {
-                        &quot;id&quot;: 793,
-                        &quot;advert_id&quot;: 217,
-                        &quot;image&quot;: &quot;68d22ededfa24.webp&quot;,
+                        &quot;id&quot;: 740,
+                        &quot;advert_id&quot;: 208,
+                        &quot;image&quot;: &quot;68d08c8b03c5a.webp&quot;,
                         &quot;position&quot;: 3,
-                        &quot;created_at&quot;: &quot;2025-09-23T06:23:43.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-23T06:23:43.000000Z&quot;
+                        &quot;created_at&quot;: &quot;2025-09-22T00:38:51.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-22T00:38:51.000000Z&quot;
+                    },
+                    {
+                        &quot;id&quot;: 741,
+                        &quot;advert_id&quot;: 208,
+                        &quot;image&quot;: &quot;68d08c8bac58f.webp&quot;,
+                        &quot;position&quot;: 4,
+                        &quot;created_at&quot;: &quot;2025-09-22T00:38:52.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-22T00:38:52.000000Z&quot;
+                    }
+                ]
+            },
+            {
+                &quot;id&quot;: 216,
+                &quot;user_id&quot;: &quot;93209&quot;,
+                &quot;ad_id&quot;: &quot;74533&quot;,
+                &quot;ad_type&quot;: &quot;Private&quot;,
+                &quot;ad_title&quot;: &quot;Oppo Smartphone&quot;,
+                &quot;title_slug&quot;: &quot;oppo-smartphone&quot;,
+                &quot;category&quot;: &quot;4&quot;,
+                &quot;sub_category&quot;: &quot;6&quot;,
+                &quot;brand&quot;: &quot;1599&quot;,
+                &quot;price&quot;: &quot;180000&quot;,
+                &quot;price_type&quot;: &quot;Fixed&quot;,
+                &quot;item_condition&quot;: null,
+                &quot;quantity&quot;: 1,
+                &quot;buy_direct&quot;: &quot;Yes&quot;,
+                &quot;description&quot;: &quot;&lt;div&gt;&lt;!--block--&gt;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&lt;/div&gt;&quot;,
+                &quot;state&quot;: &quot;Lagos&quot;,
+                &quot;lga&quot;: &quot;Surulere&quot;,
+                &quot;ad_status&quot;: &quot;active&quot;,
+                &quot;featured&quot;: &quot;No&quot;,
+                &quot;shipment&quot;: &quot;Pickup&quot;,
+                &quot;shipping&quot;: null,
+                &quot;views&quot;: &quot;26&quot;,
+                &quot;keyword&quot;: &quot;oppo, smartphone, block, second, hand, uses, reno, with, ram258gb, some&quot;,
+                &quot;meta_description&quot;: &quot;It is a second hand uses Oppo Reno 8t 5g smartphone with 8gb ram/258gb ROM with some other interesting features.&quot;,
+                &quot;created_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
+                &quot;sold&quot;: &quot;No&quot;,
+                &quot;sold_date&quot;: null,
+                &quot;show_contact&quot;: &quot;Yes&quot;,
+                &quot;state_slug&quot;: &quot;surulere&quot;,
+                &quot;contact_price&quot;: &quot;no&quot;,
+                &quot;salary&quot;: null,
+                &quot;expected_salary&quot;: null,
+                &quot;redirect&quot;: &quot;No&quot;,
+                &quot;images&quot;: [
+                    {
+                        &quot;id&quot;: 788,
+                        &quot;advert_id&quot;: 216,
+                        &quot;image&quot;: &quot;68d1f77207d4e.webp&quot;,
+                        &quot;position&quot;: 1,
+                        &quot;created_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-23T02:27:14.000000Z&quot;
+                    },
+                    {
+                        &quot;id&quot;: 789,
+                        &quot;advert_id&quot;: 216,
+                        &quot;image&quot;: &quot;68d1f772bf3ed.webp&quot;,
+                        &quot;position&quot;: 2,
+                        &quot;created_at&quot;: &quot;2025-09-23T02:27:15.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-23T02:27:15.000000Z&quot;
+                    },
+                    {
+                        &quot;id&quot;: 790,
+                        &quot;advert_id&quot;: 216,
+                        &quot;image&quot;: &quot;68d1f773a1e8c.webp&quot;,
+                        &quot;position&quot;: 3,
+                        &quot;created_at&quot;: &quot;2025-09-23T02:27:16.000000Z&quot;,
+                        &quot;updated_at&quot;: &quot;2025-09-23T02:27:16.000000Z&quot;
                     }
                 ]
             },
@@ -10020,68 +10062,6 @@ access-control-allow-origin: *
                         &quot;position&quot;: 1,
                         &quot;created_at&quot;: &quot;2025-08-18T13:20:07.000000Z&quot;,
                         &quot;updated_at&quot;: &quot;2025-08-18T13:20:07.000000Z&quot;
-                    }
-                ]
-            },
-            {
-                &quot;id&quot;: 82,
-                &quot;user_id&quot;: &quot;84123&quot;,
-                &quot;ad_id&quot;: &quot;72875&quot;,
-                &quot;ad_type&quot;: &quot;Private&quot;,
-                &quot;ad_title&quot;: &quot;iPhone 11, 128Gb, ​​Black&quot;,
-                &quot;title_slug&quot;: &quot;iphone-11-128gb-black&quot;,
-                &quot;category&quot;: &quot;4&quot;,
-                &quot;sub_category&quot;: &quot;6&quot;,
-                &quot;brand&quot;: &quot;1542&quot;,
-                &quot;price&quot;: &quot;320000&quot;,
-                &quot;price_type&quot;: &quot;Fixed&quot;,
-                &quot;item_condition&quot;: null,
-                &quot;quantity&quot;: 1,
-                &quot;buy_direct&quot;: &quot;No&quot;,
-                &quot;description&quot;: &quot;&lt;div&gt;For sale is an iPhone 11 128GB with 78% battery capacity. The display and back are free of scratches, and the battery is original.&lt;/div&gt;&quot;,
-                &quot;state&quot;: &quot;Lagos&quot;,
-                &quot;lga&quot;: &quot;Ikeja&quot;,
-                &quot;ad_status&quot;: &quot;active&quot;,
-                &quot;featured&quot;: &quot;No&quot;,
-                &quot;shipment&quot;: &quot;Pickup&quot;,
-                &quot;shipping&quot;: null,
-                &quot;views&quot;: &quot;70&quot;,
-                &quot;keyword&quot;: &quot;iphone, 128gb, black, divfor, sale, with, battery, capacity, display, back&quot;,
-                &quot;meta_description&quot;: &quot;For sale is an iPhone 11 128GB with 78% battery capacity. The display and back are free of scratches, and the battery is original.&quot;,
-                &quot;created_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;,
-                &quot;updated_at&quot;: &quot;2025-09-03T13:16:17.000000Z&quot;,
-                &quot;sold&quot;: &quot;No&quot;,
-                &quot;sold_date&quot;: null,
-                &quot;show_contact&quot;: &quot;No&quot;,
-                &quot;state_slug&quot;: &quot;ikeja&quot;,
-                &quot;contact_price&quot;: &quot;no&quot;,
-                &quot;salary&quot;: null,
-                &quot;expected_salary&quot;: null,
-                &quot;redirect&quot;: &quot;No&quot;,
-                &quot;images&quot;: [
-                    {
-                        &quot;id&quot;: 322,
-                        &quot;advert_id&quot;: 82,
-                        &quot;image&quot;: &quot;68b82d09b9a6d.webp&quot;,
-                        &quot;position&quot;: 1,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;
-                    },
-                    {
-                        &quot;id&quot;: 323,
-                        &quot;advert_id&quot;: 82,
-                        &quot;image&quot;: &quot;68b82d09cb418.webp&quot;,
-                        &quot;position&quot;: 2,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;
-                    },
-                    {
-                        &quot;id&quot;: 324,
-                        &quot;advert_id&quot;: 82,
-                        &quot;image&quot;: &quot;68b82d09d0a97.webp&quot;,
-                        &quot;position&quot;: 3,
-                        &quot;created_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;,
-                        &quot;updated_at&quot;: &quot;2025-09-03T12:56:57.000000Z&quot;
                     }
                 ]
             }
@@ -10203,7 +10183,7 @@ GET /api/adverts/seller/{seller_id}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/adverts/seller/ut" \
+    --get "http://127.0.0.1:8030/api/adverts/seller/fuga" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -10211,7 +10191,7 @@ GET /api/adverts/seller/{seller_id}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/adverts/seller/ut"
+    "http://127.0.0.1:8030/api/adverts/seller/fuga"
 );
 
 const headers = {
@@ -10339,10 +10319,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="seller_id"                data-endpoint="GETapi-adverts-seller--seller_id-"
-               value="ut"
+               value="fuga"
                data-component="url">
     <br>
-<p>The ID of the seller. Example: <code>ut</code></p>
+<p>The ID of the seller. Example: <code>fuga</code></p>
             </div>
                     </form>
 
@@ -12609,7 +12589,7 @@ GET /api/categories/{category_slug}/{subcat_slug}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/categories/1/minima" \
+    --get "http://127.0.0.1:8030/api/categories/1/odio" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -12617,7 +12597,7 @@ GET /api/categories/{category_slug}/{subcat_slug}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/categories/1/minima"
+    "http://127.0.0.1:8030/api/categories/1/odio"
 );
 
 const headers = {
@@ -12757,10 +12737,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="subcat_slug"                data-endpoint="GETapi-categories--category_slug---subcat_slug-"
-               value="minima"
+               value="odio"
                data-component="url">
     <br>
-<p>The slug of the subcat. Example: <code>minima</code></p>
+<p>The slug of the subcat. Example: <code>odio</code></p>
             </div>
                     </form>
 
@@ -12779,7 +12759,7 @@ GET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/brands/deserunt/ut/temporibus" \
+    --get "http://127.0.0.1:8030/api/brands/sunt/ea/ut" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -12787,7 +12767,7 @@ GET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/brands/deserunt/ut/temporibus"
+    "http://127.0.0.1:8030/api/brands/sunt/ea/ut"
 );
 
 const headers = {
@@ -12915,10 +12895,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="category_slug"                data-endpoint="GETapi-brands--category_slug---subcat_slug---brand_slug-"
-               value="deserunt"
+               value="sunt"
                data-component="url">
     <br>
-<p>The slug of the category. Example: <code>deserunt</code></p>
+<p>The slug of the category. Example: <code>sunt</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>subcat_slug</code></b>&nbsp;&nbsp;
@@ -12927,10 +12907,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="subcat_slug"                data-endpoint="GETapi-brands--category_slug---subcat_slug---brand_slug-"
-               value="ut"
+               value="ea"
                data-component="url">
     <br>
-<p>The slug of the subcat. Example: <code>ut</code></p>
+<p>The slug of the subcat. Example: <code>ea</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>brand_slug</code></b>&nbsp;&nbsp;
@@ -12939,10 +12919,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="brand_slug"                data-endpoint="GETapi-brands--category_slug---subcat_slug---brand_slug-"
-               value="temporibus"
+               value="ut"
                data-component="url">
     <br>
-<p>The slug of the brand. Example: <code>temporibus</code></p>
+<p>The slug of the brand. Example: <code>ut</code></p>
             </div>
                     </form>
 
@@ -12961,7 +12941,7 @@ GET /api/location/{state_slug}</h2>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/location/velit" \
+    --get "http://127.0.0.1:8030/api/location/non" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -12969,7 +12949,7 @@ GET /api/location/{state_slug}</h2>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/location/velit"
+    "http://127.0.0.1:8030/api/location/non"
 );
 
 const headers = {
@@ -13004,7 +12984,7 @@ access-control-allow-origin: *
     &quot;success&quot;: true,
     &quot;data&quot;: {
         &quot;ads&quot;: [],
-        &quot;location&quot;: &quot;velit&quot;,
+        &quot;location&quot;: &quot;non&quot;,
         &quot;has_more&quot;: false,
         &quot;next_page&quot;: 2
     }
@@ -13102,10 +13082,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="state_slug"                data-endpoint="GETapi-location--state_slug-"
-               value="velit"
+               value="non"
                data-component="url">
     <br>
-<p>The slug of the state. Example: <code>velit</code></p>
+<p>The slug of the state. Example: <code>non</code></p>
             </div>
                     </form>
 
@@ -13419,8 +13399,8 @@ POST /api/adverts/{id}/report</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"subject\": \"almtadwsjcdtmhctodb\",
-    \"message\": \"amet\"
+    \"subject\": \"hjxktybli\",
+    \"message\": \"quia\"
 }"
 </code></pre></div>
 
@@ -13437,8 +13417,8 @@ const headers = {
 };
 
 let body = {
-    "subject": "almtadwsjcdtmhctodb",
-    "message": "amet"
+    "subject": "hjxktybli",
+    "message": "quia"
 };
 
 fetch(url, {
@@ -13555,10 +13535,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="subject"                data-endpoint="POSTapi-adverts--id--report"
-               value="almtadwsjcdtmhctodb"
+               value="hjxktybli"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>almtadwsjcdtmhctodb</code></p>
+<p>Must not be greater than 255 characters. Example: <code>hjxktybli</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>message</code></b>&nbsp;&nbsp;
@@ -13567,10 +13547,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="message"                data-endpoint="POSTapi-adverts--id--report"
-               value="amet"
+               value="quia"
                data-component="body">
     <br>
-<p>Example: <code>amet</code></p>
+<p>Example: <code>quia</code></p>
         </div>
         </form>
 
@@ -13594,7 +13574,7 @@ POST /api/adverts/{id}/apply</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"message\": \"reprehenderit\"
+    \"message\": \"in\"
 }"
 </code></pre></div>
 
@@ -13611,7 +13591,7 @@ const headers = {
 };
 
 let body = {
-    "message": "reprehenderit"
+    "message": "in"
 };
 
 fetch(url, {
@@ -13728,10 +13708,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="message"                data-endpoint="POSTapi-adverts--id--apply"
-               value="reprehenderit"
+               value="in"
                data-component="body">
     <br>
-<p>Example: <code>reprehenderit</code></p>
+<p>Example: <code>in</code></p>
         </div>
         </form>
 
@@ -14563,9 +14543,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"search\": \"ibzhlpinqeaheffocucdkugqmfubnbybwcf\",
-    \"state_id\": 6,
-    \"limit\": 12
+    \"search\": \"fswejfawwnrpwokwckuemyocnxwmeckvsrbyzwhgxagrrdhyhzifnmwudnlxbovihbt\",
+    \"state_id\": 19,
+    \"limit\": 13
 }"
 </code></pre></div>
 
@@ -14582,9 +14562,9 @@ const headers = {
 };
 
 let body = {
-    "search": "ibzhlpinqeaheffocucdkugqmfubnbybwcf",
-    "state_id": 6,
-    "limit": 12
+    "search": "fswejfawwnrpwokwckuemyocnxwmeckvsrbyzwhgxagrrdhyhzifnmwudnlxbovihbt",
+    "state_id": 19,
+    "limit": 13
 };
 
 fetch(url, {
@@ -14707,10 +14687,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="search"                data-endpoint="GETapi-locations-cities"
-               value="ibzhlpinqeaheffocucdkugqmfubnbybwcf"
+               value="fswejfawwnrpwokwckuemyocnxwmeckvsrbyzwhgxagrrdhyhzifnmwudnlxbovihbt"
                data-component="body">
     <br>
-<p>Must be at least 2 characters. Example: <code>ibzhlpinqeaheffocucdkugqmfubnbybwcf</code></p>
+<p>Must be at least 2 characters. Example: <code>fswejfawwnrpwokwckuemyocnxwmeckvsrbyzwhgxagrrdhyhzifnmwudnlxbovihbt</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>state_id</code></b>&nbsp;&nbsp;
@@ -14719,10 +14699,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="state_id"                data-endpoint="GETapi-locations-cities"
-               value="6"
+               value="19"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the states table. Example: <code>6</code></p>
+<p>The <code>id</code> of an existing record in the states table. Example: <code>19</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -14731,10 +14711,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="limit"                data-endpoint="GETapi-locations-cities"
-               value="12"
+               value="13"
                data-component="body">
     <br>
-<p>Must be at least 1. Must not be greater than 50. Example: <code>12</code></p>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>13</code></p>
         </div>
         </form>
 
@@ -14752,7 +14732,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/locations/cities/soluta" \
+    --get "http://127.0.0.1:8030/api/locations/cities/modi" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -14760,7 +14740,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/locations/cities/soluta"
+    "http://127.0.0.1:8030/api/locations/cities/modi"
 );
 
 const headers = {
@@ -14888,10 +14868,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="city_id"                data-endpoint="GETapi-locations-cities--city_id-"
-               value="soluta"
+               value="modi"
                data-component="url">
     <br>
-<p>The ID of the city. Example: <code>soluta</code></p>
+<p>The ID of the city. Example: <code>modi</code></p>
             </div>
                     </form>
 
@@ -14914,12 +14894,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"sender_station\": \"et\",
-    \"receiver_station\": \"accusantium\",
-    \"ad_price\": 44,
-    \"ad_title\": \"corporis\",
-    \"ad_des\": \"rerum\",
-    \"weight\": 44,
+    \"sender_station\": \"quis\",
+    \"receiver_station\": \"quidem\",
+    \"ad_price\": 73,
+    \"ad_title\": \"vel\",
+    \"ad_des\": \"sequi\",
+    \"weight\": 12,
     \"quantity\": 43
 }"
 </code></pre></div>
@@ -14937,12 +14917,12 @@ const headers = {
 };
 
 let body = {
-    "sender_station": "et",
-    "receiver_station": "accusantium",
-    "ad_price": 44,
-    "ad_title": "corporis",
-    "ad_des": "rerum",
-    "weight": 44,
+    "sender_station": "quis",
+    "receiver_station": "quidem",
+    "ad_price": 73,
+    "ad_title": "vel",
+    "ad_des": "sequi",
+    "weight": 12,
     "quantity": 43
 };
 
@@ -15047,10 +15027,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sender_station"                data-endpoint="POSTapi-shipping-calculate"
-               value="et"
+               value="quis"
                data-component="body">
     <br>
-<p>Example: <code>et</code></p>
+<p>Example: <code>quis</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>receiver_station</code></b>&nbsp;&nbsp;
@@ -15059,10 +15039,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="receiver_station"                data-endpoint="POSTapi-shipping-calculate"
-               value="accusantium"
+               value="quidem"
                data-component="body">
     <br>
-<p>Example: <code>accusantium</code></p>
+<p>Example: <code>quidem</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>ad_price</code></b>&nbsp;&nbsp;
@@ -15071,10 +15051,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="ad_price"                data-endpoint="POSTapi-shipping-calculate"
-               value="44"
+               value="73"
                data-component="body">
     <br>
-<p>Must be at least 0. Example: <code>44</code></p>
+<p>Must be at least 0. Example: <code>73</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>ad_title</code></b>&nbsp;&nbsp;
@@ -15083,10 +15063,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="ad_title"                data-endpoint="POSTapi-shipping-calculate"
-               value="corporis"
+               value="vel"
                data-component="body">
     <br>
-<p>Example: <code>corporis</code></p>
+<p>Example: <code>vel</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>ad_des</code></b>&nbsp;&nbsp;
@@ -15095,10 +15075,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="ad_des"                data-endpoint="POSTapi-shipping-calculate"
-               value="rerum"
+               value="sequi"
                data-component="body">
     <br>
-<p>Example: <code>rerum</code></p>
+<p>Example: <code>sequi</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>weight</code></b>&nbsp;&nbsp;
@@ -15107,10 +15087,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="weight"                data-endpoint="POSTapi-shipping-calculate"
-               value="44"
+               value="12"
                data-component="body">
     <br>
-<p>Must be at least 0. Example: <code>44</code></p>
+<p>Must be at least 0. Example: <code>12</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>quantity</code></b>&nbsp;&nbsp;
@@ -15145,9 +15125,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"advert_id\": 13,
-    \"receiver_id\": 17,
-    \"message_content\": \"gbluhotlqhtnvqrvkoeqr\"
+    \"advert_id\": 10,
+    \"receiver_id\": 2,
+    \"message_content\": \"ytpltdsavujuyoeznixi\"
 }"
 </code></pre></div>
 
@@ -15164,9 +15144,9 @@ const headers = {
 };
 
 let body = {
-    "advert_id": 13,
-    "receiver_id": 17,
-    "message_content": "gbluhotlqhtnvqrvkoeqr"
+    "advert_id": 10,
+    "receiver_id": 2,
+    "message_content": "ytpltdsavujuyoeznixi"
 };
 
 fetch(url, {
@@ -15270,10 +15250,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="advert_id"                data-endpoint="POSTapi-messages"
-               value="13"
+               value="10"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the adverts table. Example: <code>13</code></p>
+<p>The <code>id</code> of an existing record in the adverts table. Example: <code>10</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>receiver_id</code></b>&nbsp;&nbsp;
@@ -15282,10 +15262,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="receiver_id"                data-endpoint="POSTapi-messages"
-               value="17"
+               value="2"
                data-component="body">
     <br>
-<p>The <code>user_id</code> of an existing record in the users table. Example: <code>17</code></p>
+<p>The <code>user_id</code> of an existing record in the users table. Example: <code>2</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>message_content</code></b>&nbsp;&nbsp;
@@ -15294,10 +15274,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="message_content"                data-endpoint="POSTapi-messages"
-               value="gbluhotlqhtnvqrvkoeqr"
+               value="ytpltdsavujuyoeznixi"
                data-component="body">
     <br>
-<p>Must not be greater than 1000 characters. Example: <code>gbluhotlqhtnvqrvkoeqr</code></p>
+<p>Must not be greater than 1000 characters. Example: <code>ytpltdsavujuyoeznixi</code></p>
         </div>
         </form>
 
@@ -15315,7 +15295,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/messages/conversation/magni/deserunt" \
+    --get "http://127.0.0.1:8030/api/messages/conversation/fuga/voluptatibus" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -15323,7 +15303,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/messages/conversation/magni/deserunt"
+    "http://127.0.0.1:8030/api/messages/conversation/fuga/voluptatibus"
 );
 
 const headers = {
@@ -15448,10 +15428,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="advertId"                data-endpoint="GETapi-messages-conversation--advertId---receiverId-"
-               value="magni"
+               value="fuga"
                data-component="url">
     <br>
-<p>Example: <code>magni</code></p>
+<p>Example: <code>fuga</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>receiverId</code></b>&nbsp;&nbsp;
@@ -15460,10 +15440,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="receiverId"                data-endpoint="GETapi-messages-conversation--advertId---receiverId-"
-               value="deserunt"
+               value="voluptatibus"
                data-component="url">
     <br>
-<p>Example: <code>deserunt</code></p>
+<p>Example: <code>voluptatibus</code></p>
             </div>
                     </form>
 
@@ -15917,7 +15897,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://127.0.0.1:8030/api/messages/ex/read" \
+    "http://127.0.0.1:8030/api/messages/rerum/read" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -15925,7 +15905,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/messages/ex/read"
+    "http://127.0.0.1:8030/api/messages/rerum/read"
 );
 
 const headers = {
@@ -16034,10 +16014,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="messageId"                data-endpoint="PUTapi-messages--messageId--read"
-               value="ex"
+               value="rerum"
                data-component="url">
     <br>
-<p>Example: <code>ex</code></p>
+<p>Example: <code>rerum</code></p>
             </div>
                     </form>
 
@@ -16055,7 +16035,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://127.0.0.1:8030/api/messages/conversation/non/sequi/read" \
+    "http://127.0.0.1:8030/api/messages/conversation/ex/qui/read" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -16063,7 +16043,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/messages/conversation/non/sequi/read"
+    "http://127.0.0.1:8030/api/messages/conversation/ex/qui/read"
 );
 
 const headers = {
@@ -16172,10 +16152,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="advertId"                data-endpoint="PUTapi-messages-conversation--advertId---userId--read"
-               value="non"
+               value="ex"
                data-component="url">
     <br>
-<p>Example: <code>non</code></p>
+<p>Example: <code>ex</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>userId</code></b>&nbsp;&nbsp;
@@ -16184,10 +16164,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="userId"                data-endpoint="PUTapi-messages-conversation--advertId---userId--read"
-               value="sequi"
+               value="qui"
                data-component="url">
     <br>
-<p>Example: <code>sequi</code></p>
+<p>Example: <code>qui</code></p>
             </div>
                     </form>
 
@@ -16205,7 +16185,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://127.0.0.1:8030/api/payments/aspernatur/mark-delivered" \
+    "http://127.0.0.1:8030/api/payments/qui/mark-delivered" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -16213,7 +16193,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/payments/aspernatur/mark-delivered"
+    "http://127.0.0.1:8030/api/payments/qui/mark-delivered"
 );
 
 const headers = {
@@ -16322,10 +16302,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="paymentId"                data-endpoint="POSTapi-payments--paymentId--mark-delivered"
-               value="aspernatur"
+               value="qui"
                data-component="url">
     <br>
-<p>Example: <code>aspernatur</code></p>
+<p>Example: <code>qui</code></p>
             </div>
                     </form>
 
@@ -16349,19 +16329,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"shipping_data\": {
-        \"first_name\": \"quos\",
-        \"last_name\": \"laborum\",
-        \"phone\": \"quasi\",
-        \"grand_total\": 30611.04,
-        \"commission\": 1446,
-        \"shipping_cost\": 49.7935,
-        \"shipping_method\": 1,
+        \"first_name\": \"debitis\",
+        \"last_name\": \"nemo\",
+        \"phone\": \"modi\",
+        \"grand_total\": 22.7531,
+        \"commission\": 2.5536,
+        \"shipping_cost\": 55850,
+        \"shipping_method\": 14,
         \"ad\": {
-            \"id\": 15,
-            \"price\": 180.08158751
+            \"id\": 4,
+            \"price\": 557287.9
         },
         \"reciever_city\": {
-            \"id\": 9
+            \"id\": 4
         },
         \"reciever_state\": {
             \"id\": 18
@@ -16384,19 +16364,19 @@ const headers = {
 
 let body = {
     "shipping_data": {
-        "first_name": "quos",
-        "last_name": "laborum",
-        "phone": "quasi",
-        "grand_total": 30611.04,
-        "commission": 1446,
-        "shipping_cost": 49.7935,
-        "shipping_method": 1,
+        "first_name": "debitis",
+        "last_name": "nemo",
+        "phone": "modi",
+        "grand_total": 22.7531,
+        "commission": 2.5536,
+        "shipping_cost": 55850,
+        "shipping_method": 14,
         "ad": {
-            "id": 15,
-            "price": 180.08158751
+            "id": 4,
+            "price": 557287.9
         },
         "reciever_city": {
-            "id": 9
+            "id": 4
         },
         "reciever_state": {
             "id": 18
@@ -16515,10 +16495,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_data.first_name"                data-endpoint="POSTapi-payments-initialize"
-               value="quos"
+               value="debitis"
                data-component="body">
     <br>
-<p>Example: <code>quos</code></p>
+<p>Example: <code>debitis</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>last_name</code></b>&nbsp;&nbsp;
@@ -16527,10 +16507,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_data.last_name"                data-endpoint="POSTapi-payments-initialize"
-               value="laborum"
+               value="nemo"
                data-component="body">
     <br>
-<p>Example: <code>laborum</code></p>
+<p>Example: <code>nemo</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
@@ -16539,10 +16519,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_data.phone"                data-endpoint="POSTapi-payments-initialize"
-               value="quasi"
+               value="modi"
                data-component="body">
     <br>
-<p>Example: <code>quasi</code></p>
+<p>Example: <code>modi</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>grand_total</code></b>&nbsp;&nbsp;
@@ -16551,10 +16531,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.grand_total"                data-endpoint="POSTapi-payments-initialize"
-               value="30611.04"
+               value="22.7531"
                data-component="body">
     <br>
-<p>Example: <code>30611.04</code></p>
+<p>Example: <code>22.7531</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>commission</code></b>&nbsp;&nbsp;
@@ -16563,10 +16543,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.commission"                data-endpoint="POSTapi-payments-initialize"
-               value="1446"
+               value="2.5536"
                data-component="body">
     <br>
-<p>Example: <code>1446</code></p>
+<p>Example: <code>2.5536</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>shipping_cost</code></b>&nbsp;&nbsp;
@@ -16575,10 +16555,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.shipping_cost"                data-endpoint="POSTapi-payments-initialize"
-               value="49.7935"
+               value="55850"
                data-component="body">
     <br>
-<p>Example: <code>49.7935</code></p>
+<p>Example: <code>55850</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>shipping_method</code></b>&nbsp;&nbsp;
@@ -16587,10 +16567,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.shipping_method"                data-endpoint="POSTapi-payments-initialize"
-               value="1"
+               value="14"
                data-component="body">
     <br>
-<p>Example: <code>1</code></p>
+<p>Example: <code>14</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -16609,10 +16589,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.ad.id"                data-endpoint="POSTapi-payments-initialize"
-               value="15"
+               value="4"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the adverts table. Example: <code>15</code></p>
+<p>The <code>id</code> of an existing record in the adverts table. Example: <code>4</code></p>
                     </div>
                                                                 <div style="margin-left: 28px; clear: unset;">
                         <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
@@ -16621,10 +16601,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.ad.price"                data-endpoint="POSTapi-payments-initialize"
-               value="180.08158751"
+               value="557287.9"
                data-component="body">
     <br>
-<p>Example: <code>180.08158751</code></p>
+<p>Example: <code>557287.9</code></p>
                     </div>
                                     </details>
         </div>
@@ -16645,10 +16625,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="shipping_data.reciever_city.id"                data-endpoint="POSTapi-payments-initialize"
-               value="9"
+               value="4"
                data-component="body">
     <br>
-<p>Example: <code>9</code></p>
+<p>Example: <code>4</code></p>
                     </div>
                                     </details>
         </div>
@@ -16699,10 +16679,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"advert_id\": 20,
-    \"amount\": 70,
-    \"boost_type\": \"eos\",
-    \"duration\": 49
+    \"advert_id\": 4,
+    \"amount\": 84,
+    \"boost_type\": \"corporis\",
+    \"duration\": 89
 }"
 </code></pre></div>
 
@@ -16719,10 +16699,10 @@ const headers = {
 };
 
 let body = {
-    "advert_id": 20,
-    "amount": 70,
-    "boost_type": "eos",
-    "duration": 49
+    "advert_id": 4,
+    "amount": 84,
+    "boost_type": "corporis",
+    "duration": 89
 };
 
 fetch(url, {
@@ -16826,10 +16806,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="advert_id"                data-endpoint="POSTapi-payments-initialize-boost"
-               value="20"
+               value="4"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the adverts table. Example: <code>20</code></p>
+<p>The <code>id</code> of an existing record in the adverts table. Example: <code>4</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
@@ -16838,10 +16818,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="amount"                data-endpoint="POSTapi-payments-initialize-boost"
-               value="70"
+               value="84"
                data-component="body">
     <br>
-<p>Must be at least 0. Example: <code>70</code></p>
+<p>Must be at least 0. Example: <code>84</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>boost_type</code></b>&nbsp;&nbsp;
@@ -16850,10 +16830,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="boost_type"                data-endpoint="POSTapi-payments-initialize-boost"
-               value="eos"
+               value="corporis"
                data-component="body">
     <br>
-<p>Example: <code>eos</code></p>
+<p>Example: <code>corporis</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>duration</code></b>&nbsp;&nbsp;
@@ -16862,10 +16842,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="duration"                data-endpoint="POSTapi-payments-initialize-boost"
-               value="49"
+               value="89"
                data-component="body">
     <br>
-<p>Must be at least 1. Example: <code>49</code></p>
+<p>Must be at least 1. Example: <code>89</code></p>
         </div>
         </form>
 
@@ -16883,7 +16863,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/payments/dolores" \
+    --get "http://127.0.0.1:8030/api/payments/dolor" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -16891,7 +16871,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/payments/dolores"
+    "http://127.0.0.1:8030/api/payments/dolor"
 );
 
 const headers = {
@@ -17016,10 +16996,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="paymentId"                data-endpoint="GETapi-payments--paymentId-"
-               value="dolores"
+               value="dolor"
                data-component="url">
     <br>
-<p>Example: <code>dolores</code></p>
+<p>Example: <code>dolor</code></p>
             </div>
                     </form>
 
@@ -17350,7 +17330,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"reference\": \"autem\"
+    \"reference\": \"quaerat\"
 }"
 </code></pre></div>
 
@@ -17367,7 +17347,7 @@ const headers = {
 };
 
 let body = {
-    "reference": "autem"
+    "reference": "quaerat"
 };
 
 fetch(url, {
@@ -17471,10 +17451,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="reference"                data-endpoint="POSTapi-payments-callback"
-               value="autem"
+               value="quaerat"
                data-component="body">
     <br>
-<p>Example: <code>autem</code></p>
+<p>Example: <code>quaerat</code></p>
         </div>
         </form>
 
@@ -17497,18 +17477,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"q\": \"itcdxhipnsmnyyvrlaocikkhtfptigc\",
-    \"category\": 18,
-    \"sub_category\": 8,
-    \"brand\": 4,
-    \"location\": \"repudiandae\",
-    \"min_price\": 8,
-    \"max_price\": 8,
-    \"price_range\": \"1m_10m\",
-    \"seller_type\": \"no\",
+    \"q\": \"whwwimsudvdpyvfjhwkg\",
+    \"category\": 2,
+    \"sub_category\": 16,
+    \"brand\": 19,
+    \"location\": \"qui\",
+    \"min_price\": 58,
+    \"max_price\": 23,
+    \"price_range\": \"under_20k\",
+    \"seller_type\": \"yes\",
     \"buy_direct\": \"yes\",
-    \"page\": 43,
-    \"per_page\": 4
+    \"page\": 56,
+    \"per_page\": 2
 }"
 </code></pre></div>
 
@@ -17525,18 +17505,18 @@ const headers = {
 };
 
 let body = {
-    "q": "itcdxhipnsmnyyvrlaocikkhtfptigc",
-    "category": 18,
-    "sub_category": 8,
-    "brand": 4,
-    "location": "repudiandae",
-    "min_price": 8,
-    "max_price": 8,
-    "price_range": "1m_10m",
-    "seller_type": "no",
+    "q": "whwwimsudvdpyvfjhwkg",
+    "category": 2,
+    "sub_category": 16,
+    "brand": 19,
+    "location": "qui",
+    "min_price": 58,
+    "max_price": 23,
+    "price_range": "under_20k",
+    "seller_type": "yes",
     "buy_direct": "yes",
-    "page": 43,
-    "per_page": 4
+    "page": 56,
+    "per_page": 2
 };
 
 fetch(url, {
@@ -17565,9 +17545,6 @@ access-control-allow-origin: *
 <code class="language-json" style="max-height: 300px;">{
     &quot;success&quot;: false,
     &quot;errors&quot;: {
-        &quot;sub_category&quot;: [
-            &quot;The selected sub category is invalid.&quot;
-        ],
         &quot;brand&quot;: [
             &quot;The selected brand is invalid.&quot;
         ]
@@ -17666,10 +17643,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="q"                data-endpoint="GETapi-search"
-               value="itcdxhipnsmnyyvrlaocikkhtfptigc"
+               value="whwwimsudvdpyvfjhwkg"
                data-component="body">
     <br>
-<p>Must be at least 3 characters. Example: <code>itcdxhipnsmnyyvrlaocikkhtfptigc</code></p>
+<p>Must be at least 3 characters. Example: <code>whwwimsudvdpyvfjhwkg</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
@@ -17678,10 +17655,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="category"                data-endpoint="GETapi-search"
-               value="18"
+               value="2"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the categories table. Example: <code>18</code></p>
+<p>The <code>id</code> of an existing record in the categories table. Example: <code>2</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>sub_category</code></b>&nbsp;&nbsp;
@@ -17690,10 +17667,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="sub_category"                data-endpoint="GETapi-search"
-               value="8"
+               value="16"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the sub_categories table. Example: <code>8</code></p>
+<p>The <code>id</code> of an existing record in the sub_categories table. Example: <code>16</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>brand</code></b>&nbsp;&nbsp;
@@ -17702,10 +17679,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="brand"                data-endpoint="GETapi-search"
-               value="4"
+               value="19"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the brands table. Example: <code>4</code></p>
+<p>The <code>id</code> of an existing record in the brands table. Example: <code>19</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>location</code></b>&nbsp;&nbsp;
@@ -17714,10 +17691,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="location"                data-endpoint="GETapi-search"
-               value="repudiandae"
+               value="qui"
                data-component="body">
     <br>
-<p>Example: <code>repudiandae</code></p>
+<p>Example: <code>qui</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_price</code></b>&nbsp;&nbsp;
@@ -17726,10 +17703,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="min_price"                data-endpoint="GETapi-search"
-               value="8"
+               value="58"
                data-component="body">
     <br>
-<p>Must be at least 0. Example: <code>8</code></p>
+<p>Must be at least 0. Example: <code>58</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>max_price</code></b>&nbsp;&nbsp;
@@ -17738,10 +17715,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="max_price"                data-endpoint="GETapi-search"
-               value="8"
+               value="23"
                data-component="body">
     <br>
-<p>Must be at least 0. Example: <code>8</code></p>
+<p>Must be at least 0. Example: <code>23</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>price_range</code></b>&nbsp;&nbsp;
@@ -17750,10 +17727,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="price_range"                data-endpoint="GETapi-search"
-               value="1m_10m"
+               value="under_20k"
                data-component="body">
     <br>
-<p>Example: <code>1m_10m</code></p>
+<p>Example: <code>under_20k</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>under_20k</code></li> <li><code>20k_120k</code></li> <li><code>120k_1m</code></li> <li><code>1m_10m</code></li> <li><code>above_10m</code></li></ul>
         </div>
@@ -17764,10 +17741,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="seller_type"                data-endpoint="GETapi-search"
-               value="no"
+               value="yes"
                data-component="body">
     <br>
-<p>Example: <code>no</code></p>
+<p>Example: <code>yes</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>all</code></li> <li><code>yes</code></li> <li><code>no</code></li></ul>
         </div>
@@ -17792,10 +17769,10 @@ Must be one of:
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-search"
-               value="43"
+               value="56"
                data-component="body">
     <br>
-<p>Must be at least 1. Example: <code>43</code></p>
+<p>Must be at least 1. Example: <code>56</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -17804,10 +17781,10 @@ Must be one of:
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-search"
-               value="4"
+               value="2"
                data-component="body">
     <br>
-<p>Must be at least 1. Must not be greater than 100. Example: <code>4</code></p>
+<p>Must be at least 1. Must not be greater than 100. Example: <code>2</code></p>
         </div>
         </form>
 
@@ -17825,7 +17802,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/search/location/repellendus/numquam" \
+    --get "http://127.0.0.1:8030/api/search/location/id/non" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -17833,7 +17810,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/search/location/repellendus/numquam"
+    "http://127.0.0.1:8030/api/search/location/id/non"
 );
 
 const headers = {
@@ -17961,10 +17938,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="location"                data-endpoint="GETapi-search-location--location---slug-"
-               value="repellendus"
+               value="id"
                data-component="url">
     <br>
-<p>The location. Example: <code>repellendus</code></p>
+<p>The location. Example: <code>id</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>slug</code></b>&nbsp;&nbsp;
@@ -17973,10 +17950,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="slug"                data-endpoint="GETapi-search-location--location---slug-"
-               value="numquam"
+               value="non"
                data-component="url">
     <br>
-<p>The slug of the {location}. Example: <code>numquam</code></p>
+<p>The slug of the {location}. Example: <code>non</code></p>
             </div>
                     </form>
 
@@ -20772,8 +20749,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"q\": \"ngkmuszreidtxjfvhp\",
-    \"limit\": 1
+    \"q\": \"nvdifpngtrvpwmzaqhiiuhpypotidgdmzlvmpakqlmcuycringyinwntvbybodsibwbgihuvgelvgss\",
+    \"limit\": 9
 }"
 </code></pre></div>
 
@@ -20790,8 +20767,8 @@ const headers = {
 };
 
 let body = {
-    "q": "ngkmuszreidtxjfvhp",
-    "limit": 1
+    "q": "nvdifpngtrvpwmzaqhiiuhpypotidgdmzlvmpakqlmcuycringyinwntvbybodsibwbgihuvgelvgss",
+    "limit": 9
 };
 
 fetch(url, {
@@ -20918,10 +20895,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="q"                data-endpoint="GETapi-search-suggestions"
-               value="ngkmuszreidtxjfvhp"
+               value="nvdifpngtrvpwmzaqhiiuhpypotidgdmzlvmpakqlmcuycringyinwntvbybodsibwbgihuvgelvgss"
                data-component="body">
     <br>
-<p>Must be at least 2 characters. Example: <code>ngkmuszreidtxjfvhp</code></p>
+<p>Must be at least 2 characters. Example: <code>nvdifpngtrvpwmzaqhiiuhpypotidgdmzlvmpakqlmcuycringyinwntvbybodsibwbgihuvgelvgss</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -20930,10 +20907,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="limit"                data-endpoint="GETapi-search-suggestions"
-               value="1"
+               value="9"
                data-component="body">
     <br>
-<p>Must be at least 1. Must not be greater than 20. Example: <code>1</code></p>
+<p>Must be at least 1. Must not be greater than 20. Example: <code>9</code></p>
         </div>
         </form>
 
@@ -21515,7 +21492,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://127.0.0.1:8030/api/user/ads/officiis/status" \
+    "http://127.0.0.1:8030/api/user/ads/ad/status" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -21527,7 +21504,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/ads/officiis/status"
+    "http://127.0.0.1:8030/api/user/ads/ad/status"
 );
 
 const headers = {
@@ -21641,10 +21618,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="adId"                data-endpoint="PATCHapi-user-ads--adId--status"
-               value="officiis"
+               value="ad"
                data-component="url">
     <br>
-<p>Example: <code>officiis</code></p>
+<p>Example: <code>ad</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -21677,7 +21654,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://127.0.0.1:8030/api/user/ads/aspernatur/mark-sold" \
+    "http://127.0.0.1:8030/api/user/ads/perferendis/mark-sold" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -21685,7 +21662,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/ads/aspernatur/mark-sold"
+    "http://127.0.0.1:8030/api/user/ads/perferendis/mark-sold"
 );
 
 const headers = {
@@ -21794,10 +21771,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="adId"                data-endpoint="PATCHapi-user-ads--adId--mark-sold"
-               value="aspernatur"
+               value="perferendis"
                data-component="url">
     <br>
-<p>Example: <code>aspernatur</code></p>
+<p>Example: <code>perferendis</code></p>
             </div>
                     </form>
 
@@ -21956,7 +21933,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://127.0.0.1:8030/api/user/wishlist/ullam" \
+    "http://127.0.0.1:8030/api/user/wishlist/eligendi" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -21964,7 +21941,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/wishlist/ullam"
+    "http://127.0.0.1:8030/api/user/wishlist/eligendi"
 );
 
 const headers = {
@@ -22073,10 +22050,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="adId"                data-endpoint="POSTapi-user-wishlist--adId-"
-               value="ullam"
+               value="eligendi"
                data-component="url">
     <br>
-<p>Example: <code>ullam</code></p>
+<p>Example: <code>eligendi</code></p>
             </div>
                     </form>
 
@@ -22094,7 +22071,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://127.0.0.1:8030/api/user/wishlist/ullam" \
+    "http://127.0.0.1:8030/api/user/wishlist/dolorum" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -22102,7 +22079,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/wishlist/ullam"
+    "http://127.0.0.1:8030/api/user/wishlist/dolorum"
 );
 
 const headers = {
@@ -22211,10 +22188,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="adId"                data-endpoint="DELETEapi-user-wishlist--adId-"
-               value="ullam"
+               value="dolorum"
                data-component="url">
     <br>
-<p>Example: <code>ullam</code></p>
+<p>Example: <code>dolorum</code></p>
             </div>
                     </form>
 
@@ -22373,7 +22350,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://127.0.0.1:8030/api/user/payments/eius/confirm-delivery" \
+    "http://127.0.0.1:8030/api/user/payments/autem/confirm-delivery" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -22381,7 +22358,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/payments/eius/confirm-delivery"
+    "http://127.0.0.1:8030/api/user/payments/autem/confirm-delivery"
 );
 
 const headers = {
@@ -22490,10 +22467,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="paymentId"                data-endpoint="POSTapi-user-payments--paymentId--confirm-delivery"
-               value="eius"
+               value="autem"
                data-component="url">
     <br>
-<p>Example: <code>eius</code></p>
+<p>Example: <code>autem</code></p>
             </div>
                     </form>
 
@@ -22511,19 +22488,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://127.0.0.1:8030/api/user/payments/modi/shipping-status" \
+    "http://127.0.0.1:8030/api/user/payments/quo/shipping-status" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"shipping_status\": \"ab\"
+    \"shipping_status\": \"quidem\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/payments/modi/shipping-status"
+    "http://127.0.0.1:8030/api/user/payments/quo/shipping-status"
 );
 
 const headers = {
@@ -22533,7 +22510,7 @@ const headers = {
 };
 
 let body = {
-    "shipping_status": "ab"
+    "shipping_status": "quidem"
 };
 
 fetch(url, {
@@ -22637,10 +22614,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="paymentId"                data-endpoint="PATCHapi-user-payments--paymentId--shipping-status"
-               value="modi"
+               value="quo"
                data-component="url">
     <br>
-<p>Example: <code>modi</code></p>
+<p>Example: <code>quo</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -22650,10 +22627,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_status"                data-endpoint="PATCHapi-user-payments--paymentId--shipping-status"
-               value="ab"
+               value="quidem"
                data-component="body">
     <br>
-<p>Example: <code>ab</code></p>
+<p>Example: <code>quidem</code></p>
         </div>
         </form>
 
@@ -22812,23 +22789,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://127.0.0.1:8030/api/user/feedbacks/molestiae" \
+    "http://127.0.0.1:8030/api/user/feedbacks/et" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"rating\": 1,
+    \"rating\": 2,
     \"satisfaction\": 1,
     \"reliable\": 1,
-    \"friendly\": 1,
-    \"message\": \"mzqj\"
+    \"friendly\": 2,
+    \"message\": \"zimcq\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/feedbacks/molestiae"
+    "http://127.0.0.1:8030/api/user/feedbacks/et"
 );
 
 const headers = {
@@ -22838,11 +22815,11 @@ const headers = {
 };
 
 let body = {
-    "rating": 1,
+    "rating": 2,
     "satisfaction": 1,
     "reliable": 1,
-    "friendly": 1,
-    "message": "mzqj"
+    "friendly": 2,
+    "message": "zimcq"
 };
 
 fetch(url, {
@@ -22946,10 +22923,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="sellerId"                data-endpoint="POSTapi-user-feedbacks--sellerId-"
-               value="molestiae"
+               value="et"
                data-component="url">
     <br>
-<p>Example: <code>molestiae</code></p>
+<p>Example: <code>et</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -22959,10 +22936,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="rating"                data-endpoint="POSTapi-user-feedbacks--sellerId-"
-               value="1"
+               value="2"
                data-component="body">
     <br>
-<p>Must be between 1 and 5. Example: <code>1</code></p>
+<p>Must be between 1 and 5. Example: <code>2</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>satisfaction</code></b>&nbsp;&nbsp;
@@ -22995,10 +22972,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="friendly"                data-endpoint="POSTapi-user-feedbacks--sellerId-"
-               value="1"
+               value="2"
                data-component="body">
     <br>
-<p>Must be between 1 and 5. Example: <code>1</code></p>
+<p>Must be between 1 and 5. Example: <code>2</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>message</code></b>&nbsp;&nbsp;
@@ -23007,10 +22984,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="message"                data-endpoint="POSTapi-user-feedbacks--sellerId-"
-               value="mzqj"
+               value="zimcq"
                data-component="body">
     <br>
-<p>Must not be greater than 1000 characters. Example: <code>mzqj</code></p>
+<p>Must not be greater than 1000 characters. Example: <code>zimcq</code></p>
         </div>
         </form>
 
@@ -23028,7 +23005,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/user/following/check/odio" \
+    --get "http://127.0.0.1:8030/api/user/following/check/vel" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -23036,7 +23013,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/user/following/check/odio"
+    "http://127.0.0.1:8030/api/user/following/check/vel"
 );
 
 const headers = {
@@ -23161,10 +23138,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="userId"                data-endpoint="GETapi-user-following-check--userId-"
-               value="odio"
+               value="vel"
                data-component="url">
     <br>
-<p>Example: <code>odio</code></p>
+<p>Example: <code>vel</code></p>
             </div>
                     </form>
 
@@ -23187,7 +23164,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"followee_id\": 11
+    \"followee_id\": 1
 }"
 </code></pre></div>
 
@@ -23204,7 +23181,7 @@ const headers = {
 };
 
 let body = {
-    "followee_id": 11
+    "followee_id": 1
 };
 
 fetch(url, {
@@ -23308,10 +23285,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="followee_id"                data-endpoint="POSTapi-user-following-toggle"
-               value="11"
+               value="1"
                data-component="body">
     <br>
-<p>The <code>user_id</code> of an existing record in the users table. Example: <code>11</code></p>
+<p>The <code>user_id</code> of an existing record in the users table. Example: <code>1</code></p>
         </div>
         </form>
 
@@ -24976,7 +24953,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/adverts/brands/recusandae/models" \
+    --get "http://127.0.0.1:8030/api/adverts/brands/occaecati/models" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -24984,7 +24961,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/adverts/brands/recusandae/models"
+    "http://127.0.0.1:8030/api/adverts/brands/occaecati/models"
 );
 
 const headers = {
@@ -25112,10 +25089,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="brandId"                data-endpoint="GETapi-adverts-brands--brandId--models"
-               value="recusandae"
+               value="occaecati"
                data-component="url">
     <br>
-<p>Example: <code>recusandae</code></p>
+<p>Example: <code>occaecati</code></p>
             </div>
                     </form>
 
@@ -25278,14 +25255,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "ad_title=ohtdukrxrriya"\
-    --form "category=ut"\
-    --form "subcategory=non"\
-    --form "brand=blanditiis"\
-    --form "state=ut"\
-    --form "lga=fugiat"\
-    --form "description=reiciendis"\
-    --form "images[]=@/tmp/php3lv0d0ljq4lb5miwmLR" </code></pre></div>
+    --form "ad_title=ubmvjhvzbmhyrmjizkuxti"\
+    --form "category=dolor"\
+    --form "subcategory=minima"\
+    --form "brand=esse"\
+    --form "state=hic"\
+    --form "lga=et"\
+    --form "description=sit"\
+    --form "images[]=@/tmp/php8ac129ja68j65dxHJJ9" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -25300,13 +25277,13 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('ad_title', 'ohtdukrxrriya');
-body.append('category', 'ut');
-body.append('subcategory', 'non');
-body.append('brand', 'blanditiis');
-body.append('state', 'ut');
-body.append('lga', 'fugiat');
-body.append('description', 'reiciendis');
+body.append('ad_title', 'ubmvjhvzbmhyrmjizkuxti');
+body.append('category', 'dolor');
+body.append('subcategory', 'minima');
+body.append('brand', 'esse');
+body.append('state', 'hic');
+body.append('lga', 'et');
+body.append('description', 'sit');
 body.append('images[]', document.querySelector('input[name="images[]"]').files[0]);
 
 fetch(url, {
@@ -25410,10 +25387,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="ad_title"                data-endpoint="POSTapi-adverts"
-               value="ohtdukrxrriya"
+               value="ubmvjhvzbmhyrmjizkuxti"
                data-component="body">
     <br>
-<p>Must not be greater than 75 characters. Example: <code>ohtdukrxrriya</code></p>
+<p>Must not be greater than 75 characters. Example: <code>ubmvjhvzbmhyrmjizkuxti</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
@@ -25422,10 +25399,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="category"                data-endpoint="POSTapi-adverts"
-               value="ut"
+               value="dolor"
                data-component="body">
     <br>
-<p>Example: <code>ut</code></p>
+<p>Example: <code>dolor</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>subcategory</code></b>&nbsp;&nbsp;
@@ -25434,10 +25411,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="subcategory"                data-endpoint="POSTapi-adverts"
-               value="non"
+               value="minima"
                data-component="body">
     <br>
-<p>Example: <code>non</code></p>
+<p>Example: <code>minima</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>brand</code></b>&nbsp;&nbsp;
@@ -25446,10 +25423,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="brand"                data-endpoint="POSTapi-adverts"
-               value="blanditiis"
+               value="esse"
                data-component="body">
     <br>
-<p>Example: <code>blanditiis</code></p>
+<p>Example: <code>esse</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
@@ -25458,10 +25435,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="state"                data-endpoint="POSTapi-adverts"
-               value="ut"
+               value="hic"
                data-component="body">
     <br>
-<p>Example: <code>ut</code></p>
+<p>Example: <code>hic</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>lga</code></b>&nbsp;&nbsp;
@@ -25470,10 +25447,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="lga"                data-endpoint="POSTapi-adverts"
-               value="fugiat"
+               value="et"
                data-component="body">
     <br>
-<p>Example: <code>fugiat</code></p>
+<p>Example: <code>et</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
@@ -25482,10 +25459,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="POSTapi-adverts"
-               value="reiciendis"
+               value="sit"
                data-component="body">
     <br>
-<p>Example: <code>reiciendis</code></p>
+<p>Example: <code>sit</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>images</code></b>&nbsp;&nbsp;
@@ -25675,14 +25652,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "ad_title=ytxvoiceya"\
-    --form "category=quod"\
-    --form "subcategory=accusantium"\
-    --form "brand=tempore"\
-    --form "state=voluptas"\
-    --form "lga=eaque"\
-    --form "description=dolor"\
-    --form "images[]=@/tmp/phppr7r2ibgoesk75qPQUO" </code></pre></div>
+    --form "ad_title=ewdzhsfwhmqfaxhtqsbcs"\
+    --form "category=ipsum"\
+    --form "subcategory=est"\
+    --form "brand=qui"\
+    --form "state=assumenda"\
+    --form "lga=non"\
+    --form "description=recusandae"\
+    --form "images[]=@/tmp/phpc6a6v7k0tr4gfeAaaAr" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -25697,13 +25674,13 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('ad_title', 'ytxvoiceya');
-body.append('category', 'quod');
-body.append('subcategory', 'accusantium');
-body.append('brand', 'tempore');
-body.append('state', 'voluptas');
-body.append('lga', 'eaque');
-body.append('description', 'dolor');
+body.append('ad_title', 'ewdzhsfwhmqfaxhtqsbcs');
+body.append('category', 'ipsum');
+body.append('subcategory', 'est');
+body.append('brand', 'qui');
+body.append('state', 'assumenda');
+body.append('lga', 'non');
+body.append('description', 'recusandae');
 body.append('images[]', document.querySelector('input[name="images[]"]').files[0]);
 
 fetch(url, {
@@ -25820,10 +25797,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="ad_title"                data-endpoint="PUTapi-adverts--advertId-"
-               value="ytxvoiceya"
+               value="ewdzhsfwhmqfaxhtqsbcs"
                data-component="body">
     <br>
-<p>Must not be greater than 75 characters. Example: <code>ytxvoiceya</code></p>
+<p>Must not be greater than 75 characters. Example: <code>ewdzhsfwhmqfaxhtqsbcs</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
@@ -25832,10 +25809,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="category"                data-endpoint="PUTapi-adverts--advertId-"
-               value="quod"
+               value="ipsum"
                data-component="body">
     <br>
-<p>Example: <code>quod</code></p>
+<p>Example: <code>ipsum</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>subcategory</code></b>&nbsp;&nbsp;
@@ -25844,10 +25821,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="subcategory"                data-endpoint="PUTapi-adverts--advertId-"
-               value="accusantium"
+               value="est"
                data-component="body">
     <br>
-<p>Example: <code>accusantium</code></p>
+<p>Example: <code>est</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>brand</code></b>&nbsp;&nbsp;
@@ -25856,10 +25833,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="brand"                data-endpoint="PUTapi-adverts--advertId-"
-               value="tempore"
+               value="qui"
                data-component="body">
     <br>
-<p>Example: <code>tempore</code></p>
+<p>Example: <code>qui</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
@@ -25868,10 +25845,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="state"                data-endpoint="PUTapi-adverts--advertId-"
-               value="voluptas"
+               value="assumenda"
                data-component="body">
     <br>
-<p>Example: <code>voluptas</code></p>
+<p>Example: <code>assumenda</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>lga</code></b>&nbsp;&nbsp;
@@ -25880,10 +25857,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="lga"                data-endpoint="PUTapi-adverts--advertId-"
-               value="eaque"
+               value="non"
                data-component="body">
     <br>
-<p>Example: <code>eaque</code></p>
+<p>Example: <code>non</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
@@ -25892,10 +25869,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="PUTapi-adverts--advertId-"
-               value="dolor"
+               value="recusandae"
                data-component="body">
     <br>
-<p>Example: <code>dolor</code></p>
+<p>Example: <code>recusandae</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>images</code></b>&nbsp;&nbsp;
@@ -26800,11 +26777,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "name=goyilbcwzgbrldgwfstvvc"\
-    --form "address=tvabgwy"\
-    --form "city=lgjevsbczxylalhh"\
-    --form "state=hldcwsmrkdgrpgutwqoydiajh"\
-    --form "profile_image=@/tmp/phpnr64e4uvrmvdcjmx7su" </code></pre></div>
+    --form "name=ynclfujnkqcichwfhdc"\
+    --form "address=rnq"\
+    --form "city=kwkwmxcwafaocogwj"\
+    --form "state=cwmzkxp"\
+    --form "profile_image=@/tmp/phpeeleh95jc2225kqnCHc" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -26819,10 +26796,10 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('name', 'goyilbcwzgbrldgwfstvvc');
-body.append('address', 'tvabgwy');
-body.append('city', 'lgjevsbczxylalhh');
-body.append('state', 'hldcwsmrkdgrpgutwqoydiajh');
+body.append('name', 'ynclfujnkqcichwfhdc');
+body.append('address', 'rnq');
+body.append('city', 'kwkwmxcwafaocogwj');
+body.append('state', 'cwmzkxp');
 body.append('profile_image', document.querySelector('input[name="profile_image"]').files[0]);
 
 fetch(url, {
@@ -26926,10 +26903,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-user-profile-address"
-               value="goyilbcwzgbrldgwfstvvc"
+               value="ynclfujnkqcichwfhdc"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>goyilbcwzgbrldgwfstvvc</code></p>
+<p>Must not be greater than 255 characters. Example: <code>ynclfujnkqcichwfhdc</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
@@ -26938,10 +26915,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="address"                data-endpoint="PUTapi-user-profile-address"
-               value="tvabgwy"
+               value="rnq"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>tvabgwy</code></p>
+<p>Must not be greater than 255 characters. Example: <code>rnq</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
@@ -26950,10 +26927,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="city"                data-endpoint="PUTapi-user-profile-address"
-               value="lgjevsbczxylalhh"
+               value="kwkwmxcwafaocogwj"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>lgjevsbczxylalhh</code></p>
+<p>Must not be greater than 255 characters. Example: <code>kwkwmxcwafaocogwj</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
@@ -26962,10 +26939,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="state"                data-endpoint="PUTapi-user-profile-address"
-               value="hldcwsmrkdgrpgutwqoydiajh"
+               value="cwmzkxp"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>hldcwsmrkdgrpgutwqoydiajh</code></p>
+<p>Must not be greater than 255 characters. Example: <code>cwmzkxp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>profile_image</code></b>&nbsp;&nbsp;
@@ -26977,7 +26954,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpnr64e4uvrmvdcjmx7su</code></p>
+<p>Must be an image. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpeeleh95jc2225kqnCHc</code></p>
         </div>
         </form>
 
@@ -26999,11 +26976,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "name=xhuilebig"\
-    --form "address=xlsm"\
-    --form "city=thqzcuyks"\
-    --form "state=zorrlygntgnc"\
-    --form "profile_image=@/tmp/phpa7sspieui6522mxhaPU" </code></pre></div>
+    --form "name=fhyuvenhohfcakneglvbl"\
+    --form "address=aiyimptn"\
+    --form "city=wqqayt"\
+    --form "state=aifcaoeivgo"\
+    --form "profile_image=@/tmp/phpo148b2gaoskdfyUwPAR" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -27018,10 +26995,10 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('name', 'xhuilebig');
-body.append('address', 'xlsm');
-body.append('city', 'thqzcuyks');
-body.append('state', 'zorrlygntgnc');
+body.append('name', 'fhyuvenhohfcakneglvbl');
+body.append('address', 'aiyimptn');
+body.append('city', 'wqqayt');
+body.append('state', 'aifcaoeivgo');
 body.append('profile_image', document.querySelector('input[name="profile_image"]').files[0]);
 
 fetch(url, {
@@ -27125,10 +27102,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-user-profile-address"
-               value="xhuilebig"
+               value="fhyuvenhohfcakneglvbl"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>xhuilebig</code></p>
+<p>Must not be greater than 255 characters. Example: <code>fhyuvenhohfcakneglvbl</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
@@ -27137,10 +27114,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="address"                data-endpoint="POSTapi-user-profile-address"
-               value="xlsm"
+               value="aiyimptn"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>xlsm</code></p>
+<p>Must not be greater than 255 characters. Example: <code>aiyimptn</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
@@ -27149,10 +27126,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="city"                data-endpoint="POSTapi-user-profile-address"
-               value="thqzcuyks"
+               value="wqqayt"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>thqzcuyks</code></p>
+<p>Must not be greater than 255 characters. Example: <code>wqqayt</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
@@ -27161,10 +27138,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="state"                data-endpoint="POSTapi-user-profile-address"
-               value="zorrlygntgnc"
+               value="aifcaoeivgo"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>zorrlygntgnc</code></p>
+<p>Must not be greater than 255 characters. Example: <code>aifcaoeivgo</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>profile_image</code></b>&nbsp;&nbsp;
@@ -27176,7 +27153,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpa7sspieui6522mxhaPU</code></p>
+<p>Must be an image. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpo148b2gaoskdfyUwPAR</code></p>
         </div>
         </form>
 
@@ -27486,10 +27463,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "document_number=c"\
-    --form "document_type=hsfb"\
-    --form "document_file=@/tmp/phpfoo3nve2uren2g0Pu0C" \
-    --form "proof_address=@/tmp/phps1j1e2ul06omc2TvG7H" </code></pre></div>
+    --form "document_number=fbcyjfiebfys"\
+    --form "document_type=do"\
+    --form "document_file=@/tmp/php6u9b4r58skdv0SoybS4" \
+    --form "proof_address=@/tmp/phpriaste8n0psq2fXKHyP" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -27504,8 +27481,8 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('document_number', 'c');
-body.append('document_type', 'hsfb');
+body.append('document_number', 'fbcyjfiebfys');
+body.append('document_type', 'do');
 body.append('document_file', document.querySelector('input[name="document_file"]').files[0]);
 body.append('proof_address', document.querySelector('input[name="proof_address"]').files[0]);
 
@@ -27610,10 +27587,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="document_number"                data-endpoint="POSTapi-user-verification"
-               value="c"
+               value="fbcyjfiebfys"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>c</code></p>
+<p>Must not be greater than 255 characters. Example: <code>fbcyjfiebfys</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>document_type</code></b>&nbsp;&nbsp;
@@ -27622,10 +27599,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="document_type"                data-endpoint="POSTapi-user-verification"
-               value="hsfb"
+               value="do"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>hsfb</code></p>
+<p>Must not be greater than 255 characters. Example: <code>do</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>document_file</code></b>&nbsp;&nbsp;
@@ -27637,7 +27614,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpfoo3nve2uren2g0Pu0C</code></p>
+<p>Must be a file. Must not be greater than 12048 kilobytes. Example: <code>/tmp/php6u9b4r58skdv0SoybS4</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>proof_address</code></b>&nbsp;&nbsp;
@@ -27649,7 +27626,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phps1j1e2ul06omc2TvG7H</code></p>
+<p>Must be a file. Must not be greater than 12048 kilobytes. Example: <code>/tmp/phpriaste8n0psq2fXKHyP</code></p>
         </div>
         </form>
 
@@ -27813,10 +27790,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"bank_name\": \"qg\",
-    \"paystack_bank_code\": \"thffaufplayaiuaqtwswpvc\",
-    \"account_number\": \"iizqk\",
-    \"account_name\": \"wfsumdjxafjawltsvapxyvyso\"
+    \"bank_name\": \"wyxghpkdvifyppkzlumz\",
+    \"paystack_bank_code\": \"equpoczguwuew\",
+    \"account_number\": \"qtpknkfkziwyenm\",
+    \"account_name\": \"vzowyseueesn\"
 }"
 </code></pre></div>
 
@@ -27833,10 +27810,10 @@ const headers = {
 };
 
 let body = {
-    "bank_name": "qg",
-    "paystack_bank_code": "thffaufplayaiuaqtwswpvc",
-    "account_number": "iizqk",
-    "account_name": "wfsumdjxafjawltsvapxyvyso"
+    "bank_name": "wyxghpkdvifyppkzlumz",
+    "paystack_bank_code": "equpoczguwuew",
+    "account_number": "qtpknkfkziwyenm",
+    "account_name": "vzowyseueesn"
 };
 
 fetch(url, {
@@ -27940,10 +27917,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="bank_name"                data-endpoint="PUTapi-user-payment-info"
-               value="qg"
+               value="wyxghpkdvifyppkzlumz"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>qg</code></p>
+<p>Must not be greater than 255 characters. Example: <code>wyxghpkdvifyppkzlumz</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>paystack_bank_code</code></b>&nbsp;&nbsp;
@@ -27952,10 +27929,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="paystack_bank_code"                data-endpoint="PUTapi-user-payment-info"
-               value="thffaufplayaiuaqtwswpvc"
+               value="equpoczguwuew"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>thffaufplayaiuaqtwswpvc</code></p>
+<p>Must not be greater than 255 characters. Example: <code>equpoczguwuew</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>account_number</code></b>&nbsp;&nbsp;
@@ -27964,10 +27941,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="account_number"                data-endpoint="PUTapi-user-payment-info"
-               value="iizqk"
+               value="qtpknkfkziwyenm"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>iizqk</code></p>
+<p>Must not be greater than 255 characters. Example: <code>qtpknkfkziwyenm</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>account_name</code></b>&nbsp;&nbsp;
@@ -27976,10 +27953,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="account_name"                data-endpoint="PUTapi-user-payment-info"
-               value="wfsumdjxafjawltsvapxyvyso"
+               value="vzowyseueesn"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>wfsumdjxafjawltsvapxyvyso</code></p>
+<p>Must not be greater than 255 characters. Example: <code>vzowyseueesn</code></p>
         </div>
         </form>
 
@@ -28002,8 +27979,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"old_password\": \"odit\",
-    \"password\": \"!2[QenQ`Gd58(\"
+    \"old_password\": \"aut\",
+    \"password\": \"#z7`m9bmM30O5\"
 }"
 </code></pre></div>
 
@@ -28020,8 +27997,8 @@ const headers = {
 };
 
 let body = {
-    "old_password": "odit",
-    "password": "!2[QenQ`Gd58("
+    "old_password": "aut",
+    "password": "#z7`m9bmM30O5"
 };
 
 fetch(url, {
@@ -28125,10 +28102,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="old_password"                data-endpoint="PUTapi-user-password"
-               value="odit"
+               value="aut"
                data-component="body">
     <br>
-<p>Example: <code>odit</code></p>
+<p>Example: <code>aut</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -28137,10 +28114,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="PUTapi-user-password"
-               value="!2[QenQ`Gd58("
+               value="#z7`m9bmM30O5"
                data-component="body">
     <br>
-<p>Must be at least 6 characters. Example: <code>!2[QenQ</code>Gd58(`</p>
+<p>Must be at least 6 characters. Example: <code>#z7</code>m9bmM30O5`</p>
         </div>
         </form>
 
@@ -28163,7 +28140,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"notifications\": \"et\"
+    \"notifications\": \"reiciendis\"
 }"
 </code></pre></div>
 
@@ -28180,7 +28157,7 @@ const headers = {
 };
 
 let body = {
-    "notifications": "et"
+    "notifications": "reiciendis"
 };
 
 fetch(url, {
@@ -28284,10 +28261,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="notifications"                data-endpoint="PUTapi-user-notifications"
-               value="et"
+               value="reiciendis"
                data-component="body">
     <br>
-<p>Example: <code>et</code></p>
+<p>Example: <code>reiciendis</code></p>
         </div>
         </form>
 
@@ -28880,7 +28857,7 @@ content-type: application/json
 x-ratelimit-limit: 60
 x-ratelimit-remaining: 32
 access-control-allow-origin: *
-set-cookie: XSRF-TOKEN=eyJpdiI6ImxOZ2ZIQTNqTnBOREVUSFJoVXY0Vnc9PSIsInZhbHVlIjoiN3dGc1BMTm9YMlJIN0Jpak9HNDRlWkJEVWpPNThGdTNpY3I0cmY0UGg2dGk1YWt1VjBzRllXVzNjeVFGUGlPb05OUERqMEMwQy8vLzJFOWU4a1g1SXZkSnI1cFlFS3F4a0t3MnErbWMyQmpPYU9KYTBpcC9FaW9aYkdrcWJQcVYiLCJtYWMiOiJlODRhMjZmYjQ3YzMxNTk4NWFlMDc2NmYxY2ZjNTM4MTE0MTBlNmU2NTA1NDFmOGQ0MmUwZGNiZjVkMTQ5OGRiIiwidGFnIjoiIn0%3D; expires=Tue, 23 Dec 2025 06:01:46 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6IjM3Y2paVDhoVm9XYzBvbU1XcGd3cUE9PSIsInZhbHVlIjoiQ3c5RklyZUdQRGZwYk9GTVJ6QmtjMU16MDJHRUgrcjkxOVltQUtXeExIa1ZDZlcvNlpsRXVuTnRKa1hvZTNvcktlVC9CeG11Tm5FbzZRWUVJbjFMT3JzZlJlTkplNHNBcGRoekNTNTgvbmgwcGUvSk1IcW54eStzOElEMm5IOEkiLCJtYWMiOiI5YzhlMDMwZDQ2NjczZTNmYWMyMWE3Y2JlZjliZDc0MDAzNTgwZDQ3OTg0OTJlMTFkYTBkODMxZTVhMDkzYTZjIiwidGFnIjoiIn0%3D; expires=Tue, 23 Dec 2025 06:01:46 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6IlVGRmk1dDdNRUxuRmlId2cwNVZrSnc9PSIsInZhbHVlIjoiUXZKY0pYRVVIbDdxNXZia2R3YWVMQW1KTkRySjFiM3RXdEcvUkVKZnVrTnJBMlFtdlZCaFR2cXU1NXg4TVhTalluUXBnVGtPaDhEUGQwcEF0M0J4WTUrYkVoWGl6R29SUmN3bGpoSW9xeWxkdWYwSThlMGFvV2pVZlZIQzBlK0QiLCJtYWMiOiJmMjAwMzQ1Y2MyYTdkNzBkNDFiMTk5MGIyZGU5MTYwY2RhMTBjZDhhM2Y5YzhiZWUzMjJjYzI4NGNmYWJiNzBlIiwidGFnIjoiIn0%3D; expires=Wed, 24 Dec 2025 08:32:50 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6Im1xWVV4NmRJblN3RUlzTWFodGswcWc9PSIsInZhbHVlIjoiVHNqQkFGY1NCSm9BaUNKR05jbzhOa2s2QWdQU2thOVR6UUhyQXR4MWYxeWk0eTI1N1BaQjd2UEVOMFhFSi9CY0g1YzgyNkgzQU1OUXlKOGdsMlNzVy9nUThMbG02QkZmVUdMK2NlNTZHdGdhSnIvaXRNeFkrNVBNdkRJN2ozME0iLCJtYWMiOiI2MGQyYzlkOGUxY2JiMmQxZDM2ZTkwMGM0MWYyYjFjMGFiZTVmNzk3MjcxMzQyZDVjZjRkNjE1NTVmMjAzMjA3IiwidGFnIjoiIn0%3D; expires=Wed, 24 Dec 2025 08:32:50 GMT; Max-Age=7200; path=/; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
@@ -28987,7 +28964,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8030/api/check-following/corporis" \
+    --get "http://127.0.0.1:8030/api/check-following/fuga" \
     --header "Authorization: Bearer YOUR_TOKEN_HERE" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -28995,7 +28972,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8030/api/check-following/corporis"
+    "http://127.0.0.1:8030/api/check-following/fuga"
 );
 
 const headers = {
@@ -29022,7 +28999,7 @@ fetch(url, {
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 access-control-allow-origin: *
-set-cookie: XSRF-TOKEN=eyJpdiI6ImRzR0VDc1NCR0lIUXR2WnpIZHFjcUE9PSIsInZhbHVlIjoiOG1vR2RoWW5sVmJzY0ErTlpBSzBjMXF1UlprTE5XbGxYYUYxcUVuMlY2Q3htQnNWclZSL1BTKzU0c3pGdU1LU1VKejRBaEVxZkpETkd4OWJEK1l3Q1V6SWhiVWFYZTJiMlFuT1Mwa1c1MklqUWpKOGVkbUNmUGhQQi9FVktuL3IiLCJtYWMiOiI1YmM5NGE3ZWM2Y2FhNDhmZTMyMjExMTkxMmNiN2YyODk1MTEwMjM5NWFiNDdiNTkwYjVjNzFmNDdkODBjYjQwIiwidGFnIjoiIn0%3D; expires=Tue, 23 Dec 2025 06:01:46 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6ImcxNC83Q25kSEk4TWFKL3VFcExEY3c9PSIsInZhbHVlIjoicllRM3lQWnpaS1EzQ1VTWGpGVEl6L2FrSGRNNlRIR2h6b0hQc0UyVDMyOTVFSXV6OEd1aUpPcmFnWkhlRXNIVFBCMnc2QzhUc3hpNWVONi9laUVtUHBSd2Y4cFI3TW5lemtQdGZ4Z3B0WE9zQTlvenBDeXA4S00vTjBpazFvMlAiLCJtYWMiOiJlYjg4YzI5YjIyNzY5NjBjMDBlNWQ2N2M3NzY5OTUzMTc2NjZjNmVjMDVhZmVjY2JiZmI3YWNhYzNlMDNlYjZlIiwidGFnIjoiIn0%3D; expires=Tue, 23 Dec 2025 06:01:46 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6Ik5qWWdBNTFaOTY5MzdTWXhmTnF2dkE9PSIsInZhbHVlIjoiclhjOHFpQlhubjd3ZWxFVjM0OEhvYmhSN0hJWFZ6Q1NOSi9VVjM3dUtGdVUvK3lDOGpqN3lUZ0cwQ2xvbmx0citTbXcrakFhZEpZallKK0Z5ekkyYWF5NVpvVUhkdnV6WU1kQ29pNkFtTnNITmVJZDJsdnhEOFJ0UXNNVE03VVMiLCJtYWMiOiJjODMxM2ZkNTQzOGQzZjQyNGE2Y2ZmZTk2YmI5NDdhNWQ3ODBmN2JmZGM2ZThkOTQzMGIyYTQyOGE3MDUyNjFlIiwidGFnIjoiIn0%3D; expires=Wed, 24 Dec 2025 08:32:50 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6Im1NVEpjbkxtQ2ZwS1dxMlRRV3VYdWc9PSIsInZhbHVlIjoia1cyVnBadWZnRzh2alg3MWt6amFxRWFuT1IvcC90TmlscWMyLzNWQ0pZZjlCcWRpdlZTZ3lVcm5KbFVhZjhlMm9MQWVyS09YaE1wb1NWVTJjQnlQdDJTMFZ6NUxrc1o0R1V2OS9seWNjN3p6K2NqbE9XQVliSHlDcFVQdVpiamMiLCJtYWMiOiI5MTFmMDYzM2U5NzEzOTU2NmE1NTM4OGQ1ODJmMGUwMzJkOWM4YTZhNGYyMmI0MTc0YzRkZGMxMzU4ZjBiYmQzIiwidGFnIjoiIn0%3D; expires=Wed, 24 Dec 2025 08:32:50 GMT; Max-Age=7200; path=/; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
@@ -29121,10 +29098,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="userId"                data-endpoint="GETapi-check-following--userId-"
-               value="corporis"
+               value="fuga"
                data-component="url">
     <br>
-<p>Example: <code>corporis</code></p>
+<p>Example: <code>fuga</code></p>
             </div>
                     </form>
 
@@ -29147,7 +29124,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"followee_id\": \"blanditiis\"
+    \"followee_id\": \"et\"
 }"
 </code></pre></div>
 
@@ -29164,7 +29141,7 @@ const headers = {
 };
 
 let body = {
-    "followee_id": "blanditiis"
+    "followee_id": "et"
 };
 
 fetch(url, {
@@ -29268,10 +29245,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="followee_id"                data-endpoint="POSTapi-toggle-follow"
-               value="blanditiis"
+               value="et"
                data-component="body">
     <br>
-<p>The <code>user_id</code> of an existing record in the users table. Example: <code>blanditiis</code></p>
+<p>The <code>user_id</code> of an existing record in the users table. Example: <code>et</code></p>
         </div>
         </form>
 

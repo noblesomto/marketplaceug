@@ -43,6 +43,11 @@ return [
         'name' => 'token',
         'use_value' => env('SCRIBE_AUTH_KEY'),
         'placeholder' => 'YOUR_TOKEN_HERE',
+
+        'method' => env('DOCS_AUTH_METHOD', 'token'),
+        'token' => env('DOCS_ACCESS_TOKEN'),
+        'users' => env('DOCS_AUTH_USERS'),
+        'skip_local' => env('DOCS_SKIP_LOCAL_AUTH', true),
     ],
 
     // Try it out feature
@@ -55,8 +60,9 @@ return [
     'type' => 'laravel',
     'laravel' => [
         'add_routes' => true,
-        'docs_url' => '/docs',
-        'assets_directory' => null,
+        'docs_url' => '/documentation',
+        'middleware' => ['docs.auth'],
+         'assets_directory' => null,
     ],
 
     // Example requests

@@ -9,6 +9,7 @@ class FeaturedAdPaginator
 {
     protected int $perPage;
     protected int $featuredLimit;
+    protected int $columns; // Track columns for layout
     protected array $filters = [];
     protected bool $isMobile;
 
@@ -20,9 +21,10 @@ class FeaturedAdPaginator
         $agent = new Agent();
         $this->isMobile = $agent->isMobile();
 
-        // Set different values for mobile and desktop
-        $this->perPage = $this->isMobile ? 18 : 24;
-        $this->featuredLimit = $this->isMobile ? 6 : 6;
+        // Set columns and calculate limits as multiples of columns
+        $this->columns = $this->isMobile ? 2 : 3;
+        $this->perPage = $this->isMobile ? 16 : 24; // Already multiples of columns
+        $this->featuredLimit = $this->isMobile ? 4 : 6; // 2 rows mobile, 2 rows desktop
     }
 
     public function filters(array $filters): self
@@ -34,18 +36,54 @@ class FeaturedAdPaginator
     public function get(): array
     {
         $featured = collect();
+        $firstPageAds = collect();
+
         if ($this->page === 1) {
             $featured = $this->getFeaturedAds();
+            $featuredCount = $featured->count();
+
+            // Calculate how many ads we need to complete the row
+            $remainder = $featuredCount % $this->columns;
+
+            if ($remainder > 0) {
+                // We have an incomplete row, need to fill it
+                $adsNeeded = $this->columns - $remainder;
+
+                // Get regular ads to fill the incomplete row
+                $fillerAds = $this->getRegularAds(0, $adsNeeded);
+
+                // Merge featured with filler ads
+                $firstPageAds = $featured->merge($fillerAds);
+
+                // Get remaining regular ads for the rest of the page
+                $remainingCount = $this->perPage - $firstPageAds->count();
+                if ($remainingCount > 0) {
+                    $remainingAds = $this->getRegularAds($adsNeeded, $remainingCount);
+                    $firstPageAds = $firstPageAds->merge($remainingAds);
+                }
+            } else {
+                // Perfect rows, just get regular ads normally
+                $remainingCount = $this->perPage - $featuredCount;
+                if ($remainingCount > 0) {
+                    $regularAds = $this->getRegularAds(0, $remainingCount);
+                    $firstPageAds = $featured->merge($regularAds);
+                } else {
+                    $firstPageAds = $featured;
+                }
+            }
+
+            $ads = $firstPageAds;
+        } else {
+            $ads = $this->getRegularAds();
         }
 
-        $regular = $this->getRegularAds();
-        $ads = $this->page === 1 ? $featured->merge($regular) : $regular;
         $hasMore = $this->hasMoreAds();
 
         return [
             'ads' => $ads,
             'hasMore' => $hasMore,
-            'nextPage' => $this->page + 1
+            'nextPage' => $this->page + 1,
+            'featuredCount' => $this->page === 1 ? $featured->count() : 0 // For frontend debugging
         ];
     }
 
@@ -71,10 +109,10 @@ class FeaturedAdPaginator
             ->get();
     }
 
-    protected function getRegularAds(): Collection
+    protected function getRegularAds(?int $offset = null, ?int $limit = null): Collection
     {
-        $offset = ($this->page - 1) * $this->perPage;
-        $limit = $this->perPage;
+        $offset = $offset ?? (($this->page - 1) * $this->perPage);
+        $limit = $limit ?? $this->perPage;
 
         $query = Advert::with('firstImage', 'car', 'brands', 'owner')
             ->where('ad_status', 'active')
