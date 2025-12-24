@@ -12,6 +12,7 @@
         "intervention/image": "^3.11",
         "intervention/image-laravel": "^1.5",
         "jenssegers/agent": "^2.6",
+        "knuckleswtf/scribe": "^5.6",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.23",
@@ -27,7 +28,6 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "knuckleswtf/scribe": "^5.6",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "phpunit/phpunit": "^11.5",

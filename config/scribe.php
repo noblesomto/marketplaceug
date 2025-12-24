@@ -57,12 +57,9 @@ return [
     ],
 
     // Static output or Laravel route
-    'type' => 'laravel',
-    'laravel' => [
-        'add_routes' => true,
-        'docs_url' => '/documentation',
-        'middleware' => ['docs.auth'],
-         'assets_directory' => null,
+    'type' => 'static',  // Change from 'laravel'
+    'static' => [
+        'output_path' => 'public/docs',
     ],
 
     // Example requests

@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Scribe will auto-register routes when add_routes is true
+        // No need to do anything here
     }
 }

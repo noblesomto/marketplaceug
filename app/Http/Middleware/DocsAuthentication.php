@@ -67,23 +67,23 @@ class DocsAuthentication
         $validToken = config('scribe.auth.token');
 
         if (empty($validToken)) {
-            // If no token configured, allow access (for initial setup)
             return $next($request);
         }
 
-        // Check for token in query string or header
         $providedToken = $request->query('token')
                       ?? $request->header('X-Docs-Token')
                       ?? $request->bearerToken();
 
         if ($providedToken && hash_equals($validToken, $providedToken)) {
-            // Store token in session for subsequent requests
-            session(['docs_authenticated' => true]);
+            // ✅ Check if session is available before using it
+            if ($request->hasSession()) {
+                session(['docs_authenticated' => true]);
+            }
             return $next($request);
         }
 
-        // Check if already authenticated in session
-        if (session('docs_authenticated')) {
+        // ✅ Check if session is available
+        if ($request->hasSession() && session('docs_authenticated')) {
             return $next($request);
         }
 
