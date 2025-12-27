@@ -23,6 +23,7 @@ use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
@@ -599,11 +600,10 @@ class AccountController extends Controller
         $user = User::where('user_id', $user_id)->first();
 
         if ($request->isMethod('GET')) {
-            return view('frontend.account.register', compact('title','user'));
+            return view('frontend.account.register', compact('title', 'user'));
         }
 
         if ($request->isMethod('POST')) {
-
             try {
                 $validatedData = $request->validate([
                     'acc_type' => 'required',
@@ -614,29 +614,54 @@ class AccountController extends Controller
                     ],
                     'email' => 'required|email|unique:users,email',
                     'password' => 'required|min:6',
+                    'g-recaptcha-response' => 'required',
+                ], [
+                    'g-recaptcha-response.required' => 'Security verification is required.',
                 ]);
+
+                // Verify reCAPTCHA v3
+                $recaptchaResponse = $request->input('g-recaptcha-response');
+                $recaptchaSecret = config('services.recaptcha.secret_key');
+
+                $verifyResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => $recaptchaSecret,
+                    'response' => $recaptchaResponse,
+                    'remoteip' => $request->ip()
+                ]);
+
+                $recaptchaData = $verifyResponse->json();
+
+                // Check if verification was successful and score is acceptable
+                if (!$recaptchaData['success'] || $recaptchaData['score'] < 0.5) {
+                    Log::warning('reCAPTCHA verification failed', [
+                        'email' => $validatedData['email'],
+                        'score' => $recaptchaData['score'] ?? 'N/A',
+                        'ip' => $request->ip(),
+                        'error_codes' => $recaptchaData['error-codes'] ?? []
+                    ]);
+
+                    return redirect()->back()
+                        ->withInput($request->except('password'))
+                        ->withErrors(['g-recaptcha-response' => 'Security verification failed. Please try again.']);
+                }
+
             } catch (ValidationException $e) {
-
-
                 throw $e;
             }
-
-
 
             $email = $validatedData['email'];
             $token = Str::random(40);
 
             DB::beginTransaction();
-
             try {
                 $user = User::create([
                     'name' => ContentHelper::sanitizeName($validatedData['name']),
-                    'email'=> $validatedData['email'],
-                    'phone'=> $validatedData['phone'],
-                    'acc_type'=> $validatedData['acc_type'],
-                    'token'=> $token,
-                    'acc_status'=> 0,
-                    'password'=> Hash::make($validatedData['password']),
+                    'email' => $validatedData['email'],
+                    'phone' => $validatedData['phone'],
+                    'acc_type' => $validatedData['acc_type'],
+                    'token' => $token,
+                    'acc_status' => 0,
+                    'password' => Hash::make($validatedData['password']),
                 ]);
 
                 $details = [
@@ -645,10 +670,7 @@ class AccountController extends Controller
                     'name' => $validatedData['name'],
                 ];
 
-
                 Mail::to($email)->queue(new RegisterMail($details));
-
-
 
                 DB::commit();
 
@@ -660,7 +682,7 @@ class AccountController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                //  Better error logging and user feedback
+                // Better error logging and user feedback
                 Log::error('Registration failed', [
                     'email' => $email,
                     'error' => $e->getMessage(),
@@ -682,6 +704,7 @@ class AccountController extends Controller
             }
         }
     }
+
 
 
 
@@ -756,14 +779,20 @@ class AccountController extends Controller
             ]);
 
             $email = $request->email;
+            $login = User::where('email', $email)->first();
 
-            $login = User::where('email', $email)
-                        ->first();
             if ($login) {
                 $name = $login->name;
                 $user_id = $login->user_id;
-                $token = $login->token;
+                $token = Str::random(40);
 
+
+                // Save the token to the database
+                DB::table('users')
+                    ->where('user_id', $user_id)
+                    ->update([
+                        'token' => $token
+                    ]);
 
                 $details = [
                     'user_id' => $user_id,
@@ -773,16 +802,12 @@ class AccountController extends Controller
 
                 try {
                     Mail::to($email)->send(new PasswordMail($details));
-                    return redirect("login")->with('success','Please check your email for link to change password');
-
+                    return redirect("login")->with('success', 'Please check your email for link to change password');
                 } catch (Throwable $e) {
-
-                    return redirect()->back()->with('error','Sorry!, Email Could not be Sent now, Try again later');
+                    return redirect()->back()->with('error', 'Sorry!, Email could not be sent now. Try again later');
                 }
-
-            }else{
-                return redirect()->back()->with('error','Sorry!, This email does not exit on our system... Please register');
-
+            } else {
+                return redirect()->back()->with('error', 'Sorry!, This email does not exist on our system... Please register');
             }
         }
 
@@ -802,12 +827,13 @@ class AccountController extends Controller
                 'token' => $token,
             ];
 
+        //dd($user);
         if ($request->isMethod('GET')) {
 
             if($token == $token2){
                 return view('frontend.account.reset-password', compact('title','post'));
             }else{
-                return redirect("login")->with('danger','Sorry!, There was an error and token does not match, Please contact admin ');
+                return redirect("login")->with('error','Sorry!, There was an error and token does not match, Please contact admin ');
             }
         }
 
@@ -820,6 +846,7 @@ class AccountController extends Controller
             ->where('user_id', $user_id)
             ->update([
                 'password'=> Hash::make($request->input('password')),
+                'token' => null,
             ]);
 
             return redirect("login")->with('success','Your password was successfully updated, Please Login');

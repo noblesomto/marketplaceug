@@ -17,8 +17,21 @@
                     <a href="/" class="text-gray-700 hover:text-black px-3 py-2 rounded-md text-sm font-medium">Home</a>
                   </li>
                   <li>
-                    <a href="/about-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">About</a>
+                    <a href="/about-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">About Us</a>
                   </li>
+                  <li>
+                    <a href="/privacy-policy" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="/our-terms" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Terms of Use</a>
+                  </li>
+                  <li>
+                    <a href="/cookie-policy" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Cookie Policy</a>
+                  </li>
+                  <li>
+                    <a href="/safety-tips" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Tips for Safety</a>
+                  </li>
+
                   <li>
                     <a href="/how-it-works" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">How It Works</a>
                   </li>
@@ -26,7 +39,7 @@
                     <a href="/faq" class="text-gray-700 hover:text-black px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
                   </li>
                   <li>
-                    <a href="/contact-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    <a href="/contact-us" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Contact Us</a>
                   </li>
                   <li>
                     <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">Chat Support</a>

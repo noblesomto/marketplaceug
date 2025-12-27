@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -136,7 +137,6 @@ class PageController extends Controller
             return view('frontend.pages.contact-us', compact('title'));
         }
 
-
         if ($request->isMethod('POST')) {
             $request->validate([
                 'name' => 'required',
@@ -144,8 +144,36 @@ class PageController extends Controller
                 'subject' => 'required',
                 'email' => 'required|email',
                 'message' => 'required',
-                'g-recaptcha-response' => ['required', new ReCaptcha],
+                'g-recaptcha-response' => 'required',
+            ], [
+                'g-recaptcha-response.required' => 'Security verification is required.',
             ]);
+
+            // Verify reCAPTCHA v3
+            $recaptchaResponse = $request->input('g-recaptcha-response');
+            $recaptchaSecret = config('services.recaptcha.secret_key');
+
+            $verifyResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse,
+                'remoteip' => $request->ip()
+            ]);
+
+            $recaptchaData = $verifyResponse->json();
+
+            // Check if verification was successful and score is acceptable
+            if (!$recaptchaData['success'] || $recaptchaData['score'] < 0.5) {
+                Log::warning('Contact form reCAPTCHA verification failed', [
+                    'email' => $request->input('email'),
+                    'score' => $recaptchaData['score'] ?? 'N/A',
+                    'ip' => $request->ip(),
+                    'error_codes' => $recaptchaData['error-codes'] ?? []
+                ]);
+
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['g-recaptcha-response' => 'Security verification failed. Please try again.']);
+            }
 
             $details = [
                 'name' => $request->input('name'),
@@ -156,15 +184,17 @@ class PageController extends Controller
             ];
 
             $admin_email = config('global.site_email');
+
             try {
                 Mail::to($admin_email)->send(new ContactMail($details));
-
-               return redirect()->back()->with('success', 'Great! Your message was successfully sent, We will get back to you ASAP');
+                return redirect()->back()->with('success', 'Great! Your message was successfully sent, We will get back to you ASAP');
             } catch (Throwable $e) {
-
+                Log::error('Contact form email failed', [
+                    'error' => $e->getMessage(),
+                    'email' => $request->input('email')
+                ]);
                 return redirect()->back()->with('error', 'Error!, Your Email could not be sent, please contact admin: '.config('global.site_email'));
             }
-
         }
     }
 

@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<div class="max-w-4xl mx-auto bg-white my-10">
+<div class="max-w-4xl mx-auto bg-white my-10 pb-20">
     <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Cookies Policy</h1>

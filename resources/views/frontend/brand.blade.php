@@ -12,27 +12,60 @@
       <div class="col-span-12 lg:col-span-8">
         <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4">
-            <div><h4 class="font-semibold">Filter</h4></div>
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Locations</h4>
-                <button id="locationButton" class="text-dark_green">Select Location</button>
-            </div>
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Price</h4>
-                @include('frontend.components.advert.price-filter-brand')
+            <!-- Main Sidebar Header -->
+            <div class="flex items-center gap-2 px-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                <h4 class="font-bold text-gray-800 text-lg tracking-tight">Filter Results</h4>
             </div>
 
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Buy Dircetly</h4>
-                @include('frontend.components.filter.buydirect-brand')
+            <!-- Locations Card -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-semibold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Locations</h4>
+                <button id="locationButton" class="w-full flex items-center justify-between px-3 py-2.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:border-dark_green hover:text-dark_green transition-all focus:ring-2 focus:ring-emerald-100 outline-none group">
+                    <span class="flex items-center gap-2 font-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-dark_green transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Select Location
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-30 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
             </div>
 
-            <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Verified Sellers </h4>
-                @include('frontend.components.advert.sellers-brand')
+            <!-- Price Card -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Price Range</h4>
+                <div class="custom-filter-content">
+                    @include('frontend.components.advert.price-filter-brand')
+                </div>
             </div>
 
-           </div>
+            <!-- Buy Directly Card -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Ordering</h4>
+                <div class="custom-filter-content">
+                    @include('frontend.components.filter.buydirect-brand')
+                </div>
+            </div>
+
+            <!-- Verified Sellers Card -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 flex items-center gap-2 uppercase tracking-wider text-[11px]">
+                    Trust & Safety
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                </h4>
+                <div class="custom-filter-content">
+                    @include('frontend.components.advert.sellers-brand')
+                </div>
+            </div>
+        </div>
            <div class="col-span-12 lg:col-span-9">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')

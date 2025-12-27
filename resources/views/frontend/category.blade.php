@@ -15,65 +15,105 @@
               </div>
         <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4">
-              <div><h4 class="font-semibold">Categories</h4></div>
+    <!-- Header Title (Optional, can be removed if it feels cluttered) -->
+    <div class="flex items-center gap-2 px-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+        </svg>
+        <h4 class="font-bold text-gray-800 text-lg tracking-tight">Filter Results</h4>
+    </div>
 
-              <div class="bg-white p-2 space-y-2">
-                    <div class="mt-4">
-                      <a class="text-xs" href="{{ url('/all-categories') }}">All Categories</a>
-                  </div>
+    <!-- Categories Card -->
+    <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="p-4 border-b border-gray-50 bg-gray-50/50">
+            <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wider">Categories</h4>
+        </div>
 
-                  <div class="flex bg-gray-200 p-2 mt-1 mb-2">
-                      <span class="font-semibold mr-2">{{ $cat->category }}</span>
-                      <span>({{ $count_cat }})</span>
-                  </div>
-                  @php
-                      $catLimit = 15;
-                    @endphp
-                  @foreach($categories->take($catLimit) as $subCategory)
-                      <span class="space-y-1 mt-1">
-                          <a class="" href="{{ url('/category/' . $cat->category_slug . '/' . $subCategory->sub_cat_slug) }}">
-                          <div class="flex ml-3 mt-2">
-                              <span class="mr-1">{{ $subCategory->sub_category }}</span>
-                              <span>({{ $subCategory->advert_count }})</span>
-                          </div>
-                      </a>
-                      </span>
-                  @endforeach
+        <div class="p-3">
+            <!-- Breadcrumb Navigation for SEO -->
+            <nav class="mb-4" aria-label="Breadcrumb">
+                <a href="{{ url('/all-categories') }}" class="inline-flex items-center text-xs font-medium text-secondary_dark hover:text-dark_green transition-colors">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                    All Categories
+                </a>
+            </nav>
 
-                  @if($categories->count() > $catLimit)
-                  <div class="ml-3 mt-2">
-                    <a href="{{ url('/category/'.$cat->category_slug) }}"
-                       class="text-dark_green text-sm hover:underline">
-                      See all {{ $cat->category }}
+            <!-- Active Category State -->
+            <div class="flex items-center justify-between p-2.5 mb-3 rounded-lg bg-emerald-50 border border-emerald-100 group">
+                <span class="font-bold text-emerald-900 text-[15px]">{{ $cat->category }}</span>
+                <span class="text-xs font-bold bg-white text-emerald-700 px-2 py-1 rounded-full shadow-sm">{{ $count_cat }}</span>
+            </div>
+
+            <!-- Subcategories List -->
+            @php $catLimit = 15; @endphp
+            <ul class="space-y-0.5">
+                @foreach($categories->take($catLimit) as $subCategory)
+                <li>
+                    <a href="{{ url('/category/' . $cat->category_slug . '/' . $subCategory->sub_cat_slug) }}"
+                       class="group flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-all duration-200">
+                        <span class="text-gray-600 group-hover:text-secondary_dark text-[14px] leading-tight transition-colors font-bold">
+                            {{ $subCategory->sub_category }}
+                        </span>
+                        <span class="text-[11px] text-gray-500 font-medium group-hover:text-secondary_dark transition-colors">
+                             ({{ $subCategory->advert_count }})
+                        </span>
                     </a>
-                  </div>
-                @endif
-              </div>
-              <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Locations</h4>
-                <button id="locationButton" class="text-dark_green">Select Location</button>
-              </div>
+                </li>
+                @endforeach
+            </ul>
 
-              <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Price</h4>
+            @if($categories->count() > $catLimit)
+            <div class="mt-4 pt-3 border-t border-gray-100">
+                <a href="{{ url('/category/'.$cat->category_slug) }}"
+                   class="flex items-center justify-center text-emerald-600 text-xs font-bold hover:text-emerald-700 transition-colors uppercase tracking-wide">
+                    See all in {{ $cat->category }}
+                </a>
+            </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Filters Group -->
+    <div class="space-y-3">
+        <!-- Location Section -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Location</h4>
+            <button id="locationButton" class="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:border-emerald-500 hover:text-emerald-600 transition-all focus:ring-2 focus:ring-emerald-100 outline-none font-bold">
+                <span>Select Location</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            </button>
+        </div>
+
+        <!-- Price Section -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Price Range</h4>
+            <div class="custom-filter-wrapper">
                 @include('frontend.components.advert.price-filter')
-              </div>
+            </div>
+        </div>
 
-              <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Buy Dircetly</h4>
-                @include('frontend.components.filter.buydirect-category')
-              </div>
+        <!-- Purchase Type Section -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Buying Options</h4>
+            @include('frontend.components.filter.buydirect-category')
+        </div>
 
-              <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Verified Sellers</h4>
-                @include('frontend.components.advert.sellers-category')
-              </div>
+        <!-- Verified Sellers -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Trust Safety</h4>
+            @include('frontend.components.advert.sellers-category')
+        </div>
 
-              <div class="bg-white p-2 space-y-2">
-                <h4 class="font-semibold">Brands</h4>
-                <button id="brandsButton" class="text-dark_green">Select Brand</button>
-              </div>
-          </div>
+        <!-- Brands Section -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Brands</h4>
+            <button id="brandsButton" class="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:border-emerald-500 hover:text-emerald-600 transition-all focus:ring-2 focus:ring-emerald-100 outline-none">
+                <span>Select Brand</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+        </div>
+    </div>
+</div>
            <div class="col-span-12 lg:col-span-9">
               
               <div class="block lg:hidden">

@@ -205,7 +205,7 @@
 </div>
 
 <div class="pb-10"></div>
-<script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 <script>
     function showDiv(placeholderText) {
         document.getElementById('myDiv').classList.remove('hidden');
@@ -255,46 +255,66 @@
         }
     }
 
-
-    // Recaptcha submit callback
+    // Recaptcha submit handler
     document.addEventListener('DOMContentLoaded', function() {
-    const registerBtn = document.getElementById('register-btn');
-    const form = document.getElementById('register-form');
+        const registerBtn = document.getElementById('register-btn');
+        const form = document.getElementById('register-form');
 
-    registerBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+        registerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
 
-        // Validate form first
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
+            // Validate form first
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
 
-        // Check if reCAPTCHA is loaded
-        if (typeof grecaptcha === 'undefined') {
-            alert('Security check is loading. Please wait a moment and try again.');
-            return;
-        }
+            // Check if account type is selected
+            const accTypeSelected = document.querySelector('input[name="acc_type"]:checked');
+            if (!accTypeSelected) {
+                alert('Please select an account type (Private or Commercial)');
+                return;
+            }
 
-        // Execute reCAPTCHA
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_KEY') }}', {action: 'submit'})
-                .then(function(token) {
-                    // Add token to form
-                    let input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'g-recaptcha-response';
-                    input.value = token;
-                    form.appendChild(input);
+            // Check if reCAPTCHA is loaded
+            if (typeof grecaptcha === 'undefined') {
+                alert('Security check is loading. Please wait a moment and try again.');
+                return;
+            }
 
-                    // Submit form
-                    form.submit();
-                });
+            // Disable button to prevent double submission
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
+            // Execute reCAPTCHA
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'register'})
+                    .then(function(token) {
+                        // Remove any existing recaptcha response inputs
+                        const existingInput = form.querySelector('input[name="g-recaptcha-response"]');
+                        if (existingInput) {
+                            existingInput.remove();
+                        }
+
+                        // Add token to form
+                        let input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'g-recaptcha-response';
+                        input.value = token;
+                        form.appendChild(input);
+
+                        // Submit form
+                        form.submit();
+                    })
+                    .catch(function(error) {
+                        console.error('reCAPTCHA error:', error);
+                        alert('Security verification failed. Please refresh the page and try again.');
+                        registerBtn.disabled = false;
+                        registerBtn.innerHTML = 'Register for Free';
+                    });
+            });
         });
     });
-});
-
-
 </script>
 
 <style>

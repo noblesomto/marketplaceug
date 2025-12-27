@@ -56,6 +56,10 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect'      => env('FACEBOOK_REDIRECT_URL'),
     ],
+    'recaptcha' => [
+        'site_key' => env('GOOGLE_RECAPTCHA_KEY'),
+        'secret_key' => env('GOOGLE_RECAPTCHA_SECRET'),
+    ],
 
 
 ];

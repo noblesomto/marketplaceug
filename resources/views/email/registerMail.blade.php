@@ -150,6 +150,12 @@
             font-size: 20px;
         }
 
+        h3 {
+            color: #FF0000;
+            margin: 0 0 12px 0;
+            font-size: 18px;
+        }
+
         h4 {
             color: #4CAF50;
             margin: 0 0 12px 0;
@@ -209,9 +215,15 @@
                                 </div>
                             </div>
                             
-                            <p class="message">
-                                If you have any questions, just reply to this email. Our team is always ready to help.
-                            </p>
+                            <h3 class="">Important:</h3>
+                            <div class="message">
+                                <p>
+                                    Please note that we do not offer rewards for clicking links or completing tasks. Any such request is a scam and not from us.
+                                </p><br>
+                               <p>
+                                    If you have any questions, please <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">contact us on WhatsApp</a>. Our team is always available to assist you.
+                               </p>
+                            </div>
                             
                             <p class="signature">
                                 Cheers,<br>
