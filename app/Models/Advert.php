@@ -185,6 +185,18 @@ class Advert extends Model implements HasMedia
                      ->orderByDesc('created_at'); // Others newest
     }
 
+    public function scopeActiveNotSold($query)
+    {
+        return $query->where('ad_status', 'active')
+            ->where(function($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function($subQ) {
+                      $subQ->where('sold', 'Yes')
+                           ->whereNotNull('sold_date')
+                           ->where('sold_date', '>=', now()->subDays(30));
+                  });
+            });
+    }
 
     public function registerMediaConversions(?Media $media = null): void
     {

@@ -4,7 +4,6 @@
 @endphp
 
 <div class="relative w-full group bg-black md:bg-gray-100 md:rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] ">
-
     <!-- Main Slider -->
     <div id="slider" class="flex h-full transition-transform duration-500 ease-out">
         @foreach($mediaItems as $index => $media)
@@ -26,8 +25,8 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
-    <!-- Indicators -->
-    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+    <!-- Indicators (Added id="indicators") -->
+    <div id="indicators" class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
         @foreach ($mediaItems as $index => $media)
             <button data-index="{{ $index }}" class="w-2.5 h-2.5 rounded-full bg-white transition-opacity {{ $index == 0 ? 'opacity-100 scale-110' : 'opacity-50 hover:opacity-100' }} shadow-sm"></button>
         @endforeach
@@ -35,7 +34,7 @@
     @endif
 </div>
 
-<!-- Lightbox -->
+<!-- Lightbox (Keep as is, but ensure buttons exist) -->
 <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
     <div class="relative w-full h-full flex items-center justify-center overflow-hidden">
         <img id="lightbox-image"
@@ -44,19 +43,23 @@
              class="max-h-[90vh] max-w-[90vw] object-contain transition-transform duration-300"
              style="transform: scale(1);">
 
-        <!-- Controls -->
         <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 z-10">✕</button>
-        <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10"><i class="bi bi-chevron-left text-2xl"></i></button>
-        <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10"><i class="bi bi-chevron-right text-2xl"></i></button>
 
-        <!-- Zoom Controls -->
+        @if(count($mediaItems) > 1)
+            <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full z-10">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        @endif
+
         <div class="absolute bottom-6 right-6 flex space-x-2 z-10">
-            <button onclick="zoomIn()" class="bg-white text-black px-2 py-1 rounded shadow">+</button>
-            <button onclick="zoomOut()" class="bg-white text-black px-2 py-1 rounded shadow">−</button>
-            <button onclick="resetZoom()" class="bg-white text-black px-2 py-1 rounded shadow">Reset</button>
+            <button onclick="zoomIn()" class="bg-white text-black px-3 py-1 rounded shadow font-bold">+</button>
+            <button onclick="zoomOut()" class="bg-white text-black px-3 py-1 rounded shadow font-bold">−</button>
+            <button onclick="resetZoom()" class="bg-white text-black px-3 py-1 rounded shadow">Reset</button>
         </div>
 
-        <!-- Counter -->
         <div class="absolute bottom-6 left-6 text-white text-sm z-10">
             <span id="image-counter">1 / {{ count($mediaItems) }}</span>
         </div>
@@ -64,31 +67,33 @@
 </div>
 
 <script>
-    const imageList = @json($imageUrls); // 🔥 single source
+    const imageList = @json($imageUrls);
     const slider = document.getElementById('slider');
     const indicators = document.querySelectorAll('#indicators button');
     const slides = imageList.length;
 
-    let index = 0; // slider index
-    let currentIndex = 0; // lightbox index
+    let index = 0;
+    let currentIndex = 0;
     let zoomLevel = 1;
 
     function showSlide(i) {
+        if (!slider) return;
         index = i;
         slider.style.transform = `translateX(-${index * 100}%)`;
         indicators.forEach((btn, idx) => {
-            btn.classList.toggle('bg-gray-800', idx === index);
             btn.classList.toggle('opacity-100', idx === index);
-            btn.classList.toggle('opacity-70', idx !== index);
+            btn.classList.toggle('scale-110', idx === index);
+            btn.classList.toggle('opacity-50', idx !== index);
         });
     }
 
-    document.getElementById('next').addEventListener('click', () => {
+    // Safety checks for buttons
+    document.getElementById('next')?.addEventListener('click', () => {
         index = (index + 1) % slides;
         showSlide(index);
     });
 
-    document.getElementById('prev').addEventListener('click', () => {
+    document.getElementById('prev')?.addEventListener('click', () => {
         index = (index - 1 + slides) % slides;
         showSlide(index);
     });
@@ -99,15 +104,14 @@
 
     // Swipe support for slider
     let startX = 0;
-    slider.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    slider.addEventListener('touchend', e => {
+    slider?.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    slider?.addEventListener('touchend', e => {
+        if (slides <= 1) return;
         const endX = e.changedTouches[0].clientX;
         if (startX - endX > 50) index = (index + 1) % slides;
         else if (endX - startX > 50) index = (index - 1 + slides) % slides;
         showSlide(index);
     });
-
-    showSlide(index);
 
     // === Lightbox ===
     const lightbox = document.getElementById('lightbox');
@@ -128,78 +132,63 @@
     }
 
     function updateLightbox() {
+        if (!lightboxImage) return;
         lightboxImage.src = imageList[currentIndex];
         lightboxImage.style.transform = `scale(${zoomLevel})`;
-        document.getElementById('image-counter').textContent =
-            `${currentIndex + 1} / ${imageList.length}`;
-        showSlide(currentIndex); // 🔥 keep slider in sync
+        document.getElementById('image-counter').textContent = `${currentIndex + 1} / ${imageList.length}`;
+
+        // Only update slider if there are multiple images
+        if (slides > 1) showSlide(currentIndex);
     }
 
     function showNext() {
+        if (slides <= 1) return;
         currentIndex = (currentIndex + 1) % imageList.length;
         resetZoom();
         updateLightbox();
     }
 
     function showPrev() {
+        if (slides <= 1) return;
         currentIndex = (currentIndex - 1 + imageList.length) % imageList.length;
         resetZoom();
         updateLightbox();
     }
 
-    function zoomIn() { zoomLevel = Math.min(zoomLevel + 0.2, 3); updateLightbox(); }
-    function zoomOut() { zoomLevel = Math.max(0.5, zoomLevel - 0.2); updateLightbox(); }
-    function resetZoom() { zoomLevel = 1; lightboxImage.style.transform = 'scale(1)'; }
+    function zoomIn() { zoomLevel = Math.min(zoomLevel + 0.5, 4); updateLightbox(); }
+    function zoomOut() { zoomLevel = Math.max(1, zoomLevel - 0.5); updateLightbox(); }
+    function resetZoom() { zoomLevel = 1; updateLightbox(); }
 
-    document.getElementById('lightbox-next').addEventListener('click', showNext);
-    document.getElementById('lightbox-prev').addEventListener('click', showPrev);
+    document.getElementById('lightbox-next')?.addEventListener('click', showNext);
+    document.getElementById('lightbox-prev')?.addEventListener('click', showPrev);
 
-    // Backdrop click closes
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', e => {
         if (lightbox.classList.contains('hidden')) return;
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowRight') showNext();
         if (e.key === 'ArrowLeft') showPrev();
-        if (e.key === '+' || e.key === '=') zoomIn();
+        if (e.key === '+') zoomIn();
         if (e.key === '-') zoomOut();
-        if (e.key === '0') resetZoom();
     });
 
-    // Swipe support for lightbox
+    // Lightbox Swipe
     let lightboxStartX = 0;
-    lightboxImage.addEventListener('touchstart', e => {
-        lightboxStartX = e.touches[0].clientX;
-    });
-    lightboxImage.addEventListener('touchend', e => {
+    lightboxImage?.addEventListener('touchstart', e => lightboxStartX = e.touches[0].clientX);
+    lightboxImage?.addEventListener('touchend', e => {
+        if (slides <= 1 || zoomLevel > 1) return; // Don't swipe if zoomed in
         const endX = e.changedTouches[0].clientX;
         const diff = lightboxStartX - endX;
-        if (Math.abs(diff) > 50) { // minimum swipe distance
-            if (diff > 0) showNext(); // swipe left
-            else showPrev(); // swipe right
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) showNext();
+            else showPrev();
         }
     });
 </script>
 
+
 <style>
-    #lightbox-image {
-        cursor: grab;
-    }
-    #lightbox-image:active {
-        cursor: grabbing;
-    }
-    #lightbox {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-    #lightbox button {
-        transition: all 0.2s ease;
-    }
-    body.lightbox-open {
-        overflow: hidden;
-    }
+#lightbox-image { cursor: grab; }
+#lightbox-image:active { cursor: grabbing; }
 </style>
