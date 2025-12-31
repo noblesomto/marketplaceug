@@ -64,9 +64,6 @@ class UserManageAdverts extends Controller
             return redirect('/user/profile-info')->with('error', 'Please Update your Phone number');
         }
 
-        if (empty($user->address) && empty($user->state)) {
-            return redirect('/user/profile-address')->with('error', 'Please update your Address and State');
-        }
         //dd($followers);
 
         if ($request->isMethod('POST')) {

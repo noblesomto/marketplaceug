@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\MessageImage;
 use App\Models\User;
 use App\Models\Advert;
 use App\Models\Payment;
+use App\Models\ArchivedMessage;
+use App\Models\BlockedUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Events\MessageSent;
 use App\Events\NewMessageNotification;
@@ -19,39 +21,33 @@ class MessageController extends Controller
     /**
      * @OA\Post(
      *     path="/api/messages",
-     *     summary="Send a new message",
+     *     summary="Send a new message with optional images",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"advert_id", "receiver_id", "message_content"},
-     *             @OA\Property(property="advert_id", type="integer", description="Advert ID"),
-     *             @OA\Property(property="receiver_id", type="integer", description="Receiver user ID"),
-     *             @OA\Property(property="message_content", type="string", description="Message content")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"advert_id", "receiver_id"},
+     *                 @OA\Property(property="advert_id", type="integer"),
+     *                 @OA\Property(property="receiver_id", type="string"),
+     *                 @OA\Property(property="message_content", type="string", maxLength=1000),
+     *                 @OA\Property(property="images[]", type="array", @OA\Items(type="string", format="binary"))
+     *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Message sent successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Message")
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     *     @OA\Response(response=201, description="Message sent successfully"),
+     *     @OA\Response(response=462, description="Blocked by receiver")
      * )
      */
     public function sendMessage(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'advert_id' => 'required|integer|exists:adverts,id',
-            'receiver_id' => 'required|integer|exists:users,user_id',
-            'message_content' => 'required|string|max:1000'
+            'receiver_id' => 'required|exists:users,user_id',
+            'message_content' => 'nullable|string|max:1000',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12048',
         ]);
 
         if ($validator->fails()) {
@@ -63,6 +59,23 @@ class MessageController extends Controller
 
         $user = auth()->user();
 
+        // Check if sender is blocked
+        $isBlocked = BlockedUser::where('blocker_id', $request->receiver_id)
+            ->where('blocked_id', $user->user_id)
+            ->where(function($query) use ($request) {
+                $query->where('advert_id', $request->advert_id)
+                      ->orWhereNull('advert_id');
+            })
+            ->exists();
+
+        if ($isBlocked) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You cannot send messages to this user'
+            ], 462);
+        }
+
+        // Create message
         $message = Message::create([
             'advert_id' => $request->advert_id,
             'sender_id' => $user->user_id,
@@ -71,9 +84,23 @@ class MessageController extends Controller
             'is_read' => false
         ]);
 
+        // Handle image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $messageImage = MessageImage::create([
+                    'message_id' => $message->id,
+                ]);
+
+                $messageImage->addMedia($imageFile)
+                    ->toMediaCollection('message_images');
+            }
+        }
+
+        // Load relationships for response
+        $message->load('images');
+
         // Broadcast events
-        broadcast(new MessageSent($message))->toOthers();
-        broadcast(new NewMessageNotification($message));
+        event(new NewMessageNotification($message));
 
         return response()->json([
             'success' => true,
@@ -88,40 +115,9 @@ class MessageController extends Controller
      *     summary="Get conversation between users for an advert",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="advertId",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="receiverId",
-     *         in="path",
-     *         required=true,
-     *         description="Receiver user ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Conversation messages",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="messages", type="array", @OA\Items(ref="#/components/schemas/Message")),
-     *                 @OA\Property(property="advert", ref="#/components/schemas/Advert"),
-     *                 @OA\Property(property="receiver", ref="#/components/schemas/User")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Advert or user not found"
-     *     )
+     *     @OA\Parameter(name="advertId", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="receiverId", in="path", required=true, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Conversation messages")
      * )
      */
     public function getConversation($advertId, $receiverId)
@@ -136,7 +132,7 @@ class MessageController extends Controller
             ], 404);
         }
 
-        $receiver = User::find($receiverId);
+        $receiver = User::where('user_id', $receiverId)->first();
         if (!$receiver) {
             return response()->json([
                 'success' => false,
@@ -144,7 +140,8 @@ class MessageController extends Controller
             ], 404);
         }
 
-        $messages = Message::where(function ($query) use ($user, $receiver, $advertId) {
+        $messages = Message::with(['images', 'sender', 'receiver'])
+            ->where(function ($query) use ($user, $receiver, $advertId) {
                 $query->where('sender_id', $user->user_id)
                       ->where('receiver_id', $receiver->user_id)
                       ->where('advert_id', $advertId);
@@ -163,12 +160,23 @@ class MessageController extends Controller
             ->where('advert_id', $advertId)
             ->update(['is_read' => true]);
 
+        // Check if blocked
+        $isBlocked = $user->hasBlocked($receiver->user_id, $advertId);
+
+        // Check if archived
+        $isArchived = ArchivedMessage::where('user_id', $user->user_id)
+            ->where('advert_id', $advertId)
+            ->where('other_user_id', $receiver->user_id)
+            ->exists();
+
         return response()->json([
             'success' => true,
             'data' => [
                 'messages' => $messages,
                 'advert' => $advert,
-                'receiver' => $receiver
+                'receiver' => $receiver,
+                'is_blocked' => $isBlocked,
+                'is_archived' => $isArchived
             ]
         ]);
     }
@@ -179,32 +187,15 @@ class MessageController extends Controller
      *     summary="Get all messages for an advert",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="advertId",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Messages for the advert",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Message"))
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     *     @OA\Parameter(name="advertId", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Messages for the advert")
      * )
      */
     public function getAdvertMessages($advertId)
     {
         $user = auth()->user();
 
-        $messages = Message::with(['sender', 'receiver'])
+        $messages = Message::with(['sender', 'receiver', 'images'])
             ->where('advert_id', $advertId)
             ->where(function ($query) use ($user) {
                 $query->where('sender_id', $user->user_id)
@@ -225,44 +216,79 @@ class MessageController extends Controller
      *     summary="Get all user conversations",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of conversations",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Conversation"))
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     *     @OA\Parameter(name="page", in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="include_archived", in="query", @OA\Schema(type="boolean")),
+     *     @OA\Response(response=200, description="List of conversations")
      * )
      */
     public function getUserConversations(Request $request)
     {
         $user = auth()->user();
+        $includeArchived = $request->boolean('include_archived', false);
 
-        $conversations = Message::select('advert_id', 'sender_id', 'receiver_id')
+        $query = Message::select('advert_id', 'sender_id', 'receiver_id')
             ->selectRaw('MAX(created_at) as last_message_date')
-            ->where(function ($query) use ($user) {
-                $query->where('sender_id', $user->user_id)
-                      ->orWhere('receiver_id', $user->user_id);
+            ->selectRaw('MAX(id) as last_message_id')
+            ->where(function ($q) use ($user) {
+                $q->where('sender_id', $user->user_id)
+                  ->orWhere('receiver_id', $user->user_id);
             })
-            ->with(['advert', 'sender', 'receiver'])
             ->groupBy('advert_id', 'sender_id', 'receiver_id')
-            ->orderBy('last_message_date', 'desc')
-            ->paginate($request->get('per_page', 20));
+            ->orderBy('last_message_date', 'desc');
+
+        // Exclude archived conversations if not requested
+        if (!$includeArchived) {
+            $archivedIds = ArchivedMessage::where('user_id', $user->user_id)
+                ->pluck('advert_id')
+                ->toArray();
+
+            if (!empty($archivedIds)) {
+                $query->whereNotIn('advert_id', $archivedIds);
+            }
+        }
+
+        $conversations = $query->paginate($request->get('per_page', 20));
+
+        // Load relationships
+        $conversations->getCollection()->transform(function ($conversation) use ($user) {
+            $otherUserId = $conversation->sender_id == $user->user_id
+                ? $conversation->receiver_id
+                : $conversation->sender_id;
+
+            $lastMessage = Message::with('images')
+                ->find($conversation->last_message_id);
+
+            $unreadCount = Message::where('advert_id', $conversation->advert_id)
+                ->where('receiver_id', $user->user_id)
+                ->where('sender_id', $otherUserId)
+                ->where('is_read', false)
+                ->count();
+
+            $isArchived = ArchivedMessage::where('user_id', $user->user_id)
+                ->where('advert_id', $conversation->advert_id)
+                ->where('other_user_id', $otherUserId)
+                ->exists();
+
+            return [
+                'advert_id' => $conversation->advert_id,
+                'advert' => Advert::with('firstImage')->find($conversation->advert_id),
+                'other_user' => User::find($otherUserId),
+                'last_message' => $lastMessage,
+                'last_message_date' => $conversation->last_message_date,
+                'unread_count' => $unreadCount,
+                'is_archived' => $isArchived
+            ];
+        });
 
         return response()->json([
             'success' => true,
-            'data' => $conversations
+            'data' => $conversations->items(),
+            'pagination' => [
+                'current_page' => $conversations->currentPage(),
+                'last_page' => $conversations->lastPage(),
+                'per_page' => $conversations->perPage(),
+                'total' => $conversations->total()
+            ]
         ]);
     }
 
@@ -272,18 +298,7 @@ class MessageController extends Controller
      *     summary="Get count of unread messages",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Unread message count",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="unread_count", type="integer")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     *     @OA\Response(response=200, description="Unread message count")
      * )
      */
     public function getUnreadCount()
@@ -306,29 +321,8 @@ class MessageController extends Controller
      *     summary="Mark message as read",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="messageId",
-     *         in="path",
-     *         required=true,
-     *         description="Message ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Message marked as read",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Message not found"
-     *     )
+     *     @OA\Parameter(name="messageId", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Message marked as read")
      * )
      */
     public function markAsRead($messageId)
@@ -360,32 +354,9 @@ class MessageController extends Controller
      *     summary="Mark all messages in conversation as read",
      *     tags={"Messages"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="advertId",
-     *         in="path",
-     *         required=true,
-     *         description="Advert ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="userId",
-     *         in="path",
-     *         required=true,
-     *         description="Other user ID in conversation",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Messages marked as read",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     *     @OA\Parameter(name="advertId", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="userId", in="path", required=true, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Messages marked as read")
      * )
      */
     public function markConversationAsRead($advertId, $userId)
@@ -405,33 +376,157 @@ class MessageController extends Controller
 
     /**
      * @OA\Post(
+     *     path="/api/messages/archive",
+     *     summary="Archive a conversation",
+     *     tags={"Messages"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"advert_id", "other_user_id"},
+     *             @OA\Property(property="advert_id", type="integer"),
+     *             @OA\Property(property="other_user_id", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Conversation archived")
+     * )
+     */
+    public function archive(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'advert_id' => 'required|exists:adverts,id',
+            'other_user_id' => 'required|exists:users,user_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = auth()->user();
+
+        // Prevent self-archiving
+        if ($user->user_id == $request->other_user_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid operation.'
+            ], 400);
+        }
+
+        $archived = ArchivedMessage::updateOrCreate(
+            [
+                'user_id' => $user->user_id,
+                'advert_id' => $request->advert_id,
+                'other_user_id' => $request->other_user_id,
+            ],
+            [
+                'archived_at' => now(),
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Conversation archived successfully',
+            'data' => $archived
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/messages/unarchive",
+     *     summary="Unarchive a conversation",
+     *     tags={"Messages"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"advert_id", "other_user_id"},
+     *             @OA\Property(property="advert_id", type="integer"),
+     *             @OA\Property(property="other_user_id", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Conversation unarchived")
+     * )
+     */
+    public function unarchive(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'advert_id' => 'required|exists:adverts,id',
+            'other_user_id' => 'required|exists:users,user_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = auth()->user();
+
+        $deleted = ArchivedMessage::where('user_id', $user->user_id)
+            ->where('advert_id', $request->advert_id)
+            ->where('other_user_id', $request->other_user_id)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Conversation unarchived successfully'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Archive not found'
+        ], 404);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/messages/archived",
+     *     summary="Get archived conversations",
+     *     tags={"Messages"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Archived conversations")
+     * )
+     */
+    public function getArchivedConversations(Request $request)
+    {
+        $user = auth()->user();
+
+        $archived = ArchivedMessage::where('user_id', $user->user_id)
+            ->with(['advert.firstImage'])
+            ->orderBy('archived_at', 'desc')
+            ->paginate($request->get('per_page', 20));
+
+        $archived->getCollection()->transform(function ($item) {
+            $item->other_user = User::find($item->other_user_id);
+            return $item;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $archived->items(),
+            'pagination' => [
+                'current_page' => $archived->currentPage(),
+                'last_page' => $archived->lastPage(),
+                'per_page' => $archived->perPage(),
+                'total' => $archived->total()
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
      *     path="/api/payments/{paymentId}/mark-delivered",
      *     summary="Mark payment as delivered",
      *     tags={"Payments"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="paymentId",
-     *         in="path",
-     *         required=true,
-     *         description="Payment ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Payment marked as delivered",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Payment not found"
-     *     )
+     *     @OA\Parameter(name="paymentId", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Payment marked as delivered")
      * )
      */
     public function markAsDelivered($paymentId)
@@ -452,7 +547,8 @@ class MessageController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Payment marked as delivered'
+            'message' => 'Payment marked as delivered',
+            'data' => $payment
         ]);
     }
 }

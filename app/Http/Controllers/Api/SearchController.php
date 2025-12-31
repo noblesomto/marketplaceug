@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Advert;
-use App\Models\Category;
-use App\Models\SubCategory;
-use App\Models\Brands;
-use App\Models\User;
-use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Advert;
+use App\Models\SubCategory;
+use App\Models\Category;
+use App\Models\Brands;
+use App\Models\State;
+use Jenssegers\Agent\Agent;
 
 class SearchController extends Controller
 {
@@ -19,103 +19,25 @@ class SearchController extends Controller
      *     path="/api/search",
      *     summary="Search adverts with filters",
      *     tags={"Search"},
-     *     @OA\Parameter(
-     *         name="q",
-     *         in="query",
-     *         description="Search query",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="category",
-     *         in="query",
-     *         description="Category ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="sub_category",
-     *         in="query",
-     *         description="Subcategory ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="brand",
-     *         in="query",
-     *         description="Brand ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="location",
-     *         in="query",
-     *         description="State/location",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="min_price",
-     *         in="query",
-     *         description="Minimum price",
-     *         @OA\Schema(type="number")
-     *     ),
-     *     @OA\Parameter(
-     *         name="max_price",
-     *         in="query",
-     *         description="Maximum price",
-     *         @OA\Schema(type="number")
-     *     ),
-     *     @OA\Parameter(
-     *         name="price_range",
-     *         in="query",
-     *         description="Price range category",
-     *         @OA\Schema(type="string", enum={"under_20k", "20k_120k", "120k_1m", "1m_10m", "above_10m"})
-     *     ),
-     *     @OA\Parameter(
-     *         name="seller_type",
-     *         in="query",
-     *         description="Seller verification status",
-     *         @OA\Schema(type="string", enum={"all", "yes", "no"})
-     *     ),
-     *     @OA\Parameter(
-     *         name="buy_direct",
-     *         in="query",
-     *         description="Buy direct availability",
-     *         @OA\Schema(type="string", enum={"yes", "no"})
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Items per page",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Search results",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", ref="#/components/schemas/AdvertList")
-     *         )
-     *     )
+     *     @OA\Parameter(name="product", in="query", description="Product search term", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="location", in="query", description="State/Location", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="category", in="query", description="Category ID", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="sub_category", in="query", description="Sub-category ID", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="brand", in="query", description="Brand ID", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="buydirect", in="query", description="Buy direct filter", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="page", in="query", description="Page number", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Search results")
      * )
      */
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'q' => 'nullable|string|min:3',
-            'category' => 'nullable|integer|exists:categories,id',
-            'sub_category' => 'nullable|integer|exists:sub_categories,id',
-            'brand' => 'nullable|integer|exists:brands,id',
-            'location' => 'nullable|string',
-            'min_price' => 'nullable|numeric|min:0',
-            'max_price' => 'nullable|numeric|min:0',
-            'price_range' => 'nullable|string|in:under_20k,20k_120k,120k_1m,1m_10m,above_10m',
-            'seller_type' => 'nullable|string|in:all,yes,no',
-            'buy_direct' => 'nullable|string|in:yes,no',
-            'page' => 'nullable|integer|min:1',
-            'per_page' => 'nullable|integer|min:1|max:100'
+            'product' => 'nullable|string|min:3',
+            'location' => 'nullable',
+            'category' => 'nullable',
+            'sub_category' => 'nullable',
+            'brand' => 'nullable',
+            'buydirect' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -125,15 +47,15 @@ class SearchController extends Controller
             ], 422);
         }
 
-        $query = Advert::with(['firstImage', 'owner', 'category', 'subCategory', 'brand'])
-            ->activeNotRecentlySold();
+        $query = Advert::with('firstImage')->activeNotRecentlySold();
 
-        // Search query
-        if ($request->filled('q')) {
-            $query->where('ad_title', 'LIKE', '%' . $request->q . '%');
+        if ($request->filled('product')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+            });
         }
 
-        // Category filters
         if ($request->filled('category')) {
             $query->where('category', $request->category);
         }
@@ -146,22 +68,95 @@ class SearchController extends Controller
             $query->where('brand', $request->brand);
         }
 
-        // Location filter
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
+        }
+
+        $ads = $query->orderWithFeatured()
+                    ->paginate($request->input('per_page', 10));
+
+        return response()->json([
+            'success' => true,
+            'data' => $ads->items(),
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total(),
+                'has_more' => $ads->hasMorePages()
+            ],
+            'search_params' => [
+                'product' => $request->input('product'),
+                'location' => $request->input('location'),
+                'category' => $request->input('category'),
+                'sub_category' => $request->input('sub_category'),
+                'brand' => $request->input('brand'),
+                'buydirect' => $request->input('buydirect'),
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/search/filter",
+     *     summary="Advanced filtering with price ranges",
+     *     tags={"Search"},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="category", type="integer"),
+     *             @OA\Property(property="sub_category", type="integer"),
+     *             @OA\Property(property="brand", type="integer"),
+     *             @OA\Property(property="location", type="string"),
+     *             @OA\Property(property="min", type="number"),
+     *             @OA\Property(property="max", type="number"),
+     *             @OA\Property(property="range", type="string", enum={"under_20k", "20k_120k", "120k_1m", "1m_10m", "above_10m"})
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Filtered results")
+     * )
+     */
+    public function filter(Request $request)
+    {
+        $query = Advert::with('firstImage')
+                    ->where('ad_status', 'active')
+                    ->where('sold', 'No');
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
         if ($request->filled('location')) {
             $query->where('state', $request->location);
         }
 
         // Price filters
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', (float) $request->min_price);
+        $min = $request->input('min');
+        $max = $request->input('max');
+        $range = $request->input('range');
+
+        if ($min !== null) {
+            $query->where('price', '>=', (int) $min);
         }
 
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', (float) $request->max_price);
+        if ($max !== null) {
+            $query->where('price', '<=', (int) $max);
         }
 
-        if ($request->filled('price_range')) {
-            switch ($request->price_range) {
+        if ($range) {
+            switch ($range) {
                 case 'under_20k':
                     $query->where('price', '<', 20000);
                     break;
@@ -180,167 +175,345 @@ class SearchController extends Controller
             }
         }
 
-        // Seller type filter
-        if ($request->filled('seller_type') && $request->seller_type !== 'all') {
-            $query->whereHas('owner', function ($q) use ($request) {
-                $q->where('verified', $request->seller_type);
-            });
-        }
-
-        // Buy direct filter
-        if ($request->filled('buy_direct')) {
-            $query->where('buy_direct', $request->buy_direct);
-        }
-
-        // Order and paginate
-        $ads = $query->orderWithFeatured()
-            ->paginate($request->get('per_page', 10))
-            ->appends($request->except('page'));
+        $adverts = $query->orderWithFeatured()
+                        ->paginate($request->input('per_page', 10));
 
         return response()->json([
             'success' => true,
-            'data' => $ads
+            'data' => $adverts->items(),
+            'pagination' => [
+                'current_page' => $adverts->currentPage(),
+                'last_page' => $adverts->lastPage(),
+                'per_page' => $adverts->perPage(),
+                'total' => $adverts->total(),
+                'has_more' => $adverts->hasMorePages()
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/search/filter-by-seller",
+     *     summary="Filter by verified/unverified sellers",
+     *     tags={"Search"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="sellers", type="string", enum={"all", "yes", "no"}, description="Seller verification status")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Filtered results")
+     * )
+     */
+    public function filterBySeller(Request $request)
+    {
+        $query = Advert::with('firstImage')
+            ->where('ad_status', 'active')
+            ->where('sold', 'No');
+
+        $sellers = $request->input('sellers', 'all');
+        if ($sellers !== 'all') {
+            $query->whereHas('owner', function ($q) use ($sellers) {
+                $q->where('verified', $sellers);
+            });
+        }
+
+        // Context filters
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        $adverts = $query->orderWithFeatured()
+                        ->paginate($request->input('per_page', 10));
+
+        return response()->json([
+            'success' => true,
+            'data' => $adverts->items(),
+            'pagination' => [
+                'current_page' => $adverts->currentPage(),
+                'last_page' => $adverts->lastPage(),
+                'per_page' => $adverts->perPage(),
+                'total' => $adverts->total(),
+                'has_more' => $adverts->hasMorePages()
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/search/filter-by-buydirect",
+     *     summary="Filter by buy direct availability",
+     *     tags={"Search"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="buydirect", type="string", description="Buy direct filter value")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Filtered results")
+     * )
+     */
+    public function filterByBuydirect(Request $request)
+    {
+        $query = Advert::with('firstImage')
+            ->where('ad_status', 'active')
+            ->where('sold', 'No');
+
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
+        }
+
+        // Context filters
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        $adverts = $query->orderWithFeatured()
+                        ->paginate($request->input('per_page', 10));
+
+        return response()->json([
+            'success' => true,
+            'data' => $adverts->items(),
+            'pagination' => [
+                'current_page' => $adverts->currentPage(),
+                'last_page' => $adverts->lastPage(),
+                'per_page' => $adverts->perPage(),
+                'total' => $adverts->total(),
+                'has_more' => $adverts->hasMorePages()
+            ]
         ]);
     }
 
     /**
      * @OA\Get(
      *     path="/api/search/location/{location}/{slug}",
-     *     summary="Search by location and category/brand/subcategory",
+     *     summary="Search by location and category/subcategory/brand",
      *     tags={"Search"},
-     *     @OA\Parameter(
-     *         name="location",
-     *         in="path",
-     *         required=true,
-     *         description="Location/state",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="slug",
-     *         in="path",
-     *         required=true,
-     *         description="Category, subcategory, or brand slug",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Items per page",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Location-based search results",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="type", type="string"),
-     *                 @OA\Property(property="item", type="object"),
-     *                 @OA\Property(property="ads", ref="#/components/schemas/AdvertList"),
-     *                 @OA\Property(property="count", type="integer")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Category/Subcategory/Brand not found"
-     *     )
+     *     @OA\Parameter(name="location", in="path", required=true, @OA\Schema(type="string")),
+     *     @OA\Parameter(name="slug", in="path", required=true, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Location-based search results")
      * )
      */
     public function locationSearch($location, $slug)
     {
-        $category = Category::where('category_slug', $slug)->first();
-        $subcategory = SubCategory::where('sub_cat_slug', $slug)->first();
-        $brand = Brands::where('brand_slug', $slug)->first();
-
-        if ($category) {
-            return $this->locationCategorySearch($location, $category);
-        } elseif ($subcategory) {
-            return $this->locationSubcategorySearch($location, $subcategory);
-        } elseif ($brand) {
-            return $this->locationBrandSearch($location, $brand);
+        // Determine type based on slug existence
+        if (Category::where('category_slug', $slug)->exists()) {
+            return $this->locationCategory($location, $slug);
+        } elseif (SubCategory::where('sub_cat_slug', $slug)->exists()) {
+            return $this->locationSubcat($location, $slug);
+        } elseif (Brands::where('brand_slug', $slug)->exists()) {
+            return $this->locationBrand($location, $slug);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'No matching category, subcategory, or brand found'
+            'message' => 'Resource not found'
         ], 404);
     }
 
-    private function locationCategorySearch($location, $category)
+    /**
+     * Location + Category search
+     */
+    private function locationCategory($location, $slug)
     {
-        $ads = Advert::with(['firstImage', 'owner'])
-            ->activeNotRecentlySold()
-            ->where('state', $location)
-            ->where('category', $category->id)
-            ->orderWithFeatured()
-            ->paginate(request()->get('per_page', 10));
+        $cat = Category::where('category_slug', $slug)->first();
 
-        $count = Advert::activeNotRecentlySold()
-            ->where('category', $category->id)
-            ->count();
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('state', $location)
+                    ->where('category', $cat->id)
+                    ->orderWithFeatured()
+                    ->paginate(10);
+
+        $count_cat = Advert::activeNotRecentlySold()
+                          ->where('category', $cat->id)
+                          ->count();
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'type' => 'category',
-                'item' => $category,
-                'ads' => $ads,
-                'count' => $count
+            'data' => $ads->items(),
+            'category' => $cat,
+            'total_count' => $count_cat,
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total(),
+                'has_more' => $ads->hasMorePages()
             ]
         ]);
     }
 
-    private function locationSubcategorySearch($location, $subcategory)
+    /**
+     * Location + Subcategory search
+     */
+    private function locationSubcat($location, $slug)
     {
-        $ads = Advert::with(['firstImage', 'owner'])
-            ->activeNotRecentlySold()
-            ->where('state', $location)
-            ->where('sub_category', $subcategory->id)
-            ->orderWithFeatured()
-            ->paginate(request()->get('per_page', 10));
+        $subcat = SubCategory::where('sub_cat_slug', $slug)->first();
 
-        $count = Advert::activeNotRecentlySold()
-            ->where('sub_category', $subcategory->id)
-            ->count();
+        if (!$subcat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Subcategory not found'
+            ], 404);
+        }
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('sold', 'No')
+                    ->where('state', $location)
+                    ->where('sub_category', $subcat->id)
+                    ->orderWithFeatured()
+                    ->paginate(10);
+
+        $count_subcat = Advert::activeNotRecentlySold()
+                            ->where('sub_category', $subcat->id)
+                            ->count();
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'type' => 'subcategory',
-                'item' => $subcategory,
-                'ads' => $ads,
-                'count' => $count
+            'data' => $ads->items(),
+            'subcategory' => $subcat,
+            'total_count' => $count_subcat,
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total(),
+                'has_more' => $ads->hasMorePages()
             ]
         ]);
     }
 
-    private function locationBrandSearch($location, $brand)
+    /**
+     * Location + Brand search
+     */
+    private function locationBrand($location, $slug)
     {
-        $ads = Advert::with(['firstImage', 'owner'])
-            ->activeNotRecentlySold()
-            ->where('state', $location)
-            ->where('brand', $brand->id)
-            ->orderWithFeatured()
-            ->paginate(request()->get('per_page', 10));
+        $brand = Brands::where('brand_slug', $slug)->first();
 
-        $count = Advert::activeNotRecentlySold()
-            ->where('brand', $brand->id)
-            ->count();
+        if (!$brand) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Brand not found'
+            ], 404);
+        }
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where('state', $location)
+                    ->where('brand', $brand->id)
+                    ->orderWithFeatured()
+                    ->paginate(10);
+
+        $count_brand = Advert::activeNotRecentlySold()
+                        ->where('brand', $brand->id)
+                        ->count();
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'type' => 'brand',
-                'item' => $brand,
-                'ads' => $ads,
-                'count' => $count
+            'data' => $ads->items(),
+            'brand' => $brand,
+            'total_count' => $count_brand,
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total(),
+                'has_more' => $ads->hasMorePages()
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/search/load-more",
+     *     summary="Load more results for infinite scroll",
+     *     tags={"Search"},
+     *     @OA\Parameter(name="product", in="query", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="category", in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="sub_category", in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="brand", in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="location", in="query", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="buydirect", in="query", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="page", in="query", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="More results")
+     * )
+     */
+    public function loadMore(Request $request)
+    {
+        $query = Advert::with('firstImage')->activeNotRecentlySold();
+
+        if ($request->filled('product')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
+        }
+
+        $ads = $query->orderWithFeatured()
+                    ->paginate($request->input('per_page', 10));
+
+        return response()->json([
+            'success' => true,
+            'data' => $ads->items(),
+            'has_more' => $ads->hasMorePages(),
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total()
             ]
         ]);
     }
@@ -348,57 +521,30 @@ class SearchController extends Controller
     /**
      * @OA\Get(
      *     path="/api/search/filters",
-     *     summary="Get available search filters",
+     *     summary="Get available filter options",
      *     tags={"Search"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Available filters",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="categories", type="array", @OA\Items(ref="#/components/schemas/Category")),
-     *                 @OA\Property(property="locations", type="array", @OA\Items(type="string")),
-     *                 @OA\Property(property="price_ranges", type="array", @OA\Items(type="object",
-     *                     @OA\Property(property="value", type="string"),
-     *                     @OA\Property(property="label", type="string")
-     *                 ))
-     *             )
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Filter options")
      * )
      */
-    public function getFilters()
+    public function getFilters(Request $request)
     {
-        $categories = Category::with('subCategories')->get();
-
-        $locations = Advert::where('ad_status', 1)
-            ->where(function($query) {
-                $query->where('sold', '!=', 'Yes')
-                      ->orWhere(function($q) {
-                          $q->where('sold', 'Yes')
-                            ->whereNotNull('sold_date')
-                            ->where('sold_date', '>=', now()->subDays(7));
-                      });
-            })
-            ->distinct()
-            ->pluck('state')
-            ->filter()
-            ->values();
-
-        $priceRanges = [
-            ['value' => 'under_20k', 'label' => 'Under ₦20,000'],
-            ['value' => '20k_120k', 'label' => '₦20,000 - ₦120,000'],
-            ['value' => '120k_1m', 'label' => '₦120,000 - ₦1,000,000'],
-            ['value' => '1m_10m', 'label' => '₦1,000,000 - ₦10,000,000'],
-            ['value' => 'above_10m', 'label' => 'Above ₦10,000,000']
-        ];
-
         return response()->json([
             'success' => true,
             'data' => [
-                'categories' => $categories,
-                'locations' => $locations,
-                'price_ranges' => $priceRanges
+                'categories' => Category::with('subCategories')->get(),
+                'states' => State::all(),
+                'price_ranges' => [
+                    ['value' => 'under_20k', 'label' => 'Under ₦20,000'],
+                    ['value' => '20k_120k', 'label' => '₦20,000 - ₦120,000'],
+                    ['value' => '120k_1m', 'label' => '₦120,000 - ₦1,000,000'],
+                    ['value' => '1m_10m', 'label' => '₦1,000,000 - ₦10,000,000'],
+                    ['value' => 'above_10m', 'label' => 'Above ₦10,000,000'],
+                ],
+                'seller_types' => [
+                    ['value' => 'all', 'label' => 'All Sellers'],
+                    ['value' => 'yes', 'label' => 'Verified Sellers'],
+                    ['value' => 'no', 'label' => 'Unverified Sellers'],
+                ]
             ]
         ]);
     }
@@ -408,38 +554,14 @@ class SearchController extends Controller
      *     path="/api/search/suggestions",
      *     summary="Get search suggestions",
      *     tags={"Search"},
-     *     @OA\Parameter(
-     *         name="q",
-     *         in="query",
-     *         required=true,
-     *         description="Search query",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         description="Number of suggestions",
-     *         @OA\Schema(type="integer", default=5)
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Search suggestions",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="adverts", type="array", @OA\Items(ref="#/components/schemas/Advert")),
-     *                 @OA\Property(property="categories", type="array", @OA\Items(ref="#/components/schemas/Category")),
-     *                 @OA\Property(property="brands", type="array", @OA\Items(ref="#/components/schemas/Brand"))
-     *             )
-     *         )
-     *     )
+     *     @OA\Parameter(name="q", in="query", required=true, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Search suggestions")
      * )
      */
     public function getSuggestions(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'q' => 'required|string|min:2',
-            'limit' => 'nullable|integer|min:1|max:20'
+            'q' => 'required|string|min:2'
         ]);
 
         if ($validator->fails()) {
@@ -449,31 +571,19 @@ class SearchController extends Controller
             ], 422);
         }
 
-        $limit = $request->get('limit', 5);
-        $query = $request->q;
+        $query = $request->input('q');
 
-        $adverts = Advert::with('firstImage')
-            ->activeNotRecentlySold()
-            ->where('ad_title', 'LIKE', '%' . $query . '%')
-            ->orderBy('views', 'desc')
-            ->limit($limit)
-            ->get();
-
-        $categories = Category::where('category', 'LIKE', '%' . $query . '%')
-            ->limit($limit)
-            ->get();
-
-        $brands = Brands::where('brand', 'LIKE', '%' . $query . '%')
-            ->limit($limit)
-            ->get();
+        $suggestions = Advert::where('ad_title', 'LIKE', '%' . $query . '%')
+                            ->where('ad_status', 'active')
+                            ->where('sold', 'No')
+                            ->select('ad_title')
+                            ->distinct()
+                            ->limit(10)
+                            ->pluck('ad_title');
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'adverts' => $adverts,
-                'categories' => $categories,
-                'brands' => $brands
-            ]
+            'data' => $suggestions
         ]);
     }
 }
