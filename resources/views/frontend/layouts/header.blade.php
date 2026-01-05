@@ -35,26 +35,26 @@
      <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
     <!-- Preload LCP Image - Add this to your <head> section -->
-@if(isset($gallery[0]))
-    @php
-        $firstMedia = $gallery[0]->getFirstMedia('images');
-    @endphp
-    @if($firstMedia)
-        <link rel="preload" as="image"
-              href="{{ $firstMedia->hasGeneratedConversion('thumb-sm') ? $firstMedia->getUrl('thumb-sm') : $firstMedia->getUrl('thumbnail') }}"
-              fetchpriority="high">
+    @if(isset($gallery[0]))
+        @php
+            $firstMedia = $gallery[0]->getFirstMedia('images');
+        @endphp
+        @if($firstMedia)
+            <link rel="preload" as="image"
+                  href="{{ $firstMedia->hasGeneratedConversion('thumb-sm') ? $firstMedia->getUrl('thumb-sm') : $firstMedia->getUrl('thumbnail') }}"
+                  fetchpriority="high">
+        @endif
     @endif
-@endif
-@if(isset($listings[0]))
-    @php
-        $firstImage = $listings[0]->getFirstMedia('images');
-    @endphp
-    @if($firstImage)
-        <link rel="preload" as="image"
-              href="{{ $firstImage->hasGeneratedConversion('thumb-sm') ? $firstImage->getUrl('thumb-sm') : $firstImage->getUrl('thumbnail') }}"
-              fetchpriority="high"
-              media="(max-width: 640px)">
+    @if(isset($listings[0]))
+        @php
+            $firstImage = $listings[0]->getFirstMedia('images');
+        @endphp
+        @if($firstImage)
+            <link rel="preload" as="image"
+                  href="{{ $firstImage->hasGeneratedConversion('thumb-sm') ? $firstImage->getUrl('thumb-sm') : $firstImage->getUrl('thumbnail') }}"
+                  fetchpriority="high"
+                  media="(max-width: 640px)">
+        @endif
     @endif
-@endif
   @include('frontend.layouts.header-links')
 

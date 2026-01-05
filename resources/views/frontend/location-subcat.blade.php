@@ -5,12 +5,12 @@
 
 
 <section class="w-full md:w-5/6 mx-auto mt-3">
-  <div class="grid grid-cols-10 gap-3">
+  <div class="grid grid-cols-12 gap-3">
       <div class="col-span-2 hidden sm:block">
         @include('frontend.components.advert.side-advert')
       </div>
-      <div class="col-span-10 md:col-span-6">
-        <div class="grid grid-cols-10 gap-3">
+      <div class="col-span-12 md:col-span-8">
+        <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden sm:block space-y-4">
             <!-- Main Sidebar Header -->
             <div class="flex items-center gap-2 px-1">
@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-           <div class="col-span-10 md:col-span-7">
+           <div class="col-span-12 md:col-span-9">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>

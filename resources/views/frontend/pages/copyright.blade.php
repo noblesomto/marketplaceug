@@ -8,8 +8,8 @@
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Copyright Policy</h1>
             <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-              <p>Effective Date: August 1, 2024</p>
-              <p>Last Updated: May 3, 2025</p>
+              <p>Effective Date: August 1, 2025</p>
+              <p>Last Updated: January 4, 2026</p>
             </div>
             <p class="text-gray-600 mb-8">
               Marketplace Naija ("we", "our", or "the Platform") respects the intellectual property rights of others and expects all users to do the same. This Copyright Policy outlines how we handle copyrighted materials, user-generated content, and copyright infringement claims.

@@ -7,7 +7,10 @@
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
-        <p class="text-sm text-gray-500 mb-8">Effective Date: December 24, 2025</p>
+        <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
+          <p>Effective Date: August 1, 2025</p>
+          <p>Last Updated: January 4, 2026</p>
+        </div>
         <p class="text-gray-600 mb-8">
           Welcome to Marketplace Naija ("Marketplace Naija", "Marketplace.ng", "we", "our", or "us"). This Privacy Policy explains how we collect, use, disclose, and protect personal information when you access or use our website and services at www.marketplace.ng.
         </p>
@@ -120,9 +123,23 @@
           <li>Analyze traffic and user behavior</li>
           <li>Support advertising and marketing efforts</li>
         </ul>
-        <p class="text-gray-600">
-          You may disable cookies through your browser settings. Please note that some features of the platform may not function properly if cookies are disabled.
-        </p>
+        <div class="space-y-3 text-gray-600">
+            <p class="">
+              You may disable cookies through your browser settings. Please note that some features of the platform may not function properly if cookies are disabled.
+            </p>
+
+                <h4 class="text-xl font-semibold text-gray-900 mt-2">
+                Analytics and Session Recording Tools</h4>
+            <p>
+                Marketplace Naija uses analytics and behavior analysis tools such as <strong>Google Analytics</strong> and <strong>Microsoft Clarity</strong> to understand how users interact with our website, improve performance, and enhance user experience.
+            </p>
+            <p>
+                These tools may collect information such as pages visited, interactions, device type, browser, and approximate location. Data collected through these tools is processed in aggregated form and used solely for analytical and improvement purposes.
+            </p>
+            <p>
+                Analytics and session recording tools are only activated after users provide consent through our cookie consent mechanism.
+            </p>
+        </div>
       </div>
     </section>
 

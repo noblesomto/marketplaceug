@@ -32,7 +32,7 @@ class MessageController extends Controller
             })
             ->get();
 
-        //dd($message);
+        dd($message);
         return ($message);
     }
 

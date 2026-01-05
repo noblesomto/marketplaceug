@@ -8,8 +8,8 @@
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Cookies Policy</h1>
             <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-              <p>Effective Date: August 1, 2024</p>
-              <p>Last Updated: May 3, 2025</p>
+              <p>Effective Date: August 1, 2025</p>
+              <p>Last Updated: January 4, 2026</p>
             </div>
             <p class="text-gray-600 mb-8">
               This Cookies Policy explains how Marketplace Naija ("we", "our", "us") uses cookies and similar tracking technologies when you visit or interact with our website www.marketplace.ng (the "platform").
@@ -111,6 +111,8 @@
               <li>Google Analytics</li>
               <li>Meta (Facebook) Pixel</li>
               <li>Payment processors (Paystack)</li>
+              <li>Microsoft Clarity</li>
+              <li>Advertising cookies (Google AdSense)</li>
               <li>Live chat or customer support tools</li>
             </ul>
             <p class="text-gray-600">

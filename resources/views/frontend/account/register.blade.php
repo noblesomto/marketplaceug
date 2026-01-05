@@ -32,7 +32,7 @@
                         <label class="relative cursor-pointer group">
                             <input type="radio" name="acc_type" value="Private" class="peer sr-only" id="showDivRadio" onclick="showDiv('Profile Name')" required>
                             <div class="p-2 rounded-xl border-2 border-gray-200 hover:border-dark_green/50 peer-checked:border-dark_green peer-checked:bg-green-50 transition-all duration-200 flex  items-center justify-center text-center space-x-2">
-                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 <span class="block text-base font-bold text-gray-900 peer-checked:text-dark_green">Private</span>
                             </div>
                         </label>
@@ -41,7 +41,7 @@
                         <label class="relative cursor-pointer group">
                             <input type="radio" name="acc_type" value="Commercial" class="peer sr-only" onclick="showDiv('Company Name')">
                             <div class="p-2 rounded-xl border-2 border-gray-200 hover:border-dark_green/50 peer-checked:border-dark_green peer-checked:bg-green-50 transition-all duration-200 flex items-center justify-center text-center space-x-2">
-                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 peer-checked:text-dark_green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                                 <span class="block text-base font-bold text-gray-900 peer-checked:text-dark_green">Commercial</span>
                             </div>
                         </label>

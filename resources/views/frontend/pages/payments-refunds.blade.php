@@ -8,8 +8,8 @@
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment & Refund Policy</h1>
         <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-          <p>Effective Date: August 1, 2024</p>
-          <p>Last Updated: May 3, 2025</p>
+            <p>Effective Date: August 1, 2025</p>
+            <p>Last Updated: January 4, 2026</p>
         </div>
         <p class="text-gray-600 mb-8">
           At Marketplace Naija, we believe in transparency, fairness, and trust when it comes to payments and refunds. This Payment & Refund Policy explains how charges are processed on our platform, what services are billable, and under what conditions users may be eligible for refunds.

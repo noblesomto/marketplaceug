@@ -54,7 +54,6 @@ class AdvertController extends Controller
             ->take(6) // Take only 6 after filtering
             ->values(); // Reindex collection
         */
-        // Move device detection to the top
         $agent = new Agent();
         if (request()->has('view')) {
             $isMobile = request()->get('view') === 'mobile';
@@ -62,28 +61,19 @@ class AdvertController extends Controller
             $isMobile = $agent->isMobile() || $agent->isTablet();
         }
 
-        // Define items per page (30 for both desktop and mobile)
+        // Configuration
         $perPage = 30;
+        $featuredLimit = $isMobile ? 8 : 10;
         $currentPage = request()->get('page', 1);
-
-        // Define a reusable query scope for sold status
-        $soldStatusQuery = function($query) {
-            $query->where('sold', '!=', 'Yes')
-                  ->orWhere(function($q) {
-                      $q->where('sold', 'Yes')
-                        ->whereNotNull('sold_date')
-                        ->where('sold_date', '>=', now()->subDays(30));
-                  });
-        };
 
         // Get featured ads (only on first page)
         if ($currentPage == 1) {
             $featured = Advert::with('firstImage', 'owner')
-            ->activeNotSold()
-            ->where('featured', 'yes')
-            ->inRandomOrder()
-            ->limit($perPage)
-            ->get();
+                ->activeNotSold()
+                ->where('featured', 'yes')
+                ->inRandomOrder()
+                ->limit($featuredLimit)
+                ->get();
 
             $featuredCount = $featured->count();
             $remainingSlots = $perPage - $featuredCount;
@@ -93,71 +83,60 @@ class AdvertController extends Controller
             $remainingSlots = $perPage;
         }
 
-        // Only fetch regular listings if we need to fill remaining slots
-        if ($remainingSlots > 0) {
-            // Calculate offset for pagination (exclude first page featured ads)
-            $offset = ($currentPage - 1) * $perPage - ($currentPage > 1 ? $featuredCount : 0);
-            $offset = max(0, $offset);
+        // Fetch regular listings to fill remaining slots
+        $excludeIds = $featured->pluck('id')->toArray();
 
-            // Split remaining slots: 40% recent, 60% random
-            $recentCount = (int) ceil($remainingSlots * 0.4);
-            $randomCount = $remainingSlots - $recentCount;
+        // Split remaining slots: 40% recent, 60% random
+        $recentCount = (int) ceil($remainingSlots * 0.4);
+        $randomCount = $remainingSlots - $recentCount;
 
-            // Get IDs to exclude (featured posts on first page)
-            $excludeIds = $currentPage == 1 ? $featured->pluck('id')->toArray() : [];
+        // Calculate offset for pagination
+        $recentOffset = $currentPage == 1 ? 0 : (($currentPage - 1) * $perPage) - $featuredCount;
 
-            // Get recent listings
-            $recentListings = Advert::with('firstImage', 'owner')
-                ->where('ad_status', 'active')
-                ->whereNotIn('id', $excludeIds)
-                ->where('featured', '!=', 'yes')
-                ->where($soldStatusQuery)
-                ->orderByDesc('created_at')
-                ->skip($offset)
-                ->limit($recentCount)
-                ->get();
+        // Get recent listings
+        $recentListings = Advert::with('firstImage', 'owner')
+            ->activeNotSold()
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->orderByDesc('created_at')
+            ->skip($recentOffset)
+            ->limit($recentCount)
+            ->get();
 
-            // Update exclude IDs
-            $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
+        // Update exclude IDs
+        $excludeIds = array_merge($excludeIds, $recentListings->pluck('id')->toArray());
 
-            // Get random listings
-            $randomListings = Advert::with('firstImage', 'owner')
-                ->where('ad_status', 'active')
-                ->whereNotIn('id', $excludeIds)
-                ->where('featured', '!=', 'yes')
-                ->where($soldStatusQuery)
-                ->inRandomOrder()
-                ->limit($randomCount)
-                ->get();
+        // Get random listings
+        $randomListings = Advert::with('firstImage', 'owner')
+            ->activeNotSold()
+            ->whereNotIn('id', $excludeIds)
+            ->where('featured', '!=', 'yes')
+            ->inRandomOrder()
+            ->limit($randomCount)
+            ->get();
 
-            // Interleave recent and random posts
-            $mixed = collect();
-            $maxCount = max($recentListings->count(), $randomListings->count());
+        // Interleave recent and random posts
+        $mixed = collect();
+        $maxCount = max($recentListings->count(), $randomListings->count());
 
-            for ($i = 0; $i < $maxCount; $i++) {
-                if ($recentListings->has($i)) {
-                    $mixed->push($recentListings->get($i));
-                }
-                if ($randomListings->has($i)) {
-                    $mixed->push($randomListings->get($i));
-                }
+        for ($i = 0; $i < $maxCount; $i++) {
+            if ($recentListings->has($i)) {
+                $mixed->push($recentListings->get($i));
             }
-
-            // Combine featured (if first page) with mixed listings
-            $allListings = $currentPage == 1 ? $featured->concat($mixed) : $mixed;
-        } else {
-            // All slots filled with featured ads
-            $allListings = $featured;
+            if ($randomListings->has($i)) {
+                $mixed->push($randomListings->get($i));
+            }
         }
 
+        // Combine featured with mixed listings
+        $allListings = $currentPage == 1 ? $featured->concat($mixed) : $mixed;
+
         // Calculate total count for pagination
-        $totalActiveListing = Advert::where('ad_status', 'active')
+        $totalActiveListings = Advert::activeNotSold()
             ->where('featured', '!=', 'yes')
-            ->where($soldStatusQuery)
             ->count();
 
-        // Add featured count to total (they only appear on first page)
-        $totalCount = $totalActiveListing + $featuredCount;
+        $totalCount = $totalActiveListings + $featuredCount;
 
         // Create paginator
         $listings = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -168,39 +147,36 @@ class AdvertController extends Controller
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
-        // Gallery section (if still needed - currently seems unused)
+        // Gallery
         $gallery = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
-            ->where($soldStatusQuery)
+            ->activeNotSold()
             ->inRandomOrder()
             ->limit(10)
             ->get();
 
-        // Category-specific listings (cars, phones, fashion)
+        // Category-specific listings
         $cars = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
+            ->activeNotSold()
             ->where('sub_category', 2)
-            ->where($soldStatusQuery)
             ->orderBy('views', 'desc')
             ->limit(10)
             ->get();
 
         $phones = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
+            ->activeNotSold()
             ->where('sub_category', 6)
-            ->where($soldStatusQuery)
             ->orderBy('views', 'desc')
             ->limit(10)
             ->get();
 
         $fashion = Advert::with('firstImage', 'owner')
-            ->where('ad_status', 'active')
+            ->activeNotSold()
             ->where('category', 5)
-            ->where($soldStatusQuery)
             ->orderBy('views', 'desc')
             ->limit(10)
             ->get();
 
+        // User and categories
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
@@ -1105,7 +1081,7 @@ class AdvertController extends Controller
             $request->session()->forget('user_id');
             $currentURL = url()->current();
             $request->session()->put('previous_url', $currentURL);
-            return redirect('/login')->with('error','Sorry, you need to login to Use Buy Directly');
+            return redirect('/login')->with('error','Sorry, you need to login to Use Buy Direct');
         }
 
         return view('frontend.buy-direct', $data);

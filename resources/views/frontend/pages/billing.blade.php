@@ -8,8 +8,8 @@
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Billing Policy</h1>
         <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-          <p>Effective Date: August 1, 2024</p>
-          <p>Last Updated: May 3, 2025</p>
+            <p>Effective Date: August 1, 2025</p>
+            <p>Last Updated: January 4, 2026</p>
         </div>
         <p class="text-gray-600 mb-8">
           This Billing Policy outlines how paid services on Marketplace Naija operate, particularly for users who choose to promote, boost, or sponsor their ad listings on our platform. By purchasing any promotional service on www.marketplace.ng, you agree to the terms described herein.

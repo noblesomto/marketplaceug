@@ -8,8 +8,8 @@
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Terms of Use</h1>
         <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-          <p>Effective Date: August 1, 2024</p>
-          <p>Last Updated: May 3, 2025</p>
+          <p>Effective Date: August 1, 2025</p>
+          <p>Last Updated: January 4, 2026</p>
         </div>
         <p class="text-gray-600 mb-8">
           Welcome to Marketplace Naija ("we", "our", or "the Platform"). These Terms of Use govern your access to and use of our website, services, features, and tools located at www.marketplace.ng. By accessing or using our platform, you agree to be bound by these terms. If you do not agree, please do not use our services.
@@ -29,9 +29,14 @@
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. About Marketplace Naija</h2>
-        <p class="text-gray-600">
-          Marketplace Naija is a Nigerian online classifieds platform that allows users to buy and sell products or services through postings, promotions, and direct communication. The platform connects buyers and sellers but does not own, buy, or sell the items listed unless explicitly stated.
-        </p>
+        <div class="text-gray-600 space-y-2">
+            <p class="">
+              Marketplace Naija is a Nigerian online classifieds platform that allows users to buy and sell products or services through postings, promotions, and direct communication. The platform connects buyers and sellers but does not own, buy, or sell the items listed unless explicitly stated.
+            </p>
+            <p>
+                Marketplace Naija may also display job and service listings submitted by users. For job listings, Marketplace Naija acts solely as a classified advertising platform and is not an employer, recruiter, or hiring agency, and does not verify, screen, or guarantee the legitimacy of job offers, employers, or applicants.
+            </p>
+        </div>
       </div>
     </section>
 
@@ -109,6 +114,7 @@
           <li>Adult content, pornography, or sexually explicit material</li>
           <li>Services promoting scams, betting, pyramid schemes, or money doubling</li>
           <li>Anything that violates Nigerian law or community standards</li>
+          <li>Fraudulent job postings, fake recruitment offers, or requests for upfront fees disguised as employment opportunities are prohibited.</li>
         </ul>
         <p class="text-gray-600">
           Marketplace Naija reserves the right to remove any content that violates these rules, even without notice.

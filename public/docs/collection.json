@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Marketplace Nigeria API Documentation",
-        "_postman_id": "25dcf240-4208-4eb0-98d3-596498f1b151",
+        "_postman_id": "44e453cc-f935-4172-9493-5caf42295606",
         "description": "Complete API documentation for Marketplace Nigeria platform",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -59,7 +59,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "36"
+                                    "value": "59"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -94,7 +94,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"acc_type\":\"qui\",\"name\":\"zesbjfuqa\",\"phone\":\"quo\",\"email\":\"major59@example.net\",\"password\":\"fKXL\\\\5h{}'f.\"}"
+                            "raw": "{\"acc_type\":\"aperiam\",\"name\":\"uqakkoxlfsydbniosgyxedej\",\"phone\":\"est\",\"email\":\"kbode@example.com\",\"password\":\"<F7`sP[RHafuk_l37nV.\"}"
                         },
                         "description": ""
                     },
@@ -122,7 +122,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"olueilwitz@example.com\",\"password\":\"`\\\/bSJp0Y$Vc6b\"}"
+                            "raw": "{\"email\":\"vallie41@example.net\",\"password\":\"FeY#pb&VCUNS%*32lr\"}"
                         },
                         "description": ""
                     },
@@ -150,7 +150,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"cole.isai@example.com\",\"otp\":\"217734\",\"trust_device\":true}"
+                            "raw": "{\"email\":\"braeden72@example.net\",\"otp\":\"695486\",\"trust_device\":true}"
                         },
                         "description": ""
                     },
@@ -178,7 +178,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"shea38@example.org\"}"
+                            "raw": "{\"email\":\"greenfelder.melba@example.net\"}"
                         },
                         "description": ""
                     },
@@ -196,13 +196,13 @@
                                 {
                                     "id": "email",
                                     "key": "email",
-                                    "value": "ojacobi%40example.net",
+                                    "value": "gparisian%40example.com",
                                     "description": ""
                                 },
                                 {
                                     "id": "token",
                                     "key": "token",
-                                    "value": "maiores",
+                                    "value": "id",
                                     "description": ""
                                 }
                             ]
@@ -238,7 +238,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "35"
+                                    "value": "58"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -273,7 +273,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"maybell.weissnat@example.com\"}"
+                            "raw": "{\"email\":\"obrakus@example.org\"}"
                         },
                         "description": ""
                     },
@@ -301,7 +301,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"lind.brett@example.net\"}"
+                            "raw": "{\"email\":\"marianne.mann@example.net\"}"
                         },
                         "description": ""
                     },
@@ -319,13 +319,13 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "excepturi",
+                                    "value": "dolorem",
                                     "description": "The ID of the user."
                                 },
                                 {
                                     "id": "token",
                                     "key": "token",
-                                    "value": "culpa",
+                                    "value": "ullam",
                                     "description": ""
                                 }
                             ]
@@ -343,7 +343,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"password\":\"zjen(22>I-y\"}"
+                            "raw": "{\"password\":\"U\\\/H~2Bw2Po.$06\"}"
                         },
                         "description": ""
                     },
@@ -371,7 +371,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"provider\":\"google\",\"access_token\":\"voluptas\",\"device_name\":\"ipsum\"}"
+                            "raw": "{\"provider\":\"facebook\",\"access_token\":\"repellat\",\"device_name\":\"id\"}"
                         },
                         "description": "Mobile app gets token from provider (Google\/Facebook SDK)\nthen sends it to this endpoint for verification"
                     },
@@ -389,7 +389,7 @@
                                 {
                                     "id": "provider",
                                     "key": "provider",
-                                    "value": "et",
+                                    "value": "rerum",
                                     "description": ""
                                 }
                             ]
@@ -425,7 +425,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "34"
+                                    "value": "57"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -450,7 +450,7 @@
                                 {
                                     "id": "provider",
                                     "key": "provider",
-                                    "value": "quam",
+                                    "value": "aut",
                                     "description": ""
                                 }
                             ]
@@ -486,7 +486,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "33"
+                                    "value": "56"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -581,7 +581,7 @@
                                 {
                                     "id": "device_id",
                                     "key": "device_id",
-                                    "value": "eos",
+                                    "value": "sapiente",
                                     "description": "The ID of the device."
                                 }
                             ]
@@ -614,7 +614,7 @@
                                 {
                                     "id": "seller_id",
                                     "key": "seller_id",
-                                    "value": "similique",
+                                    "value": "quia",
                                     "description": "The ID of the seller."
                                 }
                             ]
@@ -650,7 +650,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "32"
+                                    "value": "55"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -703,7 +703,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "31"
+                                    "value": "54"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -764,7 +764,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "30"
+                                    "value": "53"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -795,7 +795,7 @@
                                 {
                                     "id": "subcat_slug",
                                     "key": "subcat_slug",
-                                    "value": "repellat",
+                                    "value": "quasi",
                                     "description": "The slug of the subcat."
                                 }
                             ]
@@ -831,7 +831,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "29"
+                                    "value": "52"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -856,19 +856,19 @@
                                 {
                                     "id": "category_slug",
                                     "key": "category_slug",
-                                    "value": "ut",
+                                    "value": "laboriosam",
                                     "description": "The slug of the category."
                                 },
                                 {
                                     "id": "subcat_slug",
                                     "key": "subcat_slug",
-                                    "value": "dignissimos",
+                                    "value": "culpa",
                                     "description": "The slug of the subcat."
                                 },
                                 {
                                     "id": "brand_slug",
                                     "key": "brand_slug",
-                                    "value": "voluptatem",
+                                    "value": "quod",
                                     "description": "The slug of the brand."
                                 }
                             ]
@@ -904,7 +904,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "28"
+                                    "value": "51"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -929,7 +929,7 @@
                                 {
                                     "id": "state_slug",
                                     "key": "state_slug",
-                                    "value": "qui",
+                                    "value": "ea",
                                     "description": "The slug of the state."
                                 }
                             ]
@@ -965,7 +965,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "27"
+                                    "value": "50"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -973,7 +973,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":{\"ads\":[],\"location\":\"qui\",\"has_more\":false,\"next_page\":2}}",
+                            "body": "{\"success\":true,\"data\":{\"ads\":[],\"location\":\"ea\",\"has_more\":false,\"next_page\":2}}",
                             "name": ""
                         }
                     ]
@@ -1098,7 +1098,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"subject\":\"psuzg\",\"message\":\"expedita\"}"
+                            "raw": "{\"subject\":\"hciexulgywigq\",\"message\":\"repellat\"}"
                         },
                         "description": ""
                     },
@@ -1134,7 +1134,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"message\":\"reprehenderit\"}"
+                            "raw": "{\"message\":\"officiis\"}"
                         },
                         "description": ""
                     },
@@ -1162,7 +1162,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"product\":\"gzzfegwqyh\"}"
+                            "raw": "{\"product\":\"enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj\"}"
                         },
                         "description": ""
                     },
@@ -1183,7 +1183,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "26"
+                                    "value": "49"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1191,7 +1191,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":[],\"pagination\":{\"current_page\":1,\"last_page\":1,\"per_page\":10,\"total\":0,\"has_more\":false},\"search_params\":{\"product\":\"gzzfegwqyh\",\"location\":null,\"category\":null,\"sub_category\":null,\"brand\":null,\"buydirect\":null}}",
+                            "body": "{\"success\":true,\"data\":[],\"pagination\":{\"current_page\":1,\"last_page\":1,\"per_page\":10,\"total\":0,\"has_more\":false},\"search_params\":{\"product\":\"enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj\",\"location\":null,\"category\":null,\"sub_category\":null,\"brand\":null,\"buydirect\":null}}",
                             "name": ""
                         }
                     ]
@@ -1283,13 +1283,13 @@
                                 {
                                     "id": "location",
                                     "key": "location",
-                                    "value": "et",
+                                    "value": "tempore",
                                     "description": "The location."
                                 },
                                 {
                                     "id": "slug",
                                     "key": "slug",
-                                    "value": "sunt",
+                                    "value": "est",
                                     "description": "The slug of the {location}."
                                 }
                             ]
@@ -1325,7 +1325,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "25"
+                                    "value": "48"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1378,7 +1378,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "24"
+                                    "value": "47"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1413,7 +1413,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"q\":\"zcopxuvdsgkepicfukguyiiiqhlxxrxvhebdhndkaagvoaijpsqtsmchfgvwylwlouwpgxmkmqrftzjufkyjoxx\"}"
+                            "raw": "{\"q\":\"pnoekxcaynoq\"}"
                         },
                         "description": ""
                     },
@@ -1434,7 +1434,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "23"
+                                    "value": "46"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1487,7 +1487,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "22"
+                                    "value": "45"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1495,7 +1495,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":[{\"id\":287,\"user_id\":\"70656\",\"ad_id\":\"83561\",\"ad_type\":\"Private\",\"ad_title\":\"HERO BIKE\",\"title_slug\":\"hero-bike\",\"category\":\"1\",\"sub_category\":\"22\",\"brand\":\"1012\",\"price\":\"750000\",\"price_type\":\"Negotiable\",\"item_condition\":\"Locally Used\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\\\/div>\",\"state\":\"Osun\",\"lga\":\"Ife Central\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"121\",\"keyword\":\"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv\",\"meta_description\":\"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;\",\"created_at\":\"2025-09-25T12:00:23.000000Z\",\"updated_at\":\"2025-09-25T12:00:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"ife-central\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":914,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"be55ae56-f1f3-4a29-8664-576293a1fa2a\",\"collection_name\":\"images\",\"name\":\"68d520c76b5ff.webp\",\"file_name\":\"68d520c76b5ff.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":247922,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":977},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:22:39.000000Z\",\"updated_at\":\"2025-09-29T02:22:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"preview_url\":\"\"}},{\"id\":136,\"user_id\":\"28352\",\"ad_id\":\"82078\",\"ad_type\":\"Private\",\"ad_title\":\"iPhone 11 Pro\",\"title_slug\":\"iphone-11-pro\",\"category\":\"4\",\"sub_category\":\"6\",\"brand\":\"1542\",\"price\":\"269000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Alimosho\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"178\",\"keyword\":\"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234\",\"meta_description\":\"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990\",\"created_at\":\"2025-09-11T17:00:15.000000Z\",\"updated_at\":\"2025-11-13T09:35:24.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"alimosho\",\"contact_price\":\"no\",\"salary\":\"\\u20a6200,000 - \\u20a6220,000\",\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":414,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc\",\"collection_name\":\"images\",\"name\":\"68c2f20f99ac0.webp\",\"file_name\":\"68c2f20f99ac0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":52572,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":499},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:12.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"preview_url\":\"\"}},{\"id\":314,\"user_id\":\"82261\",\"ad_id\":\"19583\",\"ad_type\":\"Private\",\"ad_title\":\"New 2025 Toyota Corolla LE FWD 4dr Car\",\"title_slug\":\"new-2025-toyota-corolla-le-fwd-4dr-car\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"4000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->The car is a new and forieng used<\\\/div>\",\"state\":\"Anambra\",\"lga\":\"Idemili South\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"48\",\"keyword\":\"2025, toyota, corolla, block, forieng, useddiv\",\"meta_description\":\"The car is a new and forieng used\",\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-11-30T11:30:36.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"idemili-south\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1063,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"b7a75deb-fd92-4b36-ba47-d7fff74f1a75\",\"collection_name\":\"images\",\"name\":\"d2e28f69361fd659185e76017ece2ad5\",\"file_name\":\"68db5c7e6ded4.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119862,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"d2e28f69361fd659185e76017ece2ad5.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-09-30T04:28:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"preview_url\":\"\"}},{\"id\":334,\"user_id\":\"82261\",\"ad_id\":\"20222\",\"ad_type\":\"Private\",\"ad_title\":\"New wig for sale\",\"title_slug\":\"new-wig-for-sale\",\"category\":\"8\",\"sub_category\":\"13\",\"brand\":\"656\",\"price\":\"230000\",\"price_type\":\"Negotiable\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"new wig arrive today for sale\",\"state\":\"Adamawa\",\"lga\":\"Fufure\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"33\",\"keyword\":\"sale, arrive, today\",\"meta_description\":\"new wig arrive today for sale\",\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:00.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"fufure\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1145,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e7bece4c-30a8-435c-ab34-704c8c2f7f7f\",\"collection_name\":\"images\",\"name\":\"IMG_7062\",\"file_name\":\"694245f08bad0.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":16434835,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"IMG_7062.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:06.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"preview_url\":\"\"}},{\"id\":328,\"user_id\":\"82261\",\"ad_id\":\"81404\",\"ad_type\":\"Private\",\"ad_title\":\"Toyota Highlander for sale\",\"title_slug\":\"toyota-highlander-for-sale\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"1000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\\\/div>\",\"state\":\"FCT - Abuja\",\"lga\":\"Gwagwalada\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"87\",\"keyword\":\"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good\",\"meta_description\":\"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;\",\"created_at\":\"2025-11-02T17:34:22.000000Z\",\"updated_at\":\"2025-12-12T14:13:02.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"gwagwalada\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1102,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"8986e5fb-9dc7-4543-b5dc-75f5667cb234\",\"collection_name\":\"images\",\"name\":\"68d52f121818a-large\",\"file_name\":\"690796242394a.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":101674,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"68d52f121818a-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-02T17:34:28.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"preview_url\":\"\"}},{\"id\":329,\"user_id\":\"82261\",\"ad_id\":\"93361\",\"ad_type\":\"Private\",\"ad_title\":\"I Need a Web Developer\",\"title_slug\":\"i-need-a-web-developer-3\",\"category\":\"18\",\"sub_category\":\"147\",\"brand\":\"4131\",\"price\":null,\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->I need a vert good developer for immediate employment<\\\/div>\",\"state\":\"Ebonyi\",\"lga\":\"Abakaliki\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"need, developer, block, vert, good, immediate, employmentdiv\",\"meta_description\":\"I need a vert good developer for immediate employment\",\"created_at\":\"2025-11-04T03:36:23.000000Z\",\"updated_at\":\"2025-12-12T14:08:28.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"abakaliki\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":\"\\u20a6180,000 - \\u20a6200,000\",\"redirect\":\"Yes\",\"is_featured\":0,\"first_image\":{\"id\":1106,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":329,\"uuid\":\"b6afba5a-e16f-40cd-b832-3a1fd729d2a1\",\"collection_name\":\"images\",\"name\":\"WInter is coming english\",\"file_name\":\"690974b801fca.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":310197,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"WInter is coming english.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-04T03:36:24.000000Z\",\"updated_at\":\"2025-11-04T03:36:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"preview_url\":\"\"}},{\"id\":313,\"user_id\":\"82151\",\"ad_id\":\"97920\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2019 Mercedes Benz Gle350\",\"title_slug\":\"foreign-used-2019-mercedes-benz-gle350\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"266\",\"price\":\"56500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"5\",\"keyword\":\"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather\",\"meta_description\":\"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.\",\"created_at\":\"2025-09-28T21:32:01.000000Z\",\"updated_at\":\"2025-09-28T21:32:01.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1054,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"1425cace-0d95-4a49-94bc-096ed104946e\",\"collection_name\":\"images\",\"name\":\"68d99b4142e49.webp\",\"file_name\":\"68d99b4142e49.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":337178,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1117},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:17.000000Z\",\"updated_at\":\"2025-09-29T02:27:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"preview_url\":\"\"}},{\"id\":312,\"user_id\":\"76917\",\"ad_id\":\"58798\",\"ad_type\":\"Private\",\"ad_title\":\"The IKEJA LAUNDRY\",\"title_slug\":\"the-ikeja-laundry\",\"category\":\"12\",\"sub_category\":\"93\",\"brand\":\"2270\",\"price\":\"25000\",\"price_type\":\"Fixed\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert\",\"meta_description\":\"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!\",\"created_at\":\"2025-09-28T21:28:23.000000Z\",\"updated_at\":\"2025-09-28T21:28:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"ikeja\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1053,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":312,\"uuid\":\"c5a25f74-2dc1-4b51-b43f-f9efd15610bd\",\"collection_name\":\"images\",\"name\":\"68d99a678c6f7.webp\",\"file_name\":\"68d99a678c6f7.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":60366,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1116},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:16.000000Z\",\"updated_at\":\"2025-09-29T02:27:17.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"preview_url\":\"\"}},{\"id\":311,\"user_id\":\"82151\",\"ad_id\":\"15876\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2007 Toyota highlander\",\"title_slug\":\"foreign-used-2007-toyota-highlander\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"15500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"22\",\"keyword\":\"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower\",\"meta_description\":\"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.\",\"created_at\":\"2025-09-28T21:27:39.000000Z\",\"updated_at\":\"2025-09-28T21:27:39.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1043,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"571b3471-15de-4665-a644-21fe42a0c1ce\",\"collection_name\":\"images\",\"name\":\"68d99a3b46178.webp\",\"file_name\":\"68d99a3b46178.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":255048,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1106},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:55.000000Z\",\"updated_at\":\"2025-09-29T02:26:57.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"preview_url\":\"\"}},{\"id\":310,\"user_id\":\"82151\",\"ad_id\":\"97443\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2017 Toyota camry\",\"title_slug\":\"foreign-used-2017-toyota-camry\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"19500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"17\",\"keyword\":\"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident\",\"meta_description\":\"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.\",\"created_at\":\"2025-09-28T21:21:20.000000Z\",\"updated_at\":\"2025-09-28T21:21:20.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1034,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"615d49d8-ffde-441c-a0ac-14dd40995339\",\"collection_name\":\"images\",\"name\":\"68d998c04673f.webp\",\"file_name\":\"68d998c04673f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":238710,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1097},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:37.000000Z\",\"updated_at\":\"2025-09-29T02:26:39.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"preview_url\":\"\"}}],\"has_more\":true,\"pagination\":{\"current_page\":1,\"last_page\":26,\"per_page\":10,\"total\":253}}",
+                            "body": "{\"success\":true,\"data\":[{\"id\":328,\"user_id\":\"82261\",\"ad_id\":\"81404\",\"ad_type\":\"Private\",\"ad_title\":\"Toyota Highlander for sale\",\"title_slug\":\"toyota-highlander-for-sale\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"1000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\\\/div>\",\"state\":\"FCT - Abuja\",\"lga\":\"Gwagwalada\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"87\",\"keyword\":\"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good\",\"meta_description\":\"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;\",\"created_at\":\"2025-11-02T17:34:22.000000Z\",\"updated_at\":\"2025-12-12T14:13:02.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"gwagwalada\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1102,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"8986e5fb-9dc7-4543-b5dc-75f5667cb234\",\"collection_name\":\"images\",\"name\":\"68d52f121818a-large\",\"file_name\":\"690796242394a.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":101674,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"68d52f121818a-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-02T17:34:28.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"preview_url\":\"\"}},{\"id\":287,\"user_id\":\"70656\",\"ad_id\":\"83561\",\"ad_type\":\"Private\",\"ad_title\":\"HERO BIKE\",\"title_slug\":\"hero-bike\",\"category\":\"1\",\"sub_category\":\"22\",\"brand\":\"1012\",\"price\":\"750000\",\"price_type\":\"Negotiable\",\"item_condition\":\"Locally Used\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\\\/div>\",\"state\":\"Osun\",\"lga\":\"Ife Central\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"121\",\"keyword\":\"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv\",\"meta_description\":\"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;\",\"created_at\":\"2025-09-25T12:00:23.000000Z\",\"updated_at\":\"2025-09-25T12:00:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"ife-central\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":914,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"be55ae56-f1f3-4a29-8664-576293a1fa2a\",\"collection_name\":\"images\",\"name\":\"68d520c76b5ff.webp\",\"file_name\":\"68d520c76b5ff.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":247922,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":977},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:22:39.000000Z\",\"updated_at\":\"2025-09-29T02:22:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"preview_url\":\"\"}},{\"id\":314,\"user_id\":\"82261\",\"ad_id\":\"19583\",\"ad_type\":\"Private\",\"ad_title\":\"New 2025 Toyota Corolla LE FWD 4dr Car\",\"title_slug\":\"new-2025-toyota-corolla-le-fwd-4dr-car\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"4000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->The car is a new and forieng used<\\\/div>\",\"state\":\"Anambra\",\"lga\":\"Idemili South\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"48\",\"keyword\":\"2025, toyota, corolla, block, forieng, useddiv\",\"meta_description\":\"The car is a new and forieng used\",\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-11-30T11:30:36.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"idemili-south\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1063,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"b7a75deb-fd92-4b36-ba47-d7fff74f1a75\",\"collection_name\":\"images\",\"name\":\"d2e28f69361fd659185e76017ece2ad5\",\"file_name\":\"68db5c7e6ded4.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119862,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"d2e28f69361fd659185e76017ece2ad5.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-09-30T04:28:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"preview_url\":\"\"}},{\"id\":136,\"user_id\":\"28352\",\"ad_id\":\"82078\",\"ad_type\":\"Private\",\"ad_title\":\"iPhone 11 Pro\",\"title_slug\":\"iphone-11-pro\",\"category\":\"4\",\"sub_category\":\"6\",\"brand\":\"1542\",\"price\":\"269000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Alimosho\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"178\",\"keyword\":\"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234\",\"meta_description\":\"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990\",\"created_at\":\"2025-09-11T17:00:15.000000Z\",\"updated_at\":\"2025-11-13T09:35:24.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"alimosho\",\"contact_price\":\"no\",\"salary\":\"\\u20a6200,000 - \\u20a6220,000\",\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":414,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc\",\"collection_name\":\"images\",\"name\":\"68c2f20f99ac0.webp\",\"file_name\":\"68c2f20f99ac0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":52572,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":499},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:12.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"preview_url\":\"\"}},{\"id\":334,\"user_id\":\"82261\",\"ad_id\":\"20222\",\"ad_type\":\"Private\",\"ad_title\":\"New wig for sale\",\"title_slug\":\"new-wig-for-sale\",\"category\":\"8\",\"sub_category\":\"13\",\"brand\":\"656\",\"price\":\"230000\",\"price_type\":\"Negotiable\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"new wig arrive today for sale\",\"state\":\"Adamawa\",\"lga\":\"Fufure\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"33\",\"keyword\":\"sale, arrive, today\",\"meta_description\":\"new wig arrive today for sale\",\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:00.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"fufure\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1145,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e7bece4c-30a8-435c-ab34-704c8c2f7f7f\",\"collection_name\":\"images\",\"name\":\"IMG_7062\",\"file_name\":\"694245f08bad0.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":16434835,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"IMG_7062.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:06.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"preview_url\":\"\"}},{\"id\":329,\"user_id\":\"82261\",\"ad_id\":\"93361\",\"ad_type\":\"Private\",\"ad_title\":\"I Need a Web Developer\",\"title_slug\":\"i-need-a-web-developer-3\",\"category\":\"18\",\"sub_category\":\"147\",\"brand\":\"4131\",\"price\":null,\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->I need a vert good developer for immediate employment<\\\/div>\",\"state\":\"Ebonyi\",\"lga\":\"Abakaliki\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"need, developer, block, vert, good, immediate, employmentdiv\",\"meta_description\":\"I need a vert good developer for immediate employment\",\"created_at\":\"2025-11-04T03:36:23.000000Z\",\"updated_at\":\"2025-12-12T14:08:28.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"abakaliki\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":\"\\u20a6180,000 - \\u20a6200,000\",\"redirect\":\"Yes\",\"is_featured\":0,\"first_image\":{\"id\":1106,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":329,\"uuid\":\"b6afba5a-e16f-40cd-b832-3a1fd729d2a1\",\"collection_name\":\"images\",\"name\":\"WInter is coming english\",\"file_name\":\"690974b801fca.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":310197,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"WInter is coming english.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-04T03:36:24.000000Z\",\"updated_at\":\"2025-11-04T03:36:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"preview_url\":\"\"}},{\"id\":313,\"user_id\":\"82151\",\"ad_id\":\"97920\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2019 Mercedes Benz Gle350\",\"title_slug\":\"foreign-used-2019-mercedes-benz-gle350\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"266\",\"price\":\"56500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"5\",\"keyword\":\"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather\",\"meta_description\":\"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.\",\"created_at\":\"2025-09-28T21:32:01.000000Z\",\"updated_at\":\"2025-09-28T21:32:01.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1054,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"1425cace-0d95-4a49-94bc-096ed104946e\",\"collection_name\":\"images\",\"name\":\"68d99b4142e49.webp\",\"file_name\":\"68d99b4142e49.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":337178,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1117},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:17.000000Z\",\"updated_at\":\"2025-09-29T02:27:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"preview_url\":\"\"}},{\"id\":312,\"user_id\":\"76917\",\"ad_id\":\"58798\",\"ad_type\":\"Private\",\"ad_title\":\"The IKEJA LAUNDRY\",\"title_slug\":\"the-ikeja-laundry\",\"category\":\"12\",\"sub_category\":\"93\",\"brand\":\"2270\",\"price\":\"25000\",\"price_type\":\"Fixed\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert\",\"meta_description\":\"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!\",\"created_at\":\"2025-09-28T21:28:23.000000Z\",\"updated_at\":\"2025-09-28T21:28:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"ikeja\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1053,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":312,\"uuid\":\"c5a25f74-2dc1-4b51-b43f-f9efd15610bd\",\"collection_name\":\"images\",\"name\":\"68d99a678c6f7.webp\",\"file_name\":\"68d99a678c6f7.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":60366,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1116},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:16.000000Z\",\"updated_at\":\"2025-09-29T02:27:17.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"preview_url\":\"\"}},{\"id\":311,\"user_id\":\"82151\",\"ad_id\":\"15876\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2007 Toyota highlander\",\"title_slug\":\"foreign-used-2007-toyota-highlander\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"15500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"22\",\"keyword\":\"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower\",\"meta_description\":\"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.\",\"created_at\":\"2025-09-28T21:27:39.000000Z\",\"updated_at\":\"2025-09-28T21:27:39.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1043,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"571b3471-15de-4665-a644-21fe42a0c1ce\",\"collection_name\":\"images\",\"name\":\"68d99a3b46178.webp\",\"file_name\":\"68d99a3b46178.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":255048,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1106},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:55.000000Z\",\"updated_at\":\"2025-09-29T02:26:57.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"preview_url\":\"\"}},{\"id\":310,\"user_id\":\"82151\",\"ad_id\":\"97443\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2017 Toyota camry\",\"title_slug\":\"foreign-used-2017-toyota-camry\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"19500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"17\",\"keyword\":\"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident\",\"meta_description\":\"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.\",\"created_at\":\"2025-09-28T21:21:20.000000Z\",\"updated_at\":\"2025-09-28T21:21:20.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1034,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"615d49d8-ffde-441c-a0ac-14dd40995339\",\"collection_name\":\"images\",\"name\":\"68d998c04673f.webp\",\"file_name\":\"68d998c04673f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":238710,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1097},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:37.000000Z\",\"updated_at\":\"2025-09-29T02:26:39.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"preview_url\":\"\"}}],\"has_more\":true,\"pagination\":{\"current_page\":1,\"last_page\":26,\"per_page\":10,\"total\":253}}",
                             "name": ""
                         }
                     ]
@@ -1540,7 +1540,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "21"
+                                    "value": "44"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1601,7 +1601,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "20"
+                                    "value": "43"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1662,7 +1662,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "19"
+                                    "value": "42"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1697,7 +1697,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"search\":\"ljrdtxwomiiqtzhxduh\",\"state_id\":19,\"limit\":16}"
+                            "raw": "{\"search\":\"tfsofkarqnicrcurteiupxzhiwyogvrzkaexvujsngeytmvljwskdikuupolmkosomokocq\",\"state_id\":19,\"limit\":20}"
                         },
                         "description": ""
                     },
@@ -1718,7 +1718,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "18"
+                                    "value": "41"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1743,7 +1743,7 @@
                                 {
                                     "id": "city_id",
                                     "key": "city_id",
-                                    "value": "tempore",
+                                    "value": "aspernatur",
                                     "description": "The ID of the city."
                                 }
                             ]
@@ -1779,7 +1779,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "17"
+                                    "value": "40"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1814,7 +1814,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"sender_station\":\"est\",\"receiver_station\":\"unde\",\"ad_price\":50,\"ad_title\":\"dolor\",\"ad_des\":\"eos\",\"weight\":60,\"quantity\":81}"
+                            "raw": "{\"sender_station\":\"saepe\",\"receiver_station\":\"ab\",\"ad_price\":17,\"ad_title\":\"maiores\",\"ad_des\":\"quia\",\"weight\":6,\"quantity\":43}"
                         },
                         "description": ""
                     },
@@ -1845,19 +1845,19 @@
                             "formdata": [
                                 {
                                     "key": "advert_id",
-                                    "value": "19",
+                                    "value": "9",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the adverts table."
                                 },
                                 {
                                     "key": "receiver_id",
-                                    "value": "doloremque",
+                                    "value": "sunt",
                                     "type": "text",
                                     "description": "The <code>user_id<\/code> of an existing record in the users table."
                                 },
                                 {
                                     "key": "message_content",
-                                    "value": "cemprim",
+                                    "value": "scwoisehcxa",
                                     "type": "text",
                                     "description": "Must not be greater than 1000 characters."
                                 },
@@ -1884,13 +1884,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "quod",
+                                    "value": "aliquid",
                                     "description": ""
                                 },
                                 {
                                     "id": "receiverId",
                                     "key": "receiverId",
-                                    "value": "aliquid",
+                                    "value": "non",
                                     "description": ""
                                 }
                             ]
@@ -2086,7 +2086,7 @@
                                 {
                                     "id": "messageId",
                                     "key": "messageId",
-                                    "value": "doloremque",
+                                    "value": "cupiditate",
                                     "description": ""
                                 }
                             ]
@@ -2119,13 +2119,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "esse",
+                                    "value": "quam",
                                     "description": ""
                                 },
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "nihil",
+                                    "value": "beatae",
                                     "description": ""
                                 }
                             ]
@@ -2168,7 +2168,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"porro\",\"other_user_id\":\"earum\"}"
+                            "raw": "{\"advert_id\":\"eligendi\",\"other_user_id\":\"at\"}"
                         },
                         "description": ""
                     },
@@ -2196,7 +2196,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"ipsa\",\"other_user_id\":\"sunt\"}"
+                            "raw": "{\"advert_id\":\"qui\",\"other_user_id\":\"non\"}"
                         },
                         "description": ""
                     },
@@ -2259,7 +2259,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "et",
+                                    "value": "necessitatibus",
                                     "description": ""
                                 }
                             ]
@@ -2302,7 +2302,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_data\":{\"first_name\":\"repudiandae\",\"last_name\":\"cupiditate\",\"phone\":\"iste\",\"grand_total\":17.5,\"commission\":70.578024,\"shipping_cost\":31.733,\"shipping_method\":14,\"ad\":{\"id\":12,\"price\":212917538.9375},\"reciever_city\":{\"id\":19},\"reciever_state\":{\"id\":2}}}"
+                            "raw": "{\"shipping_data\":{\"first_name\":\"hic\",\"last_name\":\"deleniti\",\"phone\":\"delectus\",\"grand_total\":119521877.46,\"commission\":2783.867121,\"shipping_cost\":120168.09865,\"shipping_method\":14,\"ad\":{\"id\":7,\"price\":563.80886353},\"reciever_city\":{\"id\":7},\"reciever_state\":{\"id\":14}}}"
                         },
                         "description": ""
                     },
@@ -2330,7 +2330,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":2,\"amount\":49,\"boost_type\":\"vel\",\"duration\":37}"
+                            "raw": "{\"advert_id\":16,\"amount\":59,\"boost_type\":\"et\",\"duration\":70}"
                         },
                         "description": ""
                     },
@@ -2348,7 +2348,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "et",
+                                    "value": "deleniti",
                                     "description": ""
                                 }
                             ]
@@ -2517,7 +2517,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reference\":\"molestiae\"}"
+                            "raw": "{\"reference\":\"itaque\"}"
                         },
                         "description": ""
                     },
@@ -2715,7 +2715,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "assumenda",
+                                    "value": "est",
                                     "description": ""
                                 }
                             ]
@@ -2733,7 +2733,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"status\":\"inactive\"}"
+                            "raw": "{\"status\":\"active\"}"
                         },
                         "description": ""
                     },
@@ -2751,7 +2751,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "aut",
+                                    "value": "ullam",
                                     "description": ""
                                 }
                             ]
@@ -2829,7 +2829,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "ea",
+                                    "value": "fuga",
                                     "description": ""
                                 }
                             ]
@@ -2862,7 +2862,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "blanditiis",
+                                    "value": "sint",
                                     "description": ""
                                 }
                             ]
@@ -2940,7 +2940,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "similique",
+                                    "value": "sit",
                                     "description": ""
                                 }
                             ]
@@ -2973,7 +2973,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "odit",
+                                    "value": "sit",
                                     "description": ""
                                 }
                             ]
@@ -2991,7 +2991,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_status\":\"ipsam\"}"
+                            "raw": "{\"shipping_status\":\"omnis\"}"
                         },
                         "description": ""
                     },
@@ -3054,7 +3054,7 @@
                                 {
                                     "id": "sellerId",
                                     "key": "sellerId",
-                                    "value": "aspernatur",
+                                    "value": "impedit",
                                     "description": ""
                                 }
                             ]
@@ -3072,7 +3072,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"rating\":1,\"satisfaction\":1,\"reliable\":2,\"friendly\":1,\"message\":\"xmyjtujowhoajmhjcbmbqq\"}"
+                            "raw": "{\"rating\":1,\"satisfaction\":1,\"reliable\":1,\"friendly\":2,\"message\":\"epymablgtnghjntykrmscyn\"}"
                         },
                         "description": ""
                     },
@@ -3090,7 +3090,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "non",
+                                    "value": "aliquam",
                                     "description": ""
                                 }
                             ]
@@ -3153,7 +3153,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":4}"
+                            "raw": "{\"followee_id\":18}"
                         },
                         "description": ""
                     },
@@ -3207,7 +3207,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "16"
+                                    "value": "39"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3268,7 +3268,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "15"
+                                    "value": "38"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3293,7 +3293,7 @@
                                 {
                                     "id": "brandId",
                                     "key": "brandId",
-                                    "value": "illo",
+                                    "value": "corporis",
                                     "description": ""
                                 }
                             ]
@@ -3329,7 +3329,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "14"
+                                    "value": "37"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3502,25 +3502,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "sijrgurhvqvzttdmvb",
+                                    "value": "kihgddulkdochrrlpglsmgmg",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "scmsgcwaddtqqdxizmdkofoi",
+                                    "value": "zyxpkrjvanbxipp",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "jnirxufykmajukd",
+                                    "value": "apu",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "vmuoihwvvusyeof",
+                                    "value": "gfpsllwt",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -3565,25 +3565,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "qlnc",
+                                    "value": "sphcispqlipmf",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "hjtulzwyrd",
+                                    "value": "sfulasmtelzkigbhygdboupp",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "ouvhjdphjkrebichitsivomg",
+                                    "value": "ilolqdpzfhl",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "nyhiwizwsuwhbbunx",
+                                    "value": "vvwweusv",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -3620,7 +3620,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"phone\":\"voluptas\"}"
+                            "raw": "{\"phone\":\"accusantium\"}"
                         },
                         "description": ""
                     },
@@ -3696,13 +3696,13 @@
                             "formdata": [
                                 {
                                     "key": "document_number",
-                                    "value": "pczfcyvhogmuhopuwrud",
+                                    "value": "dbizuhixenmnadbksnejvwnaf",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "document_type",
-                                    "value": "h",
+                                    "value": "wojg",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
@@ -3789,7 +3789,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"bank_name\":\"cupiditate\",\"paystack_bank_code\":\"magnam\",\"account_number\":\"amet\",\"account_name\":\"architecto\"}"
+                            "raw": "{\"bank_name\":\"quae\",\"paystack_bank_code\":\"doloremque\",\"account_number\":\"aut\",\"account_name\":\"pariatur\"}"
                         },
                         "description": ""
                     },
@@ -3817,7 +3817,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"old_password\":\"non\",\"password\":\"%1ChO~]^lA5u\"}"
+                            "raw": "{\"old_password\":\"dolores\",\"password\":\"hEi^odUmqG\"}"
                         },
                         "description": ""
                     },
@@ -3845,7 +3845,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"notifications\":\"laboriosam\"}"
+                            "raw": "{\"notifications\":\"nostrum\"}"
                         },
                         "description": ""
                     },
@@ -3968,7 +3968,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"in\"}"
+                            "raw": "{\"blocked_id\":\"aperiam\"}"
                         },
                         "description": ""
                     },
@@ -3996,7 +3996,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"similique\"}"
+                            "raw": "{\"blocked_id\":\"ut\"}"
                         },
                         "description": ""
                     },
@@ -4059,7 +4059,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "repellendus",
+                                    "value": "maxime",
                                     "description": ""
                                 }
                             ]
@@ -4112,7 +4112,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "magnam",
+                                    "value": "iusto",
                                     "description": ""
                                 }
                             ]
@@ -4351,7 +4351,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"duration_days\":24}"
+                            "raw": "{\"duration_days\":15}"
                         },
                         "description": ""
                     },
@@ -4422,7 +4422,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "et",
+                                    "value": "enim",
                                     "description": ""
                                 }
                             ]
@@ -4475,7 +4475,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "ullam",
+                                    "value": "ea",
                                     "description": ""
                                 }
                             ]
@@ -4517,7 +4517,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "ab",
+                                    "value": "esse",
                                     "description": ""
                                 }
                             ]
@@ -4578,7 +4578,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "13"
+                                    "value": "36"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -4631,7 +4631,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "12"
+                                    "value": "35"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -4639,7 +4639,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IkMzRWcvOHArTENFMlVUa1ljTEJ3b0E9PSIsInZhbHVlIjoiWXppSkJNWlhoemc2S1VKZ0hPTjJKS1B1MWZnSDJSR1JMRlUweUM2MGFhVTAxZnBrR3hrRWpkR3FVQWRsM1BJR3VuVU9TV056T2creGFjYSsydVVlRzYxVWs2c0lUemg5aDN1ZU1rbmdWV0lEcHYzdERTSUNoWmh2VjFzQ1lOdGgiLCJtYWMiOiIxMDNmMjlmMzQ5MGJmNGRlYjhkZmFiNDgwMjE3NWVjNDRkYzczMGE4OGU4ZjliODZiNzI5NGFmNmFlZjFiZmQxIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6IjRSWDljeXJkMkoyNC94MXBwSmVHemc9PSIsInZhbHVlIjoienQ4S2xCT00xallSWHY3TEI1eW1wMFZmTkh0RWJJZzJmak1hRVNnZGtVanlXWWhzR2Nwc0lrQVZ4R0ZlcUJpNUd6VVZRd3BLaS9McjlHeHdHWmdxbVFCdm5HNnVQUnhDM3duVkcwYjZnNHRscVU1L1hXRkVVdWxqeTE5ejA5ZjciLCJtYWMiOiI0YTZjMzA5MmYyNDQ0MGYyNTgzN2MzMGI4ZDYzZjQzOGMxNWE2NjE4MzQ2ZjYyMDQ4NWVlMmJlNjdiZWQ1YmNkIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6ImNuazlpMW9pVWprckZUNUgrVGpLbkE9PSIsInZhbHVlIjoieFRqTjV5Q2hnQ0JTanI1N01LaUs3K3AvUWgwUS9tTDU0b2lud0cxSjR3VU5JZng5Y3FKMENkNUk5dDdWV1NmUlBVNFdvalhtSkpwNVJxMUxobEJockZMQUpMWklJYnF4SCtmSnQrTkxLMmZFMW96UStTU3lFZEhRcWpYblAzQlAiLCJtYWMiOiJlNTk1OTIxYjE2MzZhZDVlZTE1ZDlhOWRjZTdkZTU5ZDAwMGU4ZjMyYTc5M2ZiYWQ3NDMyNTk5NmM3MzQ4ZmNhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6Im4vQ1NWVGRmc01CN1VyRlhLbnhCRHc9PSIsInZhbHVlIjoiWjhQRG5aWkxFYVQwTlJKYXg4MmlsMURXVTU2UXZwWUU3b1QzMm12Nk1BZzRrMytvNmNENVFMalc0eDRLQjBiYzRQWUtUVEp1V3RTY09JYUdrdlprU2lzY241cSsvaW9icFFReDYrK2EwcjZwOEhPNmZLSzB6bEloK0ZyMXBtcXMiLCJtYWMiOiJjMzYwNWU0MmY2MjQ2OGQ5ZTNjNmFiZTFkZThiOTFlYTU3ZTY5NThmZDcxN2ZkODBhYTgxMWY5YzAwYjI5NDlhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 200,
@@ -4660,7 +4660,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "cumque",
+                                    "value": "perspiciatis",
                                     "description": ""
                                 }
                             ]
@@ -4696,7 +4696,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6ImQwWS9jU2E3d2NtRFYyM01yZzVtSUE9PSIsInZhbHVlIjoiMjRkZnlOUGJwWkY5b1NGZm45WkdIeGJjaTkweVlPeTVhc29pVWtEZ2R0VGF4UVYrc1hhNGY2ZzhwWHRnZHR6MHJjZkVORTNLbDJTQXdpd2YxNTF4SmQ0RUk3eUZRUjliRUhvSHFnanB5R2V2V1l3YktIdzlFY3ZjNkprZUx6SUMiLCJtYWMiOiIzZjdlN2RiYTAxZjg1ZWZjMmM0ZjA5ZjMxNDM3NGIwN2VmYThhNTY4NzZjOTdjNjQzOTFmY2ViZWZkZjNiMjYzIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6IjFmdFc3b3dqNk12aFB0Ny9XVmMzL1E9PSIsInZhbHVlIjoiZk9HVzh3QlNSM3JpVFhLeEVld3I5YkNHTktVdURON3F1d05oZDQrVXZvZ1lpZEYwN1NBb2pWZk84QnZuem9xdURpaDNoM25odmJhaUZCaG1aUExsUEsySXV0Y3hidGxwQnFFWHA0My9oQkQvajcrTW5oZFFSektvRi81bVUzTEMiLCJtYWMiOiIzZTYxODc1MzFkNzVmZGNkNmI4ZGFmMTY0NzgxYWNmODY0YTA3YjMwNGEwZmUwZjVhMzQ2ZjJhM2EwYzA0ODBmIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IkNZcVM1Y0ZNYXhkcWRJY2RGNTlDMEE9PSIsInZhbHVlIjoidXJZaTZ4TUs3UzFqRFY3UzBIN24wb1RyQ0hZY013blY2NCtGcld3MlYzM2drbGJQQkh2QWY1TDJta25paVVDck9XY3RNQ0RlOVNjOTlId0Q0RXhML0lKSXBULzRKbGdMTTFBOXVodlNJcENYUXU3Tm8zeklZbHJDWEhndktpcHMiLCJtYWMiOiIwOTc0Y2NkZmM1ODRlZWFmZjRhNTZlODhmYWIzNWU1NmE2NTE2YjljMGEzNmZlMjBlYmM2MDRjYjJkOGEzNDQzIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6Ik56QS8wSlF1Z1V0STJsWXNQV3ZRaWc9PSIsInZhbHVlIjoiT1VacDduWVRUaU9PUStRZGxvSmRQUkI1NndzQk15eGN4RC9xbWRya200NDAzUUsvbkhNdVpSUXZwa00wWElhdlBLNXQwRTRQdlB4UU10ekVjb29INC9DVGt4UzNaSmJDRlU3QlhnSTEvNGdnaExuZXdQcmZ5Yis1clBLWkNzODIiLCJtYWMiOiJlNGVhOTdjZWRhNzJmZjc5M2I3NzQyZTEwODIzY2M0YTU4ZmVjYzMyN2M2YmM4MjcxNTMwMDAyMjM5Mjk5M2IyIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 200,
@@ -4727,7 +4727,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":\"doloribus\"}"
+                            "raw": "{\"followee_id\":\"unde\"}"
                         },
                         "description": ""
                     },

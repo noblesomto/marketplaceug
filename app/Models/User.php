@@ -261,24 +261,21 @@ class User extends Authenticatable implements HasMedia
         return $this->getFirstMediaUrl('profile_image', 'optimized');
     }
 
-    public function getProfileThumbnailUrlAttribute(): ?string
+    public function getProfileThumbnailUrlAttribute(): string
     {
         if ($this->hasMedia('profile_image')) {
             return $this->getFirstMediaUrl('profile_image', 'thumbnail');
         }
 
-        // Inline SVG fallback (simple avatar)
+        $initials = \App\Helpers\AvatarHelper::generateInitials($this->name);
+        $bgColor = \App\Helpers\AvatarHelper::generateColor($this->name);
+
         $svg = <<<SVG
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
-                <!-- Gray rounded background -->
-                <rect width="24" height="24" rx="12" fill="#e5e7eb"/>
-
-                <!-- User icon -->
-                <circle cx="12" cy="7" r="5" fill="#9ca3af"/>
-                <path d="M12 14c-5 0-9 2.5-9 5v2h18v-2c0-2.5-4-5-9-5z" fill="#9ca3af"/>
-            </svg>
-            SVG;
-
+        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+            <rect width="128" height="128" fill="{$bgColor}" rx="64"/>
+            <text x="50%" y="50%" text-anchor="middle" dy="0.35em" font-family="Arial, sans-serif" font-size="48" font-weight="600" fill="white">{$initials}</text>
+        </svg>
+        SVG;
 
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }

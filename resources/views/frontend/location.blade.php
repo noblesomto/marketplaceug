@@ -3,6 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
+
 <section class="w-full max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-2">
       <div class="col-span-2  hidden sm:block">
@@ -10,10 +11,10 @@
       </div>
       <div class="col-span-12 xl:col-span-8">
         <div class="grid grid-cols-12 gap-3">
-           <div class="col-span-4 hidden sm:block p-2 ">
+           <div class="col-span-3 hidden sm:block p-2 ">
              @include('frontend.components.home.side-categories')
            </div>
-           <div class="col-span-12 md:col-span-8">
+           <div class="col-span-12 md:col-span-9">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>

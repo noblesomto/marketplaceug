@@ -1,5 +1,4 @@
 
-
 <!-- Discover what's trending Section -->
 <section class="bg-white px-2">
     <div class="flex justify-start items-center ml-2 my-1 text-gray-500">
@@ -62,14 +61,14 @@
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
-                                    <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
+                                    <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                                 </span>
                             </div>
                         @endif
                         @if($row->views >= setViews())
-                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
+                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
                             <span title="Popular Ad">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
                             </span>
@@ -87,7 +86,7 @@
                         @endif
                     </div>
                 </div>
-                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
+                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 40) }}</p>
                 <div class="flex justify-between">
                     @if($row->category==3)
                     <span class="text-sm font-bold text-green-600">
@@ -178,14 +177,14 @@
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
-                                    <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
+                                    <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                                 </span>
                             </div>
                         @endif
                         @if($row->views >= setViews())
-                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
+                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
                             <span title="Popular Ad">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
                             </span>
@@ -203,7 +202,7 @@
                         @endif
                     </div>
                 </div>
-                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
+                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 40) }}</p>
                 <div class="flex justify-between">
                     @if($row->category==3)
                     <span class="text-sm font-bold text-green-600">
@@ -294,14 +293,14 @@
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
-                                    <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
+                                    <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                                 </span>
                             </div>
                         @endif
                         @if($row->views >= setViews())
-                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[13px]">
+                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
                             <span title="Popular Ad">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
                             </span>
@@ -319,7 +318,7 @@
                         @endif
                     </div>
                 </div>
-                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
+                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 40) }}</p>
                 <div class="flex justify-between">
                     @if($row->category==3)
                     <span class="text-sm font-bold text-green-600">
@@ -410,14 +409,14 @@
                         @if($row->owner->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
-                                    <i class="bi bi-patch-check-fill text-xl text-secondary_dark"></i>
+                                    <i class="bi bi-patch-check-fill text-secondary_dark"></i>
                                 </span>
                             </div>
                         @endif
                         @if($row->views >= setViews())
-                        <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 text-[12px]">
+                        <div class="bg-white opacity-8 flex py-1 px-2 rounded text-[13px]">
                             <span title="Popular Ad">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
                                     <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
                                 </svg>
                             </span>
@@ -435,7 +434,7 @@
                         @endif
                     </div>
                 </div>
-                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 15) }}</p>
+                <p class="text-sm text-gray-600 leading-4 mt-1">{{ Str::limit($row->ad_title, 40) }}</p>
                 <div class="flex justify-between">
                     @if($row->category==3)
                     <span class="text-sm font-bold text-green-600">

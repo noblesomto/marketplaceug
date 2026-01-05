@@ -36,14 +36,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '36'
+          x-ratelimit-remaining: '59'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer f8DacE4bvh36a5kZdPV6e1g'
+      - 'Bearer a61EvfdZcDba3P4gek68hV5'
     controller: null
     method: null
     route: null
@@ -78,7 +78,7 @@ endpoints:
         name: acc_type
         description: ''
         required: true
-        example: qui
+        example: aperiam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -89,7 +89,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 100 characters.'
         required: true
-        example: zesbjfuqa
+        example: uqakkoxlfsydbniosgyxedej
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -100,7 +100,7 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: quo
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -111,7 +111,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: major59@example.net
+        example: kbode@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -122,25 +122,25 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: 'fKXL\5h{}''f.'
+        example: '<F7`sP[RHafuk_l37nV.'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      acc_type: qui
-      name: zesbjfuqa
-      phone: quo
-      email: major59@example.net
-      password: 'fKXL\5h{}''f.'
+      acc_type: aperiam
+      name: uqakkoxlfsydbniosgyxedej
+      phone: est
+      email: kbode@example.com
+      password: '<F7`sP[RHafuk_l37nV.'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer gZ6d64aak1Ee8PcvV5f3hbD'
+      - 'Bearer 6Dhd41Vk5aeba8EgvcZ3fP6'
     controller: null
     method: null
     route: null
@@ -175,7 +175,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: olueilwitz@example.com
+        example: vallie41@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -186,22 +186,22 @@ endpoints:
         name: password
         description: 'Must be at least 4 characters.'
         required: true
-        example: '`/bSJp0Y$Vc6b'
+        example: 'FeY#pb&VCUNS%*32lr'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: olueilwitz@example.com
-      password: '`/bSJp0Y$Vc6b'
+      email: vallie41@example.net
+      password: 'FeY#pb&VCUNS%*32lr'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3Dhv1bea546EgfkacZ6dVP8'
+      - 'Bearer 3c8a5ab4h6kPZEDf6vVdg1e'
     controller: null
     method: null
     route: null
@@ -236,7 +236,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: cole.isai@example.com
+        example: braeden72@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -247,7 +247,7 @@ endpoints:
         name: otp
         description: 'Must be 6 digits.'
         required: true
-        example: '217734'
+        example: '695486'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -265,8 +265,8 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: cole.isai@example.com
-      otp: '217734'
+      email: braeden72@example.net
+      otp: '695486'
       trust_device: true
     fileParameters: []
     responses: []
@@ -274,7 +274,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer fahg3aDeZPc8dbV4v16kE65'
+      - 'Bearer hZgavDc8kb6345P1eV6faEd'
     controller: null
     method: null
     route: null
@@ -309,21 +309,21 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: shea38@example.org
+        example: greenfelder.melba@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: shea38@example.org
+      email: greenfelder.melba@example.net
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer caPfh1gDb66dV5kZ3v8a4Ee'
+      - 'Bearer ve3bh6cdZafE415kPV6Dg8a'
     controller: null
     method: null
     route: null
@@ -354,7 +354,7 @@ endpoints:
         name: email
         description: ''
         required: true
-        example: ojacobi@example.net
+        example: gparisian@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -365,15 +365,15 @@ endpoints:
         name: token
         description: ''
         required: true
-        example: maiores
+        example: id
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      email: ojacobi@example.net
-      token: maiores
+      email: gparisian@example.com
+      token: id
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -388,14 +388,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '35'
+          x-ratelimit-remaining: '58'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer b61f68E54eZchg3DvkPdVaa'
+      - 'Bearer aPDb5c6Evh6ge4Zafk8V31d'
     controller: null
     method: null
     route: null
@@ -430,21 +430,21 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: maybell.weissnat@example.com
+        example: obrakus@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: maybell.weissnat@example.com
+      email: obrakus@example.org
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer d1a8fV5Dbe6PZa3cE4k6vgh'
+      - 'Bearer dk41Zaa8bgPv6V635ecEfhD'
     controller: null
     method: null
     route: null
@@ -479,21 +479,21 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: lind.brett@example.net
+        example: marianne.mann@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: lind.brett@example.net
+      email: marianne.mann@example.net
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eE5acadg6kvDP6481bVZf3h'
+      - 'Bearer vcaaDg1dehk5ZE6438fVbP6'
     controller: null
     method: null
     route: null
@@ -524,7 +524,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: excepturi
+        example: dolorem
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -535,15 +535,15 @@ endpoints:
         name: token
         description: ''
         required: true
-        example: culpa
+        example: ullam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: excepturi
-      token: culpa
+      user_id: dolorem
+      token: ullam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -552,21 +552,21 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: zjen(22>I-y
+        example: U/H~2Bw2Po.$06
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      password: zjen(22>I-y
+      password: U/H~2Bw2Po.$06
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1ehbaZav4f568d63PVEckDg'
+      - 'Bearer 6gEveV5aPkb8da16f43DZhc'
     controller: null
     method: null
     route: null
@@ -603,7 +603,7 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: google
+        example: facebook
         type: string
         enumValues:
           - google
@@ -616,7 +616,7 @@ endpoints:
         name: access_token
         description: ''
         required: true
-        example: voluptas
+        example: repellat
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -627,23 +627,23 @@ endpoints:
         name: device_name
         description: ''
         required: false
-        example: ipsum
+        example: id
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      provider: google
-      access_token: voluptas
-      device_name: ipsum
+      provider: facebook
+      access_token: repellat
+      device_name: id
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer PDgaZavV86k31hE4d6becf5'
+      - 'Bearer 1eE3PZ8agVcDvh54fkd6a6b'
     controller: null
     method: null
     route: null
@@ -674,14 +674,14 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: et
+        example: rerum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      provider: et
+      provider: rerum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -696,14 +696,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '34'
+          x-ratelimit-remaining: '57'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 684Pha5v63egfkDZ1VEabcd'
+      - 'Bearer 81d4kgfacV5hvDZae3E6Pb6'
     controller: null
     method: null
     route: null
@@ -734,14 +734,14 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: quam
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      provider: quam
+      provider: aut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -756,14 +756,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '33'
+          x-ratelimit-remaining: '56'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer vVgec51366db4Zfh8PkaDaE'
+      - 'Bearer dc516v6ZE3g4fhePkabVaD8'
     controller: null
     method: null
     route: null
@@ -807,7 +807,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3Pg1ahcak6bvZdDe4E68Vf5'
+      - 'Bearer 6Pe4V8abh3gvD5dZ16Ekafc'
     controller: null
     method: null
     route: null
@@ -844,7 +844,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3bkVvZE4Dagh5P6dca6e1f8'
+      - 'Bearer 86PZ5cvegaDb1a3k4fVd6hE'
     controller: null
     method: null
     route: null
@@ -875,14 +875,14 @@ endpoints:
         name: device_id
         description: 'The ID of the device.'
         required: true
-        example: eos
+        example: sapiente
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      device_id: eos
+      device_id: sapiente
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -893,7 +893,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer deb4PZg6v1faVa38hc6D5Ek'
+      - 'Bearer 6e854VaZEbfP63kdg1hvcaD'
     controller: null
     method: null
     route: null
@@ -924,14 +924,14 @@ endpoints:
         name: seller_id
         description: 'The ID of the seller.'
         required: true
-        example: similique
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      seller_id: similique
+      seller_id: quia
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -946,14 +946,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '32'
+          x-ratelimit-remaining: '55'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer af6ED61ZVPae4gbc358hvkd'
+      - 'Bearer V3Da81Pfeag5hvc6Z4kbdE6'
     controller: null
     method: null
     route: null
@@ -994,14 +994,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '31'
+          x-ratelimit-remaining: '54'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer a8651vdeVfD6kcZgab3h4EP'
+      - 'Bearer gkba8hde35aP6D4fvZcEV61'
     controller: null
     method: null
     route: null
@@ -1054,14 +1054,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '30'
+          x-ratelimit-remaining: '53'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer ZP8hfd5g6Dak4V3veb16Eac'
+      - 'Bearer 6vkZgacbEf8PVh61d4e3D5a'
     controller: null
     method: null
     route: null
@@ -1103,7 +1103,7 @@ endpoints:
         name: subcat_slug
         description: 'The slug of the subcat.'
         required: true
-        example: repellat
+        example: quasi
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1111,7 +1111,7 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       category_slug: 1
-      subcat_slug: repellat
+      subcat_slug: quasi
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1126,14 +1126,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '29'
+          x-ratelimit-remaining: '52'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer bfahE86vZgack5V4Pd163eD'
+      - 'Bearer vV4Zd8Ebh3agkf1D6e6c5Pa'
     controller: null
     method: null
     route: null
@@ -1164,7 +1164,7 @@ endpoints:
         name: category_slug
         description: 'The slug of the category.'
         required: true
-        example: ut
+        example: laboriosam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1175,7 +1175,7 @@ endpoints:
         name: subcat_slug
         description: 'The slug of the subcat.'
         required: true
-        example: dignissimos
+        example: culpa
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1186,16 +1186,16 @@ endpoints:
         name: brand_slug
         description: 'The slug of the brand.'
         required: true
-        example: voluptatem
+        example: quod
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      category_slug: ut
-      subcat_slug: dignissimos
-      brand_slug: voluptatem
+      category_slug: laboriosam
+      subcat_slug: culpa
+      brand_slug: quod
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1210,14 +1210,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '28'
+          x-ratelimit-remaining: '51'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1aZeg6V3da5vb8Dckhf4PE6'
+      - 'Bearer g1afkEZ8D5Vv4e63bPda6hc'
     controller: null
     method: null
     route: null
@@ -1248,14 +1248,14 @@ endpoints:
         name: state_slug
         description: 'The slug of the state.'
         required: true
-        example: qui
+        example: ea
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      state_slug: qui
+      state_slug: ea
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1265,19 +1265,19 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"success":true,"data":{"ads":[],"location":"qui","has_more":false,"next_page":2}}'
+        content: '{"success":true,"data":{"ads":[],"location":"ea","has_more":false,"next_page":2}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '27'
+          x-ratelimit-remaining: '50'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer Va866Pke4gb5aZhEd13fcDv'
+      - 'Bearer fk1VvhD566E8Zbegacda43P'
     controller: null
     method: null
     route: null
@@ -1323,7 +1323,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4366Va1gvZ5hfdeEa8bcDkP'
+      - 'Bearer 6vDa34Vcfag8Z6kPEeb5d1h'
     controller: null
     method: null
     route: null
@@ -1369,7 +1369,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Eack5vdfVDZ4a36h1Pe8gb6'
+      - 'Bearer 6a4akcvb3gPfZh1E658dDeV'
     controller: null
     method: null
     route: null
@@ -1416,7 +1416,7 @@ endpoints:
         name: subject
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: psuzg
+        example: hciexulgywigq
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1427,22 +1427,22 @@ endpoints:
         name: message
         description: ''
         required: true
-        example: expedita
+        example: repellat
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      subject: psuzg
-      message: expedita
+      subject: hciexulgywigq
+      message: repellat
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer gPhkDV16b3Z5v6ac4Efaed8'
+      - 'Bearer V61gc3Ddba8eh5PE6ak4fvZ'
     controller: null
     method: null
     route: null
@@ -1489,21 +1489,21 @@ endpoints:
         name: message
         description: ''
         required: true
-        example: reprehenderit
+        example: officiis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      message: reprehenderit
+      message: officiis
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer k1ahf5VcbZv6Ed64a3Pge8D'
+      - 'Bearer gbhc8eP6a64vZ5akDdE1V3f'
     controller: null
     method: null
     route: null
@@ -1536,7 +1536,7 @@ endpoints:
         name: product
         description: 'Must be at least 3 characters.'
         required: false
-        example: gzzfegwqyh
+        example: enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1598,25 +1598,25 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      product: gzzfegwqyh
+      product: enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj
     fileParameters: []
     responses:
       -
         custom: []
         status: 200
-        content: '{"success":true,"data":[],"pagination":{"current_page":1,"last_page":1,"per_page":10,"total":0,"has_more":false},"search_params":{"product":"gzzfegwqyh","location":null,"category":null,"sub_category":null,"brand":null,"buydirect":null}}'
+        content: '{"success":true,"data":[],"pagination":{"current_page":1,"last_page":1,"per_page":10,"total":0,"has_more":false},"search_params":{"product":"enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj","location":null,"category":null,"sub_category":null,"brand":null,"buydirect":null}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '26'
+          x-ratelimit-remaining: '49'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer e3v4a6Zba5khDdP6f1VgE8c'
+      - 'Bearer 3E5gD4ea8ba1VPck6hZdfv6'
     controller: null
     method: null
     route: null
@@ -1651,7 +1651,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer cb6k35vafhZ6dEePDgVa184'
+      - 'Bearer cV8d6he1f3bgD5aa4kE6ZvP'
     controller: null
     method: null
     route: null
@@ -1686,7 +1686,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dVahfPka566Z8b4EeDc13vg'
+      - 'Bearer Efvdc1VbD85eP4k6hZa6ga3'
     controller: null
     method: null
     route: null
@@ -1721,7 +1721,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer f35hZaPdgaD68vVEe16bk4c'
+      - 'Bearer Vb86hEdcakaZ6g4vP513Def'
     controller: null
     method: null
     route: null
@@ -1750,7 +1750,7 @@ endpoints:
         name: location
         description: 'The location.'
         required: true
-        example: et
+        example: tempore
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1761,15 +1761,15 @@ endpoints:
         name: slug
         description: 'The slug of the {location}.'
         required: true
-        example: sunt
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      location: et
-      slug: sunt
+      location: tempore
+      slug: est
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1784,14 +1784,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '25'
+          x-ratelimit-remaining: '48'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer dg1fZca6VEbvh8e653aPk4D'
+      - 'Bearer fD13v6a5a4hPdecbk6E8VZg'
     controller: null
     method: null
     route: null
@@ -1830,14 +1830,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '24'
+          x-ratelimit-remaining: '47'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6P8f1kdveDcVaa63h4gZ5bE'
+      - 'Bearer Pf6bDaeg8Z1acdE34hvV56k'
     controller: null
     method: null
     route: null
@@ -1870,14 +1870,14 @@ endpoints:
         name: q
         description: 'Must be at least 2 characters.'
         required: true
-        example: zcopxuvdsgkepicfukguyiiiqhlxxrxvhebdhndkaagvoaijpsqtsmchfgvwylwlouwpgxmkmqrftzjufkyjoxx
+        example: pnoekxcaynoq
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      q: zcopxuvdsgkepicfukguyiiiqhlxxrxvhebdhndkaagvoaijpsqtsmchfgvwylwlouwpgxmkmqrftzjufkyjoxx
+      q: pnoekxcaynoq
     fileParameters: []
     responses:
       -
@@ -1888,14 +1888,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '23'
+          x-ratelimit-remaining: '46'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer aD6gkacePdEb3f65Z81vVh4'
+      - 'Bearer va8ah6fe3kDb64cgPd5E1VZ'
     controller: null
     method: null
     route: null
@@ -1929,19 +1929,19 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"success":true,"data":[{"id":287,"user_id":"70656","ad_id":"83561","ad_type":"Private","ad_title":"HERO BIKE","title_slug":"hero-bike","category":"1","sub_category":"22","brand":"1012","price":"750000","price_type":"Negotiable","item_condition":"Locally Used","quantity":1,"buy_direct":"No","description":"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\/div>","state":"Osun","lga":"Ife Central","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"121","keyword":"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv","meta_description":"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;","created_at":"2025-09-25T12:00:23.000000Z","updated_at":"2025-09-25T12:00:23.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"ife-central","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":914,"model_type":"App\\Models\\Advert","model_id":287,"uuid":"be55ae56-f1f3-4a29-8664-576293a1fa2a","collection_name":"images","name":"68d520c76b5ff.webp","file_name":"68d520c76b5ff.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":247922,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":977},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:22:39.000000Z","updated_at":"2025-09-29T02:22:41.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/914\/68d520c76b5ff.webp","preview_url":""}},{"id":136,"user_id":"28352","ad_id":"82078","ad_type":"Private","ad_title":"iPhone 11 Pro","title_slug":"iphone-11-pro","category":"4","sub_category":"6","brand":"1542","price":"269000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"Yes","description":"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\/div>","state":"Lagos","lga":"Alimosho","ad_status":"active","featured":"Yes","shipment":"Ship","shipping":null,"views":"178","keyword":"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234","meta_description":"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990","created_at":"2025-09-11T17:00:15.000000Z","updated_at":"2025-11-13T09:35:24.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"alimosho","contact_price":"no","salary":"\u20a6200,000 - \u20a6220,000","expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":414,"model_type":"App\\Models\\Advert","model_id":136,"uuid":"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc","collection_name":"images","name":"68c2f20f99ac0.webp","file_name":"68c2f20f99ac0.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":52572,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":499},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-24T00:55:12.000000Z","updated_at":"2025-09-24T00:55:12.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/414\/68c2f20f99ac0.webp","preview_url":""}},{"id":314,"user_id":"82261","ad_id":"19583","ad_type":"Private","ad_title":"New 2025 Toyota Corolla LE FWD 4dr Car","title_slug":"new-2025-toyota-corolla-le-fwd-4dr-car","category":"1","sub_category":"2","brand":"832","price":"4000000","price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->The car is a new and forieng used<\/div>","state":"Anambra","lga":"Idemili South","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"48","keyword":"2025, toyota, corolla, block, forieng, useddiv","meta_description":"The car is a new and forieng used","created_at":"2025-09-30T04:28:46.000000Z","updated_at":"2025-11-30T11:30:36.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"idemili-south","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1063,"model_type":"App\\Models\\Advert","model_id":314,"uuid":"b7a75deb-fd92-4b36-ba47-d7fff74f1a75","collection_name":"images","name":"d2e28f69361fd659185e76017ece2ad5","file_name":"68db5c7e6ded4.webp","mime_type":"image\/jpeg","disk":"spatie","conversions_disk":"spatie","size":119862,"manipulations":[],"custom_properties":{"position":1,"original_name":"d2e28f69361fd659185e76017ece2ad5.jpg"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-30T04:28:46.000000Z","updated_at":"2025-09-30T04:28:47.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1063\/68db5c7e6ded4.webp","preview_url":""}},{"id":334,"user_id":"82261","ad_id":"20222","ad_type":"Private","ad_title":"New wig for sale","title_slug":"new-wig-for-sale","category":"8","sub_category":"13","brand":"656","price":"230000","price_type":"Negotiable","item_condition":"New","quantity":1,"buy_direct":"Yes","description":"new wig arrive today for sale","state":"Adamawa","lga":"Fufure","ad_status":"active","featured":"Yes","shipment":"Ship","shipping":null,"views":"33","keyword":"sale, arrive, today","meta_description":"new wig arrive today for sale","created_at":"2025-12-17T05:56:00.000000Z","updated_at":"2025-12-17T05:56:00.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"fufure","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1145,"model_type":"App\\Models\\Advert","model_id":334,"uuid":"e7bece4c-30a8-435c-ab34-704c8c2f7f7f","collection_name":"images","name":"IMG_7062","file_name":"694245f08bad0.webp","mime_type":"image\/png","disk":"spatie","conversions_disk":"spatie","size":16434835,"manipulations":[],"custom_properties":{"position":1,"original_name":"IMG_7062.png"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true,"thumb-sm":true,"thumb-md":true},"responsive_images":[],"order_column":1,"created_at":"2025-12-17T05:56:00.000000Z","updated_at":"2025-12-17T05:56:06.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1145\/694245f08bad0.webp","preview_url":""}},{"id":328,"user_id":"82261","ad_id":"81404","ad_type":"Private","ad_title":"Toyota Highlander for sale","title_slug":"toyota-highlander-for-sale","category":"1","sub_category":"2","brand":"832","price":"1000000","price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\/div>","state":"FCT - Abuja","lga":"Gwagwalada","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"87","keyword":"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good","meta_description":"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;","created_at":"2025-11-02T17:34:22.000000Z","updated_at":"2025-12-12T14:13:02.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"gwagwalada","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1102,"model_type":"App\\Models\\Advert","model_id":328,"uuid":"8986e5fb-9dc7-4543-b5dc-75f5667cb234","collection_name":"images","name":"68d52f121818a-large","file_name":"690796242394a.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":101674,"manipulations":[],"custom_properties":{"position":1,"original_name":"68d52f121818a-large.webp"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-11-02T17:34:28.000000Z","updated_at":"2025-11-03T04:54:43.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1102\/690796242394a.webp","preview_url":""}},{"id":329,"user_id":"82261","ad_id":"93361","ad_type":"Private","ad_title":"I Need a Web Developer","title_slug":"i-need-a-web-developer-3","category":"18","sub_category":"147","brand":"4131","price":null,"price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->I need a vert good developer for immediate employment<\/div>","state":"Ebonyi","lga":"Abakaliki","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"4","keyword":"need, developer, block, vert, good, immediate, employmentdiv","meta_description":"I need a vert good developer for immediate employment","created_at":"2025-11-04T03:36:23.000000Z","updated_at":"2025-12-12T14:08:28.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"abakaliki","contact_price":"no","salary":null,"expected_salary":"\u20a6180,000 - \u20a6200,000","redirect":"Yes","is_featured":0,"first_image":{"id":1106,"model_type":"App\\Models\\Advert","model_id":329,"uuid":"b6afba5a-e16f-40cd-b832-3a1fd729d2a1","collection_name":"images","name":"WInter is coming english","file_name":"690974b801fca.webp","mime_type":"image\/jpeg","disk":"spatie","conversions_disk":"spatie","size":310197,"manipulations":[],"custom_properties":{"position":1,"original_name":"WInter is coming english.jpg"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-11-04T03:36:24.000000Z","updated_at":"2025-11-04T03:36:25.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1106\/690974b801fca.webp","preview_url":""}},{"id":313,"user_id":"82151","ad_id":"97920","ad_type":"Private","ad_title":"Foreign Used 2019 Mercedes Benz Gle350","title_slug":"foreign-used-2019-mercedes-benz-gle350","category":"1","sub_category":"2","brand":"266","price":"56500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"5","keyword":"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather","meta_description":"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.","created_at":"2025-09-28T21:32:01.000000Z","updated_at":"2025-09-28T21:32:01.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1054,"model_type":"App\\Models\\Advert","model_id":313,"uuid":"1425cace-0d95-4a49-94bc-096ed104946e","collection_name":"images","name":"68d99b4142e49.webp","file_name":"68d99b4142e49.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":337178,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1117},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:27:17.000000Z","updated_at":"2025-09-29T02:27:19.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1054\/68d99b4142e49.webp","preview_url":""}},{"id":312,"user_id":"76917","ad_id":"58798","ad_type":"Private","ad_title":"The IKEJA LAUNDRY","title_slug":"the-ikeja-laundry","category":"12","sub_category":"93","brand":"2270","price":"25000","price_type":"Fixed","item_condition":"New","quantity":1,"buy_direct":"No","description":"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\/div>","state":"Lagos","lga":"Ikeja","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"4","keyword":"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert","meta_description":"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!","created_at":"2025-09-28T21:28:23.000000Z","updated_at":"2025-09-28T21:28:23.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"ikeja","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1053,"model_type":"App\\Models\\Advert","model_id":312,"uuid":"c5a25f74-2dc1-4b51-b43f-f9efd15610bd","collection_name":"images","name":"68d99a678c6f7.webp","file_name":"68d99a678c6f7.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":60366,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1116},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:27:16.000000Z","updated_at":"2025-09-29T02:27:17.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1053\/68d99a678c6f7.webp","preview_url":""}},{"id":311,"user_id":"82151","ad_id":"15876","ad_type":"Private","ad_title":"Foreign Used 2007 Toyota highlander","title_slug":"foreign-used-2007-toyota-highlander","category":"1","sub_category":"2","brand":"832","price":"15500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"22","keyword":"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower","meta_description":"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.","created_at":"2025-09-28T21:27:39.000000Z","updated_at":"2025-09-28T21:27:39.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1043,"model_type":"App\\Models\\Advert","model_id":311,"uuid":"571b3471-15de-4665-a644-21fe42a0c1ce","collection_name":"images","name":"68d99a3b46178.webp","file_name":"68d99a3b46178.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":255048,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1106},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:26:55.000000Z","updated_at":"2025-09-29T02:26:57.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1043\/68d99a3b46178.webp","preview_url":""}},{"id":310,"user_id":"82151","ad_id":"97443","ad_type":"Private","ad_title":"Foreign Used 2017 Toyota camry","title_slug":"foreign-used-2017-toyota-camry","category":"1","sub_category":"2","brand":"832","price":"19500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"17","keyword":"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident","meta_description":"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.","created_at":"2025-09-28T21:21:20.000000Z","updated_at":"2025-09-28T21:21:20.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1034,"model_type":"App\\Models\\Advert","model_id":310,"uuid":"615d49d8-ffde-441c-a0ac-14dd40995339","collection_name":"images","name":"68d998c04673f.webp","file_name":"68d998c04673f.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":238710,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1097},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:26:37.000000Z","updated_at":"2025-09-29T02:26:39.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1034\/68d998c04673f.webp","preview_url":""}}],"has_more":true,"pagination":{"current_page":1,"last_page":26,"per_page":10,"total":253}}'
+        content: '{"success":true,"data":[{"id":328,"user_id":"82261","ad_id":"81404","ad_type":"Private","ad_title":"Toyota Highlander for sale","title_slug":"toyota-highlander-for-sale","category":"1","sub_category":"2","brand":"832","price":"1000000","price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\/div>","state":"FCT - Abuja","lga":"Gwagwalada","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"87","keyword":"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good","meta_description":"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;","created_at":"2025-11-02T17:34:22.000000Z","updated_at":"2025-12-12T14:13:02.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"gwagwalada","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1102,"model_type":"App\\Models\\Advert","model_id":328,"uuid":"8986e5fb-9dc7-4543-b5dc-75f5667cb234","collection_name":"images","name":"68d52f121818a-large","file_name":"690796242394a.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":101674,"manipulations":[],"custom_properties":{"position":1,"original_name":"68d52f121818a-large.webp"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-11-02T17:34:28.000000Z","updated_at":"2025-11-03T04:54:43.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1102\/690796242394a.webp","preview_url":""}},{"id":287,"user_id":"70656","ad_id":"83561","ad_type":"Private","ad_title":"HERO BIKE","title_slug":"hero-bike","category":"1","sub_category":"22","brand":"1012","price":"750000","price_type":"Negotiable","item_condition":"Locally Used","quantity":1,"buy_direct":"No","description":"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\/div>","state":"Osun","lga":"Ife Central","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"121","keyword":"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv","meta_description":"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;","created_at":"2025-09-25T12:00:23.000000Z","updated_at":"2025-09-25T12:00:23.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"ife-central","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":914,"model_type":"App\\Models\\Advert","model_id":287,"uuid":"be55ae56-f1f3-4a29-8664-576293a1fa2a","collection_name":"images","name":"68d520c76b5ff.webp","file_name":"68d520c76b5ff.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":247922,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":977},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:22:39.000000Z","updated_at":"2025-09-29T02:22:41.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/914\/68d520c76b5ff.webp","preview_url":""}},{"id":314,"user_id":"82261","ad_id":"19583","ad_type":"Private","ad_title":"New 2025 Toyota Corolla LE FWD 4dr Car","title_slug":"new-2025-toyota-corolla-le-fwd-4dr-car","category":"1","sub_category":"2","brand":"832","price":"4000000","price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->The car is a new and forieng used<\/div>","state":"Anambra","lga":"Idemili South","ad_status":"active","featured":"Yes","shipment":"Pickup","shipping":null,"views":"48","keyword":"2025, toyota, corolla, block, forieng, useddiv","meta_description":"The car is a new and forieng used","created_at":"2025-09-30T04:28:46.000000Z","updated_at":"2025-11-30T11:30:36.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"idemili-south","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1063,"model_type":"App\\Models\\Advert","model_id":314,"uuid":"b7a75deb-fd92-4b36-ba47-d7fff74f1a75","collection_name":"images","name":"d2e28f69361fd659185e76017ece2ad5","file_name":"68db5c7e6ded4.webp","mime_type":"image\/jpeg","disk":"spatie","conversions_disk":"spatie","size":119862,"manipulations":[],"custom_properties":{"position":1,"original_name":"d2e28f69361fd659185e76017ece2ad5.jpg"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-30T04:28:46.000000Z","updated_at":"2025-09-30T04:28:47.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1063\/68db5c7e6ded4.webp","preview_url":""}},{"id":136,"user_id":"28352","ad_id":"82078","ad_type":"Private","ad_title":"iPhone 11 Pro","title_slug":"iphone-11-pro","category":"4","sub_category":"6","brand":"1542","price":"269000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"Yes","description":"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\/div>","state":"Lagos","lga":"Alimosho","ad_status":"active","featured":"Yes","shipment":"Ship","shipping":null,"views":"178","keyword":"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234","meta_description":"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990","created_at":"2025-09-11T17:00:15.000000Z","updated_at":"2025-11-13T09:35:24.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"alimosho","contact_price":"no","salary":"\u20a6200,000 - \u20a6220,000","expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":414,"model_type":"App\\Models\\Advert","model_id":136,"uuid":"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc","collection_name":"images","name":"68c2f20f99ac0.webp","file_name":"68c2f20f99ac0.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":52572,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":499},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-24T00:55:12.000000Z","updated_at":"2025-09-24T00:55:12.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/414\/68c2f20f99ac0.webp","preview_url":""}},{"id":334,"user_id":"82261","ad_id":"20222","ad_type":"Private","ad_title":"New wig for sale","title_slug":"new-wig-for-sale","category":"8","sub_category":"13","brand":"656","price":"230000","price_type":"Negotiable","item_condition":"New","quantity":1,"buy_direct":"Yes","description":"new wig arrive today for sale","state":"Adamawa","lga":"Fufure","ad_status":"active","featured":"Yes","shipment":"Ship","shipping":null,"views":"33","keyword":"sale, arrive, today","meta_description":"new wig arrive today for sale","created_at":"2025-12-17T05:56:00.000000Z","updated_at":"2025-12-17T05:56:00.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"fufure","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":1,"first_image":{"id":1145,"model_type":"App\\Models\\Advert","model_id":334,"uuid":"e7bece4c-30a8-435c-ab34-704c8c2f7f7f","collection_name":"images","name":"IMG_7062","file_name":"694245f08bad0.webp","mime_type":"image\/png","disk":"spatie","conversions_disk":"spatie","size":16434835,"manipulations":[],"custom_properties":{"position":1,"original_name":"IMG_7062.png"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true,"thumb-sm":true,"thumb-md":true},"responsive_images":[],"order_column":1,"created_at":"2025-12-17T05:56:00.000000Z","updated_at":"2025-12-17T05:56:06.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1145\/694245f08bad0.webp","preview_url":""}},{"id":329,"user_id":"82261","ad_id":"93361","ad_type":"Private","ad_title":"I Need a Web Developer","title_slug":"i-need-a-web-developer-3","category":"18","sub_category":"147","brand":"4131","price":null,"price_type":"Fixed","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->I need a vert good developer for immediate employment<\/div>","state":"Ebonyi","lga":"Abakaliki","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"4","keyword":"need, developer, block, vert, good, immediate, employmentdiv","meta_description":"I need a vert good developer for immediate employment","created_at":"2025-11-04T03:36:23.000000Z","updated_at":"2025-12-12T14:08:28.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"abakaliki","contact_price":"no","salary":null,"expected_salary":"\u20a6180,000 - \u20a6200,000","redirect":"Yes","is_featured":0,"first_image":{"id":1106,"model_type":"App\\Models\\Advert","model_id":329,"uuid":"b6afba5a-e16f-40cd-b832-3a1fd729d2a1","collection_name":"images","name":"WInter is coming english","file_name":"690974b801fca.webp","mime_type":"image\/jpeg","disk":"spatie","conversions_disk":"spatie","size":310197,"manipulations":[],"custom_properties":{"position":1,"original_name":"WInter is coming english.jpg"},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-11-04T03:36:24.000000Z","updated_at":"2025-11-04T03:36:25.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1106\/690974b801fca.webp","preview_url":""}},{"id":313,"user_id":"82151","ad_id":"97920","ad_type":"Private","ad_title":"Foreign Used 2019 Mercedes Benz Gle350","title_slug":"foreign-used-2019-mercedes-benz-gle350","category":"1","sub_category":"2","brand":"266","price":"56500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"5","keyword":"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather","meta_description":"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.","created_at":"2025-09-28T21:32:01.000000Z","updated_at":"2025-09-28T21:32:01.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1054,"model_type":"App\\Models\\Advert","model_id":313,"uuid":"1425cace-0d95-4a49-94bc-096ed104946e","collection_name":"images","name":"68d99b4142e49.webp","file_name":"68d99b4142e49.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":337178,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1117},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:27:17.000000Z","updated_at":"2025-09-29T02:27:19.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1054\/68d99b4142e49.webp","preview_url":""}},{"id":312,"user_id":"76917","ad_id":"58798","ad_type":"Private","ad_title":"The IKEJA LAUNDRY","title_slug":"the-ikeja-laundry","category":"12","sub_category":"93","brand":"2270","price":"25000","price_type":"Fixed","item_condition":"New","quantity":1,"buy_direct":"No","description":"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\/div>","state":"Lagos","lga":"Ikeja","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"4","keyword":"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert","meta_description":"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!","created_at":"2025-09-28T21:28:23.000000Z","updated_at":"2025-09-28T21:28:23.000000Z","sold":"No","sold_date":null,"show_contact":"No","state_slug":"ikeja","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1053,"model_type":"App\\Models\\Advert","model_id":312,"uuid":"c5a25f74-2dc1-4b51-b43f-f9efd15610bd","collection_name":"images","name":"68d99a678c6f7.webp","file_name":"68d99a678c6f7.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":60366,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1116},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:27:16.000000Z","updated_at":"2025-09-29T02:27:17.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1053\/68d99a678c6f7.webp","preview_url":""}},{"id":311,"user_id":"82151","ad_id":"15876","ad_type":"Private","ad_title":"Foreign Used 2007 Toyota highlander","title_slug":"foreign-used-2007-toyota-highlander","category":"1","sub_category":"2","brand":"832","price":"15500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"22","keyword":"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower","meta_description":"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.","created_at":"2025-09-28T21:27:39.000000Z","updated_at":"2025-09-28T21:27:39.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1043,"model_type":"App\\Models\\Advert","model_id":311,"uuid":"571b3471-15de-4665-a644-21fe42a0c1ce","collection_name":"images","name":"68d99a3b46178.webp","file_name":"68d99a3b46178.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":255048,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1106},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:26:55.000000Z","updated_at":"2025-09-29T02:26:57.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1043\/68d99a3b46178.webp","preview_url":""}},{"id":310,"user_id":"82151","ad_id":"97443","ad_type":"Private","ad_title":"Foreign Used 2017 Toyota camry","title_slug":"foreign-used-2017-toyota-camry","category":"1","sub_category":"2","brand":"832","price":"19500000","price_type":"Negotiable","item_condition":null,"quantity":1,"buy_direct":"No","description":"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\/div>","state":"Lagos","lga":"Apapa","ad_status":"active","featured":"No","shipment":"Pickup","shipping":null,"views":"17","keyword":"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident","meta_description":"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.","created_at":"2025-09-28T21:21:20.000000Z","updated_at":"2025-09-28T21:21:20.000000Z","sold":"No","sold_date":null,"show_contact":"Yes","state_slug":"apapa","contact_price":"no","salary":null,"expected_salary":null,"redirect":"No","is_featured":0,"first_image":{"id":1034,"model_type":"App\\Models\\Advert","model_id":310,"uuid":"615d49d8-ffde-441c-a0ac-14dd40995339","collection_name":"images","name":"68d998c04673f.webp","file_name":"68d998c04673f.webp","mime_type":"image\/webp","disk":"spatie","conversions_disk":"spatie","size":238710,"manipulations":[],"custom_properties":{"position":1,"migrated_from_id":1097},"generated_conversions":{"optimized":true,"large":true,"thumbnail":true},"responsive_images":[],"order_column":1,"created_at":"2025-09-29T02:26:37.000000Z","updated_at":"2025-09-29T02:26:39.000000Z","original_url":"http:\/\/127.0.0.1:8030\/uploads\/1034\/68d998c04673f.webp","preview_url":""}}],"has_more":true,"pagination":{"current_page":1,"last_page":26,"per_page":10,"total":253}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '22'
+          x-ratelimit-remaining: '45'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer ebVk4Pd15c66fE3va8ahZDg'
+      - 'Bearer 6kbVv8haEf56cZaPg14eD3d'
     controller: null
     method: null
     route: null
@@ -1980,14 +1980,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '21'
+          x-ratelimit-remaining: '44'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer a68PaZhfevEV43dc1g65Dkb'
+      - 'Bearer Eg31adZV64k8vhfb56aPDec'
     controller: null
     method: null
     route: null
@@ -2038,14 +2038,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '20'
+          x-ratelimit-remaining: '43'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer k81aVbd463EafP5v6gheZDc'
+      - 'Bearer ZD8e4avcVPg6k61fh5bad3E'
     controller: null
     method: null
     route: null
@@ -2096,14 +2096,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '19'
+          x-ratelimit-remaining: '42'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer bchke1vgVZEaaPfdD583664'
+      - 'Bearer Dgahba146k6fcE8PV3vZ5de'
     controller: null
     method: null
     route: null
@@ -2136,7 +2136,7 @@ endpoints:
         name: search
         description: 'Must be at least 2 characters.'
         required: false
-        example: ljrdtxwomiiqtzhxduh
+        example: tfsofkarqnicrcurteiupxzhiwyogvrzkaexvujsngeytmvljwskdikuupolmkosomokocq
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2158,16 +2158,16 @@ endpoints:
         name: limit
         description: 'Must be at least 1. Must not be greater than 50.'
         required: false
-        example: 16
+        example: 20
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      search: ljrdtxwomiiqtzhxduh
+      search: tfsofkarqnicrcurteiupxzhiwyogvrzkaexvujsngeytmvljwskdikuupolmkosomokocq
       state_id: 19
-      limit: 16
+      limit: 20
     fileParameters: []
     responses:
       -
@@ -2178,14 +2178,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '18'
+          x-ratelimit-remaining: '41'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 4deEfhVvD5a8P631b6Zcakg'
+      - 'Bearer 6heb36Dg5EadaZVcfk14P8v'
     controller: null
     method: null
     route: null
@@ -2214,14 +2214,14 @@ endpoints:
         name: city_id
         description: 'The ID of the city.'
         required: true
-        example: tempore
+        example: aspernatur
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      city_id: tempore
+      city_id: aspernatur
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2236,14 +2236,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '17'
+          x-ratelimit-remaining: '40'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer ae31gh6Pk4ZfbDc8VEvd6a5'
+      - 'Bearer a38ce15Ph4VvkaDEfZd6g6b'
     controller: null
     method: null
     route: null
@@ -2276,7 +2276,7 @@ endpoints:
         name: sender_station
         description: ''
         required: true
-        example: est
+        example: saepe
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2287,7 +2287,7 @@ endpoints:
         name: receiver_station
         description: ''
         required: true
-        example: unde
+        example: ab
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2298,7 +2298,7 @@ endpoints:
         name: ad_price
         description: 'Must be at least 0.'
         required: true
-        example: 50
+        example: 17
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -2309,7 +2309,7 @@ endpoints:
         name: ad_title
         description: ''
         required: true
-        example: dolor
+        example: maiores
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2320,7 +2320,7 @@ endpoints:
         name: ad_des
         description: ''
         required: false
-        example: eos
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2331,7 +2331,7 @@ endpoints:
         name: weight
         description: 'Must be at least 0.'
         required: false
-        example: 60
+        example: 6
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -2342,27 +2342,27 @@ endpoints:
         name: quantity
         description: 'Must be at least 1.'
         required: false
-        example: 81
+        example: 43
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      sender_station: est
-      receiver_station: unde
-      ad_price: 50
-      ad_title: dolor
-      ad_des: eos
-      weight: 60
-      quantity: 81
+      sender_station: saepe
+      receiver_station: ab
+      ad_price: 17
+      ad_title: maiores
+      ad_des: quia
+      weight: 6
+      quantity: 43
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer DgE1kdaPf586e463ahVbcZv'
+      - 'Bearer dbk45PZae6v3c6VfED8a1hg'
     controller: null
     method: null
     route: null
@@ -2395,7 +2395,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: 19
+        example: 9
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -2406,7 +2406,7 @@ endpoints:
         name: receiver_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: doloremque
+        example: sunt
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2417,7 +2417,7 @@ endpoints:
         name: message_content
         description: 'Must not be greater than 1000 characters.'
         required: false
-        example: cemprim
+        example: scwoisehcxa
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2436,9 +2436,9 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      advert_id: 19
-      receiver_id: doloremque
-      message_content: cemprim
+      advert_id: 9
+      receiver_id: sunt
+      message_content: scwoisehcxa
     fileParameters:
       images:
         - null
@@ -2447,7 +2447,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4gvbaeD1h6ZVPd38fa56Ekc'
+      - 'Bearer 8b63VagfvPcdkZa146Ee5hD'
     controller: null
     method: null
     route: null
@@ -2476,7 +2476,7 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: quod
+        example: aliquid
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2487,15 +2487,15 @@ endpoints:
         name: receiverId
         description: ''
         required: true
-        example: aliquid
+        example: non
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: quod
-      receiverId: aliquid
+      advertId: aliquid
+      receiverId: non
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2515,7 +2515,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer D1vd6bZak5EfheV3gP48ac6'
+      - 'Bearer Eah1Zb5v3Vek8fg66c4DPad'
     controller: null
     method: null
     route: null
@@ -2571,7 +2571,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3kZ56DbPaa1e4V6Edcv8gfh'
+      - 'Bearer EDk6f4b83v6ecVghdZa5P1a'
     controller: null
     method: null
     route: null
@@ -2615,7 +2615,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dbhfEV41g8D6Z3vkePac6a5'
+      - 'Bearer bv51P8aae4chfZdDE6g3k6V'
     controller: null
     method: null
     route: null
@@ -2659,7 +2659,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6cEkP561a8ZDefd43agVhvb'
+      - 'Bearer dDP5gfce8EaZ4Vahv6b3k16'
     controller: null
     method: null
     route: null
@@ -2688,14 +2688,14 @@ endpoints:
         name: messageId
         description: ''
         required: true
-        example: doloremque
+        example: cupiditate
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      messageId: doloremque
+      messageId: cupiditate
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2706,7 +2706,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer a86VEev6d51fk43bhZDgaPc'
+      - 'Bearer aEe1d36DZcak48g6V5Pfbhv'
     controller: null
     method: null
     route: null
@@ -2735,7 +2735,7 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: esse
+        example: quam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2746,15 +2746,15 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: nihil
+        example: beatae
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: esse
-      userId: nihil
+      advertId: quam
+      userId: beatae
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2765,7 +2765,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 5bEefcPaD6V634kh1Zgv8ad'
+      - 'Bearer 1ah4ekvZV6aE6g53D8dPbfc'
     controller: null
     method: null
     route: null
@@ -2798,7 +2798,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: porro
+        example: eligendi
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2809,22 +2809,22 @@ endpoints:
         name: other_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: earum
+        example: at
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      advert_id: porro
-      other_user_id: earum
+      advert_id: eligendi
+      other_user_id: at
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer aa6ZE4ed1Df56VPk38bvhcg'
+      - 'Bearer V8kaea5ch6bZD31gP6E4dvf'
     controller: null
     method: null
     route: null
@@ -2857,7 +2857,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: ipsa
+        example: qui
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2868,22 +2868,22 @@ endpoints:
         name: other_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: sunt
+        example: non
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      advert_id: ipsa
-      other_user_id: sunt
+      advert_id: qui
+      other_user_id: non
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 4835Vk6a1ZhbdfcvgDPae6E'
+      - 'Bearer DakV6ha51d38ZEcPf4ebvg6'
     controller: null
     method: null
     route: null
@@ -2927,7 +2927,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ZD56ag18k6e4fbaVEvhc3Pd'
+      - 'Bearer Z3DaPevdbaV16fk6hcg84E5'
     controller: null
     method: null
     route: null
@@ -2956,14 +2956,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: et
+        example: necessitatibus
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: et
+      paymentId: necessitatibus
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2974,7 +2974,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer PvaDE81gb64adZf3Vehck65'
+      - 'Bearer ad56e1fckZP4DbEh3av68gV'
     controller: null
     method: null
     route: null
@@ -3018,7 +3018,7 @@ endpoints:
         name: shipping_data.first_name
         description: ''
         required: true
-        example: repudiandae
+        example: hic
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -3029,7 +3029,7 @@ endpoints:
         name: shipping_data.last_name
         description: ''
         required: true
-        example: cupiditate
+        example: deleniti
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -3040,7 +3040,7 @@ endpoints:
         name: shipping_data.phone
         description: ''
         required: true
-        example: iste
+        example: delectus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -3051,7 +3051,7 @@ endpoints:
         name: shipping_data.grand_total
         description: ''
         required: true
-        example: 17.5
+        example: 119521877.46
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -3062,7 +3062,7 @@ endpoints:
         name: shipping_data.commission
         description: ''
         required: true
-        example: 70.578024
+        example: 2783.867121
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -3073,7 +3073,7 @@ endpoints:
         name: shipping_data.shipping_cost
         description: ''
         required: true
-        example: 31.733
+        example: 120168.09865
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -3106,7 +3106,7 @@ endpoints:
         name: shipping_data.ad.id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: 12
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -3117,7 +3117,7 @@ endpoints:
         name: shipping_data.ad.price
         description: ''
         required: true
-        example: 212917538.9375
+        example: 563.80886353
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -3139,7 +3139,7 @@ endpoints:
         name: shipping_data.reciever_city.id
         description: ''
         required: false
-        example: 19
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -3161,7 +3161,7 @@ endpoints:
         name: shipping_data.reciever_state.id
         description: ''
         required: false
-        example: 2
+        example: 14
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -3169,27 +3169,27 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       shipping_data:
-        first_name: repudiandae
-        last_name: cupiditate
-        phone: iste
-        grand_total: 17.5
-        commission: 70.578024
-        shipping_cost: 31.733
+        first_name: hic
+        last_name: deleniti
+        phone: delectus
+        grand_total: 119521877.46
+        commission: 2783.867121
+        shipping_cost: 120168.09865
         shipping_method: 14
         ad:
-          id: 12
-          price: 212917538.9375
+          id: 7
+          price: 563.80886353
         reciever_city:
-          id: 19
+          id: 7
         reciever_state:
-          id: 2
+          id: 14
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer bvZVP643ah5agEe816fckdD'
+      - 'Bearer 8eVc6EhD4avd6fgkabP5Z31'
     controller: null
     method: null
     route: null
@@ -3222,7 +3222,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: 2
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -3233,7 +3233,7 @@ endpoints:
         name: amount
         description: 'Must be at least 0.'
         required: true
-        example: 49
+        example: 59
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -3244,7 +3244,7 @@ endpoints:
         name: boost_type
         description: ''
         required: true
-        example: vel
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -3255,24 +3255,24 @@ endpoints:
         name: duration
         description: 'Must be at least 1.'
         required: true
-        example: 37
+        example: 70
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      advert_id: 2
-      amount: 49
-      boost_type: vel
-      duration: 37
+      advert_id: 16
+      amount: 59
+      boost_type: et
+      duration: 70
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 31fd668kZ4avPbhEe5agDcV'
+      - 'Bearer 3Pa61fgD5chZkdve6Va84bE'
     controller: null
     method: null
     route: null
@@ -3301,14 +3301,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: et
+        example: deleniti
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: et
+      paymentId: deleniti
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -3328,7 +3328,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vDVb8deaP6Zk5fcEgha3461'
+      - 'Bearer 5DaZaE46g8e3v6bfdPkc1hV'
     controller: null
     method: null
     route: null
@@ -3384,7 +3384,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Ve8fd61ah6EZaPgk4D3cv5b'
+      - 'Bearer ca8db31f5ZePvh4k66VDagE'
     controller: null
     method: null
     route: null
@@ -3440,7 +3440,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer DkaV6g8e63avPh4Ef5Zd1bc'
+      - 'Bearer bPfk4Vd6Zae18cEDva53g6h'
     controller: null
     method: null
     route: null
@@ -3473,21 +3473,21 @@ endpoints:
         name: reference
         description: ''
         required: true
-        example: molestiae
+        example: itaque
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      reference: molestiae
+      reference: itaque
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer aZcv4kh1e5D6Vd6afP38gEb'
+      - 'Bearer 3vZdPkVhb145aD68cg6afEe'
     controller: null
     method: null
     route: null
@@ -3531,7 +3531,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer PcdvEgeha36f54V8k6baZD1'
+      - 'Bearer h3aEZV56Pb4e86aDd1ckvfg'
     controller: null
     method: null
     route: null
@@ -3575,7 +3575,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer E18VdkefaZ6cgPDvhba3546'
+      - 'Bearer ae61k4Efh63bc8gPavVZdD5'
     controller: null
     method: null
     route: null
@@ -3619,7 +3619,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ef43kPg6DE1ZVvc6bhda58a'
+      - 'Bearer 1VDahEfP6kgvc6a45Ze38db'
     controller: null
     method: null
     route: null
@@ -3663,7 +3663,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ka4h3EfPe658gvVZD6c1abd'
+      - 'Bearer kg31cehaEPaDf68546vbZdV'
     controller: null
     method: null
     route: null
@@ -3692,14 +3692,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: assumenda
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: assumenda
+      adId: est
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -3708,7 +3708,7 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: inactive
+        example: active
         type: string
         enumValues:
           - active
@@ -3717,14 +3717,14 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      status: inactive
+      status: active
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer fkc4Z1DeEgh8dPa356bavV6'
+      - 'Bearer DefE6havkcV1a53PZ6d8gb4'
     controller: null
     method: null
     route: null
@@ -3753,14 +3753,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: aut
+        example: ullam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: aut
+      adId: ullam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -3771,7 +3771,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vba6Edk3VZ4gPec86h1aD5f'
+      - 'Bearer Vde4Z5k6av1cbh6a3gfP8ED'
     controller: null
     method: null
     route: null
@@ -3815,7 +3815,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer PZ5edVbE86vakf1aD4g3c6h'
+      - 'Bearer 5P4hVDe3f66baka81gcEdvZ'
     controller: null
     method: null
     route: null
@@ -3844,14 +3844,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: ea
+        example: fuga
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: ea
+      adId: fuga
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -3862,7 +3862,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bfZVgceh5k3d6Ev1aPaD846'
+      - 'Bearer 5v68feZ1gkEcbPhdDV63aa4'
     controller: null
     method: null
     route: null
@@ -3891,14 +3891,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: blanditiis
+        example: sint
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: blanditiis
+      adId: sint
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -3909,7 +3909,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer VavEb3DZ5a8khdP6g1f4ce6'
+      - 'Bearer 3khb4a68D6cdaePZvfVgE51'
     controller: null
     method: null
     route: null
@@ -3953,7 +3953,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer hZ4ak5gdc68PV6feEDbv13a'
+      - 'Bearer cbag6afvd34ZVeEPk516D8h'
     controller: null
     method: null
     route: null
@@ -3982,14 +3982,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: similique
+        example: sit
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: similique
+      paymentId: sit
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -4000,7 +4000,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bZ1Dvh6PV3a4kedc5g6f8aE'
+      - 'Bearer V646hPEDae5vd13gab8kZfc'
     controller: null
     method: null
     route: null
@@ -4029,14 +4029,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: odit
+        example: sit
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: odit
+      paymentId: sit
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -4045,21 +4045,21 @@ endpoints:
         name: shipping_status
         description: ''
         required: true
-        example: ipsam
+        example: omnis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      shipping_status: ipsam
+      shipping_status: omnis
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer dDe5k631haZba6VgEcv8P4f'
+      - 'Bearer 5aZ3v4f8hb6aVkPe1DdE6gc'
     controller: null
     method: null
     route: null
@@ -4103,7 +4103,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer aedbkhED6cafg6Z4P1V58v3'
+      - 'Bearer 1Df56vacbkPVEgZ3dh6a4e8'
     controller: null
     method: null
     route: null
@@ -4132,14 +4132,14 @@ endpoints:
         name: sellerId
         description: ''
         required: true
-        example: aspernatur
+        example: impedit
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      sellerId: aspernatur
+      sellerId: impedit
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -4170,7 +4170,7 @@ endpoints:
         name: reliable
         description: 'Must be between 1 and 5.'
         required: true
-        example: 2
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -4181,7 +4181,7 @@ endpoints:
         name: friendly
         description: 'Must be between 1 and 5.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -4192,7 +4192,7 @@ endpoints:
         name: message
         description: 'Must not be greater than 1000 characters.'
         required: true
-        example: xmyjtujowhoajmhjcbmbqq
+        example: epymablgtnghjntykrmscyn
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4201,16 +4201,16 @@ endpoints:
     cleanBodyParameters:
       rating: 1
       satisfaction: 1
-      reliable: 2
-      friendly: 1
-      message: xmyjtujowhoajmhjcbmbqq
+      reliable: 1
+      friendly: 2
+      message: epymablgtnghjntykrmscyn
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 8dPD1kfhgZ6v3EcabV56a4e'
+      - 'Bearer 1fd8aZk4heEb3gVPcv6D5a6'
     controller: null
     method: null
     route: null
@@ -4239,14 +4239,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: non
+        example: aliquam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: non
+      userId: aliquam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -4266,7 +4266,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer g5kc36PaeabZdE1VDhv68f4'
+      - 'Bearer ahZcgEka8vD64VbPd5e16f3'
     controller: null
     method: null
     route: null
@@ -4299,21 +4299,21 @@ endpoints:
         name: followee_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: 4
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      followee_id: 4
+      followee_id: 18
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer Ed68hV3PZge1v4c5a6akbfD'
+      - 'Bearer 48ZPgV5vedcaE36a1bDk6hf'
     controller: null
     method: null
     route: null
@@ -4364,14 +4364,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '16'
+          x-ratelimit-remaining: '39'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6ZPabdD1g385hfvVeEck64a'
+      - 'Bearer 8agcDVZk143vd66PafEhbe5'
     controller: null
     method: null
     route: null
@@ -4422,14 +4422,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '15'
+          x-ratelimit-remaining: '38'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer bhv5kD16g3ZeafV864dEcaP'
+      - 'Bearer d83c4Ehe6g1v65kZaVafPbD'
     controller: null
     method: null
     route: null
@@ -4458,14 +4458,14 @@ endpoints:
         name: brandId
         description: ''
         required: true
-        example: illo
+        example: corporis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      brandId: illo
+      brandId: corporis
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -4480,14 +4480,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '14'
+          x-ratelimit-remaining: '37'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer fkvEVD4c5h36e81PZabad6g'
+      - 'Bearer cD6Eb3d4eZ6aPh1Vg5f8akv'
     controller: null
     method: null
     route: null
@@ -4531,7 +4531,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer h8aVefdbaE5cg364ZDv16Pk'
+      - 'Bearer daPg853a4eDh66cfZbE1vVk'
     controller: null
     method: null
     route: null
@@ -4575,7 +4575,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer DkaV13vPc5hb6gdfE6Zae84'
+      - 'Bearer aDV5834f61EbkhgdvaPecZ6'
     controller: null
     method: null
     route: null
@@ -4619,7 +4619,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dV4bk865ge1a6cvDah3ZPfE'
+      - 'Bearer Z4ac8b6EekdV1P3Dfgha5v6'
     controller: null
     method: null
     route: null
@@ -4652,7 +4652,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: sijrgurhvqvzttdmvb
+        example: kihgddulkdochrrlpglsmgmg
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4663,7 +4663,7 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: false
-        example: scmsgcwaddtqqdxizmdkofoi
+        example: zyxpkrjvanbxipp
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4674,7 +4674,7 @@ endpoints:
         name: city
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: jnirxufykmajukd
+        example: apu
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4685,7 +4685,7 @@ endpoints:
         name: state
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: vmuoihwvvusyeof
+        example: gfpsllwt
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4703,10 +4703,10 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: sijrgurhvqvzttdmvb
-      address: scmsgcwaddtqqdxizmdkofoi
-      city: jnirxufykmajukd
-      state: vmuoihwvvusyeof
+      name: kihgddulkdochrrlpglsmgmg
+      address: zyxpkrjvanbxipp
+      city: apu
+      state: gfpsllwt
     fileParameters:
       profile_image: null
     responses: []
@@ -4714,7 +4714,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer edD6V51E8hZvfkc3aa4P6bg'
+      - 'Bearer 6h6aVPk4ad13fcgeDEb5Z8v'
     controller: null
     method: null
     route: null
@@ -4747,7 +4747,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: qlnc
+        example: sphcispqlipmf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4758,7 +4758,7 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: false
-        example: hjtulzwyrd
+        example: sfulasmtelzkigbhygdboupp
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4769,7 +4769,7 @@ endpoints:
         name: city
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: ouvhjdphjkrebichitsivomg
+        example: ilolqdpzfhl
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4780,7 +4780,7 @@ endpoints:
         name: state
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: nyhiwizwsuwhbbunx
+        example: vvwweusv
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4798,10 +4798,10 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: qlnc
-      address: hjtulzwyrd
-      city: ouvhjdphjkrebichitsivomg
-      state: nyhiwizwsuwhbbunx
+      name: sphcispqlipmf
+      address: sfulasmtelzkigbhygdboupp
+      city: ilolqdpzfhl
+      state: vvwweusv
     fileParameters:
       profile_image: null
     responses: []
@@ -4809,7 +4809,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1e8v35a6b6chaVkPEfZd4Dg'
+      - 'Bearer d16gkfPE6bceVDa853vaZ4h'
     controller: null
     method: null
     route: null
@@ -4842,21 +4842,21 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: voluptas
+        example: accusantium
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      phone: voluptas
+      phone: accusantium
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer gk6DfE8dV1a4ceb63hP5vZa'
+      - 'Bearer eD646185cZVPdgEahv3kafb'
     controller: null
     method: null
     route: null
@@ -4900,7 +4900,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer f8D6ak45ZaEeb1dg6PchV3v'
+      - 'Bearer Zg6D4VkefaP163bdac58vhE'
     controller: null
     method: null
     route: null
@@ -4933,7 +4933,7 @@ endpoints:
         name: document_number
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: pczfcyvhogmuhopuwrud
+        example: dbizuhixenmnadbksnejvwnaf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4944,7 +4944,7 @@ endpoints:
         name: document_type
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: h
+        example: wojg
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -4973,8 +4973,8 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      document_number: pczfcyvhogmuhopuwrud
-      document_type: h
+      document_number: dbizuhixenmnadbksnejvwnaf
+      document_type: wojg
     fileParameters:
       document_file: null
       proof_address: null
@@ -4983,7 +4983,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4V5ZagkhEP6D1fc6vd8bea3'
+      - 'Bearer a8aVf54bD6hEPc3veg1Zk6d'
     controller: null
     method: null
     route: null
@@ -5027,7 +5027,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 8vVkafEe1bdZgha5PD6364c'
+      - 'Bearer 64eVk6vc83gEPaab1Zh5Dfd'
     controller: null
     method: null
     route: null
@@ -5060,7 +5060,7 @@ endpoints:
         name: bank_name
         description: ''
         required: true
-        example: cupiditate
+        example: quae
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5071,7 +5071,7 @@ endpoints:
         name: paystack_bank_code
         description: ''
         required: true
-        example: magnam
+        example: doloremque
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5082,7 +5082,7 @@ endpoints:
         name: account_number
         description: ''
         required: true
-        example: amet
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5093,24 +5093,24 @@ endpoints:
         name: account_name
         description: ''
         required: true
-        example: architecto
+        example: pariatur
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      bank_name: cupiditate
-      paystack_bank_code: magnam
-      account_number: amet
-      account_name: architecto
+      bank_name: quae
+      paystack_bank_code: doloremque
+      account_number: aut
+      account_name: pariatur
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6VbZaf8de31gPcE4Dkv56ah'
+      - 'Bearer 86Pa1cZvbDd6kfV3e4agE5h'
     controller: null
     method: null
     route: null
@@ -5143,7 +5143,7 @@ endpoints:
         name: old_password
         description: ''
         required: true
-        example: non
+        example: dolores
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5154,22 +5154,22 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: '%1ChO~]^lA5u'
+        example: hEi^odUmqG
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      old_password: non
-      password: '%1ChO~]^lA5u'
+      old_password: dolores
+      password: hEi^odUmqG
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer e153v6aE6Vk4cPbhgdfDaZ8'
+      - 'Bearer v64fc1eahbV3Ek5g68DZaPd'
     controller: null
     method: null
     route: null
@@ -5202,21 +5202,21 @@ endpoints:
         name: notifications
         description: ''
         required: true
-        example: laboriosam
+        example: nostrum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      notifications: laboriosam
+      notifications: nostrum
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer kPh6evfEca1ZaDb4gV538d6'
+      - 'Bearer eg54PaaE8f6k1VZbD6d3vch'
     controller: null
     method: null
     route: null
@@ -5260,7 +5260,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4gfvZVc6dP6b5ahakED831e'
+      - 'Bearer 65fabdeVhvc14aPkg836ZED'
     controller: null
     method: null
     route: null
@@ -5295,7 +5295,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vh6Dcak1a8geZdb634PVEf5'
+      - 'Bearer 168afv3cZDkbhdEa4e56PVg'
     controller: null
     method: null
     route: null
@@ -5330,7 +5330,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6a145kcV3PvfeZDEha68dgb'
+      - 'Bearer kgPf1h6ZVa4Ec6dva83Db5e'
     controller: null
     method: null
     route: null
@@ -5363,7 +5363,7 @@ endpoints:
         name: blocked_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: in
+        example: aperiam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5381,14 +5381,14 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      blocked_id: in
+      blocked_id: aperiam
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer a613dZ8agkcvbDE6h4fV5eP'
+      - 'Bearer vVaEa5D1Zf6hdce468P3gbk'
     controller: null
     method: null
     route: null
@@ -5421,7 +5421,7 @@ endpoints:
         name: blocked_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: similique
+        example: ut
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -5439,14 +5439,14 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      blocked_id: similique
+      blocked_id: ut
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer dV1g8DEfa3e6vkPa65Z4bhc'
+      - 'Bearer 5PDbd14Ve8vhZ3f6Eg6ckaa'
     controller: null
     method: null
     route: null
@@ -5490,7 +5490,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer kd648aD3VZfhbE5Pa6gcev1'
+      - 'Bearer dka6D85bcge43ah16fZVPvE'
     controller: null
     method: null
     route: null
@@ -5519,14 +5519,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: repellendus
+        example: maxime
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: repellendus
+      userId: maxime
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -5546,7 +5546,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v6Ea4PVcf6gaeDd5k138Zbh'
+      - 'Bearer bD3g4v6PkdZc8h6af15EeaV'
     controller: null
     method: null
     route: null
@@ -5575,14 +5575,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: magnam
+        example: iusto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: magnam
+      userId: iusto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -5593,7 +5593,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer PkDdvcgE68Vbae36fa514hZ'
+      - 'Bearer cZE4kdhav6V618beg3a5DPf'
     controller: null
     method: null
     route: null
@@ -5637,7 +5637,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vd3gaV1e5f8a6EkP6DhZ4bc'
+      - 'Bearer e3DfvbZ8V6aEgh16cP5kda4'
     controller: null
     method: null
     route: null
@@ -5681,7 +5681,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 31Da6VZv56begfPckEhd8a4'
+      - 'Bearer faZ66kh5cE1v43PVdD8gaeb'
     controller: null
     method: null
     route: null
@@ -5725,7 +5725,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer k1vdfhZ8a63gcEDeaP56Vb4'
+      - 'Bearer dhf8vE6egaaD56cP1bZV43k'
     controller: null
     method: null
     route: null
@@ -5781,7 +5781,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Ve3kDa4E6fgaPhvcZb5d681'
+      - 'Bearer k58f4ad63ghDZbacVv6PE1e'
     controller: null
     method: null
     route: null
@@ -5826,21 +5826,21 @@ endpoints:
         name: duration_days
         description: 'Must be at least 1. Must not be greater than 30.'
         required: false
-        example: 24
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      duration_days: 24
+      duration_days: 15
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer fPEbd85e6ag31vZh4a6ckDV'
+      - 'Bearer PhDdf86E6b5Zc1g43aevVka'
     controller: null
     method: null
     route: null
@@ -5896,7 +5896,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer avk3VZPd6EgDechb6f145a8'
+      - 'Bearer E1aPebchag64D865fVvkd3Z'
     controller: null
     method: null
     route: null
@@ -5925,14 +5925,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: et
+        example: enim
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: et
+      boostId: enim
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -5952,7 +5952,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v6cgf86aDak4Ebde3h5ZVP1'
+      - 'Bearer avPfEeZDk6cah1g83645bdV'
     controller: null
     method: null
     route: null
@@ -5981,14 +5981,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: ullam
+        example: ea
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: ullam
+      boostId: ea
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -6011,7 +6011,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer daZvf1h6g4ebaEkVD8c6P53'
+      - 'Bearer hc4PVg6a3aZ5ev8bfk6dDE1'
     controller: null
     method: null
     route: null
@@ -6040,14 +6040,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: ab
+        example: esse
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: ab
+      boostId: esse
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -6058,7 +6058,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer E5f83bkvVc6DaZehadg1P46'
+      - 'Bearer ek6agE3fP645VbdvhZa18cD'
     controller: null
     method: null
     route: null
@@ -6101,14 +6101,14 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '13'
+          x-ratelimit-remaining: '36'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer bvaeV6kZDEhfcP1d853ag46'
+      - 'Bearer 648Zf5VdD6gEkhv1a3abPec'
     controller: null
     method: null
     route: null
@@ -6147,15 +6147,15 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '12'
+          x-ratelimit-remaining: '35'
           access-control-allow-origin: '*'
-          set-cookie: 'XSRF-TOKEN=eyJpdiI6IkMzRWcvOHArTENFMlVUa1ljTEJ3b0E9PSIsInZhbHVlIjoiWXppSkJNWlhoemc2S1VKZ0hPTjJKS1B1MWZnSDJSR1JMRlUweUM2MGFhVTAxZnBrR3hrRWpkR3FVQWRsM1BJR3VuVU9TV056T2creGFjYSsydVVlRzYxVWs2c0lUemg5aDN1ZU1rbmdWV0lEcHYzdERTSUNoWmh2VjFzQ1lOdGgiLCJtYWMiOiIxMDNmMjlmMzQ5MGJmNGRlYjhkZmFiNDgwMjE3NWVjNDRkYzczMGE4OGU4ZjliODZiNzI5NGFmNmFlZjFiZmQxIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6IjRSWDljeXJkMkoyNC94MXBwSmVHemc9PSIsInZhbHVlIjoienQ4S2xCT00xallSWHY3TEI1eW1wMFZmTkh0RWJJZzJmak1hRVNnZGtVanlXWWhzR2Nwc0lrQVZ4R0ZlcUJpNUd6VVZRd3BLaS9McjlHeHdHWmdxbVFCdm5HNnVQUnhDM3duVkcwYjZnNHRscVU1L1hXRkVVdWxqeTE5ejA5ZjciLCJtYWMiOiI0YTZjMzA5MmYyNDQ0MGYyNTgzN2MzMGI4ZDYzZjQzOGMxNWE2NjE4MzQ2ZjYyMDQ4NWVlMmJlNjdiZWQ1YmNkIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6ImNuazlpMW9pVWprckZUNUgrVGpLbkE9PSIsInZhbHVlIjoieFRqTjV5Q2hnQ0JTanI1N01LaUs3K3AvUWgwUS9tTDU0b2lud0cxSjR3VU5JZng5Y3FKMENkNUk5dDdWV1NmUlBVNFdvalhtSkpwNVJxMUxobEJockZMQUpMWklJYnF4SCtmSnQrTkxLMmZFMW96UStTU3lFZEhRcWpYblAzQlAiLCJtYWMiOiJlNTk1OTIxYjE2MzZhZDVlZTE1ZDlhOWRjZTdkZTU5ZDAwMGU4ZjMyYTc5M2ZiYWQ3NDMyNTk5NmM3MzQ4ZmNhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6Im4vQ1NWVGRmc01CN1VyRlhLbnhCRHc9PSIsInZhbHVlIjoiWjhQRG5aWkxFYVQwTlJKYXg4MmlsMURXVTU2UXZwWUU3b1QzMm12Nk1BZzRrMytvNmNENVFMalc0eDRLQjBiYzRQWUtUVEp1V3RTY09JYUdrdlprU2lzY241cSsvaW9icFFReDYrK2EwcjZwOEhPNmZLSzB6bEloK0ZyMXBtcXMiLCJtYWMiOiJjMzYwNWU0MmY2MjQ2OGQ5ZTNjNmFiZTFkZThiOTFlYTU3ZTY5NThmZDcxN2ZkODBhYTgxMWY5YzAwYjI5NDlhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer hag14d3VcZvPEk66eaD85bf'
+      - 'Bearer E6Pv5eb8ak34ZafdgV1chD6'
     controller: null
     method: null
     route: null
@@ -6184,14 +6184,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: cumque
+        example: perspiciatis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: cumque
+      userId: perspiciatis
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -6206,13 +6206,13 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           access-control-allow-origin: '*'
-          set-cookie: 'XSRF-TOKEN=eyJpdiI6ImQwWS9jU2E3d2NtRFYyM01yZzVtSUE9PSIsInZhbHVlIjoiMjRkZnlOUGJwWkY5b1NGZm45WkdIeGJjaTkweVlPeTVhc29pVWtEZ2R0VGF4UVYrc1hhNGY2ZzhwWHRnZHR6MHJjZkVORTNLbDJTQXdpd2YxNTF4SmQ0RUk3eUZRUjliRUhvSHFnanB5R2V2V1l3YktIdzlFY3ZjNkprZUx6SUMiLCJtYWMiOiIzZjdlN2RiYTAxZjg1ZWZjMmM0ZjA5ZjMxNDM3NGIwN2VmYThhNTY4NzZjOTdjNjQzOTFmY2ViZWZkZjNiMjYzIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6IjFmdFc3b3dqNk12aFB0Ny9XVmMzL1E9PSIsInZhbHVlIjoiZk9HVzh3QlNSM3JpVFhLeEVld3I5YkNHTktVdURON3F1d05oZDQrVXZvZ1lpZEYwN1NBb2pWZk84QnZuem9xdURpaDNoM25odmJhaUZCaG1aUExsUEsySXV0Y3hidGxwQnFFWHA0My9oQkQvajcrTW5oZFFSektvRi81bVUzTEMiLCJtYWMiOiIzZTYxODc1MzFkNzVmZGNkNmI4ZGFmMTY0NzgxYWNmODY0YTA3YjMwNGEwZmUwZjVhMzQ2ZjJhM2EwYzA0ODBmIiwidGFnIjoiIn0%3D; expires=Wed, 31 Dec 2025 08:56:24 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6IkNZcVM1Y0ZNYXhkcWRJY2RGNTlDMEE9PSIsInZhbHVlIjoidXJZaTZ4TUs3UzFqRFY3UzBIN24wb1RyQ0hZY013blY2NCtGcld3MlYzM2drbGJQQkh2QWY1TDJta25paVVDck9XY3RNQ0RlOVNjOTlId0Q0RXhML0lKSXBULzRKbGdMTTFBOXVodlNJcENYUXU3Tm8zeklZbHJDWEhndktpcHMiLCJtYWMiOiIwOTc0Y2NkZmM1ODRlZWFmZjRhNTZlODhmYWIzNWU1NmE2NTE2YjljMGEzNmZlMjBlYmM2MDRjYjJkOGEzNDQzIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=/; samesite=lax; marketplace_naija_session=eyJpdiI6Ik56QS8wSlF1Z1V0STJsWXNQV3ZRaWc9PSIsInZhbHVlIjoiT1VacDduWVRUaU9PUStRZGxvSmRQUkI1NndzQk15eGN4RC9xbWRya200NDAzUUsvbkhNdVpSUXZwa00wWElhdlBLNXQwRTRQdlB4UU10ekVjb29INC9DVGt4UzNaSmJDRlU3QlhnSTEvNGdnaExuZXdQcmZ5Yis1clBLWkNzODIiLCJtYWMiOiJlNGVhOTdjZWRhNzJmZjc5M2I3NzQyZTEwODIzY2M0YTU4ZmVjYzMyN2M2YmM4MjcxNTMwMDAyMjM5Mjk5M2IyIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer PvEdZ8V63D1gecbh6a54fak'
+      - 'Bearer Dd4h36Eagacvk6V5bZef1P8'
     controller: null
     method: null
     route: null
@@ -6245,21 +6245,21 @@ endpoints:
         name: followee_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: doloribus
+        example: unde
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      followee_id: doloribus
+      followee_id: unde
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 46fdk8h3gZPbvc5Ve6aEDa1'
+      - 'Bearer vZea4d3Ph6kV815bg6EfcaD'
     controller: null
     method: null
     route: null

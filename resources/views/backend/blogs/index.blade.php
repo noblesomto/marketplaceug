@@ -105,6 +105,7 @@
               </table>
             </div>
 
+
             <!-- Pagination -->
             @if($blogs->hasPages())
             <div class="d-flex justify-content-between align-items-center mt-3">
@@ -112,7 +113,7 @@
                 Showing {{ $blogs->firstItem() }} to {{ $blogs->lastItem() }} of {{ $blogs->total() }} results
               </div>
               <nav>
-                {{ $blogs->links() }}
+                {{ $blogs->links('pagination::bootstrap-4') }}
               </nav>
             </div>
             @endif
