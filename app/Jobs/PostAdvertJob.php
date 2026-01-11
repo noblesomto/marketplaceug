@@ -1,4 +1,5 @@
 <?php
+// app/Jobs/PostAdvertJob.php
 
 namespace App\Jobs;
 
@@ -47,8 +48,8 @@ class PostAdvertJob implements ShouldQueue
         $now = now();
         $notifications = [];
 
-
         foreach ($followers as $follower) {
+            // Create in-app notification
             $notifications[] = [
                 'user_id'    => $follower->user->id,  // buyer
                 'seller_id'  => $this->seller->id,    // seller
@@ -59,7 +60,7 @@ class PostAdvertJob implements ShouldQueue
                 'updated_at' => $now,
             ];
 
-            // Email per follower
+            // Send email per follower
             Mail::to($follower->user->email)->queue(
                 new NewAdMail([
                     'advert'     => $this->advert->ad_title,
@@ -71,11 +72,39 @@ class PostAdvertJob implements ShouldQueue
                     'type'       => $this->type,
                 ])
             );
+
+            // 🆕 NEW: Dispatch push notification to follower
+            // Wrapped in try-catch to prevent breaking existing flow
+            try {
+                SendFollowerPushNotification::dispatch(
+                    $follower->user,
+                    $this->advert,
+                    $this->seller,
+                    $this->type,
+                    $this->message
+                );
+            } catch (\Exception $e) {
+                // Log but don't break the job
+                Log::error('Failed to dispatch push notification for follower', [
+                    'follower_id' => $follower->user->id,
+                    'seller_id' => $this->seller->id,
+                    'advert_id' => $this->advert->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
-        //dd($notifications);
+        // Insert all in-app notifications at once
         if (!empty($notifications)) {
             Notification::insert($notifications);
         }
+
+        // Log summary
+        Log::info('PostAdvertJob completed', [
+            'advert_id' => $this->advert->id,
+            'seller_id' => $this->seller->id,
+            'type' => $this->type,
+            'follower_count' => count($followers),
+        ]);
     }
 }

@@ -1,7 +1,7 @@
 <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 h-full flex flex-col">
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="block group h-full flex flex-col">
         <!-- Image -->
-        <div class="aspect-[4/3] w-full overflow-hidden relative">
+        <div class="aspect-[4/3.5] w-full overflow-hidden relative">
             @php
                 $image = $row->getFirstMedia('images');
                 $thumbSmUrl = $image && $image->hasGeneratedConversion('thumb-sm')
@@ -19,8 +19,8 @@
                     src="{{ $thumbSmUrl }}"
                     alt="{{ $row->ad_title }}"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    width="200"
-                    height="150"
+                    width="300"
+                    height="350"
                     @if($loop->index < 2)
                         fetchpriority="high"
                     @endif
@@ -35,8 +35,6 @@
                     src="{{ $thumbSmUrl }}"
                     alt="{{ $row->ad_title }}"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    width="200"
-                    height="150"
                     loading="lazy"
                     @if($image)
                         srcset="{{ $thumbnailUrl }} 200w, {{ $thumbSmUrl }} 400w"

@@ -226,6 +226,7 @@ class AdvertController extends Controller
             ], 404);
         }
 
+
         // Process images for portrait detection
         if ($ad->images) {
             foreach ($ad->images as $img) {

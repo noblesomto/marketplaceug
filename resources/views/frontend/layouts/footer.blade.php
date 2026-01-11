@@ -67,7 +67,7 @@
 		</a>
 	</div>
 </section>
-
+ @include('frontend.components.cookie-consent')
 @include('frontend.layouts.footer-links')
 </main>
 <script>

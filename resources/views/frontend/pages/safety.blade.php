@@ -220,9 +220,7 @@
         <p class="text-gray-600 mb-8">
           While Marketplace Naija provides tools and systems to keep you safe, your personal vigilance is key. Always trust your instincts — if something feels off, it probably is.
         </p>
-        <p class="text-xl font-semibold text-gray-900">
-          Stay smart. Stay secure. Trade confidently.
-        </p>
+
       </div>
     </section>
 </div>

@@ -85,7 +85,7 @@
     </header>
 
     @if(!in_array($ad->category, [3, 11, 18]))
-    <!-- Specs Grid (Replaces old definition lists) -->
+    <!-- Specs Grid  -->
     <section class="mt-8 px-2">
         <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
             <svg class="w-5 h-5 mr-2 text-dark_green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
@@ -187,6 +187,24 @@
             </div>
             @endif
         @endif
+
+        <!-- Features Tags -->
+        @if($ad->sub_category=="2")
+            @php $interiors = array_filter(array_map(fn($i)=>trim(str_replace(['/', '"', '\\', '[]'], '', $i)), explode(',', $car->interior ?? ''))); @endphp
+            @if(count($interiors))
+            <div class="mt-6">
+                <h3 class="text-sm font-bold text-gray-700 mb-3">Key Features</h3>
+                <div class="flex flex-wrap gap-2">
+                    @foreach($interiors as $i)
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-dark_green border border-green-100">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            {{ ucfirst($i) }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        @endif
     </section>
     @endif
 
@@ -244,7 +262,7 @@
 
     <!-- Inline Application Form (For Jobs Only) -->
     @if(($cat->category ?? '') =="Jobs" && $ad->sold != 'Yes')
-        <div class="mt-8 bg-blue-50 rounded-xl p-6 border border-blue-100">
+        <div class="mt-3 bg-blue-50 rounded-xl p-6 border border-blue-100">
             <h3 class="text-lg font-bold text-blue-900 mb-4">Apply for this Position</h3>
             <form method="POST" action="/apply/{{ $ad->id ?? '' }}">
                 @csrf

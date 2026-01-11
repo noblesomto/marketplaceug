@@ -14,6 +14,10 @@ use App\Http\Controllers\Api\UserManageAdverts;
 use App\Http\Controllers\Api\UserProfile;
 use App\Http\Controllers\Api\BlockUserController;
 use App\Http\Controllers\Api\UserManageBoostController;
+use App\Http\Controllers\Api\UserStatsController;
+use App\Http\Controllers\Api\AdvertStatsController;
+use App\Http\Controllers\Api\DeviceTokenController;
+use App\Http\Controllers\Api\NotificationSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +25,23 @@ use App\Http\Controllers\Api\UserManageBoostController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/test', function() {
-    return response()->json(['status' => 'API is working!']);
-});
 
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Device Token Management
+    Route::prefix('device-tokens')->group(function () {
+        Route::get('/', [DeviceTokenController::class, 'index']);
+        Route::post('/', [DeviceTokenController::class, 'store']);
+        Route::delete('/{id}', [DeviceTokenController::class, 'destroy']);
+    });
+
+    // Notification Settings
+    Route::prefix('notification-settings')->group(function () {
+        Route::get('/', [NotificationSettingsController::class, 'show']);
+        Route::put('/', [NotificationSettingsController::class, 'update']);
+    });
+
+});
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes (Public)
@@ -275,6 +292,31 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/boosts/{boostId}', [UserManageBoostController::class, 'getBoost']);
     Route::post('/boosts/{boostId}/upload-proof', [UserManageBoostController::class, 'uploadProof']);
     Route::delete('/boosts/{boostId}', [UserManageBoostController::class, 'cancelBoost']);
+});
+
+
+
+// Protected routes - require authentication
+Route::middleware('auth:sanctum')->group(function () {
+
+    // User Statistics
+    Route::prefix('user')->group(function () {
+        Route::get('/stats', [UserStatsController::class, 'getUserStats']);
+        Route::get('/unread-messages', [UserStatsController::class, 'getUnreadMessagesCount']);
+        Route::get('/notifications', [UserStatsController::class, 'getNotifications']);
+    });
+
+    // Public user data (still protected but can view others)
+    Route::get('/user/{userId}/followers', [UserStatsController::class, 'getUserFollowers']);
+    Route::get('/user/{userId}/feedback', [UserStatsController::class, 'getUserFeedback']);
+
+    // Advert Statistics
+    Route::prefix('adverts')->group(function () {
+        Route::get('/count', [AdvertStatsController::class, 'getAdvertCount']);
+        Route::get('/by-state', [AdvertStatsController::class, 'getAdvertsByState']);
+        Route::get('/count-filtered', [AdvertStatsController::class, 'getAdvertCountByFilter']);
+        Route::get('/brands', [AdvertStatsController::class, 'getBrandsWithAdvertCount']);
+    });
 });
 
 /*

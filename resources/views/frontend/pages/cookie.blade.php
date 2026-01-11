@@ -7,10 +7,7 @@
     <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Cookies Policy</h1>
-            <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-              <p>Effective Date: August 1, 2025</p>
-              <p>Last Updated: January 4, 2026</p>
-            </div>
+
             <p class="text-gray-600 mb-8">
               This Cookies Policy explains how Marketplace Naija ("we", "our", "us") uses cookies and similar tracking technologies when you visit or interact with our website www.marketplace.ng (the "platform").
             </p>
@@ -24,7 +21,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. What Are Cookies?</h2>
             <p class="text-gray-600">
-              Cookies are small text files placed on your computer, smartphone, or tablet when you visit a website. Cookies allow websites to recognize your device, remember your preferences, and improve your browsing experience.
+              Cookies are small text files placed on your computer, smartphone, or tablet when you visit a website. Cookies allow websites to recognize your device, remember your preferences, and improve your browsing experience. Some cookies are set by us and are known as first-party cookies. We also use third-party cookies, which come from domains other than our Service, to support our advertising and marketing efforts.
             </p>
           </div>
         </section>
@@ -53,7 +50,7 @@
               Here's a breakdown of the cookie categories used on Marketplace Naija:
             </p>
 
-            <h3 class="text-xl font-medium text-gray-900 mb-4">a. Strictly Necessary Cookies</h3>
+            <h3 class="text-xl font-medium text-gray-900 mb-4">a. Necessary Cookies</h3>
             <p class="text-gray-600 mb-4">
               These are essential for the operation of our website and cannot be switched off. They include:
             </p>
@@ -72,9 +69,6 @@
               <li>Click paths and bounce rates</li>
               <li>Website errors and speed tracking</li>
             </ul>
-            <p class="text-sm text-gray-500 italic">
-              Example tools: Google Analytics, Microsoft Clarity (anonymized tracking)
-            </p>
 
             <h3 class="text-xl font-medium text-gray-900 mb-4">c. Functional Cookies</h3>
             <p class="text-gray-600 mb-4">
@@ -111,7 +105,6 @@
               <li>Google Analytics</li>
               <li>Meta (Facebook) Pixel</li>
               <li>Payment processors (Paystack)</li>
-              <li>Microsoft Clarity</li>
               <li>Advertising cookies (Google AdSense)</li>
               <li>Live chat or customer support tools</li>
             </ul>
@@ -183,6 +176,9 @@
               We may update this policy to reflect changes in technology or legal requirements. When we do, we'll revise the "Last Updated" date and notify you where appropriate.
             </p>
           </div>
+          <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
+              <p>Last Updated: January 4, 2026</p>
+            </div>
         </section>
 
         <section class="py-2 px-4 sm:px-6 lg:px-8">
@@ -195,11 +191,9 @@
               <p class="text-gray-600"><span class="font-medium">Marketplace Naija</span></p>
               <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplace.ng" class="text-blue-600 hover:text-blue-800">privacy@marketplace.ng</a></p>
               <p class="text-gray-600"><span class="font-medium">Phone:</span> +2349073729787</p>
-              <p class="text-gray-600"><span class="font-medium">Website:</span> <a href="https://www.marketplace.ng" class="text-blue-600 hover:text-blue-800">www.marketplace.ng</a></p>
+
             </div>
-            <p class="text-gray-600 font-semibold mt-8">
-              Your privacy matters. Thank you for choosing Marketplace Naija.
-            </p>
+
           </div>
         </section>
 </div>

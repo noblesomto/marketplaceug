@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\MediaImageService;
 use Illuminate\Support\ServiceProvider;
+use App\Services\FirebaseCloudMessagingService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(MediaImageService::class, function ($app) {
             return new MediaImageService();
+        });
+        $this->app->singleton(FirebaseCloudMessagingService::class, function ($app) {
+            return new FirebaseCloudMessagingService();
         });
     }
 

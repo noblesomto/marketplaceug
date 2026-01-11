@@ -391,6 +391,17 @@ public function getCleanDescriptionAttribute()
     return trim($description);
 }
 
+    protected $appends = ['image_url', 'thumbnail_url'];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('images');
+    }
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('images', 'thumbnail');
+    }
 
 
 }

@@ -11,6 +11,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Enums\Fit;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable implements HasMedia
 {
@@ -44,7 +46,8 @@ class User extends Authenticatable implements HasMedia
         'account_name',
         'account_number',
         'remember_token',
-        'otp_expires_at'
+        'otp_expires_at',
+        'push_notifications_enabled'
     ];
 
     /**
@@ -67,6 +70,7 @@ class User extends Authenticatable implements HasMedia
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'push_notifications_enabled' => 'boolean',
         ];
     }
 
@@ -80,6 +84,11 @@ class User extends Authenticatable implements HasMedia
             } while (User::where('user_id', $user->user_id)->exists());
         });
     }
+
+     protected $appends = [
+        'profile_image_url',
+        'profile_thumbnail_url'
+    ];
 
     protected $primaryKey = 'user_id';
     public $incrementing = false;
@@ -280,6 +289,21 @@ class User extends Authenticatable implements HasMedia
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
 
+    /**
+     * Get all active device tokens for this user
+     */
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class)->where('is_active', true);
+    }
+
+    /**
+     * Check if user can receive push notifications
+     */
+    public function canReceivePushNotifications(): bool
+    {
+        return $this->push_notifications_enabled && $this->deviceTokens()->exists();
+    }
 
 
 }

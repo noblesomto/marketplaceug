@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Events\NewMessageNotification;
 use App\Helpers\FileUploadHelper;
 use App\Models\ArchivedMessage;
+use App\Jobs\SendPushNotification;
 
 
 class MessageController extends Controller
@@ -139,6 +140,15 @@ class MessageController extends Controller
 
     // Fire event
     event(new NewMessageNotification($message));
+    try {
+        $receiver = User::where('user_id', $receiverId)->first();
+        $sender = User::where('user_id', $senderId)->first();
+        if ($receiver && $sender) {
+            SendPushNotification::dispatch($receiver, $message, $sender);
+        }
+    } catch (\Exception $e) {
+        \Log::error('Failed to dispatch push notification: ' . $e->getMessage());
+    }
 
     return redirect()->back()->with('success', 'Message sent successfully!');
 }

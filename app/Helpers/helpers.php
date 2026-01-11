@@ -74,7 +74,14 @@ if (!function_exists('countUserFollowers')) {
 if (!function_exists('getTotalUnreadMessages')) {
     function getTotalUnreadMessages()
     {
+        // Try session first (web)
         $userId = Session::get('user_id');
+
+        // If no session, try API auth
+        if (!$userId && Auth::check()) {
+            $user = Auth::user();
+            $userId = User::where('id', $user->id)->value('user_id');
+        }
 
         if (!$userId) {
             return 0;

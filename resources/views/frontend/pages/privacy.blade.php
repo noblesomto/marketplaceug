@@ -7,10 +7,7 @@
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
-        <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-          <p>Effective Date: August 1, 2025</p>
-          <p>Last Updated: January 4, 2026</p>
-        </div>
+
         <p class="text-gray-600 mb-8">
           Welcome to Marketplace Naija ("Marketplace Naija", "Marketplace.ng", "we", "our", or "us"). This Privacy Policy explains how we collect, use, disclose, and protect personal information when you access or use our website and services at www.marketplace.ng.
         </p>
@@ -129,16 +126,14 @@
             </p>
 
                 <h4 class="text-xl font-semibold text-gray-900 mt-2">
-                Analytics and Session Recording Tools</h4>
+                Analytics and Session Tools</h4>
             <p>
-                Marketplace Naija uses analytics and behavior analysis tools such as <strong>Google Analytics</strong> and <strong>Microsoft Clarity</strong> to understand how users interact with our website, improve performance, and enhance user experience.
+                Marketplace Naija uses analytics and behavior analysis tools such as Google Analytics to understand how users interact with our website, improve performance, and enhance user experience.
             </p>
             <p>
                 These tools may collect information such as pages visited, interactions, device type, browser, and approximate location. Data collected through these tools is processed in aggregated form and used solely for analytical and improvement purposes.
             </p>
-            <p>
-                Analytics and session recording tools are only activated after users provide consent through our cookie consent mechanism.
-            </p>
+
         </div>
       </div>
     </section>
@@ -270,6 +265,10 @@
           We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Continued use of the platform constitutes acceptance of the updated policy.
         </p>
       </div>
+      <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
+          <p>Effective Date: August 1, 2025</p>
+          <p>Last Updated: January 4, 2026</p>
+        </div>
     </section>
 
     <section class="py-2 px-4 sm:px-6 lg:px-8">
@@ -283,7 +282,7 @@
           <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplace.ng" class="text-blue-600 hover:text-blue-800">privacy@marketplace.ng</a></p>
           <p class="text-gray-600"><span class="font-medium">Customer Support:</span> <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a></p>
           <p class="text-gray-600"><span class="font-medium">Phone:</span> +2349073729787</p>
-          <p class="text-gray-600"><span class="font-medium">Website:</span> <a href="https://www.marketplace.ng" class="text-blue-600 hover:text-blue-800">www.marketplace.ng</a></p>
+
         </div>
       </div>
     </section>

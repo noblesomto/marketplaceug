@@ -27,9 +27,9 @@
                         {{-- First 3 images: Eager load with high priority --}}
                         <img
                             alt="{{ $row->ad_title }}"
-                            class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                             width="300"
-                            height="112"
+                            height="262"
                             @if($loop->first)
                                 fetchpriority="high"
                             @endif
@@ -44,9 +44,9 @@
                         {{-- Remaining images: Lazy load --}}
                         <img
                             alt="{{ $row->ad_title }}"
-                            class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                             width="300"
-                            height="112"
+                            height="262"
                             loading="lazy"
                             @if($media)
                                 srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
@@ -161,9 +161,9 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
-                        height="112"
+                        height="262"
                         loading="lazy"
                         @if($media)
                             srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
@@ -277,9 +277,9 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
-                        height="112"
+                        height="262"
                         loading="lazy"
                         @if($media)
                             srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
@@ -393,9 +393,9 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full h-28 md:h-32 object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
-                        height="112"
+                        height="262"
                         loading="lazy"
                         @if($media)
                             srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"

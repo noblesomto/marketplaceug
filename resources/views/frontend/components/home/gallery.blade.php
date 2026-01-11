@@ -35,7 +35,7 @@
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative aspect-[4/3] overflow-hidden">
+                <div class="relative aspect-[4/3.5] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -188,7 +188,7 @@
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative aspect-[4/3] overflow-hidden">
+                <div class="relative aspect-[4/3.5] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -343,7 +343,7 @@
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative aspect-[4/3] overflow-hidden">
+                <div class="relative aspect-[4/3.5] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp
@@ -497,7 +497,7 @@
             <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
               <div class="bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-200 h-full flex flex-col">
                 <!-- Image container with fixed height -->
-                <div class="relative aspect-[4/3] overflow-hidden">
+                <div class="relative aspect-[4/3.5] overflow-hidden">
                   @php
                         $image = $row->getFirstMedia('images');
                     @endphp

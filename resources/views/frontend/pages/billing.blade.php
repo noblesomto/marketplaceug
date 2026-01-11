@@ -7,10 +7,7 @@
     <section class="pt-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Billing Policy</h1>
-        <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mb-8">
-            <p>Effective Date: August 1, 2025</p>
-            <p>Last Updated: January 4, 2026</p>
-        </div>
+
         <p class="text-gray-600 mb-8">
           This Billing Policy outlines how paid services on Marketplace Naija operate, particularly for users who choose to promote, boost, or sponsor their ad listings on our platform. By purchasing any promotional service on www.marketplace.ng, you agree to the terms described herein.
         </p>
@@ -176,7 +173,7 @@
         </ul>
         <div class="mt-4 space-y-2">
           <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:billing@marketplace.ng" class="text-blue-600 hover:text-blue-800">billing@marketplace.ng</a></p>
-          <p class="text-gray-600"><span class="font-medium">Phone Support:</span> +2348063229879</p>
+          <p class="text-gray-600"><span class="font-medium">Phone Support:</span> +2349073729787</p>
           <p class="text-gray-600"><span class="font-medium">Response Time:</span> Within 24–48 business hours</p>
         </div>
       </div>
@@ -207,6 +204,10 @@
           Continued use of promotional features after updates means you accept the revised policy.
         </p>
       </div>
+      <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
+
+            <p>Last Updated: January 4, 2026</p>
+        </div>
     </section>
 
     <section class="py-2 px-4 sm:px-6 lg:px-8">
@@ -230,12 +231,7 @@
               </svg>
               +2349073729787
             </p>
-            <p class="text-gray-600 flex items-center">
-              <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-              </svg>
-              <a href="https://www.marketplace.ng" class="text-blue-600 hover:text-blue-800">www.marketplace.ng</a>
-            </p>
+
           </div>
         </div>
         <p class="text-gray-600 mt-8 font-semibold">

@@ -60,6 +60,9 @@ return [
         'site_key' => env('GOOGLE_RECAPTCHA_KEY'),
         'secret_key' => env('GOOGLE_RECAPTCHA_SECRET'),
     ],
+    'fcm' => [
+        'server_key' => env('FCM_SERVER_KEY'),
+    ],
 
 
 ];

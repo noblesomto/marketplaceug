@@ -37,7 +37,7 @@ Route::any('/page', [PageController::class, 'page']);
 Route::any('/about-us', [PageController::class, 'about']);
 Route::any('/career', [PageController::class, 'career']);
 Route::any('/privacy-policy', [PageController::class, 'privacy']);
-Route::any('/cookie-policy', [PageController::class, 'cookie']);
+Route::any('/cookie-policy', [PageController::class, 'cookie'])->name('cookie.policy');
 Route::any('/billing-policy', [PageController::class, 'billing']);
 Route::any('/copyright-policy', [PageController::class, 'copyright']);
 Route::any('/safety-tips', [PageController::class, 'safety']);

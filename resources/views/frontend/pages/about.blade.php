@@ -17,11 +17,12 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Who We Are</h2>
         <p class="text-gray-600 mb-6">
-          Founded with the belief that everyone should have access to a trusted, nationwide marketplace, Marketplace.ng provides a digital space where individuals and businesses can list, discover, and purchase items with ease. Our team is made up of passionate Nigerians with expertise in local commerce, and we are committed to making everyday transactions simple, safe, and successful.
+          Marketplace Naija is Nigeria’s first regulated online marketplace. We actively moderate the platform to prevent illegal, misleading, or unsafe content, ensuring a secure experience for all users.
         </p>
         <p class="text-gray-600 mb-6">
-          We actively moderate listings to prevent illegal, misleading, or unsafe content and ensure a secure experience for all users.
+          Founded with the belief that everyone should have access to a trusted, nationwide marketplace, Marketplace.ng provides a digital space where individuals and businesses can list, discover, and purchase items with ease. Our team is made up of passionate Nigerians with expertise in local commerce, and we are committed to making everyday transactions simple, safe, and successful.
         </p>
+
       </div>
     </section>
 

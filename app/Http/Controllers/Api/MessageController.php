@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Events\MessageSent;
 use App\Events\NewMessageNotification;
 use Carbon\Carbon;
+use App\Jobs\SendPushNotification;
 
 class MessageController extends Controller
 {
@@ -101,6 +102,14 @@ class MessageController extends Controller
 
         // Broadcast events
         event(new NewMessageNotification($message));
+        try {
+            $receiver = User::where('user_id', $request->receiver_id)->first();
+            if ($receiver) {
+                SendPushNotification::dispatch($receiver, $message, auth()->user());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to dispatch push notification: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,
@@ -108,6 +117,7 @@ class MessageController extends Controller
             'data' => $message
         ], 201);
     }
+
 
     /**
      * @OA\Get(
