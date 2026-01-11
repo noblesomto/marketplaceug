@@ -19,8 +19,7 @@
                     src="{{ $thumbSmUrl }}"
                     alt="{{ $row->ad_title }}"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    width="300"
-                    height="350"
+
                     @if($loop->index < 2)
                         fetchpriority="high"
                     @endif

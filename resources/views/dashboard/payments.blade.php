@@ -58,7 +58,7 @@
 
                     @if(($row->shipping_status ?? '') == "shipped")
                     <div class="flex flex-col lg:flex-row lg:justify-between gap-1 lg:gap-10 mt-1">
-                        <span class="block">Item Will be delivered within 3 - 7 working days</span>
+                        <span class="block">Item Will be delivered within 3-7 working days</span>
                         <span class="block">Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
                     </div>
                     @endif

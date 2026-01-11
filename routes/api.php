@@ -197,7 +197,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 | User Manage Adverts Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->prefix('adverts')->group(function () {
+Route::middleware('auth:sanctum')->prefix('user/adverts')->group(function () {
     // Helper routes for dropdowns
     Route::get('/subcategories/{categoryId}', [UserManageAdverts::class, 'fetchSubcategories']);
     Route::get('/brands/{subcategoryId}', [UserManageAdverts::class, 'fetchBrands']);
@@ -229,8 +229,8 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     Route::get('/about-account', [UserProfile::class, 'aboutAccount']);
     Route::get('/profile-info', [UserProfile::class, 'getProfileInfo']);
 
-    // User ads
-    Route::get('/ads', [UserProfile::class, 'loadMoreUserAds']);
+    // User ads - NOTE: Removed duplicate, using UserController@myAds instead (line 172)
+    // Route::get('/ads', [UserProfile::class, 'loadMoreUserAds']);
 
     // Profile updates
     Route::put('/profile/address', [UserProfile::class, 'updateAddress']);

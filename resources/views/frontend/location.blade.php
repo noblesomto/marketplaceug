@@ -20,7 +20,7 @@
               </div>
 
               <!-- Loading the Ads from Components -->
-            <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
+            <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2">
                     @foreach ($ads as $row)
                         @if($isMobile)
                             @include('frontend.components.advert.advert-location-mobile', ['row' => $row])

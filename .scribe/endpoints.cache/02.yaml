@@ -16,8 +16,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving advertisement statistics, counts, and filtering
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get adverts count with filters'
       description: |-
         Returns the total count of active adverts based on various filters.
@@ -25,97 +25,11 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      category:
-        custom: []
-        name: category
-        description: 'The category ID.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sub_category:
-        custom: []
-        name: sub_category
-        description: 'The sub-category ID.'
-        required: false
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      brand:
-        custom: []
-        name: brand
-        description: 'The brand ID.'
-        required: false
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      buy_direct:
-        custom: []
-        name: buy_direct
-        description: 'Filter by buy direct option. Use "Yes" or "No".'
-        required: false
-        example: 'Yes'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      state:
-        custom: []
-        name: state
-        description: 'The state name.'
-        required: false
-        example: Lagos
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      from_date:
-        custom: []
-        name: from_date
-        description: 'date Filter adverts from this date (YYYY-MM-DD).'
-        required: false
-        example: '2025-01-01'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      to_date:
-        custom: []
-        name: to_date
-        description: 'date Filter adverts to this date (YYYY-MM-DD).'
-        required: false
-        example: '2025-01-31'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      category: 1
-      sub_category: 5
-      brand: 10
-      buy_direct: 'Yes'
-      state: Lagos
-      from_date: '2025-01-01'
-      to_date: '2025-01-31'
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -151,7 +65,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4kZefvV8Ea1cgPDabd36h65'
+      - 'Bearer D3ev6g61afZEPdabV5c48kh'
     controller: null
     method: null
     route: null
@@ -166,8 +80,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving advertisement statistics, counts, and filtering
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get adverts grouped by state'
       description: |-
         Returns the count of active adverts grouped by Nigerian states.
@@ -175,49 +89,11 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      category:
-        custom: []
-        name: category
-        description: 'Filter by category ID.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sub_category:
-        custom: []
-        name: sub_category
-        description: 'Filter by sub-category ID.'
-        required: false
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      brand:
-        custom: []
-        name: brand
-        description: 'Filter by brand ID.'
-        required: false
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      category: 1
-      sub_category: 5
-      brand: 10
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -265,7 +141,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer geD58k3Phva166cdfaZE4bV'
+      - 'Bearer DkaE81dVP6be3ghc6f4Z5av'
     controller: null
     method: null
     route: null
@@ -280,8 +156,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving advertisement statistics, counts, and filtering
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get advert count filtered by verified sellers'
       description: |-
         Returns the count of adverts from verified or unverified sellers.
@@ -289,61 +165,11 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      verified:
-        custom: []
-        name: verified
-        description: 'Filter by seller verification status. Use "yes" or "no". Defaults to "yes".'
-        required: false
-        example: 'yes'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      category:
-        custom: []
-        name: category
-        description: 'string|integer Category ID or slug.'
-        required: false
-        example: electronics
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sub_category:
-        custom: []
-        name: sub_category
-        description: 'string|integer Sub-category ID or slug.'
-        required: false
-        example: mobile-phones
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      brand:
-        custom: []
-        name: brand
-        description: 'string|integer Brand ID or slug.'
-        required: false
-        example: samsung
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      verified: 'yes'
-      category: electronics
-      sub_category: mobile-phones
-      brand: samsung
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -379,7 +205,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 5Z3agbvP661eVdh8fc4DkEa'
+      - 'Bearer fgvEVkc43e6bD1P58hdaaZ6'
     controller: null
     method: null
     route: null
@@ -394,8 +220,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving advertisement statistics, counts, and filtering
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get brands with advert counts'
       description: |-
         Returns a list of brands with their active advert counts.
@@ -403,37 +229,11 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      category_id:
-        custom: []
-        name: category_id
-        description: 'Filter brands by category ID.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      sub_category_id:
-        custom: []
-        name: sub_category_id
-        description: 'Filter brands by sub-category ID.'
-        required: false
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      category_id: 1
-      sub_category_id: 5
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -496,7 +296,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 614eDf3kZ8a5bdVhvagE6cP'
+      - 'Bearer Z36P5Eh4eg6v1fa8dVbaDck'
     controller: null
     method: null
     route: null

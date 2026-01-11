@@ -16,8 +16,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving user statistics, feedback, and notifications
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get authenticated user statistics'
       description: |-
         Returns comprehensive statistics for the currently authenticated user including
@@ -25,9 +25,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -85,7 +83,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 16a54gefbZVv3dDka86PchE'
+      - 'Bearer 6VcZkDd16hgb5Pa3a4vefE8'
     controller: null
     method: null
     route: null
@@ -100,16 +98,14 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving user statistics, feedback, and notifications
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get unread messages count'
       description: 'Returns the count of unread messages for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -144,7 +140,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Vavf158gac3bDeEPd6Zkh64'
+      - 'Bearer 18cdDgP3Eef65ahak6Zvb4V'
     controller: null
     method: null
     route: null
@@ -159,8 +155,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving user statistics, feedback, and notifications
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get user notifications'
       description: |-
         Retrieves notifications for the authenticated user with pagination support.
@@ -168,25 +164,11 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      limit:
-        custom: []
-        name: limit
-        description: 'The number of notifications to return. Defaults to 10.'
-        required: false
-        example: 20
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      limit: 20
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -234,7 +216,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer P3ecEDg841a5b6dvZhfVak6'
+      - 'Bearer D6gVf38vh5aEZekca6bdP14'
     controller: null
     method: null
     route: null
@@ -249,30 +231,28 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving user statistics, feedback, and notifications
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get user followers count'
       description: 'Retrieves the total number of followers for a specific user.'
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters:
       userId:
         custom: []
         name: userId
-        description: 'The user ID (5-character code).'
+        description: ''
         required: true
-        example: ABC12
+        example: id
         type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: ABC12
+      userId: id
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -307,7 +287,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer D1kacbev34h6gdVfa6ZEP58'
+      - 'Bearer 5PhD3edVv41kaEb686gfcZa'
     controller: null
     method: null
     route: null
@@ -322,8 +302,8 @@ endpoints:
       groupDescription: |-
 
         APIs for retrieving user statistics, feedback, and notifications
-      subgroup: ''
-      subgroupDescription: ''
+      subgroup: null
+      subgroupDescription: null
       title: 'Get user feedback and ratings'
       description: |-
         Retrieves feedback averages and rating labels for a specific user.
@@ -331,23 +311,21 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
-      Authorization: 'Bearer YOUR_TOKEN_HERE'
-      Content-Type: application/json
-      Accept: application/json
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
     urlParameters:
       userId:
         custom: []
         name: userId
-        description: 'The user ID (5-character code).'
+        description: ''
         required: true
-        example: ABC12
+        example: ad
         type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: ABC12
+      userId: ad
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -401,7 +379,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer beZP4aad1cgf65Vk8v6h3ED'
+      - 'Bearer kP164dvf5aZgha83eDVcb6E'
     controller: null
     method: null
     route: null

@@ -158,21 +158,21 @@ class AdvertController extends Controller
         $cars = Advert::with('firstImage', 'owner')
             ->activeNotSold()
             ->where('sub_category', 2)
-            ->orderBy('views', 'desc')
+            ->inRandomOrder()
             ->limit(10)
             ->get();
 
         $phones = Advert::with('firstImage', 'owner')
             ->activeNotSold()
             ->where('sub_category', 6)
-            ->orderBy('views', 'desc')
+            ->inRandomOrder()
             ->limit(10)
             ->get();
 
         $fashion = Advert::with('firstImage', 'owner')
             ->activeNotSold()
             ->where('category', 5)
-            ->orderBy('views', 'desc')
+            ->inRandomOrder()
             ->limit(10)
             ->get();
 
