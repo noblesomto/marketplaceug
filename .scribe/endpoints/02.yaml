@@ -1,0 +1,500 @@
+name: 'Advert Statistics'
+description: |-
+
+  APIs for retrieving advertisement statistics, counts, and filtering
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/adverts/count
+    metadata:
+      custom: []
+      groupName: 'Advert Statistics'
+      groupDescription: |-
+
+        APIs for retrieving advertisement statistics, counts, and filtering
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get adverts count with filters'
+      description: |-
+        Returns the total count of active adverts based on various filters.
+        All filters are optional and can be combined.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer YOUR_TOKEN_HERE'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      category:
+        custom: []
+        name: category
+        description: 'The category ID.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sub_category:
+        custom: []
+        name: sub_category
+        description: 'The sub-category ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      brand:
+        custom: []
+        name: brand
+        description: 'The brand ID.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      buy_direct:
+        custom: []
+        name: buy_direct
+        description: 'Filter by buy direct option. Use "Yes" or "No".'
+        required: false
+        example: 'Yes'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: 'The state name.'
+        required: false
+        example: Lagos
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      from_date:
+        custom: []
+        name: from_date
+        description: 'date Filter adverts from this date (YYYY-MM-DD).'
+        required: false
+        example: '2025-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      to_date:
+        custom: []
+        name: to_date
+        description: 'date Filter adverts to this date (YYYY-MM-DD).'
+        required: false
+        example: '2025-01-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      category: 1
+      sub_category: 5
+      brand: 10
+      buy_direct: 'Yes'
+      state: Lagos
+      from_date: '2025-01-01'
+      to_date: '2025-01-31'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "total_count": 1500,
+              "filters_applied": {
+                "category": "1",
+                "state": "Lagos"
+              }
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "success": false,
+            "message": "Failed to fetch advert count",
+            "error": "Error details"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 4kZefvV8Ea1cgPDabd36h65'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/adverts/by-state
+    metadata:
+      custom: []
+      groupName: 'Advert Statistics'
+      groupDescription: |-
+
+        APIs for retrieving advertisement statistics, counts, and filtering
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get adverts grouped by state'
+      description: |-
+        Returns the count of active adverts grouped by Nigerian states.
+        Results are ordered by state with the most adverts first.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer YOUR_TOKEN_HERE'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      category:
+        custom: []
+        name: category
+        description: 'Filter by category ID.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sub_category:
+        custom: []
+        name: sub_category
+        description: 'Filter by sub-category ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      brand:
+        custom: []
+        name: brand
+        description: 'Filter by brand ID.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      category: 1
+      sub_category: 5
+      brand: 10
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "states": [
+                {
+                  "state": "Lagos",
+                  "total": 500
+                },
+                {
+                  "state": "Abuja",
+                  "total": 300
+                },
+                {
+                  "state": "Port Harcourt",
+                  "total": 250
+                }
+              ],
+              "filters_applied": {
+                "category": "1"
+              }
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "success": false,
+            "message": "Failed to fetch adverts by state",
+            "error": "Error details"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer geD58k3Phva166cdfaZE4bV'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/adverts/count-filtered
+    metadata:
+      custom: []
+      groupName: 'Advert Statistics'
+      groupDescription: |-
+
+        APIs for retrieving advertisement statistics, counts, and filtering
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get advert count filtered by verified sellers'
+      description: |-
+        Returns the count of adverts from verified or unverified sellers.
+        Useful for showing marketplace trust metrics.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer YOUR_TOKEN_HERE'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      verified:
+        custom: []
+        name: verified
+        description: 'Filter by seller verification status. Use "yes" or "no". Defaults to "yes".'
+        required: false
+        example: 'yes'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      category:
+        custom: []
+        name: category
+        description: 'string|integer Category ID or slug.'
+        required: false
+        example: electronics
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sub_category:
+        custom: []
+        name: sub_category
+        description: 'string|integer Sub-category ID or slug.'
+        required: false
+        example: mobile-phones
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      brand:
+        custom: []
+        name: brand
+        description: 'string|integer Brand ID or slug.'
+        required: false
+        example: samsung
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      verified: 'yes'
+      category: electronics
+      sub_category: mobile-phones
+      brand: samsung
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "count": 250,
+              "verified": "yes",
+              "category": "electronics",
+              "sub_category": "mobile-phones",
+              "brand": "samsung"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "success": false,
+            "message": "Failed to fetch filtered advert count",
+            "error": "Error details"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 5Z3agbvP661eVdh8fc4DkEa'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/adverts/brands
+    metadata:
+      custom: []
+      groupName: 'Advert Statistics'
+      groupDescription: |-
+
+        APIs for retrieving advertisement statistics, counts, and filtering
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get brands with advert counts'
+      description: |-
+        Returns a list of brands with their active advert counts.
+        Can be filtered by category or sub-category. Only returns brands with at least one active advert.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer YOUR_TOKEN_HERE'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      category_id:
+        custom: []
+        name: category_id
+        description: 'Filter brands by category ID.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sub_category_id:
+        custom: []
+        name: sub_category_id
+        description: 'Filter brands by sub-category ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      category_id: 1
+      sub_category_id: 5
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "brands": [
+                {
+                  "id": 1,
+                  "brand_name": "Samsung",
+                  "brand_slug": "samsung",
+                  "adverts_count": 45,
+                  "sub_category": {
+                    "id": 5,
+                    "sub_cat_name": "Mobile Phones",
+                    "category": {
+                      "id": 1,
+                      "category_name": "Electronics"
+                    }
+                  }
+                },
+                {
+                  "id": 2,
+                  "brand_name": "Apple",
+                  "brand_slug": "apple",
+                  "adverts_count": 38,
+                  "sub_category": {
+                    "id": 5,
+                    "sub_cat_name": "Mobile Phones",
+                    "category": {
+                      "id": 1,
+                      "category_name": "Electronics"
+                    }
+                  }
+                }
+              ],
+              "category_id": 1,
+              "sub_category_id": 5
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 500
+        content: |-
+          {
+            "success": false,
+            "message": "Failed to fetch brands with advert count",
+            "error": "Error details"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 614eDf3kZ8a5bdVhvagE6cP'
+    controller: null
+    method: null
+    route: null

@@ -1,7 +1,7 @@
 
 <!-- Cookie Consent Popup -->
 <div id="cookieConsent"
-     class="hidden fixed bottom-16 inset-x-0 z-[9999] bg-white/95 border-t border-gray-200 shadow-lg animate-slideUp">
+     class="hidden fixed bottom-16 lg:bottom-0 inset-x-0 z-[9999] bg-white/95 border-t border-gray-200 shadow-lg animate-slideUp">
 
     <div class="max-w-7xl mx-auto px-2 py-2 grid grid-cols-12 gap-2 items-center">
 

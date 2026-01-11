@@ -10,23 +10,586 @@
     ],
     "info": {
         "name": "Marketplace Nigeria API Documentation",
-        "_postman_id": "44e453cc-f935-4172-9493-5caf42295606",
+        "_postman_id": "7b7f0c89-cf8d-461a-aa33-a7b33b0c028d",
         "description": "Complete API documentation for Marketplace Nigeria platform",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
         {
+            "name": "Advert Statistics",
+            "description": "\nAPIs for retrieving advertisement statistics, counts, and filtering",
+            "item": [
+                {
+                    "name": "Get adverts count with filters",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/count",
+                            "query": [
+                                {
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "The category ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sub_category",
+                                    "value": "5",
+                                    "description": "The sub-category ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "10",
+                                    "description": "The brand ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "buy_direct",
+                                    "value": "Yes",
+                                    "description": "Filter by buy direct option. Use \"Yes\" or \"No\".",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "Lagos",
+                                    "description": "The state name.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "from_date",
+                                    "value": "2025-01-01",
+                                    "description": "date Filter adverts from this date (YYYY-MM-DD).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "to_date",
+                                    "value": "2025-01-31",
+                                    "description": "date Filter adverts to this date (YYYY-MM-DD).",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/adverts\/count?category=1&sub_category=5&brand=10&buy_direct=Yes&state=Lagos&from_date=2025-01-01&to_date=2025-01-31"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the total count of active adverts based on various filters.\nAll filters are optional and can be combined."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"total_count\": 1500,\n    \"filters_applied\": {\n      \"category\": \"1\",\n      \"state\": \"Lagos\"\n    }\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"Failed to fetch advert count\",\n  \"error\": \"Error details\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get adverts grouped by state",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/by-state",
+                            "query": [
+                                {
+                                    "key": "category",
+                                    "value": "1",
+                                    "description": "Filter by category ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sub_category",
+                                    "value": "5",
+                                    "description": "Filter by sub-category ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "10",
+                                    "description": "Filter by brand ID.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/adverts\/by-state?category=1&sub_category=5&brand=10"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the count of active adverts grouped by Nigerian states.\nResults are ordered by state with the most adverts first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"states\": [\n      {\n        \"state\": \"Lagos\",\n        \"total\": 500\n      },\n      {\n        \"state\": \"Abuja\",\n        \"total\": 300\n      },\n      {\n        \"state\": \"Port Harcourt\",\n        \"total\": 250\n      }\n    ],\n    \"filters_applied\": {\n      \"category\": \"1\"\n    }\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"Failed to fetch adverts by state\",\n  \"error\": \"Error details\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get advert count filtered by verified sellers",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/count-filtered",
+                            "query": [
+                                {
+                                    "key": "verified",
+                                    "value": "yes",
+                                    "description": "Filter by seller verification status. Use \"yes\" or \"no\". Defaults to \"yes\".",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "electronics",
+                                    "description": "string|integer Category ID or slug.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sub_category",
+                                    "value": "mobile-phones",
+                                    "description": "string|integer Sub-category ID or slug.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "samsung",
+                                    "description": "string|integer Brand ID or slug.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/adverts\/count-filtered?verified=yes&category=electronics&sub_category=mobile-phones&brand=samsung"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the count of adverts from verified or unverified sellers.\nUseful for showing marketplace trust metrics."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"count\": 250,\n    \"verified\": \"yes\",\n    \"category\": \"electronics\",\n    \"sub_category\": \"mobile-phones\",\n    \"brand\": \"samsung\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"Failed to fetch filtered advert count\",\n  \"error\": \"Error details\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get brands with advert counts",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/brands",
+                            "query": [
+                                {
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "Filter brands by category ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sub_category_id",
+                                    "value": "5",
+                                    "description": "Filter brands by sub-category ID.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/adverts\/brands?category_id=1&sub_category_id=5"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of brands with their active advert counts.\nCan be filtered by category or sub-category. Only returns brands with at least one active advert."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"brands\": [\n      {\n        \"id\": 1,\n        \"brand_name\": \"Samsung\",\n        \"brand_slug\": \"samsung\",\n        \"adverts_count\": 45,\n        \"sub_category\": {\n          \"id\": 5,\n          \"sub_cat_name\": \"Mobile Phones\",\n          \"category\": {\n            \"id\": 1,\n            \"category_name\": \"Electronics\"\n          }\n        }\n      },\n      {\n        \"id\": 2,\n        \"brand_name\": \"Apple\",\n        \"brand_slug\": \"apple\",\n        \"adverts_count\": 38,\n        \"sub_category\": {\n          \"id\": 5,\n          \"sub_cat_name\": \"Mobile Phones\",\n          \"category\": {\n            \"id\": 1,\n            \"category_name\": \"Electronics\"\n          }\n        }\n      }\n    ],\n    \"category_id\": 1,\n    \"sub_category_id\": 5\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"Failed to fetch brands with advert count\",\n  \"error\": \"Error details\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Endpoints",
             "description": "",
             "item": [
                 {
-                    "name": "GET api\/test",
+                    "name": "GET api\/device-tokens",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/test",
+                            "path": "api\/device-tokens",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/test"
+                            "raw": "{{baseUrl}}\/api\/device-tokens"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/device-tokens",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/device-tokens",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/device-tokens"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"token\":\"lpntfa\",\"platform\":\"soluta\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/device-tokens\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/device-tokens\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/device-tokens\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "adipisci",
+                                    "description": "The ID of the device token."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/notification-settings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/notification-settings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/notification-settings"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/notification-settings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/notification-settings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/notification-settings"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"push_notifications_enabled\":true}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Register\nPOST \/api\/register",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"acc_type\":\"doloribus\",\"name\":\"nywd\",\"phone\":\"suscipit\",\"email\":\"virginie.senger@example.org\",\"password\":\"rAj\\\/\\\/;<VA%@\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "API Login - Step 1: Validate credentials\nPOST \/api\/login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"boehm.carroll@example.com\",\"password\":\"D}Hxm[4lt{B6?vrfB\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "API Login - Step 2: Verify OTP\nPOST \/api\/verify-otp",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/verify-otp",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/verify-otp"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"bashirian.casimer@example.org\",\"otp\":\"162738\",\"trust_device\":true}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Resend OTP\nPOST \/api\/resend-otp",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/resend-otp",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/resend-otp"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"hailee63@example.org\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Verify Account\nGET \/api\/verify\/{email}\/{token}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/verify\/:email\/:token",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/verify\/:email\/:token",
+                            "variable": [
+                                {
+                                    "id": "email",
+                                    "key": "email",
+                                    "value": "eichmann.easton%40example.net",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "token",
+                                    "key": "token",
+                                    "value": "magnam",
+                                    "description": ""
+                                }
+                            ]
                         },
                         "method": "GET",
                         "header": [
@@ -66,20 +629,20 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"status\":\"API is working!\"}",
+                            "code": 400,
+                            "body": "{\"status\":false,\"message\":\"Invalid verification link.\"}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "Register\nPOST \/api\/register",
+                    "name": "Resend Verification Email\nPOST \/api\/resend-verification",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/register",
+                            "path": "api\/resend-verification",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/register"
+                            "raw": "{{baseUrl}}\/api\/resend-verification"
                         },
                         "method": "POST",
                         "header": [
@@ -94,20 +657,20 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"acc_type\":\"aperiam\",\"name\":\"uqakkoxlfsydbniosgyxedej\",\"phone\":\"est\",\"email\":\"kbode@example.com\",\"password\":\"<F7`sP[RHafuk_l37nV.\"}"
+                            "raw": "{\"email\":\"qzemlak@example.net\"}"
                         },
                         "description": ""
                     },
                     "response": []
                 },
                 {
-                    "name": "API Login - Step 1: Validate credentials\nPOST \/api\/login",
+                    "name": "Forgot Password\nPOST \/api\/forgot-password",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/login",
+                            "path": "api\/forgot-password",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/login"
+                            "raw": "{{baseUrl}}\/api\/forgot-password"
                         },
                         "method": "POST",
                         "header": [
@@ -122,87 +685,95 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"vallie41@example.net\",\"password\":\"FeY#pb&VCUNS%*32lr\"}"
+                            "raw": "{\"email\":\"crawford.ruecker@example.net\"}"
                         },
                         "description": ""
                     },
                     "response": []
                 },
                 {
-                    "name": "API Login - Step 2: Verify OTP\nPOST \/api\/verify-otp",
+                    "name": "Reset Password\nPOST \/api\/reset-password\/{user_id}\/{token}",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/verify-otp",
+                            "path": "api\/reset-password\/:user_id\/:token",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/verify-otp"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"braeden72@example.net\",\"otp\":\"695486\",\"trust_device\":true}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Resend OTP\nPOST \/api\/resend-otp",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/resend-otp",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/resend-otp"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"greenfelder.melba@example.net\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Verify Account\nGET \/api\/verify\/{email}\/{token}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/verify\/:email\/:token",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/verify\/:email\/:token",
+                            "raw": "{{baseUrl}}\/api\/reset-password\/:user_id\/:token",
                             "variable": [
                                 {
-                                    "id": "email",
-                                    "key": "email",
-                                    "value": "gparisian%40example.com",
-                                    "description": ""
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "cum",
+                                    "description": "The ID of the user."
                                 },
                                 {
                                     "id": "token",
                                     "key": "token",
-                                    "value": "id",
+                                    "value": "ut",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"password\":\"gsXwC(]zNpp=d\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Social Login - Mobile sends provider token\nPOST \/api\/auth\/social",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/social",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/social"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"provider\":\"facebook\",\"access_token\":\"voluptas\",\"device_name\":\"corrupti\"}"
+                        },
+                        "description": "Mobile app gets token from provider (Google\/Facebook SDK)\nthen sends it to this endpoint for verification"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Social Login URL - For WebView flow\nGET \/api\/auth\/{provider}\/redirect",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/:provider\/redirect",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/:provider\/redirect",
+                            "variable": [
+                                {
+                                    "id": "provider",
+                                    "key": "provider",
+                                    "value": "ullam",
                                     "description": ""
                                 }
                             ]
@@ -246,150 +817,24 @@
                                 }
                             ],
                             "code": 400,
-                            "body": "{\"status\":false,\"message\":\"Invalid verification link.\"}",
+                            "body": "{\"status\":false,\"message\":\"Invalid provider.\"}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "Resend Verification Email\nPOST \/api\/resend-verification",
+                    "name": "Social Login Callback - For WebView flow\nGET \/api\/auth\/{provider}\/callback",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/resend-verification",
+                            "path": "api\/auth\/:provider\/callback",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/resend-verification"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"obrakus@example.org\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Forgot Password\nPOST \/api\/forgot-password",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/forgot-password",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/forgot-password"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"marianne.mann@example.net\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Reset Password\nPOST \/api\/reset-password\/{user_id}\/{token}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/reset-password\/:user_id\/:token",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/reset-password\/:user_id\/:token",
-                            "variable": [
-                                {
-                                    "id": "user_id",
-                                    "key": "user_id",
-                                    "value": "dolorem",
-                                    "description": "The ID of the user."
-                                },
-                                {
-                                    "id": "token",
-                                    "key": "token",
-                                    "value": "ullam",
-                                    "description": ""
-                                }
-                            ]
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"password\":\"U\\\/H~2Bw2Po.$06\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Social Login - Mobile sends provider token\nPOST \/api\/auth\/social",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/auth\/social",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/auth\/social"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"provider\":\"facebook\",\"access_token\":\"repellat\",\"device_name\":\"id\"}"
-                        },
-                        "description": "Mobile app gets token from provider (Google\/Facebook SDK)\nthen sends it to this endpoint for verification"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Social Login URL - For WebView flow\nGET \/api\/auth\/{provider}\/redirect",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/auth\/:provider\/redirect",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/auth\/:provider\/redirect",
+                            "raw": "{{baseUrl}}\/api\/auth\/:provider\/callback",
                             "variable": [
                                 {
                                     "id": "provider",
                                     "key": "provider",
-                                    "value": "rerum",
+                                    "value": "quae",
                                     "description": ""
                                 }
                             ]
@@ -426,67 +871,6 @@
                                 {
                                     "key": "x-ratelimit-remaining",
                                     "value": "57"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 400,
-                            "body": "{\"status\":false,\"message\":\"Invalid provider.\"}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Social Login Callback - For WebView flow\nGET \/api\/auth\/{provider}\/callback",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/auth\/:provider\/callback",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/auth\/:provider\/callback",
-                            "variable": [
-                                {
-                                    "id": "provider",
-                                    "key": "provider",
-                                    "value": "aut",
-                                    "description": ""
-                                }
-                            ]
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "x-ratelimit-limit",
-                                    "value": "60"
-                                },
-                                {
-                                    "key": "x-ratelimit-remaining",
-                                    "value": "56"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -581,7 +965,7 @@
                                 {
                                     "id": "device_id",
                                     "key": "device_id",
-                                    "value": "sapiente",
+                                    "value": "ipsa",
                                     "description": "The ID of the device."
                                 }
                             ]
@@ -614,7 +998,7 @@
                                 {
                                     "id": "seller_id",
                                     "key": "seller_id",
-                                    "value": "quia",
+                                    "value": "soluta",
                                     "description": "The ID of the seller."
                                 }
                             ]
@@ -650,7 +1034,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "55"
+                                    "value": "56"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -703,7 +1087,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "54"
+                                    "value": "55"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -764,7 +1148,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "53"
+                                    "value": "54"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -795,8 +1179,81 @@
                                 {
                                     "id": "subcat_slug",
                                     "key": "subcat_slug",
-                                    "value": "quasi",
+                                    "value": "reprehenderit",
                                     "description": "The slug of the subcat."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit",
+                                    "value": "60"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining",
+                                    "value": "53"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 404,
+                            "body": "{\"success\":false,\"message\":\"Category not found\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get adverts by brand\nGET \/api\/brands\/{category_slug}\/{subcat_slug}\/{brand_slug}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/brands\/:category_slug\/:subcat_slug\/:brand_slug",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/brands\/:category_slug\/:subcat_slug\/:brand_slug",
+                            "variable": [
+                                {
+                                    "id": "category_slug",
+                                    "key": "category_slug",
+                                    "value": "enim",
+                                    "description": "The slug of the category."
+                                },
+                                {
+                                    "id": "subcat_slug",
+                                    "key": "subcat_slug",
+                                    "value": "suscipit",
+                                    "description": "The slug of the subcat."
+                                },
+                                {
+                                    "id": "brand_slug",
+                                    "key": "brand_slug",
+                                    "value": "sit",
+                                    "description": "The slug of the brand."
                                 }
                             ]
                         },
@@ -845,31 +1302,19 @@
                     ]
                 },
                 {
-                    "name": "Get adverts by brand\nGET \/api\/brands\/{category_slug}\/{subcat_slug}\/{brand_slug}",
+                    "name": "Get adverts by location\nGET \/api\/location\/{state_slug}",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/brands\/:category_slug\/:subcat_slug\/:brand_slug",
+                            "path": "api\/location\/:state_slug",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/brands\/:category_slug\/:subcat_slug\/:brand_slug",
+                            "raw": "{{baseUrl}}\/api\/location\/:state_slug",
                             "variable": [
                                 {
-                                    "id": "category_slug",
-                                    "key": "category_slug",
-                                    "value": "laboriosam",
-                                    "description": "The slug of the category."
-                                },
-                                {
-                                    "id": "subcat_slug",
-                                    "key": "subcat_slug",
-                                    "value": "culpa",
-                                    "description": "The slug of the subcat."
-                                },
-                                {
-                                    "id": "brand_slug",
-                                    "key": "brand_slug",
-                                    "value": "quod",
-                                    "description": "The slug of the brand."
+                                    "id": "state_slug",
+                                    "key": "state_slug",
+                                    "value": "in",
+                                    "description": "The slug of the state."
                                 }
                             ]
                         },
@@ -911,69 +1356,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 404,
-                            "body": "{\"success\":false,\"message\":\"Category not found\"}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Get adverts by location\nGET \/api\/location\/{state_slug}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/location\/:state_slug",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/location\/:state_slug",
-                            "variable": [
-                                {
-                                    "id": "state_slug",
-                                    "key": "state_slug",
-                                    "value": "ea",
-                                    "description": "The slug of the state."
-                                }
-                            ]
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "x-ratelimit-limit",
-                                    "value": "60"
-                                },
-                                {
-                                    "key": "x-ratelimit-remaining",
-                                    "value": "50"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":{\"ads\":[],\"location\":\"ea\",\"has_more\":false,\"next_page\":2}}",
+                            "body": "{\"success\":true,\"data\":{\"ads\":[],\"location\":\"in\",\"has_more\":false,\"next_page\":2}}",
                             "name": ""
                         }
                     ]
@@ -1098,7 +1482,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"subject\":\"hciexulgywigq\",\"message\":\"repellat\"}"
+                            "raw": "{\"subject\":\"cbynqkvfldnlohgxruizvbycd\",\"message\":\"esse\"}"
                         },
                         "description": ""
                     },
@@ -1134,7 +1518,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"message\":\"officiis\"}"
+                            "raw": "{\"message\":\"nemo\"}"
                         },
                         "description": ""
                     },
@@ -1162,7 +1546,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"product\":\"enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj\"}"
+                            "raw": "{\"product\":\"ilrtepxxldliznjqbnzvyoqxcxxqburicmuzlnyxkxedizkzsq\"}"
                         },
                         "description": ""
                     },
@@ -1183,7 +1567,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "49"
+                                    "value": "50"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1191,7 +1575,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":[],\"pagination\":{\"current_page\":1,\"last_page\":1,\"per_page\":10,\"total\":0,\"has_more\":false},\"search_params\":{\"product\":\"enenkkektshzzmcyressjfrbjisugtefraqxadahkfkzckjnazqaouzzpymlcdpspwoj\",\"location\":null,\"category\":null,\"sub_category\":null,\"brand\":null,\"buydirect\":null}}",
+                            "body": "{\"success\":true,\"data\":[],\"pagination\":{\"current_page\":1,\"last_page\":1,\"per_page\":10,\"total\":0,\"has_more\":false},\"search_params\":{\"product\":\"ilrtepxxldliznjqbnzvyoqxcxxqburicmuzlnyxkxedizkzsq\",\"location\":null,\"category\":null,\"sub_category\":null,\"brand\":null,\"buydirect\":null}}",
                             "name": ""
                         }
                     ]
@@ -1283,13 +1667,13 @@
                                 {
                                     "id": "location",
                                     "key": "location",
-                                    "value": "tempore",
+                                    "value": "nihil",
                                     "description": "The location."
                                 },
                                 {
                                     "id": "slug",
                                     "key": "slug",
-                                    "value": "est",
+                                    "value": "rerum",
                                     "description": "The slug of the {location}."
                                 }
                             ]
@@ -1325,7 +1709,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "48"
+                                    "value": "49"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1378,7 +1762,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "47"
+                                    "value": "48"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1413,7 +1797,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"q\":\"pnoekxcaynoq\"}"
+                            "raw": "{\"q\":\"ipimqzuuoxgvwhysvvttkniabicuhemamtcbiqbhwksthbaphynjsncqfojttrsyvdzedlnrytfyjgxuwb\"}"
                         },
                         "description": ""
                     },
@@ -1434,7 +1818,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "46"
+                                    "value": "47"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1487,7 +1871,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "45"
+                                    "value": "46"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1495,7 +1879,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"data\":[{\"id\":328,\"user_id\":\"82261\",\"ad_id\":\"81404\",\"ad_type\":\"Private\",\"ad_title\":\"Toyota Highlander for sale\",\"title_slug\":\"toyota-highlander-for-sale\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"1000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\\\/div>\",\"state\":\"FCT - Abuja\",\"lga\":\"Gwagwalada\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"87\",\"keyword\":\"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good\",\"meta_description\":\"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;\",\"created_at\":\"2025-11-02T17:34:22.000000Z\",\"updated_at\":\"2025-12-12T14:13:02.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"gwagwalada\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1102,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"8986e5fb-9dc7-4543-b5dc-75f5667cb234\",\"collection_name\":\"images\",\"name\":\"68d52f121818a-large\",\"file_name\":\"690796242394a.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":101674,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"68d52f121818a-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-02T17:34:28.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"preview_url\":\"\"}},{\"id\":287,\"user_id\":\"70656\",\"ad_id\":\"83561\",\"ad_type\":\"Private\",\"ad_title\":\"HERO BIKE\",\"title_slug\":\"hero-bike\",\"category\":\"1\",\"sub_category\":\"22\",\"brand\":\"1012\",\"price\":\"750000\",\"price_type\":\"Negotiable\",\"item_condition\":\"Locally Used\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\\\/div>\",\"state\":\"Osun\",\"lga\":\"Ife Central\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"121\",\"keyword\":\"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv\",\"meta_description\":\"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;\",\"created_at\":\"2025-09-25T12:00:23.000000Z\",\"updated_at\":\"2025-09-25T12:00:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"ife-central\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":914,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"be55ae56-f1f3-4a29-8664-576293a1fa2a\",\"collection_name\":\"images\",\"name\":\"68d520c76b5ff.webp\",\"file_name\":\"68d520c76b5ff.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":247922,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":977},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:22:39.000000Z\",\"updated_at\":\"2025-09-29T02:22:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"preview_url\":\"\"}},{\"id\":314,\"user_id\":\"82261\",\"ad_id\":\"19583\",\"ad_type\":\"Private\",\"ad_title\":\"New 2025 Toyota Corolla LE FWD 4dr Car\",\"title_slug\":\"new-2025-toyota-corolla-le-fwd-4dr-car\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"4000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->The car is a new and forieng used<\\\/div>\",\"state\":\"Anambra\",\"lga\":\"Idemili South\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"48\",\"keyword\":\"2025, toyota, corolla, block, forieng, useddiv\",\"meta_description\":\"The car is a new and forieng used\",\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-11-30T11:30:36.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"idemili-south\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1063,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"b7a75deb-fd92-4b36-ba47-d7fff74f1a75\",\"collection_name\":\"images\",\"name\":\"d2e28f69361fd659185e76017ece2ad5\",\"file_name\":\"68db5c7e6ded4.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119862,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"d2e28f69361fd659185e76017ece2ad5.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-09-30T04:28:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"preview_url\":\"\"}},{\"id\":136,\"user_id\":\"28352\",\"ad_id\":\"82078\",\"ad_type\":\"Private\",\"ad_title\":\"iPhone 11 Pro\",\"title_slug\":\"iphone-11-pro\",\"category\":\"4\",\"sub_category\":\"6\",\"brand\":\"1542\",\"price\":\"269000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Alimosho\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"178\",\"keyword\":\"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234\",\"meta_description\":\"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990\",\"created_at\":\"2025-09-11T17:00:15.000000Z\",\"updated_at\":\"2025-11-13T09:35:24.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"alimosho\",\"contact_price\":\"no\",\"salary\":\"\\u20a6200,000 - \\u20a6220,000\",\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":414,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc\",\"collection_name\":\"images\",\"name\":\"68c2f20f99ac0.webp\",\"file_name\":\"68c2f20f99ac0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":52572,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":499},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:12.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"preview_url\":\"\"}},{\"id\":334,\"user_id\":\"82261\",\"ad_id\":\"20222\",\"ad_type\":\"Private\",\"ad_title\":\"New wig for sale\",\"title_slug\":\"new-wig-for-sale\",\"category\":\"8\",\"sub_category\":\"13\",\"brand\":\"656\",\"price\":\"230000\",\"price_type\":\"Negotiable\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"new wig arrive today for sale\",\"state\":\"Adamawa\",\"lga\":\"Fufure\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"33\",\"keyword\":\"sale, arrive, today\",\"meta_description\":\"new wig arrive today for sale\",\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:00.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"fufure\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"first_image\":{\"id\":1145,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e7bece4c-30a8-435c-ab34-704c8c2f7f7f\",\"collection_name\":\"images\",\"name\":\"IMG_7062\",\"file_name\":\"694245f08bad0.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":16434835,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"IMG_7062.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:06.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"preview_url\":\"\"}},{\"id\":329,\"user_id\":\"82261\",\"ad_id\":\"93361\",\"ad_type\":\"Private\",\"ad_title\":\"I Need a Web Developer\",\"title_slug\":\"i-need-a-web-developer-3\",\"category\":\"18\",\"sub_category\":\"147\",\"brand\":\"4131\",\"price\":null,\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->I need a vert good developer for immediate employment<\\\/div>\",\"state\":\"Ebonyi\",\"lga\":\"Abakaliki\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"need, developer, block, vert, good, immediate, employmentdiv\",\"meta_description\":\"I need a vert good developer for immediate employment\",\"created_at\":\"2025-11-04T03:36:23.000000Z\",\"updated_at\":\"2025-12-12T14:08:28.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"abakaliki\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":\"\\u20a6180,000 - \\u20a6200,000\",\"redirect\":\"Yes\",\"is_featured\":0,\"first_image\":{\"id\":1106,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":329,\"uuid\":\"b6afba5a-e16f-40cd-b832-3a1fd729d2a1\",\"collection_name\":\"images\",\"name\":\"WInter is coming english\",\"file_name\":\"690974b801fca.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":310197,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"WInter is coming english.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-04T03:36:24.000000Z\",\"updated_at\":\"2025-11-04T03:36:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"preview_url\":\"\"}},{\"id\":313,\"user_id\":\"82151\",\"ad_id\":\"97920\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2019 Mercedes Benz Gle350\",\"title_slug\":\"foreign-used-2019-mercedes-benz-gle350\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"266\",\"price\":\"56500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"5\",\"keyword\":\"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather\",\"meta_description\":\"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.\",\"created_at\":\"2025-09-28T21:32:01.000000Z\",\"updated_at\":\"2025-09-28T21:32:01.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1054,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"1425cace-0d95-4a49-94bc-096ed104946e\",\"collection_name\":\"images\",\"name\":\"68d99b4142e49.webp\",\"file_name\":\"68d99b4142e49.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":337178,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1117},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:17.000000Z\",\"updated_at\":\"2025-09-29T02:27:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"preview_url\":\"\"}},{\"id\":312,\"user_id\":\"76917\",\"ad_id\":\"58798\",\"ad_type\":\"Private\",\"ad_title\":\"The IKEJA LAUNDRY\",\"title_slug\":\"the-ikeja-laundry\",\"category\":\"12\",\"sub_category\":\"93\",\"brand\":\"2270\",\"price\":\"25000\",\"price_type\":\"Fixed\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert\",\"meta_description\":\"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!\",\"created_at\":\"2025-09-28T21:28:23.000000Z\",\"updated_at\":\"2025-09-28T21:28:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"ikeja\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1053,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":312,\"uuid\":\"c5a25f74-2dc1-4b51-b43f-f9efd15610bd\",\"collection_name\":\"images\",\"name\":\"68d99a678c6f7.webp\",\"file_name\":\"68d99a678c6f7.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":60366,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1116},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:16.000000Z\",\"updated_at\":\"2025-09-29T02:27:17.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"preview_url\":\"\"}},{\"id\":311,\"user_id\":\"82151\",\"ad_id\":\"15876\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2007 Toyota highlander\",\"title_slug\":\"foreign-used-2007-toyota-highlander\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"15500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"22\",\"keyword\":\"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower\",\"meta_description\":\"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.\",\"created_at\":\"2025-09-28T21:27:39.000000Z\",\"updated_at\":\"2025-09-28T21:27:39.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1043,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"571b3471-15de-4665-a644-21fe42a0c1ce\",\"collection_name\":\"images\",\"name\":\"68d99a3b46178.webp\",\"file_name\":\"68d99a3b46178.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":255048,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1106},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:55.000000Z\",\"updated_at\":\"2025-09-29T02:26:57.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"preview_url\":\"\"}},{\"id\":310,\"user_id\":\"82151\",\"ad_id\":\"97443\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2017 Toyota camry\",\"title_slug\":\"foreign-used-2017-toyota-camry\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"19500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"17\",\"keyword\":\"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident\",\"meta_description\":\"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.\",\"created_at\":\"2025-09-28T21:21:20.000000Z\",\"updated_at\":\"2025-09-28T21:21:20.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"first_image\":{\"id\":1034,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"615d49d8-ffde-441c-a0ac-14dd40995339\",\"collection_name\":\"images\",\"name\":\"68d998c04673f.webp\",\"file_name\":\"68d998c04673f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":238710,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1097},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:37.000000Z\",\"updated_at\":\"2025-09-29T02:26:39.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"preview_url\":\"\"}}],\"has_more\":true,\"pagination\":{\"current_page\":1,\"last_page\":26,\"per_page\":10,\"total\":253}}",
+                            "body": "{\"success\":true,\"data\":[{\"id\":314,\"user_id\":\"82261\",\"ad_id\":\"19583\",\"ad_type\":\"Private\",\"ad_title\":\"New 2025 Toyota Corolla LE FWD 4dr Car\",\"title_slug\":\"new-2025-toyota-corolla-le-fwd-4dr-car\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"4000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->The car is a new and forieng used<\\\/div>\",\"state\":\"Anambra\",\"lga\":\"Idemili South\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"48\",\"keyword\":\"2025, toyota, corolla, block, forieng, useddiv\",\"meta_description\":\"The car is a new and forieng used\",\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-11-30T11:30:36.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"idemili-south\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/conversions\\\/68db5c7e6ded4-thumbnail.webp\",\"first_image\":{\"id\":1063,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"b7a75deb-fd92-4b36-ba47-d7fff74f1a75\",\"collection_name\":\"images\",\"name\":\"d2e28f69361fd659185e76017ece2ad5\",\"file_name\":\"68db5c7e6ded4.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119862,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"d2e28f69361fd659185e76017ece2ad5.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-09-30T04:28:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1063,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"b7a75deb-fd92-4b36-ba47-d7fff74f1a75\",\"collection_name\":\"images\",\"name\":\"d2e28f69361fd659185e76017ece2ad5\",\"file_name\":\"68db5c7e6ded4.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119862,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"d2e28f69361fd659185e76017ece2ad5.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-30T04:28:46.000000Z\",\"updated_at\":\"2025-09-30T04:28:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1063\\\/68db5c7e6ded4.webp\",\"preview_url\":\"\"},{\"id\":1064,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"852f4355-14bb-407d-8615-b439750f2479\",\"collection_name\":\"images\",\"name\":\"4c11f07343790ba79cef8e6babcad653\",\"file_name\":\"68db5c802aa47.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":126123,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"original_name\":\"4c11f07343790ba79cef8e6babcad653.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-30T04:28:48.000000Z\",\"updated_at\":\"2025-09-30T04:28:48.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1064\\\/68db5c802aa47.webp\",\"preview_url\":\"\"},{\"id\":1065,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":314,\"uuid\":\"be47d5ba-26f2-4ff1-9b8e-281107004624\",\"collection_name\":\"images\",\"name\":\"a0c4b61a8df537ea6b4c9621341616cd (1)\",\"file_name\":\"68db5c81c93e5.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":128198,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"original_name\":\"a0c4b61a8df537ea6b4c9621341616cd (1).jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-30T04:28:49.000000Z\",\"updated_at\":\"2025-09-30T04:28:50.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1065\\\/68db5c81c93e5.webp\",\"preview_url\":\"\"}]},{\"id\":334,\"user_id\":\"82261\",\"ad_id\":\"20222\",\"ad_type\":\"Private\",\"ad_title\":\"New wig for sale\",\"title_slug\":\"new-wig-for-sale\",\"category\":\"8\",\"sub_category\":\"13\",\"brand\":\"656\",\"price\":\"230000\",\"price_type\":\"Negotiable\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"new wig arrive today for sale\",\"state\":\"Adamawa\",\"lga\":\"Fufure\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"33\",\"keyword\":\"sale, arrive, today\",\"meta_description\":\"new wig arrive today for sale\",\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:00.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"fufure\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/conversions\\\/694245f08bad0-thumbnail.webp\",\"first_image\":{\"id\":1145,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e7bece4c-30a8-435c-ab34-704c8c2f7f7f\",\"collection_name\":\"images\",\"name\":\"IMG_7062\",\"file_name\":\"694245f08bad0.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":16434835,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"IMG_7062.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:06.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1145,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e7bece4c-30a8-435c-ab34-704c8c2f7f7f\",\"collection_name\":\"images\",\"name\":\"IMG_7062\",\"file_name\":\"694245f08bad0.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":16434835,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"IMG_7062.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-12-17T05:56:00.000000Z\",\"updated_at\":\"2025-12-17T05:56:06.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1145\\\/694245f08bad0.webp\",\"preview_url\":\"\"},{\"id\":1146,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"09721585-634a-47d7-91a1-a9a22821ba21\",\"collection_name\":\"images\",\"name\":\"IMG_7060\",\"file_name\":\"694245f76ffc3.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":1362482,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"original_name\":\"IMG_7060.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-12-17T05:56:07.000000Z\",\"updated_at\":\"2025-12-17T05:56:08.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1146\\\/694245f76ffc3.webp\",\"preview_url\":\"\"},{\"id\":1147,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"ed59debf-3df3-4b56-a445-e4d3b9da3e48\",\"collection_name\":\"images\",\"name\":\"IMG_70603\",\"file_name\":\"694245f9b3fd9.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":13803876,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"original_name\":\"IMG_70603.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-12-17T05:56:09.000000Z\",\"updated_at\":\"2025-12-17T05:56:15.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1147\\\/694245f9b3fd9.webp\",\"preview_url\":\"\"},{\"id\":1148,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":334,\"uuid\":\"e35d7355-3073-41b7-9060-1eb463784606\",\"collection_name\":\"images\",\"name\":\"IMG_7071\",\"file_name\":\"694246001a9e9.webp\",\"mime_type\":\"image\\\/png\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":17617039,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"original_name\":\"IMG_7071.png\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true,\"thumb-sm\":true,\"thumb-md\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-12-17T05:56:16.000000Z\",\"updated_at\":\"2025-12-17T05:56:22.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1148\\\/694246001a9e9.webp\",\"preview_url\":\"\"}]},{\"id\":328,\"user_id\":\"82261\",\"ad_id\":\"81404\",\"ad_type\":\"Private\",\"ad_title\":\"Toyota Highlander for sale\",\"title_slug\":\"toyota-highlander-for-sale\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"1000000\",\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;<\\\/div>\",\"state\":\"FCT - Abuja\",\"lga\":\"Gwagwalada\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"87\",\"keyword\":\"toyota, highlander, sale, block, affordable, clean, neat, model, sells, good\",\"meta_description\":\"Affordable clean and neat Toyota highlander model for sells in good working conditions full options buy and drive nothing to fixed&nbsp;\",\"created_at\":\"2025-11-02T17:34:22.000000Z\",\"updated_at\":\"2025-12-12T14:13:02.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"gwagwalada\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/conversions\\\/690796242394a-thumbnail.webp\",\"first_image\":{\"id\":1102,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"8986e5fb-9dc7-4543-b5dc-75f5667cb234\",\"collection_name\":\"images\",\"name\":\"68d52f121818a-large\",\"file_name\":\"690796242394a.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":101674,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"68d52f121818a-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-02T17:34:28.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1100,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"6e67dfab-fb8a-43f8-9dbb-5abbe494e205\",\"collection_name\":\"images\",\"name\":\"68d52f123720f-large\",\"file_name\":\"690796209fa39.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":81170,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"original_name\":\"68d52f123720f-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-11-02T17:34:24.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1100\\\/690796209fa39.webp\",\"preview_url\":\"\"},{\"id\":1101,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"08334276-ac24-43e6-b58c-4c2d96fbd8a1\",\"collection_name\":\"images\",\"name\":\"68d52f124453b-large\",\"file_name\":\"6907962262bee.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":92634,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"original_name\":\"68d52f124453b-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-11-02T17:34:26.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1101\\\/6907962262bee.webp\",\"preview_url\":\"\"},{\"id\":1102,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"8986e5fb-9dc7-4543-b5dc-75f5667cb234\",\"collection_name\":\"images\",\"name\":\"68d52f121818a-large\",\"file_name\":\"690796242394a.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":101674,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"68d52f121818a-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-02T17:34:28.000000Z\",\"updated_at\":\"2025-11-03T04:54:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1102\\\/690796242394a.webp\",\"preview_url\":\"\"},{\"id\":1103,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"e2b6ecd7-16d3-4adc-b54d-62e3b191224d\",\"collection_name\":\"images\",\"name\":\"68d52f120910f-large\",\"file_name\":\"69079625e1d26.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":97902,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"original_name\":\"68d52f120910f-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-11-02T17:34:29.000000Z\",\"updated_at\":\"2025-11-02T17:34:30.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1103\\\/69079625e1d26.webp\",\"preview_url\":\"\"},{\"id\":1105,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":328,\"uuid\":\"4b423dd0-7daf-4dc9-bedd-3c6c5e46e234\",\"collection_name\":\"images\",\"name\":\"68d52f11f0a08-large\",\"file_name\":\"6907962969e5e.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":93010,\"manipulations\":[],\"custom_properties\":{\"position\":5,\"original_name\":\"68d52f11f0a08-large.webp\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":5,\"created_at\":\"2025-11-02T17:34:33.000000Z\",\"updated_at\":\"2025-11-03T04:57:42.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1105\\\/6907962969e5e.webp\",\"preview_url\":\"\"}]},{\"id\":136,\"user_id\":\"28352\",\"ad_id\":\"82078\",\"ad_type\":\"Private\",\"ad_title\":\"iPhone 11 Pro\",\"title_slug\":\"iphone-11-pro\",\"category\":\"4\",\"sub_category\":\"6\",\"brand\":\"1542\",\"price\":\"269000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"Yes\",\"description\":\"<div><!--block-->11 pro 64gb&nbsp;<br>Face ID active&nbsp;<br>True Tone active&nbsp;<br>Battery 100&nbsp;<br>No crack&nbsp;<br>Back camera shaking&nbsp;<br>+234 <\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Alimosho\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Ship\",\"shipping\":null,\"views\":\"178\",\"keyword\":\"iphone, block, 64gbnbspbrface, activenbspbrtrue, tone, activenbspbrbattery, 100nbspbrno, cracknbspbrback, camera, shakingnbspbr234\",\"meta_description\":\"11 pro 64gb&nbsp;Face ID active&nbsp;True Tone active&nbsp;Battery 100&nbsp;No crack&nbsp;Back camera shaking&nbsp;+234 7072473990\",\"created_at\":\"2025-09-11T17:00:15.000000Z\",\"updated_at\":\"2025-11-13T09:35:24.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"alimosho\",\"contact_price\":\"no\",\"salary\":\"\\u20a6200,000 - \\u20a6220,000\",\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/conversions\\\/68c2f20f99ac0-thumbnail.webp\",\"first_image\":{\"id\":414,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc\",\"collection_name\":\"images\",\"name\":\"68c2f20f99ac0.webp\",\"file_name\":\"68c2f20f99ac0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":52572,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":499},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:12.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":414,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"8b48d764-dcb2-47bc-a3b2-fd798dbcbebc\",\"collection_name\":\"images\",\"name\":\"68c2f20f99ac0.webp\",\"file_name\":\"68c2f20f99ac0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":52572,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":499},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:12.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/414\\\/68c2f20f99ac0.webp\",\"preview_url\":\"\"},{\"id\":415,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"006e1132-703b-4e0d-acc4-6878d7e02483\",\"collection_name\":\"images\",\"name\":\"68c2f20fbd2c3.webp\",\"file_name\":\"68c2f20fbd2c3.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":48842,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"migrated_from_id\":500},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-24T00:55:12.000000Z\",\"updated_at\":\"2025-09-24T00:55:13.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/415\\\/68c2f20fbd2c3.webp\",\"preview_url\":\"\"},{\"id\":416,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"24f2de4d-138d-4b54-98be-59dae1fed728\",\"collection_name\":\"images\",\"name\":\"68c2f20fd75e3.webp\",\"file_name\":\"68c2f20fd75e3.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":56216,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"migrated_from_id\":501},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-24T00:55:13.000000Z\",\"updated_at\":\"2025-09-24T00:55:15.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/416\\\/68c2f20fd75e3.webp\",\"preview_url\":\"\"},{\"id\":417,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"d8317925-b666-4752-8a5c-d53a21372ad5\",\"collection_name\":\"images\",\"name\":\"68c2f20ff192c.webp\",\"file_name\":\"68c2f20ff192c.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":54066,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"migrated_from_id\":502},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-09-24T00:55:15.000000Z\",\"updated_at\":\"2025-09-24T00:55:16.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/417\\\/68c2f20ff192c.webp\",\"preview_url\":\"\"},{\"id\":418,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"2e6a9160-85c1-4152-b9b7-63f485c29cf5\",\"collection_name\":\"images\",\"name\":\"68c2f2101a3e9.webp\",\"file_name\":\"68c2f2101a3e9.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":42540,\"manipulations\":[],\"custom_properties\":{\"position\":5,\"migrated_from_id\":503},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":5,\"created_at\":\"2025-09-24T00:55:16.000000Z\",\"updated_at\":\"2025-09-24T00:55:18.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/418\\\/68c2f2101a3e9.webp\",\"preview_url\":\"\"},{\"id\":419,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"be9b24c1-2983-41c6-a0fe-bf22e2744bf0\",\"collection_name\":\"images\",\"name\":\"68c2f2103500d.webp\",\"file_name\":\"68c2f2103500d.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":57740,\"manipulations\":[],\"custom_properties\":{\"position\":6,\"migrated_from_id\":504},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":6,\"created_at\":\"2025-09-24T00:55:18.000000Z\",\"updated_at\":\"2025-09-24T00:55:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/419\\\/68c2f2103500d.webp\",\"preview_url\":\"\"},{\"id\":420,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"5dc7c287-6e99-4809-a23b-2049d105913d\",\"collection_name\":\"images\",\"name\":\"68c2f2104fbc5.webp\",\"file_name\":\"68c2f2104fbc5.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":75984,\"manipulations\":[],\"custom_properties\":{\"position\":7,\"migrated_from_id\":505},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":7,\"created_at\":\"2025-09-24T00:55:19.000000Z\",\"updated_at\":\"2025-09-24T00:55:20.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/420\\\/68c2f2104fbc5.webp\",\"preview_url\":\"\"},{\"id\":421,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"784dfe74-e4e8-42d0-9623-63cc4c6391d1\",\"collection_name\":\"images\",\"name\":\"68c2f2106c5bf.webp\",\"file_name\":\"68c2f2106c5bf.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":73110,\"manipulations\":[],\"custom_properties\":{\"position\":8,\"migrated_from_id\":506},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":8,\"created_at\":\"2025-09-24T00:55:20.000000Z\",\"updated_at\":\"2025-09-24T00:55:21.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/421\\\/68c2f2106c5bf.webp\",\"preview_url\":\"\"},{\"id\":422,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":136,\"uuid\":\"115bcd0b-3f10-49e6-8d96-da235f257fca\",\"collection_name\":\"images\",\"name\":\"68c2f21088d89.webp\",\"file_name\":\"68c2f21088d89.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":49854,\"manipulations\":[],\"custom_properties\":{\"position\":9,\"migrated_from_id\":507},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":9,\"created_at\":\"2025-09-24T00:55:21.000000Z\",\"updated_at\":\"2025-09-24T00:55:22.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/422\\\/68c2f21088d89.webp\",\"preview_url\":\"\"}]},{\"id\":287,\"user_id\":\"70656\",\"ad_id\":\"83561\",\"ad_type\":\"Private\",\"ad_title\":\"HERO BIKE\",\"title_slug\":\"hero-bike\",\"category\":\"1\",\"sub_category\":\"22\",\"brand\":\"1012\",\"price\":\"750000\",\"price_type\":\"Negotiable\",\"item_condition\":\"Locally Used\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Bike is only used for 4 months and working perfectly or parts are complete&nbsp;<\\\/div>\",\"state\":\"Osun\",\"lga\":\"Ife Central\",\"ad_status\":\"active\",\"featured\":\"Yes\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"121\",\"keyword\":\"hero, bike, block, only, used, months, working, perfectly, parts, completenbspdiv\",\"meta_description\":\"Bike is only used for 4 months and working perfectly or parts are complete&nbsp;\",\"created_at\":\"2025-09-25T12:00:23.000000Z\",\"updated_at\":\"2025-09-25T12:00:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"ife-central\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":1,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/conversions\\\/68d520c76b5ff-thumbnail.webp\",\"first_image\":{\"id\":914,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"be55ae56-f1f3-4a29-8664-576293a1fa2a\",\"collection_name\":\"images\",\"name\":\"68d520c76b5ff.webp\",\"file_name\":\"68d520c76b5ff.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":247922,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":977},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:22:39.000000Z\",\"updated_at\":\"2025-09-29T02:22:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":914,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"be55ae56-f1f3-4a29-8664-576293a1fa2a\",\"collection_name\":\"images\",\"name\":\"68d520c76b5ff.webp\",\"file_name\":\"68d520c76b5ff.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":247922,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":977},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:22:39.000000Z\",\"updated_at\":\"2025-09-29T02:22:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/914\\\/68d520c76b5ff.webp\",\"preview_url\":\"\"},{\"id\":915,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"f6d25f3b-89f0-44be-bfcb-82d4a6e19d4b\",\"collection_name\":\"images\",\"name\":\"68d520c924cc9.webp\",\"file_name\":\"68d520c924cc9.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":299372,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"migrated_from_id\":978},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-29T02:22:41.000000Z\",\"updated_at\":\"2025-09-29T02:22:44.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/915\\\/68d520c924cc9.webp\",\"preview_url\":\"\"},{\"id\":916,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"6ed13707-d334-4853-a353-a999a3ba2989\",\"collection_name\":\"images\",\"name\":\"68d520ca9370f.webp\",\"file_name\":\"68d520ca9370f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":230950,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"migrated_from_id\":979},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-29T02:22:44.000000Z\",\"updated_at\":\"2025-09-29T02:22:46.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/916\\\/68d520ca9370f.webp\",\"preview_url\":\"\"},{\"id\":917,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":287,\"uuid\":\"77cf04fd-785a-4845-913a-bd807ce0107f\",\"collection_name\":\"images\",\"name\":\"68d520cc21943.webp\",\"file_name\":\"68d520cc21943.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":117702,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"migrated_from_id\":980},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-09-29T02:22:46.000000Z\",\"updated_at\":\"2025-09-29T02:22:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/917\\\/68d520cc21943.webp\",\"preview_url\":\"\"}]},{\"id\":329,\"user_id\":\"82261\",\"ad_id\":\"93361\",\"ad_type\":\"Private\",\"ad_title\":\"I Need a Web Developer\",\"title_slug\":\"i-need-a-web-developer-3\",\"category\":\"18\",\"sub_category\":\"147\",\"brand\":\"4131\",\"price\":null,\"price_type\":\"Fixed\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->I need a vert good developer for immediate employment<\\\/div>\",\"state\":\"Ebonyi\",\"lga\":\"Abakaliki\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"need, developer, block, vert, good, immediate, employmentdiv\",\"meta_description\":\"I need a vert good developer for immediate employment\",\"created_at\":\"2025-11-04T03:36:23.000000Z\",\"updated_at\":\"2025-12-12T14:08:28.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"abakaliki\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":\"\\u20a6180,000 - \\u20a6200,000\",\"redirect\":\"Yes\",\"is_featured\":0,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/conversions\\\/690974b801fca-thumbnail.webp\",\"first_image\":{\"id\":1106,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":329,\"uuid\":\"b6afba5a-e16f-40cd-b832-3a1fd729d2a1\",\"collection_name\":\"images\",\"name\":\"WInter is coming english\",\"file_name\":\"690974b801fca.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":310197,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"WInter is coming english.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-04T03:36:24.000000Z\",\"updated_at\":\"2025-11-04T03:36:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1106,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":329,\"uuid\":\"b6afba5a-e16f-40cd-b832-3a1fd729d2a1\",\"collection_name\":\"images\",\"name\":\"WInter is coming english\",\"file_name\":\"690974b801fca.webp\",\"mime_type\":\"image\\\/jpeg\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":310197,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"original_name\":\"WInter is coming english.jpg\"},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-11-04T03:36:24.000000Z\",\"updated_at\":\"2025-11-04T03:36:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1106\\\/690974b801fca.webp\",\"preview_url\":\"\"}]},{\"id\":313,\"user_id\":\"82151\",\"ad_id\":\"97920\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2019 Mercedes Benz Gle350\",\"title_slug\":\"foreign-used-2019-mercedes-benz-gle350\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"266\",\"price\":\"56500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V6 engine.<br>Leather seat.<br>Collision sensor.<br>Accident free.<br>Power booth.<br>360 camera.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"5\",\"keyword\":\"foreign, used, 2019, mercedes, benz, gle350, block, usedbrreverse, camerabrv6, enginebrleather\",\"meta_description\":\"Foreign Used.Reverse camera.V6 engine.Leather seat.Collision sensor.Accident free.Power booth.360 camera.Duty paid.\",\"created_at\":\"2025-09-28T21:32:01.000000Z\",\"updated_at\":\"2025-09-28T21:32:01.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/conversions\\\/68d99b4142e49-thumbnail.webp\",\"first_image\":{\"id\":1054,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"1425cace-0d95-4a49-94bc-096ed104946e\",\"collection_name\":\"images\",\"name\":\"68d99b4142e49.webp\",\"file_name\":\"68d99b4142e49.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":337178,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1117},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:17.000000Z\",\"updated_at\":\"2025-09-29T02:27:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1054,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"1425cace-0d95-4a49-94bc-096ed104946e\",\"collection_name\":\"images\",\"name\":\"68d99b4142e49.webp\",\"file_name\":\"68d99b4142e49.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":337178,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1117},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:17.000000Z\",\"updated_at\":\"2025-09-29T02:27:19.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1054\\\/68d99b4142e49.webp\",\"preview_url\":\"\"},{\"id\":1055,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"5bd0eda2-ae12-472c-8386-d162bcb2b7fe\",\"collection_name\":\"images\",\"name\":\"68d99b42936de.webp\",\"file_name\":\"68d99b42936de.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":345748,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"migrated_from_id\":1118},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-29T02:27:19.000000Z\",\"updated_at\":\"2025-09-29T02:27:21.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1055\\\/68d99b42936de.webp\",\"preview_url\":\"\"},{\"id\":1056,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"9f965557-ea46-4845-8fb4-6aaa284be56e\",\"collection_name\":\"images\",\"name\":\"68d99b43b6b46.webp\",\"file_name\":\"68d99b43b6b46.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":319648,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"migrated_from_id\":1119},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-29T02:27:21.000000Z\",\"updated_at\":\"2025-09-29T02:27:23.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1056\\\/68d99b43b6b46.webp\",\"preview_url\":\"\"},{\"id\":1057,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"54a6e75b-b348-4b9f-98cc-e18987d6f006\",\"collection_name\":\"images\",\"name\":\"68d99b44bd73f.webp\",\"file_name\":\"68d99b44bd73f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":142946,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"migrated_from_id\":1120},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-09-29T02:27:23.000000Z\",\"updated_at\":\"2025-09-29T02:27:25.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1057\\\/68d99b44bd73f.webp\",\"preview_url\":\"\"},{\"id\":1058,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"65b9c309-3b1f-4a20-aac2-9e46f898a8ea\",\"collection_name\":\"images\",\"name\":\"68d99b45b1c7f.webp\",\"file_name\":\"68d99b45b1c7f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":119818,\"manipulations\":[],\"custom_properties\":{\"position\":5,\"migrated_from_id\":1121},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":5,\"created_at\":\"2025-09-29T02:27:25.000000Z\",\"updated_at\":\"2025-09-29T02:27:27.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1058\\\/68d99b45b1c7f.webp\",\"preview_url\":\"\"},{\"id\":1059,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"12a9448f-4b9e-4119-9245-ba508eb57b96\",\"collection_name\":\"images\",\"name\":\"68d99b46b0a13.webp\",\"file_name\":\"68d99b46b0a13.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":152762,\"manipulations\":[],\"custom_properties\":{\"position\":6,\"migrated_from_id\":1122},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":6,\"created_at\":\"2025-09-29T02:27:27.000000Z\",\"updated_at\":\"2025-09-29T02:27:29.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1059\\\/68d99b46b0a13.webp\",\"preview_url\":\"\"},{\"id\":1060,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"a5d205b3-3caa-46e5-821d-0d6d1abbf081\",\"collection_name\":\"images\",\"name\":\"68d99b47b4d9c.webp\",\"file_name\":\"68d99b47b4d9c.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":239324,\"manipulations\":[],\"custom_properties\":{\"position\":7,\"migrated_from_id\":1123},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":7,\"created_at\":\"2025-09-29T02:27:29.000000Z\",\"updated_at\":\"2025-09-29T02:27:31.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1060\\\/68d99b47b4d9c.webp\",\"preview_url\":\"\"},{\"id\":1061,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"7c18e7ab-8ae1-407e-8f05-4d244b86c765\",\"collection_name\":\"images\",\"name\":\"68d99b48c0f7d.webp\",\"file_name\":\"68d99b48c0f7d.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":242214,\"manipulations\":[],\"custom_properties\":{\"position\":8,\"migrated_from_id\":1124},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":8,\"created_at\":\"2025-09-29T02:27:31.000000Z\",\"updated_at\":\"2025-09-29T02:27:34.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1061\\\/68d99b48c0f7d.webp\",\"preview_url\":\"\"},{\"id\":1062,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":313,\"uuid\":\"44832cb4-4b93-408d-ad68-507007f695db\",\"collection_name\":\"images\",\"name\":\"68d99b49c2e7c.webp\",\"file_name\":\"68d99b49c2e7c.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":173436,\"manipulations\":[],\"custom_properties\":{\"position\":9,\"migrated_from_id\":1125},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":9,\"created_at\":\"2025-09-29T02:27:34.000000Z\",\"updated_at\":\"2025-09-29T02:27:36.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1062\\\/68d99b49c2e7c.webp\",\"preview_url\":\"\"}]},{\"id\":312,\"user_id\":\"76917\",\"ad_id\":\"58798\",\"ad_type\":\"Private\",\"ad_title\":\"The IKEJA LAUNDRY\",\"title_slug\":\"the-ikeja-laundry\",\"category\":\"12\",\"sub_category\":\"93\",\"brand\":\"2270\",\"price\":\"25000\",\"price_type\":\"Fixed\",\"item_condition\":\"New\",\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"4\",\"keyword\":\"ikeja, laundry, block, fast, reliable, service, lagos, doorstep, pick, expert\",\"meta_description\":\"Fast, reliable laundry service in Ikeja, Lagos. Doorstep pick-up, expert washing, and fresh delivery. Book IKEJA LAUNDRY today!\",\"created_at\":\"2025-09-28T21:28:23.000000Z\",\"updated_at\":\"2025-09-28T21:28:23.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"No\",\"state_slug\":\"ikeja\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/conversions\\\/68d99a678c6f7-thumbnail.webp\",\"first_image\":{\"id\":1053,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":312,\"uuid\":\"c5a25f74-2dc1-4b51-b43f-f9efd15610bd\",\"collection_name\":\"images\",\"name\":\"68d99a678c6f7.webp\",\"file_name\":\"68d99a678c6f7.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":60366,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1116},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:16.000000Z\",\"updated_at\":\"2025-09-29T02:27:17.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1053,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":312,\"uuid\":\"c5a25f74-2dc1-4b51-b43f-f9efd15610bd\",\"collection_name\":\"images\",\"name\":\"68d99a678c6f7.webp\",\"file_name\":\"68d99a678c6f7.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":60366,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1116},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:27:16.000000Z\",\"updated_at\":\"2025-09-29T02:27:17.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1053\\\/68d99a678c6f7.webp\",\"preview_url\":\"\"}]},{\"id\":311,\"user_id\":\"82151\",\"ad_id\":\"15876\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2007 Toyota highlander\",\"title_slug\":\"foreign-used-2007-toyota-highlander\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"15500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>V6 engine.<br>Leather seat.<br>Accident free.<br>Power booth.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"22\",\"keyword\":\"foreign, used, 2007, toyota, highlander, block, usedbrv6, enginebrleather, seatbraccident, freebrpower\",\"meta_description\":\"Foreign Used.V6 engine.Leather seat.Accident free.Power booth.Duty paid.\",\"created_at\":\"2025-09-28T21:27:39.000000Z\",\"updated_at\":\"2025-09-28T21:27:39.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/conversions\\\/68d99a3b46178-thumbnail.webp\",\"first_image\":{\"id\":1043,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"571b3471-15de-4665-a644-21fe42a0c1ce\",\"collection_name\":\"images\",\"name\":\"68d99a3b46178.webp\",\"file_name\":\"68d99a3b46178.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":255048,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1106},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:55.000000Z\",\"updated_at\":\"2025-09-29T02:26:57.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1043,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"571b3471-15de-4665-a644-21fe42a0c1ce\",\"collection_name\":\"images\",\"name\":\"68d99a3b46178.webp\",\"file_name\":\"68d99a3b46178.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":255048,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1106},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:55.000000Z\",\"updated_at\":\"2025-09-29T02:26:57.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1043\\\/68d99a3b46178.webp\",\"preview_url\":\"\"},{\"id\":1044,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"7d4f978a-c81b-4948-9be4-a96ef3fcedd3\",\"collection_name\":\"images\",\"name\":\"68d99a3c56b44.webp\",\"file_name\":\"68d99a3c56b44.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":268518,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"migrated_from_id\":1107},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-29T02:26:57.000000Z\",\"updated_at\":\"2025-09-29T02:26:59.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1044\\\/68d99a3c56b44.webp\",\"preview_url\":\"\"},{\"id\":1045,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"782bfcca-55da-40b4-bd1c-a0e3b5f96054\",\"collection_name\":\"images\",\"name\":\"68d99a3d4f9ad.webp\",\"file_name\":\"68d99a3d4f9ad.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":211368,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"migrated_from_id\":1108},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-29T02:26:59.000000Z\",\"updated_at\":\"2025-09-29T02:27:01.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1045\\\/68d99a3d4f9ad.webp\",\"preview_url\":\"\"},{\"id\":1046,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"fbeb2eca-0bbf-4d29-bd9f-2aa337fd9260\",\"collection_name\":\"images\",\"name\":\"68d99a3e4fcb3.webp\",\"file_name\":\"68d99a3e4fcb3.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":137690,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"migrated_from_id\":1109},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-09-29T02:27:01.000000Z\",\"updated_at\":\"2025-09-29T02:27:03.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1046\\\/68d99a3e4fcb3.webp\",\"preview_url\":\"\"},{\"id\":1047,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"312f0426-d3f8-40be-914a-972766563d56\",\"collection_name\":\"images\",\"name\":\"68d99a3f3d483.webp\",\"file_name\":\"68d99a3f3d483.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":125664,\"manipulations\":[],\"custom_properties\":{\"position\":5,\"migrated_from_id\":1110},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":5,\"created_at\":\"2025-09-29T02:27:03.000000Z\",\"updated_at\":\"2025-09-29T02:27:05.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1047\\\/68d99a3f3d483.webp\",\"preview_url\":\"\"},{\"id\":1048,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"2fce85e1-f0db-4f1c-87ed-8ac18bbba9c2\",\"collection_name\":\"images\",\"name\":\"68d99a4047b21.webp\",\"file_name\":\"68d99a4047b21.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":85686,\"manipulations\":[],\"custom_properties\":{\"position\":6,\"migrated_from_id\":1111},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":6,\"created_at\":\"2025-09-29T02:27:05.000000Z\",\"updated_at\":\"2025-09-29T02:27:07.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1048\\\/68d99a4047b21.webp\",\"preview_url\":\"\"},{\"id\":1049,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"6a7ab61b-5ea4-4562-a6e9-ecfe7b5b8cac\",\"collection_name\":\"images\",\"name\":\"68d99a41276d9.webp\",\"file_name\":\"68d99a41276d9.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":94650,\"manipulations\":[],\"custom_properties\":{\"position\":7,\"migrated_from_id\":1112},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":7,\"created_at\":\"2025-09-29T02:27:07.000000Z\",\"updated_at\":\"2025-09-29T02:27:09.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1049\\\/68d99a41276d9.webp\",\"preview_url\":\"\"},{\"id\":1050,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"0f5c6de2-652a-41de-8a10-5a1db19b5ee2\",\"collection_name\":\"images\",\"name\":\"68d99a41d31a0.webp\",\"file_name\":\"68d99a41d31a0.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":178252,\"manipulations\":[],\"custom_properties\":{\"position\":8,\"migrated_from_id\":1113},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":8,\"created_at\":\"2025-09-29T02:27:09.000000Z\",\"updated_at\":\"2025-09-29T02:27:11.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1050\\\/68d99a41d31a0.webp\",\"preview_url\":\"\"},{\"id\":1051,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"3c3b1079-e61f-4059-9723-49f3d0770a14\",\"collection_name\":\"images\",\"name\":\"68d99a4302797.webp\",\"file_name\":\"68d99a4302797.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":180668,\"manipulations\":[],\"custom_properties\":{\"position\":9,\"migrated_from_id\":1114},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":9,\"created_at\":\"2025-09-29T02:27:11.000000Z\",\"updated_at\":\"2025-09-29T02:27:13.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1051\\\/68d99a4302797.webp\",\"preview_url\":\"\"},{\"id\":1052,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":311,\"uuid\":\"20bbb467-6ad4-46fa-ad18-5a8e1bef0e5d\",\"collection_name\":\"images\",\"name\":\"68d99a4420737.webp\",\"file_name\":\"68d99a4420737.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":225888,\"manipulations\":[],\"custom_properties\":{\"position\":10,\"migrated_from_id\":1115},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":10,\"created_at\":\"2025-09-29T02:27:14.000000Z\",\"updated_at\":\"2025-09-29T02:27:16.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1052\\\/68d99a4420737.webp\",\"preview_url\":\"\"}]},{\"id\":310,\"user_id\":\"82151\",\"ad_id\":\"97443\",\"ad_type\":\"Private\",\"ad_title\":\"Foreign Used 2017 Toyota camry\",\"title_slug\":\"foreign-used-2017-toyota-camry\",\"category\":\"1\",\"sub_category\":\"2\",\"brand\":\"832\",\"price\":\"19500000\",\"price_type\":\"Negotiable\",\"item_condition\":null,\"quantity\":1,\"buy_direct\":\"No\",\"description\":\"<div><!--block-->Foreign Used.<br>Reverse camera.<br>V4 engine.<br>Leather seat.<br>Accident free.<br>Duty paid.<\\\/div>\",\"state\":\"Lagos\",\"lga\":\"Apapa\",\"ad_status\":\"active\",\"featured\":\"No\",\"shipment\":\"Pickup\",\"shipping\":null,\"views\":\"17\",\"keyword\":\"foreign, used, 2017, toyota, camry, block, usedbrreverse, camerabrv4, enginebrleather, seatbraccident\",\"meta_description\":\"Foreign Used.Reverse camera.V4 engine.Leather seat.Accident free.Duty paid.\",\"created_at\":\"2025-09-28T21:21:20.000000Z\",\"updated_at\":\"2025-09-28T21:21:20.000000Z\",\"sold\":\"No\",\"sold_date\":null,\"show_contact\":\"Yes\",\"state_slug\":\"apapa\",\"contact_price\":\"no\",\"salary\":null,\"expected_salary\":null,\"redirect\":\"No\",\"is_featured\":0,\"image_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"thumbnail_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/conversions\\\/68d998c04673f-thumbnail.webp\",\"first_image\":{\"id\":1034,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"615d49d8-ffde-441c-a0ac-14dd40995339\",\"collection_name\":\"images\",\"name\":\"68d998c04673f.webp\",\"file_name\":\"68d998c04673f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":238710,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1097},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:37.000000Z\",\"updated_at\":\"2025-09-29T02:26:39.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"preview_url\":\"\"},\"media\":[{\"id\":1034,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"615d49d8-ffde-441c-a0ac-14dd40995339\",\"collection_name\":\"images\",\"name\":\"68d998c04673f.webp\",\"file_name\":\"68d998c04673f.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":238710,\"manipulations\":[],\"custom_properties\":{\"position\":1,\"migrated_from_id\":1097},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":1,\"created_at\":\"2025-09-29T02:26:37.000000Z\",\"updated_at\":\"2025-09-29T02:26:39.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1034\\\/68d998c04673f.webp\",\"preview_url\":\"\"},{\"id\":1035,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"9716a0e9-0bad-4fb8-a93a-0c7bd00f5d51\",\"collection_name\":\"images\",\"name\":\"68d998c1965b2.webp\",\"file_name\":\"68d998c1965b2.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":197840,\"manipulations\":[],\"custom_properties\":{\"position\":2,\"migrated_from_id\":1098},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":2,\"created_at\":\"2025-09-29T02:26:39.000000Z\",\"updated_at\":\"2025-09-29T02:26:41.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1035\\\/68d998c1965b2.webp\",\"preview_url\":\"\"},{\"id\":1036,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"26973ad8-4d01-4c53-945e-614b1f147a6f\",\"collection_name\":\"images\",\"name\":\"68d998c286290.webp\",\"file_name\":\"68d998c286290.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":223462,\"manipulations\":[],\"custom_properties\":{\"position\":3,\"migrated_from_id\":1099},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":3,\"created_at\":\"2025-09-29T02:26:41.000000Z\",\"updated_at\":\"2025-09-29T02:26:43.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1036\\\/68d998c286290.webp\",\"preview_url\":\"\"},{\"id\":1037,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"209c4dfe-8e81-4bb4-9a97-c71cd6fea2ce\",\"collection_name\":\"images\",\"name\":\"68d998c379108.webp\",\"file_name\":\"68d998c379108.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":115572,\"manipulations\":[],\"custom_properties\":{\"position\":4,\"migrated_from_id\":1100},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":4,\"created_at\":\"2025-09-29T02:26:43.000000Z\",\"updated_at\":\"2025-09-29T02:26:45.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1037\\\/68d998c379108.webp\",\"preview_url\":\"\"},{\"id\":1038,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"cdd62cfe-c81e-4c2b-88a8-8bc6c634e9bf\",\"collection_name\":\"images\",\"name\":\"68d998c467c88.webp\",\"file_name\":\"68d998c467c88.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":120776,\"manipulations\":[],\"custom_properties\":{\"position\":5,\"migrated_from_id\":1101},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":5,\"created_at\":\"2025-09-29T02:26:45.000000Z\",\"updated_at\":\"2025-09-29T02:26:47.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1038\\\/68d998c467c88.webp\",\"preview_url\":\"\"},{\"id\":1039,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"d30a88b6-6fd3-4d3c-8ec8-9aedb76db0ea\",\"collection_name\":\"images\",\"name\":\"68d998c554bb1.webp\",\"file_name\":\"68d998c554bb1.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":226638,\"manipulations\":[],\"custom_properties\":{\"position\":6,\"migrated_from_id\":1102},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":6,\"created_at\":\"2025-09-29T02:26:47.000000Z\",\"updated_at\":\"2025-09-29T02:26:49.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1039\\\/68d998c554bb1.webp\",\"preview_url\":\"\"},{\"id\":1040,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"9ae47c80-38b7-4ff5-8fb4-06d2bab46934\",\"collection_name\":\"images\",\"name\":\"68d998c64c804.webp\",\"file_name\":\"68d998c64c804.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":175770,\"manipulations\":[],\"custom_properties\":{\"position\":7,\"migrated_from_id\":1103},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":7,\"created_at\":\"2025-09-29T02:26:49.000000Z\",\"updated_at\":\"2025-09-29T02:26:51.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1040\\\/68d998c64c804.webp\",\"preview_url\":\"\"},{\"id\":1041,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"70f975bf-66fd-4e3e-bffc-48c064e62e1d\",\"collection_name\":\"images\",\"name\":\"68d998c74d367.webp\",\"file_name\":\"68d998c74d367.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":182606,\"manipulations\":[],\"custom_properties\":{\"position\":8,\"migrated_from_id\":1104},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":8,\"created_at\":\"2025-09-29T02:26:51.000000Z\",\"updated_at\":\"2025-09-29T02:26:53.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1041\\\/68d998c74d367.webp\",\"preview_url\":\"\"},{\"id\":1042,\"model_type\":\"App\\\\Models\\\\Advert\",\"model_id\":310,\"uuid\":\"cdf0137a-a769-44ad-89c9-607caa7dbec7\",\"collection_name\":\"images\",\"name\":\"68d998c841799.webp\",\"file_name\":\"68d998c841799.webp\",\"mime_type\":\"image\\\/webp\",\"disk\":\"spatie\",\"conversions_disk\":\"spatie\",\"size\":169740,\"manipulations\":[],\"custom_properties\":{\"position\":9,\"migrated_from_id\":1105},\"generated_conversions\":{\"optimized\":true,\"large\":true,\"thumbnail\":true},\"responsive_images\":[],\"order_column\":9,\"created_at\":\"2025-09-29T02:26:53.000000Z\",\"updated_at\":\"2025-09-29T02:26:55.000000Z\",\"original_url\":\"http:\\\/\\\/127.0.0.1:8030\\\/uploads\\\/1042\\\/68d998c841799.webp\",\"preview_url\":\"\"}]}],\"has_more\":true,\"pagination\":{\"current_page\":1,\"last_page\":26,\"per_page\":10,\"total\":253}}",
                             "name": ""
                         }
                     ]
@@ -1540,7 +1924,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "44"
+                                    "value": "45"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1601,7 +1985,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "43"
+                                    "value": "44"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1662,7 +2046,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "42"
+                                    "value": "43"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1697,7 +2081,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"search\":\"tfsofkarqnicrcurteiupxzhiwyogvrzkaexvujsngeytmvljwskdikuupolmkosomokocq\",\"state_id\":19,\"limit\":20}"
+                            "raw": "{\"search\":\"vwbmznvskawsvisvhtcohfksaaceqxpbgttvnjoaomxdioyucfa\",\"state_id\":10,\"limit\":10}"
                         },
                         "description": ""
                     },
@@ -1718,7 +2102,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "41"
+                                    "value": "42"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1743,7 +2127,7 @@
                                 {
                                     "id": "city_id",
                                     "key": "city_id",
-                                    "value": "aspernatur",
+                                    "value": "nemo",
                                     "description": "The ID of the city."
                                 }
                             ]
@@ -1779,7 +2163,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "40"
+                                    "value": "41"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1814,7 +2198,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"sender_station\":\"saepe\",\"receiver_station\":\"ab\",\"ad_price\":17,\"ad_title\":\"maiores\",\"ad_des\":\"quia\",\"weight\":6,\"quantity\":43}"
+                            "raw": "{\"sender_station\":\"perferendis\",\"receiver_station\":\"eveniet\",\"ad_price\":26,\"ad_title\":\"explicabo\",\"ad_des\":\"non\",\"weight\":3,\"quantity\":76}"
                         },
                         "description": ""
                     },
@@ -1845,19 +2229,19 @@
                             "formdata": [
                                 {
                                     "key": "advert_id",
-                                    "value": "9",
+                                    "value": "10",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the adverts table."
                                 },
                                 {
                                     "key": "receiver_id",
-                                    "value": "sunt",
+                                    "value": "ipsa",
                                     "type": "text",
                                     "description": "The <code>user_id<\/code> of an existing record in the users table."
                                 },
                                 {
                                     "key": "message_content",
-                                    "value": "scwoisehcxa",
+                                    "value": "oqhxi",
                                     "type": "text",
                                     "description": "Must not be greater than 1000 characters."
                                 },
@@ -1884,13 +2268,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "aliquid",
+                                    "value": "autem",
                                     "description": ""
                                 },
                                 {
                                     "id": "receiverId",
                                     "key": "receiverId",
-                                    "value": "non",
+                                    "value": "explicabo",
                                     "description": ""
                                 }
                             ]
@@ -2086,7 +2470,7 @@
                                 {
                                     "id": "messageId",
                                     "key": "messageId",
-                                    "value": "cupiditate",
+                                    "value": "tenetur",
                                     "description": ""
                                 }
                             ]
@@ -2119,13 +2503,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "quam",
+                                    "value": "qui",
                                     "description": ""
                                 },
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "beatae",
+                                    "value": "exercitationem",
                                     "description": ""
                                 }
                             ]
@@ -2168,7 +2552,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"eligendi\",\"other_user_id\":\"at\"}"
+                            "raw": "{\"advert_id\":\"atque\",\"other_user_id\":\"laudantium\"}"
                         },
                         "description": ""
                     },
@@ -2196,7 +2580,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"qui\",\"other_user_id\":\"non\"}"
+                            "raw": "{\"advert_id\":\"aspernatur\",\"other_user_id\":\"eveniet\"}"
                         },
                         "description": ""
                     },
@@ -2259,7 +2643,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "necessitatibus",
+                                    "value": "voluptatem",
                                     "description": ""
                                 }
                             ]
@@ -2302,7 +2686,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_data\":{\"first_name\":\"hic\",\"last_name\":\"deleniti\",\"phone\":\"delectus\",\"grand_total\":119521877.46,\"commission\":2783.867121,\"shipping_cost\":120168.09865,\"shipping_method\":14,\"ad\":{\"id\":7,\"price\":563.80886353},\"reciever_city\":{\"id\":7},\"reciever_state\":{\"id\":14}}}"
+                            "raw": "{\"shipping_data\":{\"first_name\":\"iste\",\"last_name\":\"maiores\",\"phone\":\"aut\",\"grand_total\":6993.1792,\"commission\":5787090.889118721,\"shipping_cost\":2.8,\"shipping_method\":2,\"ad\":{\"id\":18,\"price\":8.51597212},\"reciever_city\":{\"id\":16},\"reciever_state\":{\"id\":4}}}"
                         },
                         "description": ""
                     },
@@ -2330,7 +2714,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":16,\"amount\":59,\"boost_type\":\"et\",\"duration\":70}"
+                            "raw": "{\"advert_id\":17,\"amount\":39,\"boost_type\":\"voluptas\",\"duration\":20}"
                         },
                         "description": ""
                     },
@@ -2348,7 +2732,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "deleniti",
+                                    "value": "facilis",
                                     "description": ""
                                 }
                             ]
@@ -2517,7 +2901,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reference\":\"itaque\"}"
+                            "raw": "{\"reference\":\"tempore\"}"
                         },
                         "description": ""
                     },
@@ -2715,7 +3099,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "est",
+                                    "value": "a",
                                     "description": ""
                                 }
                             ]
@@ -2751,7 +3135,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "ullam",
+                                    "value": "totam",
                                     "description": ""
                                 }
                             ]
@@ -2829,7 +3213,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "fuga",
+                                    "value": "totam",
                                     "description": ""
                                 }
                             ]
@@ -2862,7 +3246,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "sint",
+                                    "value": "cum",
                                     "description": ""
                                 }
                             ]
@@ -2940,7 +3324,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "sit",
+                                    "value": "culpa",
                                     "description": ""
                                 }
                             ]
@@ -2973,7 +3357,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "sit",
+                                    "value": "earum",
                                     "description": ""
                                 }
                             ]
@@ -2991,7 +3375,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_status\":\"omnis\"}"
+                            "raw": "{\"shipping_status\":\"vel\"}"
                         },
                         "description": ""
                     },
@@ -3054,7 +3438,7 @@
                                 {
                                     "id": "sellerId",
                                     "key": "sellerId",
-                                    "value": "impedit",
+                                    "value": "blanditiis",
                                     "description": ""
                                 }
                             ]
@@ -3072,7 +3456,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"rating\":1,\"satisfaction\":1,\"reliable\":1,\"friendly\":2,\"message\":\"epymablgtnghjntykrmscyn\"}"
+                            "raw": "{\"rating\":2,\"satisfaction\":1,\"reliable\":2,\"friendly\":1,\"message\":\"epuvfgorkqckawqkvfzhkpkkm\"}"
                         },
                         "description": ""
                     },
@@ -3090,7 +3474,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "aliquam",
+                                    "value": "facere",
                                     "description": ""
                                 }
                             ]
@@ -3153,7 +3537,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":18}"
+                            "raw": "{\"followee_id\":15}"
                         },
                         "description": ""
                     },
@@ -3207,7 +3591,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "39"
+                                    "value": "40"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3268,7 +3652,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "38"
+                                    "value": "39"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3293,7 +3677,7 @@
                                 {
                                     "id": "brandId",
                                     "key": "brandId",
-                                    "value": "corporis",
+                                    "value": "qui",
                                     "description": ""
                                 }
                             ]
@@ -3329,7 +3713,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "37"
+                                    "value": "38"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -3502,25 +3886,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "kihgddulkdochrrlpglsmgmg",
+                                    "value": "jyxqonaegvbwpafdqffb",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "zyxpkrjvanbxipp",
+                                    "value": "ewpbsiboaavnn",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "apu",
+                                    "value": "tagve",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "gfpsllwt",
+                                    "value": "xc",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -3565,25 +3949,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "sphcispqlipmf",
+                                    "value": "nyrku",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "sfulasmtelzkigbhygdboupp",
+                                    "value": "wkavjc",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "ilolqdpzfhl",
+                                    "value": "rgdccxlhkz",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "vvwweusv",
+                                    "value": "ayvltjnamaqgffrhfdfh",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -3620,7 +4004,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"phone\":\"accusantium\"}"
+                            "raw": "{\"phone\":\"minus\"}"
                         },
                         "description": ""
                     },
@@ -3696,13 +4080,13 @@
                             "formdata": [
                                 {
                                     "key": "document_number",
-                                    "value": "dbizuhixenmnadbksnejvwnaf",
+                                    "value": "kijpdlvoho",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "document_type",
-                                    "value": "wojg",
+                                    "value": "qzrqkvgvmomtorwpqxpph",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
@@ -3789,7 +4173,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"bank_name\":\"quae\",\"paystack_bank_code\":\"doloremque\",\"account_number\":\"aut\",\"account_name\":\"pariatur\"}"
+                            "raw": "{\"bank_name\":\"aliquid\",\"paystack_bank_code\":\"totam\",\"account_number\":\"dolorem\",\"account_name\":\"suscipit\"}"
                         },
                         "description": ""
                     },
@@ -3817,7 +4201,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"old_password\":\"dolores\",\"password\":\"hEi^odUmqG\"}"
+                            "raw": "{\"old_password\":\"non\",\"password\":\"#3PQmd\"}"
                         },
                         "description": ""
                     },
@@ -3845,7 +4229,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"notifications\":\"nostrum\"}"
+                            "raw": "{\"notifications\":\"doloremque\"}"
                         },
                         "description": ""
                     },
@@ -3968,7 +4352,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"aperiam\"}"
+                            "raw": "{\"blocked_id\":\"adipisci\"}"
                         },
                         "description": ""
                     },
@@ -3996,7 +4380,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"ut\"}"
+                            "raw": "{\"blocked_id\":\"aut\"}"
                         },
                         "description": ""
                     },
@@ -4059,7 +4443,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "maxime",
+                                    "value": "placeat",
                                     "description": ""
                                 }
                             ]
@@ -4112,7 +4496,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "iusto",
+                                    "value": "vero",
                                     "description": ""
                                 }
                             ]
@@ -4351,7 +4735,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"duration_days\":15}"
+                            "raw": "{\"duration_days\":11}"
                         },
                         "description": ""
                     },
@@ -4422,7 +4806,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "enim",
+                                    "value": "blanditiis",
                                     "description": ""
                                 }
                             ]
@@ -4475,7 +4859,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "ea",
+                                    "value": "facilis",
                                     "description": ""
                                 }
                             ]
@@ -4517,7 +4901,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "esse",
+                                    "value": "ab",
                                     "description": ""
                                 }
                             ]
@@ -4578,7 +4962,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "36"
+                                    "value": "37"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -4631,7 +5015,7 @@
                                 },
                                 {
                                     "key": "x-ratelimit-remaining",
-                                    "value": "35"
+                                    "value": "36"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -4639,7 +5023,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6ImNuazlpMW9pVWprckZUNUgrVGpLbkE9PSIsInZhbHVlIjoieFRqTjV5Q2hnQ0JTanI1N01LaUs3K3AvUWgwUS9tTDU0b2lud0cxSjR3VU5JZng5Y3FKMENkNUk5dDdWV1NmUlBVNFdvalhtSkpwNVJxMUxobEJockZMQUpMWklJYnF4SCtmSnQrTkxLMmZFMW96UStTU3lFZEhRcWpYblAzQlAiLCJtYWMiOiJlNTk1OTIxYjE2MzZhZDVlZTE1ZDlhOWRjZTdkZTU5ZDAwMGU4ZjMyYTc5M2ZiYWQ3NDMyNTk5NmM3MzQ4ZmNhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6Im4vQ1NWVGRmc01CN1VyRlhLbnhCRHc9PSIsInZhbHVlIjoiWjhQRG5aWkxFYVQwTlJKYXg4MmlsMURXVTU2UXZwWUU3b1QzMm12Nk1BZzRrMytvNmNENVFMalc0eDRLQjBiYzRQWUtUVEp1V3RTY09JYUdrdlprU2lzY241cSsvaW9icFFReDYrK2EwcjZwOEhPNmZLSzB6bEloK0ZyMXBtcXMiLCJtYWMiOiJjMzYwNWU0MmY2MjQ2OGQ5ZTNjNmFiZTFkZThiOTFlYTU3ZTY5NThmZDcxN2ZkODBhYTgxMWY5YzAwYjI5NDlhIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IlZvODQxMTBjbmFpYmNSMlN4Sk1nNlE9PSIsInZhbHVlIjoiYjNhT1R1bjNIamZUM3F3VEhKYVhaMm5LTms3c2FHeVVMcHZDSmFmK3pwbkFxUzlZVWtSU0NBQ0JhNHllU0N3UTZ0M3BCV3V0YnNNVFlSdWw2eUlaeURyY0lVMGNiQ2hPamQ4N1lXd2VLaGcyYzh2cTZQVGNGMldxM080YVl0RGwiLCJtYWMiOiI0YjJjZTIyM2I1NDg0ZGQzOWE0MzMxZjlkN2JmNTViMDY0NDhhZGIxZWY4Njc0YmYzMWEzYzZmMjczMGJjYjI2IiwidGFnIjoiIn0%3D; expires=Sun, 11 Jan 2026 06:57:32 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6IlJZaE9QdU5OUWJrYjJmZDJDY3p4L2c9PSIsInZhbHVlIjoicVZ4MFc1d2daNXpneFlqcXZSL21ZdlI4bzZhckNaU3FZYmFMS0MrcVo0NGlEVDhRK3VCU3ZUalVDUG4yLzkxelF5ZnByc0ZnYVFkRHk1MmtUSGdmUDZYUkdsd0lUTkNsMjFLakhLSGJ2ZUVHaktlQk1UOXk4YUxoN2x0NG1XemYiLCJtYWMiOiI3YWM2M2U5MDNmZDQ0NDg3M2MxNTAxMTQ1NWNlZjAxMmE5NWU4ODc5MTE3MGNkMjJiZTZjZjFiYzgzNjQ1MDI2IiwidGFnIjoiIn0%3D; expires=Sun, 11 Jan 2026 06:57:32 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 200,
@@ -4660,7 +5044,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "perspiciatis",
+                                    "value": "hic",
                                     "description": ""
                                 }
                             ]
@@ -4696,7 +5080,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IkNZcVM1Y0ZNYXhkcWRJY2RGNTlDMEE9PSIsInZhbHVlIjoidXJZaTZ4TUs3UzFqRFY3UzBIN24wb1RyQ0hZY013blY2NCtGcld3MlYzM2drbGJQQkh2QWY1TDJta25paVVDck9XY3RNQ0RlOVNjOTlId0Q0RXhML0lKSXBULzRKbGdMTTFBOXVodlNJcENYUXU3Tm8zeklZbHJDWEhndktpcHMiLCJtYWMiOiIwOTc0Y2NkZmM1ODRlZWFmZjRhNTZlODhmYWIzNWU1NmE2NTE2YjljMGEzNmZlMjBlYmM2MDRjYjJkOGEzNDQzIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6Ik56QS8wSlF1Z1V0STJsWXNQV3ZRaWc9PSIsInZhbHVlIjoiT1VacDduWVRUaU9PUStRZGxvSmRQUkI1NndzQk15eGN4RC9xbWRya200NDAzUUsvbkhNdVpSUXZwa00wWElhdlBLNXQwRTRQdlB4UU10ekVjb29INC9DVGt4UzNaSmJDRlU3QlhnSTEvNGdnaExuZXdQcmZ5Yis1clBLWkNzODIiLCJtYWMiOiJlNGVhOTdjZWRhNzJmZjc5M2I3NzQyZTEwODIzY2M0YTU4ZmVjYzMyN2M2YmM4MjcxNTMwMDAyMjM5Mjk5M2IyIiwidGFnIjoiIn0%3D; expires=Mon, 05 Jan 2026 10:30:09 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6ImR5WWR4T0RySnZtYlpHd1BBTTMxQkE9PSIsInZhbHVlIjoiUUhvenVJLzRnZlZtMnloSy9zaitTM0d3Q09yVjlPYTM2VU1ITmtrUzRUT2VNN1FEYkZBRTh3SjlMUE0zMkpMVUdaMlVVRzhkT3gydzZKU21rNUtKRHJaZlZOZDN1akNJbXdyc09FeDFGSUM0MU5GaWNGTWNJdU91VTQ0cEJ0eGMiLCJtYWMiOiIzOWU3Mjc0YWE2ODE0NjNkYzdjOTVmOTg2OTg2Yzg5YTkxYzE5MGY0NjFiZmM2YzllMThkOGIwY2M0YjM4MjkyIiwidGFnIjoiIn0%3D; expires=Sun, 11 Jan 2026 06:57:32 GMT; Max-Age=7200; path=\/; samesite=lax; marketplace_naija_session=eyJpdiI6InUybGtaOW1uM0JDR0ZmQnhMcThqNWc9PSIsInZhbHVlIjoiZjEzWmprbHFvRG9MdU43ckZ1UDlmK081S2NSVEt5WlZ2d0c2WDN0QWNhNTdYekZWaGpnOUN0cUh2dnRBNi9MbTFIeXRETVRHekRIUEYyZzczeFVrTEJ3Z05wOEl0Mkx1V3dRNFhpRHNVRUdrcWdSeDdPd0dveVBWSElndzk4K1ciLCJtYWMiOiI0NzU5Zjk3Mjc3Y2ZkNjg1YWJjNTNhN2RiOTQ3N2QwOGQ2MzYyNGFhODRhYjdmMmZhY2U0OTViMjE3Y2Q3ZTQ1IiwidGFnIjoiIn0%3D; expires=Sun, 11 Jan 2026 06:57:32 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 200,
@@ -4727,11 +5111,230 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":\"unde\"}"
+                            "raw": "{\"followee_id\":\"sunt\"}"
                         },
                         "description": ""
                     },
                     "response": []
+                }
+            ]
+        },
+        {
+            "name": "User Statistics",
+            "description": "\nAPIs for retrieving user statistics, feedback, and notifications",
+            "item": [
+                {
+                    "name": "Get authenticated user statistics",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/stats",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user\/stats"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns comprehensive statistics for the currently authenticated user including\nfollowers count, unread messages, notifications, and feedback ratings."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"followers_count\": 150,\n    \"unread_messages_count\": 5,\n    \"unread_notifications_count\": 3,\n    \"feedback\": {\n      \"rating\": 4.5,\n      \"satisfaction\": 4.2,\n      \"reliable\": 4.8,\n      \"friendly\": 4.3,\n      \"count\": 20\n    },\n    \"feedback_labels\": {\n      \"satisfaction\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      },\n      \"friendly\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      },\n      \"reliable\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      }\n    }\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"User not authenticated\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get unread messages count",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/unread-messages",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user\/unread-messages"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the count of unread messages for the authenticated user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"unread_count\": 5\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"User not authenticated\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get user notifications",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/notifications",
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "20",
+                                    "description": "The number of notifications to return. Defaults to 10.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/user\/notifications?limit=20"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves notifications for the authenticated user with pagination support.\nReturns both the notifications list and unread count."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"notifications\": [\n      {\n        \"id\": 1,\n        \"type\": \"message\",\n        \"message\": \"You have a new message\",\n        \"is_read\": false,\n        \"created_at\": \"2025-01-09T10:30:00.000000Z\",\n        \"seller\": {\n          \"user_id\": \"DEF45\",\n          \"name\": \"John Doe\"\n        },\n        \"advert\": {\n          \"id\": 123,\n          \"title\": \"Samsung Galaxy S21\"\n        }\n      }\n    ],\n    \"unread_count\": 3\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"User not authenticated\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get user followers count",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/:userId\/followers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user\/:userId\/followers",
+                            "variable": [
+                                {
+                                    "id": "userId",
+                                    "key": "userId",
+                                    "value": "ABC12",
+                                    "description": "The user ID (5-character code)."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves the total number of followers for a specific user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user_id\": \"ABC12\",\n    \"followers_count\": 150\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"Failed to fetch followers count\",\n  \"error\": \"Error details\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get user feedback and ratings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/:userId\/feedback",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user\/:userId\/feedback",
+                            "variable": [
+                                {
+                                    "id": "userId",
+                                    "key": "userId",
+                                    "value": "ABC12",
+                                    "description": "The user ID (5-character code)."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves feedback averages and rating labels for a specific user.\nIncludes overall rating, satisfaction, reliability, and friendliness scores."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user_id\": \"ABC12\",\n    \"averages\": {\n      \"rating\": 4.5,\n      \"satisfaction\": 4.2,\n      \"reliable\": 4.8,\n      \"friendly\": 4.3,\n      \"count\": 20\n    },\n    \"labels\": {\n      \"satisfaction\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      },\n      \"friendly\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      },\n      \"reliable\": {\n        \"label\": \"Very\",\n        \"color\": \"bg-blue-100 text-blue-800\"\n      }\n    }\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"success\": false,\n  \"message\": \"User not found\"\n}",
+                            "name": ""
+                        }
+                    ]
                 }
             ]
         }

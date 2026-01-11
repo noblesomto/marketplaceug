@@ -328,16 +328,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Broadcast::routes(['middleware' => ['usersession']]);
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
-Route::get('/unread-messages-count', function() {
-    if (!Session::has('user_id')) {
+Route::middleware('auth:sanctum')->get('/unread-messages-count', function(Request $request) {
+    $user = $request->user();
+
+    if (!$user) {
         return response()->json(['count' => 0]);
     }
 
-    $count = App\Models\Message::where('receiver_id', Session::get('user_id'))
+    $count = App\Models\Message::where('receiver_id', $user->user_id)
                 ->where('is_read', false)
                 ->count();
 
     return response()->json(['count' => $count]);
-})->middleware('web');
+});
