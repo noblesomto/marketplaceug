@@ -362,6 +362,7 @@ class UserController extends Controller
         ]);
     }
 
+
     /**
      * @OA\Get(
      *     path="/api/user/wishlist",

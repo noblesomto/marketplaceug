@@ -265,6 +265,7 @@ class User extends Authenticatable implements HasMedia
         }
     }
 
+
     public function getProfileImageUrlAttribute(): ?string
     {
         return $this->getFirstMediaUrl('profile_image', 'optimized');
@@ -289,12 +290,15 @@ class User extends Authenticatable implements HasMedia
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
 
-    /**
+   /**
      * Get all active device tokens for this user
+     *
+     * IMPORTANT: device_tokens.user_id references users.id (not users.user_id)
      */
     public function deviceTokens(): HasMany
     {
-        return $this->hasMany(DeviceToken::class)->where('is_active', true);
+        return $this->hasMany(DeviceToken::class, 'user_id', 'id')
+            ->where('is_active', true);
     }
 
     /**

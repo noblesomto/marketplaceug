@@ -21,9 +21,14 @@ class DeviceToken extends Model
         'last_used_at' => 'datetime',
     ];
 
+    /**
+     * Get the user that owns the device token
+     *
+     * IMPORTANT: This references users.id (not users.user_id)
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function scopeActive($query)

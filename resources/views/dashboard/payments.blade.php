@@ -101,7 +101,7 @@
             </div>
 
             <div class="w-full lg:pt-7">
-                <a href="{{ optional($row->advert)->ad_id ? '/report-ad/' . $row->advert->ad_id : '#' }}"
+                <a href="{{ optional($row->advert)->id ? '/report-ad/' . $row->advert->id : '#' }}"
                    class="bg-secondary-200 px-4 py-2 rounded-lg inline-block w-full text-center">
                     Report an Issue
                 </a>

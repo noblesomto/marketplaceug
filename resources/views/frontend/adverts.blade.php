@@ -3,7 +3,7 @@
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
 
-<section class="w-full max-w-[95rem] mx-auto mt-3">
+<section class="w-full max-w-[100rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-3">
       <div class="col-span-2  hidden sm:block">
           @include('frontend.components.advert.side-advert')
@@ -54,9 +54,6 @@
                     </button>
                 </div>
             @endif
-
-
-
            </div>
         </div>
       </div>

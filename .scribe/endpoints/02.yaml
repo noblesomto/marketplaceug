@@ -1,25 +1,25 @@
-name: 'Advert Statistics'
+name: 'User Statistics'
 description: |-
 
-  APIs for retrieving advertisement statistics, counts, and filtering
+  APIs for retrieving user statistics, feedback, and notifications
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/adverts/count
+    uri: api/user/stats
     metadata:
       custom: []
-      groupName: 'Advert Statistics'
+      groupName: 'User Statistics'
       groupDescription: |-
 
-        APIs for retrieving advertisement statistics, counts, and filtering
+        APIs for retrieving user statistics, feedback, and notifications
       subgroup: null
       subgroupDescription: null
-      title: 'Get adverts count with filters'
+      title: 'Get authenticated user statistics'
       description: |-
-        Returns the total count of active adverts based on various filters.
-        All filters are optional and can be combined.
+        Returns comprehensive statistics for the currently authenticated user including
+        followers count, unread messages, notifications, and feedback ratings.
       authenticated: true
       deprecated: false
     headers:
@@ -39,86 +39,29 @@ endpoints:
           {
             "success": true,
             "data": {
-              "total_count": 1500,
-              "filters_applied": {
-                "category": "1",
-                "state": "Lagos"
-              }
-            }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 500
-        content: |-
-          {
-            "success": false,
-            "message": "Failed to fetch advert count",
-            "error": "Error details"
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer D3ev6g61afZEPdabV5c48kh'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/adverts/by-state
-    metadata:
-      custom: []
-      groupName: 'Advert Statistics'
-      groupDescription: |-
-
-        APIs for retrieving advertisement statistics, counts, and filtering
-      subgroup: null
-      subgroupDescription: null
-      title: 'Get adverts grouped by state'
-      description: |-
-        Returns the count of active adverts grouped by Nigerian states.
-        Results are ordered by state with the most adverts first.
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "success": true,
-            "data": {
-              "states": [
-                {
-                  "state": "Lagos",
-                  "total": 500
+              "followers_count": 150,
+              "unread_messages_count": 5,
+              "unread_notifications_count": 3,
+              "feedback": {
+                "rating": 4.5,
+                "satisfaction": 4.2,
+                "reliable": 4.8,
+                "friendly": 4.3,
+                "count": 20
+              },
+              "feedback_labels": {
+                "satisfaction": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
                 },
-                {
-                  "state": "Abuja",
-                  "total": 300
+                "friendly": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
                 },
-                {
-                  "state": "Port Harcourt",
-                  "total": 250
+                "reliable": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
                 }
-              ],
-              "filters_applied": {
-                "category": "1"
               }
             }
           }
@@ -126,12 +69,11 @@ endpoints:
         description: ''
       -
         custom: []
-        status: 500
+        status: 401
         content: |-
           {
             "success": false,
-            "message": "Failed to fetch adverts by state",
-            "error": "Error details"
+            "message": "User not authenticated"
           }
         headers: []
         description: ''
@@ -139,7 +81,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer DkaE81dVP6be3ghc6f4Z5av'
+      - 'Bearer ehbPv35f64ac8DVg1ZE6dka'
     controller: null
     method: null
     route: null
@@ -147,19 +89,17 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/adverts/count-filtered
+    uri: api/user/unread-messages
     metadata:
       custom: []
-      groupName: 'Advert Statistics'
+      groupName: 'User Statistics'
       groupDescription: |-
 
-        APIs for retrieving advertisement statistics, counts, and filtering
+        APIs for retrieving user statistics, feedback, and notifications
       subgroup: null
       subgroupDescription: null
-      title: 'Get advert count filtered by verified sellers'
-      description: |-
-        Returns the count of adverts from verified or unverified sellers.
-        Useful for showing marketplace trust metrics.
+      title: 'Get unread messages count'
+      description: 'Returns the count of unread messages for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
@@ -179,23 +119,18 @@ endpoints:
           {
             "success": true,
             "data": {
-              "count": 250,
-              "verified": "yes",
-              "category": "electronics",
-              "sub_category": "mobile-phones",
-              "brand": "samsung"
+              "unread_count": 5
             }
           }
         headers: []
         description: ''
       -
         custom: []
-        status: 500
+        status: 401
         content: |-
           {
             "success": false,
-            "message": "Failed to fetch filtered advert count",
-            "error": "Error details"
+            "message": "User not authenticated"
           }
         headers: []
         description: ''
@@ -203,7 +138,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer fgvEVkc43e6bD1P58hdaaZ6'
+      - 'Bearer hP6bEfd35ZkeV8Dag4ca61v'
     controller: null
     method: null
     route: null
@@ -211,19 +146,19 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/adverts/brands
+    uri: api/user/notifications
     metadata:
       custom: []
-      groupName: 'Advert Statistics'
+      groupName: 'User Statistics'
       groupDescription: |-
 
-        APIs for retrieving advertisement statistics, counts, and filtering
+        APIs for retrieving user statistics, feedback, and notifications
       subgroup: null
       subgroupDescription: null
-      title: 'Get brands with advert counts'
+      title: 'Get user notifications'
       description: |-
-        Returns a list of brands with their active advert counts.
-        Can be filtered by category or sub-category. Only returns brands with at least one active advert.
+        Retrieves notifications for the authenticated user with pagination support.
+        Returns both the notifications list and unread count.
       authenticated: true
       deprecated: false
     headers:
@@ -243,38 +178,94 @@ endpoints:
           {
             "success": true,
             "data": {
-              "brands": [
+              "notifications": [
                 {
                   "id": 1,
-                  "brand_name": "Samsung",
-                  "brand_slug": "samsung",
-                  "adverts_count": 45,
-                  "sub_category": {
-                    "id": 5,
-                    "sub_cat_name": "Mobile Phones",
-                    "category": {
-                      "id": 1,
-                      "category_name": "Electronics"
-                    }
-                  }
-                },
-                {
-                  "id": 2,
-                  "brand_name": "Apple",
-                  "brand_slug": "apple",
-                  "adverts_count": 38,
-                  "sub_category": {
-                    "id": 5,
-                    "sub_cat_name": "Mobile Phones",
-                    "category": {
-                      "id": 1,
-                      "category_name": "Electronics"
-                    }
+                  "type": "message",
+                  "message": "You have a new message",
+                  "is_read": false,
+                  "created_at": "2025-01-09T10:30:00.000000Z",
+                  "seller": {
+                    "user_id": "DEF45",
+                    "name": "John Doe"
+                  },
+                  "advert": {
+                    "id": 123,
+                    "title": "Samsung Galaxy S21"
                   }
                 }
               ],
-              "category_id": 1,
-              "sub_category_id": 5
+              "unread_count": 3
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "success": false,
+            "message": "User not authenticated"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer ED1ZV6gahb8vkfa365cPde4'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/user/{userId}/followers'
+    metadata:
+      custom: []
+      groupName: 'User Statistics'
+      groupDescription: |-
+
+        APIs for retrieving user statistics, feedback, and notifications
+      subgroup: null
+      subgroupDescription: null
+      title: 'Get user followers count'
+      description: 'Retrieves the total number of followers for a specific user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+    urlParameters:
+      userId:
+        custom: []
+        name: userId
+        description: ''
+        required: true
+        example: ea
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      userId: ea
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "user_id": "ABC12",
+              "followers_count": 150
             }
           }
         headers: []
@@ -285,7 +276,7 @@ endpoints:
         content: |-
           {
             "success": false,
-            "message": "Failed to fetch brands with advert count",
+            "message": "Failed to fetch followers count",
             "error": "Error details"
           }
         headers: []
@@ -294,7 +285,99 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Z36P5Eh4eg6v1fa8dVbaDck'
+      - 'Bearer 1663DEVafghea4Pcvb8k5Zd'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/user/{userId}/feedback'
+    metadata:
+      custom: []
+      groupName: 'User Statistics'
+      groupDescription: |-
+
+        APIs for retrieving user statistics, feedback, and notifications
+      subgroup: null
+      subgroupDescription: null
+      title: 'Get user feedback and ratings'
+      description: |-
+        Retrieves feedback averages and rating labels for a specific user.
+        Includes overall rating, satisfaction, reliability, and friendliness scores.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+    urlParameters:
+      userId:
+        custom: []
+        name: userId
+        description: ''
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      userId: est
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "user_id": "ABC12",
+              "averages": {
+                "rating": 4.5,
+                "satisfaction": 4.2,
+                "reliable": 4.8,
+                "friendly": 4.3,
+                "count": 20
+              },
+              "labels": {
+                "satisfaction": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
+                },
+                "friendly": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
+                },
+                "reliable": {
+                  "label": "Very",
+                  "color": "bg-blue-100 text-blue-800"
+                }
+              }
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "success": false,
+            "message": "User not found"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer aPb5VEcahkf486Z1e6dvDg3'
     controller: null
     method: null
     route: null

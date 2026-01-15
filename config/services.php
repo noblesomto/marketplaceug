@@ -61,7 +61,8 @@ return [
         'secret_key' => env('GOOGLE_RECAPTCHA_SECRET'),
     ],
     'fcm' => [
-        'server_key' => env('FCM_SERVER_KEY'),
+        'credentials' => storage_path('app/firebase/firebase-credentials.json'),
+        'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
 
 

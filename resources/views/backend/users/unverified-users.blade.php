@@ -70,10 +70,8 @@
                             <div class="col-md-3">
                                 <select class="form-select" id="accountTypeFilter">
                                     <option value="">All Account Types</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">User</option>
-                                    <option value="moderator">Moderator</option>
-                                    <option value="vendor">Vendor</option>
+                                    <option value="Private">Private</option>
+                                    <option value="Commercial">Commercial</option>
                                 </select>
                             </div>
                             <div class="col-md-3">

@@ -1189,6 +1189,7 @@ public function buy_direct_payment(Request $request, $id)
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
 
+        //dd($advert);
         if (!$advert) {
 
             abort(404, 'Advert not found');

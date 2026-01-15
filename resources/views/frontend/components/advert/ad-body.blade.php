@@ -1,4 +1,4 @@
-<article itemscope itemtype="https://schema.org/Product" class="pb-10">
+<article itemscope itemtype="https://schema.org/Product" class="pb-2">
 
     <!-- Header: Title, Price, Meta -->
     <header class="border-b border-gray-100 pb-4 px-2 bg-white">
@@ -48,13 +48,13 @@
                     </div>
                 <div class="flex items-center text-sm text-gray-500 gap-4 mt-2">
 
-                    <div class="flex items-center" data-nosnippet>
+                    <div class="flex items-center" data-nosnippet aria-hidden="true">
                         <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <time datetime="{{ $ad->created_at }}">{{ $ad->created_at ? date('j M Y', strtotime($ad->created_at)) : '' }}</time>
+                        <span data-nosnippet>{{ $ad->created_at ? date('j M Y', strtotime($ad->created_at)) : '' }}</span>
                     </div>
-                    <div class="flex items-center" data-nosnippet>
+                    <div class="flex items-center" data-nosnippet aria-hidden="true">
                         <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                        <span>{{ $ad->views ?? 0 }} views</span>
+                        <span data-nosnippet>{{ $ad->views ?? 0 }} views</span>
                     </div>
                 </div>
             </div>
@@ -188,14 +188,14 @@
             @endif
         @endif
 
-        <!-- Features Tags -->
+        <!-- External Features -->
         @if($ad->sub_category=="2")
-            @php $interiors = array_filter(array_map(fn($i)=>trim(str_replace(['/', '"', '\\', '[]'], '', $i)), explode(',', $car->interior ?? ''))); @endphp
-            @if(count($interiors))
+            @php $exterior_equipments = array_filter(array_map(fn($i)=>trim(str_replace(['/', '"', '\\', '[]'], '', $i)), explode(',', $car->exterior_equipment ?? ''))); @endphp
+            @if(count($exterior_equipments))
             <div class="mt-6">
-                <h3 class="text-sm font-bold text-gray-700 mb-3">Key Features</h3>
+                <h3 class="text-sm font-bold text-gray-700 mb-3">External Features</h3>
                 <div class="flex flex-wrap gap-2">
-                    @foreach($interiors as $i)
+                    @foreach($exterior_equipments as $i)
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-dark_green border border-green-100">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
                             {{ ucfirst($i) }}

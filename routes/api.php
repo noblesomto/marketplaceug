@@ -41,6 +41,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/', [NotificationSettingsController::class, 'update']);
     });
 
+    // Test Push Notifications (Local/Development only)
+    Route::prefix('test')->group(function () {
+        Route::post('/notification', [\App\Http\Controllers\Api\TestNotificationController::class, 'sendTest']);
+        Route::get('/my-tokens', [\App\Http\Controllers\Api\TestNotificationController::class, 'getMyTokens']);
+    });
+
 });
 /*
 |--------------------------------------------------------------------------
