@@ -183,6 +183,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     Route::get('/wishlist', [UserController::class, 'wishlist']);
     Route::post('/wishlist/{adId}', [UserController::class, 'addToWishlist']);
     Route::delete('/wishlist/{adId}', [UserController::class, 'removeFromWishlist']);
+    Route::post('/user/wishlist/{adId}', [UserController::class, 'toggleWishlist']);
 
     // Payments
     Route::get('/payments', [UserController::class, 'payments']);

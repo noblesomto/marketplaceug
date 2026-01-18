@@ -1189,7 +1189,7 @@ public function buy_direct_payment(Request $request, $id)
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
 
-        //dd($advert);
+
         if (!$advert) {
 
             abort(404, 'Advert not found');
@@ -1227,7 +1227,7 @@ public function buy_direct_payment(Request $request, $id)
                 'message' => $request->message,
             ];
 
-            Mail::to(config('global.admin_email'))->send(new ReportMail($details));
+            Mail::to(config('global.admin_email'))->queue(new ReportMail($details));
 
             return redirect()->back()->with('success', 'Your Report Has Been Received, We will Get back to Shortly');
         }

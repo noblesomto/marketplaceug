@@ -14,7 +14,7 @@
 
 
      <!-- SEO Meta Tags -->
-    <meta name="description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell fast or find cars, jobs, electronics, property and more near you.">
+    <meta name="description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.">
     <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
     <meta name="author" content="Marketplace Naija">
 

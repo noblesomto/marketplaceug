@@ -278,6 +278,7 @@ class UserController extends Controller
      *     )
      * )
      */
+    /**
     public function addToWishlist($adId)
     {
         $user = auth()->user();
@@ -311,6 +312,7 @@ class UserController extends Controller
             'message' => 'Added to wishlist successfully'
         ], 201);
     }
+    **/
 
     /**
      * @OA\Delete(
@@ -339,6 +341,7 @@ class UserController extends Controller
      *     )
      * )
      */
+    /**
     public function removeFromWishlist($adId)
     {
         $user = auth()->user();
@@ -360,6 +363,80 @@ class UserController extends Controller
             'success' => true,
             'message' => 'Removed from wishlist successfully'
         ]);
+    }
+
+    **/
+
+    /**
+     * @OA\Post(
+     *     path="/api/user/wishlist/{adId}",
+     *     summary="Toggle ad in wishlist (add/remove)",
+     *     tags={"Wishlist"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="adId",
+     *         in="path",
+     *         required=true,
+     *         description="Ad ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Wishlist toggled successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Added to wishlist"),
+     *             @OA\Property(property="in_wishlist", type="boolean", example=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Advert not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
+     */
+    public function toggleWishlist($adId)
+    {
+        $user = auth()->user();
+
+        // Check if advert exists
+        $advert = Advert::find($adId);
+        if (!$advert) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found'
+            ], 404);
+        }
+
+        // Check if already in wishlist
+        $wishlist = Wishlist::where('user_id', $user->user_id)
+            ->where('advert_id', $adId)
+            ->first();
+
+        if ($wishlist) {
+            // Remove from wishlist
+            $wishlist->delete();
+            $message = 'Removed from wishlist';
+            $inWishlist = false;
+        } else {
+            // Add to wishlist
+            Wishlist::create([
+                'user_id' => $user->user_id,
+                'advert_id' => $adId
+            ]);
+            $message = 'Added to wishlist';
+            $inWishlist = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'in_wishlist' => $inWishlist
+        ], 200);
     }
 
 

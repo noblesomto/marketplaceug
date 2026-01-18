@@ -12,7 +12,7 @@
     </div>
 
         @include('frontend.components.flash-message')
-        <form method="POST" action="/report-user/{{ $reported->user_id }}">
+        <form method="POST" action="/report-user/{{ $reported->user_id }}" id="report-user-form">
             @csrf
 
             
@@ -71,16 +71,23 @@
                 
             </div>
 
-            <div class="mb-4 mt-4">
-                <label class="text-sm font-semibold">ReCaptcha *</label>
-                @if ($errors->has('g-recaptcha-response'))
-                   <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
-               @endif
-                <div class="g-recaptcha" data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>               
-            </div>
+            @if ($errors->has('g-recaptcha-response'))
+                <div class="mb-4 rounded-md bg-red-50 p-3">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Security Check Failed. Please try again.</h3>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <div class="mt-8">
-                <button type="submit" class="flex justify-center items-center bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-3 px-6 border-2 border-dark_green hover:border-dark_green rounded-full ">
+                <button type="button" id="report-user-submit-btn" class="flex justify-center items-center bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-3 px-6 border-2 border-dark_green hover:border-dark_green rounded-full transition-all">
                     <span>Submit</span>
                     <span class="ml-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -90,9 +97,79 @@
                 </button>
               </div>
 
+            <p class="text-xs text-center text-gray-500 mt-4 leading-relaxed">
+                This site is protected by reCAPTCHA and the Google
+                <a href="https://policies.google.com/privacy" class="text-dark_green hover:underline">Privacy Policy</a> and
+                <a href="https://policies.google.com/terms" class="text-dark_green hover:underline">Terms of Service</a> apply.
+            </p>
+
         </form>
     </div>
 </section>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitBtn = document.getElementById('report-user-submit-btn');
+        const form = document.getElementById('report-user-form');
+
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Validate form first
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Check if reCAPTCHA is loaded
+            if (typeof grecaptcha === 'undefined') {
+                alert('Security check is loading. Please wait a moment and try again.');
+                return;
+            }
+
+            // Disable button to prevent double submission
+            submitBtn.disabled = true;
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
+            // Execute reCAPTCHA v3
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'report_user'})
+                    .then(function(token) {
+                        // Remove any existing recaptcha response inputs
+                        const existingInput = form.querySelector('input[name="g-recaptcha-response"]');
+                        if (existingInput) {
+                            existingInput.remove();
+                        }
+
+                        // Add token to form
+                        let input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'g-recaptcha-response';
+                        input.value = token;
+                        form.appendChild(input);
+
+                        // Submit form
+                        form.submit();
+                    })
+                    .catch(function(error) {
+                        console.error('reCAPTCHA error:', error);
+                        alert('Security verification failed. Please refresh the page and try again.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalContent;
+                    });
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Hides the floating Google Recaptcha Badge */
+    .grecaptcha-badge {
+        visibility: hidden;
+    }
+</style>
 
 @include('frontend.layouts.footer')
 

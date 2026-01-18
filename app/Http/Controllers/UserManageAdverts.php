@@ -110,30 +110,29 @@ class UserManageAdverts extends Controller
 
             // Subcategory-specific rules
             switch ($subcat) {
-                case 2:
-                    $rules += [
-                        'model'        => 'required',
-                        'registration' => 'required',
-                        'mileage'      => 'required|numeric',
-                        'condition'    => 'required',
-                        'fuel'         => 'required',
-                        'transmission' => 'required',
-                        'vehicle_type' => 'required',
-                        'doors'        => 'required',
-                    ];
-                    break;
+            case 2:
+            case 21:
+            case 23:
+                $rules += [
+                    'registration' => 'required',
+                    'condition'    => 'required',
+                    'fuel'         => 'required',
+                    'transmission' => 'required',
+                ];
+                break;
 
-                case 6:
-                    $rules += [
-                        'phone_color'     => 'required',
-                        'phone_condition' => 'required',
-                        'device'          => 'required',
-                    ];
-                    break;
-            }
+            case 6:
+                $rules += [
+                    'phone_color'     => 'required',
+                    'phone_condition' => 'required',
+                    'device'          => 'required',
+                ];
+                break;
+        }
+
 
             // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
-            if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+            if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 22, 23, 24, 25])) {
                 $rules['item_condition'] = 'required';
             }
 
@@ -210,7 +209,7 @@ class UserManageAdverts extends Controller
 
 
             // Store car-specific info
-            if ($subcat === 2) {
+            if (in_array($subcat, [2, 21, 23])) {
                 $car = new CarDetail([
                     'car_id'            => rand(10000, 99999),
                     'cat_id'            => $request->input('category'),

@@ -1,4 +1,7 @@
 
+//Edit Ad JS Functions
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // ==================== Form Selection Logic ====================
     const categorySelect = document.getElementById('category');
@@ -148,89 +151,120 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
     }
 
-    function toggleSections(subcategoryId,categoryId) {
+  function toggleSections(subcategoryId, categoryId) {
+    // Convert to string for consistent comparison
+    subcategoryId = subcategoryId ? String(subcategoryId) : null;
+    categoryId = categoryId ? String(categoryId) : null;
 
-        //category services 11;
-         if (categoryId === "11") {
-                services.classList.remove("hidden");
-                buyDirect.classList.add("hidden");
-                shipping.classList.add("hidden");
-                shipmentDiv.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
-                }
-             }else{
-                services.classList.add("hidden");
-                buyDirect.classList.remove("hidden");
-                shipping.classList.remove("hidden");
-                shipmentDiv.classList.remove("hidden");
-                itemCondition.classList.remove("hidden");
-                if (quantity) {
-                    quantity.classList.remove("hidden");
-                }
-             }
+    // ==================== CATEGORY-BASED RULES ====================
 
-             //Category Jobs 3
-            if (categoryId === "3") {
-                salary.classList.remove("hidden");
-                price.classList.add("hidden");
-                shipmentDiv.classList.add("hidden");
-                shipping.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                buyDirect.classList.add("hidden");
-                expectedSalary.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
-                }
-                 //Category CV 18
-            }else if (categoryId === "18")  {
-                expectedSalary.classList.remove("hidden");
-                price.classList.add("hidden");
-                salary.classList.add("hidden");
-                shipmentDiv.classList.add("hidden");
-                shipping.classList.add("hidden");
-                itemCondition.classList.add("hidden");
-                buyDirect.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.add("hidden");
-                }
-            }else{
-                price.classList.remove("hidden");
-                salary.classList.add("hidden");
-                expectedSalary.classList.add("hidden");
-                if (quantity) {
-                    quantity.classList.remove("hidden");
-                }
-            }
-        // Car section (subcategory 2)
-        if (subcategoryId == 2) {
-            if (divCar) divCar.classList.remove('hidden');
-            if (divPhone) divPhone.classList.add('hidden');
-            if (divModel) divModel.classList.remove('hidden');
-            if (shipping) shipping.classList.add('hidden');
-            if (shipmentDiv) shipmentDiv.classList.add('hidden');
-            if (itemCondition) itemCondition.classList.add('hidden');
-            if (modelSelect) modelSelect.setAttribute('required', 'required');
-            if (buyDirect) buyDirect.classList.add('hidden');
-        }
-        // Phone section (subcategory 6)
-        else if (subcategoryId == 6) {
-            if (divCar) divCar.classList.add('hidden');
-            if (divPhone) divPhone.classList.remove('hidden');
-            if (divModel) divModel.classList.remove('hidden');
-            if (shipmentDiv) shipmentDiv.classList.add('hidden');
-            if (itemCondition) itemCondition.classList.add('hidden');
-
-        }
-        // Other sections
-        else {
-            if (divCar) divCar.classList.add('hidden');
-            if (divPhone) divPhone.classList.add('hidden');
-            if (divModel) divModel.classList.add('hidden');
-        }
+    // Category Services (11)
+    if (categoryId === "11") {
+        services.classList.remove("hidden");
+        buyDirect.classList.add("hidden");
+        shipping.classList.add("hidden");
+        shipmentDiv.classList.add("hidden");
+        itemCondition.classList.add("hidden");
+        if (quantity) quantity.classList.add("hidden");
+    } else {
+        services.classList.add("hidden");
+        buyDirect.classList.remove("hidden");
+        shipping.classList.remove("hidden");
+        shipmentDiv.classList.remove("hidden");
+        itemCondition.classList.remove("hidden");
+        if (quantity) quantity.classList.remove("hidden");
     }
 
+    // Category Jobs (3)
+    if (categoryId === "3") {
+        salary.classList.remove("hidden");
+        price.classList.add("hidden");
+        shipmentDiv.classList.add("hidden");
+        shipping.classList.add("hidden");
+        itemCondition.classList.add("hidden");
+        buyDirect.classList.add("hidden");
+        expectedSalary.classList.add("hidden");
+        if (quantity) quantity.classList.add("hidden");
+    }
+    // Category CV (18)
+    else if (categoryId === "18") {
+        expectedSalary.classList.remove("hidden");
+        price.classList.add("hidden");
+        salary.classList.add("hidden");
+        shipmentDiv.classList.add("hidden");
+        shipping.classList.add("hidden");
+        itemCondition.classList.add("hidden");
+        buyDirect.classList.add("hidden");
+        if (quantity) quantity.classList.add("hidden");
+    }
+    else {
+        price.classList.remove("hidden");
+        salary.classList.add("hidden");
+        expectedSalary.classList.add("hidden");
+        if (quantity) quantity.classList.remove("hidden");
+    }
+
+    // ==================== SUBCATEGORY-BASED RULES ====================
+
+    if (!subcategoryId) return;
+
+    // Cars (2), Mini Buses (21), Trucks (23)
+    if (subcategoryId === "2" || subcategoryId === "21" || subcategoryId === "23") {
+        if (divCar) divCar.classList.remove('hidden');
+        if (divModel) divModel.classList.remove('hidden');
+        if (divPhone) divPhone.classList.add('hidden');
+        if (shipmentDiv) shipmentDiv.classList.add('hidden');
+        if (itemCondition) itemCondition.classList.add('hidden');
+        if (buyDirect) buyDirect.classList.add('hidden');
+        if (modelSelect) modelSelect.setAttribute('required', 'required');
+    }
+    // Scooter (22)
+    else if (subcategoryId === "22") {
+        if (itemCondition) itemCondition.classList.remove('hidden');
+        if (divCar) divCar.classList.add('hidden');
+        if (divModel) divModel.classList.add('hidden');
+        if (divPhone) divPhone.classList.add('hidden');
+        if (shipmentDiv) shipmentDiv.classList.add('hidden');
+        if (buyDirect) buyDirect.classList.add('hidden');
+        if (modelSelect) modelSelect.removeAttribute('required');
+    }
+    // Vehicle Parts (24)
+    else if (subcategoryId === "24") {
+        if (itemCondition) itemCondition.classList.remove('hidden');
+        if (shipmentDiv) shipmentDiv.classList.remove('hidden');
+        if (buyDirect) buyDirect.classList.remove('hidden');
+        if (divCar) divCar.classList.add('hidden');
+        if (divModel) divModel.classList.add('hidden');
+        if (divPhone) divPhone.classList.add('hidden');
+        if (modelSelect) modelSelect.removeAttribute('required');
+    }
+    // Boats (25)
+    else if (subcategoryId === "25") {
+        if (itemCondition) itemCondition.classList.remove('hidden');
+        if (divCar) divCar.classList.add('hidden');
+        if (divModel) divModel.classList.add('hidden');
+        if (divPhone) divPhone.classList.add('hidden');
+        if (shipmentDiv) shipmentDiv.classList.add('hidden');
+        if (buyDirect) buyDirect.classList.add('hidden');
+        if (modelSelect) modelSelect.removeAttribute('required');
+    }
+    // Phones (6)
+    else if (subcategoryId === "6") {
+        if (divPhone) divPhone.classList.remove('hidden');
+        if (divModel) divModel.classList.remove('hidden');
+        if (shipmentDiv) shipmentDiv.classList.remove('hidden');
+        if (divCar) divCar.classList.add('hidden');
+        if (itemCondition) itemCondition.classList.add('hidden');
+        if (modelSelect) modelSelect.setAttribute('required', 'required');
+    }
+    // Default: hide all special divs
+    else {
+        if (divCar) divCar.classList.add('hidden');
+        if (divPhone) divPhone.classList.add('hidden');
+        if (divModel) divModel.classList.add('hidden');
+        if (modelSelect) modelSelect.removeAttribute('required');
+    }
+}
 
 
     // ==================== Shipment Toggle ====================

@@ -171,22 +171,7 @@
 
             <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Mileage *</div>
-                </div>
-                <div class="col-span-10 md:col-span-6">
-                    @if ($errors->has('mileage'))
-                        <span class="text-red-400">{{ $errors->first('mileage') }}</span>
-                    @endif
-                    <div class="flex w-2/4">
-                        <input type="text" name="mileage" placeholder="mileage" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->car->mileage }}">
-                        <span class="mt-3">Km</span>
-                    </div>
-                </div>
-           </div>
-
-            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
-                <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Vehicle Condition *</div>
+                    <div class="font-semibold">Vehicle Condition <span class="text-red-500">*</span></div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('condition'))
@@ -201,9 +186,26 @@
                 </div>
            </div>
 
+            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
+                <div class="col-span-10 md:col-span-2">
+                    <div class="font-semibold">Mileage </div>
+                </div>
+                <div class="col-span-10 md:col-span-6">
+                    @if ($errors->has('mileage'))
+                        <span class="text-red-400">{{ $errors->first('mileage') }}</span>
+                    @endif
+                    <div class="flex w-2/4">
+                        <input type="text" name="mileage" placeholder="mileage" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $advert->car->mileage }}">
+                        <span class="mt-3">Km</span>
+                    </div>
+                </div>
+           </div>
+
+
+
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Registration</div>
+                    <div class="font-semibold">Registration <span class="text-red-500">*</span></div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('registration'))
@@ -223,7 +225,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Fuel Type *</div>
+                    <div class="font-semibold">Fuel Type <span class="text-red-500">*</span></div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('fuel'))
@@ -252,7 +254,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Transmission *</div>
+                    <div class="font-semibold">Transmission <span class="text-red-500">*</span></div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('transmission'))
@@ -262,13 +264,16 @@
                     <option value="">Please Choose</option>
                     <option value="Automatic" {{ $advert->car->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
                     <option value="Manually" {{ $advert->car->transmission == 'Manually' ? 'selected' : '' }}>Manually</option>
+                    <option value="CVT" {{ $advert->car->transmission == 'CVT' ? 'selected' : '' }}>CVT</option>
+                    <option value="AMT" {{ $advert->car->transmission == 'AMT' ? 'selected' : '' }}>AMT</option>
+                    <option value="Other" {{ $advert->car->transmission == 'Other' ? 'selected' : '' }}>Other</option>
                 </select>
                 </div>
            </div>
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Vehicle Type *</div>
+                    <div class="font-semibold">Vehicle Type </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('vehicle_type'))
@@ -300,7 +305,7 @@
 
             <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Color *</div>
+                    <div class="font-semibold">Exterior Color <span class="text-red-500">*</span></div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('exterior_color'))
@@ -362,7 +367,7 @@
            </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Number of Doors *</div>
+                    <div class="font-semibold">Number of Doors </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('doors'))
@@ -380,7 +385,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Material Interior *</div>
+                    <div class="font-semibold">Material Interior </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     @if ($errors->has('material_interior'))
@@ -410,7 +415,7 @@
 
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Exterior Equipment *</div>
+                    <div class="font-semibold">Exterior Equipment </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -463,7 +468,7 @@
             </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Interior Equipment *</div>
+                    <div class="font-semibold">Interior Equipment </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">
@@ -521,7 +526,7 @@
             </div>
            <div class="grid grid-cols-10 gap-2 md:gap-10 py-3 border-b border-b-gray-200">
                 <div class="col-span-10 md:col-span-2">
-                    <div class="font-semibold">Security *</div>
+                    <div class="font-semibold">Security </div>
                 </div>
                 <div class="col-span-10 md:col-span-6">
                     <div class="grid grid-cols-10">

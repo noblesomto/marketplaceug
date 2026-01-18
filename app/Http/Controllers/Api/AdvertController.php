@@ -217,7 +217,7 @@ class AdvertController extends Controller
      */
     public function show($id)
     {
-        $ad = Advert::with(['images', 'owner'])->find($id);
+        $ad = Advert::with(['owner'])->find($id);
 
         if (!$ad) {
             return response()->json([
@@ -226,22 +226,25 @@ class AdvertController extends Controller
             ], 404);
         }
 
-
-        // Process images for portrait detection
-        if ($ad->images) {
-            foreach ($ad->images as $img) {
-                $path = public_path('uploads/images/' . $img->image);
-                if (File::exists($path)) {
-                    [$width, $height] = getimagesize($path);
-                    $img->is_portrait = $height > $width;
-                } else {
-                    $img->is_portrait = false;
-                }
-            }
-        }
+        // Get images with all required conversions
+        $images = $ad->getMedia('images')->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'original' => $media->getUrl(),
+                'large' => $media->getUrl('large'),
+                'optimized' => $media->getUrl('optimized'),
+                'thumbnail' => $media->getUrl('thumbnail'),
+                'thumb_sm' => $media->getUrl('thumb-sm'),  // Mobile optimized
+                'thumb_md' => $media->getUrl('thumb-md'),  // Desktop optimized
+                'order' => $media->getCustomProperty('position', $media->order_column),
+                'name' => $media->name,
+                'size' => $media->size,
+            ];
+        })->sortBy('order')->values();
 
         $data = [
             'ad' => $ad,
+            'images' => $images,
             'ad_owner' => User::where('user_id', $ad->user_id)->first(),
             'cat' => Category::find($ad->category),
             'sub_cat' => SubCategory::find($ad->sub_category),
@@ -261,18 +264,34 @@ class AdvertController extends Controller
             $data['model'] = Models::find($data['phone']->model);
         }
 
-        // Related adverts
-        $data['adverts'] = Advert::with('images')
-            ->inRandomOrder()
+        // Related adverts with images
+        $relatedAdverts = Advert::inRandomOrder()
             ->where('user_id', $ad->user_id)
             ->activeNotRecentlySold()
             ->where('id', '!=', $id)
             ->limit(6)
             ->get();
 
-        // Similar adverts
-        $data['similar_ads'] = Advert::with('images')
-            ->inRandomOrder()
+        $data['adverts'] = $relatedAdverts->map(function ($advert) {
+            return [
+                'id' => $advert->id,
+                'ad_id' => $advert->ad_id,
+                'ad_title' => $advert->ad_title,
+                'price' => $advert->price,
+                'price_type' => $advert->price_type,
+                'state' => $advert->state,
+                'buy_direct' => $advert->buy_direct,
+                'sold' => $advert->sold,
+                'sold_date' => $advert->sold_date,
+                'featured' => $advert->featured,
+                'image_large' => $advert->getFirstImageUrl('large'),
+                'image_optimized' => $advert->getFirstImageUrl('optimized'),
+                'image_thumb' => $advert->getFirstImageUrl('thumbnail'),
+            ];
+        });
+
+        // Similar adverts with images
+        $similarAds = Advert::inRandomOrder()
             ->where(function($q) use ($ad) {
                 $q->where('ad_title', 'LIKE', '%' . $ad->ad_title . '%')
                   ->orWhere('category', $ad->category);
@@ -280,8 +299,27 @@ class AdvertController extends Controller
             ->where('id', '!=', $id)
             ->activeNotRecentlySold()
             ->where('user_id', '!=', $ad->user_id)
-            ->limit(3)
+            ->limit(20)
             ->get();
+
+        $data['similar_ads'] = $similarAds->map(function ($advert) {
+            return [
+                'id' => $advert->id,
+                'ad_id' => $advert->ad_id,
+                'ad_title' => $advert->ad_title,
+                'price' => $advert->price,
+                'price_type' => $advert->price_type,
+                'state' => $advert->state,
+                'buy_direct' => $advert->buy_direct,
+                'sold' => $advert->sold,
+                'sold_date' => $advert->sold_date,
+                'state' => $advert->state,
+                'featured' => $advert->featured,
+                'image_large' => $advert->getFirstImageUrl('large'),
+                'image_optimized' => $advert->getFirstImageUrl('optimized'),
+                'image_thumb' => $advert->getFirstImageUrl('thumbnail'),
+            ];
+        });
 
         // Increment views
         Advert::where('id', $id)->increment('views', 1);

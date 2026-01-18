@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const text = document.getElementById('cookieText');
 
     // Show popup if user hasn't accepted yet
-    if (!localStorage.getItem('cookieConsent')) {
-        cookieConsent.classList.remove('hidden');
-    }
+    //if (!localStorage.getItem('cookieConsent')) {
+       // cookieConsent.classList.remove('hidden');
+    //}
 
     // Handle accept button
     acceptButton.addEventListener('click', function() {

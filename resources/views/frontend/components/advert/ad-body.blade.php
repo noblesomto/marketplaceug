@@ -98,7 +98,7 @@
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Condition</span>
                     <span class="font-semibold text-gray-800">
-                        @if($ad->sub_category == 2)
+                        @if(in_array($ad->sub_category, [2, 21, 23]))
                             {{ $car->condition ?? 'N/A' }}
                         @elseif($ad->sub_category == 6)
                             {{ $phone->condition ?? 'N/A' }}
@@ -110,22 +110,22 @@
 
 
             <!-- Vehicle Specifics -->
-            @if($ad->sub_category=="2")
+            @if(in_array($ad->sub_category, [2, 21, 23]))
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Brand</span>
                     <span class="font-semibold text-gray-800">{{ optional($brand)->brand }}</span>
                 </div>
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Model</span>
-                    <span class="font-semibold text-gray-800">{{ optional($model)->model }}</span>
+                    <span class="font-semibold text-gray-800">{{ $model->model ?? 'N/A' }}</span>
                 </div>
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Mileage</span>
                     <span class="font-semibold text-gray-800">{{ $car->mileage ?? '-' }} Km</span>
                 </div>
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                    <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Year</span>
-                    <span class="font-semibold text-gray-800">{{ $car->year ?? '-' }}</span>
+                    <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Registeration</span>
+                    <span class="font-semibold text-gray-800">{{ $car->registration ?? '-' }}</span>
                 </div>
                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">Transmission</span>

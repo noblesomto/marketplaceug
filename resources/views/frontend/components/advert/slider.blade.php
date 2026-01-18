@@ -3,7 +3,7 @@
     $imageUrls = $mediaItems->map(fn($media) => $media->getUrl('optimized'))->toArray();
 @endphp
 
-<div class="relative w-full group bg-black md:bg-gray-100 md:rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] ">
+<div class="relative w-full group bg-black md:bg-gray-100 md:rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9]">
     <!-- Main Slider -->
     <div id="slider" class="flex h-full transition-transform duration-500 ease-out">
         @foreach($mediaItems as $index => $media)
@@ -25,7 +25,7 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
-    <!-- Indicators (Added id="indicators") -->
+    <!-- Indicators (Dots) -->
     <div id="indicators" class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
         @foreach ($mediaItems as $index => $media)
             <button data-index="{{ $index }}" class="w-2.5 h-2.5 rounded-full bg-white transition-opacity {{ $index == 0 ? 'opacity-100 scale-110' : 'opacity-50 hover:opacity-100' }} shadow-sm"></button>
@@ -33,6 +33,24 @@
     </div>
     @endif
 </div>
+
+<!-- Thumbnail Navigation (Only show if more than 2 images) -->
+@if(count($mediaItems) > 2)
+<div class="mt-3 md:mt-4">
+    <div id="thumbnail-container" class="flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        @foreach($mediaItems as $index => $media)
+            <button
+                data-thumb-index="{{ $index }}"
+                class="thumbnail-btn flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 {{ $index == 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-400' }}"
+                onclick="showSlideFromThumbnail({{ $index }})">
+                <img src="{{ $media->getUrl('thumbnail') }}"
+                     alt="Thumbnail {{ $index + 1 }}"
+                     class="w-full h-full object-cover">
+            </button>
+        @endforeach
+    </div>
+</div>
+@endif
 
 <!-- Lightbox (Keep as is, but ensure buttons exist) -->
 <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
@@ -70,6 +88,7 @@
     const imageList = @json($imageUrls);
     const slider = document.getElementById('slider');
     const indicators = document.querySelectorAll('#indicators button');
+    const thumbnails = document.querySelectorAll('.thumbnail-btn');
     const slides = imageList.length;
 
     let index = 0;
@@ -80,11 +99,38 @@
         if (!slider) return;
         index = i;
         slider.style.transform = `translateX(-${index * 100}%)`;
+
+        // Update indicators (dots)
         indicators.forEach((btn, idx) => {
             btn.classList.toggle('opacity-100', idx === index);
             btn.classList.toggle('scale-110', idx === index);
             btn.classList.toggle('opacity-50', idx !== index);
         });
+
+        // Update thumbnails
+        updateThumbnails();
+    }
+
+    function updateThumbnails() {
+        thumbnails.forEach((thumb, idx) => {
+            if (idx === index) {
+                thumb.classList.remove('border-gray-200', 'hover:border-gray-400');
+                thumb.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
+            } else {
+                thumb.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
+                thumb.classList.add('border-gray-200', 'hover:border-gray-400');
+            }
+        });
+
+        // Auto-scroll thumbnail into view
+        const activeThumbnail = thumbnails[index];
+        if (activeThumbnail) {
+            activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
+
+    function showSlideFromThumbnail(i) {
+        showSlide(i);
     }
 
     // Safety checks for buttons
@@ -187,8 +233,23 @@
     });
 </script>
 
-
 <style>
 #lightbox-image { cursor: grab; }
 #lightbox-image:active { cursor: grabbing; }
+
+/* Custom scrollbar for thumbnails */
+.scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 </style>

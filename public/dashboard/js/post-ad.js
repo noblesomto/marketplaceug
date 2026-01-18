@@ -1,5 +1,5 @@
 // ============================================================================
-// CONFIGURATION - All business rules in one place
+// CONFIGURATION FOR POST AD - All business rules in one place
 // ============================================================================
 
 const CONFIG = {
@@ -36,6 +36,26 @@ const CONFIG = {
         "2": { // Cars
             show: ["divCar", "divModel"],
             hide: ["shipment", "itemCondition", "buyDirect"]
+        },
+        "21": { // Mini Buses
+            show: ["divCar", "divModel"],
+            hide: ["shipment", "itemCondition", "buyDirect"]
+        },
+        "23": { // Trucks
+            show: ["divCar", "divModel"],
+            hide: ["shipment", "itemCondition", "buyDirect"]
+        },
+        "22": { // Scooter
+            show: ["itemCondition"],
+            hide: ["shipment", "buyDirect", "divCar", "divModel"]
+        },
+        "24": { // Vehicle Parts
+            show: ["itemCondition", "shipment", "buyDirect"],
+            hide: ["divCar", "divModel"]
+        },
+        "25": { // Boats
+            show: ["itemCondition"],
+            hide: ["shipment", "buyDirect", "divCar", "divModel"]
         },
         "6": { // Phones
             show: ["divPhone", "shipment"],

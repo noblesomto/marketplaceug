@@ -155,15 +155,6 @@
             <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                    <!-- Mileage -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mileage (Km) <span class="text-red-500">*</span></label>
-                        <div class="flex">
-                            <input type="text" name="mileage" placeholder="0" value="{{ old('mileage') }}" class="block w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
-                            <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
-                        </div>
-                    </div>
-
                     <!-- Vehicle Condition -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Condition <span class="text-red-500">*</span></label>
@@ -175,9 +166,20 @@
                         </select>
                     </div>
 
+                    <!-- Mileage -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mileage (Km) </label>
+                        <div class="flex">
+                            <input type="text" name="mileage" placeholder="0" value="{{ old('mileage') }}" class="block w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
+                            <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
+                        </div>
+                    </div>
+
+
+
                     <!-- Registration -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Registration</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Registration <span class="text-red-500">*</span></label>
                         <select name="registration" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">--Select Type--</option>
                             <option value="Registered">Registered</option>
@@ -206,12 +208,15 @@
                             <option value="">Please Choose</option>
                             <option value="Automatic">Automatic</option>
                             <option value="Manual">Manual</option>
+                            <option value="CVT">CVT</option>
+                            <option value="AMT">AMT</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
 
                     <!-- Vehicle Type -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type </label>
                         <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="Small Car">Small Car</option>
@@ -228,7 +233,7 @@
 
                     <!-- Color -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Exterior Color</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Exterior Color <span class="text-red-500">*</span></label>
                         <select id="Carcolor" name="exterior_color" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Choose Color</option>
                             @php
