@@ -16,8 +16,9 @@ return [
     'description' => 'Complete REST API documentation for Marketplace Nigeria platform. This API allows you to manage adverts, users, messages, payments, and more.',
 
     // The base URL displayed in the docs
-    // This will automatically use APP_URL from .env (local or production)
-    'base_url' => env('APP_URL', 'https://www.marketplace.ng'),
+    // For production, make sure APP_URL in .env is set to: https://www.marketplace.ng
+    // For local development, set it to: http://127.0.0.1:8030
+    'base_url' => env('SCRIBE_BASE_URL', env('APP_URL', 'https://www.marketplace.ng')),
 
     // API version
     'version' => '3.0',
@@ -91,7 +92,7 @@ return [
         'enabled' => true,
 
         // Base URL for testing (uses APP_URL from environment)
-        'base_url' => env('APP_URL', 'https://www.marketplace.ng'),
+        'base_url' => env('SCRIBE_BASE_URL', env('APP_URL', 'https://www.marketplace.ng')),
 
         // Use CSRF tokens for Sanctum
         'use_csrf' => false,

@@ -247,7 +247,7 @@
 
                     <!-- Doors -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Doors <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Doors </label>
                         <select name="doors" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             <option value="1 Door">1 Door</option>

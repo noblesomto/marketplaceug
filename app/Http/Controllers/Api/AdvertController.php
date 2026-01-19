@@ -597,7 +597,32 @@ class AdvertController extends Controller
 
     /**
      * Report an advert
-     * POST /api/adverts/{id}/report
+     *
+     * Submit a report for an inappropriate or suspicious advert.
+     * The report is sent to the admin team for review.
+     *
+     * @group Adverts
+     * @authenticated
+     *
+     * @urlParam id integer required The advert ID to report. Example: 123
+     *
+     * @bodyParam subject string required Report subject/category. Example: Spam or misleading content
+     * @bodyParam message string required Detailed description of the issue. Example: This advert contains false information about the product.
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Your report has been received"
+     * }
+     * @response 404 {
+     *   "success": false,
+     *   "message": "Advert not found"
+     * }
+     * @response 422 {
+     *   "success": false,
+     *   "errors": {
+     *     "subject": ["The subject field is required."]
+     *   }
+     * }
      */
     public function reportAdvert($id, Request $request)
     {

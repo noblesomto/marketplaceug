@@ -3,7 +3,7 @@
 Complete REST API documentation for Marketplace Nigeria platform. This API allows you to manage adverts, users, messages, payments, and more.
 
 <aside>
-    <strong>Base URL</strong>: <code>http://127.0.0.1:8030</code>
+    <strong>Base URL</strong>: <code>https://www.marketplace.ng</code>
 </aside>
 
     Welcome to the Marketplace Nigeria API documentation. This documentation provides comprehensive information about all available endpoints, authentication methods, and request/response formats.

@@ -31,7 +31,7 @@ endpoints:
         name: title
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: pxayujgfimeuogxgtxelimhbz
+        example: rqgefsnxivnixuxjzozrovdel
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -42,7 +42,7 @@ endpoints:
         name: message
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: ihdr
+        example: pujgovth
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -64,7 +64,7 @@ endpoints:
         name: target_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: false
-        example: 18
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -75,17 +75,17 @@ endpoints:
         name: device_token
         description: ''
         required: false
-        example: dolor
+        example: illo
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      title: pxayujgfimeuogxgtxelimhbz
-      message: ihdr
-      target_user_id: 18
-      device_token: dolor
+      title: rqgefsnxivnixuxjzozrovdel
+      message: pujgovth
+      target_user_id: 15
+      device_token: illo
     fileParameters: []
     responses:
       -
@@ -109,7 +109,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 8ba6d6caeDP4v3f5Vg1hZkE'
+      - 'Bearer 5eaP3d84k1Eavh6cbfVg6ZD'
     controller: null
     method: null
     route: null
@@ -164,7 +164,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer acZP3vE8b1g5dfeDVk4h66a'
+      - 'Bearer 8abDegv13Z5d6V4chafk6PE'
     controller: null
     method: null
     route: null

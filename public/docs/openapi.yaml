@@ -5,13 +5,19 @@ info:
   version: '3.0'
 servers:
   -
-    url: 'http://127.0.0.1:8030'
+    url: 'https://www.marketplace.ng'
 tags:
+  -
+    name: Adverts
+    description: ''
   -
     name: 'Advert Statistics'
     description: "\nAPIs for retrieving advertisement statistics, counts, and filtering"
   -
     name: Endpoints
+    description: ''
+  -
+    name: Notifications
     description: ''
   -
     name: Testing
@@ -29,6 +35,98 @@ security:
   -
     default: []
 paths:
+  '/api/adverts/{id}/report':
+    post:
+      summary: 'Report an advert'
+      operationId: reportAnAdvert
+      description: "Submit a report for an inappropriate or suspicious advert.\nThe report is sent to the admin team for review."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Your report has been received'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Your report has been received'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: 'Advert not found'
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Advert not found'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  errors:
+                    subject:
+                      - 'The subject field is required.'
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  errors:
+                    type: object
+                    properties:
+                      subject:
+                        type: array
+                        example:
+                          - 'The subject field is required.'
+                        items:
+                          type: string
+      tags:
+        - Adverts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ohobpqivwplbqb
+                message:
+                  type: string
+                  description: ''
+                  example: cumque
+              required:
+                - subject
+                - message
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the advert.'
+        example: non
+        required: true
+        schema:
+          type: string
   /api/adverts/count:
     get:
       summary: 'Get adverts count with filters'
@@ -373,94 +471,6 @@ paths:
                     example: 'Error details'
       tags:
         - 'Advert Statistics'
-  /api/device-tokens:
-    get:
-      summary: ''
-      operationId: getApiDeviceTokens
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    post:
-      summary: ''
-      operationId: postApiDeviceTokens
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                token:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: angsmi
-                platform:
-                  type: string
-                  description: ''
-                  example: recusandae
-              required:
-                - token
-                - platform
-      security: []
-  '/api/device-tokens/{id}':
-    delete:
-      summary: ''
-      operationId: deleteApiDeviceTokensId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the device token.'
-        example: natus
-        required: true
-        schema:
-          type: string
-  /api/notification-settings:
-    get:
-      summary: ''
-      operationId: getApiNotificationSettings
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    put:
-      summary: ''
-      operationId: putApiNotificationSettings
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                push_notifications_enabled:
-                  type: boolean
-                  description: ''
-                  example: false
-              required:
-                - push_notifications_enabled
-      security: []
   /api/register:
     post:
       summary: "Register\nPOST /api/register"
@@ -480,23 +490,23 @@ paths:
                 acc_type:
                   type: string
                   description: ''
-                  example: ut
+                  example: minima
                 name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: mtpwhktzumfpdxqwsi
+                  example: nvgupxzk
                 phone:
                   type: string
                   description: ''
-                  example: amet
+                  example: dolorem
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: sanford.alden@example.org
+                  example: mallory.bradtke@example.org
                 password:
                   type: string
                   description: 'Must be at least 6 characters.'
-                  example: lrTI4T
+                  example: 'Y9}y3)5@QNQ:QsGD8Mw'
               required:
                 - acc_type
                 - name
@@ -523,11 +533,11 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: rubie50@example.org
+                  example: lindgren.wyatt@example.net
                 password:
                   type: string
                   description: 'Must be at least 4 characters.'
-                  example: "&a%TLMv'"
+                  example: FB|$Ln-e8(|1;
               required:
                 - email
                 - password
@@ -551,11 +561,11 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: ova79@example.net
+                  example: tremblay.carlotta@example.net
                 otp:
                   type: string
                   description: 'Must be 6 digits.'
-                  example: '789418'
+                  example: '699316'
                 trust_device:
                   type: boolean
                   description: ''
@@ -583,7 +593,7 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: ydooley@example.net
+                  example: hane.wilbert@example.com
               required:
                 - email
       security: []
@@ -602,7 +612,7 @@ paths:
         in: path
         name: email
         description: ''
-        example: vmurazik@example.com
+        example: theresia.lowe@example.org
         required: true
         schema:
           type: string
@@ -610,7 +620,7 @@ paths:
         in: path
         name: token
         description: ''
-        example: tempore
+        example: iste
         required: true
         schema:
           type: string
@@ -633,7 +643,7 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: keon.schmeler@example.net
+                  example: mwilliamson@example.net
               required:
                 - email
       security: []
@@ -656,7 +666,7 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: buckridge.joshua@example.org
+                  example: zstracke@example.org
               required:
                 - email
       security: []
@@ -679,7 +689,7 @@ paths:
                 password:
                   type: string
                   description: 'Must be at least 6 characters.'
-                  example: '1UN)^]Aos!!U9A*od7@'
+                  example: oBUyLpY6xHac(j
               required:
                 - password
       security: []
@@ -688,7 +698,7 @@ paths:
         in: path
         name: user_id
         description: 'The ID of the user.'
-        example: et
+        example: aut
         required: true
         schema:
           type: string
@@ -696,7 +706,7 @@ paths:
         in: path
         name: token
         description: ''
-        example: quia
+        example: saepe
         required: true
         schema:
           type: string
@@ -726,11 +736,11 @@ paths:
                 access_token:
                   type: string
                   description: ''
-                  example: temporibus
+                  example: facere
                 device_name:
                   type: string
                   description: ''
-                  example: nulla
+                  example: aut
                   nullable: true
               required:
                 - provider
@@ -751,7 +761,7 @@ paths:
         in: path
         name: provider
         description: ''
-        example: aperiam
+        example: itaque
         required: true
         schema:
           type: string
@@ -770,7 +780,7 @@ paths:
         in: path
         name: provider
         description: ''
-        example: itaque
+        example: in
         required: true
         schema:
           type: string
@@ -809,7 +819,7 @@ paths:
         in: path
         name: device_id
         description: 'The ID of the device.'
-        example: reiciendis
+        example: dolorem
         required: true
         schema:
           type: string
@@ -838,7 +848,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the advert.'
-        example: neque
+        example: deserunt
         required: true
         schema:
           type: string
@@ -857,7 +867,7 @@ paths:
         in: path
         name: seller_id
         description: 'The ID of the seller.'
-        example: et
+        example: pariatur
         required: true
         schema:
           type: string
@@ -886,7 +896,7 @@ paths:
         in: path
         name: category_slug
         description: 'The slug of the category.'
-        example: voluptatem
+        example: repellendus
         required: true
         schema:
           type: string
@@ -905,7 +915,7 @@ paths:
         in: path
         name: category_slug
         description: 'The slug of the category.'
-        example: perspiciatis
+        example: sed
         required: true
         schema:
           type: string
@@ -913,7 +923,7 @@ paths:
         in: path
         name: subcat_slug
         description: 'The slug of the subcat.'
-        example: voluptatem
+        example: et
         required: true
         schema:
           type: string
@@ -932,7 +942,7 @@ paths:
         in: path
         name: category_slug
         description: 'The slug of the category.'
-        example: qui
+        example: aspernatur
         required: true
         schema:
           type: string
@@ -940,7 +950,7 @@ paths:
         in: path
         name: subcat_slug
         description: 'The slug of the subcat.'
-        example: libero
+        example: nam
         required: true
         schema:
           type: string
@@ -948,7 +958,7 @@ paths:
         in: path
         name: brand_slug
         description: 'The slug of the brand.'
-        example: tempore
+        example: non
         required: true
         schema:
           type: string
@@ -967,7 +977,7 @@ paths:
         in: path
         name: state_slug
         description: 'The slug of the state.'
-        example: dicta
+        example: ipsam
         required: true
         schema:
           type: string
@@ -991,43 +1001,6 @@ paths:
       tags:
         - Endpoints
       security: []
-  '/api/adverts/{id}/report':
-    post:
-      summary: "Report an advert\nPOST /api/adverts/{id}/report"
-      operationId: reportAnAdvertPOSTapiadvertsidreport
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                subject:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: jilqiarvtunuy
-                message:
-                  type: string
-                  description: ''
-                  example: a
-              required:
-                - subject
-                - message
-      security: []
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the advert.'
-        example: enim
-        required: true
-        schema:
-          type: string
   '/api/adverts/{id}/apply':
     post:
       summary: "Apply for a job advert\nPOST /api/adverts/{id}/apply"
@@ -1047,7 +1020,7 @@ paths:
                 message:
                   type: string
                   description: ''
-                  example: nulla
+                  example: eum
               required:
                 - message
       security: []
@@ -1056,7 +1029,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the advert.'
-        example: impedit
+        example: magnam
         required: true
         schema:
           type: string
@@ -1079,7 +1052,7 @@ paths:
                 product:
                   type: string
                   description: 'Must be at least 3 characters.'
-                  example: arkvexxtghtrqbkkxhrtcwrrjclrqmtjaohkshycelsusvmcyadhunptlmdabhxnvhdmmvjcunulmcaldedonh
+                  example: ntknqrbfbzwonxpid
                   nullable: true
                 location:
                   type: string
@@ -1160,7 +1133,7 @@ paths:
         in: path
         name: slug
         description: 'The slug of the {location}.'
-        example: debitis
+        example: dolorem
         required: true
         schema:
           type: string
@@ -1193,7 +1166,7 @@ paths:
                 q:
                   type: string
                   description: 'Must be at least 2 characters.'
-                  example: urtxvgxrwmnfvdpqsuipnumzzdjnvqnuqixbuavvdxzijukqth
+                  example: sstncoerqcrmeoaicaejwrwtgfcgflnwppwszuwlczdik
               required:
                 - q
       security: []
@@ -1232,7 +1205,7 @@ paths:
         in: path
         name: state_id
         description: 'The ID of the state.'
-        example: vitae
+        example: ducimus
         required: true
         schema:
           type: string
@@ -1251,7 +1224,7 @@ paths:
         in: path
         name: state_id
         description: 'The ID of the state.'
-        example: eos
+        example: rerum
         required: true
         schema:
           type: string
@@ -1274,17 +1247,17 @@ paths:
                 search:
                   type: string
                   description: 'Must be at least 2 characters.'
-                  example: ymaxrajgaamvwnvtlxjuncgygtbypkdwgfwujosfyhbhmafiddgxmfxqohyesuwtgeoqjwvjsejbxt
+                  example: vo
                   nullable: true
                 state_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the states table.'
-                  example: 9
+                  example: 1
                   nullable: true
                 limit:
                   type: integer
                   description: 'Must be at least 1. Must not be greater than 50.'
-                  example: 9
+                  example: 15
                   nullable: true
       security: []
   '/api/locations/cities/{city_id}':
@@ -1302,7 +1275,7 @@ paths:
         in: path
         name: city_id
         description: 'The ID of the city.'
-        example: voluptatibus
+        example: neque
         required: true
         schema:
           type: string
@@ -1325,33 +1298,33 @@ paths:
                 sender_station:
                   type: string
                   description: ''
-                  example: ut
+                  example: dignissimos
                 receiver_station:
                   type: string
                   description: ''
-                  example: tenetur
+                  example: mollitia
                 ad_price:
                   type: number
                   description: 'Must be at least 0.'
-                  example: 13
+                  example: 90
                 ad_title:
                   type: string
                   description: ''
-                  example: dolorem
+                  example: repudiandae
                 ad_des:
                   type: string
                   description: ''
-                  example: et
+                  example: quasi
                   nullable: true
                 weight:
                   type: number
                   description: 'Must be at least 0.'
-                  example: 37
+                  example: 25
                   nullable: true
                 quantity:
                   type: integer
                   description: 'Must be at least 1.'
-                  example: 42
+                  example: 27
                   nullable: true
               required:
                 - sender_station
@@ -1378,15 +1351,15 @@ paths:
                 advert_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: 6
+                  example: 17
                 receiver_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: dolorem
+                  example: provident
                 message_content:
                   type: string
                   description: 'Must not be greater than 1000 characters.'
-                  example: zdelpwdscqhqtbkqo
+                  example: vnpr
                   nullable: true
                 images:
                   type: array
@@ -1414,7 +1387,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: soluta
+        example: enim
         required: true
         schema:
           type: string
@@ -1422,7 +1395,7 @@ paths:
         in: path
         name: receiverId
         description: ''
-        example: deleniti
+        example: deserunt
         required: true
         schema:
           type: string
@@ -1441,7 +1414,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: et
+        example: ducimus
         required: true
         schema:
           type: string
@@ -1480,7 +1453,7 @@ paths:
         in: path
         name: messageId
         description: ''
-        example: accusamus
+        example: consequatur
         required: true
         schema:
           type: string
@@ -1499,7 +1472,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: consectetur
+        example: at
         required: true
         schema:
           type: string
@@ -1507,7 +1480,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: sunt
+        example: inventore
         required: true
         schema:
           type: string
@@ -1530,11 +1503,11 @@ paths:
                 advert_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: aut
+                  example: dolore
                 other_user_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: sequi
+                  example: aut
               required:
                 - advert_id
                 - other_user_id
@@ -1558,11 +1531,11 @@ paths:
                 advert_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: ut
+                  example: repellat
                 other_user_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: maiores
+                  example: velit
               required:
                 - advert_id
                 - other_user_id
@@ -1592,7 +1565,7 @@ paths:
         in: path
         name: paymentId
         description: ''
-        example: culpa
+        example: molestias
         required: true
         schema:
           type: string
@@ -1620,31 +1593,31 @@ paths:
                     first_name:
                       type: string
                       description: ''
-                      example: eos
+                      example: aut
                     last_name:
                       type: string
                       description: ''
-                      example: laudantium
+                      example: corporis
                     phone:
                       type: string
                       description: ''
-                      example: tempore
+                      example: facere
                     grand_total:
                       type: number
                       description: ''
-                      example: 6271.934472
+                      example: 448535.80312619
                     commission:
                       type: number
                       description: ''
-                      example: 506792.00057
+                      example: 11.15
                     shipping_cost:
                       type: number
                       description: ''
-                      example: 505.17
+                      example: 17.771589836
                     shipping_method:
                       type: integer
                       description: ''
-                      example: 14
+                      example: 10
                     ad:
                       type: object
                       description: ''
@@ -1653,11 +1626,11 @@ paths:
                         id:
                           type: integer
                           description: 'The <code>id</code> of an existing record in the adverts table.'
-                          example: 8
+                          example: 6
                         price:
                           type: number
                           description: ''
-                          example: 0.25746
+                          example: 2.03
                       required:
                         - id
                         - price
@@ -1669,7 +1642,7 @@ paths:
                         id:
                           type: integer
                           description: ''
-                          example: 1
+                          example: 19
                           nullable: true
                     reciever_state:
                       type: object
@@ -1679,7 +1652,7 @@ paths:
                         id:
                           type: integer
                           description: ''
-                          example: 1
+                          example: 3
                           nullable: true
                   required:
                     - first_name
@@ -1711,19 +1684,19 @@ paths:
                 advert_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: 14
+                  example: 18
                 amount:
                   type: number
                   description: 'Must be at least 0.'
-                  example: 11
+                  example: 23
                 boost_type:
                   type: string
                   description: ''
-                  example: perferendis
+                  example: autem
                 duration:
                   type: integer
                   description: 'Must be at least 1.'
-                  example: 66
+                  example: 10
               required:
                 - advert_id
                 - amount
@@ -1745,7 +1718,7 @@ paths:
         in: path
         name: paymentId
         description: ''
-        example: culpa
+        example: est
         required: true
         schema:
           type: string
@@ -1764,7 +1737,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: dolores
+        example: pariatur
         required: true
         schema:
           type: string
@@ -1783,7 +1756,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: ab
+        example: aliquam
         required: true
         schema:
           type: string
@@ -1806,7 +1779,7 @@ paths:
                 reference:
                   type: string
                   description: ''
-                  example: nulla
+                  example: et
               required:
                 - reference
       security: []
@@ -1881,7 +1854,7 @@ paths:
         in: path
         name: adId
         description: ''
-        example: corrupti
+        example: earum
         required: true
         schema:
           type: string
@@ -1900,7 +1873,7 @@ paths:
         in: path
         name: adId
         description: ''
-        example: excepturi
+        example: doloribus
         required: true
         schema:
           type: string
@@ -1914,19 +1887,10 @@ paths:
       tags:
         - Endpoints
       security: []
-  '/api/user/wishlist/{adId}':
+  '/api/user/user/wishlist/{adId}':
     post:
       summary: ''
-      operationId: postApiUserWishlistAdId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    delete:
-      summary: ''
-      operationId: deleteApiUserWishlistAdId
+      operationId: postApiUserUserWishlistAdId
       description: ''
       parameters: []
       responses: {  }
@@ -1938,7 +1902,7 @@ paths:
         in: path
         name: adId
         description: ''
-        example: sint
+        example: ratione
         required: true
         schema:
           type: string
@@ -1967,7 +1931,7 @@ paths:
         in: path
         name: paymentId
         description: ''
-        example: earum
+        example: modi
         required: true
         schema:
           type: string
@@ -1990,7 +1954,7 @@ paths:
                 shipping_status:
                   type: string
                   description: ''
-                  example: fuga
+                  example: nostrum
               required:
                 - shipping_status
       security: []
@@ -1999,7 +1963,7 @@ paths:
         in: path
         name: paymentId
         description: ''
-        example: a
+        example: et
         required: true
         schema:
           type: string
@@ -2032,11 +1996,11 @@ paths:
                 rating:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 1
+                  example: 2
                 satisfaction:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 2
+                  example: 1
                 reliable:
                   type: integer
                   description: 'Must be between 1 and 5.'
@@ -2044,11 +2008,11 @@ paths:
                 friendly:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 2
+                  example: 1
                 message:
                   type: string
                   description: 'Must not be greater than 1000 characters.'
-                  example: lamchxockewhiprlhjxztkwnn
+                  example: piizovljeunxydntxdqwemlte
               required:
                 - rating
                 - satisfaction
@@ -2061,7 +2025,7 @@ paths:
         in: path
         name: sellerId
         description: ''
-        example: tempora
+        example: deleniti
         required: true
         schema:
           type: string
@@ -2080,7 +2044,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: autem
+        example: dolores
         required: true
         schema:
           type: string
@@ -2103,7 +2067,7 @@ paths:
                 followee_id:
                   type: integer
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: 10
+                  example: 18
               required:
                 - followee_id
       security: []
@@ -2122,7 +2086,7 @@ paths:
         in: path
         name: categoryId
         description: ''
-        example: vitae
+        example: et
         required: true
         schema:
           type: string
@@ -2141,7 +2105,7 @@ paths:
         in: path
         name: subcategoryId
         description: ''
-        example: quos
+        example: nulla
         required: true
         schema:
           type: string
@@ -2160,7 +2124,7 @@ paths:
         in: path
         name: brandId
         description: ''
-        example: et
+        example: impedit
         required: true
         schema:
           type: string
@@ -2213,21 +2177,21 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: llhsibjzfbswufgh
+                  example: psonszblxgmyzttv
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: cmbzqsmhcjxokiccywso
+                  example: bkva
                   nullable: true
                 city:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: lvcuoulwsoadbcasrf
+                  example: ydzoe
                   nullable: true
                 state:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: pfuq
+                  example: xzezfukcgh
                   nullable: true
                 profile_image:
                   type: string
@@ -2254,21 +2218,21 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: wliqmsyxjaorvkzymsqvc
+                  example: r
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: yol
+                  example: maxqshsqytvharxsgix
                   nullable: true
                 city:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: bfcwpd
+                  example: dhllezf
                   nullable: true
                 state:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: qaga
+                  example: jeotb
                   nullable: true
                 profile_image:
                   type: string
@@ -2296,7 +2260,7 @@ paths:
                 phone:
                   type: string
                   description: ''
-                  example: est
+                  example: blanditiis
               required:
                 - phone
       security: []
@@ -2328,11 +2292,11 @@ paths:
                 document_number:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: roqbnvcnspbyu
+                  example: lyprmqjqkhgovdvrv
                 document_type:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: ghr
+                  example: bmobiqiymgj
                   nullable: true
                 document_file:
                   type: string
@@ -2375,19 +2339,19 @@ paths:
                 bank_name:
                   type: string
                   description: ''
-                  example: sunt
+                  example: consequuntur
                 paystack_bank_code:
                   type: string
                   description: ''
-                  example: sint
+                  example: nemo
                 account_number:
                   type: string
                   description: ''
-                  example: laudantium
+                  example: natus
                 account_name:
                   type: string
                   description: ''
-                  example: placeat
+                  example: quia
               required:
                 - bank_name
                 - paystack_bank_code
@@ -2413,11 +2377,11 @@ paths:
                 old_password:
                   type: string
                   description: ''
-                  example: qui
+                  example: autem
                 password:
                   type: string
                   description: 'Must be at least 6 characters.'
-                  example: '8*Pa>HK3THh'
+                  example: cm>CvN
               required:
                 - old_password
                 - password
@@ -2441,7 +2405,7 @@ paths:
                 notifications:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: dolorem
               required:
                 - notifications
       security: []
@@ -2602,7 +2566,7 @@ paths:
                 blocked_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: culpa
+                  example: sint
                 advert_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the adverts table.'
@@ -2630,7 +2594,7 @@ paths:
                 blocked_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: deserunt
+                  example: illum
                 advert_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the adverts table.'
@@ -2664,7 +2628,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: voluptate
+        example: voluptatum
         required: true
         schema:
           type: string
@@ -2683,7 +2647,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: magni
+        example: quo
         required: true
         schema:
           type: string
@@ -2732,7 +2696,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: ut
+        example: ipsum
         required: true
         schema:
           type: string
@@ -2755,7 +2719,7 @@ paths:
                 duration_days:
                   type: integer
                   description: 'Must be at least 1. Must not be greater than 30.'
-                  example: 13
+                  example: 5
                   nullable: true
       security: []
     parameters:
@@ -2763,7 +2727,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: molestias
+        example: aut
         required: true
         schema:
           type: string
@@ -2782,7 +2746,7 @@ paths:
         in: path
         name: advertId
         description: ''
-        example: pariatur
+        example: eaque
         required: true
         schema:
           type: string
@@ -2810,7 +2774,7 @@ paths:
         in: path
         name: boostId
         description: ''
-        example: molestiae
+        example: et
         required: true
         schema:
           type: string
@@ -2842,7 +2806,7 @@ paths:
         in: path
         name: boostId
         description: ''
-        example: voluptas
+        example: eum
         required: true
         schema:
           type: string
@@ -2881,7 +2845,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: hic
+        example: maxime
         required: true
         schema:
           type: string
@@ -2904,10 +2868,243 @@ paths:
                 followee_id:
                   type: string
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: omnis
+                  example: accusamus
               required:
                 - followee_id
       security: []
+  /api/device-tokens:
+    get:
+      summary: 'Get device tokens'
+      operationId: getDeviceTokens
+      description: 'Retrieve all device tokens registered for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    -
+                      id: 1
+                      platform: android
+                      is_active: true
+                      last_used_at: '2026-01-19T10:30:00.000000Z'
+                      created_at: '2026-01-15T08:00:00.000000Z'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        platform: android
+                        is_active: true
+                        last_used_at: '2026-01-19T10:30:00.000000Z'
+                        created_at: '2026-01-15T08:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        platform:
+                          type: string
+                          example: android
+                        is_active:
+                          type: boolean
+                          example: true
+                        last_used_at:
+                          type: string
+                          example: '2026-01-19T10:30:00.000000Z'
+                        created_at:
+                          type: string
+                          example: '2026-01-15T08:00:00.000000Z'
+      tags:
+        - Notifications
+    post:
+      summary: 'Register device token'
+      operationId: registerDeviceToken
+      description: "Register or update a device token for push notifications (FCM).\nIf the token already exists, it will be updated with new user and platform information."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Device token registered successfully'
+                  data:
+                    id: 1
+                    platform: android
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Device token registered successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      platform:
+                        type: string
+                        example: android
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: hidnggzv
+                platform:
+                  type: string
+                  description: ''
+                  example: dolor
+              required:
+                - token
+                - platform
+  '/api/device-tokens/{id}':
+    delete:
+      summary: 'Delete device token'
+      operationId: deleteDeviceToken
+      description: 'Remove a device token to stop receiving push notifications on that device.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Device token removed successfully'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Device token removed successfully'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: 'Device token not found'
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Device token not found'
+      tags:
+        - Notifications
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the device token.'
+        example: voluptatum
+        required: true
+        schema:
+          type: string
+  /api/notification-settings:
+    get:
+      summary: 'Get notification settings'
+      operationId: getNotificationSettings
+      description: 'Retrieve the current notification settings for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    push_notifications_enabled: true
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      push_notifications_enabled:
+                        type: boolean
+                        example: true
+      tags:
+        - Notifications
+    put:
+      summary: 'Update notification settings'
+      operationId: updateNotificationSettings
+      description: 'Update push notification preferences for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Notification settings updated successfully'
+                  data:
+                    push_notifications_enabled: true
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Notification settings updated successfully'
+                  data:
+                    type: object
+                    properties:
+                      push_notifications_enabled:
+                        type: boolean
+                        example: true
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                push_notifications_enabled:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - push_notifications_enabled
   /api/test/notification:
     post:
       summary: 'Send a test push notification'
@@ -2963,12 +3160,12 @@ paths:
                 title:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: pxayujgfimeuogxgtxelimhbz
+                  example: rqgefsnxivnixuxjzozrovdel
                   nullable: true
                 message:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: ihdr
+                  example: pujgovth
                 data:
                   type: object
                   description: ''
@@ -2978,12 +3175,12 @@ paths:
                 target_user_id:
                   type: integer
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: 18
+                  example: 15
                   nullable: true
                 device_token:
                   type: string
                   description: ''
-                  example: dolor
+                  example: illo
                   nullable: true
               required:
                 - message
@@ -3274,7 +3471,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: ea
+        example: quam
         required: true
         schema:
           type: string
@@ -3392,7 +3589,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: est
+        example: id
         required: true
         schema:
           type: string
