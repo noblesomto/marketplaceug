@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @group Advert Management
+ *
+ * APIs for creating, updating, and managing user adverts
+ */
 class UserManageAdverts extends Controller
 {
     /**

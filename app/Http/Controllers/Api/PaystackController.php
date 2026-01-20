@@ -21,6 +21,11 @@ use App\Mail\SellerMail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @group Payments
+ *
+ * APIs for payment processing, Paystack integration, and boost purchases
+ */
 class PaystackController extends Controller
 {
     /**

@@ -5,26 +5,56 @@ info:
   version: '3.0'
 servers:
   -
-    url: 'https://www.marketplace.ng'
+    url: 'http://127.0.0.1:8030'
 tags:
   -
-    name: Adverts
+    name: Authentication
     description: ''
+  -
+    name: Adverts
+    description: "\nPublic APIs for viewing and browsing adverts"
+  -
+    name: 'Advert Management'
+    description: "\nAPIs for creating, updating, and managing user adverts"
   -
     name: 'Advert Statistics'
     description: "\nAPIs for retrieving advertisement statistics, counts, and filtering"
   -
-    name: Endpoints
-    description: ''
+    name: Search
+    description: "\nAPIs for searching and filtering adverts across the platform"
+  -
+    name: User
+    description: "\nAPIs for user dashboard, ads, wishlist, payments, and user interactions"
+  -
+    name: 'User Profile'
+    description: "\nAPIs for managing user profile, settings, verification, and account preferences"
+  -
+    name: 'User Statistics'
+    description: "\nAPIs for retrieving user statistics, feedback, and notifications"
+  -
+    name: Users
+    description: "\nAPIs for blocking and unblocking users"
+  -
+    name: Messages
+    description: "\nAPIs for managing messages and conversations between users"
   -
     name: Notifications
     description: ''
   -
+    name: Payments
+    description: "\nAPIs for payment processing, Paystack integration, and boost purchases"
+  -
+    name: Boosts
+    description: "\nAPIs for managing advert boosts and boost packages"
+  -
+    name: Locations
+    description: "\nAPIs for locations, states, cities, and shipping calculations"
+  -
     name: Testing
     description: ''
   -
-    name: 'User Statistics'
-    description: "\nAPIs for retrieving user statistics, feedback, and notifications"
+    name: Endpoints
+    description: ''
 components:
   securitySchemes:
     default:
@@ -35,6 +65,1356 @@ security:
   -
     default: []
 paths:
+  /api/register:
+    post:
+      summary: 'Register New User'
+      operationId: registerNewUser
+      description: "Creates a new user account and sends a verification email. The account must be verified\nvia email before the user can log in. Supports both Private and Business account types."
+      parameters: []
+      responses:
+        201:
+          description: 'Registration successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Registration successful. Check your email to verify your account.'
+                  data:
+                    email: john@example.com
+                    requires_verification: true
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Registration successful. Check your email to verify your account.'
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: john@example.com
+                      requires_verification:
+                        type: boolean
+                        example: true
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The email has already been taken.'
+                  errors:
+                    email:
+                      - 'The email has already been taken.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The email has already been taken.'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'The email has already been taken.'
+                        items:
+                          type: string
+        500:
+          description: 'Registration failed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Registration failed. Please try again.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Registration failed. Please try again.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acc_type:
+                  type: string
+                  description: ''
+                  example: sed
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: qrdsxti
+                phone:
+                  type: string
+                  description: ''
+                  example: corporis
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: fisher.isabel@example.net
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: '_?ScMo3Joqp7lL<'
+              required:
+                - acc_type
+                - name
+                - phone
+                - email
+                - password
+      security: []
+  /api/login:
+    post:
+      summary: 'Login (Step 1)'
+      operationId: loginStep1
+      description: "Authenticates user credentials and initiates the login process. If the device is trusted,\ncompletes login immediately. Otherwise, sends a 6-digit OTP to the user's email for verification."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  -
+                    description: 'Trusted device - login successful'
+                    type: object
+                    example:
+                      status: true
+                      message: 'Login successful.'
+                      data:
+                        user:
+                          id: 1
+                          name: 'John Doe'
+                          email: john@example.com
+                          acc_type: Private
+                          phone: '08012345678'
+                        token: 1|abcdefghijklmnopqrstuvwxyz1234567890
+                    properties:
+                      status:
+                        type: boolean
+                        example: true
+                      message:
+                        type: string
+                        example: 'Login successful.'
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              name:
+                                type: string
+                                example: 'John Doe'
+                              email:
+                                type: string
+                                example: john@example.com
+                              acc_type:
+                                type: string
+                                example: Private
+                              phone:
+                                type: string
+                                example: '08012345678'
+                          token:
+                            type: string
+                            example: 1|abcdefghijklmnopqrstuvwxyz1234567890
+                  -
+                    description: 'OTP required'
+                    type: object
+                    example:
+                      status: true
+                      message: 'OTP sent to your email.'
+                      requires_otp: true
+                      email: john@example.com
+                    properties:
+                      status:
+                        type: boolean
+                        example: true
+                      message:
+                        type: string
+                        example: 'OTP sent to your email.'
+                      requires_otp:
+                        type: boolean
+                        example: true
+                      email:
+                        type: string
+                        example: john@example.com
+        401:
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Incorrect password.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Incorrect password.'
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  -
+                    description: 'Account disabled'
+                    type: object
+                    example:
+                      status: false
+                      message: 'Account has been disabled. Contact admin.'
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: 'Account has been disabled. Contact admin.'
+                  -
+                    description: 'Email not verified'
+                    type: object
+                    example:
+                      status: false
+                      message: 'Email not verified. Please verify your email.'
+                      requires_verification: true
+                      email: john@example.com
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: 'Email not verified. Please verify your email.'
+                      requires_verification:
+                        type: boolean
+                        example: true
+                      email:
+                        type: string
+                        example: john@example.com
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: icie.purdy@example.org
+                password:
+                  type: string
+                  description: 'Must be at least 4 characters.'
+                  example: 'C[!2f5Y{b:Fa"W3;'
+              required:
+                - email
+                - password
+      security: []
+  /api/verify-otp:
+    post:
+      summary: 'Verify OTP (Step 2)'
+      operationId: verifyOTPStep2
+      description: "Verifies the 6-digit OTP sent to the user's email and completes the login process.\nOptionally allows the device to be trusted for 90 days to skip OTP verification in future logins."
+      parameters: []
+      responses:
+        200:
+          description: 'OTP verified successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Login successful.'
+                  data:
+                    user:
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      acc_type: Private
+                      phone: '08012345678'
+                    token: 1|abcdefghijklmnopqrstuvwxyz1234567890
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Login successful.'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'John Doe'
+                          email:
+                            type: string
+                            example: john@example.com
+                          acc_type:
+                            type: string
+                            example: Private
+                          phone:
+                            type: string
+                            example: '08012345678'
+                      token:
+                        type: string
+                        example: 1|abcdefghijklmnopqrstuvwxyz1234567890
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  -
+                    description: 'Invalid OTP'
+                    type: object
+                    example:
+                      status: false
+                      message: 'Invalid OTP. 4 attempt(s) remaining.'
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: 'Invalid OTP. 4 attempt(s) remaining.'
+                  -
+                    description: 'OTP expired'
+                    type: object
+                    example:
+                      status: false
+                      message: 'OTP has expired. Please request a new one.'
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: 'OTP has expired. Please request a new one.'
+        404:
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'User not found.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'User not found.'
+        429:
+          description: 'Too many attempts'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Too many failed attempts. Request a new OTP.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Too many failed attempts. Request a new OTP.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: raphael85@example.com
+                otp:
+                  type: string
+                  description: 'Must be 6 digits.'
+                  example: '393881'
+                trust_device:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - email
+                - otp
+      security: []
+  /api/resend-otp:
+    post:
+      summary: 'Resend OTP'
+      operationId: resendOTP
+      description: "Sends a new 6-digit OTP to the user's email address. Limited to 3 requests per hour\nto prevent abuse. Used when the previous OTP has expired or was not received."
+      parameters: []
+      responses:
+        200:
+          description: 'OTP sent successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'New OTP sent to your email.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'New OTP sent to your email.'
+        404:
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'User not found.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'User not found.'
+        429:
+          description: 'Rate limit exceeded'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Too many OTP requests. Try again in 1 hour.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Too many OTP requests. Try again in 1 hour.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: hkozey@example.net
+              required:
+                - email
+      security: []
+  '/api/verify/{email}/{token}':
+    get:
+      summary: 'Verify Email Address'
+      operationId: verifyEmailAddress
+      description: "Verifies a user's email address using the verification link sent during registration.\nOnce verified, the user can proceed to log in to their account."
+      parameters: []
+      responses:
+        200:
+          description: 'Verification successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Email verified successfully. You can now login.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Email verified successfully. You can now login.'
+        400:
+          description: 'Invalid verification link'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid verification link.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid verification link.'
+      tags:
+        - Authentication
+      security: []
+    parameters:
+      -
+        in: path
+        name: email
+        description: ''
+        example: odaniel@example.org
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: token
+        description: ''
+        example: iusto
+        required: true
+        schema:
+          type: string
+  /api/resend-verification:
+    post:
+      summary: 'Resend Verification Email'
+      operationId: resendVerificationEmail
+      description: "Resends the email verification link to users who have not yet verified their account.\nA new verification token is generated and sent to the registered email address."
+      parameters: []
+      responses:
+        200:
+          description: 'Verification email sent'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Verification email resent successfully.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Verification email resent successfully.'
+        400:
+          description: 'Invalid request'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid or already verified account.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid or already verified account.'
+        500:
+          description: 'Failed to send email'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Failed to send verification email.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Failed to send verification email.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: mschinner@example.org
+              required:
+                - email
+      security: []
+  /api/forgot-password:
+    post:
+      summary: 'Forgot Password'
+      operationId: forgotPassword
+      description: "Initiates the password reset process by sending a password reset link to the user's email.\nThe link contains a secure token that can be used to reset the password."
+      parameters: []
+      responses:
+        200:
+          description: 'Reset link sent'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Password reset link sent to your email.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Password reset link sent to your email.'
+        404:
+          description: 'Email not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'This email does not exist.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'This email does not exist.'
+        500:
+          description: 'Failed to send email'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Could not send password reset email.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Could not send password reset email.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: bernita.friesen@example.org
+              required:
+                - email
+      security: []
+  '/api/reset-password/{user_id}/{token}':
+    post:
+      summary: 'Reset Password'
+      operationId: resetPassword
+      description: "Resets the user's password using the token received via email. The token is validated\nbefore allowing the password change. After successful reset, the token is invalidated."
+      parameters: []
+      responses:
+        200:
+          description: 'Password reset successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Password reset successfully.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Password reset successfully.'
+        400:
+          description: 'Invalid token'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid reset token.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid reset token.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The password confirmation does not match.'
+                  errors:
+                    password:
+                      - 'The password confirmation does not match.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The password confirmation does not match.'
+                  errors:
+                    type: object
+                    properties:
+                      password:
+                        type: array
+                        example:
+                          - 'The password confirmation does not match.'
+                        items:
+                          type: string
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: 6Wh2k>$`hNLt7(|gKhva
+              required:
+                - password
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: veniam
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: token
+        description: ''
+        example: praesentium
+        required: true
+        schema:
+          type: string
+  /api/auth/social:
+    post:
+      summary: 'Social Login'
+      operationId: socialLogin
+      description: "Authenticates users via social providers (Google or Facebook). The mobile app obtains\nan access token from the provider's SDK and sends it to this endpoint for verification.\nIf successful, creates or updates the user account and returns an API token. No OTP required."
+      parameters: []
+      responses:
+        200:
+          description: 'Social login successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Social login successful.'
+                  data:
+                    user:
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      acc_type: Private
+                      acc_status: 1
+                      google_id: '1234567890'
+                    token: 1|abcdefghijklmnopqrstuvwxyz1234567890
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Social login successful.'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'John Doe'
+                          email:
+                            type: string
+                            example: john@example.com
+                          acc_type:
+                            type: string
+                            example: Private
+                          acc_status:
+                            type: integer
+                            example: 1
+                          google_id:
+                            type: string
+                            example: '1234567890'
+                      token:
+                        type: string
+                        example: 1|abcdefghijklmnopqrstuvwxyz1234567890
+        401:
+          description: 'Invalid token'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid social login token.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid social login token.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The provider field is required.'
+                  errors:
+                    provider:
+                      - 'The provider field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The provider field is required.'
+                  errors:
+                    type: object
+                    properties:
+                      provider:
+                        type: array
+                        example:
+                          - 'The provider field is required.'
+                        items:
+                          type: string
+        500:
+          description: 'Login failed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Social login failed. Please try again.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Social login failed. Please try again.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                  description: ''
+                  example: facebook
+                  enum:
+                    - google
+                    - facebook
+                access_token:
+                  type: string
+                  description: ''
+                  example: excepturi
+                device_name:
+                  type: string
+                  description: ''
+                  example: voluptatem
+                  nullable: true
+              required:
+                - provider
+                - access_token
+      security: []
+  '/api/auth/{provider}/redirect':
+    get:
+      summary: 'Get Social Login Redirect URL'
+      operationId: getSocialLoginRedirectURL
+      description: "Generates the OAuth redirect URL for social login via WebView flow. The mobile app\ncan open this URL in a WebView to initiate the social authentication process.\nUse this for apps that cannot use native social SDKs."
+      parameters: []
+      responses:
+        200:
+          description: 'Redirect URL generated'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  data:
+                    redirect_url: 'https://accounts.google.com/o/oauth2/auth?client_id=...'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      redirect_url:
+                        type: string
+                        example: 'https://accounts.google.com/o/oauth2/auth?client_id=...'
+        400:
+          description: 'Invalid provider'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid provider.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid provider.'
+        500:
+          description: 'Failed to generate URL'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Failed to generate redirect URL.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Failed to generate redirect URL.'
+      tags:
+        - Authentication
+      security: []
+    parameters:
+      -
+        in: path
+        name: provider
+        description: ''
+        example: quibusdam
+        required: true
+        schema:
+          type: string
+  '/api/auth/{provider}/callback':
+    get:
+      summary: 'Social Login Callback'
+      operationId: socialLoginCallback
+      description: "Handles the OAuth callback from social providers during WebView flow. After the user\nauthenticates with the provider, they are redirected here. This endpoint verifies the\nauthentication, creates or updates the user, and returns an API token."
+      parameters: []
+      responses:
+        200:
+          description: 'Social login successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Social login successful.'
+                  data:
+                    user:
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      acc_type: Private
+                      acc_status: 1
+                      facebook_id: '9876543210'
+                    token: 1|abcdefghijklmnopqrstuvwxyz1234567890
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Social login successful.'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'John Doe'
+                          email:
+                            type: string
+                            example: john@example.com
+                          acc_type:
+                            type: string
+                            example: Private
+                          acc_status:
+                            type: integer
+                            example: 1
+                          facebook_id:
+                            type: string
+                            example: '9876543210'
+                      token:
+                        type: string
+                        example: 1|abcdefghijklmnopqrstuvwxyz1234567890
+        400:
+          description: 'Invalid provider'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Invalid provider.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid provider.'
+        500:
+          description: 'Login failed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Social login failed.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Social login failed.'
+      tags:
+        - Authentication
+      security: []
+    parameters:
+      -
+        in: path
+        name: provider
+        description: ''
+        example: perspiciatis
+        required: true
+        schema:
+          type: string
+  /api/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      description: "Logs out the authenticated user by revoking the current access token.\nThe user will need to log in again to access protected endpoints."
+      parameters: []
+      responses:
+        200:
+          description: 'Logout successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Logged out successfully.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Logged out successfully.'
+      tags:
+        - Authentication
+  '/api/trusted-device/{device_id}':
+    delete:
+      summary: 'Remove Trusted Device'
+      operationId: removeTrustedDevice
+      description: "Removes a trusted device from the user's account. After removal, the device will require\nOTP verification on the next login attempt. Used to revoke trust for lost or compromised devices."
+      parameters: []
+      responses:
+        200:
+          description: 'Device removed successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Trusted device removed successfully.'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Trusted device removed successfully.'
+        404:
+          description: 'Device not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Device not found.'
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Device not found.'
+      tags:
+        - Authentication
+    parameters:
+      -
+        in: path
+        name: device_id
+        description: 'The ID of the device.'
+        example: ratione
+        required: true
+        schema:
+          type: string
+  /api/adverts:
+    get:
+      summary: "Get all adverts with pagination and categorized sections\nGET /api/adverts"
+      operationId: getAllAdvertsWithPaginationAndCategorizedSectionsGETapiadverts
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+  '/api/adverts/{id}':
+    get:
+      summary: "Get advert details\nGET /api/adverts/{id}"
+      operationId: getAdvertDetailsGETapiadvertsid
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the advert.'
+        example: sit
+        required: true
+        schema:
+          type: string
+  '/api/adverts/seller/{seller_id}':
+    get:
+      summary: "Get adverts by seller\nGET /api/adverts/seller/{seller_id}"
+      operationId: getAdvertsBySellerGETapiadvertssellersellerId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: seller_id
+        description: 'The ID of the seller.'
+        example: sapiente
+        required: true
+        schema:
+          type: string
+  /api/categories:
+    get:
+      summary: "Get all categories with counts\nGET /api/categories"
+      operationId: getAllCategoriesWithCountsGETapicategories
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+  '/api/categories/{category_slug}':
+    get:
+      summary: "Get adverts by category\nGET /api/categories/{category_slug}"
+      operationId: getAdvertsByCategoryGETapicategoriescategorySlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: category_slug
+        description: 'The slug of the category.'
+        example: dolore
+        required: true
+        schema:
+          type: string
+  '/api/categories/{category_slug}/{subcat_slug}':
+    get:
+      summary: "Get adverts by subcategory\nGET /api/categories/{category_slug}/{subcat_slug}"
+      operationId: getAdvertsBySubcategoryGETapicategoriescategorySlugsubcatSlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: category_slug
+        description: 'The slug of the category.'
+        example: dolorem
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: subcat_slug
+        description: 'The slug of the subcat.'
+        example: et
+        required: true
+        schema:
+          type: string
+  '/api/brands/{category_slug}/{subcat_slug}/{brand_slug}':
+    get:
+      summary: "Get adverts by brand\nGET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}"
+      operationId: getAdvertsByBrandGETapibrandscategorySlugsubcatSlugbrandSlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: category_slug
+        description: 'The slug of the category.'
+        example: aperiam
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: subcat_slug
+        description: 'The slug of the subcat.'
+        example: cumque
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: brand_slug
+        description: 'The slug of the brand.'
+        example: esse
+        required: true
+        schema:
+          type: string
+  '/api/location/{state_slug}':
+    get:
+      summary: "Get adverts by location\nGET /api/location/{state_slug}"
+      operationId: getAdvertsByLocationGETapilocationstateSlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+    parameters:
+      -
+        in: path
+        name: state_slug
+        description: 'The slug of the state.'
+        example: eius
+        required: true
+        schema:
+          type: string
+  /api/adverts/featured:
+    get:
+      summary: "Get featured adverts\nGET /api/adverts/featured"
+      operationId: getFeaturedAdvertsGETapiadvertsfeatured
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
+  /api/adverts/load-more:
+    get:
+      summary: "Load more adverts (pagination helper)\nGET /api/adverts/load-more"
+      operationId: loadMoreAdvertspaginationHelperGETapiadvertsloadMore
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      security: []
   '/api/adverts/{id}/report':
     post:
       summary: 'Report an advert'
@@ -110,11 +1490,11 @@ paths:
                 subject:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: ohobpqivwplbqb
+                  example: uxfxdmlfjylcwi
                 message:
                   type: string
                   description: ''
-                  example: cumque
+                  example: nostrum
               required:
                 - subject
                 - message
@@ -123,7 +1503,96 @@ paths:
         in: path
         name: id
         description: 'The ID of the advert.'
-        example: non
+        example: illo
+        required: true
+        schema:
+          type: string
+  '/api/adverts/{id}/apply':
+    post:
+      summary: "Apply for a job advert\nPOST /api/adverts/{id}/apply"
+      operationId: applyForAJobAdvertPOSTapiadvertsidapply
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Adverts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: ''
+                  example: odit
+              required:
+                - message
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the advert.'
+        example: occaecati
+        required: true
+        schema:
+          type: string
+  '/api/adverts/categories/{categoryId}/subcategories':
+    get:
+      summary: ''
+      operationId: getApiAdvertsCategoriesCategoryIdSubcategories
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Advert Management'
+      security: []
+    parameters:
+      -
+        in: path
+        name: categoryId
+        description: ''
+        example: dignissimos
+        required: true
+        schema:
+          type: string
+  '/api/adverts/subcategories/{subcategoryId}/brands':
+    get:
+      summary: ''
+      operationId: getApiAdvertsSubcategoriesSubcategoryIdBrands
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Advert Management'
+      security: []
+    parameters:
+      -
+        in: path
+        name: subcategoryId
+        description: ''
+        example: et
+        required: true
+        schema:
+          type: string
+  '/api/adverts/brands/{brandId}/models':
+    get:
+      summary: ''
+      operationId: getApiAdvertsBrandsBrandIdModels
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Advert Management'
+      security: []
+    parameters:
+      -
+        in: path
+        name: brandId
+        description: ''
+        example: eius
         required: true
         schema:
           type: string
@@ -471,568 +1940,6 @@ paths:
                     example: 'Error details'
       tags:
         - 'Advert Statistics'
-  /api/register:
-    post:
-      summary: "Register\nPOST /api/register"
-      operationId: registerPOSTapiregister
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                acc_type:
-                  type: string
-                  description: ''
-                  example: minima
-                name:
-                  type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: nvgupxzk
-                phone:
-                  type: string
-                  description: ''
-                  example: dolorem
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: mallory.bradtke@example.org
-                password:
-                  type: string
-                  description: 'Must be at least 6 characters.'
-                  example: 'Y9}y3)5@QNQ:QsGD8Mw'
-              required:
-                - acc_type
-                - name
-                - phone
-                - email
-                - password
-      security: []
-  /api/login:
-    post:
-      summary: "API Login - Step 1: Validate credentials\nPOST /api/login"
-      operationId: aPILoginStep1ValidateCredentialsPOSTapilogin
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: lindgren.wyatt@example.net
-                password:
-                  type: string
-                  description: 'Must be at least 4 characters.'
-                  example: FB|$Ln-e8(|1;
-              required:
-                - email
-                - password
-      security: []
-  /api/verify-otp:
-    post:
-      summary: "API Login - Step 2: Verify OTP\nPOST /api/verify-otp"
-      operationId: aPILoginStep2VerifyOTPPOSTapiverifyOtp
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: tremblay.carlotta@example.net
-                otp:
-                  type: string
-                  description: 'Must be 6 digits.'
-                  example: '699316'
-                trust_device:
-                  type: boolean
-                  description: ''
-                  example: false
-              required:
-                - email
-                - otp
-      security: []
-  /api/resend-otp:
-    post:
-      summary: "Resend OTP\nPOST /api/resend-otp"
-      operationId: resendOTPPOSTapiresendOtp
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: hane.wilbert@example.com
-              required:
-                - email
-      security: []
-  '/api/verify/{email}/{token}':
-    get:
-      summary: "Verify Account\nGET /api/verify/{email}/{token}"
-      operationId: verifyAccountGETapiverifyemailtoken
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: email
-        description: ''
-        example: theresia.lowe@example.org
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: token
-        description: ''
-        example: iste
-        required: true
-        schema:
-          type: string
-  /api/resend-verification:
-    post:
-      summary: "Resend Verification Email\nPOST /api/resend-verification"
-      operationId: resendVerificationEmailPOSTapiresendVerification
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: mwilliamson@example.net
-              required:
-                - email
-      security: []
-  /api/forgot-password:
-    post:
-      summary: "Forgot Password\nPOST /api/forgot-password"
-      operationId: forgotPasswordPOSTapiforgotPassword
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: zstracke@example.org
-              required:
-                - email
-      security: []
-  '/api/reset-password/{user_id}/{token}':
-    post:
-      summary: "Reset Password\nPOST /api/reset-password/{user_id}/{token}"
-      operationId: resetPasswordPOSTapiresetPassworduserIdtoken
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-                  description: 'Must be at least 6 characters.'
-                  example: oBUyLpY6xHac(j
-              required:
-                - password
-      security: []
-    parameters:
-      -
-        in: path
-        name: user_id
-        description: 'The ID of the user.'
-        example: aut
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: token
-        description: ''
-        example: saepe
-        required: true
-        schema:
-          type: string
-  /api/auth/social:
-    post:
-      summary: "Social Login - Mobile sends provider token\nPOST /api/auth/social"
-      operationId: socialLoginMobileSendsProviderTokenPOSTapiauthsocial
-      description: "Mobile app gets token from provider (Google/Facebook SDK)\nthen sends it to this endpoint for verification"
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                provider:
-                  type: string
-                  description: ''
-                  example: google
-                  enum:
-                    - google
-                    - facebook
-                access_token:
-                  type: string
-                  description: ''
-                  example: facere
-                device_name:
-                  type: string
-                  description: ''
-                  example: aut
-                  nullable: true
-              required:
-                - provider
-                - access_token
-      security: []
-  '/api/auth/{provider}/redirect':
-    get:
-      summary: "Get Social Login URL - For WebView flow\nGET /api/auth/{provider}/redirect"
-      operationId: getSocialLoginURLForWebViewFlowGETapiauthproviderredirect
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: provider
-        description: ''
-        example: itaque
-        required: true
-        schema:
-          type: string
-  '/api/auth/{provider}/callback':
-    get:
-      summary: "Social Login Callback - For WebView flow\nGET /api/auth/{provider}/callback"
-      operationId: socialLoginCallbackForWebViewFlowGETapiauthprovidercallback
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: provider
-        description: ''
-        example: in
-        required: true
-        schema:
-          type: string
-  /api/user:
-    get:
-      summary: ''
-      operationId: getApiUser
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/logout:
-    post:
-      summary: "Logout\nPOST /api/logout"
-      operationId: logoutPOSTapilogout
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/trusted-device/{device_id}':
-    delete:
-      summary: "Remove Trusted Device\nDELETE /api/trusted-device/{device_id}"
-      operationId: removeTrustedDeviceDELETEapitrustedDevicedeviceId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: device_id
-        description: 'The ID of the device.'
-        example: dolorem
-        required: true
-        schema:
-          type: string
-  /api/adverts:
-    get:
-      summary: "Get all adverts with pagination and categorized sections\nGET /api/adverts"
-      operationId: getAllAdvertsWithPaginationAndCategorizedSectionsGETapiadverts
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/adverts/{id}':
-    get:
-      summary: "Get advert details\nGET /api/adverts/{id}"
-      operationId: getAdvertDetailsGETapiadvertsid
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the advert.'
-        example: deserunt
-        required: true
-        schema:
-          type: string
-  '/api/adverts/seller/{seller_id}':
-    get:
-      summary: "Get adverts by seller\nGET /api/adverts/seller/{seller_id}"
-      operationId: getAdvertsBySellerGETapiadvertssellersellerId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: seller_id
-        description: 'The ID of the seller.'
-        example: pariatur
-        required: true
-        schema:
-          type: string
-  /api/categories:
-    get:
-      summary: "Get all categories with counts\nGET /api/categories"
-      operationId: getAllCategoriesWithCountsGETapicategories
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/categories/{category_slug}':
-    get:
-      summary: "Get adverts by category\nGET /api/categories/{category_slug}"
-      operationId: getAdvertsByCategoryGETapicategoriescategorySlug
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: category_slug
-        description: 'The slug of the category.'
-        example: repellendus
-        required: true
-        schema:
-          type: string
-  '/api/categories/{category_slug}/{subcat_slug}':
-    get:
-      summary: "Get adverts by subcategory\nGET /api/categories/{category_slug}/{subcat_slug}"
-      operationId: getAdvertsBySubcategoryGETapicategoriescategorySlugsubcatSlug
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: category_slug
-        description: 'The slug of the category.'
-        example: sed
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: subcat_slug
-        description: 'The slug of the subcat.'
-        example: et
-        required: true
-        schema:
-          type: string
-  '/api/brands/{category_slug}/{subcat_slug}/{brand_slug}':
-    get:
-      summary: "Get adverts by brand\nGET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}"
-      operationId: getAdvertsByBrandGETapibrandscategorySlugsubcatSlugbrandSlug
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: category_slug
-        description: 'The slug of the category.'
-        example: aspernatur
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: subcat_slug
-        description: 'The slug of the subcat.'
-        example: nam
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: brand_slug
-        description: 'The slug of the brand.'
-        example: non
-        required: true
-        schema:
-          type: string
-  '/api/location/{state_slug}':
-    get:
-      summary: "Get adverts by location\nGET /api/location/{state_slug}"
-      operationId: getAdvertsByLocationGETapilocationstateSlug
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: state_slug
-        description: 'The slug of the state.'
-        example: ipsam
-        required: true
-        schema:
-          type: string
-  /api/adverts/featured:
-    get:
-      summary: "Get featured adverts\nGET /api/adverts/featured"
-      operationId: getFeaturedAdvertsGETapiadvertsfeatured
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/adverts/load-more:
-    get:
-      summary: "Load more adverts (pagination helper)\nGET /api/adverts/load-more"
-      operationId: loadMoreAdvertspaginationHelperGETapiadvertsloadMore
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/adverts/{id}/apply':
-    post:
-      summary: "Apply for a job advert\nPOST /api/adverts/{id}/apply"
-      operationId: applyForAJobAdvertPOSTapiadvertsidapply
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  description: ''
-                  example: eum
-              required:
-                - message
-      security: []
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the advert.'
-        example: magnam
-        required: true
-        schema:
-          type: string
   /api/search:
     get:
       summary: ''
@@ -1041,7 +1948,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       requestBody:
         required: false
         content:
@@ -1052,7 +1959,7 @@ paths:
                 product:
                   type: string
                   description: 'Must be at least 3 characters.'
-                  example: ntknqrbfbzwonxpid
+                  example: tyzptyixtefpmcizunvzpmiwuqenixrsztzmtjtvwhxfbgocfegcjbzmmol
                   nullable: true
                 location:
                   type: string
@@ -1088,7 +1995,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       security: []
   /api/search/filter-by-seller:
     post:
@@ -1098,7 +2005,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       security: []
   /api/search/filter-by-buydirect:
     post:
@@ -1108,7 +2015,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       security: []
   '/api/search/location/{location}/{slug}':
     get:
@@ -1118,14 +2025,14 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       security: []
     parameters:
       -
         in: path
         name: location
         description: 'The location.'
-        example: deleniti
+        example: quaerat
         required: true
         schema:
           type: string
@@ -1133,7 +2040,7 @@ paths:
         in: path
         name: slug
         description: 'The slug of the {location}.'
-        example: dolorem
+        example: eum
         required: true
         schema:
           type: string
@@ -1145,7 +2052,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       security: []
   /api/search/suggestions:
     get:
@@ -1155,7 +2062,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - Search
       requestBody:
         required: true
         content:
@@ -1166,7 +2073,7 @@ paths:
                 q:
                   type: string
                   description: 'Must be at least 2 characters.'
-                  example: sstncoerqcrmeoaicaejwrwtgfcgflnwppwszuwlczdik
+                  example: xmfnhmpkudpvqwecuwnqpynbvebbnwupqbcwzxpotabyqtvwgtxsbnhfdxqwempdvghchtks
               required:
                 - q
       security: []
@@ -1178,610 +2085,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
-      security: []
-  /api/locations/states:
-    get:
-      summary: ''
-      operationId: getApiLocationsStates
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/locations/states/{state_id}/cities':
-    get:
-      summary: ''
-      operationId: getApiLocationsStatesState_idCities
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: state_id
-        description: 'The ID of the state.'
-        example: ducimus
-        required: true
-        schema:
-          type: string
-  '/api/locations/states/{state_id}/details':
-    get:
-      summary: ''
-      operationId: getApiLocationsStatesState_idDetails
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: state_id
-        description: 'The ID of the state.'
-        example: rerum
-        required: true
-        schema:
-          type: string
-  /api/locations/cities:
-    get:
-      summary: ''
-      operationId: getApiLocationsCities
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                search:
-                  type: string
-                  description: 'Must be at least 2 characters.'
-                  example: vo
-                  nullable: true
-                state_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the states table.'
-                  example: 1
-                  nullable: true
-                limit:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 50.'
-                  example: 15
-                  nullable: true
-      security: []
-  '/api/locations/cities/{city_id}':
-    get:
-      summary: ''
-      operationId: getApiLocationsCitiesCity_id
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: city_id
-        description: 'The ID of the city.'
-        example: neque
-        required: true
-        schema:
-          type: string
-  /api/shipping/calculate:
-    post:
-      summary: ''
-      operationId: postApiShippingCalculate
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                sender_station:
-                  type: string
-                  description: ''
-                  example: dignissimos
-                receiver_station:
-                  type: string
-                  description: ''
-                  example: mollitia
-                ad_price:
-                  type: number
-                  description: 'Must be at least 0.'
-                  example: 90
-                ad_title:
-                  type: string
-                  description: ''
-                  example: repudiandae
-                ad_des:
-                  type: string
-                  description: ''
-                  example: quasi
-                  nullable: true
-                weight:
-                  type: number
-                  description: 'Must be at least 0.'
-                  example: 25
-                  nullable: true
-                quantity:
-                  type: integer
-                  description: 'Must be at least 1.'
-                  example: 27
-                  nullable: true
-              required:
-                - sender_station
-                - receiver_station
-                - ad_price
-                - ad_title
-      security: []
-  /api/messages:
-    post:
-      summary: ''
-      operationId: postApiMessages
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                advert_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: 17
-                receiver_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: provident
-                message_content:
-                  type: string
-                  description: 'Must not be greater than 1000 characters.'
-                  example: vnpr
-                  nullable: true
-                images:
-                  type: array
-                  description: 'Must be an image. Must not be greater than 12048 kilobytes.'
-                  items:
-                    type: string
-                    format: binary
-                    nullable: true
-              required:
-                - advert_id
-                - receiver_id
-      security: []
-  '/api/messages/conversation/{advertId}/{receiverId}':
-    get:
-      summary: ''
-      operationId: getApiMessagesConversationAdvertIdReceiverId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: enim
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: receiverId
-        description: ''
-        example: deserunt
-        required: true
-        schema:
-          type: string
-  '/api/messages/advert/{advertId}':
-    get:
-      summary: ''
-      operationId: getApiMessagesAdvertAdvertId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: ducimus
-        required: true
-        schema:
-          type: string
-  /api/messages/conversations:
-    get:
-      summary: ''
-      operationId: getApiMessagesConversations
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/messages/unread/count:
-    get:
-      summary: ''
-      operationId: getApiMessagesUnreadCount
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/messages/{messageId}/read':
-    put:
-      summary: ''
-      operationId: putApiMessagesMessageIdRead
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: messageId
-        description: ''
-        example: consequatur
-        required: true
-        schema:
-          type: string
-  '/api/messages/conversation/{advertId}/{userId}/read':
-    put:
-      summary: ''
-      operationId: putApiMessagesConversationAdvertIdUserIdRead
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: at
-        required: true
-        schema:
-          type: string
-      -
-        in: path
-        name: userId
-        description: ''
-        example: inventore
-        required: true
-        schema:
-          type: string
-  /api/messages/archive:
-    post:
-      summary: ''
-      operationId: postApiMessagesArchive
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                advert_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: dolore
-                other_user_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: aut
-              required:
-                - advert_id
-                - other_user_id
-      security: []
-  /api/messages/unarchive:
-    post:
-      summary: ''
-      operationId: postApiMessagesUnarchive
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                advert_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: repellat
-                other_user_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: velit
-              required:
-                - advert_id
-                - other_user_id
-      security: []
-  /api/messages/archived:
-    get:
-      summary: ''
-      operationId: getApiMessagesArchived
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/payments/{paymentId}/mark-delivered':
-    post:
-      summary: ''
-      operationId: postApiPaymentsPaymentIdMarkDelivered
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: paymentId
-        description: ''
-        example: molestias
-        required: true
-        schema:
-          type: string
-  /api/payments/initialize:
-    post:
-      summary: ''
-      operationId: postApiPaymentsInitialize
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                shipping_data:
-                  type: object
-                  description: ''
-                  example: []
-                  properties:
-                    first_name:
-                      type: string
-                      description: ''
-                      example: aut
-                    last_name:
-                      type: string
-                      description: ''
-                      example: corporis
-                    phone:
-                      type: string
-                      description: ''
-                      example: facere
-                    grand_total:
-                      type: number
-                      description: ''
-                      example: 448535.80312619
-                    commission:
-                      type: number
-                      description: ''
-                      example: 11.15
-                    shipping_cost:
-                      type: number
-                      description: ''
-                      example: 17.771589836
-                    shipping_method:
-                      type: integer
-                      description: ''
-                      example: 10
-                    ad:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        id:
-                          type: integer
-                          description: 'The <code>id</code> of an existing record in the adverts table.'
-                          example: 6
-                        price:
-                          type: number
-                          description: ''
-                          example: 2.03
-                      required:
-                        - id
-                        - price
-                    reciever_city:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        id:
-                          type: integer
-                          description: ''
-                          example: 19
-                          nullable: true
-                    reciever_state:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        id:
-                          type: integer
-                          description: ''
-                          example: 3
-                          nullable: true
-                  required:
-                    - first_name
-                    - last_name
-                    - phone
-                    - grand_total
-                    - commission
-                    - shipping_cost
-                    - shipping_method
-              required:
-                - shipping_data
-      security: []
-  /api/payments/initialize-boost:
-    post:
-      summary: ''
-      operationId: postApiPaymentsInitializeBoost
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                advert_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: 18
-                amount:
-                  type: number
-                  description: 'Must be at least 0.'
-                  example: 23
-                boost_type:
-                  type: string
-                  description: ''
-                  example: autem
-                duration:
-                  type: integer
-                  description: 'Must be at least 1.'
-                  example: 10
-              required:
-                - advert_id
-                - amount
-                - boost_type
-                - duration
-      security: []
-  '/api/payments/{paymentId}':
-    get:
-      summary: ''
-      operationId: getApiPaymentsPaymentId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: paymentId
-        description: ''
-        example: est
-        required: true
-        schema:
-          type: string
-  '/api/payments/user/{userId}':
-    get:
-      summary: ''
-      operationId: getApiPaymentsUserUserId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: userId
-        description: ''
-        example: pariatur
-        required: true
-        schema:
-          type: string
-  '/api/boosts/user/{userId}':
-    get:
-      summary: ''
-      operationId: getApiBoostsUserUserId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: userId
-        description: ''
-        example: aliquam
-        required: true
-        schema:
-          type: string
-  /api/payments/callback:
-    post:
-      summary: ''
-      operationId: postApiPaymentsCallback
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                reference:
-                  type: string
-                  description: ''
-                  example: et
-              required:
-                - reference
+        - Search
       security: []
   /api/user/dashboard:
     get:
@@ -1791,7 +2095,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   /api/user/categories:
     get:
@@ -1801,7 +2105,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   /api/user/messages/conversations:
     get:
@@ -1811,7 +2115,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   /api/user/ads:
     get:
@@ -1821,7 +2125,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   '/api/user/ads/{adId}/status':
     patch:
@@ -1831,7 +2135,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       requestBody:
         required: true
         content:
@@ -1854,7 +2158,7 @@ paths:
         in: path
         name: adId
         description: ''
-        example: earum
+        example: quis
         required: true
         schema:
           type: string
@@ -1866,14 +2170,14 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
     parameters:
       -
         in: path
         name: adId
         description: ''
-        example: doloribus
+        example: iure
         required: true
         schema:
           type: string
@@ -1885,7 +2189,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   '/api/user/user/wishlist/{adId}':
     post:
@@ -1895,14 +2199,14 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
     parameters:
       -
         in: path
         name: adId
         description: ''
-        example: ratione
+        example: alias
         required: true
         schema:
           type: string
@@ -1914,7 +2218,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   '/api/user/payments/{paymentId}/confirm-delivery':
     post:
@@ -1924,14 +2228,14 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
     parameters:
       -
         in: path
         name: paymentId
         description: ''
-        example: modi
+        example: qui
         required: true
         schema:
           type: string
@@ -1943,7 +2247,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       requestBody:
         required: true
         content:
@@ -1954,7 +2258,7 @@ paths:
                 shipping_status:
                   type: string
                   description: ''
-                  example: nostrum
+                  example: laudantium
               required:
                 - shipping_status
       security: []
@@ -1963,7 +2267,7 @@ paths:
         in: path
         name: paymentId
         description: ''
-        example: et
+        example: doloribus
         required: true
         schema:
           type: string
@@ -1975,7 +2279,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
   '/api/user/feedbacks/{sellerId}':
     post:
@@ -1985,7 +2289,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       requestBody:
         required: true
         content:
@@ -1996,23 +2300,23 @@ paths:
                 rating:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 2
+                  example: 1
                 satisfaction:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 1
+                  example: 2
                 reliable:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 2
+                  example: 1
                 friendly:
                   type: integer
                   description: 'Must be between 1 and 5.'
-                  example: 1
+                  example: 2
                 message:
                   type: string
                   description: 'Must not be greater than 1000 characters.'
-                  example: piizovljeunxydntxdqwemlte
+                  example: ipknjflsrzbptqdkcddscverz
               required:
                 - rating
                 - satisfaction
@@ -2025,7 +2329,7 @@ paths:
         in: path
         name: sellerId
         description: ''
-        example: deleniti
+        example: qui
         required: true
         schema:
           type: string
@@ -2037,14 +2341,14 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       security: []
     parameters:
       -
         in: path
         name: userId
         description: ''
-        example: dolores
+        example: delectus
         required: true
         schema:
           type: string
@@ -2056,7 +2360,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - User
       requestBody:
         required: true
         content:
@@ -2067,67 +2371,10 @@ paths:
                 followee_id:
                   type: integer
                   description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: 18
+                  example: 9
               required:
                 - followee_id
       security: []
-  '/api/adverts/categories/{categoryId}/subcategories':
-    get:
-      summary: ''
-      operationId: getApiAdvertsCategoriesCategoryIdSubcategories
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: categoryId
-        description: ''
-        example: et
-        required: true
-        schema:
-          type: string
-  '/api/adverts/subcategories/{subcategoryId}/brands':
-    get:
-      summary: ''
-      operationId: getApiAdvertsSubcategoriesSubcategoryIdBrands
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: subcategoryId
-        description: ''
-        example: nulla
-        required: true
-        schema:
-          type: string
-  '/api/adverts/brands/{brandId}/models':
-    get:
-      summary: ''
-      operationId: getApiAdvertsBrandsBrandIdModels
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: brandId
-        description: ''
-        example: impedit
-        required: true
-        schema:
-          type: string
   /api/user/profile:
     get:
       summary: ''
@@ -2136,7 +2383,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
   /api/user/about-account:
     get:
@@ -2146,7 +2393,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
   /api/user/profile-info:
     get:
@@ -2156,7 +2403,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
   /api/user/profile/address:
     put:
@@ -2166,7 +2413,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2177,21 +2424,21 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: psonszblxgmyzttv
+                  example: mldoqykhhbkhcb
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: bkva
+                  example: nwghwbkrbfiimgiqbogm
                   nullable: true
                 city:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: ydzoe
+                  example: dbdcfszjqjkgaqqpghacu
                   nullable: true
                 state:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: xzezfukcgh
+                  example: vzkvwjewxiotsknsrtciesa
                   nullable: true
                 profile_image:
                   type: string
@@ -2207,7 +2454,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2218,21 +2465,21 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: r
+                  example: hoqagilaziscd
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: maxqshsqytvharxsgix
+                  example: gjem
                   nullable: true
                 city:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: dhllezf
+                  example: jatfwoausobnbnwhef
                   nullable: true
                 state:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: jeotb
+                  example: nzycbvo
                   nullable: true
                 profile_image:
                   type: string
@@ -2249,7 +2496,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2260,7 +2507,7 @@ paths:
                 phone:
                   type: string
                   description: ''
-                  example: blanditiis
+                  example: rem
               required:
                 - phone
       security: []
@@ -2272,7 +2519,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
     post:
       summary: ''
@@ -2281,7 +2528,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2292,11 +2539,11 @@ paths:
                 document_number:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: lyprmqjqkhgovdvrv
+                  example: ytanirauxceeepvfk
                 document_type:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: bmobiqiymgj
+                  example: uow
                   nullable: true
                 document_file:
                   type: string
@@ -2319,7 +2566,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
     put:
       summary: ''
@@ -2328,7 +2575,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2339,19 +2586,19 @@ paths:
                 bank_name:
                   type: string
                   description: ''
-                  example: consequuntur
+                  example: sint
                 paystack_bank_code:
                   type: string
                   description: ''
-                  example: nemo
+                  example: quasi
                 account_number:
                   type: string
                   description: ''
-                  example: natus
+                  example: consequatur
                 account_name:
                   type: string
                   description: ''
-                  example: quia
+                  example: ex
               required:
                 - bank_name
                 - paystack_bank_code
@@ -2366,7 +2613,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2377,11 +2624,11 @@ paths:
                 old_password:
                   type: string
                   description: ''
-                  example: autem
+                  example: suscipit
                 password:
                   type: string
                   description: 'Must be at least 6 characters.'
-                  example: cm>CvN
+                  example: M76A@bu\Sc
               required:
                 - old_password
                 - password
@@ -2394,7 +2641,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       requestBody:
         required: true
         content:
@@ -2405,7 +2652,7 @@ paths:
                 notifications:
                   type: string
                   description: ''
-                  example: dolorem
+                  example: quaerat
               required:
                 - notifications
       security: []
@@ -2525,7 +2772,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
   /api/user/account:
     delete:
@@ -2535,7 +2782,7 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
   /api/user/logout:
     post:
@@ -2545,712 +2792,8 @@ paths:
       parameters: []
       responses: {  }
       tags:
-        - Endpoints
+        - 'User Profile'
       security: []
-  /api/users/block:
-    post:
-      summary: ''
-      operationId: postApiUsersBlock
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                blocked_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: sint
-                advert_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: null
-                  nullable: true
-              required:
-                - blocked_id
-      security: []
-  /api/users/unblock:
-    post:
-      summary: ''
-      operationId: postApiUsersUnblock
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                blocked_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: illum
-                advert_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the adverts table.'
-                  example: null
-                  nullable: true
-              required:
-                - blocked_id
-      security: []
-  /api/users/blocked:
-    get:
-      summary: ''
-      operationId: getApiUsersBlocked
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/users/check-blocked/{userId}':
-    get:
-      summary: ''
-      operationId: getApiUsersCheckBlockedUserId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: userId
-        description: ''
-        example: voluptatum
-        required: true
-        schema:
-          type: string
-  '/api/users/block-all/{userId}':
-    post:
-      summary: ''
-      operationId: postApiUsersBlockAllUserId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: userId
-        description: ''
-        example: quo
-        required: true
-        schema:
-          type: string
-  /api/user/boosts:
-    get:
-      summary: ''
-      operationId: getApiUserBoosts
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/boosts/active:
-    get:
-      summary: ''
-      operationId: getApiBoostsActive
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/boosts/pending:
-    get:
-      summary: ''
-      operationId: getApiBoostsPending
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/adverts/{advertId}/boost-info':
-    get:
-      summary: ''
-      operationId: getApiAdvertsAdvertIdBoostInfo
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: ipsum
-        required: true
-        schema:
-          type: string
-  '/api/adverts/{advertId}/boost':
-    post:
-      summary: ''
-      operationId: postApiAdvertsAdvertIdBoost
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                duration_days:
-                  type: integer
-                  description: 'Must be at least 1. Must not be greater than 30.'
-                  example: 5
-                  nullable: true
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: aut
-        required: true
-        schema:
-          type: string
-  '/api/adverts/{advertId}/boost-status':
-    get:
-      summary: ''
-      operationId: getApiAdvertsAdvertIdBoostStatus
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: advertId
-        description: ''
-        example: eaque
-        required: true
-        schema:
-          type: string
-  '/api/boosts/{boostId}':
-    get:
-      summary: ''
-      operationId: getApiBoostsBoostId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    delete:
-      summary: ''
-      operationId: deleteApiBoostsBoostId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: boostId
-        description: ''
-        example: et
-        required: true
-        schema:
-          type: string
-  '/api/boosts/{boostId}/upload-proof':
-    post:
-      summary: ''
-      operationId: postApiBoostsBoostIdUploadProof
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                payment_proof:
-                  type: string
-                  format: binary
-                  description: 'Must be a file. Must not be greater than 12048 kilobytes.'
-              required:
-                - payment_proof
-      security: []
-    parameters:
-      -
-        in: path
-        name: boostId
-        description: ''
-        example: eum
-        required: true
-        schema:
-          type: string
-  /api/broadcasting/auth:
-    get:
-      summary: 'Authenticate the request for channel access.'
-      operationId: authenticateTheRequestForChannelAccess
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  /api/unread-messages-count:
-    get:
-      summary: ''
-      operationId: getApiUnreadMessagesCount
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-  '/api/check-following/{userId}':
-    get:
-      summary: ''
-      operationId: getApiCheckFollowingUserId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
-    parameters:
-      -
-        in: path
-        name: userId
-        description: ''
-        example: maxime
-        required: true
-        schema:
-          type: string
-  /api/toggle-follow:
-    post:
-      summary: ''
-      operationId: postApiToggleFollow
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                followee_id:
-                  type: string
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: accusamus
-              required:
-                - followee_id
-      security: []
-  /api/device-tokens:
-    get:
-      summary: 'Get device tokens'
-      operationId: getDeviceTokens
-      description: 'Retrieve all device tokens registered for the authenticated user.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  data:
-                    -
-                      id: 1
-                      platform: android
-                      is_active: true
-                      last_used_at: '2026-01-19T10:30:00.000000Z'
-                      created_at: '2026-01-15T08:00:00.000000Z'
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        platform: android
-                        is_active: true
-                        last_used_at: '2026-01-19T10:30:00.000000Z'
-                        created_at: '2026-01-15T08:00:00.000000Z'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        platform:
-                          type: string
-                          example: android
-                        is_active:
-                          type: boolean
-                          example: true
-                        last_used_at:
-                          type: string
-                          example: '2026-01-19T10:30:00.000000Z'
-                        created_at:
-                          type: string
-                          example: '2026-01-15T08:00:00.000000Z'
-      tags:
-        - Notifications
-    post:
-      summary: 'Register device token'
-      operationId: registerDeviceToken
-      description: "Register or update a device token for push notifications (FCM).\nIf the token already exists, it will be updated with new user and platform information."
-      parameters: []
-      responses:
-        201:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  message: 'Device token registered successfully'
-                  data:
-                    id: 1
-                    platform: android
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: 'Device token registered successfully'
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      platform:
-                        type: string
-                        example: android
-      tags:
-        - Notifications
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                token:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: hidnggzv
-                platform:
-                  type: string
-                  description: ''
-                  example: dolor
-              required:
-                - token
-                - platform
-  '/api/device-tokens/{id}':
-    delete:
-      summary: 'Delete device token'
-      operationId: deleteDeviceToken
-      description: 'Remove a device token to stop receiving push notifications on that device.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  message: 'Device token removed successfully'
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: 'Device token removed successfully'
-        404:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: false
-                  message: 'Device token not found'
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: 'Device token not found'
-      tags:
-        - Notifications
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the device token.'
-        example: voluptatum
-        required: true
-        schema:
-          type: string
-  /api/notification-settings:
-    get:
-      summary: 'Get notification settings'
-      operationId: getNotificationSettings
-      description: 'Retrieve the current notification settings for the authenticated user.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  data:
-                    push_notifications_enabled: true
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: object
-                    properties:
-                      push_notifications_enabled:
-                        type: boolean
-                        example: true
-      tags:
-        - Notifications
-    put:
-      summary: 'Update notification settings'
-      operationId: updateNotificationSettings
-      description: 'Update push notification preferences for the authenticated user.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  message: 'Notification settings updated successfully'
-                  data:
-                    push_notifications_enabled: true
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: 'Notification settings updated successfully'
-                  data:
-                    type: object
-                    properties:
-                      push_notifications_enabled:
-                        type: boolean
-                        example: true
-      tags:
-        - Notifications
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                push_notifications_enabled:
-                  type: boolean
-                  description: ''
-                  example: true
-              required:
-                - push_notifications_enabled
-  /api/test/notification:
-    post:
-      summary: 'Send a test push notification'
-      operationId: sendATestPushNotification
-      description: "This endpoint allows you to test push notifications locally.\nOnly available in local/development environment."
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  message: 'Test notification sent successfully'
-                  data:
-                    tokens_count: 1
-                    notification:
-                      title: 'Test Notification'
-                      body: 'This is a test message'
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: 'Test notification sent successfully'
-                  data:
-                    type: object
-                    properties:
-                      tokens_count:
-                        type: integer
-                        example: 1
-                      notification:
-                        type: object
-                        properties:
-                          title:
-                            type: string
-                            example: 'Test Notification'
-                          body:
-                            type: string
-                            example: 'This is a test message'
-      tags:
-        - Testing
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: rqgefsnxivnixuxjzozrovdel
-                  nullable: true
-                message:
-                  type: string
-                  description: 'Must not be greater than 500 characters.'
-                  example: pujgovth
-                data:
-                  type: object
-                  description: ''
-                  example: null
-                  properties: {  }
-                  nullable: true
-                target_user_id:
-                  type: integer
-                  description: 'The <code>user_id</code> of an existing record in the users table.'
-                  example: 15
-                  nullable: true
-                device_token:
-                  type: string
-                  description: ''
-                  example: illo
-                  nullable: true
-              required:
-                - message
-  /api/test/my-tokens:
-    get:
-      summary: "Get user's registered device tokens"
-      operationId: getUsersRegisteredDeviceTokens
-      description: ''
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  success: true
-                  data:
-                    user_tokens:
-                      -
-                        id: 1
-                        platform: android
-                        token: cDNfP...
-                        is_active: true
-                        last_used_at: '2026-01-13T10:30:00.000000Z'
-                    total_count: 1
-                    active_count: 1
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: object
-                    properties:
-                      user_tokens:
-                        type: array
-                        example:
-                          -
-                            id: 1
-                            platform: android
-                            token: cDNfP...
-                            is_active: true
-                            last_used_at: '2026-01-13T10:30:00.000000Z'
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            platform:
-                              type: string
-                              example: android
-                            token:
-                              type: string
-                              example: cDNfP...
-                            is_active:
-                              type: boolean
-                              example: true
-                            last_used_at:
-                              type: string
-                              example: '2026-01-13T10:30:00.000000Z'
-                      total_count:
-                        type: integer
-                        example: 1
-                      active_count:
-                        type: integer
-                        example: 1
-      tags:
-        - Testing
   /api/user/stats:
     get:
       summary: 'Get authenticated user statistics'
@@ -3471,7 +3014,7 @@ paths:
         in: path
         name: userId
         description: ''
-        example: quam
+        example: odio
         required: true
         schema:
           type: string
@@ -3589,7 +3132,1324 @@ paths:
         in: path
         name: userId
         description: ''
+        example: sint
+        required: true
+        schema:
+          type: string
+  /api/users/block:
+    post:
+      summary: ''
+      operationId: postApiUsersBlock
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                blocked_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: sit
+                advert_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: null
+                  nullable: true
+              required:
+                - blocked_id
+      security: []
+  /api/users/unblock:
+    post:
+      summary: ''
+      operationId: postApiUsersUnblock
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                blocked_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: libero
+                advert_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: null
+                  nullable: true
+              required:
+                - blocked_id
+      security: []
+  /api/users/blocked:
+    get:
+      summary: ''
+      operationId: getApiUsersBlocked
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Users
+      security: []
+  '/api/users/check-blocked/{userId}':
+    get:
+      summary: ''
+      operationId: getApiUsersCheckBlockedUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Users
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: nobis
+        required: true
+        schema:
+          type: string
+  '/api/users/block-all/{userId}':
+    post:
+      summary: ''
+      operationId: postApiUsersBlockAllUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Users
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: animi
+        required: true
+        schema:
+          type: string
+  /api/messages:
+    post:
+      summary: ''
+      operationId: postApiMessages
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                advert_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: 16
+                receiver_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: tempora
+                message_content:
+                  type: string
+                  description: 'Must not be greater than 1000 characters.'
+                  example: xn
+                  nullable: true
+                images:
+                  type: array
+                  description: 'Must be an image. Must not be greater than 12048 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+                    nullable: true
+              required:
+                - advert_id
+                - receiver_id
+      security: []
+  '/api/messages/conversation/{advertId}/{receiverId}':
+    get:
+      summary: ''
+      operationId: getApiMessagesConversationAdvertIdReceiverId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: aut
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: receiverId
+        description: ''
+        example: adipisci
+        required: true
+        schema:
+          type: string
+  '/api/messages/advert/{advertId}':
+    get:
+      summary: ''
+      operationId: getApiMessagesAdvertAdvertId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: a
+        required: true
+        schema:
+          type: string
+  /api/messages/conversations:
+    get:
+      summary: ''
+      operationId: getApiMessagesConversations
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+  /api/messages/unread/count:
+    get:
+      summary: ''
+      operationId: getApiMessagesUnreadCount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+  '/api/messages/{messageId}/read':
+    put:
+      summary: ''
+      operationId: putApiMessagesMessageIdRead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+    parameters:
+      -
+        in: path
+        name: messageId
+        description: ''
+        example: ut
+        required: true
+        schema:
+          type: string
+  '/api/messages/conversation/{advertId}/{userId}/read':
+    put:
+      summary: ''
+      operationId: putApiMessagesConversationAdvertIdUserIdRead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: est
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: userId
+        description: ''
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/messages/archive:
+    post:
+      summary: ''
+      operationId: postApiMessagesArchive
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                advert_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: et
+                other_user_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: est
+              required:
+                - advert_id
+                - other_user_id
+      security: []
+  /api/messages/unarchive:
+    post:
+      summary: ''
+      operationId: postApiMessagesUnarchive
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                advert_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: cumque
+                other_user_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: temporibus
+              required:
+                - advert_id
+                - other_user_id
+      security: []
+  /api/messages/archived:
+    get:
+      summary: ''
+      operationId: getApiMessagesArchived
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+  '/api/payments/{paymentId}/mark-delivered':
+    post:
+      summary: ''
+      operationId: postApiPaymentsPaymentIdMarkDelivered
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Messages
+      security: []
+    parameters:
+      -
+        in: path
+        name: paymentId
+        description: ''
+        example: beatae
+        required: true
+        schema:
+          type: string
+  /api/device-tokens:
+    get:
+      summary: 'Get device tokens'
+      operationId: getDeviceTokens
+      description: 'Retrieve all device tokens registered for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    -
+                      id: 1
+                      platform: android
+                      is_active: true
+                      last_used_at: '2026-01-19T10:30:00.000000Z'
+                      created_at: '2026-01-15T08:00:00.000000Z'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        platform: android
+                        is_active: true
+                        last_used_at: '2026-01-19T10:30:00.000000Z'
+                        created_at: '2026-01-15T08:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        platform:
+                          type: string
+                          example: android
+                        is_active:
+                          type: boolean
+                          example: true
+                        last_used_at:
+                          type: string
+                          example: '2026-01-19T10:30:00.000000Z'
+                        created_at:
+                          type: string
+                          example: '2026-01-15T08:00:00.000000Z'
+      tags:
+        - Notifications
+    post:
+      summary: 'Register device token'
+      operationId: registerDeviceToken
+      description: "Register or update a device token for push notifications (FCM).\nIf the token already exists, it will be updated with new user and platform information."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Device token registered successfully'
+                  data:
+                    id: 1
+                    platform: android
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Device token registered successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      platform:
+                        type: string
+                        example: android
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: nar
+                platform:
+                  type: string
+                  description: ''
+                  example: illo
+              required:
+                - token
+                - platform
+  '/api/device-tokens/{id}':
+    delete:
+      summary: 'Delete device token'
+      operationId: deleteDeviceToken
+      description: 'Remove a device token to stop receiving push notifications on that device.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Device token removed successfully'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Device token removed successfully'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: 'Device token not found'
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Device token not found'
+      tags:
+        - Notifications
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the device token.'
+        example: ut
+        required: true
+        schema:
+          type: string
+  /api/notification-settings:
+    get:
+      summary: 'Get notification settings'
+      operationId: getNotificationSettings
+      description: 'Retrieve the current notification settings for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    push_notifications_enabled: true
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      push_notifications_enabled:
+                        type: boolean
+                        example: true
+      tags:
+        - Notifications
+    put:
+      summary: 'Update notification settings'
+      operationId: updateNotificationSettings
+      description: 'Update push notification preferences for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Notification settings updated successfully'
+                  data:
+                    push_notifications_enabled: true
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Notification settings updated successfully'
+                  data:
+                    type: object
+                    properties:
+                      push_notifications_enabled:
+                        type: boolean
+                        example: true
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                push_notifications_enabled:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - push_notifications_enabled
+  /api/payments/initialize:
+    post:
+      summary: ''
+      operationId: postApiPaymentsInitialize
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shipping_data:
+                  type: object
+                  description: ''
+                  example: []
+                  properties:
+                    first_name:
+                      type: string
+                      description: ''
+                      example: aut
+                    last_name:
+                      type: string
+                      description: ''
+                      example: laudantium
+                    phone:
+                      type: string
+                      description: ''
+                      example: nemo
+                    grand_total:
+                      type: number
+                      description: ''
+                      example: 8.0
+                    commission:
+                      type: number
+                      description: ''
+                      example: 46357.5363968
+                    shipping_cost:
+                      type: number
+                      description: ''
+                      example: 553583.5193
+                    shipping_method:
+                      type: integer
+                      description: ''
+                      example: 3
+                    ad:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        id:
+                          type: integer
+                          description: 'The <code>id</code> of an existing record in the adverts table.'
+                          example: 18
+                        price:
+                          type: number
+                          description: ''
+                          example: 166.97726
+                      required:
+                        - id
+                        - price
+                    reciever_city:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        id:
+                          type: integer
+                          description: ''
+                          example: 8
+                          nullable: true
+                    reciever_state:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        id:
+                          type: integer
+                          description: ''
+                          example: 15
+                          nullable: true
+                  required:
+                    - first_name
+                    - last_name
+                    - phone
+                    - grand_total
+                    - commission
+                    - shipping_cost
+                    - shipping_method
+              required:
+                - shipping_data
+      security: []
+  /api/payments/initialize-boost:
+    post:
+      summary: ''
+      operationId: postApiPaymentsInitializeBoost
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                advert_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the adverts table.'
+                  example: 7
+                amount:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 15
+                boost_type:
+                  type: string
+                  description: ''
+                  example: labore
+                duration:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 77
+              required:
+                - advert_id
+                - amount
+                - boost_type
+                - duration
+      security: []
+  '/api/payments/{paymentId}':
+    get:
+      summary: ''
+      operationId: getApiPaymentsPaymentId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      security: []
+    parameters:
+      -
+        in: path
+        name: paymentId
+        description: ''
+        example: est
+        required: true
+        schema:
+          type: string
+  '/api/payments/user/{userId}':
+    get:
+      summary: ''
+      operationId: getApiPaymentsUserUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: dolores
+        required: true
+        schema:
+          type: string
+  '/api/boosts/user/{userId}':
+    get:
+      summary: ''
+      operationId: getApiBoostsUserUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: cum
+        required: true
+        schema:
+          type: string
+  /api/payments/callback:
+    post:
+      summary: ''
+      operationId: postApiPaymentsCallback
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reference:
+                  type: string
+                  description: ''
+                  example: et
+              required:
+                - reference
+      security: []
+  /api/user/boosts:
+    get:
+      summary: ''
+      operationId: getApiUserBoosts
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+  /api/boosts/active:
+    get:
+      summary: ''
+      operationId: getApiBoostsActive
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+  /api/boosts/pending:
+    get:
+      summary: ''
+      operationId: getApiBoostsPending
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+  '/api/adverts/{advertId}/boost-info':
+    get:
+      summary: ''
+      operationId: getApiAdvertsAdvertIdBoostInfo
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: deserunt
+        required: true
+        schema:
+          type: string
+  '/api/adverts/{advertId}/boost':
+    post:
+      summary: ''
+      operationId: postApiAdvertsAdvertIdBoost
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                duration_days:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 30.'
+                  example: 24
+                  nullable: true
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: commodi
+        required: true
+        schema:
+          type: string
+  '/api/adverts/{advertId}/boost-status':
+    get:
+      summary: ''
+      operationId: getApiAdvertsAdvertIdBoostStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+    parameters:
+      -
+        in: path
+        name: advertId
+        description: ''
+        example: vel
+        required: true
+        schema:
+          type: string
+  '/api/boosts/{boostId}':
+    get:
+      summary: ''
+      operationId: getApiBoostsBoostId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiBoostsBoostId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      security: []
+    parameters:
+      -
+        in: path
+        name: boostId
+        description: ''
+        example: inventore
+        required: true
+        schema:
+          type: string
+  '/api/boosts/{boostId}/upload-proof':
+    post:
+      summary: ''
+      operationId: postApiBoostsBoostIdUploadProof
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Boosts
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                payment_proof:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 12048 kilobytes.'
+              required:
+                - payment_proof
+      security: []
+    parameters:
+      -
+        in: path
+        name: boostId
+        description: ''
         example: id
         required: true
         schema:
           type: string
+  /api/locations/states:
+    get:
+      summary: ''
+      operationId: getApiLocationsStates
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      security: []
+  '/api/locations/states/{state_id}/cities':
+    get:
+      summary: ''
+      operationId: getApiLocationsStatesState_idCities
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      security: []
+    parameters:
+      -
+        in: path
+        name: state_id
+        description: 'The ID of the state.'
+        example: quam
+        required: true
+        schema:
+          type: string
+  '/api/locations/states/{state_id}/details':
+    get:
+      summary: ''
+      operationId: getApiLocationsStatesState_idDetails
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      security: []
+    parameters:
+      -
+        in: path
+        name: state_id
+        description: 'The ID of the state.'
+        example: pariatur
+        required: true
+        schema:
+          type: string
+  /api/locations/cities:
+    get:
+      summary: ''
+      operationId: getApiLocationsCities
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: 'Must be at least 2 characters.'
+                  example: iqyhseaguwxvvdqdoxbblwtpcxzxskehjfskzvclwgx
+                  nullable: true
+                state_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the states table.'
+                  example: 15
+                  nullable: true
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 50.'
+                  example: 20
+                  nullable: true
+      security: []
+  '/api/locations/cities/{city_id}':
+    get:
+      summary: ''
+      operationId: getApiLocationsCitiesCity_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      security: []
+    parameters:
+      -
+        in: path
+        name: city_id
+        description: 'The ID of the city.'
+        example: enim
+        required: true
+        schema:
+          type: string
+  /api/shipping/calculate:
+    post:
+      summary: ''
+      operationId: postApiShippingCalculate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Locations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sender_station:
+                  type: string
+                  description: ''
+                  example: qui
+                receiver_station:
+                  type: string
+                  description: ''
+                  example: eos
+                ad_price:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 53
+                ad_title:
+                  type: string
+                  description: ''
+                  example: tempore
+                ad_des:
+                  type: string
+                  description: ''
+                  example: eius
+                  nullable: true
+                weight:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 8
+                  nullable: true
+                quantity:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 21
+                  nullable: true
+              required:
+                - sender_station
+                - receiver_station
+                - ad_price
+                - ad_title
+      security: []
+  /api/test/notification:
+    post:
+      summary: 'Send a test push notification'
+      operationId: sendATestPushNotification
+      description: "This endpoint allows you to test push notifications locally.\nOnly available in local/development environment."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Test notification sent successfully'
+                  data:
+                    tokens_count: 1
+                    notification:
+                      title: 'Test Notification'
+                      body: 'This is a test message'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Test notification sent successfully'
+                  data:
+                    type: object
+                    properties:
+                      tokens_count:
+                        type: integer
+                        example: 1
+                      notification:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            example: 'Test Notification'
+                          body:
+                            type: string
+                            example: 'This is a test message'
+      tags:
+        - Testing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: fvmub
+                  nullable: true
+                message:
+                  type: string
+                  description: 'Must not be greater than 500 characters.'
+                  example: agxewypxskeprdbjacwlu
+                data:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: {  }
+                  nullable: true
+                target_user_id:
+                  type: integer
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: 10
+                  nullable: true
+                device_token:
+                  type: string
+                  description: ''
+                  example: aut
+                  nullable: true
+              required:
+                - message
+  /api/test/my-tokens:
+    get:
+      summary: "Get user's registered device tokens"
+      operationId: getUsersRegisteredDeviceTokens
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    user_tokens:
+                      -
+                        id: 1
+                        platform: android
+                        token: cDNfP...
+                        is_active: true
+                        last_used_at: '2026-01-13T10:30:00.000000Z'
+                    total_count: 1
+                    active_count: 1
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      user_tokens:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            platform: android
+                            token: cDNfP...
+                            is_active: true
+                            last_used_at: '2026-01-13T10:30:00.000000Z'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            platform:
+                              type: string
+                              example: android
+                            token:
+                              type: string
+                              example: cDNfP...
+                            is_active:
+                              type: boolean
+                              example: true
+                            last_used_at:
+                              type: string
+                              example: '2026-01-13T10:30:00.000000Z'
+                      total_count:
+                        type: integer
+                        example: 1
+                      active_count:
+                        type: integer
+                        example: 1
+      tags:
+        - Testing
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/broadcasting/auth:
+    get:
+      summary: 'Authenticate the request for channel access.'
+      operationId: authenticateTheRequestForChannelAccess
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/unread-messages-count:
+    get:
+      summary: ''
+      operationId: getApiUnreadMessagesCount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/check-following/{userId}':
+    get:
+      summary: ''
+      operationId: getApiCheckFollowingUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: et
+        required: true
+        schema:
+          type: string
+  /api/toggle-follow:
+    post:
+      summary: ''
+      operationId: postApiToggleFollow
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followee_id:
+                  type: string
+                  description: 'The <code>user_id</code> of an existing record in the users table.'
+                  example: delectus
+              required:
+                - followee_id
+      security: []

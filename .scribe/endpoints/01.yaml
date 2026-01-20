@@ -31,7 +31,7 @@ endpoints:
         name: title
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: rqgefsnxivnixuxjzozrovdel
+        example: fvmub
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -42,7 +42,7 @@ endpoints:
         name: message
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: pujgovth
+        example: agxewypxskeprdbjacwlu
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -64,7 +64,7 @@ endpoints:
         name: target_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: false
-        example: 15
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -75,17 +75,17 @@ endpoints:
         name: device_token
         description: ''
         required: false
-        example: illo
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      title: rqgefsnxivnixuxjzozrovdel
-      message: pujgovth
-      target_user_id: 15
-      device_token: illo
+      title: fvmub
+      message: agxewypxskeprdbjacwlu
+      target_user_id: 10
+      device_token: aut
     fileParameters: []
     responses:
       -
@@ -109,7 +109,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 5eaP3d84k1Eavh6cbfVg6ZD'
+      - 'Bearer ca56fe63kEVdgDZ1av4P8bh'
     controller: null
     method: null
     route: null
@@ -164,7 +164,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 8abDegv13Z5d6V4chafk6PE'
+      - 'Bearer EZfPgadhcvV5Dab1436ek68'
     controller: null
     method: null
     route: null

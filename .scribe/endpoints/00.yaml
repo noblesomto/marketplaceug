@@ -48,7 +48,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer EgeZf6Da15Vkbc463aPd8hv'
+      - 'Bearer b3c164VDZgadkE6ahve8f5P'
     controller: null
     method: null
     route: null
@@ -82,7 +82,7 @@ endpoints:
         name: token
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: hidnggzv
+        example: nar
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -93,15 +93,15 @@ endpoints:
         name: platform
         description: ''
         required: true
-        example: dolor
+        example: illo
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      token: hidnggzv
-      platform: dolor
+      token: nar
+      platform: illo
     fileParameters: []
     responses:
       -
@@ -122,7 +122,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3DdP6bavea1Z5684VEfgchk'
+      - 'Bearer f1v4dVh8g65aZePDk3Eacb6'
     controller: null
     method: null
     route: null
@@ -149,14 +149,14 @@ endpoints:
         name: id
         description: 'The ID of the device token.'
         required: true
-        example: voluptatum
+        example: ut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: voluptatum
+      id: ut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -187,7 +187,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer c6gbdE3eP64vZV8afkh51Da'
+      - 'Bearer P6dZVaE4hv1D5c3fa86begk'
     controller: null
     method: null
     route: null
@@ -232,7 +232,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer a8cfb64vZaDVP13d5e6hEkg'
+      - 'Bearer v6k8D3ehEdc1Z4abVP6f5ga'
     controller: null
     method: null
     route: null
@@ -264,14 +264,14 @@ endpoints:
         name: push_notifications_enabled
         description: ''
         required: true
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      push_notifications_enabled: true
+      push_notifications_enabled: false
     fileParameters: []
     responses:
       -
@@ -291,7 +291,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 5aVbPvD6E3f1dehaZk86gc4'
+      - 'Bearer 6Va1Evebf3k6DPh8Zg5da4c'
     controller: null
     method: null
     route: null

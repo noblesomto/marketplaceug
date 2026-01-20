@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
+/**
+ * @group User
+ *
+ * APIs for user dashboard, ads, wishlist, payments, and user interactions
+ */
 class UserController extends Controller
 {
     /**

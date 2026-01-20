@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group Locations
+ *
+ * APIs for locations, states, cities, and shipping calculations
+ */
 class LocationController extends Controller
 {
     /**

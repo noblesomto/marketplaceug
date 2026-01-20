@@ -1,0 +1,134 @@
+name: 'Advert Management'
+description: |-
+
+  APIs for creating, updating, and managing user adverts
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/adverts/categories/{categoryId}/subcategories'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters:
+      categoryId:
+        custom: []
+        name: categoryId
+        description: ''
+        required: true
+        example: dignissimos
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      categoryId: dignissimos
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/adverts/subcategories/{subcategoryId}/brands'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters:
+      subcategoryId:
+        custom: []
+        name: subcategoryId
+        description: ''
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      subcategoryId: et
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/adverts/brands/{brandId}/models'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters:
+      brandId:
+        custom: []
+        name: brandId
+        description: ''
+        required: true
+        example: eius
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      brandId: eius
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

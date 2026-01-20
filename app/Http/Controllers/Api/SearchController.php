@@ -12,6 +12,11 @@ use App\Models\Brands;
 use App\Models\State;
 use Jenssegers\Agent\Agent;
 
+/**
+ * @group Search
+ *
+ * APIs for searching and filtering adverts across the platform
+ */
 class SearchController extends Controller
 {
     /**

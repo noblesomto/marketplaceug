@@ -129,13 +129,38 @@ return [
     'groups' => [
         'default' => 'Endpoints',
         'order' => [
+            // Authentication & Account
             'Authentication',
+
+            // Adverts
             'Adverts',
-            'User Management',
-            'Messages',
-            'Payments',
+            'Advert Management',
+            'Advert Statistics',
             'Search',
+
+            // User Features
+            'User',
+            'User Profile',
+            'User Statistics',
+            'Users',
+            'Wishlist',
+            'Following',
+            'Feedbacks',
+
+            // Messaging & Notifications
+            'Messages',
+            'Notifications',
+
+            // Payments & Boosts
+            'Payments',
+            'Boosts',
+
+            // Locations & Shipping
             'Locations',
+            'Shipping',
+
+            // Development/Testing
+            'Testing',
         ],
     ],
 

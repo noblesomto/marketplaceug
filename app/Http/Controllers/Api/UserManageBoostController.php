@@ -9,6 +9,11 @@ use App\Models\Advert;
 use App\Models\AdvertBoost;
 use Carbon\Carbon;
 
+/**
+ * @group Boosts
+ *
+ * APIs for managing advert boosts and boost packages
+ */
 class UserManageBoostController extends Controller
 {
     /**

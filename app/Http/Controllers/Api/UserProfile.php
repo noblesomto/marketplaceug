@@ -17,6 +17,11 @@ use App\Mail\VerificationRequestMail;
 use App\Rules\NigerianPhoneNumber;
 use Carbon\Carbon;
 
+/**
+ * @group User Profile
+ *
+ * APIs for managing user profile, settings, verification, and account preferences
+ */
 class UserProfile extends Controller
 {
     /**

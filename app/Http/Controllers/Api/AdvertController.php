@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportMail;
 use App\Services\FeaturedAdPaginator;
 
+/**
+ * @group Adverts
+ *
+ * Public APIs for viewing and browsing adverts
+ */
 class AdvertController extends Controller
 {
     /**

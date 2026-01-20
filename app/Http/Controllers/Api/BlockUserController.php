@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\BlockedUser;
 
+/**
+ * @group Users
+ *
+ * APIs for blocking and unblocking users
+ */
 class BlockUserController extends Controller
 {
     /**

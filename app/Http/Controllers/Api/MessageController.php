@@ -17,6 +17,11 @@ use App\Events\NewMessageNotification;
 use Carbon\Carbon;
 use App\Jobs\SendPushNotification;
 
+/**
+ * @group Messages
+ *
+ * APIs for managing messages and conversations between users
+ */
 class MessageController extends Controller
 {
     /**
