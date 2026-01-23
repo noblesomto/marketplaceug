@@ -31,7 +31,7 @@
                                @endif
                            </div>
                            <div class="col-sm-5 text-end">
-                              @if($cat->sub_category == "Cars" || $cat->sub_category == "Phones and Tablets")
+                              @if($cat->sub_category == "Cars" || $cat->sub_category == "Phones and Tablets" || $cat->sub_category == "Buses & Minibuses" || $cat->sub_category == "Truck & Trailers")
                               <a href="/admin/model/{{ $row->id }}" class="btn btn-sm btn-info" title="View Models">
                                   <i class="fa fa-eye"></i>
                               </a>

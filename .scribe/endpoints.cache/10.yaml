@@ -9,6 +9,395 @@ endpoints:
     custom: []
     httpMethods:
       - GET
+    uri: api/adverts/create/data
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/adverts/{advertId}/edit'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters:
+      advertId:
+        custom: []
+        name: advertId
+        description: ''
+        required: true
+        example: beatae
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      advertId: beatae
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/adverts
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: multipart/form-data
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      ad_title:
+        custom: []
+        name: ad_title
+        description: 'Must not be greater than 75 characters.'
+        required: true
+        example: apupgfdbflkwsjgqnlgoz
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      category:
+        custom: []
+        name: category
+        description: ''
+        required: true
+        example: minus
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subcategory:
+        custom: []
+        name: subcategory
+        description: ''
+        required: true
+        example: consequuntur
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      brand:
+        custom: []
+        name: brand
+        description: ''
+        required: true
+        example: in
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: ''
+        required: true
+        example: assumenda
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      lga:
+        custom: []
+        name: lga
+        description: ''
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: ''
+        required: true
+        example: labore
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      images:
+        custom: []
+        name: images
+        description: 'Must be an image. Must not be greater than 21000 kilobytes.'
+        required: false
+        example:
+          - null
+        type: 'file[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      ad_title: apupgfdbflkwsjgqnlgoz
+      category: minus
+      subcategory: consequuntur
+      brand: in
+      state: assumenda
+      lga: est
+      description: labore
+    fileParameters:
+      images:
+        - null
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/adverts/{advertId}'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: multipart/form-data
+    urlParameters:
+      advertId:
+        custom: []
+        name: advertId
+        description: ''
+        required: true
+        example: maxime
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      advertId: maxime
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      ad_title:
+        custom: []
+        name: ad_title
+        description: 'Must not be greater than 75 characters.'
+        required: true
+        example: illukwcmohbn
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      category:
+        custom: []
+        name: category
+        description: ''
+        required: true
+        example: accusamus
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subcategory:
+        custom: []
+        name: subcategory
+        description: ''
+        required: true
+        example: consequatur
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      brand:
+        custom: []
+        name: brand
+        description: ''
+        required: true
+        example: perspiciatis
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: ''
+        required: true
+        example: alias
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      lga:
+        custom: []
+        name: lga
+        description: ''
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: ''
+        required: true
+        example: ipsum
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      images:
+        custom: []
+        name: images
+        description: 'Must be an image. Must not be greater than 21000 kilobytes.'
+        required: false
+        example:
+          - null
+        type: 'file[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      ad_title: illukwcmohbn
+      category: accusamus
+      subcategory: consequatur
+      brand: perspiciatis
+      state: alias
+      lga: et
+      description: ipsum
+    fileParameters:
+      images:
+        - null
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/adverts/{advertId}'
+    metadata:
+      custom: []
+      groupName: 'Advert Management'
+      groupDescription: |-
+
+        APIs for creating, updating, and managing user adverts
+      subgroup: null
+      subgroupDescription: null
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers: []
+    urlParameters:
+      advertId:
+        custom: []
+        name: advertId
+        description: ''
+        required: true
+        example: dolorem
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      advertId: dolorem
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
     uri: 'api/adverts/categories/{categoryId}/subcategories'
     metadata:
       custom: []
@@ -29,14 +418,14 @@ endpoints:
         name: categoryId
         description: ''
         required: true
-        example: dignissimos
+        example: ratione
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      categoryId: dignissimos
+      categoryId: ratione
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -72,14 +461,14 @@ endpoints:
         name: subcategoryId
         description: ''
         required: true
-        example: et
+        example: non
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      subcategoryId: et
+      subcategoryId: non
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -115,14 +504,14 @@ endpoints:
         name: brandId
         description: ''
         required: true
-        example: eius
+        example: accusantium
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      brandId: eius
+      brandId: accusantium
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

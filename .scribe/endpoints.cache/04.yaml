@@ -64,14 +64,14 @@ endpoints:
         name: id
         description: 'The ID of the advert.'
         required: true
-        example: sit
+        example: sunt
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: sit
+      id: sunt
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -109,14 +109,14 @@ endpoints:
         name: seller_id
         description: 'The ID of the seller.'
         required: true
-        example: sapiente
+        example: at
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      seller_id: sapiente
+      seller_id: at
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -187,14 +187,14 @@ endpoints:
         name: category_slug
         description: 'The slug of the category.'
         required: true
-        example: dolore
+        example: quibusdam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      category_slug: dolore
+      category_slug: quibusdam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -232,7 +232,7 @@ endpoints:
         name: category_slug
         description: 'The slug of the category.'
         required: true
-        example: dolorem
+        example: facilis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -243,15 +243,15 @@ endpoints:
         name: subcat_slug
         description: 'The slug of the subcat.'
         required: true
-        example: et
+        example: veniam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      category_slug: dolorem
-      subcat_slug: et
+      category_slug: facilis
+      subcat_slug: veniam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -289,7 +289,7 @@ endpoints:
         name: category_slug
         description: 'The slug of the category.'
         required: true
-        example: aperiam
+        example: sapiente
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -300,7 +300,7 @@ endpoints:
         name: subcat_slug
         description: 'The slug of the subcat.'
         required: true
-        example: cumque
+        example: repellendus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -311,16 +311,16 @@ endpoints:
         name: brand_slug
         description: 'The slug of the brand.'
         required: true
-        example: esse
+        example: culpa
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      category_slug: aperiam
-      subcat_slug: cumque
-      brand_slug: esse
+      category_slug: sapiente
+      subcat_slug: repellendus
+      brand_slug: culpa
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -358,14 +358,14 @@ endpoints:
         name: state_slug
         description: 'The slug of the state.'
         required: true
-        example: eius
+        example: dolorem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      state_slug: eius
+      state_slug: dolorem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -469,14 +469,14 @@ endpoints:
         name: id
         description: 'The ID of the advert.'
         required: true
-        example: illo
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: illo
+      id: et
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -485,7 +485,7 @@ endpoints:
         name: subject
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: uxfxdmlfjylcwi
+        example: fqctf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -496,15 +496,15 @@ endpoints:
         name: message
         description: ''
         required: true
-        example: nostrum
+        example: deleniti
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      subject: uxfxdmlfjylcwi
-      message: nostrum
+      subject: fqctf
+      message: deleniti
     fileParameters: []
     responses:
       -
@@ -543,7 +543,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ckPVZ65E6ghfad4be3Da8v1'
+      - 'Bearer a3cEP6dZf5g6DVhe48akvb1'
     controller: null
     method: null
     route: null
@@ -574,14 +574,14 @@ endpoints:
         name: id
         description: 'The ID of the advert.'
         required: true
-        example: occaecati
+        example: ea
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: occaecati
+      id: ea
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -590,14 +590,14 @@ endpoints:
         name: message
         description: ''
         required: true
-        example: odit
+        example: esse
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      message: odit
+      message: esse
     fileParameters: []
     responses: []
     responseFields: []

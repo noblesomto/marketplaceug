@@ -182,6 +182,7 @@ class MessageController extends Controller
 
     public function archive(Request $request)
     {
+        //dd($request);
         $validated = $request->validate([
             'advert_id' => 'required|exists:adverts,id',
             'other_user_id' => 'required|exists:users,user_id',

@@ -81,7 +81,7 @@ class UserManageBoostController extends Controller
             'data' => [
                 'advert' => $advert,
                 'boost_price' => $price,
-                'has_active_boost' => $advert->boost && $advert->boost->status === 'active',
+                //'has_active_boost' => $advert->boost && $advert->boost->status === 'active',
                 'current_boost' => $advert->boost
             ]
         ]);

@@ -2,9 +2,8 @@
     "info": {
         "_postman_id": "marketplace-api-complete-6966c88f4114a",
         "name": "Marketplace Nigeria API - Complete",
-        "description": "Complete API collection for Marketplace Nigeria with sample data\n\n**Base URLs:**\n- Local: http://127.0.0.1:8030\n- Production: https://www.marketplace.ng\n\n**Authentication:**\nMost endpoints require Bearer token. Login first to get your token.\n\n**All requests include sample data - ready to test!**\n\n**Version:** 3.0\n**Generated:** 2026-01-21 (Updated Routes)",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "version": "3.1"
+        "description": "Complete API collection for Marketplace Nigeria with sample data\n\n**Base URLs:**\n- Local: http://127.0.0.1:8030\n- Production: https://www.marketplace.ng\n\n**Authentication:**\nMost endpoints require Bearer token. Login first to get your token.\n\n**All requests include sample data - ready to test!**\n\n**Version:** 3.0\n**Generated:** 2026-01-13 23:34:55",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "auth": {
         "type": "bearer",
@@ -30,19 +29,19 @@
                     "        // Save token from login/register",
                     "        if (response.data && response.data.token) {",
                     "            pm.environment.set(\"auth_token\", response.data.token);",
-                    "            console.log(\"✅ Auth token saved to environment\");",
+                    "            console.log(\"\u2705 Auth token saved to environment\");",
                     "        }",
                     "        ",
                     "        // Save user_id",
                     "        if (response.data && response.data.user_id) {",
                     "            pm.environment.set(\"user_id\", response.data.user_id);",
-                    "            console.log(\"✅ User ID saved:\", response.data.user_id);",
+                    "            console.log(\"\u2705 User ID saved:\", response.data.user_id);",
                     "        }",
                     "        ",
                     "        // Save advert_id from create advert",
                     "        if (response.data && response.data.id && pm.request.url.path.includes(\"adverts\")) {",
                     "            pm.environment.set(\"advert_id\", response.data.id);",
-                    "            console.log(\"✅ Advert ID saved:\", response.data.id);",
+                    "            console.log(\"\u2705 Advert ID saved:\", response.data.id);",
                     "        }",
                     "    } catch (e) {",
                     "        // Ignore JSON parse errors",
@@ -82,7 +81,7 @@
                                 "register"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/register`\nController: `App\\Http\\Controllers\\Api\\AccountController@register`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/register`\nController: `App\\Http\\Controllers\\Api\\AccountController@register`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -124,7 +123,7 @@
                                 "login"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/login`\nController: `App\\Http\\Controllers\\Api\\AccountController@login`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/login`\nController: `App\\Http\\Controllers\\Api\\AccountController@login`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -166,7 +165,7 @@
                                 "verify-otp"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/verify-otp`\nController: `App\\Http\\Controllers\\Api\\AccountController@verifyOTP`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/verify-otp`\nController: `App\\Http\\Controllers\\Api\\AccountController@verifyOTP`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -208,7 +207,7 @@
                                 "resend-otp"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/resend-otp`\nController: `App\\Http\\Controllers\\Api\\AccountController@resendOTP`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/resend-otp`\nController: `App\\Http\\Controllers\\Api\\AccountController@resendOTP`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -252,7 +251,7 @@
                                 "{token}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/verify/{email}/{token}`\nController: `App\\Http\\Controllers\\Api\\AccountController@verifyAccount`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/verify/{email}/{token}`\nController: `App\\Http\\Controllers\\Api\\AccountController@verifyAccount`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -285,7 +284,7 @@
                                 "resend-verification"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/resend-verification`\nController: `App\\Http\\Controllers\\Api\\AccountController@resendVerification`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/resend-verification`\nController: `App\\Http\\Controllers\\Api\\AccountController@resendVerification`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -327,7 +326,7 @@
                                 "forgot-password"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/forgot-password`\nController: `App\\Http\\Controllers\\Api\\AccountController@forgotPassword`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/forgot-password`\nController: `App\\Http\\Controllers\\Api\\AccountController@forgotPassword`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -371,7 +370,7 @@
                                 "{token}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/reset-password/{user_id}/{token}`\nController: `App\\Http\\Controllers\\Api\\AccountController@resetPassword`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/reset-password/{user_id}/{token}`\nController: `App\\Http\\Controllers\\Api\\AccountController@resetPassword`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -414,7 +413,7 @@
                                 "social"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/auth/social`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialLogin`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/auth/social`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialLogin`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -458,7 +457,7 @@
                                 "redirect"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/auth/{provider}/redirect`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialRedirect`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/auth/{provider}/redirect`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialRedirect`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -493,7 +492,7 @@
                                 "callback"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/auth/{provider}/callback`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialCallback`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/auth/{provider}/callback`\nController: `App\\Http\\Controllers\\Api\\AccountController@socialCallback`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -526,7 +525,7 @@
                                 "logout"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/logout`\nController: `App\\Http\\Controllers\\Api\\AccountController@logout`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/logout`\nController: `App\\Http\\Controllers\\Api\\AccountController@logout`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -580,7 +579,7 @@
                                 "adverts"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts`\nController: `App\\Http\\Controllers\\Api\\AdvertController@index`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts`\nController: `App\\Http\\Controllers\\Api\\AdvertController@index`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -614,7 +613,7 @@
                                 "{id}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@show`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@show`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -649,7 +648,7 @@
                                 "{seller_id}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/seller/{seller_id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@sellerAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/seller/{seller_id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@sellerAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -683,7 +682,7 @@
                                 "featured"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/featured`\nController: `App\\Http\\Controllers\\Api\\AdvertController@featuredAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/featured`\nController: `App\\Http\\Controllers\\Api\\AdvertController@featuredAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -717,7 +716,7 @@
                                 "load-more"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/load-more`\nController: `App\\Http\\Controllers\\Api\\AdvertController@loadMore`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/load-more`\nController: `App\\Http\\Controllers\\Api\\AdvertController@loadMore`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -752,7 +751,7 @@
                                 "report"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{id}/report`\nController: `App\\Http\\Controllers\\Api\\AdvertController@reportAdvert`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{id}/report`\nController: `App\\Http\\Controllers\\Api\\AdvertController@reportAdvert`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -803,7 +802,7 @@
                                 "apply"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{id}/apply`\nController: `App\\Http\\Controllers\\Api\\AdvertController@applyJob`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{id}/apply`\nController: `App\\Http\\Controllers\\Api\\AdvertController@applyJob`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -855,7 +854,7 @@
                                 "subcategories"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/categories/{categoryId}/subcategories`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getSubcategories`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/categories/{categoryId}/subcategories`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getSubcategories`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -863,7 +862,7 @@
                     "response": []
                 },
                 {
-                    "name": "Get Brands by Subcategory",
+                    "name": "Adverts Subcategories  SubcategoryId  Brands",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -891,7 +890,7 @@
                                 "brands"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/subcategories/{subcategoryId}/brands`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@fetchBrands`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/subcategories/{subcategoryId}/brands`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getBrands`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -899,7 +898,7 @@
                     "response": []
                 },
                 {
-                    "name": "Get Models by Brand",
+                    "name": "Adverts Brands  BrandId  Models",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -927,7 +926,7 @@
                                 "models"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/brands/{brandId}/models`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@fetchModels`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/brands/{brandId}/models`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getModels`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -962,7 +961,7 @@
                                 "boost-info"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/{advertId}/boost-info`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getBoostInfo`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/{advertId}/boost-info`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getBoostInfo`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1004,7 +1003,7 @@
                                 "boost"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{advertId}/boost`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@createBoost`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts/{advertId}/boost`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@createBoost`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1055,7 +1054,7 @@
                                 "boost-status"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/{advertId}/boost-status`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@checkBoostStatus`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/{advertId}/boost-status`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@checkBoostStatus`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1096,7 +1095,7 @@
                                 "count"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/count`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertCount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/count`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertCount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1137,7 +1136,7 @@
                                 "by-state"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/by-state`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertsByState`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/by-state`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertsByState`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1178,7 +1177,7 @@
                                 "count-filtered"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/count-filtered`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertCountByFilter`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/count-filtered`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getAdvertCountByFilter`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1219,7 +1218,7 @@
                                 "brands"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/brands`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getBrandsWithAdvertCount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/brands`\nController: `App\\Http\\Controllers\\Api\\AdvertStatsController@getBrandsWithAdvertCount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -1264,7 +1263,7 @@
                                 "categories"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories`\nController: `App\\Http\\Controllers\\Api\\AdvertController@categories`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories`\nController: `App\\Http\\Controllers\\Api\\AdvertController@categories`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1298,7 +1297,7 @@
                                 "{category_slug}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories/{category_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@categoryAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories/{category_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@categoryAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1333,7 +1332,7 @@
                                 "{subcat_slug}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories/{category_slug}/{subcat_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@subcategoryAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/categories/{category_slug}/{subcat_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@subcategoryAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1369,7 +1368,7 @@
                                 "{brand_slug}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@brandAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/brands/{category_slug}/{subcat_slug}/{brand_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@brandAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1407,7 +1406,7 @@
                                 "search"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search`\nController: `App\\Http\\Controllers\\Api\\SearchController@search`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/search`\nController: `App\\Http\\Controllers\\Api\\SearchController@search`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1441,7 +1440,7 @@
                                 "filter"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter`\nController: `App\\Http\\Controllers\\Api\\SearchController@filter`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter`\nController: `App\\Http\\Controllers\\Api\\SearchController@filter`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -1484,7 +1483,7 @@
                                 "filter-by-seller"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-seller`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterBySeller`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-seller`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterBySeller`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -1527,7 +1526,7 @@
                                 "filter-by-buydirect"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-buydirect`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByBuydirect`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-buydirect`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByBuydirect`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -1572,7 +1571,7 @@
                                 "{slug}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/location/{location}/{slug}`\nController: `App\\Http\\Controllers\\Api\\SearchController@locationSearch`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/location/{location}/{slug}`\nController: `App\\Http\\Controllers\\Api\\SearchController@locationSearch`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1606,7 +1605,7 @@
                                 "filters"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/filters`\nController: `App\\Http\\Controllers\\Api\\SearchController@getFilters`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/filters`\nController: `App\\Http\\Controllers\\Api\\SearchController@getFilters`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1640,7 +1639,7 @@
                                 "suggestions"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/suggestions`\nController: `App\\Http\\Controllers\\Api\\SearchController@getSuggestions`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/suggestions`\nController: `App\\Http\\Controllers\\Api\\SearchController@getSuggestions`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1674,7 +1673,7 @@
                                 "load-more"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/load-more`\nController: `App\\Http\\Controllers\\Api\\SearchController@loadMore`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/search/load-more`\nController: `App\\Http\\Controllers\\Api\\SearchController@loadMore`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1713,7 +1712,7 @@
                                 "{state_slug}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/location/{state_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@locationAdverts`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/location/{state_slug}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@locationAdverts`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1747,7 +1746,7 @@
                                 "states"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states`\nController: `App\\Http\\Controllers\\Api\\LocationController@getStates`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states`\nController: `App\\Http\\Controllers\\Api\\LocationController@getStates`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1783,7 +1782,7 @@
                                 "cities"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states/{state_id}/cities`\nController: `App\\Http\\Controllers\\Api\\LocationController@getCitiesByState`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states/{state_id}/cities`\nController: `App\\Http\\Controllers\\Api\\LocationController@getCitiesByState`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1819,7 +1818,7 @@
                                 "details"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states/{state_id}/details`\nController: `App\\Http\\Controllers\\Api\\LocationController@getStateWithCities`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/states/{state_id}/details`\nController: `App\\Http\\Controllers\\Api\\LocationController@getStateWithCities`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1853,7 +1852,7 @@
                                 "cities"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/cities`\nController: `App\\Http\\Controllers\\Api\\LocationController@searchCities`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/cities`\nController: `App\\Http\\Controllers\\Api\\LocationController@searchCities`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1888,7 +1887,7 @@
                                 "{city_id}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/cities/{city_id}`\nController: `App\\Http\\Controllers\\Api\\LocationController@getCity`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/locations/cities/{city_id}`\nController: `App\\Http\\Controllers\\Api\\LocationController@getCity`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1922,7 +1921,7 @@
                                 "calculate"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/shipping/calculate`\nController: `App\\Http\\Controllers\\Api\\LocationController@calculateShippingCost`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/shipping/calculate`\nController: `App\\Http\\Controllers\\Api\\LocationController@calculateShippingCost`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -1969,7 +1968,7 @@
                                 "messages"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages`\nController: `App\\Http\\Controllers\\Api\\MessageController@sendMessage`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages`\nController: `App\\Http\\Controllers\\Api\\MessageController@sendMessage`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2021,7 +2020,7 @@
                                 "{receiverId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/conversation/{advertId}/{receiverId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getConversation`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/conversation/{advertId}/{receiverId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getConversation`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2063,7 +2062,7 @@
                                 "{advertId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/advert/{advertId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getAdvertMessages`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/advert/{advertId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getAdvertMessages`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2104,7 +2103,7 @@
                                 "conversations"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/conversations`\nController: `App\\Http\\Controllers\\Api\\MessageController@getUserConversations`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/conversations`\nController: `App\\Http\\Controllers\\Api\\MessageController@getUserConversations`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2146,7 +2145,7 @@
                                 "count"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/unread/count`\nController: `App\\Http\\Controllers\\Api\\MessageController@getUnreadCount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/unread/count`\nController: `App\\Http\\Controllers\\Api\\MessageController@getUnreadCount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2188,7 +2187,7 @@
                                 "read"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/messages/{messageId}/read`\nController: `App\\Http\\Controllers\\Api\\MessageController@markAsRead`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/messages/{messageId}/read`\nController: `App\\Http\\Controllers\\Api\\MessageController@markAsRead`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2241,7 +2240,7 @@
                                 "read"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/messages/conversation/{advertId}/{userId}/read`\nController: `App\\Http\\Controllers\\Api\\MessageController@markConversationAsRead`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/messages/conversation/{advertId}/{userId}/read`\nController: `App\\Http\\Controllers\\Api\\MessageController@markConversationAsRead`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2291,7 +2290,7 @@
                                 "archive"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages/archive`\nController: `App\\Http\\Controllers\\Api\\MessageController@archive`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages/archive`\nController: `App\\Http\\Controllers\\Api\\MessageController@archive`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2341,7 +2340,7 @@
                                 "unarchive"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages/unarchive`\nController: `App\\Http\\Controllers\\Api\\MessageController@unarchive`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/messages/unarchive`\nController: `App\\Http\\Controllers\\Api\\MessageController@unarchive`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2391,7 +2390,7 @@
                                 "archived"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/archived`\nController: `App\\Http\\Controllers\\Api\\MessageController@getArchivedConversations`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/archived`\nController: `App\\Http\\Controllers\\Api\\MessageController@getArchivedConversations`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2431,7 +2430,7 @@
                                 "unread-messages-count"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/unread-messages-count`\nController: `Closure`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/unread-messages-count`\nController: `Closure`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2478,7 +2477,7 @@
                                 "mark-delivered"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/{paymentId}/mark-delivered`\nController: `App\\Http\\Controllers\\Api\\MessageController@markAsDelivered`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/{paymentId}/mark-delivered`\nController: `App\\Http\\Controllers\\Api\\MessageController@markAsDelivered`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2528,7 +2527,7 @@
                                 "initialize"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/initialize`\nController: `App\\Http\\Controllers\\Api\\PaystackController@initializePayment`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/initialize`\nController: `App\\Http\\Controllers\\Api\\PaystackController@initializePayment`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2578,7 +2577,7 @@
                                 "initialize-boost"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/initialize-boost`\nController: `App\\Http\\Controllers\\Api\\PaystackController@initializeBoost`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/payments/initialize-boost`\nController: `App\\Http\\Controllers\\Api\\PaystackController@initializeBoost`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2628,7 +2627,7 @@
                                 "{paymentId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/{paymentId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getPayment`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/{paymentId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getPayment`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2670,7 +2669,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserPayments`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserPayments`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2711,7 +2710,7 @@
                                 "callback"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/payments/callback`\nController: `App\\Http\\Controllers\\Api\\PaystackController@handleCallback`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/payments/callback`\nController: `App\\Http\\Controllers\\Api\\PaystackController@handleCallback`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -2760,7 +2759,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserBoosts`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserBoosts`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2801,7 +2800,7 @@
                                 "active"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/active`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getActiveBoosts`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/active`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getActiveBoosts`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2842,7 +2841,7 @@
                                 "pending"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/pending`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getPendingBoosts`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/pending`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getPendingBoosts`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2883,7 +2882,7 @@
                                 "{boostId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getBoost`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getBoost`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2925,7 +2924,7 @@
                                 "upload-proof"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/boosts/{boostId}/upload-proof`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@uploadProof`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/boosts/{boostId}/upload-proof`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@uploadProof`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -2975,7 +2974,7 @@
                                 "{boostId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@cancelBoost`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@cancelBoost`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3020,7 +3019,7 @@
                                 "device-tokens"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/device-tokens`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@index`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/device-tokens`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@index`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3060,7 +3059,7 @@
                                 "device-tokens"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/device-tokens`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@store`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/device-tokens`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@store`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3110,7 +3109,7 @@
                                 "{id}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/device-tokens/{id}`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@destroy`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/device-tokens/{id}`\nController: `App\\Http\\Controllers\\Api\\DeviceTokenController@destroy`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3150,7 +3149,7 @@
                                 "notification-settings"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/notification-settings`\nController: `App\\Http\\Controllers\\Api\\NotificationSettingsController@show`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/notification-settings`\nController: `App\\Http\\Controllers\\Api\\NotificationSettingsController@show`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3190,7 +3189,7 @@
                                 "notification-settings"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/notification-settings`\nController: `App\\Http\\Controllers\\Api\\NotificationSettingsController@update`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/notification-settings`\nController: `App\\Http\\Controllers\\Api\\NotificationSettingsController@update`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3245,7 +3244,7 @@
                                 "notification"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/test/notification`\nController: `App\\Http\\Controllers\\Api\\TestNotificationController@sendTest`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/test/notification`\nController: `App\\Http\\Controllers\\Api\\TestNotificationController@sendTest`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3295,7 +3294,7 @@
                                 "my-tokens"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/test/my-tokens`\nController: `App\\Http\\Controllers\\Api\\TestNotificationController@getMyTokens`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/test/my-tokens`\nController: `App\\Http\\Controllers\\Api\\TestNotificationController@getMyTokens`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3341,7 +3340,7 @@
                                 "block"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/block`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@block`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/block`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@block`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3391,7 +3390,7 @@
                                 "unblock"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/unblock`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@unblock`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/unblock`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@unblock`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3441,7 +3440,7 @@
                                 "blocked"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/users/blocked`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@getBlockedUsers`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/users/blocked`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@getBlockedUsers`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3483,7 +3482,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/users/check-blocked/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@checkBlocked`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/users/check-blocked/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@checkBlocked`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3525,7 +3524,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/block-all/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@blockGlobally`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/block-all/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@blockGlobally`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3575,7 +3574,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/check-following/{userId}`\nController: `App\\Http\\Controllers\\UserController@checkFollowing`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/check-following/{userId}`\nController: `App\\Http\\Controllers\\UserController@checkFollowing`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -3608,7 +3607,7 @@
                                 "toggle-follow"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/toggle-follow`\nController: `App\\Http\\Controllers\\UserController@toggleFollow`",
+                        "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/toggle-follow`\nController: `App\\Http\\Controllers\\UserController@toggleFollow`",
                         "auth": {
                             "type": "noauth"
                         },
@@ -3656,7 +3655,7 @@
                                 "auth"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/broadcasting/auth`\nController: `\\Illuminate\\Broadcasting\\BroadcastController@authenticate`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/broadcasting/auth`\nController: `\\Illuminate\\Broadcasting\\BroadcastController@authenticate`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3702,7 +3701,7 @@
                                 "{device_id}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/trusted-device/{device_id}`\nController: `App\\Http\\Controllers\\Api\\AccountController@removeTrustedDevice`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/trusted-device/{device_id}`\nController: `App\\Http\\Controllers\\Api\\AccountController@removeTrustedDevice`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3747,7 +3746,7 @@
                                 "user"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user`\nController: `Closure`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user`\nController: `Closure`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3793,7 +3792,7 @@
                                 "about-account"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/about-account`\nController: `App\\Http\\Controllers\\Api\\UserProfile@aboutAccount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/about-account`\nController: `App\\Http\\Controllers\\Api\\UserProfile@aboutAccount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3839,7 +3838,7 @@
                                 "account"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/account`\nController: `App\\Http\\Controllers\\Api\\UserProfile@disableAccount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/account`\nController: `App\\Http\\Controllers\\Api\\UserProfile@disableAccount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3885,7 +3884,7 @@
                                 "ads"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/ads`\nController: `App\\Http\\Controllers\\Api\\UserController@myAds`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/ads`\nController: `App\\Http\\Controllers\\Api\\UserController@myAds`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3928,7 +3927,7 @@
                                 "status"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/ads/{adId}/status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateAdStatus`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/ads/{adId}/status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateAdStatus`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -3980,7 +3979,7 @@
                                 "mark-sold"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/ads/{adId}/mark-sold`\nController: `App\\Http\\Controllers\\Api\\UserController@markAsSold`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/ads/{adId}/mark-sold`\nController: `App\\Http\\Controllers\\Api\\UserController@markAsSold`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4006,10 +4005,10 @@
             ]
         },
         {
-            "name": "06. User Manage Adverts (Protected)",
+            "name": "User   Adverts",
             "item": [
                 {
-                    "name": "Get Create Advert Data",
+                    "name": "User Adverts Subcategories  CategoryId ",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -4025,18 +4024,19 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/create/data",
+                            "raw": "{{base_url}}/api/user/adverts/subcategories/{categoryId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
+                                "user",
                                 "adverts",
-                                "create",
-                                "data"
+                                "subcategories",
+                                "{categoryId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/create/data`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getCreateData`\\n\\nGet all necessary data for creating an advert (categories, states, shipping options)",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/adverts/subcategories/{categoryId}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@fetchSubcategories`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4051,7 +4051,7 @@
                     "response": []
                 },
                 {
-                    "name": "Get Advert for Edit",
+                    "name": "User Adverts Brands  SubcategoryId ",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -4067,18 +4067,19 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}/edit",
+                            "raw": "{{base_url}}/api/user/adverts/brands/{subcategoryId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
+                                "user",
                                 "adverts",
-                                "{{advert_id}}",
-                                "edit"
+                                "brands",
+                                "{subcategoryId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/adverts/{advertId}/edit`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getAdvertForEdit`\\n\\nGet advert details along with related subcategories, brands, and models for editing",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/adverts/brands/{subcategoryId}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@fetchBrands`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4093,7 +4094,91 @@
                     "response": []
                 },
                 {
-                    "name": "Create New Advert",
+                    "name": "User Adverts Models  BrandId ",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/adverts/models/{brandId}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "user",
+                                "adverts",
+                                "models",
+                                "{brandId}"
+                            ]
+                        },
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/adverts/models/{brandId}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@fetchModels`",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "User Adverts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/adverts",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "user",
+                                "adverts"
+                            ]
+                        },
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/adverts`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@index`",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "User Adverts",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -4101,19 +4186,25 @@
                                 "key": "Accept",
                                 "value": "application/json",
                                 "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts",
+                            "raw": "{{base_url}}/api/user/adverts",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
+                                "user",
                                 "adverts"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@createAdvert`\\n\\nCreate a new advert with images and details",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/adverts`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@store`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4125,185 +4216,46 @@
                             ]
                         },
                         "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "ad_title",
-                                    "value": "2020 Toyota Camry LE",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "ad_type",
-                                    "value": "Sell",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "category",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "Category ID (e.g., 1 for Vehicles)"
-                                },
-                                {
-                                    "key": "subcategory",
-                                    "value": "2",
-                                    "type": "text",
-                                    "description": "Subcategory ID (e.g., 2 for Cars)"
-                                },
-                                {
-                                    "key": "brand",
-                                    "value": "832",
-                                    "type": "text",
-                                    "description": "Brand ID"
-                                },
-                                {
-                                    "key": "model",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "Model ID (for cars/phones)"
-                                },
-                                {
-                                    "key": "price",
-                                    "value": "8500000",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "price_type",
-                                    "value": "Fixed",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "item_condition",
-                                    "value": "Used",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "state",
-                                    "value": "Lagos",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "lga",
-                                    "value": "Ikeja",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "description",
-                                    "value": "Clean 2020 Toyota Camry LE in excellent condition. Low mileage, well maintained.",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "shipment",
-                                    "value": "Ship",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "show_contact",
-                                    "value": "Yes",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "quantity",
-                                    "value": "1",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "shipping[]",
-                                    "value": "1",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "images[]",
-                                    "value": "",
-                                    "type": "file",
-                                    "description": "Upload image files"
-                                },
-                                {
-                                    "key": "image_order",
-                                    "value": "0,1,2",
-                                    "type": "text",
-                                    "description": "Comma-separated indices"
-                                },
-                                {
-                                    "key": "registration",
-                                    "value": "2020",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "mileage",
-                                    "value": "25000",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "condition",
-                                    "value": "Nigerian Used",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "fuel",
-                                    "value": "Petrol",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "transmission",
-                                    "value": "Automatic",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "vehicle_type",
-                                    "value": "Sedan",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "doors",
-                                    "value": "4",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "exterior_color",
-                                    "value": "Silver",
-                                    "type": "text",
-                                    "description": "For cars"
-                                },
-                                {
-                                    "key": "material_interior",
-                                    "value": "Leather",
-                                    "type": "text",
-                                    "description": "For cars"
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Samsung Galaxy S24\",\n    \"description\": \"Brand new Samsung Galaxy S24 in perfect condition with original box and accessories\",\n    \"price\": 500000,\n    \"price_type\": \"Negotiable\",\n    \"category\": \"4\",\n    \"sub_category\": \"6\",\n    \"brand\": \"13\",\n    \"item_condition\": \"New\",\n    \"quantity\": 1,\n    \"buy_direct\": \"Yes\",\n    \"state\": \"Lagos\",\n    \"lga\": \"Ikeja\",\n    \"shipment\": \"Ship\",\n    \"show_contact\": \"No\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
                                 }
-                            ]
+                            }
                         }
                     },
                     "response": []
                 },
                 {
-                    "name": "Create Phone Advert (Example)",
+                    "name": "User Adverts  Id ",
                     "request": {
-                        "method": "POST",
+                        "method": "GET",
                         "header": [
                             {
                                 "key": "Accept",
                                 "value": "application/json",
                                 "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts",
+                            "raw": "{{base_url}}/api/user/adverts/{id}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "adverts"
+                                "user",
+                                "adverts",
+                                "{id}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@createAdvert`\\n\\n**Example for creating a phone advert** (subcategory 6)\\n\\nRequired fields for phones:\\n- phone_color\\n- phone_condition\\n- device",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@show`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4313,219 +4265,12 @@
                                     "type": "string"
                                 }
                             ]
-                        },
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "ad_title",
-                                    "value": "iPhone 14 Pro Max 256GB",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "ad_type",
-                                    "value": "Sell",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "category",
-                                    "value": "2",
-                                    "type": "text",
-                                    "description": "Category ID (e.g., 2 for Electronics)"
-                                },
-                                {
-                                    "key": "subcategory",
-                                    "value": "6",
-                                    "type": "text",
-                                    "description": "Subcategory ID (6 for Phones)"
-                                },
-                                {
-                                    "key": "brand",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "Brand ID (e.g., Apple)"
-                                },
-                                {
-                                    "key": "model",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "Model ID"
-                                },
-                                {
-                                    "key": "price",
-                                    "value": "850000",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "price_type",
-                                    "value": "Fixed",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "state",
-                                    "value": "Lagos",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "lga",
-                                    "value": "Lekki",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "description",
-                                    "value": "Brand new iPhone 14 Pro Max 256GB. Deep Purple color, factory unlocked, comes with original accessories.",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "shipment",
-                                    "value": "Ship",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "show_contact",
-                                    "value": "Yes",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "quantity",
-                                    "value": "1",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "shipping[]",
-                                    "value": "1",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "images[]",
-                                    "value": "",
-                                    "type": "file",
-                                    "description": "Upload image files"
-                                },
-                                {
-                                    "key": "image_order",
-                                    "value": "0,1,2",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "phone_color",
-                                    "value": "Deep Purple",
-                                    "type": "text",
-                                    "description": "Required for phones"
-                                },
-                                {
-                                    "key": "phone_condition",
-                                    "value": "Brand New",
-                                    "type": "text",
-                                    "description": "Required for phones"
-                                },
-                                {
-                                    "key": "device",
-                                    "value": "Smartphone",
-                                    "type": "text",
-                                    "description": "Required for phones"
-                                }
-                            ]
                         }
                     },
                     "response": []
                 },
                 {
-                    "name": "Create Job Advert (Example)",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/adverts",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "adverts"
-                            ]
-                        },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@createAdvert`\\n\\n**Example for creating a job advert** (category 3)\\n\\nRequired fields for jobs:\\n- salary\\n\\nNote: Images are optional for jobs (default image is used)",
-                        "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                                {
-                                    "key": "token",
-                                    "value": "{{auth_token}}",
-                                    "type": "string"
-                                }
-                            ]
-                        },
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "ad_title",
-                                    "value": "Senior Full Stack Developer",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "ad_type",
-                                    "value": "Job",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "category",
-                                    "value": "3",
-                                    "type": "text",
-                                    "description": "Category ID (3 for Jobs)"
-                                },
-                                {
-                                    "key": "subcategory",
-                                    "value": "7",
-                                    "type": "text",
-                                    "description": "Subcategory ID"
-                                },
-                                {
-                                    "key": "brand",
-                                    "value": "1",
-                                    "type": "text",
-                                    "description": "Brand ID"
-                                },
-                                {
-                                    "key": "salary",
-                                    "value": "500000",
-                                    "type": "text",
-                                    "description": "Required for jobs"
-                                },
-                                {
-                                    "key": "state",
-                                    "value": "Lagos",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "lga",
-                                    "value": "Victoria Island",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "description",
-                                    "value": "We are looking for an experienced Full Stack Developer with 5+ years experience in Laravel, Vue.js, and MySQL. Remote work available.",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "show_contact",
-                                    "value": "Yes",
-                                    "type": "text"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Update Advert",
+                    "name": "User Adverts  Id ",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -4533,20 +4278,26 @@
                                 "key": "Accept",
                                 "value": "application/json",
                                 "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}",
+                            "raw": "{{base_url}}/api/user/adverts/{id}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
+                                "user",
                                 "adverts",
-                                "{{advert_id}}"
+                                "{id}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/adverts/{advertId}`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@updateAdvert`\\n\\nUpdate an existing advert",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@update`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4558,72 +4309,19 @@
                             ]
                         },
                         "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "ad_title",
-                                    "value": "2020 Toyota Camry LE - Updated",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "category",
-                                    "value": "1",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "subcategory",
-                                    "value": "2",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "brand",
-                                    "value": "832",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "price",
-                                    "value": "8200000",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "price_type",
-                                    "value": "Negotiable",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "state",
-                                    "value": "Lagos",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "lga",
-                                    "value": "Ikeja",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "description",
-                                    "value": "Updated description for the vehicle",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "deleted_images[]",
-                                    "value": "",
-                                    "type": "text",
-                                    "description": "IDs of images to delete"
-                                },
-                                {
-                                    "key": "existing_image_order",
-                                    "value": "",
-                                    "type": "text",
-                                    "description": "New order of existing images"
+                            "mode": "raw",
+                            "raw": "{\\n\\t\\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
                                 }
-                            ]
+                            }
                         }
                     },
                     "response": []
                 },
                 {
-                    "name": "Delete Advert",
+                    "name": "User Adverts  Id ",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -4639,17 +4337,18 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}",
+                            "raw": "{{base_url}}/api/user/adverts/{id}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
+                                "user",
                                 "adverts",
-                                "{{advert_id}}"
+                                "{id}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/adverts/{advertId}`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@deleteAdvert`\\n\\nDelete an advert and all associated images",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@destroy`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4659,6 +4358,110 @@
                                     "type": "string"
                                 }
                             ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "User Adverts  Id  Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/adverts/{id}/status",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "user",
+                                "adverts",
+                                "{id}",
+                                "status"
+                            ]
+                        },
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/adverts/{id}/status`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@updateStatus`",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "User Adverts  Id  Mark Sold",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/adverts/{id}/mark-sold",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "user",
+                                "adverts",
+                                "{id}",
+                                "mark-sold"
+                            ]
+                        },
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/adverts/{id}/mark-sold`\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@markSold`",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"sold\": \"Yes\",\n    \"sold_date\": \"2026-01-13\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4695,7 +4498,7 @@
                                 "boosts"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/boosts`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getUserBoosts`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/boosts`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getUserBoosts`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4741,7 +4544,7 @@
                                 "categories"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/categories`\nController: `App\\Http\\Controllers\\Api\\UserController@categories`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/categories`\nController: `App\\Http\\Controllers\\Api\\UserController@categories`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4787,7 +4590,7 @@
                                 "dashboard"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/dashboard`\nController: `App\\Http\\Controllers\\Api\\UserController@dashboard`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/dashboard`\nController: `App\\Http\\Controllers\\Api\\UserController@dashboard`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4833,7 +4636,7 @@
                                 "feedbacks"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/feedbacks`\nController: `App\\Http\\Controllers\\Api\\UserController@feedbacks`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/feedbacks`\nController: `App\\Http\\Controllers\\Api\\UserController@feedbacks`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4875,7 +4678,7 @@
                                 "{sellerId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/feedbacks/{sellerId}`\nController: `App\\Http\\Controllers\\Api\\UserController@submitFeedback`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/feedbacks/{sellerId}`\nController: `App\\Http\\Controllers\\Api\\UserController@submitFeedback`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4932,7 +4735,7 @@
                                 "{userId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/following/check/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@checkFollowing`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/following/check/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@checkFollowing`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -4974,7 +4777,7 @@
                                 "toggle"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/following/toggle`\nController: `App\\Http\\Controllers\\Api\\UserController@toggleFollow`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/following/toggle`\nController: `App\\Http\\Controllers\\Api\\UserController@toggleFollow`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5029,7 +4832,7 @@
                                 "logout"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/logout`\nController: `App\\Http\\Controllers\\Api\\UserProfile@logout`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/logout`\nController: `App\\Http\\Controllers\\Api\\UserProfile@logout`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5085,7 +4888,7 @@
                                 "conversations"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/messages/conversations`\nController: `App\\Http\\Controllers\\Api\\UserController@conversations`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/messages/conversations`\nController: `App\\Http\\Controllers\\Api\\UserController@conversations`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5131,7 +4934,7 @@
                                 "notifications"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateNotifications`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateNotifications`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5181,7 +4984,7 @@
                                 "notifications"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getNotifications`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getNotifications`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5227,7 +5030,7 @@
                                 "password"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/password`\nController: `App\\Http\\Controllers\\Api\\UserProfile@changePassword`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/password`\nController: `App\\Http\\Controllers\\Api\\UserProfile@changePassword`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5282,7 +5085,7 @@
                                 "payment-info"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/payment-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getPaymentInfo`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/payment-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getPaymentInfo`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5323,7 +5126,7 @@
                                 "payment-info"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/payment-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updatePaymentInfo`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/payment-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updatePaymentInfo`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5378,7 +5181,7 @@
                                 "payments"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/payments`\nController: `App\\Http\\Controllers\\Api\\UserController@payments`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/payments`\nController: `App\\Http\\Controllers\\Api\\UserController@payments`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5421,7 +5224,7 @@
                                 "confirm-delivery"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/payments/{paymentId}/confirm-delivery`\nController: `App\\Http\\Controllers\\Api\\UserController@confirmDelivery`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/payments/{paymentId}/confirm-delivery`\nController: `App\\Http\\Controllers\\Api\\UserController@confirmDelivery`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5473,7 +5276,7 @@
                                 "shipping-status"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5528,7 +5331,7 @@
                                 "profile"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/profile`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getProfile`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/profile`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getProfile`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5570,7 +5373,7 @@
                                 "address"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/profile/address`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateAddress`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/profile/address`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateAddress`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5621,7 +5424,7 @@
                                 "address"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/profile/address`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateAddress`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/profile/address`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateAddress`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5672,7 +5475,7 @@
                                 "phone"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/profile/phone`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updatePhone`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/profile/phone`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updatePhone`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5727,7 +5530,7 @@
                                 "profile-info"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/profile-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getProfileInfo`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/profile-info`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getProfileInfo`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5773,7 +5576,7 @@
                                 "settings"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/settings`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getSettings`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/settings`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getSettings`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5819,7 +5622,7 @@
                                 "stats"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/stats`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserStats`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/stats`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserStats`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5865,7 +5668,7 @@
                                 "unread-messages"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/unread-messages`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUnreadMessagesCount`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/unread-messages`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUnreadMessagesCount`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5911,7 +5714,7 @@
                                 "verification"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/verification`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getVerificationStatus`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/verification`\nController: `App\\Http\\Controllers\\Api\\UserProfile@getVerificationStatus`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -5952,7 +5755,7 @@
                                 "verification"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/verification`\nController: `App\\Http\\Controllers\\Api\\UserProfile@submitVerification`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/verification`\nController: `App\\Http\\Controllers\\Api\\UserProfile@submitVerification`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -6007,7 +5810,7 @@
                                 "wishlist"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/wishlist`\nController: `App\\Http\\Controllers\\Api\\UserController@wishlist`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/wishlist`\nController: `App\\Http\\Controllers\\Api\\UserController@wishlist`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -6049,7 +5852,7 @@
                                 "{adId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@addToWishlist`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@addToWishlist`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -6100,7 +5903,7 @@
                                 "{adId}"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@removeFromWishlist`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@removeFromWishlist`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -6147,7 +5950,7 @@
                                 "followers"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/{userId}/followers`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserFollowers`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/{userId}/followers`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserFollowers`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [
@@ -6189,7 +5992,7 @@
                                 "feedback"
                             ]
                         },
-                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/{userId}/feedback`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserFeedback`",
+                        "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/{userId}/feedback`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUserFeedback`",
                         "auth": {
                             "type": "bearer",
                             "bearer": [

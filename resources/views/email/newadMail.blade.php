@@ -93,7 +93,7 @@
             </div>
 
             <div class="section">
-                <p>If you have any questions or need further assistance, please don’t hesitate to contact our support team.</p>
+                <p>You’re receiving this email because you’re following this seller on our platform. If you no longer wish to receive notifications from this seller, you can manage your follow preferences or unfollow them at any time in your account settings.</p>
                 <br>
                 <p>Thank you for choosing <b>Marketplace Naija.</b> </p>
                 <br>

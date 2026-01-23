@@ -127,7 +127,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: mldoqykhhbkhcb
+        example: fllurukxf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -138,7 +138,7 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: false
-        example: nwghwbkrbfiimgiqbogm
+        example: baokc
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -149,7 +149,7 @@ endpoints:
         name: city
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: dbdcfszjqjkgaqqpghacu
+        example: vdyeyspuwwyxpsi
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -160,7 +160,7 @@ endpoints:
         name: state
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: vzkvwjewxiotsknsrtciesa
+        example: rntpmiyjmmyb
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -178,10 +178,10 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: mldoqykhhbkhcb
-      address: nwghwbkrbfiimgiqbogm
-      city: dbdcfszjqjkgaqqpghacu
-      state: vzkvwjewxiotsknsrtciesa
+      name: fllurukxf
+      address: baokc
+      city: vdyeyspuwwyxpsi
+      state: rntpmiyjmmyb
     fileParameters:
       profile_image: null
     responses: []
@@ -219,7 +219,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: hoqagilaziscd
+        example: lmttdairbxosiytvzqcdjbrn
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -230,7 +230,7 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: false
-        example: gjem
+        example: nvvdcbfdljtbsedpizw
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -241,7 +241,7 @@ endpoints:
         name: city
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: jatfwoausobnbnwhef
+        example: hxjjjufyymgocmvpaby
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -252,7 +252,7 @@ endpoints:
         name: state
         description: 'Must not be greater than 100 characters.'
         required: false
-        example: nzycbvo
+        example: cfgaivjeeapjddvvekwjh
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -270,10 +270,10 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: hoqagilaziscd
-      address: gjem
-      city: jatfwoausobnbnwhef
-      state: nzycbvo
+      name: lmttdairbxosiytvzqcdjbrn
+      address: nvvdcbfdljtbsedpizw
+      city: hxjjjufyymgocmvpaby
+      state: cfgaivjeeapjddvvekwjh
     fileParameters:
       profile_image: null
     responses: []
@@ -311,14 +311,14 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: rem
+        example: quos
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      phone: rem
+      phone: quos
     fileParameters: []
     responses: []
     responseFields: []
@@ -386,7 +386,7 @@ endpoints:
         name: document_number
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: ytanirauxceeepvfk
+        example: iytozzcpr
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -397,7 +397,7 @@ endpoints:
         name: document_type
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: uow
+        example: otqhadkjnyyuotdp
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -426,8 +426,8 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      document_number: ytanirauxceeepvfk
-      document_type: uow
+      document_number: iytozzcpr
+      document_type: otqhadkjnyyuotdp
     fileParameters:
       document_file: null
       proof_address: null
@@ -497,7 +497,7 @@ endpoints:
         name: bank_name
         description: ''
         required: true
-        example: sint
+        example: ipsum
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -508,7 +508,7 @@ endpoints:
         name: paystack_bank_code
         description: ''
         required: true
-        example: quasi
+        example: amet
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -519,7 +519,7 @@ endpoints:
         name: account_number
         description: ''
         required: true
-        example: consequatur
+        example: ullam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -530,17 +530,17 @@ endpoints:
         name: account_name
         description: ''
         required: true
-        example: ex
+        example: dolorem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      bank_name: sint
-      paystack_bank_code: quasi
-      account_number: consequatur
-      account_name: ex
+      bank_name: ipsum
+      paystack_bank_code: amet
+      account_number: ullam
+      account_name: dolorem
     fileParameters: []
     responses: []
     responseFields: []
@@ -577,7 +577,7 @@ endpoints:
         name: old_password
         description: ''
         required: true
-        example: suscipit
+        example: consequatur
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -588,15 +588,15 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: M76A@bu\Sc
+        example: 'm[dWHyovZFn+a=q'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      old_password: suscipit
-      password: M76A@bu\Sc
+      old_password: consequatur
+      password: 'm[dWHyovZFn+a=q'
     fileParameters: []
     responses: []
     responseFields: []
@@ -633,14 +633,14 @@ endpoints:
         name: notifications
         description: ''
         required: true
-        example: quaerat
+        example: dolor
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      notifications: quaerat
+      notifications: dolor
     fileParameters: []
     responses: []
     responseFields: []

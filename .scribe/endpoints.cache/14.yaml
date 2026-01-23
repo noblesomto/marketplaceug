@@ -83,7 +83,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 65fPcDa8ZEbkgav416hVed3'
+      - 'Bearer 64ZkDa15c6gdhPfaev8EbV3'
     controller: null
     method: null
     route: null
@@ -140,7 +140,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer a8EkVfePgb5hD463d1vZa6c'
+      - 'Bearer D1caZ34dbv856hkef6VEgPa'
     controller: null
     method: null
     route: null
@@ -216,7 +216,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 5V3acE6eZd4gDk8bv6Pfa1h'
+      - 'Bearer avkE34hD1d5eVfa6gZ8b6Pc'
     controller: null
     method: null
     route: null
@@ -245,14 +245,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: odio
+        example: saepe
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: odio
+      userId: saepe
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -287,7 +287,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer fcdP1aE63e5agk4v8b6ZDVh'
+      - 'Bearer Eab6dZvh1c584PVaegD63fk'
     controller: null
     method: null
     route: null
@@ -318,14 +318,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: sint
+        example: corrupti
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: sint
+      userId: corrupti
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -379,7 +379,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3b6fcP4dahk581vgDe6VaZE'
+      - 'Bearer bf1gvc4DVEPh568Zd6ek3aa'
     controller: null
     method: null
     route: null

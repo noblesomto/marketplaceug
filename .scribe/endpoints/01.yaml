@@ -31,7 +31,7 @@ endpoints:
         name: title
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: fvmub
+        example: weell
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -42,7 +42,7 @@ endpoints:
         name: message
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: agxewypxskeprdbjacwlu
+        example: uayk
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -64,7 +64,7 @@ endpoints:
         name: target_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: false
-        example: 10
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -75,17 +75,17 @@ endpoints:
         name: device_token
         description: ''
         required: false
-        example: aut
+        example: enim
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      title: fvmub
-      message: agxewypxskeprdbjacwlu
-      target_user_id: 10
-      device_token: aut
+      title: weell
+      message: uayk
+      target_user_id: 18
+      device_token: enim
     fileParameters: []
     responses:
       -
@@ -109,7 +109,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ca56fe63kEVdgDZ1av4P8bh'
+      - 'Bearer bhkgVav6Pf41E6Ze85dacD3'
     controller: null
     method: null
     route: null
@@ -164,7 +164,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer EZfPgadhcvV5Dab1436ek68'
+      - 'Bearer ZVk6gahPc43b16D8eE5fvda'
     controller: null
     method: null
     route: null

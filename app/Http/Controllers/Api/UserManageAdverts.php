@@ -51,7 +51,7 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getSubcategories($categoryId)
+    public function fetchSubcategories($categoryId)
     {
         $subcategories = SubCategory::where('cat_id', $categoryId)->get();
 
@@ -83,7 +83,7 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getBrands($subcategoryId)
+    public function fetchBrands($subcategoryId)
     {
         $brands = Brands::where('subcat_id', $subcategoryId)->get();
 
@@ -115,7 +115,7 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getModels($brandId)
+    public function fetchModels($brandId)
     {
         $models = Models::where('brand_id', $brandId)->get();
 

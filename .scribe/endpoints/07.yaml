@@ -32,7 +32,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -43,7 +43,7 @@ endpoints:
         name: receiver_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: tempora
+        example: laudantium
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -54,7 +54,7 @@ endpoints:
         name: message_content
         description: 'Must not be greater than 1000 characters.'
         required: false
-        example: xn
+        example: xbamd
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -73,9 +73,9 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      advert_id: 16
-      receiver_id: tempora
-      message_content: xn
+      advert_id: 1
+      receiver_id: laudantium
+      message_content: xbamd
     fileParameters:
       images:
         - null
@@ -109,7 +109,7 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: aut
+        example: ipsam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -120,15 +120,15 @@ endpoints:
         name: receiverId
         description: ''
         required: true
-        example: adipisci
+        example: ut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: aut
-      receiverId: adipisci
+      advertId: ipsam
+      receiverId: ut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -164,14 +164,14 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: a
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: a
+      advertId: et
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -269,14 +269,14 @@ endpoints:
         name: messageId
         description: ''
         required: true
-        example: ut
+        example: eaque
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      messageId: ut
+      messageId: eaque
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -312,7 +312,7 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: est
+        example: tempore
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -323,15 +323,15 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: consequatur
+        example: sunt
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: est
-      userId: consequatur
+      advertId: tempore
+      userId: sunt
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -372,7 +372,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: et
+        example: ratione
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -383,15 +383,15 @@ endpoints:
         name: other_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: est
+        example: similique
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      advert_id: et
-      other_user_id: est
+      advert_id: ratione
+      other_user_id: similique
     fileParameters: []
     responses: []
     responseFields: []
@@ -428,7 +428,7 @@ endpoints:
         name: advert_id
         description: 'The <code>id</code> of an existing record in the adverts table.'
         required: true
-        example: cumque
+        example: voluptatem
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -439,15 +439,15 @@ endpoints:
         name: other_user_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: temporibus
+        example: nam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      advert_id: cumque
-      other_user_id: temporibus
+      advert_id: voluptatem
+      other_user_id: nam
     fileParameters: []
     responses: []
     responseFields: []
@@ -510,14 +510,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: beatae
+        example: magni
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: beatae
+      paymentId: magni
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

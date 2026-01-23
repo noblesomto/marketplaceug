@@ -34,7 +34,7 @@ endpoints:
         name: blocked_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: sit
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -52,7 +52,7 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      blocked_id: sit
+      blocked_id: et
     fileParameters: []
     responses: []
     responseFields: []
@@ -89,7 +89,7 @@ endpoints:
         name: blocked_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: libero
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -107,7 +107,7 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      blocked_id: libero
+      blocked_id: et
     fileParameters: []
     responses: []
     responseFields: []
@@ -170,14 +170,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: nobis
+        example: voluptas
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: nobis
+      userId: voluptas
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -213,14 +213,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: animi
+        example: maiores
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: animi
+      userId: maiores
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

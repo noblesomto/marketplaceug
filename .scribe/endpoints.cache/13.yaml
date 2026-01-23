@@ -122,14 +122,14 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: deserunt
+        example: quo
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: deserunt
+      advertId: quo
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -166,14 +166,14 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: commodi
+        example: incidunt
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: commodi
+      advertId: incidunt
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -182,14 +182,14 @@ endpoints:
         name: duration_days
         description: 'Must be at least 1. Must not be greater than 30.'
         required: false
-        example: 24
+        example: 23
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      duration_days: 24
+      duration_days: 23
     fileParameters: []
     responses: []
     responseFields: []
@@ -221,14 +221,14 @@ endpoints:
         name: advertId
         description: ''
         required: true
-        example: vel
+        example: rerum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      advertId: vel
+      advertId: rerum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -264,14 +264,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: inventore
+        example: nostrum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: inventore
+      boostId: nostrum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -308,14 +308,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: id
+        example: ducimus
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: id
+      boostId: ducimus
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -363,14 +363,14 @@ endpoints:
         name: boostId
         description: ''
         required: true
-        example: consequatur
+        example: cumque
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      boostId: consequatur
+      boostId: cumque
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

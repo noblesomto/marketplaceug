@@ -32,7 +32,7 @@ endpoints:
         name: product
         description: 'Must be at least 3 characters.'
         required: false
-        example: tyzptyixtefpmcizunvzpmiwuqenixrsztzmtjtvwhxfbgocfegcjbzmmol
+        example: rnmtzbdzyhyolgrrzigbmkffkvhplklrxmhiitnzwubwckywgsycvxrrqdydajdnahgwdirmtcapa
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -94,7 +94,7 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      product: tyzptyixtefpmcizunvzpmiwuqenixrsztzmtjtvwhxfbgocfegcjbzmmol
+      product: rnmtzbdzyhyolgrrzigbmkffkvhplklrxmhiitnzwubwckywgsycvxrrqdydajdnahgwdirmtcapa
     fileParameters: []
     responses: []
     responseFields: []
@@ -219,7 +219,7 @@ endpoints:
         name: location
         description: 'The location.'
         required: true
-        example: quaerat
+        example: similique
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -230,15 +230,15 @@ endpoints:
         name: slug
         description: 'The slug of the {location}.'
         required: true
-        example: eum
+        example: necessitatibus
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      location: quaerat
-      slug: eum
+      location: similique
+      slug: necessitatibus
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -310,14 +310,14 @@ endpoints:
         name: q
         description: 'Must be at least 2 characters.'
         required: true
-        example: xmfnhmpkudpvqwecuwnqpynbvebbnwupqbcwzxpotabyqtvwgtxsbnhfdxqwempdvghchtks
+        example: gmzwivnyixubiwevxzknyjmuqlrvefxjwfbmrdcbqqkgfbmqsegwqjpqhvsergafwzwwxc
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      q: xmfnhmpkudpvqwecuwnqpynbvebbnwupqbcwzxpotabyqtvwgtxsbnhfdxqwempdvghchtks
+      q: gmzwivnyixubiwevxzknyjmuqlrvefxjwfbmrdcbqqkgfbmqsegwqjpqhvsergafwzwwxc
     fileParameters: []
     responses: []
     responseFields: []

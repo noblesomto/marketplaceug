@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Marketplace Nigeria API Documentation",
-        "_postman_id": "d60b7002-2410-4a6c-9004-eaf1af0cadf6",
+        "_postman_id": "42779cae-3621-46aa-bd84-57d03b4275cd",
         "description": "Complete REST API documentation for Marketplace Nigeria platform. This API allows you to manage adverts, users, messages, payments, and more.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json",
         "version": "3.0"
@@ -42,7 +42,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"acc_type\":\"sed\",\"name\":\"qrdsxti\",\"phone\":\"corporis\",\"email\":\"fisher.isabel@example.net\",\"password\":\"_?ScMo3Joqp7lL<\"}"
+                            "raw": "{\"acc_type\":\"asperiores\",\"name\":\"qgvhhwovvxwudkbxeynpmabra\",\"phone\":\"ex\",\"email\":\"adan73@example.org\",\"password\":\"(Np]hZ82vz(}f(@RQ5j\"}"
                         },
                         "description": "Creates a new user account and sends a verification email. The account must be verified\nvia email before the user can log in. Supports both Private and Business account types.",
                         "auth": {
@@ -92,7 +92,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"icie.purdy@example.org\",\"password\":\"C[!2f5Y{b:Fa\\\"W3;\"}"
+                            "raw": "{\"email\":\"welch.nedra@example.net\",\"password\":\"dFcLlc#<`\"}"
                         },
                         "description": "Authenticates user credentials and initiates the login process. If the device is trusted,\ncompletes login immediately. Otherwise, sends a 6-digit OTP to the user's email for verification.",
                         "auth": {
@@ -154,7 +154,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"raphael85@example.com\",\"otp\":\"393881\",\"trust_device\":true}"
+                            "raw": "{\"email\":\"jeffrey.rau@example.org\",\"otp\":\"658640\",\"trust_device\":false}"
                         },
                         "description": "Verifies the 6-digit OTP sent to the user's email and completes the login process.\nOptionally allows the device to be trusted for 90 days to skip OTP verification in future logins.",
                         "auth": {
@@ -216,7 +216,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"hkozey@example.net\"}"
+                            "raw": "{\"email\":\"reyes89@example.net\"}"
                         },
                         "description": "Sends a new 6-digit OTP to the user's email address. Limited to 3 requests per hour\nto prevent abuse. Used when the previous OTP has expired or was not received.",
                         "auth": {
@@ -256,13 +256,13 @@
                                 {
                                     "id": "email",
                                     "key": "email",
-                                    "value": "odaniel%40example.org",
+                                    "value": "craig81%40example.org",
                                     "description": ""
                                 },
                                 {
                                     "id": "token",
                                     "key": "token",
-                                    "value": "iusto",
+                                    "value": "voluptatem",
                                     "description": ""
                                 }
                             ]
@@ -317,7 +317,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"mschinner@example.org\"}"
+                            "raw": "{\"email\":\"langworth.william@example.net\"}"
                         },
                         "description": "Resends the email verification link to users who have not yet verified their account.\nA new verification token is generated and sent to the registered email address.",
                         "auth": {
@@ -367,7 +367,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"bernita.friesen@example.org\"}"
+                            "raw": "{\"email\":\"claire.kub@example.org\"}"
                         },
                         "description": "Initiates the password reset process by sending a password reset link to the user's email.\nThe link contains a secure token that can be used to reset the password.",
                         "auth": {
@@ -407,13 +407,13 @@
                                 {
                                     "id": "user_id",
                                     "key": "user_id",
-                                    "value": "veniam",
+                                    "value": "illo",
                                     "description": "The ID of the user."
                                 },
                                 {
                                     "id": "token",
                                     "key": "token",
-                                    "value": "praesentium",
+                                    "value": "dolorum",
                                     "description": ""
                                 }
                             ]
@@ -431,7 +431,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"password\":\"6Wh2k>$`hNLt7(|gKhva\"}"
+                            "raw": "{\"password\":\"\\\/YaW_\\\"\\\"\\\"yu&zOFkG\"}"
                         },
                         "description": "Resets the user's password using the token received via email. The token is validated\nbefore allowing the password change. After successful reset, the token is invalidated.",
                         "auth": {
@@ -481,7 +481,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"provider\":\"facebook\",\"access_token\":\"excepturi\",\"device_name\":\"voluptatem\"}"
+                            "raw": "{\"provider\":\"google\",\"access_token\":\"debitis\",\"device_name\":\"laborum\"}"
                         },
                         "description": "Authenticates users via social providers (Google or Facebook). The mobile app obtains\nan access token from the provider's SDK and sends it to this endpoint for verification.\nIf successful, creates or updates the user account and returns an API token. No OTP required.",
                         "auth": {
@@ -527,7 +527,7 @@
                                 {
                                     "id": "provider",
                                     "key": "provider",
-                                    "value": "quibusdam",
+                                    "value": "ipsam",
                                     "description": ""
                                 }
                             ]
@@ -578,7 +578,7 @@
                                 {
                                     "id": "provider",
                                     "key": "provider",
-                                    "value": "perspiciatis",
+                                    "value": "quidem",
                                     "description": ""
                                 }
                             ]
@@ -657,7 +657,7 @@
                                 {
                                     "id": "device_id",
                                     "key": "device_id",
-                                    "value": "ratione",
+                                    "value": "quod",
                                     "description": "The ID of the device."
                                 }
                             ]
@@ -729,7 +729,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "sit",
+                                    "value": "sunt",
                                     "description": "The ID of the advert."
                                 }
                             ]
@@ -761,7 +761,7 @@
                                 {
                                     "id": "seller_id",
                                     "key": "seller_id",
-                                    "value": "sapiente",
+                                    "value": "at",
                                     "description": "The ID of the seller."
                                 }
                             ]
@@ -817,7 +817,7 @@
                                 {
                                     "id": "category_slug",
                                     "key": "category_slug",
-                                    "value": "dolore",
+                                    "value": "quibusdam",
                                     "description": "The slug of the category."
                                 }
                             ]
@@ -849,13 +849,13 @@
                                 {
                                     "id": "category_slug",
                                     "key": "category_slug",
-                                    "value": "dolorem",
+                                    "value": "facilis",
                                     "description": "The slug of the category."
                                 },
                                 {
                                     "id": "subcat_slug",
                                     "key": "subcat_slug",
-                                    "value": "et",
+                                    "value": "veniam",
                                     "description": "The slug of the subcat."
                                 }
                             ]
@@ -887,19 +887,19 @@
                                 {
                                     "id": "category_slug",
                                     "key": "category_slug",
-                                    "value": "aperiam",
+                                    "value": "sapiente",
                                     "description": "The slug of the category."
                                 },
                                 {
                                     "id": "subcat_slug",
                                     "key": "subcat_slug",
-                                    "value": "cumque",
+                                    "value": "repellendus",
                                     "description": "The slug of the subcat."
                                 },
                                 {
                                     "id": "brand_slug",
                                     "key": "brand_slug",
-                                    "value": "esse",
+                                    "value": "culpa",
                                     "description": "The slug of the brand."
                                 }
                             ]
@@ -931,7 +931,7 @@
                                 {
                                     "id": "state_slug",
                                     "key": "state_slug",
-                                    "value": "eius",
+                                    "value": "dolorem",
                                     "description": "The slug of the state."
                                 }
                             ]
@@ -1011,7 +1011,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "illo",
+                                    "value": "et",
                                     "description": "The ID of the advert."
                                 }
                             ]
@@ -1029,7 +1029,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"subject\":\"uxfxdmlfjylcwi\",\"message\":\"nostrum\"}"
+                            "raw": "{\"subject\":\"fqctf\",\"message\":\"deleniti\"}"
                         },
                         "description": "Submit a report for an inappropriate or suspicious advert.\nThe report is sent to the admin team for review."
                     },
@@ -1066,7 +1066,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "occaecati",
+                                    "value": "ea",
                                     "description": "The ID of the advert."
                                 }
                             ]
@@ -1084,7 +1084,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"message\":\"odit\"}"
+                            "raw": "{\"message\":\"esse\"}"
                         },
                         "description": "",
                         "auth": {
@@ -1100,6 +1100,265 @@
             "description": "\nAPIs for creating, updating, and managing user adverts",
             "item": [
                 {
+                    "name": "GET api\/adverts\/create\/data",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/create\/data",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/adverts\/create\/data"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/adverts\/{advertId}\/edit",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/:advertId\/edit",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/adverts\/:advertId\/edit",
+                            "variable": [
+                                {
+                                    "id": "advertId",
+                                    "key": "advertId",
+                                    "value": "beatae",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/adverts",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/adverts"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "ad_title",
+                                    "value": "apupgfdbflkwsjgqnlgoz",
+                                    "type": "text",
+                                    "description": "Must not be greater than 75 characters."
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "minus",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "subcategory",
+                                    "value": "consequuntur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "in",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "assumenda",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "lga",
+                                    "value": "est",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "labore",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "images[]",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT api\/adverts\/{advertId}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/:advertId",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/adverts\/:advertId",
+                            "variable": [
+                                {
+                                    "id": "advertId",
+                                    "key": "advertId",
+                                    "value": "maxime",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "ad_title",
+                                    "value": "illukwcmohbn",
+                                    "type": "text",
+                                    "description": "Must not be greater than 75 characters."
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "accusamus",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "subcategory",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "perspiciatis",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "alias",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "lga",
+                                    "value": "et",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "ipsum",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "images[]",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/adverts\/{advertId}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/adverts\/:advertId",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/adverts\/:advertId",
+                            "variable": [
+                                {
+                                    "id": "advertId",
+                                    "key": "advertId",
+                                    "value": "dolorem",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
                     "name": "GET api\/adverts\/categories\/{categoryId}\/subcategories",
                     "request": {
                         "url": {
@@ -1111,7 +1370,7 @@
                                 {
                                     "id": "categoryId",
                                     "key": "categoryId",
-                                    "value": "dignissimos",
+                                    "value": "ratione",
                                     "description": ""
                                 }
                             ]
@@ -1143,7 +1402,7 @@
                                 {
                                     "id": "subcategoryId",
                                     "key": "subcategoryId",
-                                    "value": "et",
+                                    "value": "non",
                                     "description": ""
                                 }
                             ]
@@ -1175,7 +1434,7 @@
                                 {
                                     "id": "brandId",
                                     "key": "brandId",
-                                    "value": "eius",
+                                    "value": "accusantium",
                                     "description": ""
                                 }
                             ]
@@ -1365,7 +1624,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"product\":\"tyzptyixtefpmcizunvzpmiwuqenixrsztzmtjtvwhxfbgocfegcjbzmmol\"}"
+                            "raw": "{\"product\":\"rnmtzbdzyhyolgrrzigbmkffkvhplklrxmhiitnzwubwckywgsycvxrrqdydajdnahgwdirmtcapa\"}"
                         },
                         "description": "",
                         "auth": {
@@ -1458,13 +1717,13 @@
                                 {
                                     "id": "location",
                                     "key": "location",
-                                    "value": "quaerat",
+                                    "value": "similique",
                                     "description": "The location."
                                 },
                                 {
                                     "id": "slug",
                                     "key": "slug",
-                                    "value": "eum",
+                                    "value": "necessitatibus",
                                     "description": "The slug of the {location}."
                                 }
                             ]
@@ -1530,7 +1789,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"q\":\"xmfnhmpkudpvqwecuwnqpynbvebbnwupqbcwzxpotabyqtvwgtxsbnhfdxqwempdvghchtks\"}"
+                            "raw": "{\"q\":\"gmzwivnyixubiwevxzknyjmuqlrvefxjwfbmrdcbqqkgfbmqsegwqjpqhvsergafwzwwxc\"}"
                         },
                         "description": "",
                         "auth": {
@@ -1677,7 +1936,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "quis",
+                                    "value": "est",
                                     "description": ""
                                 }
                             ]
@@ -1716,7 +1975,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "iure",
+                                    "value": "aspernatur",
                                     "description": ""
                                 }
                             ]
@@ -1772,7 +2031,7 @@
                                 {
                                     "id": "adId",
                                     "key": "adId",
-                                    "value": "alias",
+                                    "value": "natus",
                                     "description": ""
                                 }
                             ]
@@ -1828,7 +2087,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "qui",
+                                    "value": "dolores",
                                     "description": ""
                                 }
                             ]
@@ -1860,7 +2119,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "doloribus",
+                                    "value": "consequatur",
                                     "description": ""
                                 }
                             ]
@@ -1878,7 +2137,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_status\":\"laudantium\"}"
+                            "raw": "{\"shipping_status\":\"velit\"}"
                         },
                         "description": "",
                         "auth": {
@@ -1923,7 +2182,7 @@
                                 {
                                     "id": "sellerId",
                                     "key": "sellerId",
-                                    "value": "qui",
+                                    "value": "hic",
                                     "description": ""
                                 }
                             ]
@@ -1941,7 +2200,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"rating\":1,\"satisfaction\":2,\"reliable\":1,\"friendly\":2,\"message\":\"ipknjflsrzbptqdkcddscverz\"}"
+                            "raw": "{\"rating\":2,\"satisfaction\":1,\"reliable\":1,\"friendly\":1,\"message\":\"reeluj\"}"
                         },
                         "description": "",
                         "auth": {
@@ -1962,7 +2221,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "delectus",
+                                    "value": "voluptatem",
                                     "description": ""
                                 }
                             ]
@@ -2004,7 +2263,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":9}"
+                            "raw": "{\"followee_id\":18}"
                         },
                         "description": "",
                         "auth": {
@@ -2116,25 +2375,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "mldoqykhhbkhcb",
+                                    "value": "fllurukxf",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "nwghwbkrbfiimgiqbogm",
+                                    "value": "baokc",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "dbdcfszjqjkgaqqpghacu",
+                                    "value": "vdyeyspuwwyxpsi",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "vzkvwjewxiotsknsrtciesa",
+                                    "value": "rntpmiyjmmyb",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -2182,25 +2441,25 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "hoqagilaziscd",
+                                    "value": "lmttdairbxosiytvzqcdjbrn",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "gjem",
+                                    "value": "nvvdcbfdljtbsedpizw",
                                     "type": "text",
                                     "description": "Must not be greater than 500 characters."
                                 },
                                 {
                                     "key": "city",
-                                    "value": "jatfwoausobnbnwhef",
+                                    "value": "hxjjjufyymgocmvpaby",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
                                 {
                                     "key": "state",
-                                    "value": "nzycbvo",
+                                    "value": "cfgaivjeeapjddvvekwjh",
                                     "type": "text",
                                     "description": "Must not be greater than 100 characters."
                                 },
@@ -2240,7 +2499,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"phone\":\"rem\"}"
+                            "raw": "{\"phone\":\"quos\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2298,13 +2557,13 @@
                             "formdata": [
                                 {
                                     "key": "document_number",
-                                    "value": "ytanirauxceeepvfk",
+                                    "value": "iytozzcpr",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "document_type",
-                                    "value": "uow",
+                                    "value": "otqhadkjnyyuotdp",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
@@ -2373,7 +2632,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"bank_name\":\"sint\",\"paystack_bank_code\":\"quasi\",\"account_number\":\"consequatur\",\"account_name\":\"ex\"}"
+                            "raw": "{\"bank_name\":\"ipsum\",\"paystack_bank_code\":\"amet\",\"account_number\":\"ullam\",\"account_name\":\"dolorem\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2404,7 +2663,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"old_password\":\"suscipit\",\"password\":\"M76A@bu\\\\Sc\"}"
+                            "raw": "{\"old_password\":\"consequatur\",\"password\":\"m[dWHyovZFn+a=q\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2435,7 +2694,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"notifications\":\"quaerat\"}"
+                            "raw": "{\"notifications\":\"dolor\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2636,7 +2895,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "odio",
+                                    "value": "saepe",
                                     "description": ""
                                 }
                             ]
@@ -2678,7 +2937,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "sint",
+                                    "value": "corrupti",
                                     "description": ""
                                 }
                             ]
@@ -2736,7 +2995,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"sit\"}"
+                            "raw": "{\"blocked_id\":\"et\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2767,7 +3026,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"blocked_id\":\"libero\"}"
+                            "raw": "{\"blocked_id\":\"et\"}"
                         },
                         "description": "",
                         "auth": {
@@ -2812,7 +3071,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "nobis",
+                                    "value": "voluptas",
                                     "description": ""
                                 }
                             ]
@@ -2844,7 +3103,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "animi",
+                                    "value": "maiores",
                                     "description": ""
                                 }
                             ]
@@ -2895,19 +3154,19 @@
                             "formdata": [
                                 {
                                     "key": "advert_id",
-                                    "value": "16",
+                                    "value": "1",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the adverts table."
                                 },
                                 {
                                     "key": "receiver_id",
-                                    "value": "tempora",
+                                    "value": "laudantium",
                                     "type": "text",
                                     "description": "The <code>user_id<\/code> of an existing record in the users table."
                                 },
                                 {
                                     "key": "message_content",
-                                    "value": "xn",
+                                    "value": "xbamd",
                                     "type": "text",
                                     "description": "Must not be greater than 1000 characters."
                                 },
@@ -2937,13 +3196,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "aut",
+                                    "value": "ipsam",
                                     "description": ""
                                 },
                                 {
                                     "id": "receiverId",
                                     "key": "receiverId",
-                                    "value": "adipisci",
+                                    "value": "ut",
                                     "description": ""
                                 }
                             ]
@@ -2975,7 +3234,7 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "a",
+                                    "value": "et",
                                     "description": ""
                                 }
                             ]
@@ -3055,7 +3314,7 @@
                                 {
                                     "id": "messageId",
                                     "key": "messageId",
-                                    "value": "ut",
+                                    "value": "eaque",
                                     "description": ""
                                 }
                             ]
@@ -3087,13 +3346,13 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "est",
+                                    "value": "tempore",
                                     "description": ""
                                 },
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "consequatur",
+                                    "value": "sunt",
                                     "description": ""
                                 }
                             ]
@@ -3135,7 +3394,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"et\",\"other_user_id\":\"est\"}"
+                            "raw": "{\"advert_id\":\"ratione\",\"other_user_id\":\"similique\"}"
                         },
                         "description": "",
                         "auth": {
@@ -3166,7 +3425,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":\"cumque\",\"other_user_id\":\"temporibus\"}"
+                            "raw": "{\"advert_id\":\"voluptatem\",\"other_user_id\":\"nam\"}"
                         },
                         "description": "",
                         "auth": {
@@ -3211,7 +3470,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "beatae",
+                                    "value": "magni",
                                     "description": ""
                                 }
                             ]
@@ -3287,7 +3546,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"token\":\"nar\",\"platform\":\"illo\"}"
+                            "raw": "{\"token\":\"upbhrbmtujagjcrlnq\",\"platform\":\"debitis\"}"
                         },
                         "description": "Register or update a device token for push notifications (FCM).\nIf the token already exists, it will be updated with new user and platform information."
                     },
@@ -3433,7 +3692,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"shipping_data\":{\"first_name\":\"aut\",\"last_name\":\"laudantium\",\"phone\":\"nemo\",\"grand_total\":8,\"commission\":46357.5363968,\"shipping_cost\":553583.5193,\"shipping_method\":3,\"ad\":{\"id\":18,\"price\":166.97726},\"reciever_city\":{\"id\":8},\"reciever_state\":{\"id\":15}}}"
+                            "raw": "{\"shipping_data\":{\"first_name\":\"unde\",\"last_name\":\"et\",\"phone\":\"labore\",\"grand_total\":87739076.808498,\"commission\":24.959832,\"shipping_cost\":6.5686858,\"shipping_method\":8,\"ad\":{\"id\":18,\"price\":108253174},\"reciever_city\":{\"id\":9},\"reciever_state\":{\"id\":8}}}"
                         },
                         "description": "",
                         "auth": {
@@ -3464,7 +3723,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"advert_id\":7,\"amount\":15,\"boost_type\":\"labore\",\"duration\":77}"
+                            "raw": "{\"advert_id\":7,\"amount\":54,\"boost_type\":\"dolorum\",\"duration\":18}"
                         },
                         "description": "",
                         "auth": {
@@ -3485,7 +3744,7 @@
                                 {
                                     "id": "paymentId",
                                     "key": "paymentId",
-                                    "value": "est",
+                                    "value": "magni",
                                     "description": ""
                                 }
                             ]
@@ -3517,7 +3776,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "dolores",
+                                    "value": "necessitatibus",
                                     "description": ""
                                 }
                             ]
@@ -3549,7 +3808,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "cum",
+                                    "value": "modi",
                                     "description": ""
                                 }
                             ]
@@ -3591,7 +3850,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reference\":\"et\"}"
+                            "raw": "{\"reference\":\"nam\"}"
                         },
                         "description": "",
                         "auth": {
@@ -3690,7 +3949,7 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "deserunt",
+                                    "value": "quo",
                                     "description": ""
                                 }
                             ]
@@ -3722,7 +3981,7 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "commodi",
+                                    "value": "incidunt",
                                     "description": ""
                                 }
                             ]
@@ -3740,7 +3999,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"duration_days\":24}"
+                            "raw": "{\"duration_days\":23}"
                         },
                         "description": "",
                         "auth": {
@@ -3761,7 +4020,7 @@
                                 {
                                     "id": "advertId",
                                     "key": "advertId",
-                                    "value": "vel",
+                                    "value": "rerum",
                                     "description": ""
                                 }
                             ]
@@ -3793,7 +4052,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "inventore",
+                                    "value": "nostrum",
                                     "description": ""
                                 }
                             ]
@@ -3825,7 +4084,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "id",
+                                    "value": "ducimus",
                                     "description": ""
                                 }
                             ]
@@ -3870,7 +4129,7 @@
                                 {
                                     "id": "boostId",
                                     "key": "boostId",
-                                    "value": "consequatur",
+                                    "value": "cumque",
                                     "description": ""
                                 }
                             ]
@@ -3932,7 +4191,7 @@
                                 {
                                     "id": "state_id",
                                     "key": "state_id",
-                                    "value": "quam",
+                                    "value": "ut",
                                     "description": "The ID of the state."
                                 }
                             ]
@@ -3964,7 +4223,7 @@
                                 {
                                     "id": "state_id",
                                     "key": "state_id",
-                                    "value": "pariatur",
+                                    "value": "voluptatem",
                                     "description": "The ID of the state."
                                 }
                             ]
@@ -4006,7 +4265,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"search\":\"iqyhseaguwxvvdqdoxbblwtpcxzxskehjfskzvclwgx\",\"state_id\":15,\"limit\":20}"
+                            "raw": "{\"search\":\"akqblnwvvhihhhqurnnhyrnwknktcugkpcnuskgvywphwhrzjsuubolzpxrqa\",\"state_id\":3,\"limit\":13}"
                         },
                         "description": "",
                         "auth": {
@@ -4027,7 +4286,7 @@
                                 {
                                     "id": "city_id",
                                     "key": "city_id",
-                                    "value": "enim",
+                                    "value": "voluptate",
                                     "description": "The ID of the city."
                                 }
                             ]
@@ -4069,7 +4328,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"sender_station\":\"qui\",\"receiver_station\":\"eos\",\"ad_price\":53,\"ad_title\":\"tempore\",\"ad_des\":\"eius\",\"weight\":8,\"quantity\":21}"
+                            "raw": "{\"sender_station\":\"sit\",\"receiver_station\":\"velit\",\"ad_price\":74,\"ad_title\":\"id\",\"ad_des\":\"corporis\",\"weight\":86,\"quantity\":53}"
                         },
                         "description": "",
                         "auth": {
@@ -4106,7 +4365,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"title\":\"fvmub\",\"message\":\"agxewypxskeprdbjacwlu\",\"target_user_id\":10,\"device_token\":\"aut\"}"
+                            "raw": "{\"title\":\"weell\",\"message\":\"uayk\",\"target_user_id\":18,\"device_token\":\"enim\"}"
                         },
                         "description": "This endpoint allows you to test push notifications locally.\nOnly available in local\/development environment."
                     },
@@ -4237,7 +4496,7 @@
                                 {
                                     "id": "userId",
                                     "key": "userId",
-                                    "value": "et",
+                                    "value": "officia",
                                     "description": ""
                                 }
                             ]
@@ -4279,7 +4538,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"followee_id\":\"delectus\"}"
+                            "raw": "{\"followee_id\":\"ea\"}"
                         },
                         "description": "",
                         "auth": {

@@ -408,6 +408,7 @@ class MessageController extends Controller
      */
     public function archive(Request $request)
     {
+        //dd($request);
         $validator = Validator::make($request->all(), [
             'advert_id' => 'required|exists:adverts,id',
             'other_user_id' => 'required|exists:users,user_id',

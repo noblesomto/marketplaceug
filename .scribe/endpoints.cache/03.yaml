@@ -113,14 +113,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: et
+        example: officia
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: et
+      userId: officia
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -159,14 +159,14 @@ endpoints:
         name: followee_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: delectus
+        example: ea
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      followee_id: delectus
+      followee_id: ea
     fileParameters: []
     responses: []
     responseFields: []

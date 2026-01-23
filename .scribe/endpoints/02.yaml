@@ -30,7 +30,7 @@ endpoints:
         name: acc_type
         description: ''
         required: true
-        example: sed
+        example: asperiores
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -41,7 +41,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 100 characters.'
         required: true
-        example: qrdsxti
+        example: qgvhhwovvxwudkbxeynpmabra
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -52,7 +52,7 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: corporis
+        example: ex
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -63,7 +63,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: fisher.isabel@example.net
+        example: adan73@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -74,18 +74,18 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: '_?ScMo3Joqp7lL<'
+        example: '(Np]hZ82vz(}f(@RQ5j'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      acc_type: sed
-      name: qrdsxti
-      phone: corporis
-      email: fisher.isabel@example.net
-      password: '_?ScMo3Joqp7lL<'
+      acc_type: asperiores
+      name: qgvhhwovvxwudkbxeynpmabra
+      phone: ex
+      email: adan73@example.org
+      password: '(Np]hZ82vz(}f(@RQ5j'
     fileParameters: []
     responses:
       -
@@ -160,7 +160,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: icie.purdy@example.org
+        example: welch.nedra@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -171,15 +171,15 @@ endpoints:
         name: password
         description: 'Must be at least 4 characters.'
         required: true
-        example: 'C[!2f5Y{b:Fa"W3;'
+        example: 'dFcLlc#<`'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: icie.purdy@example.org
-      password: 'C[!2f5Y{b:Fa"W3;'
+      email: welch.nedra@example.net
+      password: 'dFcLlc#<`'
     fileParameters: []
     responses:
       -
@@ -280,7 +280,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: raphael85@example.com
+        example: jeffrey.rau@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -291,7 +291,7 @@ endpoints:
         name: otp
         description: 'Must be 6 digits.'
         required: true
-        example: '393881'
+        example: '658640'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -302,16 +302,16 @@ endpoints:
         name: trust_device
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: raphael85@example.com
-      otp: '393881'
-      trust_device: true
+      email: jeffrey.rau@example.org
+      otp: '658640'
+      trust_device: false
     fileParameters: []
     responses:
       -
@@ -408,14 +408,14 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: hkozey@example.net
+        example: reyes89@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: hkozey@example.net
+      email: reyes89@example.net
     fileParameters: []
     responses:
       -
@@ -477,7 +477,7 @@ endpoints:
         name: email
         description: ''
         required: true
-        example: odaniel@example.org
+        example: craig81@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -488,15 +488,15 @@ endpoints:
         name: token
         description: ''
         required: true
-        example: iusto
+        example: voluptatem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      email: odaniel@example.org
-      token: iusto
+      email: craig81@example.org
+      token: voluptatem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -557,14 +557,14 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: mschinner@example.org
+        example: langworth.william@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: mschinner@example.org
+      email: langworth.william@example.net
     fileParameters: []
     responses:
       -
@@ -631,14 +631,14 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: bernita.friesen@example.org
+        example: claire.kub@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: bernita.friesen@example.org
+      email: claire.kub@example.org
     fileParameters: []
     responses:
       -
@@ -701,7 +701,7 @@ endpoints:
         name: user_id
         description: 'The ID of the user.'
         required: true
-        example: veniam
+        example: illo
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -712,15 +712,15 @@ endpoints:
         name: token
         description: ''
         required: true
-        example: praesentium
+        example: dolorum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_id: veniam
-      token: praesentium
+      user_id: illo
+      token: dolorum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -729,14 +729,14 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: 6Wh2k>$`hNLt7(|gKhva
+        example: '/YaW_"""yu&zOFkG'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      password: 6Wh2k>$`hNLt7(|gKhva
+      password: '/YaW_"""yu&zOFkG'
     fileParameters: []
     responses:
       -
@@ -808,7 +808,7 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: facebook
+        example: google
         type: string
         enumValues:
           - google
@@ -821,7 +821,7 @@ endpoints:
         name: access_token
         description: ''
         required: true
-        example: excepturi
+        example: debitis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -832,16 +832,16 @@ endpoints:
         name: device_name
         description: ''
         required: false
-        example: voluptatem
+        example: laborum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      provider: facebook
-      access_token: excepturi
-      device_name: voluptatem
+      provider: google
+      access_token: debitis
+      device_name: laborum
     fileParameters: []
     responses:
       -
@@ -929,14 +929,14 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: quibusdam
+        example: ipsam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      provider: quibusdam
+      provider: ipsam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1005,14 +1005,14 @@ endpoints:
         name: provider
         description: ''
         required: true
-        example: perspiciatis
+        example: quidem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      provider: perspiciatis
+      provider: quidem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1106,7 +1106,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vPafbgcDa13Ved46hE8k65Z'
+      - 'Bearer ecP4b6hDf861vZa3gd5aEVk'
     controller: null
     method: null
     route: null
@@ -1135,14 +1135,14 @@ endpoints:
         name: device_id
         description: 'The ID of the device.'
         required: true
-        example: ratione
+        example: quod
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      device_id: ratione
+      device_id: quod
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1173,7 +1173,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer chEd8Z3bvk1Pa5a66fD4Veg'
+      - 'Bearer 168ad4kZVhfP65ev3abDgcE'
     controller: null
     method: null
     route: null

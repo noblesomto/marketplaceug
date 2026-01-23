@@ -50,7 +50,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer b3c164VDZgadkE6ahve8f5P'
+      - 'Bearer d6Z48VE3avgc65hDPabekf1'
     controller: null
     method: null
     route: null
@@ -84,7 +84,7 @@ endpoints:
         name: token
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: nar
+        example: upbhrbmtujagjcrlnq
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -95,15 +95,15 @@ endpoints:
         name: platform
         description: ''
         required: true
-        example: illo
+        example: debitis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      token: nar
-      platform: illo
+      token: upbhrbmtujagjcrlnq
+      platform: debitis
     fileParameters: []
     responses:
       -
@@ -124,7 +124,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer f1v4dVh8g65aZePDk3Eacb6'
+      - 'Bearer EP6e4356cgkV8bfDhav1Zad'
     controller: null
     method: null
     route: null
@@ -189,7 +189,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer P6dZVaE4hv1D5c3fa86begk'
+      - 'Bearer vDaka66VZPg5c8h1bf3E4de'
     controller: null
     method: null
     route: null
@@ -234,7 +234,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v6k8D3ehEdc1Z4abVP6f5ga'
+      - 'Bearer ga6DPbf46cV3vdZEe1ah85k'
     controller: null
     method: null
     route: null
@@ -293,7 +293,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6Va1Evebf3k6DPh8Zg5da4c'
+      - 'Bearer fc5P3v86kZ6ad1gE4VehabD'
     controller: null
     method: null
     route: null

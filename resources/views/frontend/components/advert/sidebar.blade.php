@@ -168,8 +168,8 @@
             </ul>
         @endif
         <div class="mt-3 flex justify-between pt-3 border-t border-yellow-200">
-            <a href="/report-ad/{{ $ad->id }}" class="text-xs text-red-600 font-semibold hover:underline">Report Ad</a>
-            <button id="openModalShare" class="text-xs text-dark_green font-semibold hover:underline">Share Ad</button>
+            <a href="/report-ad/{{ $ad->id }}" class="text-xs text-red-600 font-semibold hover:underline p-2 rounded-xl border-2 border-red-600">Report Ad</a>
+            <button id="openModalShare" class="text-xs text-dark_green font-semibold hover:underline p-2 rounded-xl border-2 border-dark_green">Share Ad</button>
         </div>
     </div>
 

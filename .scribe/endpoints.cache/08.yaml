@@ -45,7 +45,7 @@ endpoints:
         name: shipping_data.first_name
         description: ''
         required: true
-        example: aut
+        example: unde
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -56,7 +56,7 @@ endpoints:
         name: shipping_data.last_name
         description: ''
         required: true
-        example: laudantium
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -67,7 +67,7 @@ endpoints:
         name: shipping_data.phone
         description: ''
         required: true
-        example: nemo
+        example: labore
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -78,7 +78,7 @@ endpoints:
         name: shipping_data.grand_total
         description: ''
         required: true
-        example: 8.0
+        example: 87739076.808498
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -89,7 +89,7 @@ endpoints:
         name: shipping_data.commission
         description: ''
         required: true
-        example: 46357.5363968
+        example: 24.959832
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -100,7 +100,7 @@ endpoints:
         name: shipping_data.shipping_cost
         description: ''
         required: true
-        example: 553583.5193
+        example: 6.5686858
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -111,7 +111,7 @@ endpoints:
         name: shipping_data.shipping_method
         description: ''
         required: true
-        example: 3
+        example: 8
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -144,7 +144,7 @@ endpoints:
         name: shipping_data.ad.price
         description: ''
         required: true
-        example: 166.97726
+        example: 108253174.0
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -166,7 +166,7 @@ endpoints:
         name: shipping_data.reciever_city.id
         description: ''
         required: false
-        example: 8
+        example: 9
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -188,7 +188,7 @@ endpoints:
         name: shipping_data.reciever_state.id
         description: ''
         required: false
-        example: 15
+        example: 8
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -196,20 +196,20 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       shipping_data:
-        first_name: aut
-        last_name: laudantium
-        phone: nemo
-        grand_total: 8.0
-        commission: 46357.5363968
-        shipping_cost: 553583.5193
-        shipping_method: 3
+        first_name: unde
+        last_name: et
+        phone: labore
+        grand_total: 87739076.808498
+        commission: 24.959832
+        shipping_cost: 6.5686858
+        shipping_method: 8
         ad:
           id: 18
-          price: 166.97726
+          price: 108253174.0
         reciever_city:
-          id: 8
+          id: 9
         reciever_state:
-          id: 15
+          id: 8
     fileParameters: []
     responses: []
     responseFields: []
@@ -257,7 +257,7 @@ endpoints:
         name: amount
         description: 'Must be at least 0.'
         required: true
-        example: 15
+        example: 54
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -268,7 +268,7 @@ endpoints:
         name: boost_type
         description: ''
         required: true
-        example: labore
+        example: dolorum
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -279,7 +279,7 @@ endpoints:
         name: duration
         description: 'Must be at least 1.'
         required: true
-        example: 77
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -287,9 +287,9 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       advert_id: 7
-      amount: 15
-      boost_type: labore
-      duration: 77
+      amount: 54
+      boost_type: dolorum
+      duration: 18
     fileParameters: []
     responses: []
     responseFields: []
@@ -321,14 +321,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: est
+        example: magni
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: est
+      paymentId: magni
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -364,14 +364,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: dolores
+        example: necessitatibus
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: dolores
+      userId: necessitatibus
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -407,14 +407,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: cum
+        example: modi
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: cum
+      userId: modi
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -455,14 +455,14 @@ endpoints:
         name: reference
         description: ''
         required: true
-        example: et
+        example: nam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      reference: et
+      reference: nam
     fileParameters: []
     responses: []
     responseFields: []

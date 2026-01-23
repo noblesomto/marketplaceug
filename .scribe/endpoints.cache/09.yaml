@@ -154,14 +154,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: quis
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: quis
+      adId: est
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -211,14 +211,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: iure
+        example: aspernatur
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: iure
+      adId: aspernatur
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -285,14 +285,14 @@ endpoints:
         name: adId
         description: ''
         required: true
-        example: alias
+        example: natus
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      adId: alias
+      adId: natus
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -359,14 +359,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: qui
+        example: dolores
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: qui
+      paymentId: dolores
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -403,14 +403,14 @@ endpoints:
         name: paymentId
         description: ''
         required: true
-        example: doloribus
+        example: consequatur
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      paymentId: doloribus
+      paymentId: consequatur
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -419,14 +419,14 @@ endpoints:
         name: shipping_status
         description: ''
         required: true
-        example: laudantium
+        example: velit
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      shipping_status: laudantium
+      shipping_status: velit
     fileParameters: []
     responses: []
     responseFields: []
@@ -490,14 +490,14 @@ endpoints:
         name: sellerId
         description: ''
         required: true
-        example: qui
+        example: hic
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      sellerId: qui
+      sellerId: hic
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -506,7 +506,7 @@ endpoints:
         name: rating
         description: 'Must be between 1 and 5.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -517,7 +517,7 @@ endpoints:
         name: satisfaction
         description: 'Must be between 1 and 5.'
         required: true
-        example: 2
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -539,7 +539,7 @@ endpoints:
         name: friendly
         description: 'Must be between 1 and 5.'
         required: true
-        example: 2
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -550,18 +550,18 @@ endpoints:
         name: message
         description: 'Must not be greater than 1000 characters.'
         required: true
-        example: ipknjflsrzbptqdkcddscverz
+        example: reeluj
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      rating: 1
-      satisfaction: 2
+      rating: 2
+      satisfaction: 1
       reliable: 1
-      friendly: 2
-      message: ipknjflsrzbptqdkcddscverz
+      friendly: 1
+      message: reeluj
     fileParameters: []
     responses: []
     responseFields: []
@@ -593,14 +593,14 @@ endpoints:
         name: userId
         description: ''
         required: true
-        example: delectus
+        example: voluptatem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      userId: delectus
+      userId: voluptatem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -641,14 +641,14 @@ endpoints:
         name: followee_id
         description: 'The <code>user_id</code> of an existing record in the users table.'
         required: true
-        example: 9
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      followee_id: 9
+      followee_id: 18
     fileParameters: []
     responses: []
     responseFields: []

@@ -60,14 +60,14 @@ endpoints:
         name: state_id
         description: 'The ID of the state.'
         required: true
-        example: quam
+        example: ut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      state_id: quam
+      state_id: ut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -103,14 +103,14 @@ endpoints:
         name: state_id
         description: 'The ID of the state.'
         required: true
-        example: pariatur
+        example: voluptatem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      state_id: pariatur
+      state_id: voluptatem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -151,7 +151,7 @@ endpoints:
         name: search
         description: 'Must be at least 2 characters.'
         required: false
-        example: iqyhseaguwxvvdqdoxbblwtpcxzxskehjfskzvclwgx
+        example: akqblnwvvhihhhqurnnhyrnwknktcugkpcnuskgvywphwhrzjsuubolzpxrqa
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -162,7 +162,7 @@ endpoints:
         name: state_id
         description: 'The <code>id</code> of an existing record in the states table.'
         required: false
-        example: 15
+        example: 3
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -173,16 +173,16 @@ endpoints:
         name: limit
         description: 'Must be at least 1. Must not be greater than 50.'
         required: false
-        example: 20
+        example: 13
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      search: iqyhseaguwxvvdqdoxbblwtpcxzxskehjfskzvclwgx
-      state_id: 15
-      limit: 20
+      search: akqblnwvvhihhhqurnnhyrnwknktcugkpcnuskgvywphwhrzjsuubolzpxrqa
+      state_id: 3
+      limit: 13
     fileParameters: []
     responses: []
     responseFields: []
@@ -214,14 +214,14 @@ endpoints:
         name: city_id
         description: 'The ID of the city.'
         required: true
-        example: enim
+        example: voluptate
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      city_id: enim
+      city_id: voluptate
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -262,7 +262,7 @@ endpoints:
         name: sender_station
         description: ''
         required: true
-        example: qui
+        example: sit
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -273,7 +273,7 @@ endpoints:
         name: receiver_station
         description: ''
         required: true
-        example: eos
+        example: velit
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -284,7 +284,7 @@ endpoints:
         name: ad_price
         description: 'Must be at least 0.'
         required: true
-        example: 53
+        example: 74
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -295,7 +295,7 @@ endpoints:
         name: ad_title
         description: ''
         required: true
-        example: tempore
+        example: id
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -306,7 +306,7 @@ endpoints:
         name: ad_des
         description: ''
         required: false
-        example: eius
+        example: corporis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -317,7 +317,7 @@ endpoints:
         name: weight
         description: 'Must be at least 0.'
         required: false
-        example: 8
+        example: 86
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -328,20 +328,20 @@ endpoints:
         name: quantity
         description: 'Must be at least 1.'
         required: false
-        example: 21
+        example: 53
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      sender_station: qui
-      receiver_station: eos
-      ad_price: 53
-      ad_title: tempore
-      ad_des: eius
-      weight: 8
-      quantity: 21
+      sender_station: sit
+      receiver_station: velit
+      ad_price: 74
+      ad_title: id
+      ad_des: corporis
+      weight: 86
+      quantity: 53
     fileParameters: []
     responses: []
     responseFields: []

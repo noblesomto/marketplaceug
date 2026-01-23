@@ -204,26 +204,23 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 | User Manage Adverts Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->prefix('user/adverts')->group(function () {
-    // Helper routes for dropdowns
-    Route::get('/subcategories/{categoryId}', [UserManageAdverts::class, 'fetchSubcategories']);
-    Route::get('/brands/{subcategoryId}', [UserManageAdverts::class, 'fetchBrands']);
-    Route::get('/models/{brandId}', [UserManageAdverts::class, 'fetchModels']);
+Route::middleware('auth:sanctum')->prefix('adverts')->group(function () {
+    // Get data for creating adverts
+    Route::get('/create/data', [UserManageAdverts::class, 'getCreateData']);
+
+    // Get advert for editing
+    Route::get('/{advertId}/edit', [UserManageAdverts::class, 'getAdvertForEdit']);
 
     // CRUD routes
-    Route::get('/', [UserManageAdverts::class, 'index']);
-    Route::post('/', [UserManageAdverts::class, 'store']);
-    Route::get('/{id}', [UserManageAdverts::class, 'show']);
-    Route::put('/{id}', [UserManageAdverts::class, 'update']);
-    Route::delete('/{id}', [UserManageAdverts::class, 'destroy']);
-    Route::patch('/{id}/status', [UserManageAdverts::class, 'updateStatus']);
-    Route::patch('/{id}/mark-sold', [UserManageAdverts::class, 'markSold']);
+    Route::post('/', [UserManageAdverts::class, 'createAdvert']);
+    Route::put('/{advertId}', [UserManageAdverts::class, 'updateAdvert']);
+    Route::delete('/{advertId}', [UserManageAdverts::class, 'deleteAdvert']);
 });
 
 // Public routes for category/brand/model data
-Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'getSubcategories']);
-Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'getBrands']);
-Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'getModels']);
+Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'fetchSubcategories']);
+Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'fetchBrands']);
+Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'fetchModels']);
 
 /*
 |--------------------------------------------------------------------------
