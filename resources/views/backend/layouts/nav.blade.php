@@ -241,6 +241,20 @@
         </li>
         @endadminCan
 
+        @adminCan('manage_settings')
+        <li>
+          <a href="/admin/boost-settings/types">
+            <i class="bi bi-circle"></i><span>Boost Types</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/admin/boost-settings/durations">
+            <i class="bi bi-circle"></i><span>Boost Durations</span>
+          </a>
+        </li>
+        @endadminCan
+
         @adminRole('super_admin')
         <li>
           <a href="/settings/gig-locations">

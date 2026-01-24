@@ -267,6 +267,8 @@ class UserManageAdverts extends Controller
         // Subcategory-specific rules
         switch ($subcat) {
             case 2: // Cars
+            case 21: // Vehicles
+            case 23: // Vehicle Parts
                 $rules += [
                     'model' => 'required',
                     'registration' => 'required',
@@ -289,7 +291,7 @@ class UserManageAdverts extends Controller
         }
 
         // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
             $rules['item_condition'] = 'required';
         }
 
@@ -377,7 +379,7 @@ class UserManageAdverts extends Controller
             }
 
             // Store car-specific info
-            if ($subcat === 2) {
+            if (in_array($subcat, [2, 21, 23])) {
                 $car = new CarDetail([
                     'car_id' => rand(10000, 99999),
                     'cat_id' => $request->input('category'),
@@ -621,6 +623,8 @@ class UserManageAdverts extends Controller
         // Subcategory-specific rules
         switch ($subcat) {
             case 2: // Cars
+            case 21: // Vehicles
+            case 23: // Vehicle Parts
                 $rules += [
                     'model' => 'required',
                     'registration' => 'required',
@@ -643,7 +647,7 @@ class UserManageAdverts extends Controller
         }
 
         // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
             $rules['item_condition'] = 'required';
         }
 
@@ -698,11 +702,41 @@ class UserManageAdverts extends Controller
 
             // Handle deleted images
             if ($request->has('deleted_images')) {
-                foreach ($request->input('deleted_images') as $imageId) {
-                    $image = $advert->images()->find($imageId);
-                    if ($image) {
-                        FileUploadHelper::delete('images', $image->image);
-                        $image->delete();
+                $deletedImages = $request->input('deleted_images');
+                // Ensure it's an array
+                if (!is_array($deletedImages)) {
+                    $deletedImages = explode(',', $deletedImages);
+                }
+                $deletedImages = array_filter(array_map('intval', $deletedImages));
+
+                if (!empty($deletedImages)) {
+                    // Get current image count
+                    $currentImageCount = $advert->images()->count();
+                    $requestedDeleteCount = count($deletedImages);
+                    $hasNewImages = $request->hasFile('images');
+
+                    // Validate: must have at least 1 image remaining (unless category 3 - Jobs)
+                    if ($category != 3) {
+                        if ($currentImageCount <= 1 && !$hasNewImages) {
+                            return response()->json([
+                                'success' => false,
+                                'errors' => ['deleted_images' => ['Cannot delete image. Advert must have at least one image.']]
+                            ], 422);
+                        } elseif ($requestedDeleteCount >= $currentImageCount && !$hasNewImages) {
+                            return response()->json([
+                                'success' => false,
+                                'errors' => ['deleted_images' => ['Cannot delete all images. At least one image must remain.']]
+                            ], 422);
+                        }
+                    }
+
+                    // Proceed with deletion
+                    foreach ($deletedImages as $imageId) {
+                        $image = $advert->images()->find($imageId);
+                        if ($image) {
+                            FileUploadHelper::delete('images', $image->image);
+                            $image->delete();
+                        }
                     }
                 }
             }
@@ -736,8 +770,28 @@ class UserManageAdverts extends Controller
                 }
             }
 
+            // Validate final image count - ensure at least 1 image exists
+            $finalImageCount = $advert->images()->count();
+
+            if ($finalImageCount < 1) {
+                if ($category == 3) {
+                    // Add default image for jobs category if no images exist
+                    $advert->images()->create([
+                        'image' => 'jobs.png',
+                        'position' => 1,
+                    ]);
+                } else {
+                    // For all other categories, at least 1 image is required
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['images' => ['Advert must have at least one image. Please upload an image.']]
+                    ], 422);
+                }
+            }
+
             // Update Car details
-            if ($subcat === 2) {
+            if (in_array($subcat, [2, 21, 23])) {
                 if ($advert->car) {
                     $advert->car->update([
                         'cat_id' => $request->input('category'),
@@ -829,7 +883,7 @@ class UserManageAdverts extends Controller
         try {
             DB::beginTransaction();
 
-            $advert = Advert::with('images')->where('id', $advertId)
+            $advert = Advert::where('id', $advertId)
                 ->where('user_id', $user->user_id)
                 ->first();
 
@@ -840,21 +894,11 @@ class UserManageAdverts extends Controller
                 ], 404);
             }
 
-            // Delete all associated images safely (except for category Job which uses default image)
+            // Delete media images except job category
             if ($advert->category != 3) {
-                foreach ($advert->images ?? [] as $image) {
-                    if ($image && !empty($image->image)) {
-                        try {
-                            FileUploadHelper::delete('images', $image->image);
-                            $image->delete();
-                        } catch (\Exception $imgEx) {
-                            throw new \Exception("Unable to delete image file");
-                        }
-                    }
-                }
+                $advert->clearMediaCollection('images');
             }
 
-            // Delete the advert itself
             $advert->delete();
 
             DB::commit();
@@ -864,17 +908,21 @@ class UserManageAdverts extends Controller
                 'message' => 'Advert deleted successfully'
             ]);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Advert deletion failed: ' . $e->getMessage());
+            Log::error('Advert deletion failed', [
+                'advert_id' => $advertId,
+                'error' => $e->getMessage()
+            ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete advert',
-                'error' => $e->getMessage()
+                'message' => 'Failed to delete advert'
             ], 500);
         }
     }
+
+
 
     /**
      * @OA\Get(

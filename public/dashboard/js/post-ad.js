@@ -69,6 +69,15 @@ const CONFIG = {
         default: "Select Option:"
     },
 
+    // Label text changes based on Sub category
+    subCategoryLabels: {
+        "2": "Brand:",
+        "21": "Brand:",
+        "23": "Brand:",
+        default: "Select Option:"
+    },
+
+
     // Elements that start hidden on page load
     initiallyHidden: ["divCar", "divPhone", "divModel", "salary", "expectedSalary", "services"],
 
@@ -188,10 +197,22 @@ class LabelManager {
     }
 
     static updateBrandLabel(categoryId) {
-        const labelText = CONFIG.categoryLabels[categoryId] || CONFIG.categoryLabels.default;
+        const labelText =
+            CONFIG.categoryLabels[categoryId] ||
+            CONFIG.categoryLabels.default;
+
+        this.updateLabel("brand", labelText);
+    }
+
+    static updateSubCategoryLabel(subCategoryId) {
+        const labelText =
+            CONFIG.subCategoryLabels[subCategoryId] ||
+            CONFIG.subCategoryLabels.default;
+
         this.updateLabel("brand", labelText);
     }
 }
+
 
 // ============================================================================
 // SHIPPING MANAGER - Handles shipping-related logic
@@ -354,7 +375,7 @@ class FormController {
         // Reset all dropdowns
         DropdownManager.resetDropdown(this.subcategorySelect, "Select Sub Category");
         DropdownManager.resetDropdown(this.brandSelect, "Select Option");
-        DropdownManager.resetDropdown(this.modelSelect, "Select Model");
+        DropdownManager.resetDropdown(this.modelSelect, "Select Option");
 
         // Reset shipping section
         this.shippingManager.reset();
@@ -391,8 +412,17 @@ class FormController {
             // Apply subcategory-specific visibility rules
             this.visibilityManager.applySubcategoryRules(subcategoryId);
 
+            // Update label based on subcategory
+            LabelManager.updateSubCategoryLabel(subcategoryId);
+
             // Reset brand dropdown
             DropdownManager.resetDropdown(this.brandSelect, "Select Option");
+
+            // Reset model dropdown with appropriate placeholder
+            const modelPlaceholder = ['2', '21', '23'].includes(subcategoryId)
+                ? "Select Model"
+                : "Select Option";
+            DropdownManager.resetDropdown(this.modelSelect, modelPlaceholder);
 
             // Fetch and populate brands
             await DropdownManager.fetchAndPopulate(
@@ -410,8 +440,14 @@ class FormController {
         this.brandSelect.addEventListener('change', async (e) => {
             const brandId = e.target.value;
 
+            // Get current subcategory to determine correct placeholder
+            const currentSubcategory = this.subcategorySelect?.value;
+            const placeholder = ['2', '21', '23'].includes(currentSubcategory)
+                ? "Select Model"
+                : "Select Option";
+
             // Reset model dropdown
-            DropdownManager.resetDropdown(this.modelSelect, "Select Model");
+            DropdownManager.resetDropdown(this.modelSelect, placeholder);
 
             // Fetch and populate models
             await DropdownManager.fetchAndPopulate(
@@ -447,6 +483,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================================
 // LEGACY FUNCTION SUPPORT (for backward compatibility)
 // ============================================================================
+
+// Legacy function for backward compatibility - redirects to new implementation
+function showHideDiv(categoryId, subcategoryId) {
+    console.warn('showHideDiv() is deprecated. The new system handles this automatically.');
+    // If you need to manually trigger visibility, use:
+    // const formController = new FormController();
+    // formController.visibilityManager.applyCategoryRules(categoryId);
+    // formController.visibilityManager.applySubcategoryRules(subcategoryId);
+}
 
 // Keep this function if it's called elsewhere in your codebase
 function toggleShipping() {

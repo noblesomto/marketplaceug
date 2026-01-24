@@ -23,6 +23,8 @@ class AdvertBoost extends Model implements HasMedia
         'boost_type',
         'start_date',
         'upload_proof',
+        'boost_type_id',
+        'duration_id',
     ];
 
     protected $casts = [
@@ -64,6 +66,16 @@ class AdvertBoost extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function boostType()
+    {
+        return $this->belongsTo(BoostType::class, 'boost_type_id');
+    }
+
+    public function boostDuration()
+    {
+        return $this->belongsTo(BoostDuration::class, 'duration_id');
     }
 
     public function getDaysRemainingAttribute()

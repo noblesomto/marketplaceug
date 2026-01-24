@@ -226,7 +226,7 @@ class UserController extends Controller
     public function updateAdStatus($adId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:active,inactive'
+            'status' => 'required|string|in:active,disabled,banned'
         ]);
 
         if ($validator->fails()) {

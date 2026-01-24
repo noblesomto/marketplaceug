@@ -40,30 +40,37 @@
                        <!-- Boost Type -->
   <div>
     <label class="block text-sm font-medium text-gray-700 mb-1">Boost Type *</label>
-    <select name="boost_type" id="boost_type"
+    <select name="boost_type_id" id="boost_type_id"
       class="w-full px-4 py-2 border rounded shadow-sm"
       onchange="setBoostName(); calculatePrice();" required>
       <option value="">Select Boost</option>
-      <option value="214.285" class="capitalize">highlight</option>
-      <option value="500">repeated</option>
-      <option value="1071.428">top</option>
-      <option value="1428.571">gallery</option>
+      @foreach($boostTypes as $type)
+        <option value="{{ $type->id }}"
+                data-name="{{ $type->name }}"
+                data-rate="{{ $type->daily_rate }}"
+                data-description="{{ $type->description }}">
+          {{ $type->name }} - ₦{{ number_format($type->daily_rate, 2) }}/day
+        </option>
+      @endforeach
     </select>
     <input type="hidden" name="boost_name" id="boost_name">
+    <p class="text-xs text-gray-500 mt-1" id="boost_description"></p>
   </div>
 
   <!-- Duration -->
   <div>
     <label class="block text-sm font-medium text-gray-700 mb-1">Duration *</label>
-    <select name="duration" id="duration"
+    <select name="duration_id" id="duration_id"
       class="w-full px-4 py-2 border rounded shadow-sm"
       onchange="calculatePrice();" required>
       <option value="">Select Duration</option>
-      <option value="7">7 Days (Standard)</option>
-      <option value="14">14 Days (3% discount)</option>
-      <option value="30">30 Days (5% discount)</option>
-      <option value="90">90 Days (7% discount)</option>
-      <option value="120">120 Days (10% discount)</option>
+      @foreach($boostDurations as $duration)
+        <option value="{{ $duration->id }}"
+                data-days="{{ $duration->days }}"
+                data-discount="{{ $duration->discount_percentage }}">
+          {{ $duration->label }}
+        </option>
+      @endforeach
     </select>
   </div>
 
@@ -80,6 +87,8 @@
 
   <input type="hidden" id="basePrice" value="{{ $price }}">
   <input type="hidden" name="advert_id" value="{{ $advert->id }}">
+  <input type="hidden" name="duration" id="duration_days" value="">
+  <input type="hidden" name="boost_type" id="boost_type_name" value="">
 
   <div class="flex justify-end pt-6 border-t">
     <button type="submit" class="px-8 py-3 bg-dark_green text-white rounded-md flex items-center space-x-2">
@@ -94,37 +103,84 @@
 
 <script>
   function setBoostName() {
-    const boostSelect = document.getElementById('boost_type');
-    document.getElementById('boost_name').value =
-      boostSelect.options[boostSelect.selectedIndex].text;
+    const boostSelect = document.getElementById('boost_type_id');
+    const selectedOption = boostSelect.options[boostSelect.selectedIndex];
+
+    if (selectedOption.value) {
+      document.getElementById('boost_name').value = selectedOption.dataset.name;
+      document.getElementById('boost_description').textContent = selectedOption.dataset.description || '';
+    } else {
+      document.getElementById('boost_name').value = '';
+      document.getElementById('boost_description').textContent = '';
+    }
   }
 
-  function calculatePrice() {
-    const boostValue = parseFloat(document.getElementById('boost_type').value) || 0;
-    const days = parseInt(document.getElementById('duration').value) || 0;
+  async function calculatePrice() {
+    const boostTypeId = document.getElementById('boost_type_id').value;
+    const durationId = document.getElementById('duration_id').value;
+    const amountField = document.getElementById('amount');
+    const durationSelect = document.getElementById('duration_id');
 
-    if (!boostValue || !days) {
-      document.getElementById('amount').value = '';
+    if (!boostTypeId || !durationId) {
+      amountField.value = '';
       return;
     }
 
-    // Discount lookup
-    const discounts = {
-      14: 0.03,
-      30: 0.05,
-      90: 0.07,
-      120: 0.10
-    };
+    // Update backward compatibility fields
+    const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+    if (selectedDuration.value) {
+      document.getElementById('duration_days').value = selectedDuration.dataset.days;
+    }
 
-    // Compute raw and discounted total
-    const rawTotal = boostValue * days;
-    const discountRate = discounts[days] || 0;
-    const finalTotal = rawTotal * (1 - discountRate);
+    const boostTypeSelect = document.getElementById('boost_type_id');
+    const selectedBoostType = boostTypeSelect.options[boostTypeSelect.selectedIndex];
+    if (selectedBoostType.value) {
+      document.getElementById('boost_type_name').value = selectedBoostType.dataset.name.toLowerCase();
+    }
 
-    // Format with commas, no decimals
-    document.getElementById('amount').value =
-      Math.round(finalTotal).toLocaleString();
+    try {
+      // Show loading state
+      amountField.value = 'Calculating...';
+
+      // Call API to calculate price
+      const response = await fetch('/api/boost/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          boost_type_id: parseInt(boostTypeId),
+          duration_id: parseInt(durationId)
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.data.pricing) {
+        // Format price with commas
+        const finalPrice = parseFloat(data.data.pricing.final_price);
+        amountField.value = Math.round(finalPrice).toLocaleString();
+
+        // Store the actual numeric value for form submission
+        amountField.dataset.actualValue = Math.round(finalPrice);
+      } else {
+        amountField.value = 'Error';
+        console.error('Price calculation failed:', data);
+      }
+    } catch (error) {
+      console.error('Error calculating price:', error);
+      amountField.value = 'Error';
+    }
   }
+
+  // Update amount before form submission to use numeric value
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const amountField = document.getElementById('amount');
+    if (amountField.dataset.actualValue) {
+      amountField.value = amountField.dataset.actualValue;
+    }
+  });
 </script>
 
 @include('dashboard.layouts.footer')

@@ -77,7 +77,7 @@
 
 <section class="w-full md:w-3/6  mx-auto py-3 text-sm">
     <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 rounded-lg">
-        Recent Listings
+        my Recent Listings
         @include('frontend.components.flash-message')
     </div>
     <div id="ads-container">
@@ -100,7 +100,7 @@
     @endif
 
 </section>
-<div class="pb-10"></div>
+<div class="pb-20"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 2; // Start from page 2 since page 1 is already loaded

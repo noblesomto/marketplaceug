@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Advert;
 use App\Models\AdvertBoost;
 use App\Models\User;
+use App\Models\BoostType;
+use App\Models\BoostDuration;
 use Carbon\Carbon;
 
 class UserManageBoost extends Controller
@@ -24,7 +26,11 @@ class UserManageBoost extends Controller
                         ->where('user_id', $user_id)
                         ->firstOrFail();
 
-        return view('dashboard.boost-ad', compact('title','user','advert','count_ads', 'price'));
+        // Get active boost types and durations from database
+        $boostTypes = BoostType::active()->ordered()->get();
+        $boostDurations = BoostDuration::active()->ordered()->get();
+
+        return view('dashboard.boost-ad', compact('title','user','advert','count_ads', 'price', 'boostTypes', 'boostDurations'));
     }
 
     public function post_boost_ad(Request $request, $id)
@@ -39,8 +45,11 @@ class UserManageBoost extends Controller
                         ->where('user_id', $user_id)
                         ->firstOrFail();
 
+        // Get active boost types and durations from database
+        $boostTypes = BoostType::active()->ordered()->get();
+        $boostDurations = BoostDuration::active()->ordered()->get();
 
-        return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion'));
+        return view('dashboard.post-boost-ad', compact('title','user','advert','count_ads','promotion', 'boostTypes', 'boostDurations'));
     }
 
     public function boosted_ad(Request $request, $id)

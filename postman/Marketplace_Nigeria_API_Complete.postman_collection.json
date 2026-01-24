@@ -1,0 +1,551 @@
+{
+  "info": {
+    "name": "Marketplace Nigeria - Complete API",
+    "description": "Complete API collection for Marketplace Nigeria mobile app integration. Includes all authentication, adverts, user management, payments, messaging, and boost management endpoints.\n\n**Quick Start:**\n1. Import this collection\n2. Import and select an environment (Local or Production)\n3. Run the Login request in Authentication folder\n4. Token will be auto-saved - all protected routes will work\n\n**Environments:**\n- Local: http://127.0.0.1:8030\n- Production: https://www.marketplace.ng",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "marketplace-nigeria-v1"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 or 200\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.test(\"Response has access_token\", function () {",
+                  "        pm.expect(jsonData).to.have.property('access_token');",
+                  "    });",
+                  "    ",
+                  "    if (jsonData.access_token) {",
+                  "        pm.environment.set(\"access_token\", jsonData.access_token);",
+                  "        console.log(\"✓ Access token saved to environment\");",
+                  "    }",
+                  "    ",
+                  "    if (jsonData.user && jsonData.user.user_id) {",
+                  "        pm.environment.set(\"user_id\", jsonData.user.user_id);",
+                  "        console.log(\"✓ User ID saved:\", jsonData.user.user_id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"08012345678\",\n    \"password\": \"Password123!\",\n    \"password_confirmation\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            },
+            "description": "Register a new user account. Returns access token on success."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has access_token\", function () {",
+                  "    pm.expect(jsonData).to.have.property('access_token');",
+                  "});",
+                  "",
+                  "pm.test(\"Response has user object\", function () {",
+                  "    pm.expect(jsonData).to.have.property('user');",
+                  "    pm.expect(jsonData.user).to.have.property('user_id');",
+                  "});",
+                  "",
+                  "// Auto-save token to environment",
+                  "if (jsonData.access_token) {",
+                  "    pm.environment.set(\"access_token\", jsonData.access_token);",
+                  "    console.log(\"✓ Access token saved to environment\");",
+                  "}",
+                  "",
+                  "// Auto-save user_id",
+                  "if (jsonData.user && jsonData.user.user_id) {",
+                  "    pm.environment.set(\"user_id\", jsonData.user.user_id);",
+                  "    console.log(\"✓ User ID saved:\", jsonData.user.user_id);",
+                  "}",
+                  "",
+                  "// Save user email if available",
+                  "if (jsonData.user && jsonData.user.email) {",
+                  "    pm.environment.set(\"user_email\", jsonData.user.email);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@marketplace.ng\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            },
+            "description": "**Login to get access token**\n\nReturns:\n- access_token (auto-saved to environment)\n- user object with user_id\n\nAll subsequent requests will use this token automatically."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has user data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('user_id');",
+                  "    pm.expect(jsonData).to.have.property('email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user"]
+            },
+            "description": "Get currently authenticated user details. Requires authentication token."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\",\n    \"otp\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/verify-otp",
+              "host": ["{{base_url}}"],
+              "path": ["api", "verify-otp"]
+            },
+            "description": "Verify OTP code sent to email during registration."
+          },
+          "response": []
+        },
+        {
+          "name": "Resend OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/resend-otp",
+              "host": ["{{base_url}}"],
+              "path": ["api", "resend-otp"]
+            },
+            "description": "Resend OTP verification code to email."
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "forgot-password"]
+            },
+            "description": "Send password reset link to email."
+          },
+          "response": []
+        },
+        {
+          "name": "Social Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.access_token) {",
+                  "        pm.environment.set(\"access_token\", jsonData.access_token);",
+                  "    }",
+                  "    if (jsonData.user && jsonData.user.user_id) {",
+                  "        pm.environment.set(\"user_id\", jsonData.user.user_id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"provider\": \"google\",\n    \"provider_id\": \"123456789\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@gmail.com\",\n    \"avatar\": \"https://lh3.googleusercontent.com/a/default-user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/social",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "social"]
+            },
+            "description": "Login or register using social auth (Google, Facebook, etc.)"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout"]
+            },
+            "description": "Logout current user and invalidate token."
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints for user registration, login, password reset, OTP verification, and social login."
+    },
+    {
+      "name": "2. Adverts (Public)",
+      "item": [
+        {
+          "name": "Get All Adverts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has data array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Save first advert ID for other requests",
+                  "const jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.length > 0) {",
+                  "    pm.environment.set(\"advert_id\", jsonData.data[0].id);",
+                  "    console.log(\"✓ Advert ID saved:\", jsonData.data[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/adverts?page=1&per_page=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "adverts"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Get paginated list of all active adverts. No authentication required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Advert",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has advert data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('ad_title');",
+                  "    pm.expect(jsonData).to.have.property('price');",
+                  "});",
+                  "",
+                  "// Save seller_id for other requests",
+                  "const jsonData = pm.response.json();",
+                  "if (jsonData.seller_id) {",
+                  "    pm.environment.set(\"seller_id\", jsonData.seller_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/adverts/{{advert_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "adverts", "{{advert_id}}"]
+            },
+            "description": "Get detailed information about a specific advert including images, seller info, and related adverts."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Seller Adverts",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/adverts/seller/{{seller_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "adverts", "seller", "{{seller_id}}"]
+            },
+            "description": "Get all adverts from a specific seller."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Featured Adverts",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/adverts/featured",
+              "host": ["{{base_url}}"],
+              "path": ["api", "adverts", "featured"]
+            },
+            "description": "Get featured/promoted adverts for homepage display."
+          },
+          "response": []
+        },
+        {
+          "name": "Report Advert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"inappropriate_content\",\n    \"message\": \"This advert contains misleading information\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/adverts/{{advert_id}}/report",
+              "host": ["{{base_url}}"],
+              "path": ["api", "adverts", "{{advert_id}}", "report"]
+            },
+            "description": "Report an advert for inappropriate content. Requires authentication."
+          },
+          "response": []
+        }
+      ],
+      "description": "Public endpoints for browsing and viewing adverts."
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}

@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\ManagePayments;
 use App\Http\Controllers\Admin\ManageAdminUsers;
 use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\AdminBoostTypeController;
+use App\Http\Controllers\Admin\AdminBoostDurationController;
 use Illuminate\Support\Facades\Broadcast;
 
 
@@ -280,6 +282,28 @@ Route::middleware(['adminsession'])->group(function () {
         Route::any('/boost/paid', [ManageBoost::class, 'paid']);
         Route::any('/boost/status/{id}/{status}', [ManageBoost::class, 'status']);
         Route::any('/boost/payment-status/{id}/{status}', [ManageBoost::class, 'payment']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Boost Settings Routes
+    | Accessible by: super_admin
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('admin/boost-settings')->middleware(['admin.permission:manage_settings'])->group(function () {
+        // Boost Types
+        Route::get('/types', [AdminBoostTypeController::class, 'index'])->name('admin.boost-types.index');
+        Route::post('/types', [AdminBoostTypeController::class, 'store'])->name('admin.boost-types.store');
+        Route::put('/types/{id}', [AdminBoostTypeController::class, 'update'])->name('admin.boost-types.update');
+        Route::delete('/types/{id}', [AdminBoostTypeController::class, 'destroy'])->name('admin.boost-types.destroy');
+        Route::post('/types/{id}/toggle', [AdminBoostTypeController::class, 'toggleStatus'])->name('admin.boost-types.toggle');
+
+        // Boost Durations
+        Route::get('/durations', [AdminBoostDurationController::class, 'index'])->name('admin.boost-durations.index');
+        Route::post('/durations', [AdminBoostDurationController::class, 'store'])->name('admin.boost-durations.store');
+        Route::put('/durations/{id}', [AdminBoostDurationController::class, 'update'])->name('admin.boost-durations.update');
+        Route::delete('/durations/{id}', [AdminBoostDurationController::class, 'destroy'])->name('admin.boost-durations.destroy');
+        Route::post('/durations/{id}/toggle', [AdminBoostDurationController::class, 'toggleStatus'])->name('admin.boost-durations.toggle');
     });
 
     /*

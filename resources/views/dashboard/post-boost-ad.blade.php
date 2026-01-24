@@ -37,20 +37,54 @@
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Ad Boost *</label>
-                            @if ($errors->has('promotion'))
-                                <p class="text-red-600 text-sm mb-2">{{ $errors->first('promotion') }}</p>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Boost Type *</label>
+                            @if ($errors->has('boost_type_id'))
+                                <p class="text-red-600 text-sm mb-2">{{ $errors->first('boost_type_id') }}</p>
                             @endif
 
-                            <select name="promotion" id="promotion"
+                            <select name="boost_type_id" id="boost_type_id"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-dark_green focus:border-dark_green"
+                                    onchange="updateDescription(); calculatePrice();"
                                     required>
-                                <option value="">Select Boost Option</option>
-                                <option value="1500" {{ $promotion == 'highlight' ? 'selected' : '' }}>Highlight - ₦1,500 (7 days)</option>
-                                <option value="3500" {{ $promotion == 'repeated' ? 'selected' : '' }}>Repeated Pushing Up - ₦3,500 (7 days)</option>
-                                <option value="7500" {{ $promotion == 'top' ? 'selected' : '' }}>Top Ad - ₦7,500 (14 days)</option>
-                                <option value="10000" {{ $promotion == 'gallery' ? 'selected' : '' }}>Gallery - ₦10,000 (14 days)</option>
+                                <option value="">Select Boost Type</option>
+                                @foreach($boostTypes as $type)
+                                    <option value="{{ $type->id }}"
+                                            data-name="{{ $type->name }}"
+                                            data-rate="{{ $type->daily_rate }}"
+                                            data-description="{{ $type->description }}">
+                                        {{ $type->name }} - ₦{{ number_format($type->daily_rate, 2) }}/day
+                                    </option>
+                                @endforeach
                             </select>
+                            <p class="text-xs text-gray-600 mt-1" id="boost_description"></p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Duration *</label>
+                            @if ($errors->has('duration_id'))
+                                <p class="text-red-600 text-sm mb-2">{{ $errors->first('duration_id') }}</p>
+                            @endif
+
+                            <select name="duration_id" id="duration_id"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-dark_green focus:border-dark_green"
+                                    onchange="calculatePrice();"
+                                    required>
+                                <option value="">Select Duration</option>
+                                @foreach($boostDurations as $duration)
+                                    <option value="{{ $duration->id }}"
+                                            data-days="{{ $duration->days }}"
+                                            data-discount="{{ $duration->discount_percentage }}">
+                                        {{ $duration->label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-md border">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Total Price</label>
+                            <div class="text-2xl font-bold text-dark_green" id="calculated_price">
+                                Select boost type and duration
+                            </div>
                         </div>
 
                         <div class="bg-blue-50 p-4 rounded-md">
@@ -63,7 +97,8 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="duration" value="7">
+                    <input type="hidden" name="duration" id="duration_days" value="">
+                    <input type="hidden" name="promotion" id="promotion_value" value="">
                     <input type="hidden" name="advert_id" value="{{ $advert->id }}">
                 </div>
 
@@ -89,5 +124,78 @@
         </div>
     </div>
 </section>
+
+<script>
+  function updateDescription() {
+    const boostSelect = document.getElementById('boost_type_id');
+    const selectedOption = boostSelect.options[boostSelect.selectedIndex];
+
+    if (selectedOption.value) {
+      const description = selectedOption.dataset.description || '';
+      document.getElementById('boost_description').textContent = description;
+      document.getElementById('promotion_value').value = selectedOption.dataset.name.toLowerCase();
+    } else {
+      document.getElementById('boost_description').textContent = '';
+      document.getElementById('promotion_value').value = '';
+    }
+  }
+
+  async function calculatePrice() {
+    const boostTypeId = document.getElementById('boost_type_id').value;
+    const durationId = document.getElementById('duration_id').value;
+    const priceDisplay = document.getElementById('calculated_price');
+    const durationSelect = document.getElementById('duration_id');
+
+    if (!boostTypeId || !durationId) {
+      priceDisplay.textContent = 'Select boost type and duration';
+      return;
+    }
+
+    // Update backward compatibility field
+    const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+    if (selectedDuration.value) {
+      document.getElementById('duration_days').value = selectedDuration.dataset.days;
+    }
+
+    try {
+      priceDisplay.textContent = 'Calculating...';
+
+      const response = await fetch('/api/boost/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          boost_type_id: parseInt(boostTypeId),
+          duration_id: parseInt(durationId)
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.data.pricing) {
+        const finalPrice = parseFloat(data.data.pricing.final_price);
+        const discountPercentage = parseFloat(data.data.pricing.discount_percentage);
+
+        let priceText = '₦' + Math.round(finalPrice).toLocaleString();
+
+        if (discountPercentage > 0) {
+          const basePrice = parseFloat(data.data.pricing.base_price);
+          priceText += ' <span class="text-sm text-gray-600">(Save ₦' +
+                       Math.round(basePrice - finalPrice).toLocaleString() + ')</span>';
+        }
+
+        priceDisplay.innerHTML = priceText;
+      } else {
+        priceDisplay.textContent = 'Error calculating price';
+        console.error('Price calculation failed:', data);
+      }
+    } catch (error) {
+      console.error('Error calculating price:', error);
+      priceDisplay.textContent = 'Error calculating price';
+    }
+  }
+</script>
 
 @include('dashboard.layouts.footer')

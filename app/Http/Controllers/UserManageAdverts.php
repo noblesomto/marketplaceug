@@ -15,6 +15,8 @@ use App\Models\SubCategory;
 use App\Models\Brands;
 use App\Models\Advert;
 use App\Models\AdvertBoost;
+use App\Models\BoostType;
+use App\Models\BoostDuration;
 use App\Models\Models;
 use App\Models\State;
 use App\Models\Followers;
@@ -90,17 +92,11 @@ class UserManageAdverts extends Controller
 
             // Category-specific rules
             if ($category == 3) {
-                $rules += [
-                    'salary' => 'required',
-                ];
+                $rules['salary'] = 'required';
             } elseif ($category == 18) {
-                $rules += [
-                    'expected_salary' => 'required',
-                ];
-            }elseif ($category == 11) {
-                $rules += [
-                    'price'      => 'nullable|numeric',
-                ];
+                $rules['expected_salary'] = 'required';
+            } elseif ($category == 11) {
+                $rules['price'] = 'nullable|numeric';
             } else {
                 $rules += [
                     'price'      => 'required|numeric',
@@ -110,31 +106,38 @@ class UserManageAdverts extends Controller
 
             // Subcategory-specific rules
             switch ($subcat) {
-            case 2:
-            case 21:
-            case 23:
-                $rules += [
-                    'registration' => 'required',
-                    'condition'    => 'required',
-                    'fuel'         => 'required',
-                    'transmission' => 'required',
-                ];
-                break;
+                case 2:
+                case 21:
+                case 23:
+                    $rules += [
+                        'model'        => 'required',
+                        'registration' => 'required',
+                        'condition'    => 'required',
+                        'fuel'         => 'required',
+                        'transmission' => 'required',
+                    ];
+                    break;
 
-            case 6:
-                $rules += [
-                    'phone_color'     => 'required',
-                    'phone_condition' => 'required',
-                    'device'          => 'required',
-                ];
-                break;
-        }
+                case 6:
+                    $rules += [
+                        'phone_color'     => 'required',
+                        'phone_condition' => 'required',
+                        'device'          => 'required',
+                    ];
+                    break;
+            }
 
+            // Item condition rule
+            $skipItemConditionCategories = [3, 11, 18];
+            $skipItemConditionSubcats    = [2, 6, 21, 22, 23, 24, 25];
 
-            // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
-            if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 22, 23, 24, 25])) {
+            if (
+                !in_array($category, $skipItemConditionCategories) &&
+                !in_array($subcat, $skipItemConditionSubcats)
+            ) {
                 $rules['item_condition'] = 'required';
             }
+
 
             $validatedData = $request->validate($rules);
 
@@ -270,7 +273,11 @@ class UserManageAdverts extends Controller
         }
 
         if ($request->isMethod('GET')) {
-            return view('dashboard.post-ad', compact('title', 'categories', 'user', 'shippings', 'states'));
+            // Get active boost types and durations for optional boost during post
+            $boostTypes = BoostType::active()->ordered()->get();
+            $boostDurations = BoostDuration::active()->ordered()->get();
+
+            return view('dashboard.post-ad', compact('title', 'categories', 'user', 'shippings', 'states', 'boostTypes', 'boostDurations'));
         }
     }
 
@@ -370,6 +377,8 @@ class UserManageAdverts extends Controller
         // Subcategory-specific rules
         switch ($subcat) {
             case 2:
+            case 21:
+            case 23:
                 $rules += [
                     'model'        => 'required',
                     'registration' => 'required',
@@ -391,8 +400,8 @@ class UserManageAdverts extends Controller
                 break;
         }
 
-        // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+        // Item condition rule (skip if category is 3, 11, or 18, OR subcat is 2, 6, 21, 23)
+        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
             $rules['item_condition'] = 'required';
         }
 
@@ -556,8 +565,24 @@ class UserManageAdverts extends Controller
             $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
         }
 
+        // Validate final image count - ensure at least 1 image exists
+        $finalImageCount = $advert->getMedia('images')->count();
+
+        if ($finalImageCount < 1) {
+            if ($category == 3) {
+                // Add default image for jobs category if no images exist
+                $advert->addDefaultImage('jobs.png');
+                $messages[] = "Default job image added";
+            } else {
+                // For all other categories, at least 1 image is required
+                return redirect()->back()->withErrors([
+                    'images' => 'Advert must have at least one image. Please upload an image.'
+                ])->withInput();
+            }
+        }
+
         // Update Car details
-        if ($subcat === 2 && $advert->car) {
+        if (in_array($subcat, [2, 21, 23])) {
             $advert->car->update([
                 'cat_id'            => $request->input('category'),
                 'brand_id'          => $request->input('brand'),

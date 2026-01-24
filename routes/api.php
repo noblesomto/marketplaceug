@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\UserStatsController;
 use App\Http\Controllers\Api\AdvertStatsController;
 use App\Http\Controllers\Api\DeviceTokenController;
 use App\Http\Controllers\Api\NotificationSettingsController;
+use App\Http\Controllers\Api\BoostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -298,7 +299,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/boosts/{boostId}', [UserManageBoostController::class, 'cancelBoost']);
 });
 
-
+/*
+|--------------------------------------------------------------------------
+| Boost Pricing Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('boost')->group(function () {
+    // Public boost options (can be accessed without auth for price display)
+    Route::get('/options', [BoostController::class, 'getOptions']);
+    Route::post('/calculate', [BoostController::class, 'calculatePrice']);
+});
 
 // Protected routes - require authentication
 Route::middleware('auth:sanctum')->group(function () {
