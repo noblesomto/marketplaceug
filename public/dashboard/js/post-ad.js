@@ -60,12 +60,29 @@ const CONFIG = {
         "6": { // Phones
             show: ["divPhone", "shipment"],
             hide: ["itemCondition"]
+        },
+        "16": { // Birds
+            show: ["shipment"],
+            hide: ["itemCondition"]
+        },
+        "17": { // Cats & Kittens
+            show: ["shipment"],
+            hide: ["itemCondition"]
+        },
+        "18": { // Dogs
+            show: ["shipment"],
+            hide: ["itemCondition"]
+        },
+        "19": { // Fishes
+            show: ["shipment"],
+            hide: ["itemCondition"]
         }
     },
 
     // Label text changes based on category
     categoryLabels: {
         "3": "Select Job Type:",
+        "10": "Select Type:",
         default: "Select Option:"
     },
 

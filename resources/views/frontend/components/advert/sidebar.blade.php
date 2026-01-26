@@ -20,10 +20,10 @@
             </a>
             <div class="min-w-0 flex-1">
                 <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="block font-bold text-gray-900 truncate hover:text-dark_green">{{ $ad->owner->name }}</a>
-                <div class="text-xs text-gray-500 mt-0.5">
+                <div class="text-xs text-gray-500 mt-0.5" data-nosnippet>
                     Active since {{ date('j F Y', strtotime($ad->owner->created_at)) }}
                 </div>
-                <div class="text-xs text-gray-500 mt-0.5">
+                <div class="text-xs text-gray-500 mt-0.5" data-nosnippet>
                     Last Seen:
                     @php
                         $lastSeen = \Carbon\Carbon::parse($ad->owner->last_login_at);

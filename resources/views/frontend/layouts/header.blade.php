@@ -20,11 +20,13 @@
 
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="Marketplace Naija">
     <meta property="og:title" content="{{ $title ?? 'Marketplace Naija' }}">
-    <meta property="og:description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell fast or find cars, jobs, electronics, property and more near you.">
+    <meta property="og:description" content="Marketplace Naija is Nigeria's trusted classifieds site. Post free ads to sell fast or find cars, jobs, electronics, property and more near you.">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
@@ -34,6 +36,50 @@
 
      <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
+
+    <!-- JSON-LD Organization Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Marketplace Naija",
+        "alternateName": "Marketplace Nigeria",
+        "url": "{{ config('app.url') }}",
+        "logo": "{{ asset('frontend/images/Marketplace-Naija.png') }}",
+        "sameAs": [
+            "https://www.facebook.com/marketplacenaija",
+            "https://twitter.com/marketplacenaija",
+            "https://www.instagram.com/marketplacenaija"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "{{ config('global.site_phone') }}",
+            "contactType": "Customer Service",
+            "areaServed": "NG",
+            "availableLanguage": "English"
+        }
+    }
+    </script>
+
+    <!-- JSON-LD WebSite Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Marketplace Naija",
+        "alternateName": "Marketplace Nigeria",
+        "url": "{{ config('app.url') }}",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "{{ config('app.url') }}/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
     <!-- Preload LCP Image - Add this to your <head> section -->
     @if(isset($gallery[0]))
         @php

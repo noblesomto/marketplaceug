@@ -14,11 +14,13 @@
 
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="Marketplace Naija">
     <meta property="og:title" content="{{ $title ?? '| Marketplace Naija' }}">
-    <meta property="og:description" content="Find anything you need in {{ $location }} on Marketplace Naija — Nigeria’s trusted platform to buy, sell, and trade with Buyer Protection. Post free ads today.">
+    <meta property="og:description" content="Find anything you need in {{ $location }} on Marketplace Naija — Nigeria's trusted platform to buy, sell, and trade with Buyer Protection. Post free ads today.">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">

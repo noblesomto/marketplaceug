@@ -11,9 +11,6 @@
                     @if ($ad->sold == 'Yes')
                         <span class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-0.5 rounded border border-red-200 uppercase tracking-wide">Sold</span>
                     @endif
-                    <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-0.5 rounded border border-gray-200">
-                       AD ID: {{ $ad->ad_id }}
-                    </span>
                 </div>
 
                 <h1 itemprop="name" class="text-lg md:text-2xl font-semibold text-gray-900 leading-tight mb-2">

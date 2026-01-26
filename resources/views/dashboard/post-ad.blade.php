@@ -656,11 +656,11 @@
                  @include('backend.components.post-boost')
             </div>
 
-            <div class="flex flex-col items-center space-y-4">
+            <div class="flex flex-col items-center space-y-4 mx-2">
                 <p class="text-xs text-center text-gray-500 max-w-lg">
                     By clicking "Post Ad", you agree to our Terms of Use and Privacy Policy. Please ensure your ad does not violate our community guidelines.
                 </p>
-                <button type="submit" class="w-full md:w-auto bg-dark_green hover:bg-green-700 text-white font-bold py-3 px-12 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 duration-200 text-lg">
+                <button type="submit" class="bg-dark_green hover:bg-secondary_dark text-white font-semibold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
                     Post Ad
                 </button>
             </div>

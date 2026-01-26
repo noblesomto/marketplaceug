@@ -41,30 +41,38 @@
     // Schema data
     $schema = [
         "@context" => "https://schema.org",
-        "@type" => "Product",
-        "name" => $blog->title ?? 'Marketplace Naija',
+        "@type" => "Article",
+        "headline" => $blog->title ?? 'Marketplace Naija',
         "image" => $images,
         "description" => Str::limit(strip_tags($blog->content ?? ''), 200),
-        "sku" => $blog->id ?? 'MPN-' . rand(1000, 9999),
-        "brand" => [
+        "author" => [
             "@type" => "Organization",
             "name" => "Marketplace Naija"
         ],
-        "offers" => [
-            "@type" => "Offer",
-            "url" => url()->current(),
-            "priceCurrency" => "NGN",
-            "price" => $blog->price ?? '0.00',
-            "availability" => "https://schema.org/InStock"
+        "publisher" => [
+            "@type" => "Organization",
+            "name" => "Marketplace Naija",
+            "logo" => [
+                "@type" => "ImageObject",
+                "url" => asset('frontend/images/Marketplace-Naija.png')
+            ]
+        ],
+        "mainEntityOfPage" => [
+            "@type" => "WebPage",
+            "@id" => url()->current()
         ]
     ];
 @endphp
 
 
     <!-- Open Graph -->
+    <meta property="og:site_name" content="Marketplace Naija">
     <meta property="og:title" content="{{ ($blog->title ?? 'Marketplace Naija') . ' | Marketplace Naija' }}">
     <meta property="og:description" content="{{ $blog->meta_description ?? Str::limit(strip_tags($blog->contnet ?? ''), 160) }}">
     <meta property="og:image" content="{{ $featuredImage }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">

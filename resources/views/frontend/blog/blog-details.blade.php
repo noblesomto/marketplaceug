@@ -34,7 +34,7 @@
                             <div class="mb-6">
                                 <div class="uppercase tracking-wide text-sm text-blue-600 font-semibold">{{ Str::of($blog->category)->replace('-', ' ')->title() }}</div>
                                 <h1 class="mt-2 text-3xl md:text-4xl font-bold text-gray-900">{{ $blog->title }}</h1>
-                                <div class="flex flex-wrap items-center mt-4 text-gray-500 space-x-4">
+                                <div class="flex flex-wrap items-center mt-4 text-gray-500 space-x-4" data-nosnippet>
                                     <div class="flex items-center mr-6 mb-2">
                                         <i class="far fa-calendar mr-2"></i>
                                         <span>{{ $blog->created_at->format('M j, Y') }}</span>

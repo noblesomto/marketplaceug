@@ -28,7 +28,10 @@
                     <div class="space-y-1">
                         <div class="flex justify-start gap-2">
                             <span class="text-dark_green font-bold text-base">{{ $type->name }}</span>
-                            <div class="font-bold">₦{{ number_format($type->daily_rate, 2) }}/day</div>
+                            <div class="font-bold">
+                                ₦{{ number_format(round($type->daily_rate * 7), 2) }}/week
+                            </div>
+
                         </div>
 
                         <div class="flex gap-3">

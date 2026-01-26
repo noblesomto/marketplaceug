@@ -69,9 +69,8 @@
         "name" => $cleanTitle,
         "image" => $allImages,
         "description" => Str::limit(cleanMetaText($rawDescription), 200),
-        "sku" => $ad->ad_id ?? 'MPN-' . rand(1000, 9999),
         "brand" => [
-            "@type" => "Organization",
+            "@type" => "Brand",
             "name" => $ad->brands->brand ?? "Marketplace Naija"
         ],
         "offers" => [

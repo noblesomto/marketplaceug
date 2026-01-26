@@ -266,6 +266,14 @@ class ManageCategories extends Controller
         return redirect("admin/model/".$cat)->with('status', ['text'=>'Model was deleted','type'=>'success']);
     }
 
+    public function delete_brand($id, $cat)
+    {
+        $brand = Brands::where('id', $id)->first();
+        $brand->delete();
+
+        return redirect("admin/brand/".$cat)->with('status', ['text'=>'Brand was deleted','type'=>'success']);
+    }
+
     public function fetch_subcat($cat_id)
     {
         $subcat = SubCategory::where('cat_id', $cat_id)->get();

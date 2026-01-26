@@ -100,6 +100,7 @@
                     <input type="hidden" name="duration" id="duration_days" value="">
                     <input type="hidden" name="promotion" id="promotion_value" value="">
                     <input type="hidden" name="advert_id" value="{{ $advert->id }}">
+                    <input type="hidden" name="amount" id="amount" value="">
                 </div>
 
                 <!-- Action Buttons -->
@@ -141,61 +142,67 @@
   }
 
   async function calculatePrice() {
-    const boostTypeId = document.getElementById('boost_type_id').value;
-    const durationId = document.getElementById('duration_id').value;
-    const priceDisplay = document.getElementById('calculated_price');
-    const durationSelect = document.getElementById('duration_id');
+  const boostTypeId = document.getElementById('boost_type_id').value;
+  const durationId = document.getElementById('duration_id').value;
+  const priceDisplay = document.getElementById('calculated_price');
+  const durationSelect = document.getElementById('duration_id');
 
-    if (!boostTypeId || !durationId) {
-      priceDisplay.textContent = 'Select boost type and duration';
-      return;
-    }
-
-    // Update backward compatibility field
-    const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
-    if (selectedDuration.value) {
-      document.getElementById('duration_days').value = selectedDuration.dataset.days;
-    }
-
-    try {
-      priceDisplay.textContent = 'Calculating...';
-
-      const response = await fetch('/api/boost/calculate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          boost_type_id: parseInt(boostTypeId),
-          duration_id: parseInt(durationId)
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.data.pricing) {
-        const finalPrice = parseFloat(data.data.pricing.final_price);
-        const discountPercentage = parseFloat(data.data.pricing.discount_percentage);
-
-        let priceText = '₦' + Math.round(finalPrice).toLocaleString();
-
-        if (discountPercentage > 0) {
-          const basePrice = parseFloat(data.data.pricing.base_price);
-          priceText += ' <span class="text-sm text-gray-600">(Save ₦' +
-                       Math.round(basePrice - finalPrice).toLocaleString() + ')</span>';
-        }
-
-        priceDisplay.innerHTML = priceText;
-      } else {
-        priceDisplay.textContent = 'Error calculating price';
-        console.error('Price calculation failed:', data);
-      }
-    } catch (error) {
-      console.error('Error calculating price:', error);
-      priceDisplay.textContent = 'Error calculating price';
-    }
+  if (!boostTypeId || !durationId) {
+    priceDisplay.textContent = 'Select boost type and duration';
+    document.getElementById('amount').value = ''; // Clear amount if invalid
+    return;
   }
+
+  // Update backward compatibility field
+  const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+  if (selectedDuration.value) {
+    document.getElementById('duration_days').value = selectedDuration.dataset.days;
+  }
+
+  try {
+    priceDisplay.textContent = 'Calculating...';
+
+    const response = await fetch('/api/boost/calculate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        boost_type_id: parseInt(boostTypeId),
+        duration_id: parseInt(durationId)
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success && data.data.pricing) {
+      const finalPrice = parseFloat(data.data.pricing.final_price);
+      const discountPercentage = parseFloat(data.data.pricing.discount_percentage);
+
+      let priceText = '₦' + Math.round(finalPrice).toLocaleString();
+
+      if (discountPercentage > 0) {
+        const basePrice = parseFloat(data.data.pricing.base_price);
+        priceText += ' <span class="text-sm text-gray-600">(Save ₦' +
+                     Math.round(basePrice - finalPrice).toLocaleString() + ')</span>';
+      }
+
+      priceDisplay.innerHTML = priceText;
+
+      // Update the hidden amount field
+      document.getElementById('amount').value = finalPrice;
+    } else {
+      priceDisplay.textContent = 'Error calculating price';
+      document.getElementById('amount').value = ''; // Clear on error
+      console.error('Price calculation failed:', data);
+    }
+  } catch (error) {
+    console.error('Error calculating price:', error);
+    priceDisplay.textContent = 'Error calculating price';
+    document.getElementById('amount').value = ''; // Clear on error
+  }
+}
 </script>
 
 @include('dashboard.layouts.footer')

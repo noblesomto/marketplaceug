@@ -253,6 +253,7 @@ class PaystackController extends Controller
 
     public function initialize_post_boost(Request $request)
     {
+        //dd($request);
         $advertId = $request->advert_id;
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -262,7 +263,7 @@ class PaystackController extends Controller
         $response = Http::withToken(config('services.paystack.secretKey'))
             ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
                 'email' => $email,
-                'amount' => $request->promotion * 100, // kobo
+                'amount' => round($request->amount) * 100, // kobo
                 'callback_url' => route('boost.callback'),
                 'metadata' => [
                     'advert_id' => $advertId,
@@ -287,7 +288,7 @@ class PaystackController extends Controller
                 'advert_id'=> $advertId,
                 'user_id'=> $user_id,
                 'payment_reference'=> $reference,
-                'amount'=> $request->input('promotion'),
+                'amount'=> $request->input('amount'),
                 'boost_type'=> $promotion,
                 'duration'=> $duration,
                 'boost_status'=> "pending",

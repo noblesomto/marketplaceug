@@ -47,12 +47,12 @@
                       <span class="text-xs">{{ $row->state }}</span>
                     </div>
                     </div>
-                  <div>
+                  <div data-nosnippet aria-hidden="true">
                     <div class="flex justify-start mr-5 text-xs md:mt-2">
                       <span class="mr-3 hidden lg:block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                     </svg>
-                    </span>  <span class="text-xs" >{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
+                    </span>  <span class="text-xs" data-nosnippet>{{ date('d.m.Y', strtotime($row->created_at)) }}</span></div>
                   </div>
                 </div>
                 <div class="font-semibold leading-5 md:font-bold text-sm md:text-base mt-1 line-clamp-2"> {{ Str::limit($row->ad_title, 50) }}</div>

@@ -18,11 +18,13 @@
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="Marketplace Naija">
     <meta property="og:title" content="{{ $cat->meta_title ?? $cat->category . ' | Marketplace Naija' }}">
     <meta property="og:description" content="{{ $cat->meta_description ?? 'Explore ads in ' . $cat->category . ' on Marketplace Naija.' }}">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
