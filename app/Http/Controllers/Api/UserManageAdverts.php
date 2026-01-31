@@ -16,6 +16,7 @@ use App\Models\PhoneDetail;
 use App\Models\AdvertBoost;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
+use App\Services\AdvertValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -237,63 +238,9 @@ class UserManageAdverts extends Controller
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
 
-        $rules = [
-            'ad_title' => 'required|max:75',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'brand' => 'required',
-            'state' => 'required',
-            'lga' => 'required',
-            'description' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
-        ];
-
-        if ($category != 3) {
-            $rules['images'] = 'required|array';
-        }
-
-        // Category-specific rules
-        if ($category == 3) {
-            $rules['salary'] = 'required';
-        } elseif ($category == 18) {
-            $rules['expected_salary'] = 'required';
-        } elseif ($category == 11) {
-            $rules['price'] = 'nullable|numeric';
-        } else {
-            $rules['price'] = 'required|numeric';
-            $rules['price_type'] = 'required';
-        }
-
-        // Subcategory-specific rules
-        switch ($subcat) {
-            case 2: // Cars
-            case 21: // Vehicles
-            case 23: // Vehicle Parts
-                $rules += [
-                    'model' => 'required',
-                    'registration' => 'required',
-                    'mileage' => 'required|numeric',
-                    'condition' => 'required',
-                    'fuel' => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors' => 'required',
-                ];
-                break;
-
-            case 6: // Phones
-                $rules += [
-                    'phone_color' => 'required',
-                    'phone_condition' => 'required',
-                    'device' => 'required',
-                ];
-                break;
-        }
-
-        // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
-            $rules['item_condition'] = 'required';
-        }
+        // Use dynamic validation service based on Category UI Config
+        $validationService = new AdvertValidationService();
+        $rules = $validationService->getRules($category, $subcat, false);
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -304,10 +251,12 @@ class UserManageAdverts extends Controller
             ], 422);
         }
 
-        if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
+        // Validate shipping requirements
+        $shippingError = $validationService->validateShipping($request);
+        if ($shippingError) {
             return response()->json([
                 'success' => false,
-                'errors' => ['shipping' => ['Please select at least one shipping method.']]
+                'errors' => $shippingError
             ], 422);
         }
 
@@ -597,59 +546,9 @@ class UserManageAdverts extends Controller
             ], 404);
         }
 
-        $rules = [
-            'ad_title' => 'required|max:75',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'brand' => 'required',
-            'state' => 'required',
-            'lga' => 'required',
-            'description' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
-        ];
-
-        // Category-specific rules
-        if ($category == 3) {
-            $rules['salary'] = 'required';
-        } elseif ($category == 18) {
-            $rules['expected_salary'] = 'required';
-        } elseif ($category == 11) {
-            $rules['price'] = 'nullable|numeric';
-        } else {
-            $rules['price'] = 'required|numeric';
-            $rules['price_type'] = 'required';
-        }
-
-        // Subcategory-specific rules
-        switch ($subcat) {
-            case 2: // Cars
-            case 21: // Vehicles
-            case 23: // Vehicle Parts
-                $rules += [
-                    'model' => 'required',
-                    'registration' => 'required',
-                    'mileage' => 'required|numeric',
-                    'condition' => 'required',
-                    'fuel' => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors' => 'required',
-                ];
-                break;
-
-            case 6: // Phones
-                $rules += [
-                    'phone_color' => 'required',
-                    'phone_condition' => 'required',
-                    'device' => 'required',
-                ];
-                break;
-        }
-
-        // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
-            $rules['item_condition'] = 'required';
-        }
+        // Use dynamic validation service based on Category UI Config
+        $validationService = new AdvertValidationService();
+        $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $validator = Validator::make($request->all(), $rules);
 

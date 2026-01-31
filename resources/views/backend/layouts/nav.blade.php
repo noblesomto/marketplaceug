@@ -39,6 +39,16 @@
     </li>
     @endadminCan
 
+    {{-- Category UI Configuration --}}
+    @adminCan('manage_categories')
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/admin/category-ui">
+        <i class="bi bi-sliders"></i>
+        <span>Category UI Config</span>
+      </a>
+    </li>
+    @endadminCan
+
     {{-- Adverts --}}
     @adminCan('view_adverts')
     <li class="nav-item">

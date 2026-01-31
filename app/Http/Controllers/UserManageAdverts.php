@@ -28,6 +28,7 @@ use App\Models\Notification;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
+use App\Services\AdvertValidationService;
 use App\Traits\ManagesImages;
 
 class UserManageAdverts extends Controller
@@ -74,75 +75,17 @@ class UserManageAdverts extends Controller
             $category = (int) $request->input('category');
             $description = $this->removeEmojis($request->input('description'));
             $request->merge(['description' => $description]);
-            //dd($category);
-                $rules = [
-                'ad_title' => 'required|max:75',
-                'category'    => 'required',
-                'subcategory' => 'required',
-                'brand'       => 'required',
-                'state'       => 'required',
-                'lga'         => 'required',
-                'description' => 'required|max:3500',
-                'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
-            ];
 
-            if ($category != 3) {
-                $rules['images'] = 'required|array';
-            }
-
-            // Category-specific rules
-            if ($category == 3) {
-                $rules['salary'] = 'required';
-            } elseif ($category == 18) {
-                $rules['expected_salary'] = 'required';
-            } elseif ($category == 11) {
-                $rules['price'] = 'nullable|numeric';
-            } else {
-                $rules += [
-                    'price'      => 'required|numeric',
-                    'price_type' => 'required',
-                ];
-            }
-
-            // Subcategory-specific rules
-            switch ($subcat) {
-                case 2:
-                case 21:
-                case 23:
-                    $rules += [
-                        'model'        => 'required',
-                        'registration' => 'required',
-                        'condition'    => 'required',
-                        'fuel'         => 'required',
-                        'transmission' => 'required',
-                    ];
-                    break;
-
-                case 6:
-                    $rules += [
-                        'phone_color'     => 'required',
-                        'phone_condition' => 'required',
-                        'device'          => 'required',
-                    ];
-                    break;
-            }
-
-            // Item condition rule
-            $skipItemConditionCategories = [3, 11, 18];
-            $skipItemConditionSubcats    = [2, 6, 21, 22, 23, 24, 25];
-
-            if (
-                !in_array($category, $skipItemConditionCategories) &&
-                !in_array($subcat, $skipItemConditionSubcats)
-            ) {
-                $rules['item_condition'] = 'required';
-            }
-
+            // Use dynamic validation service based on Category UI Config
+            $validationService = new AdvertValidationService();
+            $rules = $validationService->getRules($category, $subcat, false);
 
             $validatedData = $request->validate($rules);
 
-            if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
-                return back()->withErrors(['shipping' => 'Please select at least one shipping method.'])->withInput();
+            // Validate shipping requirements
+            $shippingError = $validationService->validateShipping($request);
+            if ($shippingError) {
+                return back()->withErrors($shippingError)->withInput();
             }
 
             $adTitle = ContentHelper::sanitizeTitle($request->ad_title);
@@ -342,68 +285,9 @@ class UserManageAdverts extends Controller
         $description = $this->removeEmojis($request->input('description'));
         $request->merge(['description' => $description]);
 
-        $rules = [
-            'ad_title' => 'required|max:75',
-            'category'    => 'required',
-            'subcategory' => 'required',
-            'brand'       => 'required',
-            'state'       => 'required',
-            'lga'         => 'required',
-            'description' => 'required|max:3500',
-            //'images'      => 'required|array',
-            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:21000',
-        ];
-
-        // Category-specific rules
-        if ($category == 3) {
-            $rules += [
-                'salary' => 'required',
-            ];
-        } elseif ($category == 18) {
-            $rules += [
-                'expected_salary' => 'required',
-            ];
-        }elseif ($category == 11) {
-            $rules += [
-                'price'      => 'nullable|numeric',
-            ];
-        } else {
-            $rules += [
-                'price'      => 'required|numeric',
-                'price_type' => 'required',
-            ];
-        }
-
-        // Subcategory-specific rules
-        switch ($subcat) {
-            case 2:
-            case 21:
-            case 23:
-                $rules += [
-                    'model'        => 'required',
-                    'registration' => 'required',
-                    'mileage'      => 'required|numeric',
-                    'condition'    => 'required',
-                    'fuel'         => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors'        => 'required',
-                ];
-                break;
-
-            case 6:
-                $rules += [
-                    'phone_color'     => 'required',
-                    'phone_condition' => 'required',
-                    'device'          => 'required',
-                ];
-                break;
-        }
-
-        // Item condition rule (skip if category is 3, 11, or 18, OR subcat is 2, 6, 21, 23)
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
-            $rules['item_condition'] = 'required';
-        }
+        // Use dynamic validation service based on Category UI Config
+        $validationService = new AdvertValidationService();
+        $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $validatedData = $request->validate($rules);
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title'));

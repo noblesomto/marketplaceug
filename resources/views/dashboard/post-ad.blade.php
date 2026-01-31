@@ -677,7 +677,12 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-<script src="{{ asset('dashboard/js/post-ad.js') }}"></script>
+
+{{-- Database-Driven Category UI Configuration (2026-01-31) --}}
+<script src="{{ asset('dashboard/js/category-ui-manager.js') }}"></script>
+<script src="{{ asset('dashboard/js/post-ad-v2.js') }}"></script>
+{{-- Old hardcoded version (kept for rollback): <script src="{{ asset('dashboard/js/post-ad.js') }}"></script> --}}
+
 <script src="{{ asset('dashboard/js/word-count.js') }}"></script>
 <script src="{{ asset('dashboard/js/sortable.js') }}"></script>
 <script src="{{ asset('dashboard/js/submit.js') }}"></script>

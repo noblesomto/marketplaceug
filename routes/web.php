@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\AdminBoostTypeController;
 use App\Http\Controllers\Admin\AdminBoostDurationController;
+use App\Http\Controllers\Admin\CategoryUIAdminController;
 use Illuminate\Support\Facades\Broadcast;
 
 
@@ -321,6 +322,27 @@ Route::middleware(['adminsession'])->group(function () {
         Route::any('/admin/delete-brand/{id}/{cat}', [ManageCategories::class, 'delete_brand']);
         Route::any('/admin/model/{id}', [ManageCategories::class, 'model']);
         Route::any('/admin/delete-model/{id}/{cat}', [ManageCategories::class, 'delete_model']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Category UI Configuration Routes
+    | Accessible by: Advert_manager, super_admin
+    | Database-driven show/hide rules for Post Ad and Edit Ad forms
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['admin.permission:manage_categories'])->prefix('admin/category-ui')->name('admin.category-ui.')->group(function () {
+        Route::get('/', [CategoryUIAdminController::class, 'index'])->name('index');
+
+        // Category UI Config
+        Route::get('/category/{id}/edit', [CategoryUIAdminController::class, 'editCategory'])->name('edit-category');
+        Route::post('/category/{id}', [CategoryUIAdminController::class, 'updateCategory'])->name('update-category');
+        Route::delete('/category/{id}', [CategoryUIAdminController::class, 'deleteCategory'])->name('delete-category');
+
+        // Subcategory UI Config
+        Route::get('/subcategory/{id}/edit', [CategoryUIAdminController::class, 'editSubcategory'])->name('edit-subcategory');
+        Route::post('/subcategory/{id}', [CategoryUIAdminController::class, 'updateSubcategory'])->name('update-subcategory');
+        Route::delete('/subcategory/{id}', [CategoryUIAdminController::class, 'deleteSubcategory'])->name('delete-subcategory');
     });
 
     /*

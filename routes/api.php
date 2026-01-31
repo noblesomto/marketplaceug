@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\AdvertStatsController;
 use App\Http\Controllers\Api\DeviceTokenController;
 use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\BoostController;
+use App\Http\Controllers\Api\CategoryUIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,8 @@ Route::get('/adverts/load-more', [AdvertController::class, 'loadMore']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/adverts/{id}/report', [AdvertController::class, 'reportAdvert']);
     Route::post('/adverts/{id}/apply', [AdvertController::class, 'applyJob']);
+    Route::get('/adverts/{id}/buy-direct', [AdvertController::class, 'buy_direct']);
+    Route::post('/adverts/{id}/buy-direct-payment', [AdvertController::class, 'buy_direct_payment']);
 });
 
 /*
@@ -122,6 +125,18 @@ Route::get('/locations/states/{state_id}/details', [LocationController::class, '
 Route::get('/locations/cities', [LocationController::class, 'searchCities']);
 Route::get('/locations/cities/{city_id}', [LocationController::class, 'getCity']);
 Route::post('/shipping/calculate', [LocationController::class, 'calculateShippingCost']);
+
+/*
+|--------------------------------------------------------------------------
+| Category UI Configuration Routes (Public)
+|--------------------------------------------------------------------------
+| Database-driven UI configuration for Post Ad and Edit Ad forms
+| Heavily cached for performance (24 hours)
+*/
+Route::get('/ui-config/all', [CategoryUIController::class, 'getUIConfig']);
+Route::get('/ui-config/category/{id}', [CategoryUIController::class, 'getCategoryConfig']);
+Route::get('/ui-config/subcategory/{id}', [CategoryUIController::class, 'getSubcategoryConfig']);
+Route::post('/ui-config/clear-cache', [CategoryUIController::class, 'clearCache']); // For admin use
 
 /*
 |--------------------------------------------------------------------------
