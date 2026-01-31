@@ -951,14 +951,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}/boost-info",
+                            "raw": "{{base_url}}/api/adverts/{advertId}/boost-info",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "adverts",
-                                "{{advert_id}}",
+                                "{advertId}",
                                 "boost-info"
                             ]
                         },
@@ -993,14 +993,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}/boost",
+                            "raw": "{{base_url}}/api/adverts/{advertId}/boost",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "adverts",
-                                "{{advert_id}}",
+                                "{advertId}",
                                 "boost"
                             ]
                         },
@@ -1044,14 +1044,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/adverts/{{advert_id}}/boost-status",
+                            "raw": "{{base_url}}/api/adverts/{advertId}/boost-status",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "adverts",
-                                "{{advert_id}}",
+                                "{advertId}",
                                 "boost-status"
                             ]
                         },
@@ -1384,7 +1384,7 @@
                 {
                     "name": "Search",
                     "request": {
-                        "method": "POST",
+                        "method": "GET",
                         "header": [
                             {
                                 "key": "Accept",
@@ -1397,15 +1397,6 @@
                                 "type": "text"
                             }
                         ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"product\": \"iPhone 13\",\n    \"location\": \"Lagos\",\n    \"category\": 1,\n    \"sub_category\": 6,\n    \"brand\": 5,\n    \"buydirect\": \"yes\",\n    \"per_page\": 10,\n    \"page\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
                         "url": {
                             "raw": "{{base_url}}/api/search",
                             "host": [
@@ -1416,7 +1407,7 @@
                                 "search"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search`\nController: `App\\Http\\Controllers\\Api\\SearchController@search`\\n\\n**Request Body:**\\n- `product` (string, optional): Search term for product name or ad ID\\n- `location` (string, optional): State/location name\\n- `category` (integer, optional): Category ID\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `buydirect` (string, optional): Buy direct filter (yes/no)\\n- `per_page` (integer, optional): Items per page (default: 10)\\n- `page` (integer, optional): Page number (default: 1)",
+                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/search`\nController: `App\\Http\\Controllers\\Api\\SearchController@search`",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1493,13 +1484,13 @@
                                 "filter-by-seller"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-seller`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterBySeller`\\n\\n**Request Body:**\\n- `sellers` (required): \"all\", \"yes\", or \"no\"\\n- `category`, `sub_category`, `brand`, `location`, `per_page` (optional)",
+                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-seller`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterBySeller`",
                         "auth": {
                             "type": "noauth"
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\\n\\t\"sellers\": \"yes\",\\n\\t\"category\": 1,\\n\\t\"sub_category\": 6,\\n\\t\"brand\": 5,\\n\\t\"location\": \"Lagos\",\\n\\t\"per_page\": 20\\n}",
+                            "raw": "{\\n\\t\\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1536,13 +1527,13 @@
                                 "filter-by-buydirect"
                             ]
                         },
-                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-buydirect`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByBuydirect`\\n\\n**Request Body:**\\n- `buydirect` (required): \"Yes\" or \"No\"\\n- `category`, `sub_category`, `brand`, `location`, `min`, `max`, `per_page` (optional)",
+                        "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-buydirect`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByBuydirect`",
                         "auth": {
                             "type": "noauth"
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\\n\\t\"buydirect\": \"Yes\",\\n\\t\"category\": 1,\\n\\t\"location\": \"Lagos\",\\n\\t\"min\": 50000,\\n\\t\"max\": 500000,\\n\\t\"per_page\": 20\\n}",
+                            "raw": "{\\n\\t\\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -2018,7 +2009,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/messages/conversation/{{advert_id}}/{{receiver_id}}",
+                            "raw": "{{base_url}}/api/messages/conversation/{advertId}/{receiverId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -2026,8 +2017,8 @@
                                 "api",
                                 "messages",
                                 "conversation",
-                                "{{advert_id}}",
-                                "{{receiver_id}}"
+                                "{advertId}",
+                                "{receiverId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/conversation/{advertId}/{receiverId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getConversation`",
@@ -2061,7 +2052,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/messages/advert/{{advert_id}}",
+                            "raw": "{{base_url}}/api/messages/advert/{advertId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -2069,7 +2060,7 @@
                                 "api",
                                 "messages",
                                 "advert",
-                                "{{advert_id}}"
+                                "{advertId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/messages/advert/{advertId}`\nController: `App\\Http\\Controllers\\Api\\MessageController@getAdvertMessages`",
@@ -2237,7 +2228,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/messages/conversation/{{advert_id}}/{{user_id}}/read",
+                            "raw": "{{base_url}}/api/messages/conversation/{advertId}/{userId}/read",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -2245,8 +2236,8 @@
                                 "api",
                                 "messages",
                                 "conversation",
-                                "{{advert_id}}",
-                                "{{user_id}}",
+                                "{advertId}",
+                                "{userId}",
                                 "read"
                             ]
                         },
@@ -2476,14 +2467,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/payments/{{payment_id}}/mark-delivered",
+                            "raw": "{{base_url}}/api/payments/{paymentId}/mark-delivered",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "payments",
-                                "{{payment_id}}",
+                                "{paymentId}",
                                 "mark-delivered"
                             ]
                         },
@@ -2627,14 +2618,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/payments/{{payment_id}}",
+                            "raw": "{{base_url}}/api/payments/{paymentId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "payments",
-                                "{{payment_id}}"
+                                "{paymentId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/{paymentId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getPayment`",
@@ -2668,7 +2659,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/payments/user/{{user_id}}",
+                            "raw": "{{base_url}}/api/payments/user/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -2676,7 +2667,7 @@
                                 "api",
                                 "payments",
                                 "user",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/payments/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserPayments`",
@@ -2742,97 +2733,6 @@
             "name": "08. Ad Boosts",
             "item": [
                 {
-                    "name": "Get Boost Options",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/boost/options",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "boost",
-                                "options"
-                            ]
-                        },
-                        "description": "🔒 **Requires Authentication**\n\nEndpoint: `GET /api/boost/options`\n\nGet available boost packages and pricing tiers\n\nExample response:\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"packages\": [\n      {\"id\": 1, \"name\": \"Basic\", \"duration_days\": 7, \"price\": 1000},\n      {\"id\": 2, \"name\": \"Premium\", \"duration_days\": 14, \"price\": 1800}\n    ]\n  }\n}\n```",
-                        "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                                {
-                                    "key": "token",
-                                    "value": "{{auth_token}}",
-                                    "type": "string"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Calculate Boost Price",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/boost/calculate",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "boost",
-                                "calculate"
-                            ]
-                        },
-                        "description": "🔒 **Requires Authentication**\n\nEndpoint: `POST /api/boost/calculate`\n\nCalculate boost pricing based on parameters",
-                        "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                                {
-                                    "key": "token",
-                                    "value": "{{auth_token}}",
-                                    "type": "string"
-                                }
-                            ]
-                        },
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"package_id\": 1,\n    \"duration_days\": 7,\n    \"advert_id\": 123\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        }
-                    },
-                    "response": []
-                },
-                {
                     "name": "Boosts User  UserId ",
                     "request": {
                         "method": "GET",
@@ -2849,7 +2749,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/boosts/user/{{user_id}}",
+                            "raw": "{{base_url}}/api/boosts/user/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -2857,7 +2757,7 @@
                                 "api",
                                 "boosts",
                                 "user",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/user/{userId}`\nController: `App\\Http\\Controllers\\Api\\PaystackController@getUserBoosts`",
@@ -2973,14 +2873,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/boosts/{{boost_id}}",
+                            "raw": "{{base_url}}/api/boosts/{boostId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "boosts",
-                                "{{boost_id}}"
+                                "{boostId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@getBoost`",
@@ -3014,14 +2914,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/boosts/{{boost_id}}/upload-proof",
+                            "raw": "{{base_url}}/api/boosts/{boostId}/upload-proof",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "boosts",
-                                "{{boost_id}}",
+                                "{boostId}",
                                 "upload-proof"
                             ]
                         },
@@ -3065,14 +2965,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/boosts/{{boost_id}}",
+                            "raw": "{{base_url}}/api/boosts/{boostId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "boosts",
-                                "{{boost_id}}"
+                                "{boostId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/boosts/{boostId}`\nController: `App\\Http\\Controllers\\Api\\UserManageBoostController@cancelBoost`",
@@ -3572,7 +3472,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/users/check-blocked/{{user_id}}",
+                            "raw": "{{base_url}}/api/users/check-blocked/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -3580,7 +3480,7 @@
                                 "api",
                                 "users",
                                 "check-blocked",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/users/check-blocked/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@checkBlocked`",
@@ -3614,7 +3514,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/users/block-all/{{user_id}}",
+                            "raw": "{{base_url}}/api/users/block-all/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -3622,7 +3522,7 @@
                                 "api",
                                 "users",
                                 "block-all",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/users/block-all/{userId}`\nController: `App\\Http\\Controllers\\Api\\BlockUserController@blockGlobally`",
@@ -3665,14 +3565,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/check-following/{{user_id}}",
+                            "raw": "{{base_url}}/api/check-following/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "check-following",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/check-following/{userId}`\nController: `App\\Http\\Controllers\\UserController@checkFollowing`",
@@ -4383,6 +4283,248 @@
                     "response": []
                 },
                 {
+                    "name": "Create Phone Advert (Example)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/adverts",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "adverts"
+                            ]
+                        },
+                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@createAdvert`\\n\\n**Example for creating a phone advert** (subcategory 6)\\n\\nRequired fields for phones:\\n- phone_color\\n- phone_condition\\n- device",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "ad_title",
+                                    "value": "iPhone 14 Pro Max 256GB",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "ad_type",
+                                    "value": "Sell",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "2",
+                                    "type": "text",
+                                    "description": "Category ID (e.g., 2 for Electronics)"
+                                },
+                                {
+                                    "key": "subcategory",
+                                    "value": "6",
+                                    "type": "text",
+                                    "description": "Subcategory ID (6 for Phones)"
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "Brand ID (e.g., Apple)"
+                                },
+                                {
+                                    "key": "model",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "Model ID"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "850000",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price_type",
+                                    "value": "Fixed",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "Lagos",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lga",
+                                    "value": "Lekki",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Brand new iPhone 14 Pro Max 256GB. Deep Purple color, factory unlocked, comes with original accessories.",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "shipment",
+                                    "value": "Ship",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "show_contact",
+                                    "value": "Yes",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "quantity",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "shipping[]",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "images[]",
+                                    "value": "",
+                                    "type": "file",
+                                    "description": "Upload image files"
+                                },
+                                {
+                                    "key": "image_order",
+                                    "value": "0,1,2",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "phone_color",
+                                    "value": "Deep Purple",
+                                    "type": "text",
+                                    "description": "Required for phones"
+                                },
+                                {
+                                    "key": "phone_condition",
+                                    "value": "Brand New",
+                                    "type": "text",
+                                    "description": "Required for phones"
+                                },
+                                {
+                                    "key": "device",
+                                    "value": "Smartphone",
+                                    "type": "text",
+                                    "description": "Required for phones"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Job Advert (Example)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/adverts",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "adverts"
+                            ]
+                        },
+                        "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `POST /api/adverts`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@createAdvert`\\n\\n**Example for creating a job advert** (category 3)\\n\\nRequired fields for jobs:\\n- salary\\n\\nNote: Images are optional for jobs (default image is used)",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{auth_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "ad_title",
+                                    "value": "Senior Full Stack Developer",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "ad_type",
+                                    "value": "Job",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "3",
+                                    "type": "text",
+                                    "description": "Category ID (3 for Jobs)"
+                                },
+                                {
+                                    "key": "subcategory",
+                                    "value": "7",
+                                    "type": "text",
+                                    "description": "Subcategory ID"
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "Brand ID"
+                                },
+                                {
+                                    "key": "salary",
+                                    "value": "500000",
+                                    "type": "text",
+                                    "description": "Required for jobs"
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "Lagos",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lga",
+                                    "value": "Victoria Island",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "We are looking for an experienced Full Stack Developer with 5+ years experience in Laravel, Vue.js, and MySQL. Remote work available.",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "show_contact",
+                                    "value": "Yes",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
                     "name": "Update Advert",
                     "request": {
                         "method": "PUT",
@@ -4778,7 +4920,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/following/check/{{user_id}}",
+                            "raw": "{{base_url}}/api/user/following/check/{userId}",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -4787,7 +4929,7 @@
                                 "user",
                                 "following",
                                 "check",
-                                "{{user_id}}"
+                                "{userId}"
                             ]
                         },
                         "description": "🔒 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/following/check/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@checkFollowing`",
@@ -5267,7 +5409,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/payments/{{payment_id}}/confirm-delivery",
+                            "raw": "{{base_url}}/api/user/payments/{paymentId}/confirm-delivery",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -5275,7 +5417,7 @@
                                 "api",
                                 "user",
                                 "payments",
-                                "{{payment_id}}",
+                                "{paymentId}",
                                 "confirm-delivery"
                             ]
                         },
@@ -5319,7 +5461,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/payments/{{payment_id}}/shipping-status",
+                            "raw": "{{base_url}}/api/user/payments/{paymentId}/shipping-status",
                             "host": [
                                 "{{base_url}}"
                             ],
@@ -5327,7 +5469,7 @@
                                 "api",
                                 "user",
                                 "payments",
-                                "{{payment_id}}",
+                                "{paymentId}",
                                 "shipping-status"
                             ]
                         },
@@ -5994,14 +6136,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/{{user_id}}/followers",
+                            "raw": "{{base_url}}/api/user/{userId}/followers",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "user",
-                                "{{user_id}}",
+                                "{userId}",
                                 "followers"
                             ]
                         },
@@ -6036,14 +6178,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/{{user_id}}/feedback",
+                            "raw": "{{base_url}}/api/user/{userId}/feedback",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
                                 "user",
-                                "{{user_id}}",
+                                "{userId}",
                                 "feedback"
                             ]
                         },

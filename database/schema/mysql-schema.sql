@@ -41,6 +41,8 @@ DROP TABLE IF EXISTS `advert_boosts`;
 CREATE TABLE `advert_boosts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `advert_id` bigint(20) unsigned NOT NULL,
+  `boost_type_id` bigint(20) unsigned DEFAULT NULL,
+  `duration_id` bigint(20) unsigned DEFAULT NULL,
   `user_id` varchar(255) NOT NULL,
   `trans_id` varchar(255) DEFAULT NULL,
   `payment_reference` varchar(255) NOT NULL,
@@ -56,7 +58,11 @@ CREATE TABLE `advert_boosts` (
   PRIMARY KEY (`id`),
   KEY `advert_boosts_advert_id_foreign` (`advert_id`),
   KEY `advert_boosts_user_id_foreign` (`user_id`),
+  KEY `advert_boosts_boost_type_id_foreign` (`boost_type_id`),
+  KEY `advert_boosts_duration_id_foreign` (`duration_id`),
   CONSTRAINT `advert_boosts_advert_id_foreign` FOREIGN KEY (`advert_id`) REFERENCES `adverts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `advert_boosts_boost_type_id_foreign` FOREIGN KEY (`boost_type_id`) REFERENCES `boost_types` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `advert_boosts_duration_id_foreign` FOREIGN KEY (`duration_id`) REFERENCES `boost_durations` (`id`) ON DELETE SET NULL,
   CONSTRAINT `advert_boosts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -221,6 +227,42 @@ CREATE TABLE `blogs` (
   UNIQUE KEY `blogs_slug_unique` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `boost_durations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `boost_durations` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `days` int(11) NOT NULL,
+  `discount_percentage` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `label` varchar(255) NOT NULL,
+  `display_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `boost_durations_days_unique` (`days`),
+  KEY `boost_durations_is_active_index` (`is_active`),
+  KEY `boost_durations_display_order_index` (`display_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `boost_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `boost_types` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `daily_rate` decimal(10,2) NOT NULL,
+  `display_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `boost_types_name_unique` (`name`),
+  KEY `boost_types_is_active_index` (`is_active`),
+  KEY `boost_types_display_order_index` (`display_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `brands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -270,14 +312,14 @@ CREATE TABLE `car_details` (
   `car_id` varchar(255) NOT NULL,
   `brand_id` varchar(255) NOT NULL,
   `model` varchar(255) DEFAULT NULL,
-  `mileage` varchar(255) NOT NULL,
+  `mileage` varchar(255) DEFAULT NULL,
   `condition` varchar(255) NOT NULL,
   `registration` varchar(255) NOT NULL,
   `registration_year` varchar(255) DEFAULT NULL,
   `fuel` varchar(255) NOT NULL,
   `transmission` varchar(255) NOT NULL,
   `vehicle_type` varchar(255) NOT NULL,
-  `doors` varchar(255) NOT NULL,
+  `doors` varchar(255) DEFAULT NULL,
   `exterior_color` varchar(255) DEFAULT NULL,
   `material_interior` varchar(255) DEFAULT NULL,
   `exterior_equipment` varchar(255) DEFAULT NULL,
@@ -522,6 +564,7 @@ CREATE TABLE `models` (
   `brand_id` bigint(20) unsigned NOT NULL,
   `model` varchar(255) NOT NULL,
   `model_slug` varchar(255) NOT NULL,
+  `keywords` text DEFAULT NULL,
   `meta_title` text DEFAULT NULL,
   `meta_description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -920,3 +963,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (55,'2025_11_26_101
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (56,'2025_12_05_044403_create_admin_login_attempts_table',23);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (57,'2026_01_09_170105_create_device_tokens_table',24);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (58,'2026_01_09_170144_add_notification_settings_to_users_table',24);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (59,'2026_01_21_101947_add_cat_id_and_brand_id_to_brands_table',25);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (60,'2026_01_21_101949_add_missing_columns_to_models_table',25);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (61,'2026_01_24_131520_create_boost_types_table',26);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (62,'2026_01_24_131521_create_boost_durations_table',26);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (63,'2026_01_24_131556_add_boost_type_and_duration_to_advert_boosts_table',26);

@@ -20,18 +20,34 @@ use Jenssegers\Agent\Agent;
 class SearchController extends Controller
 {
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/search",
      *     summary="Search adverts with filters",
      *     tags={"Search"},
-     *     @OA\Parameter(name="product", in="query", description="Product search term", @OA\Schema(type="string")),
-     *     @OA\Parameter(name="location", in="query", description="State/Location", @OA\Schema(type="string")),
-     *     @OA\Parameter(name="category", in="query", description="Category ID", @OA\Schema(type="integer")),
-     *     @OA\Parameter(name="sub_category", in="query", description="Sub-category ID", @OA\Schema(type="integer")),
-     *     @OA\Parameter(name="brand", in="query", description="Brand ID", @OA\Schema(type="integer")),
-     *     @OA\Parameter(name="buydirect", in="query", description="Buy direct filter", @OA\Schema(type="string")),
-     *     @OA\Parameter(name="page", in="query", description="Page number", @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Search results")
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="product", type="string", description="Product search term", example="iPhone 13"),
+     *             @OA\Property(property="location", type="string", description="State/Location", example="Lagos"),
+     *             @OA\Property(property="category", type="integer", description="Category ID", example=1),
+     *             @OA\Property(property="sub_category", type="integer", description="Sub-category ID", example=6),
+     *             @OA\Property(property="brand", type="integer", description="Brand ID", example=5),
+     *             @OA\Property(property="buydirect", type="string", description="Buy direct filter", example="yes"),
+     *             @OA\Property(property="per_page", type="integer", description="Items per page", example=10),
+     *             @OA\Property(property="page", type="integer", description="Page number", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Search results with pagination",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="pagination", type="object"),
+     *             @OA\Property(property="search_params", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
     public function search(Request $request)

@@ -37,48 +37,57 @@
      <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
 
-    <!-- JSON-LD Organization Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Marketplace Naija",
-        "alternateName": "Marketplace Nigeria",
-        "url": "{{ config('app.url') }}",
-        "logo": "{{ asset('frontend/images/Marketplace-Naija.png') }}",
-        "sameAs": [
-            "https://www.facebook.com/marketplacenaija",
-            "https://twitter.com/marketplacenaija",
-            "https://www.instagram.com/marketplacenaija"
-        ],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "{{ config('global.site_phone') }}",
-            "contactType": "Customer Service",
-            "areaServed": "NG",
-            "availableLanguage": "English"
-        }
-    }
-    </script>
+<!-- JSON-LD Organization Schema -->
+@php
+$organizationSchema = [
+    "@context" => "https://schema.org",
+    "@type" => "Organization",
+    "name" => "Marketplace Naija",
+    "alternateName" => "Marketplace Nigeria",
+    "url" => config('app.url'),
+    "logo" => asset('frontend/images/Marketplace-Naija.png'),
+    "sameAs" => [
+        "https://www.facebook.com/marketplacenaija",
+        "https://twitter.com/marketplacenaija",
+        "https://www.instagram.com/marketplacenaija"
+    ]
+];
 
-    <!-- JSON-LD WebSite Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Marketplace Naija",
-        "alternateName": "Marketplace Nigeria",
-        "url": "{{ config('app.url') }}",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "{{ config('app.url') }}/search?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
+if (config('global.site_phone')) {
+    $organizationSchema["contactPoint"] = [
+        "@type" => "ContactPoint",
+        "telephone" => config('global.site_phone'),
+        "contactType" => "Customer Service",
+        "areaServed" => "NG",
+        "availableLanguage" => "English"
+    ];
+}
+@endphp
+<script type="application/ld+json">
+{!! json_encode($organizationSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+
+<!-- JSON-LD WebSite Schema -->
+@php
+$websiteSchema = [
+    "@context" => "https://schema.org",
+    "@type" => "WebSite",
+    "name" => "Marketplace Naija",
+    "alternateName" => "Marketplace Nigeria",
+    "url" => config('app.url'),
+    "potentialAction" => [
+        "@type" => "SearchAction",
+        "target" => [
+            "@type" => "EntryPoint",
+            "urlTemplate" => config('app.url') . "/search?q={search_term_string}"
+        ],
+        "query-input" => "required name=search_term_string"
+    ]
+];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($websiteSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
 
     <!-- Preload LCP Image - Add this to your <head> section -->
     @if(isset($gallery[0]))
@@ -91,6 +100,7 @@
                   fetchpriority="high">
         @endif
     @endif
+
     @if(isset($listings[0]))
         @php
             $firstImage = $listings[0]->getFirstMedia('images');
@@ -101,6 +111,9 @@
                   fetchpriority="high"
                   media="(max-width: 640px)">
         @endif
-    @endif
-  @include('frontend.layouts.header-links')
+    @endif  {{-- This was missing --}}
+
+@include('frontend.layouts.header-links')
+
+
 

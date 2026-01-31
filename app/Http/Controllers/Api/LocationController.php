@@ -94,156 +94,314 @@ class LocationController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/shipping/calculate",
-     *     summary="Calculate shipping cost",
-     *     tags={"Shipping"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"sender_station", "receiver_station", "ad_price", "ad_title"},
-     *             @OA\Property(property="sender_station", type="string", description="Sender station ID"),
-     *             @OA\Property(property="receiver_station", type="string", description="Receiver station ID"),
-     *             @OA\Property(property="ad_price", type="number", format="float", description="Item price"),
-     *             @OA\Property(property="ad_title", type="string", description="Item title"),
-     *             @OA\Property(property="ad_des", type="string", description="Item description", nullable=true),
-     *             @OA\Property(property="weight", type="number", format="float", description="Item weight in kg", default=5),
-     *             @OA\Property(property="quantity", type="integer", description="Quantity", default=1)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Shipping cost calculated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Shipping calculation failed"
-     *     )
-     * )
+     * Calculate Agility shipping cost (API Version)
+     *
+     * This is the API-ready version that throws exceptions instead of redirects
      */
     public function calculateShippingCost(Request $request)
     {
+        // Validate input parameters
         $validator = Validator::make($request->all(), [
-            'sender_station' => 'required|string',
-            'receiver_station' => 'required|string',
+            'sender_station' => 'required|integer',
+            'sender_address' => 'required|string',
+            'reciever_station' => 'required|integer',
+            'reciever_address' => 'required|string',
             'ad_price' => 'required|numeric|min:0',
-            'ad_title' => 'required|string',
-            'ad_des' => 'nullable|string',
-            'weight' => 'nullable|numeric|min:0',
-            'quantity' => 'nullable|integer|min:1'
+            'ad_title' => 'required|string|max:255',
+            'ad_des' => 'nullable|string|max:4000',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
+                'error' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422);
         }
 
+        $validated = $validator->validated();
+
         try {
             // Step 1: Retrieve token from cache or login
-            $token = Cache::remember('agility_access_token', 3600, function () {
-                $loginResponse = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])->post('https://thirdpartynode.theagilitysystems.com/login', [
-                    'email' => config('services.agility.email', 'Info@marketplace.ng'),
-                    'password' => config('services.agility.password', 'Mj:wNWI0'),
-                ]);
-
-                if ($loginResponse->failed()) {
-                    Log::error('Agility login failed', ['status' => $loginResponse->status()]);
-                    throw new \Exception('Unable to retrieve Agility access token.');
-                }
-
-                $loginData = $loginResponse->json();
-                return $loginData['data']['access-token'] ?? null;
-            });
+            $token = $this->getAgilityToken();
 
             if (!$token) {
-                throw new \Exception('Access token was not retrieved or is null.');
+                throw new \Exception('Unable to retrieve Agility access token.');
             }
 
-            // Step 2: Build the shipping cost payload
-            $payload = [
-                "SenderStationId" => $request->sender_station,
-                "ReceiverStationId" => $request->receiver_station,
-                "VehicleType" => 3,
-                "ReceiverLocation" => ["Latitude" => 0.00, "Longitude" => 0.00],
-                "SenderLocation" => ["Latitude" => 0, "Longitude" => 0],
-                "IsFromAgility" => false,
-                "CustomerCode" => config('services.agility.customer_code', 'IND1875642'),
-                "CustomerType" => 0,
-                "DeliveryOptionIds" => [3],
-                "Value" => $request->ad_price,
-                "PickUpOptions" => 1,
-                "ShipmentItems" => [[
-                    "ItemName" => $request->ad_title,
-                    "Description" => $request->ad_des ?? '',
-                    "SpecialPackageId" => 1,
-                    "Quantity" => $request->quantity ?? 1,
-                    "Weight" => $request->weight ?? 5,
-                    "IsVolumetric" => false,
-                    "Length" => 0,
-                    "Width" => 0,
-                    "Height" => 0,
-                    "ShipmentType" => 0,
-                    "Value" => $request->ad_price
-                ]]
-            ];
+            // Step 2: Get sender and receiver locations (with API-safe error handling)
+            $senderAddress = $this->getSenderLocation($validated['sender_address']);
+            $recieverAddress = $this->getRecieverLocation($validated['reciever_address']);
 
-            // Step 3: Make the shipping cost API request
-            $response = Http::withOptions([
-                'verify' => storage_path('cacert.pem'),
-            ])->withHeaders([
-                'Authorization' => 'Bearer ' . $token,
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-                'User-Agent' => 'AgilityOfficialClient/1.0',
-                'Access-Token' => $token,
-                'Request-ID' => (string) Str::uuid(),
-            ])->withBody(json_encode($payload), 'application/json')
-              ->timeout(25)
-              ->post(config('services.agility.url', 'https://thirdpartynode.theagilitysystems.com/api/ShippingCost/GetShippingCost'));
+            // Step 3: Build the shipping cost payload
+            $payload = $this->buildShippingPayload($validated, $senderAddress, $recieverAddress);
 
-            // Step 4: Handle errors
-            if ($response->status() === 440) {
-                // Force token to refresh next time
-                Cache::forget('agility_access_token');
-                throw new \Exception("Agility rejected our token (440).");
-            }
-
-            if ($response->failed()) {
-                throw new \Exception("Agility API request failed with status " . $response->status());
-            }
-
-            $responseData = $response->json();
+            // Step 4: Make the shipping cost API request with retry logic
+            $response = $this->makeAgilityApiRequest($token, $payload);
 
             // Step 5: Return success response
             return response()->json([
                 'success' => true,
-                'data' => $responseData['data'] ?? $responseData
+                'data' => $response->json()['data'] ?? [],
             ]);
 
         } catch (\Exception $e) {
             Log::error('Agility API Error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $validated ?? [],
             ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Shipping cost calculation failed',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage() ?: 'Shipping cost calculation failed. Please try again later.',
             ], 500);
+        }
+    }
+
+    /**
+     * Get Agility API access token (cached for 1 hour)
+     */
+    private function getAgilityToken()
+    {
+        return Cache::remember('agility_access_token', 3600, function () {
+            try {
+                $loginResponse = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ])->timeout(30)->post('https://thirdpartynode.theagilitysystems.com/login', [
+                    'email' => config('services.agility.email'),
+                    'password' => config('services.agility.password'),
+                ]);
+
+                if ($loginResponse->failed()) {
+                    Log::error('Agility login failed', [
+                        'status' => $loginResponse->status(),
+                        'response' => $loginResponse->body()
+                    ]);
+                    return null;
+                }
+
+                $loginData = $loginResponse->json();
+                return $loginData['data']['access-token'] ?? null;
+
+            } catch (\Exception $e) {
+                Log::error('Agility token retrieval exception', [
+                    'error' => $e->getMessage()
+                ]);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * Build Agility shipping payload
+     */
+    private function buildShippingPayload(array $validated, array $senderAddress, array $recieverAddress)
+    {
+        return [
+            "SenderStationId" => $validated['sender_station'],
+            "ReceiverStationId" => $validated['reciever_station'],
+            "VehicleType" => config('services.agility.vehicle_type', 3),
+            "ReceiverLocation" => [
+                "Latitude" => $recieverAddress['latitude'],
+                "Longitude" => $recieverAddress['longitude']
+            ],
+            "SenderLocation" => [
+                "Latitude" => $senderAddress['latitude'],
+                "Longitude" => $senderAddress['longitude']
+            ],
+            "IsFromAgility" => false,
+            "CustomerCode" => config('services.agility.customer_code'),
+            "CustomerType" => 0,
+            "DeliveryOptionIds" => [3],
+            "Value" => $validated['ad_price'],
+            "PickUpOptions" => 1,
+            "ShipmentItems" => [[
+                "ItemName" => $validated['ad_title'],
+                "Description" => $this->cleanDescription($validated['ad_des'] ?? ''),
+                "SpecialPackageId" => 1,
+                "Quantity" => 1,
+                "Weight" => config('services.agility.default_weight', 5),
+                "IsVolumetric" => false,
+                "Length" => 0,
+                "Width" => 0,
+                "Height" => 0,
+                "ShipmentType" => 0,
+                "Value" => $validated['ad_price']
+            ]]
+        ];
+    }
+
+    /**
+     * Make Agility API request with retry logic for token expiry
+     */
+    private function makeAgilityApiRequest($token, $payload, $isRetry = false)
+    {
+        $httpOptions = [];
+
+        // Only use custom SSL cert if file exists
+        $certPath = storage_path('cacert.pem');
+        if (file_exists($certPath)) {
+            $httpOptions['verify'] = $certPath;
+        }
+
+        try {
+            $response = Http::withOptions($httpOptions)
+                ->withHeaders([
+                    'access-token' => $token,
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'User-Agent' => 'AgilityOfficialClient/1.0',
+                    'Request-ID' => (string) Str::uuid(),
+                ])
+                ->withBody(json_encode($payload), 'application/json')
+                ->timeout(30)
+                ->post(config('services.agility.url'));
+
+            // Handle token expiry with retry
+            if ($response->status() === 440 && !$isRetry) {
+                Cache::forget('agility_access_token');
+                $newToken = $this->getAgilityToken();
+
+                if ($newToken) {
+                    return $this->makeAgilityApiRequest($newToken, $payload, true);
+                }
+
+                throw new \Exception('Failed to refresh Agility token');
+            }
+
+            if ($response->failed()) {
+                $errorMessage = $response->json()['message'] ?? 'Agility API request failed';
+                throw new \Exception($errorMessage . " (Status: " . $response->status() . ")");
+            }
+
+            return $response;
+
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            throw new \Exception('Connection to Agility API failed. Please check your internet connection.');
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clean description for API submission
+     */
+    private function cleanDescription($description)
+    {
+        if (empty($description)) {
+            return '';
+        }
+
+        // Strip HTML tags and decode HTML entities
+        $cleaned = strip_tags($description);
+        $cleaned = html_entity_decode($cleaned, ENT_QUOTES, 'UTF-8');
+
+        // Remove extra whitespace and line breaks
+        $cleaned = preg_replace('/\s+/', ' ', $cleaned);
+
+        // Trim and limit length if needed
+        return trim($cleaned);
+    }
+
+    /**
+     * Get sender location coordinates (API-safe version)
+     *
+     * @throws \Exception if address not found
+     */
+    private function getSenderLocation($address)
+    {
+        try {
+            // Get Latitude & Longitude using OpenStreetMap (Nominatim)
+            $response = Http::withHeaders([
+                'User-Agent' => 'MarketplaceNigeria/1.0 (support@marketplacenigeria.com)'
+            ])->timeout(15)->get("https://nominatim.openstreetmap.org/search", [
+                'q' => $address,
+                'format' => 'json',
+                'limit' => 1
+            ]);
+
+            if ($response->failed()) {
+                throw new \Exception('Failed to connect to geocoding service');
+            }
+
+            $geoData = $response->json();
+
+            if (empty($geoData)) {
+                throw new \Exception("Sender address not found: {$address}");
+            }
+
+            $latitude = $geoData[0]['lat'] ?? null;
+            $longitude = $geoData[0]['lon'] ?? null;
+
+            if (!$latitude || !$longitude) {
+                throw new \Exception("Invalid coordinates for sender address: {$address}");
+            }
+
+            return [
+                'latitude' => (float) $latitude,
+                'longitude' => (float) $longitude
+            ];
+
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            throw new \Exception('Unable to connect to geocoding service for sender address');
+        } catch (\Exception $e) {
+            Log::error('Sender location error', [
+                'address' => $address,
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Get receiver location coordinates (API-safe version)
+     *
+     * @throws \Exception if address not found
+     */
+    private function getRecieverLocation($address)
+    {
+        try {
+            // Get Latitude & Longitude using OpenStreetMap (Nominatim)
+            $response = Http::withHeaders([
+                'User-Agent' => 'MarketplaceNigeria/1.0 (support@marketplacenigeria.com)'
+            ])->timeout(15)->get("https://nominatim.openstreetmap.org/search", [
+                'q' => $address,
+                'format' => 'json',
+                'limit' => 1
+            ]);
+
+            if ($response->failed()) {
+                throw new \Exception('Failed to connect to geocoding service');
+            }
+
+            $geoData = $response->json();
+
+            if (empty($geoData)) {
+                throw new \Exception("Receiver address not found: {$address}");
+            }
+
+            $latitude = $geoData[0]['lat'] ?? null;
+            $longitude = $geoData[0]['lon'] ?? null;
+
+            if (!$latitude || !$longitude) {
+                throw new \Exception("Invalid coordinates for receiver address: {$address}");
+            }
+
+            return [
+                'latitude' => (float) $latitude,
+                'longitude' => (float) $longitude
+            ];
+
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            throw new \Exception('Unable to connect to geocoding service for receiver address');
+        } catch (\Exception $e) {
+            Log::error('Receiver location error', [
+                'address' => $address,
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
         }
     }
 

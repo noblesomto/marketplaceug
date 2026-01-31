@@ -81,7 +81,7 @@
                 <h5 class="font-semibold text-sm">Shipping Method:</h5>
                 <div class="flex items-center w-full">
                     @if(isset($row->shipping->logo))
-                        <span><img class="w-16" src="{{ asset('uploads/shipping/'.$row->shipping->logo) }}" alt="{{ $row->shipping->company ?? 'Shipping company' }} logo"></span>
+                        <span><img class="w-16" src="{{ $row->shipping->logo }}" alt="{{ $row->shipping->company ?? 'Shipping company' }} logo"></span>
                     @endif
                     <span class="ml-2 text-sm font-bold">{{ $row->shipping->company ?? 'Shipping not specified' }}</span>
                 </div>

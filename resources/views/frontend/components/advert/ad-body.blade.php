@@ -4,13 +4,16 @@
     <header class="border-b border-gray-100 pb-4 px-2 bg-white">
         <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
             <div class="flex-1">
-                <div class="flex flex-wrap gap-2 mb-3">
+                <div data-nosnippet class="flex flex-wrap gap-2 mb-3">
                     @if ($ad->featured == 'Yes')
-                        <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-0.5 rounded border border-yellow-200 uppercase tracking-wide">Promoted</span>
+                        <span data-nosnippet class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-0.5 rounded border border-yellow-200 uppercase tracking-wide">Promoted</span>
                     @endif
                     @if ($ad->sold == 'Yes')
-                        <span class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-0.5 rounded border border-red-200 uppercase tracking-wide">Sold</span>
+                        <span data-nosnippet class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-0.5 rounded border border-red-200 uppercase tracking-wide">Sold</span>
                     @endif
+                    <span data-nosnippet class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-0.5 rounded border border-gray-200">
+                       AD ID: {{ $ad->ad_id }}
+                    </span>
                 </div>
 
                 <h1 itemprop="name" class="text-lg md:text-2xl font-semibold text-gray-900 leading-tight mb-2">

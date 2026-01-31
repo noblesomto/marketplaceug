@@ -15,6 +15,8 @@ use App\Models\User;
 use App\Models\Reports;
 use App\Models\State;
 use App\Models\Message;
+use App\Models\GigLogistic;
+use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportMail;
 use App\Services\FeaturedAdPaginator;
+
 
 /**
  * @group Adverts
@@ -268,6 +271,7 @@ class AdvertController extends Controller
         if ($data['phone']) {
             $data['model'] = Models::find($data['phone']->model);
         }
+
 
         // Related adverts with images
         $relatedAdverts = Advert::inRandomOrder()
@@ -779,4 +783,238 @@ class AdvertController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Calculate shipping cost for direct purchase
+     * POST /api/shipping/calculate/{ad_id}
+     */
+    public function calculate_shipping(Request $request, $id)
+    {
+        try {
+            // Validate input
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'city' => 'required|integer',
+                'state' => 'required|integer',
+                'shipping_selected' => 'required|integer',
+                'ship_id' => 'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Get authenticated user
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated'
+                ], 401);
+            }
+
+            // Get ad details
+            $ad = Advert::with('images', 'shippings')->findOrFail($id);
+
+            // Get state and city details
+            $sender_station = State::where('name', $ad->state)->firstOrFail();
+            $reciever_station = State::findOrFail($request->state);
+            $reciever_city = GigLogistic::findOrFail($request->city);
+
+            $reciever_address = $reciever_city->city . ", " . $reciever_station->name;
+
+            // Prepare shipping calculation details
+            $details = [
+                'advert_id' => $id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'reciever_station' => $reciever_station->station_id,
+                'reciever_address' => $reciever_address,
+                'sender_station' => $sender_station->station_id,
+                'sender_address' => $ad->lga . ', ' . $ad->state,
+                'ad_title' => $ad->ad_title,
+                'ad_price' => $ad->price,
+                'ad_des' => $ad->description,
+            ];
+
+            // Call shipping cost calculation using API LocationController
+            $shippingResponse = app()->make(\App\Http\Controllers\Api\LocationController::class)
+                ->calculateShippingCost(new Request($details));
+
+            $responseData = $shippingResponse->getData();
+
+            if (!$responseData->success) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $responseData->error ?? 'Failed to calculate shipping cost'
+                ], 400);
+            }
+
+            // Calculate commission (2% for items >= ₦300,000, 3% otherwise)
+            $commission = $ad->price >= 300000
+                ? 0.02 * $ad->price
+                : 0.03 * $ad->price;
+
+            $shipping_cost = $responseData->data->GrandTotal ?? 0;
+            $grand_total = $ad->price + $shipping_cost + $commission;
+
+            // Get shipping method details
+            $shipping_method = Shipping::findOrFail($request->ship_id);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'ad' => [
+                        'id' => $ad->id,
+                        'title' => $ad->ad_title,
+                        'price' => $ad->price,
+                        'image' => $ad->images->first()?->image,
+                    ],
+                    'shipping_cost' => $shipping_cost,
+                    'commission' => $commission,
+                    'grand_total' => $grand_total,
+                    'shipping_details' => [
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'phone' => $request->phone,
+                        'receiver_state' => [
+                            'id' => $reciever_station->id,
+                            'name' => $reciever_station->name,
+                            'station_id' => $reciever_station->station_id,
+                        ],
+                        'receiver_city' => [
+                            'id' => $reciever_city->id,
+                            'city' => $reciever_city->city,
+                        ],
+                        'receiver_address' => $reciever_address,
+                        'sender_address' => $ad->lga . ', ' . $ad->state,
+                    ],
+                    'shipping_method' => [
+                        'id' => $shipping_method->id,
+                        'name' => $shipping_method->name,
+                        'description' => $shipping_method->description,
+                    ],
+                ]
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found'
+            ], 404);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while calculating shipping',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get direct purchase details
+     * GET /api/buy-direct/{ad_id}
+     */
+    public function buy_direct(Request $request, $id)
+    {
+        try {
+            // Get authenticated user
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Authentication required'
+                ], 401);
+            }
+
+            $ad = Advert::with('images', 'shippings')->where('id', $id)->firstOrFail();
+            $states = State::all();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'ad' => $ad,
+                    'user' => $user,
+                    'states' => $states,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch purchase details',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get payment details for direct purchase
+     * GET /api/buy-direct-payment/{ad_id}
+     */
+    public function buy_direct_payment(Request $request, $id)
+    {
+        try {
+            // Get authenticated user
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Authentication required'
+                ], 401);
+            }
+
+            $ad = Advert::with('images', 'shippings')->where('id', $id)->firstOrFail();
+
+            // Shipping data should be passed from previous step or stored
+            // For API, we expect client to send this data
+            $validator = Validator::make($request->all(), [
+                'shipping_data' => 'required|array',
+                'shipping_method_id' => 'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Shipping data required',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $shipping_method = Shipping::findOrFail($request->shipping_method_id);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'ad' => $ad,
+                    'user' => $user,
+                    'shipping_method' => $shipping_method,
+                    'shipping_data' => $request->shipping_data,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch payment details',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

@@ -102,7 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
 | Search Routes (Public & Enhanced)
 |--------------------------------------------------------------------------
 */
-Route::get('/search', [SearchController::class, 'search']);
+Route::post('/search', [SearchController::class, 'search']);
 Route::post('/search/filter', [SearchController::class, 'filter']);
 Route::post('/search/filter-by-seller', [SearchController::class, 'filterBySeller']);
 Route::post('/search/filter-by-buydirect', [SearchController::class, 'filterByBuydirect']);
