@@ -33,7 +33,7 @@ class SearchFilter extends Controller
         if ($request->filled('product')) {
             $query->where(function ($q) use ($request) {
                 $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
-                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+                  ->orWhere('title_slug', 'LIKE', '%' . $request->product . '%');
             });
         }
 
@@ -233,9 +233,24 @@ class SearchFilter extends Controller
                  ->paginate(10)
                  ->appends($request->except('page'));
 
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
         // Return only partial
         return response()->json([
-            'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
+            'html' => $html,
+            'hasMore' => $adverts->hasMorePages()
         ]);
     }
 
@@ -276,13 +291,28 @@ class SearchFilter extends Controller
                  ->paginate(10)
                  ->appends(['sellers' => $sellers]);
 
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
         return response()->json([
-            'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
+            'html' => $html,
+            'hasMore' => $adverts->hasMorePages()
         ]);
     }
 
 
-        public function filterByBuydirect(Request $request)
+    public function filterByBuydirect(Request $request)
     {
         $query = Advert::with('firstImage')
             ->where('ad_status', 'active')
@@ -320,72 +350,85 @@ class SearchFilter extends Controller
                      'buydirect' => $request->input('buydirect')
                  ]);
 
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
         return response()->json([
-            'html' => view('frontend.components.advert.advert-list', ['ads' => $adverts])->render()
+            'html' => $html,
+            'hasMore' => $adverts->hasMorePages()
         ]);
     }
 
     public function loadMore(Request $request)
-{
-    $query = Advert::with('firstImage')
-                ->activeNotRecentlySold();
+    {
+        $query = Advert::with('firstImage')
+                    ->activeNotRecentlySold();
 
-    // Product search
-    if ($request->filled('product')) {
-        $query->where(function ($q) use ($request) {
-            $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
-              ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
-        });
-    }
-
-    // Category context
-    if ($request->filled('category')) {
-        $query->where('category', $request->category);
-    }
-
-    // Subcategory context
-    if ($request->filled('sub_category')) {
-        $query->where('sub_category', $request->sub_category);
-    }
-
-    // Brand context
-    if ($request->filled('brand')) {
-        $query->where('brand', $request->brand);
-    }
-
-    // Location context
-    if ($request->filled('location')) {
-        $query->where('state', $request->location);
-    }
-
-    // Buy direct filter
-    if ($request->filled('buydirect')) {
-        $query->where('buy_direct', $request->buydirect);
-    }
-
-    // Get paginated results
-    $ads = $query->orderWithFeatured()
-                 ->paginate(10);
-
-    // Render based on device type
-    $agent = new Agent();
-    $html = '';
-
-    if ($agent->isMobile()) {
-        foreach ($ads as $row) {
-            $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+        // Product search
+        if ($request->filled('product')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', 'LIKE', '%' . $request->product . '%');
+            });
         }
-    } else {
-        foreach ($ads as $row) {
-            $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+
+        // Category context
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
         }
+
+        // Subcategory context
+        if ($request->filled('sub_category')) {
+            $query->where('sub_category', $request->sub_category);
+        }
+
+        // Brand context
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        // Location context
+        if ($request->filled('location')) {
+            $query->where('state', $request->location);
+        }
+
+        // Buy direct filter
+        if ($request->filled('buydirect')) {
+            $query->where('buy_direct', $request->buydirect);
+        }
+
+        // Get paginated results
+        $ads = $query->orderWithFeatured()
+                     ->paginate(10);
+
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($ads as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($ads as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
+        return response()->json([
+            'html' => $html,
+            'hasMore' => $ads->hasMorePages()
+        ]);
     }
-
-    return response()->json([
-        'html' => $html,
-        'hasMore' => $ads->hasMorePages()
-    ]);
-}
-
-
 }

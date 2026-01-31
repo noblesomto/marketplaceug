@@ -40,9 +40,17 @@
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('advert-results').innerHTML = data.html;
-            attachPaginationEvents(); // re-bind pagination events
-            verifiedModal.classList.add('hidden');
+            const adsContainer = document.getElementById('ads-container');
+            if (adsContainer) {
+                adsContainer.innerHTML = data.html;
+                attachPaginationEvents(); // re-bind pagination events
+            }
+
+            // Close modal if it exists
+            const verifiedModal = document.getElementById('verifiedModal');
+            if (verifiedModal) {
+                verifiedModal.classList.add('hidden');
+            }
         });
     }
 
@@ -55,12 +63,15 @@
 
     // 🟢 Handle Pagination
     function attachPaginationEvents() {
-        document.querySelectorAll('#advert-results .pagination a').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                fetchSellerAds(this.href); // Load next page with current filter
+        const adsContainer = document.getElementById('ads-container');
+        if (adsContainer) {
+            adsContainer.querySelectorAll('.pagination a').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    fetchSellerAds(this.href); // Load next page with current filter
+                });
             });
-        });
+        }
     }
 
     attachPaginationEvents(); // Initial binding

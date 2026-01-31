@@ -130,8 +130,9 @@
 
 <script>
     // Get all buttons and modals
-
+    const regionButton = document.getElementById('filterlocationButton');
     const priceButton = document.getElementById('priceDropdownButton');
+    const buyDirectButton = document.getElementById('buyDirectDesktop');
     const verifiedButton = document.getElementById('verifiedDropdownButton');
 
     const regionModal = document.getElementById('regionModal');
@@ -142,34 +143,49 @@
     const closeButtons = document.querySelectorAll('.close-modal');
 
     // Add click handlers to buttons
+    if (regionButton) {
+        regionButton.addEventListener('click', () => {
+            regionModal.classList.remove('hidden');
+        });
+    }
 
+    if (priceButton) {
+        priceButton.addEventListener('click', () => {
+            verifyPriceModal.classList.remove('hidden');
+        });
+    }
 
-    priceButton.addEventListener('click', () => {
-        verifyPriceModal.classList.remove('hidden');
-    });
+    if (buyDirectButton) {
+        buyDirectButton.addEventListener('click', () => {
+            // BuyDirect functionality - can be extended as needed
+            console.log('Buy Direct filter clicked');
+        });
+    }
 
-    verifiedButton.addEventListener('click', () => {
-        verifiedModal.classList.remove('hidden');
-    });
+    if (verifiedButton) {
+        verifiedButton.addEventListener('click', () => {
+            verifiedModal.classList.remove('hidden');
+        });
+    }
 
     // Add click handlers to close buttons
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            regionModal.classList.add('hidden');
-            verifyPriceModal.classList.add('hidden');
-            verifiedModal.classList.add('hidden');
+            if (regionModal) regionModal.classList.add('hidden');
+            if (verifyPriceModal) verifyPriceModal.classList.add('hidden');
+            if (verifiedModal) verifiedModal.classList.add('hidden');
         });
     });
 
     // Close modal when clicking outside
     window.addEventListener('click', (event) => {
-        if (event.target === regionModal) {
+        if (regionModal && event.target === regionModal) {
             regionModal.classList.add('hidden');
         }
-        if (event.target === verifyPriceModal) {
+        if (verifyPriceModal && event.target === verifyPriceModal) {
             verifyPriceModal.classList.add('hidden');
         }
-        if (event.target === verifiedModal) {
+        if (verifiedModal && event.target === verifiedModal) {
             verifiedModal.classList.add('hidden');
         }
     });

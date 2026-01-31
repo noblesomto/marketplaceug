@@ -637,9 +637,11 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
 
         //dd($categories);
-        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories'));
+        return view('frontend.adverts', compact('title', 'ads', 'user', 'categories','mobile'));
     }
 
    public function seller(Request $request, $id, $ad)

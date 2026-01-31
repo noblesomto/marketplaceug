@@ -5,11 +5,8 @@
  *
  * PRODUCTION-SAFE:
  * - Uses CategoryUIManager with automatic fallback
- * - Maintains all existing functionality
- * - No breaking changes
  * - Backward compatible
- *
- * Version: 2.0 (Database-driven)
+ * Version: 2.0
  * Date: 2026-01-31
  */
 

@@ -3,11 +3,6 @@
  * CATEGORY UI MANAGER - Database-driven configuration system
  * ============================================================================
  *
- * PRODUCTION-SAFE:
- * - Automatic fallback to hardcoded config if API fails
- * - No breaking changes to existing functionality
- * - Graceful degradation
- * - Performance optimized with caching
  *
  * Version: 1.0
  * Date: 2026-01-31

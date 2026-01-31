@@ -179,20 +179,31 @@
     })
     .then(res => res.json())
     .then(data => {
-      document.getElementById('advert-results').innerHTML = data.html;
-      attachPaginationEvents();
-      verifyPriceModal.classList.add('hidden');
+      const adsContainer = document.getElementById('ads-container');
+      if (adsContainer) {
+        adsContainer.innerHTML = data.html;
+        attachPaginationEvents();
+      }
+
+      // Close modal if it exists
+      const verifyPriceModal = document.getElementById('verifyPriceModal');
+      if (verifyPriceModal) {
+        verifyPriceModal.classList.add('hidden');
+      }
     });
   }
 
   // Pagination handling (unchanged)
   function attachPaginationEvents() {
-    document.querySelectorAll('#advert-results .pagination a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        fetchAds(this.href);
+    const adsContainer = document.getElementById('ads-container');
+    if (adsContainer) {
+      adsContainer.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          fetchAds(this.href);
+        });
       });
-    });
+    }
   }
 
   attachPaginationEvents();
