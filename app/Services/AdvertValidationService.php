@@ -78,24 +78,31 @@ class AdvertValidationService
             return in_array($field, $uiConfig['required'] ?? []);
         };
 
-        // Price field (only if visible and not a jobs/CV category)
-        if ($isVisible('price')) {
-            if (in_array($categoryId, [11])) { // Services category
-                $rules['price'] = 'nullable|numeric';
-            } elseif (!in_array($categoryId, [3, 18])) { // Not jobs or CVs
-                $rules['price'] = 'required|numeric';
-                $rules['price_type'] = 'required';
-            }
-        }
+        // Determine which financial field should be required
+        $salaryVisible = $isVisible('salary');
+        $expectedSalaryVisible = $isVisible('expectedSalary');
+        $priceVisible = $isVisible('price');
 
         // Salary field (for jobs category)
-        if ($isVisible('salary') && $categoryId == 3) {
+        if ($salaryVisible) {
             $rules['salary'] = 'required';
         }
 
         // Expected salary field (for CVs category)
-        if ($isVisible('expectedSalary') && $categoryId == 18) {
+        if ($expectedSalaryVisible) {
             $rules['expected_salary'] = 'required';
+        }
+
+        // Price field - required by default unless salary or expectedSalary are visible
+        if ($priceVisible) {
+            // If salary or expectedSalary are shown, price is not required
+            if ($salaryVisible || $expectedSalaryVisible) {
+                $rules['price'] = 'nullable|numeric';
+            } else {
+                // Price is required by default
+                $rules['price'] = 'required|numeric';
+                $rules['price_type'] = 'required';
+            }
         }
 
         // Quantity field

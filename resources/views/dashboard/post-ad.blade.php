@@ -409,8 +409,8 @@
                     </div>
                 </div>
 
-                <!-- Salary (Hidden/Shown via JS) -->
-                <div id="salary">
+                <!-- Salary (Hidden by default, shown via JS) -->
+                <div id="salary" class="hidden">
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Salary</label>
                      <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Salary--</option>
@@ -436,8 +436,8 @@
                     </select>
                 </div>
 
-                <!-- Expected Salary (Hidden/Shown via JS) -->
-                <div id="expectedSalary">
+                <!-- Expected Salary (Hidden by default, shown via JS) -->
+                <div id="expectedSalary" class="hidden">
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Expected Salary</label>
                      <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Expected Salary--</option>
