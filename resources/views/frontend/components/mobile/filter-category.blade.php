@@ -1,5 +1,18 @@
 <div class="block md:hidden overflow-x-auto mb-2 pb-1">
     <div class="flex justify-between gap-2 p-2 w-max min-w-full">
+        <!-- Subcategory Button/Dropdown -->
+        <div class="relative">
+            <button
+                id="categoryDropdownButton"
+                class="flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+                Category
+                <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+
         <!-- Region Button/Dropdown -->
         <div class="relative">
             <button
@@ -65,6 +78,30 @@
                     <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                 </svg>
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- SubCategory Modal -->
+<div id="categoryModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center w-full min-h-screen px-2 py-10 sm:px-4 sm:py-20">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full sm:max-w-4xl sm:my-8">
+            <div class="bg-white w-full px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Category Filter</h3>
+                <div class="mt-2">
+                    @include('frontend.components.advert.filter-subcategory')
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm close-modal">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -169,12 +206,14 @@
 
 <script>
     // Get all buttons and modals
+    const categoryButton = document.getElementById('categoryDropdownButton');
     const regionButton = document.getElementById('filterlocationButton');
     const priceButton = document.getElementById('priceDropdownButton');
     const buyDirectButton = document.getElementById('buyDirectDesktop');
     const verifiedButton = document.getElementById('verifiedDropdownButton');
     const brandButton = document.getElementById('brandDropdownButton');
 
+    const categoryModal = document.getElementById('categoryModal');
     const regionModal = document.getElementById('regionModal');
     const verifyPriceModal = document.getElementById('verifyPriceModal');
     const verifiedModal = document.getElementById('verifiedModal');
@@ -184,6 +223,12 @@
     const closeButtons = document.querySelectorAll('.close-modal');
 
     // Add click handlers to buttons
+    if (categoryButton) {
+        categoryButton.addEventListener('click', () => {
+            categoryModal.classList.remove('hidden');
+        });
+    }
+
     if (regionButton) {
         regionButton.addEventListener('click', () => {
             regionModal.classList.remove('hidden');
@@ -218,6 +263,7 @@
     // Add click handlers to close buttons
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
+            if (categoryModal) categoryModal.classList.add('hidden');
             if (regionModal) regionModal.classList.add('hidden');
             if (verifyPriceModal) verifyPriceModal.classList.add('hidden');
             if (verifiedModal) verifiedModal.classList.add('hidden');
@@ -227,6 +273,9 @@
 
     // Close modal when clicking outside
     window.addEventListener('click', (event) => {
+        if (categoryModal && event.target === categoryModal) {
+            categoryModal.classList.add('hidden');
+        }
         if (regionModal && event.target === regionModal) {
             regionModal.classList.add('hidden');
         }

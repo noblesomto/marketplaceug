@@ -1,4 +1,4 @@
-@foreach($ads as $row)
+@forelse($ads as $row)
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}">
       <div class="bg-white my-2 py-1 border-b-1 border-b-gray-300 h-[154px] sm:h-[160px] md:h-[190px]">
          <div class="flex w-full h-full">
@@ -124,4 +124,20 @@
           </div>
       </div>
 </a>
-@endforeach
+@empty
+    <div class="flex flex-col items-center justify-center py-10 text-gray-500">
+        {{-- Empty box SVG --}}
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-20 h-20 mb-4"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M3 7l9 5 9-5M3 7v10l9 5 9-5V7M3 7l9-5 9 5" />
+        </svg>
+
+        <p class="text-sm">You have no item listed yet, <a class="text-dark_green font-semibold" href="/user/post-ad">Post an Ad</a> </p>
+    </div>
+@endforelse

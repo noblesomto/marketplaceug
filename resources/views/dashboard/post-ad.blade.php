@@ -399,7 +399,7 @@
                         </div>
 
                         <!-- Contact for Price -->
-                        <div id="services" class="flex items-center h-full pt-1">
+                        <div id="services" class="hidden flex items-center h-full pt-1">
                              <input type="hidden" name="contact_price" value="no">
                              <label class="flex items-center cursor-pointer select-none">
                                 <input type="checkbox" name="contact_price" value="yes" class="w-5 h-5 text-dark_green rounded border border-gray-300 focus:ring-dark_green">
@@ -408,6 +408,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Salary (Hidden by default, shown via JS) -->
                 <div id="salary" class="hidden">

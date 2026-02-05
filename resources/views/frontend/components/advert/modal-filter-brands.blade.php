@@ -1,7 +1,7 @@
  <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden items-center justify-center z-50">
         <!-- Modal Container -->
-        <div id="modalContainer" class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 transform transition-all">
+        <div id="modalContainer" class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 transform transition-all">
             <!-- Modal Header -->
             <div class="flex items-center justify-between p-4 border-b">
                 <h3 class="text-lg font-semibold text-gray-900">Select Brand</h3>

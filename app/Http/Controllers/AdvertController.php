@@ -1090,7 +1090,6 @@ class AdvertController extends Controller
     }
 
 
-
     public function calculate_shipping(Request $request, $id)
     {
         try {

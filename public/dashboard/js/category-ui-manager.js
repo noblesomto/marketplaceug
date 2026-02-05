@@ -3,9 +3,9 @@
  * CATEGORY UI MANAGER - Database-driven configuration system
  * ============================================================================
  *
- *
- * Version: 1.0
- * Date: 2026-01-31
+ * Version: 1.1
+ * Date: 2026-02-03
+ * Fixed: "not focusable" error and undefined defaults issue
  */
 
 class CategoryUIManager {
@@ -126,9 +126,10 @@ class CategoryUIManager {
             if (result.success && result.data) {
                 // Convert numeric keys to strings for consistent comparison
                 this.config = {
-                    categories: this.normalizeKeys(result.data.categories),
-                    subcategories: this.normalizeKeys(result.data.subcategories),
-                    defaults: result.data.defaults
+                    categories: this.normalizeKeys(result.data.categories || {}),
+                    subcategories: this.normalizeKeys(result.data.subcategories || {}),
+                    // ✅ Always ensure defaults exist, use fallback if API doesn't provide them
+                    defaults: result.data.defaults || this.fallbackConfig.defaults
                 };
 
                 this.usingFallback = false;
@@ -220,6 +221,9 @@ class CategoryUIManager {
             });
         }
 
+        // Clear required from model when divModel is hidden
+        this.clearRequiredOnHiddenFields();
+
         console.log(`Applied category rules for ID ${categoryId}`, config);
     }
 
@@ -254,7 +258,12 @@ class CategoryUIManager {
             });
         }
 
-        // Apply required attribute changes
+        // Always clear required on model first, then re-add only if explicitly listed
+        const modelElement = document.getElementById('model');
+        if (modelElement) {
+            modelElement.removeAttribute('required');
+        }
+
         if (config.required) {
             config.required.forEach(fieldName => {
                 const element = document.getElementById(fieldName);
@@ -264,15 +273,29 @@ class CategoryUIManager {
             });
         }
 
-        // Remove required attribute from elements not in config
-        if (config.required && config.required.length > 0) {
-            const modelElement = document.getElementById('model');
-            if (modelElement && !config.required.includes('model')) {
-                modelElement.removeAttribute('required');
-            }
-        }
+        // Clear required from any fields in hidden containers
+        this.clearRequiredOnHiddenFields();
 
         console.log(`Applied subcategory rules for ID ${subcategoryId}`, config);
+    }
+
+    /**
+     * Clear required attribute from inputs in hidden containers
+     */
+    clearRequiredOnHiddenFields() {
+        // List of container IDs that might contain required fields
+        const containers = ['divModel', 'divCar', 'divPhone'];
+
+        containers.forEach(containerId => {
+            const container = this.elements[containerId];
+            if (container && container.classList.contains('hidden')) {
+                // Find all required inputs within this hidden container
+                const requiredInputs = container.querySelectorAll('[required]');
+                requiredInputs.forEach(input => {
+                    input.removeAttribute('required');
+                });
+            }
+        });
     }
 
     /**
@@ -290,6 +313,13 @@ class CategoryUIManager {
     hide(elementId) {
         if (this.elements[elementId]) {
             this.elements[elementId].classList.add('hidden');
+
+            // Remove required from any inputs inside hidden containers
+            const hiddenContainer = this.elements[elementId];
+            const requiredInputs = hiddenContainer.querySelectorAll('[required]');
+            requiredInputs.forEach(input => {
+                input.removeAttribute('required');
+            });
         }
     }
 

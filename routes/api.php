@@ -98,6 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/adverts/{id}/apply', [AdvertController::class, 'applyJob']);
     Route::get('/adverts/{id}/buy-direct', [AdvertController::class, 'buy_direct']);
     Route::post('/adverts/{id}/buy-direct-payment', [AdvertController::class, 'buy_direct_payment']);
+    Route::post('/shipping/calculate/{id}', [AdvertController::class, 'calculate_shipping']);
 });
 
 /*
@@ -124,7 +125,7 @@ Route::get('/locations/states/{state_id}/cities', [LocationController::class, 'g
 Route::get('/locations/states/{state_id}/details', [LocationController::class, 'getStateWithCities']);
 Route::get('/locations/cities', [LocationController::class, 'searchCities']);
 Route::get('/locations/cities/{city_id}', [LocationController::class, 'getCity']);
-Route::post('/shipping/calculate', [LocationController::class, 'calculateShippingCost']);
+
 
 /*
 |--------------------------------------------------------------------------

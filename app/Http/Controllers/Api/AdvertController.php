@@ -790,6 +790,7 @@ class AdvertController extends Controller
      */
     public function calculate_shipping(Request $request, $id)
     {
+        //dd($request);
         try {
             // Validate input
             $validator = Validator::make($request->all(), [
@@ -799,7 +800,7 @@ class AdvertController extends Controller
                 'city' => 'required|integer',
                 'state' => 'required|integer',
                 'shipping_selected' => 'required|integer',
-                'ship_id' => 'required|integer',
+                //'ship_id' => 'required|integer',
             ]);
 
             if ($validator->fails()) {
@@ -822,12 +823,14 @@ class AdvertController extends Controller
             // Get ad details
             $ad = Advert::with('images', 'shippings')->findOrFail($id);
 
+
             // Get state and city details
             $sender_station = State::where('name', $ad->state)->firstOrFail();
             $reciever_station = State::findOrFail($request->state);
             $reciever_city = GigLogistic::findOrFail($request->city);
 
             $reciever_address = $reciever_city->city . ", " . $reciever_station->name;
+
 
             // Prepare shipping calculation details
             $details = [
@@ -858,16 +861,16 @@ class AdvertController extends Controller
             }
 
             // Calculate commission (2% for items >= ₦300,000, 3% otherwise)
-            $commission = $ad->price >= 300000
-                ? 0.02 * $ad->price
-                : 0.03 * $ad->price;
+            $commission = $responseData->data->DeclaredValue >= 300000
+                ? 0.02 * $responseData->data->DeclaredValue
+                : 0.03 * $responseData->data->DeclaredValue;
 
             $shipping_cost = $responseData->data->GrandTotal ?? 0;
-            $grand_total = $ad->price + $shipping_cost + $commission;
+            $grand_total = $responseData->data->DeclaredValue + $shipping_cost + $commission;
 
             // Get shipping method details
-            $shipping_method = Shipping::findOrFail($request->ship_id);
-
+            $shipping_method = Shipping::findOrFail($request->shipping_selected);
+            //dd($ad->ad_title);
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -875,7 +878,9 @@ class AdvertController extends Controller
                         'id' => $ad->id,
                         'title' => $ad->ad_title,
                         'price' => $ad->price,
-                        'image' => $ad->images->first()?->image,
+                        'image_large' => $ad->getFirstImageUrl('large'),
+                        'image_optimized' => $ad->getFirstImageUrl('optimized'),
+                        'image_thumb' => $ad->getFirstImageUrl('thumbnail'),
                     ],
                     'shipping_cost' => $shipping_cost,
                     'commission' => $commission,

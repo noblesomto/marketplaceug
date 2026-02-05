@@ -84,7 +84,7 @@
         </div>
     </header>
 
-    @if(!in_array($ad->category, [3, 11, 18]))
+    @if(!in_array($ad->category, [3, 7, 11, 14, 18]))
     <!-- Specs Grid  -->
     <section class="mt-8 px-2">
         <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
