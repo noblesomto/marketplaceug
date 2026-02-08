@@ -14,8 +14,7 @@
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full z-50 h-screen">
             <button id="closeSearch" class="text-red-500 text-lg font-semibold mb-4 mt-10">Close</button>
             <h2 class="text-xl font-bold mb-4">What are you looking for?</h2>
-            <form action="/search" method="POST" class="">
-                    @csrf
+            <form action="/search" method="GET" class="">
             <div class="flex flex-col">
                 
                   <div class="col-span-3 mt-2">
