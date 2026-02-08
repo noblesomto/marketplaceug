@@ -3,18 +3,19 @@
         $conditions = ['Local used', 'Foreign used', 'Brand new'];
         $contextFilters = [];
 
-        // Only add filters if the variable exists AND we're on the appropriate page
-        // Don't mix brand filter with other contexts
-        // Check for $brands (plural) to avoid using loop variable from brand list
-        if(isset($brand) && isset($brand->id) && !isset($brands)) {
-            // Brand page: filter by brand only (brand already implies category and subcategory)
-            $contextFilters['brand'] = $brand->id;
-        } elseif(isset($subcat) && isset($subcat->id)) {
-            // Subcategory page: filter by subcategory (already implies category)
-            $contextFilters['sub_category'] = $subcat->id;
-        } elseif(isset($cat) && isset($cat->id)) {
-            // Category page: filter by category only
-            $contextFilters['category'] = $cat->id;
+        // Detect page context based on filterType variable set by controller
+        // This is more reliable than checking variable existence
+        if(isset($filterType)) {
+            if($filterType === 'brand' && isset($filterId)) {
+                // Brand page: filter by brand only
+                $contextFilters['brand'] = $filterId;
+            } elseif($filterType === 'sub_category' && isset($filterId)) {
+                // Subcategory page: filter by subcategory
+                $contextFilters['sub_category'] = $filterId;
+            } elseif($filterType === 'category' && isset($filterId)) {
+                // Category page: filter by category
+                $contextFilters['category'] = $filterId;
+            }
         }
 
     @endphp

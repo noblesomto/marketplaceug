@@ -127,7 +127,6 @@ Route::get('/payment/callback', [PaystackController::class, 'callback'])->name('
 Route::get('/m-category/{id}/{slug}', [AdvertController::class, 'mobile_category'])->name('mobile.category');
 
 //Messages
-// REMOVED: fetchMessages route - method had dd() debug, replaced by showMessages
 Route::post('/messages', [MessageController::class, 'sendMessage'])->middleware('usersession');
 Route::get('/my-messages/{id}', [MessageController::class, 'fetchMyMessages'])->middleware('usersession');
 
@@ -365,7 +364,7 @@ Route::middleware(['adminsession'])->group(function () {
     */
     Route::middleware(['admin.permission:view_users,manage_user_status,verify_users'])->group(function () {
         Route::get('/admin/active-users', [ManageUsers::class, 'active_users'])->name('admin.active.users');
-        Route::post('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->name('admin.user.status');
+        Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->name('admin.user.status');
         Route::post('/admin/disable-status/{id}/{status}', [ManageUsers::class, 'disable_status'])->name('admin.disable.status');
         Route::get('/admin/unverified-users', [ManageUsers::class, 'unverified_users'])->name('admin.unverified.users');
         Route::get('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->name('admin.disabled.users');
