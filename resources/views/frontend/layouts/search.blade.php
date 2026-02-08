@@ -1,7 +1,6 @@
 <section class="mt-5 w-full bg-secondary_dark h-auto min-h-12 hidden lg:block">
     <div class="w-full max-w-7xl mx-auto px-4">
-        <form action="/search" method="POST" class="py-2">
-            @csrf
+        <form action="/search" method="GET" class="py-2">
             <div class="grid grid-cols-12 gap-2 items-center">
                 <!-- Search Input Section -->
                 <div class="col-span-6 xl:col-span-5">

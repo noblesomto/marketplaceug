@@ -107,10 +107,10 @@ Route::match(['GET', 'POST'], '/report-ad/{id}', [AdvertController::class, 'repo
 Route::match(['GET', 'POST'], '/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession')->name('apply.job');
 
 //Search and Filter
-Route::get('/search', [SearchFilter::class, 'search'])->name('search');
-Route::post('/filter/adverts', [SearchFilter::class, 'filter'])->name('filter.adverts');
-Route::post('/filter/sellers', [SearchFilter::class, 'filterBySeller'])->name('filter.sellers');
-Route::post('/filter/buydirect', [SearchFilter::class, 'filterByBuydirect'])->name('filter.buydirect');
+Route::match(['GET', 'POST'], '/search', [SearchFilter::class, 'search'])->name('search');
+Route::match(['GET', 'POST'], '/filter/adverts', [SearchFilter::class, 'filter'])->name('filter.adverts');
+Route::match(['GET', 'POST'], '/filter/sellers', [SearchFilter::class, 'filterBySeller'])->name('filter.sellers');
+Route::match(['GET', 'POST'], '/filter/buydirect', [SearchFilter::class, 'filterByBuydirect'])->name('filter.buydirect');
 Route::post('/filter/car-details', [SearchFilter::class, 'filterByCarDetails'])->name('filter.car.details');
 Route::post('/filter/phone-details', [SearchFilter::class, 'filterByPhoneDetails'])->name('filter.phone.details');
 
