@@ -65,6 +65,7 @@ class MigrateToSpatiePermissionSeeder extends Seeder
 
             // Settings
             'manage_shipping',
+            'manage_settings',
 
             'view_payments',
         'manage_payments',
