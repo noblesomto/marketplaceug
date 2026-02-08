@@ -127,7 +127,7 @@ Route::get('/payment/callback', [PaystackController::class, 'callback'])->name('
 Route::get('/m-category/{id}/{slug}', [AdvertController::class, 'mobile_category'])->name('mobile.category');
 
 //Messages
-Route::get('/messages/{id}/{user}', [MessageController::class, 'fetchMessages'])->middleware('usersession');
+// REMOVED: fetchMessages route - method had dd() debug, replaced by showMessages
 Route::post('/messages', [MessageController::class, 'sendMessage'])->middleware('usersession');
 Route::get('/my-messages/{id}', [MessageController::class, 'fetchMyMessages'])->middleware('usersession');
 
