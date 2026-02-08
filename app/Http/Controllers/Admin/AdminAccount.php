@@ -14,6 +14,9 @@ use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminPasswordResetMail;
 
 class AdminAccount extends Controller
 {
@@ -73,4 +76,101 @@ class AdminAccount extends Controller
 
     return view('frontend.account.admin', compact('title'));
 }
+
+    /**
+     * Admin Forgot Password
+     */
+    public function forgotPassword(Request $request)
+    {
+        $title = "Admin Forgot Password - " . config('global.site_name');
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'email' => 'required|email',
+            ]);
+
+            $email = $request->email;
+            $admin = Admin::where('email', $email)->first();
+
+            if ($admin) {
+                $username = $admin->username;
+                $admin_id = $admin->id;
+                $token = Str::random(60);
+
+                // Save the token to the database
+                DB::table('admins')
+                    ->where('id', $admin_id)
+                    ->update([
+                        'token' => $token
+                    ]);
+
+                $details = [
+                    'admin_id' => $admin_id,
+                    'token' => $token,
+                    'username' => $username,
+                ];
+
+                try {
+                    Mail::to($email)->send(new AdminPasswordResetMail($details));
+                    return redirect()->route('admin.login')
+                        ->with('success', 'Password reset link sent to your email. Please check your inbox.');
+                } catch (\Throwable $e) {
+                    return redirect()->back()
+                        ->with('error', 'Email could not be sent. Please try again later.');
+                }
+            } else {
+                return redirect()->back()
+                    ->with('error', 'This email is not registered as an admin.');
+            }
+        }
+
+        return view('frontend.account.admin-forgot-password', compact('title'));
+    }
+
+    /**
+     * Admin Reset Password
+     */
+    public function resetPassword(Request $request, $admin_id, $token)
+    {
+        $title = "Admin Reset Password - " . config('global.site_name');
+        $admin = Admin::find($admin_id);
+
+        if (!$admin) {
+            return redirect()->route('admin.login')
+                ->with('error', 'Invalid reset link.');
+        }
+
+        $storedToken = $admin->token;
+
+        if ($request->isMethod('GET')) {
+            if ($token == $storedToken && $storedToken !== null) {
+                return view('frontend.account.admin-reset-password', compact('title', 'admin_id', 'token'));
+            } else {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Invalid or expired reset token.');
+            }
+        }
+
+        if ($request->isMethod('POST')) {
+            // Verify token again
+            if ($token != $storedToken) {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Invalid or expired reset token.');
+            }
+
+            $request->validate([
+                'password' => 'required|min:8|confirmed',
+            ]);
+
+            DB::table('admins')
+                ->where('id', $admin_id)
+                ->update([
+                    'password' => Hash::make($request->input('password')),
+                    'token' => null,
+                ]);
+
+            return redirect()->route('admin.login')
+                ->with('success', 'Password successfully updated. Please login with your new password.');
+        }
+    }
 }
