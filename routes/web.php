@@ -78,6 +78,8 @@ Route::match(['GET', 'POST'], '/shipper', [AccountController::class, 'shipper'])
 
 //Admin Login
 Route::match(['GET', 'POST'], '/admin', [AdminAccount::class, 'adminlogin'])->name('admin.login');
+Route::match(['GET', 'POST'], '/admin/forgot-password', [AdminAccount::class, 'forgotPassword'])->name('admin.forgot.password');
+Route::match(['GET', 'POST'], '/admin/reset-password/{admin_id}/{token}', [AdminAccount::class, 'resetPassword'])->name('admin.reset.password');
 
 //Adverts
 Route::get('/listings', [AdvertController::class, 'adverts'])->name('listings');
