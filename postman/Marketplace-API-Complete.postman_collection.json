@@ -1650,6 +1650,92 @@
           "response": []
         },
         {
+          "name": "Search Filter By Car Details",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/search/filter-by-car",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "search",
+                "filter-by-car"
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-car`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByCarDetails`\\n\\n**Request Body:**\\n- `condition` (optional): \"Brand New\", \"Nigerian Used\", \"Foreign Used\"\\n- `fuel_type` (optional): \"Petrol\", \"Diesel\", \"Electric\", \"Hybrid\"\\n- `transmission` (optional): \"Automatic\", \"Manual\"\\n- `registration` (optional): \"Registered\", \"Unregistered\"\\n- `category`, `sub_category`, `brand`, `location`, `min`, `max`, `per_page` (optional)",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n\\t\"condition\": \"Nigerian Used\",\\n\\t\"fuel_type\": \"Petrol\",\\n\\t\"transmission\": \"Automatic\",\\n\\t\"registration\": \"Registered\",\\n\\t\"category\": 2,\\n\\t\"location\": \"Lagos\",\\n\\t\"min\": 500000,\\n\\t\"max\": 5000000,\\n\\t\"per_page\": 20\\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Filter By Phone Details",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/search/filter-by-phone",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "search",
+                "filter-by-phone"
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-phone`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByPhoneDetails`\\n\\n**Request Body:**\\n- `condition` (optional): \"Brand New\", \"Nigerian Used\", \"Foreign Used\", \"Refurbished\"\\n- `device_type` (optional): \"Smartphone\", \"Feature Phone\", \"Tablet\"\\n- `category`, `sub_category`, `brand`, `location`, `min`, `max`, `per_page` (optional)",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n\\t\"condition\": \"Brand New\",\\n\\t\"device_type\": \"Smartphone\",\\n\\t\"category\": 1,\\n\\t\"sub_category\": 6,\\n\\t\"brand\": 5,\\n\\t\"location\": \"Lagos\",\\n\\t\"min\": 50000,\\n\\t\"max\": 500000,\\n\\t\"per_page\": 20\\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Search Location  Location   Slug ",
           "request": {
             "method": "GET",
