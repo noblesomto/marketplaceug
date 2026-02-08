@@ -23,21 +23,7 @@ class MessageController extends Controller
     use HasUserSession;
 
 
-    public function fetchMessages(Request $request, $id, $owner)
-    {   
-        $user_id = $request->session()->get('user_id');
-        $message = DB::table('messages')
-            ->join('users', 'messages.sender_id', '=', 'users.user_id')
-            ->where('messages.advert_id', $id)
-            ->where(function ($query) use ($user_id, $owner) {
-                $query->where('messages.sender_id', $user_id)
-                      ->orWhere('messages.receiver_id', $owner);
-            })
-            ->get();
-
-        dd($message);
-        return ($message);
-    }
+    // REMOVED: fetchMessages() - had dd() debug statement, replaced by showMessages()
 
     public function fetchMyMessages(Request $request, $id)
     {   

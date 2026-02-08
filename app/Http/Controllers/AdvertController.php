@@ -574,35 +574,7 @@ class AdvertController extends Controller
     }
 
 
-    public function chat(Request $request, $user_id, $id)
-    {
-        $data['ad'] = Advert::where('ad_id', $id)->first();
-        $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
-        $data['images'] = AdvertImage::where('ad_id', $id)->get();
-        $cat_id = $data['ad']->category;
-        $brand_id = $data['ad']->brand;
-        $ad_owner = $data['ad']->user_id;
-        $data['ad_owner'] = $user_id;
-        $subcat_id = $data['ad']->sub_category;
-        $user_id = $request->session()->get('user_id');
-        $data['user'] = User::where('user_id', $user_id)->first();
-        $data['cat'] = Category::where('cat_id', $cat_id)->first();
-        $data['brand'] = Brands::where('cat_id', $cat_id)->first();
-        $data['model'] = Models::where('cat_id', $cat_id)->first();
-        $data['car'] = CarDetail::where('brand_id', $brand_id)->first();
-        $data['phone'] = PhoneDetail::where('brand_id', $brand_id)->first();
-        $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
-
-        //dd($data['ad']->sub_category);
-        $currentURL = url()->current();
-        $request->session()->put('previous_url', $currentURL);
-        $user_id = $request->session()->get('user_id');
-        if (empty($user_id)) {
-            return redirect('/login')->with('error', 'Sorry, you need to login to chat with Ad Owner');
-        }
-
-        return view('frontend.chat', $data);
-    }
+    // REMOVED: chat() method - duplicate functionality, replaced by MessageController::showMessages()
 
     public function adverts(Request $request)
     {
