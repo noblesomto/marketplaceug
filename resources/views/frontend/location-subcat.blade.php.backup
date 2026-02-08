@@ -5,7 +5,7 @@
 
 
 <section class="w-full md:w-5/6 mx-auto mt-3">
-  <div class="grid grid-cols-112 gap-3">
+  <div class="grid grid-cols-12 gap-3">
       <div class="col-span-2 hidden sm:block">
         @include('frontend.components.advert.side-advert')
       </div>
@@ -15,19 +15,19 @@
             <!-- Main Sidebar Header -->
             <div class="flex items-center gap-2 px-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 </svg>
-                <h4 class="font-bold text-gray-800 text-lg tracking-tight">Filter Results</h4>
+                <h4 class="font-bold text-gray-800 text-lg tracking-tight">Refine Results</h4>
             </div>
 
-            <!-- Category Card -->
+            <!-- Sub-Category Card -->
             <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
                 <div class="p-4 border-b border-gray-50 bg-gray-50/50">
                     <h4 class="font-bold text-gray-900 text-xs uppercase tracking-wider">Categories</h4>
                 </div>
 
                 <div class="p-3">
-                    <!-- Breadcrumb Link for SEO -->
+                    <!-- Breadcrumb Navigation for SEO -->
                     <nav class="mb-3" aria-label="Breadcrumb">
                         <a href="{{ url('/all-categories') }}" class="inline-flex items-center text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
@@ -35,17 +35,17 @@
                         </a>
                     </nav>
 
-                    <!-- Active Category State -->
+                    <!-- Active Sub-Category State -->
                     <div class="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-100">
-                        <span class="font-bold text-emerald-900 text-[15px]">{{ $cat->category }}</span>
+                        <span class="font-bold text-emerald-900 text-[15px] leading-tight">{{ $subcat->sub_category }}</span>
                         <span class="text-xs font-bold bg-white text-emerald-700 px-2.5 py-1 rounded-full shadow-sm border border-emerald-100/50">
-                            {{ $count_cat }}
+                            {{ $count_subcat }}
                         </span>
                     </div>
                 </div>
             </div>
 
-            <!-- Location Card -->
+            <!-- Location Selection Card -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                 <h4 class="font-bold text-gray-900 text-xs uppercase tracking-wider mb-3">Location</h4>
                 <button id="locationButton" class="w-full flex items-center justify-between px-3 py-2.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:border-emerald-500 hover:text-emerald-600 transition-all focus:ring-2 focus:ring-emerald-100 outline-none group">
@@ -62,20 +62,26 @@
                 </button>
             </div>
 
-            <!-- Price Filter Card -->
+            <!-- Price Range Card -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                 <h4 class="font-bold text-gray-900 text-xs uppercase tracking-wider mb-3">Price Range</h4>
-                <div class="price-filter-wrapper">
+                <div class="filter-component-container">
                     @include('frontend.components.advert.price-filter')
                 </div>
             </div>
         </div>
-           <div class="col-span-10 md:col-span-9">
+           <div class="col-span-12 md:col-span-9">
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>
-            <div id="ads-container">
-                @include('frontend.components.advert.advert-list', ['ads' => $ads])
+            <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 px-1">
+                @foreach ($ads as $row)
+                    @if($isMobile)
+                        @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
+                    @else
+                        @include('frontend.components.advert.advert-card', ['row' => $row])
+                    @endif
+                @endforeach
             </div>
             @if($ads->isEmpty())
                 <div class="flex flex-col h-screen items-center bg-white p-10">
@@ -113,7 +119,7 @@
 </section>
 
 
-@include('frontend.components.advert.modal-locations')
+@include('frontend.components.advert.modal-subcat-locations')
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -125,19 +131,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Get current filters from URL or other source
     const filters = {
-    @if(isset($cat))
-    category: {{ $cat->id }},
-    location: '{{ $location ?? '' }}',
-    @endif
-    @if(isset($subcat))
-    sub_category: {{ $subcat->id }},
-    location: '{{ $location ?? '' }}',
-    @endif
-    @if(isset($brand))
-    brand: {{ $brand->id }},
-    location: '{{ $location ?? '' }}',
-    @endif
-};
+        @if(isset($cat))
+        category: {{ $cat->id }},
+        @endif
+        @if(isset($subcat))
+        sub_category: {{ $subcat->id }},
+        @endif
+        @if(isset($brand))
+        brand: {{ $brand->id }},
+        @endif
+    };
 
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', function() {

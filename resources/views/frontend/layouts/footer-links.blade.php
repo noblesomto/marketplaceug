@@ -11,6 +11,7 @@
                     <li><a href="/cookie-policy" class="hover:text-secondary-200">Cookies Policy</a></li>
                     <li><a href="/billing-policy" class="hover:text-secondary-200">Billing Policy</a></li>
                     <li><a href="/copyright-policy" class="hover:text-secondary-200">Copyright Policy</a></li>
+                    <li><a href="/sell-online" class="hover:text-secondary-200">Sell Online</a></li>
                 </ul>
             </div>
 

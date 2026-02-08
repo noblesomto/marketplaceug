@@ -264,7 +264,7 @@ class AdvertController extends Controller
             $data['model'] = Models::where('id', $model_id)->first();
         }
 
-        $data['count_ads'] = Advert::where('user_id', $ad_owner)->count();
+        $data['count_ads'] = Advert::where('user_id', $ad_owner)->activeNotRecentlySold()->count();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
 
@@ -281,11 +281,21 @@ class AdvertController extends Controller
             ->activeNotRecentlySold()
             ->where('id', '!=', $ad_id);
 
-        $data['advertsCount'] = $query->count();
+        // 1. Set the maximum potential limit
+        $limit = $isMobile ? 4 : 5;
 
-        $data['adverts'] = $query
-            ->limit($isMobile ? 4 : 5)
-            ->get();
+        // 2. Fetch the adverts
+        $adverts = $query->limit($limit)->get();
+
+        // 3. Ensure the actual count is even for mobile
+        // This handles the case where the DB returns 3 items even though the limit was 4.
+        if ($isMobile && $adverts->count() % 2 !== 0) {
+            $adverts = $adverts->slice(0, -1); // Remove the last item to make it even
+        }
+
+        $data['isMobile']     = $isMobile;
+        $data['adverts']      = $adverts;
+        $data['advertsCount'] = $adverts->count();
 
         /*
         |--------------------------------------------------------------------------
@@ -665,10 +675,10 @@ class AdvertController extends Controller
         // Fetch seller's other ads
         $ads = Advert::with('firstImage', 'owner')
             ->where('user_id', $id)
-            ->where('id', '!=', $ad->id)
             ->activeNotRecentlySold()
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(20);
+
 
         $hasMore = $ads->hasMorePages(); // Add this line
 
@@ -676,7 +686,7 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $categories = Category::with('subCategories')->get();
-        $count_ads = Advert::where('user_id', $id)->count();
+        $count_ads = Advert::where('user_id', $id)->activeNotRecentlySold()->count();
 
         return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories', 'count_ads', 'hasMore')); // Add hasMore to compact
     }
@@ -864,7 +874,7 @@ class AdvertController extends Controller
 
         $agent = new Agent();
         $isMobile = $agent->isMobile();
-        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId','isMobile'));
+        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId','isMobile'));
     }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
@@ -910,7 +920,7 @@ class AdvertController extends Controller
             $agent = new Agent();
             $isMobile = $agent->isMobile();
 
-        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'subcat', 'count_subcat', 'hasMore','filterType', 'filterId','isMobile'));
+        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore','filterType', 'filterId','isMobile'));
     }
 
         public function location($location)

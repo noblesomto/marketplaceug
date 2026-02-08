@@ -51,6 +51,7 @@
                     <a href="/user/index" class="block w-full text-center py-2 bg-gray-800 text-white rounded-xl font-bold">Dashboard</a>
                 @endif
             </div>
+            <div class="mt-10"></div>
 
         </div>
     </div>

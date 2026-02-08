@@ -77,8 +77,14 @@
               <div class=" my-5 hidden lg:block">
                  @include('frontend.components.advert.banner-advert')
               </div>
-            <div id="advert-results">
-                @include('frontend.components.advert.advert-list', ['ads' => $ads])
+            <div id="ads-container" class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 px-1">
+                @foreach ($ads as $row)
+                    @if($isMobile)
+                        @include('frontend.components.advert.advert-card-mobile', ['row' => $row])
+                    @else
+                        @include('frontend.components.advert.advert-card', ['row' => $row])
+                    @endif
+                @endforeach
             </div>
 
            </div>

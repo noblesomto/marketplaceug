@@ -1,4 +1,10 @@
-@include('frontend.layouts.header-category')
+{{-- Dynamic header based on context --}}
+@if(isset($location))
+    @include('frontend.layouts.header')
+@else
+    @include('frontend.layouts.header-category')
+@endif
+
 @include('frontend.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
@@ -15,7 +21,7 @@
               </div>
         <div class="grid grid-cols-12 gap-3">
            <div class="col-span-3 hidden lg:block space-y-4">
-    <!-- Header Title (Optional, can be removed if it feels cluttered) -->
+    <!-- Header Title -->
     <div class="flex items-center gap-2 px-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -44,7 +50,8 @@
                 <span class="text-xs font-bold bg-white text-emerald-700 px-2 py-1 rounded-full shadow-sm">{{ $count_cat }}</span>
             </div>
 
-            <!-- Subcategories List -->
+            @if(!isset($location))
+            <!-- Subcategories List (Only show when NOT location-based) -->
             @php $catLimit = 15; @endphp
             <ul class="space-y-0.5">
                 @foreach($categories->take($catLimit) as $subCategory)
@@ -70,6 +77,7 @@
                 </a>
             </div>
             @endif
+            @endif
         </div>
     </div>
 
@@ -92,31 +100,61 @@
             </div>
         </div>
 
-        <!-- Purchase Type Section -->
+        @if(!isset($location))
+        <!-- Purchase Type Section (Only show when NOT location-based) -->
         <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
             <h4 class="font-bold text-gray-900 text-sm mb-3">Buying Options</h4>
             @include('frontend.components.filter.buydirect-category')
         </div>
 
-        <!-- Verified Sellers -->
+        <!-- Verified Sellers (Only show when NOT location-based) -->
         <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
             <h4 class="font-bold text-gray-900 text-sm mb-3">Trust Safety</h4>
             @include('frontend.components.advert.sellers-category')
         </div>
+        @endif
 
-        <!-- Brands Section
+        @if($cat->id == 1)
+        <!-- Vehicle Condition -->
         <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
-            <h4 class="font-bold text-gray-900 text-sm mb-3">Brands</h4>
-            <button id="brandsButton" class="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:border-emerald-500 hover:text-emerald-600 transition-all focus:ring-2 focus:ring-emerald-100 outline-none">
-                <span>Select Brand</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-            </button>
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Vehicle Condition</h4>
+            @include('frontend.components.filter.condition-car')
         </div>
-        -->
+
+        <!-- Registration -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Registration</h4>
+            @include('frontend.components.filter.registration')
+        </div>
+
+        <!-- Fuel Type -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Fuel Type</h4>
+            @include('frontend.components.filter.fuel-type')
+        </div>
+
+        <!-- Transmission -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Transmission</h4>
+            @include('frontend.components.filter.transmission')
+        </div>
+        @elseif($cat->id == 4)
+        <!-- Phone Condition -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Condition</h4>
+            @include('frontend.components.filter.condition-phone')
+        </div>
+
+        <!-- Device Type -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Device Type</h4>
+            @include('frontend.components.filter.device-type')
+        </div>
+        @endif
     </div>
 </div>
            <div class="col-span-12 lg:col-span-9">
-              
+
               <div class="block lg:hidden">
                     @include('frontend.components.mobile.filter-category')
               </div>
@@ -166,7 +204,7 @@
       </div>
   </div>
 </section>
-<div class="pb-5"></div>
+<div class="pb-10"></div>
 @include('frontend.components.advert.modal-locations')
 @include('frontend.components.advert.modal-filter-brands')
 
@@ -188,6 +226,9 @@ document.addEventListener('DOMContentLoaded', function() {
         @endif
         @if(isset($brand))
         brand: {{ $brand->id }},
+        @endif
+        @if(isset($location))
+        location: '{{ $location }}',
         @endif
     };
 
@@ -236,4 +277,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Filter Manager Context -->
+<script>
+    // Set context variables for filter manager
+    const currentCategory = {{ $cat->id }};
+    const currentSubCategory = null;
+    const currentBrand = null;
+    const currentLocation = {{ isset($location) ? "'".$location."'" : 'null' }};
+</script>
+<script src="{{ asset('js/filter-manager.js') }}"></script>
+
 @include('frontend.layouts.footer')
