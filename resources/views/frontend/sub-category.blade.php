@@ -1,4 +1,10 @@
-@include('frontend.layouts.header-subcategory')
+{{-- Dynamic header based on context --}}
+@if(isset($location))
+    @include('frontend.layouts.header')
+@else
+    @include('frontend.layouts.header-subcategory')
+@endif
+
 @include('frontend.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
@@ -43,7 +49,8 @@
                         </span>
                     </div>
 
-                    <!-- Brands within this Sub-Category -->
+                    @if(!isset($location) && isset($brands))
+                    <!-- Brands within this Sub-Category (Only show when NOT location-based) -->
                     @php $brandLimit = 15; @endphp
                     <ul class="space-y-0.5">
                         @foreach($brands->take($brandLimit) as $brand)
@@ -69,6 +76,7 @@
                         </a>
                     </div>
                     @endif
+                    @endif
                 </div>
             </div>
 
@@ -89,17 +97,57 @@
                     @include('frontend.components.advert.price-filter')
                 </div>
 
-                <!-- Purchase Type Section -->
+                @if(!isset($location))
+                <!-- Purchase Type Section (Only show when NOT location-based) -->
                 <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                     <h4 class="font-bold text-gray-900 text-sm mb-3">Buying Options</h4>
                     @include('frontend.components.filter.buydirect-subcategory')
                 </div>
 
-                <!-- Verified Sellers Section -->
+                <!-- Verified Sellers Section (Only show when NOT location-based) -->
                 <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                     <h4 class="font-bold text-gray-900 text-sm mb-3">Trust & Safety</h4>
                     @include('frontend.components.advert.sellers-subcategory')
                 </div>
+                @endif
+
+                @if($subcat->cat_id == 1)
+                <!-- Vehicle Condition -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Vehicle Condition</h4>
+                    @include('frontend.components.filter.condition-car')
+                </div>
+
+                <!-- Registration -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Registration</h4>
+                    @include('frontend.components.filter.registration')
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Fuel Type</h4>
+                    @include('frontend.components.filter.fuel-type')
+                </div>
+
+                <!-- Transmission -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Transmission</h4>
+                    @include('frontend.components.filter.transmission')
+                </div>
+                @elseif($subcat->cat_id == 4)
+                <!-- Phone Condition -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Condition</h4>
+                    @include('frontend.components.filter.condition-phone')
+                </div>
+
+                <!-- Device Type -->
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    <h4 class="font-bold text-gray-900 text-sm mb-3">Device Type</h4>
+                    @include('frontend.components.filter.device-type')
+                </div>
+                @endif
 
                 <!-- Brands Selection Section -->
                 <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
@@ -161,7 +209,7 @@
       </div>
   </div>
 </section>
-<div class="pb-5"></div>
+<div class="pb-20"></div>
 
 
 @include('frontend.components.advert.modal-subcat-locations')
@@ -176,7 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const filters = {
         @if(isset($filterType) && isset($filterId))
-        {{ $filterType }}: {{ $filterId }}
+        {{ $filterType }}: {{ $filterIsString ?? false ? "'".$filterId."'" : $filterId }}
+        @endif
+        @if(isset($location))
+        , location: '{{ $location }}'
         @endif
     };
 
@@ -219,6 +270,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Filter Manager Context -->
+<script>
+    // Set context variables for filter manager
+    const currentCategory = {{ $subcat->cat_id }};
+    const currentSubCategory = {{ $subcat->id }};
+    const currentBrand = null;
+    const currentLocation = {{ isset($location) ? "'".$location."'" : 'null' }};
+</script>
+<script src="{{ asset('js/filter-manager.js') }}"></script>
+
 @include('frontend.layouts.footer')
-
-

@@ -94,6 +94,12 @@ class PageController extends Controller
         return view('frontend.pages.advertise', compact('title'));
     }
 
+    public function sell_online()
+    {
+        $title = "Sell Online  | " . config('global.site_name');
+        return view('frontend.pages.sell-online', compact('title'));
+    }
+
     public function blog()
     {
         $title = "Our Blog  | " . config('global.site_name');

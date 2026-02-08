@@ -44,6 +44,7 @@ Route::any('/cookie-policy', [PageController::class, 'cookie'])->name('cookie.po
 Route::any('/billing-policy', [PageController::class, 'billing']);
 Route::any('/copyright-policy', [PageController::class, 'copyright']);
 Route::any('/safety-tips', [PageController::class, 'safety']);
+Route::any('/sell-online', [PageController::class, 'sell_online']);
 Route::any('/our-terms', [PageController::class, 'terms']);
 Route::any('/payments-refunds', [PageController::class, 'payments_refunds']);
 Route::any('/how-it-works', [PageController::class, 'how_it_works']);
@@ -108,6 +109,8 @@ Route::any('/search', [SearchFilter::class, 'search']);
 Route::post('/filter/adverts', [SearchFilter::class, 'filter']);
 Route::post('/filter/sellers', [SearchFilter::class, 'filterBySeller'])->name('filter.sellers');
 Route::post('/filter/buydirect', [SearchFilter::class, 'filterByBuydirect'])->name('filter.buydirect');
+Route::post('/filter/car-details', [SearchFilter::class, 'filterByCarDetails'])->name('filter.car.details');
+Route::post('/filter/phone-details', [SearchFilter::class, 'filterByPhoneDetails'])->name('filter.phone.details');
 
 
 // Get State and Locations
@@ -463,18 +466,18 @@ Route::get('/unread-messages-count', function () {
 
 // 3-segment advert page
 Route::get('/{location}/{slug}/{id}', [AdvertController::class, 'advert'])
-    ->where('location', '[A-Za-z0-9\-]+')
+    ->where('location', '[A-Za-z0-9\-\s]+')  // Added \s for spaces
     ->where('slug', '[A-Za-z0-9\-]+')
     ->where('id', '[0-9]+');
 
 // 2-segment location filters
 Route::any('/{location}/{slug}', [SearchFilter::class, 'location_router'])
-    ->where('location', '[A-Za-z0-9\-]+')
+    ->where('location', '[A-Za-z0-9\-\s]+')  // Added \s for spaces
     ->where('slug', '[A-Za-z0-9\-]+');
 
 // 1-segment = location (LGA)
 Route::get('/{location}', [AdvertController::class, 'location'])
-    ->where('location', '[A-Za-z0-9\-]+');
+    ->where('location', '[A-Za-z0-9\-\s]+');  // Added \s for spaces
 
 
 

@@ -10,7 +10,7 @@
             <div class="flex-none w-full h-full flex items-center justify-center">
                 <img src="{{ $media->getUrl('large') }}"
                      alt="{{ $ad->ad_title }} - Image {{ $index + 1 }}"
-                     class="w-full h-full object-contain md:object-cover cursor-zoom-in"
+                     class="w-full h-full object-cover md:object-cover"
                      onclick="openLightbox({{ $index }})">
             </div>
         @endforeach

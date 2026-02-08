@@ -60,7 +60,7 @@ class SearchFilter extends Controller
 
         // Order and paginate results
         $ads = $query->orderWithFeatured()
-             ->paginate(10)
+             ->paginate(20)
              ->appends($request->except('page'));
 
         $user_id = $request->session()->get('user_id');
@@ -108,7 +108,7 @@ class SearchFilter extends Controller
                     ->where('state', $location)
                     ->where('category', $cat->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -117,9 +117,12 @@ class SearchFilter extends Controller
                           ->where('category', $cat->id)
                           ->count();
 
-        $hasMore = $ads->hasMorePages(); // Add this line
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
 
-        return view('frontend.location-category', compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore'));
+        // Use the merged category view with location context
+        return view('frontend.category', compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore', 'isMobile', 'location'));
     }
 
     public function location_subcat(Request $request, $location, $slug)
@@ -133,7 +136,7 @@ class SearchFilter extends Controller
                     ->where('state', $location)
                     ->where('sub_category', $subcat->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -142,9 +145,30 @@ class SearchFilter extends Controller
                             ->where('sub_category', $subcat->id)
                             ->count();
 
-        $hasMore = $ads->hasMorePages(); // Add this line
+        // Get brands for non-location version (will be hidden in location view)
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $subcat->id)
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
 
-        return view('frontend.location-subcat', compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore'));
+        $cat = $subcat->category;
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+
+        // Use the merged sub-category view with location context
+        return view('frontend.sub-category', compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore', 'isMobile', 'location', 'brands', 'cat'));
     }
 
     public function location_brand(Request $request, $location, $slug)
@@ -157,7 +181,7 @@ class SearchFilter extends Controller
                     ->where('state', $location)
                     ->where('brand', $brand->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(20);
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -166,9 +190,36 @@ class SearchFilter extends Controller
                         ->where('brand', $brand->id)
                         ->count();
 
-        $hasMore = $ads->hasMorePages(); // Add this line
+        // Get related data for the brand
+        $subcat = $brand->subcategory;
+        $cat = $subcat ? $subcat->category : null;
 
-        return view('frontend.location-brand', compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore'));
+        // Get other brands in same subcategory (for non-location version)
+        $brands = DB::table('brands')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('brands.subcat_id', $brand->subcat_id)
+            ->where(function($query) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+            })
+            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        $count_subcat = Advert::activeNotRecentlySold()
+                        ->where('sub_category', $brand->subcat_id)
+                        ->count();
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+
+        // Use the merged brand view with location context
+        return view('frontend.brand', compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat'));
     }
 
     public function filter(Request $request)
@@ -230,7 +281,7 @@ class SearchFilter extends Controller
 
         // Paginate
         $adverts = $query->orderWithFeatured()
-                 ->paginate(10)
+                 ->paginate(20)
                  ->appends($request->except('page'));
 
         // Render based on device type
@@ -288,7 +339,7 @@ class SearchFilter extends Controller
 
         //Paginate with sellers filter appended
         $adverts = $query->orderWithFeatured()
-                 ->paginate(10)
+                 ->paginate(20)
                  ->appends(['sellers' => $sellers]);
 
         // Render based on device type
@@ -345,7 +396,7 @@ class SearchFilter extends Controller
 
         // 🟢 Paginate with sellers and buydirect filters appended
         $adverts = $query->orderWithFeatured()
-                 ->paginate(10)
+                 ->paginate(20)
                  ->appends([
                      'buydirect' => $request->input('buydirect')
                  ]);
@@ -410,7 +461,7 @@ class SearchFilter extends Controller
 
         // Get paginated results
         $ads = $query->orderWithFeatured()
-                     ->paginate(10);
+                     ->paginate(20);
 
         // Render based on device type
         $agent = new Agent();
@@ -429,6 +480,176 @@ class SearchFilter extends Controller
         return response()->json([
             'html' => $html,
             'hasMore' => $ads->hasMorePages()
+        ]);
+    }
+
+    public function filterByCarDetails(Request $request)
+    {
+        $query = Advert::with('firstImage')
+            ->join('car_details', 'adverts.id', '=', 'car_details.advert_id')
+            ->where('adverts.ad_status', 'active')
+            ->where('adverts.sold', 'No')
+            ->select('adverts.*');
+
+        // Apply car-specific filters
+        if ($request->filled('condition') && !empty($request->condition)) {
+            $query->whereIn('car_details.condition', $request->condition);
+        }
+
+        if ($request->filled('registration') && !empty($request->registration)) {
+            $query->whereIn('car_details.registration', $request->registration);
+        }
+
+        if ($request->filled('fuel_type') && !empty($request->fuel_type)) {
+            $query->whereIn('car_details.fuel', $request->fuel_type);
+        }
+
+        if ($request->filled('transmission') && !empty($request->transmission)) {
+            $query->whereIn('car_details.transmission', $request->transmission);
+        }
+
+        // Apply context filters
+        if ($request->filled('category')) {
+            $query->where('adverts.category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('adverts.sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('adverts.brand', $request->brand);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('adverts.state', $request->location);
+        }
+
+        // Apply price filters
+        if ($request->filled('min')) {
+            $query->where('adverts.price', '>=', (int) $request->min);
+        }
+
+        if ($request->filled('max')) {
+            $query->where('adverts.price', '<=', (int) $request->max);
+        }
+
+        // Apply buy direct filter
+        if ($request->filled('buydirect')) {
+            $query->where('adverts.buy_direct', $request->buydirect);
+        }
+
+        // Apply verified seller filter
+        $sellers = $request->input('sellers', 'all');
+        if ($sellers !== 'all') {
+            $query->whereHas('owner', function ($q) use ($sellers) {
+                $q->where('verified', $sellers);
+            });
+        }
+
+        // Paginate results
+        $adverts = $query->orderBy('adverts.featured', 'DESC')
+                         ->orderBy('adverts.created_at', 'DESC')
+                         ->paginate(20);
+
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
+        return response()->json([
+            'html' => $html,
+            'hasMore' => $adverts->hasMorePages()
+        ]);
+    }
+
+    public function filterByPhoneDetails(Request $request)
+    {
+        $query = Advert::with('firstImage')
+            ->join('phone_details', 'adverts.id', '=', 'phone_details.advert_id')
+            ->where('adverts.ad_status', 'active')
+            ->where('adverts.sold', 'No')
+            ->select('adverts.*');
+
+        // Apply phone-specific filters
+        if ($request->filled('condition') && !empty($request->condition)) {
+            $query->whereIn('phone_details.condition', $request->condition);
+        }
+
+        if ($request->filled('device_type') && !empty($request->device_type)) {
+            $query->whereIn('phone_details.device', $request->device_type);
+        }
+
+        // Apply context filters
+        if ($request->filled('category')) {
+            $query->where('adverts.category', $request->category);
+        }
+
+        if ($request->filled('sub_category')) {
+            $query->where('adverts.sub_category', $request->sub_category);
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('adverts.brand', $request->brand);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('adverts.state', $request->location);
+        }
+
+        // Apply price filters
+        if ($request->filled('min')) {
+            $query->where('adverts.price', '>=', (int) $request->min);
+        }
+
+        if ($request->filled('max')) {
+            $query->where('adverts.price', '<=', (int) $request->max);
+        }
+
+        // Apply buy direct filter
+        if ($request->filled('buydirect')) {
+            $query->where('adverts.buy_direct', $request->buydirect);
+        }
+
+        // Apply verified seller filter
+        $sellers = $request->input('sellers', 'all');
+        if ($sellers !== 'all') {
+            $query->whereHas('owner', function ($q) use ($sellers) {
+                $q->where('verified', $sellers);
+            });
+        }
+
+        // Paginate results
+        $adverts = $query->orderBy('adverts.featured', 'DESC')
+                         ->orderBy('adverts.created_at', 'DESC')
+                         ->paginate(20);
+
+        // Render based on device type
+        $agent = new Agent();
+        $html = '';
+
+        if ($agent->isMobile()) {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card-mobile', compact('row'))->render();
+            }
+        } else {
+            foreach ($adverts as $row) {
+                $html .= view('frontend.components.advert.advert-card', compact('row'))->render();
+            }
+        }
+
+        return response()->json([
+            'html' => $html,
+            'hasMore' => $adverts->hasMorePages()
         ]);
     }
 }

@@ -150,7 +150,7 @@
         <!-- Logic Note: ID "divCar" is required for JS to toggle visibility -->
         <div id="divCar" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
+                <h2 class="text-base lg:text-lg font-semibold text-gray-800">Vehicle Specifications</h2>
             </div>
             <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

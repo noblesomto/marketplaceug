@@ -56,6 +56,8 @@
         </div>
         @endif
 
+
+
         <!-- Verified Sellers Button/Dropdown -->
         <div class="relative">
             <button
@@ -69,9 +71,42 @@
             </button>
         </div>
 
+        @if($subcat->cat_id == 1)
+        <!-- Car Filters Button -->
+        <div class="relative">
+            <button
+                id="carFiltersButton"
+                class="flex items-center justify-between px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-emerald-600 rounded-md shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+                Vehicle Filters
+            </button>
+        </div>
+        @elseif($subcat->cat_id == 4)
+        <!-- Phone Filters Button -->
+        <div class="relative">
+            <button
+                id="phoneFiltersButton"
+                class="flex items-center justify-between px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-emerald-600 rounded-md shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+                Phone Filters
+            </button>
+        </div>
+        @endif
 
     </div>
 </div>
+
+@if($subcat->cat_id == 1)
+    @include('frontend.components.mobile.modal-car-filters')
+@elseif($subcat->cat_id == 4)
+    @include('frontend.components.mobile.modal-phone-filters')
+@endif
 
 <!-- Region Modal -->
 <div id="regionModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
@@ -99,7 +134,6 @@
 
 <!-- Price Modal -->
 <div id="verifyPriceModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <!-- Similar structure to region modal -->
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -124,7 +158,6 @@
 
 <!-- Verified Sellers Modal -->
 <div id="verifiedModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <!-- Similar structure to region modal -->
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -170,6 +203,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
     // Get all buttons and modals

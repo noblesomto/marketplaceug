@@ -1,4 +1,10 @@
-@include('frontend.layouts.header-brand')
+{{-- Dynamic header based on context --}}
+@if(isset($location))
+    @include('frontend.layouts.header')
+@else
+    @include('frontend.layouts.header-brand')
+@endif
+
 @include('frontend.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
 @include('frontend.layouts.search')
@@ -45,7 +51,8 @@
                 </div>
             </div>
 
-            <!-- Buy Directly Card -->
+            @if(!isset($location))
+            <!-- Buy Directly Card (Only show when NOT location-based) -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                 <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Ordering</h4>
                 <div class="custom-filter-content">
@@ -53,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Verified Sellers Card -->
+            <!-- Verified Sellers Card (Only show when NOT location-based) -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                 <h4 class="font-bold text-gray-900 text-sm mb-3 flex items-center gap-2 uppercase tracking-wider text-[11px]">
                     Trust & Safety
@@ -65,6 +72,45 @@
                     @include('frontend.components.advert.sellers-brand')
                 </div>
             </div>
+            @endif
+
+            @if(isset($subcat) && $subcat->cat_id == 1)
+            <!-- Vehicle Condition -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Vehicle Condition</h4>
+                @include('frontend.components.filter.condition-car')
+            </div>
+
+            <!-- Registration -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Registration</h4>
+                @include('frontend.components.filter.registration')
+            </div>
+
+            <!-- Fuel Type -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Fuel Type</h4>
+                @include('frontend.components.filter.fuel-type')
+            </div>
+
+            <!-- Transmission -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Transmission</h4>
+                @include('frontend.components.filter.transmission')
+            </div>
+            @elseif(isset($subcat) && $subcat->cat_id == 4)
+            <!-- Phone Condition -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Condition</h4>
+                @include('frontend.components.filter.condition-phone')
+            </div>
+
+            <!-- Device Type -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Device Type</h4>
+                @include('frontend.components.filter.device-type')
+            </div>
+            @endif
         </div>
            <div class="col-span-12 lg:col-span-9">
               <div class=" my-5 hidden lg:block">
@@ -116,7 +162,7 @@
       </div>
   </div>
 </section>
-<div class="pb-5"></div>
+<div class="pb-20"></div>
 
 
 @include('frontend.components.advert.modal-brand-locations')
@@ -138,6 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
         @endif
         @if(isset($brand))
         brand: {{ $brand->id }},
+        @endif
+        @if(isset($location))
+        location: '{{ $location }}',
         @endif
     };
 
@@ -186,6 +235,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Filter Manager Context -->
+<script>
+    // Set context variables for filter manager
+    const currentCategory = {{ $brand->category_id }};
+    const currentSubCategory = {{ $brand->sub_cat_id ?? 'null' }};
+    const currentBrand = {{ $brand->id }};
+    const currentLocation = {{ isset($location) ? "'".$location."'" : 'null' }};
+</script>
+<script src="{{ asset('js/filter-manager.js') }}"></script>
+
 @include('frontend.layouts.footer')
-
-
