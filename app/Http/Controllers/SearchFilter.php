@@ -12,9 +12,11 @@ use App\Models\Brands;
 use App\Models\User;
 use App\Models\State;
 use Jenssegers\Agent\Agent;
+use App\Traits\HasUserSession;
 
 class SearchFilter extends Controller
 {
+    use HasUserSession;
     public function search(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');

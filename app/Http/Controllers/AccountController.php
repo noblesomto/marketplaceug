@@ -26,10 +26,12 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\HasUserSession;
 
 
 class AccountController extends Controller
 {
+    use HasUserSession;
     public function login(Request $request)
     {
         if ($request->isMethod('GET')) {
