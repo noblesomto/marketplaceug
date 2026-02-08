@@ -18,10 +18,12 @@ use App\Rules\NigerianPhoneNumber;
 use App\Services\ImageProcessingService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Traits\HasUserSession;
 
 
 class UserProfile extends Controller
 {
+    use HasUserSession;
     public function profile(Request $request)
     {
         $title = "My Profile | " . config('global.site_name');

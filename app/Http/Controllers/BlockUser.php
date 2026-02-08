@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\BlockedUser;
+use App\Traits\HasUserSession;
 
 class BlockUser extends Controller
 {
+    use HasUserSession;
     // BlockController.php
     public function block(Request $request)
     {

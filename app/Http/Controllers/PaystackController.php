@@ -16,9 +16,11 @@ use App\Mail\SellerMail;
 use App\Models\State;
 use App\Models\GigLogistic;
 use App\Models\Shipping;
+use App\Traits\HasUserSession;
 
 class PaystackController extends Controller
 {
+    use HasUserSession;
     public function initialize(Request $request)
     {
 

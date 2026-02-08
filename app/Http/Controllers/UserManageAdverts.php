@@ -30,9 +30,11 @@ use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
 use App\Services\AdvertValidationService;
 use App\Traits\ManagesImages;
+use App\Traits\HasUserSession;
 
 class UserManageAdverts extends Controller
 {
+    use HasUserSession;
     use ManagesImages;
 
       public function fetch_subcat($cat_id)
