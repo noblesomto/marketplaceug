@@ -286,6 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentBrand = null;
     const currentLocation = {{ isset($location) ? "'".$location."'" : 'null' }};
 </script>
-<script src="{{ asset('js/filter-manager.js') }}"></script>
+<script src="{{ asset('frontend/js/filter-manager.js') }}"></script>
 
 @include('frontend.layouts.footer')

@@ -94,7 +94,7 @@ class UserProfile extends Controller
             return view('dashboard.settings.profile-address', compact('title','user','count_ads'));
         }
 
-        if ($request->isMethod('PUT')) {
+        if ($request->isMethod('POST')) {
             $request->validate([
                 'name'          => 'required',
                 'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
@@ -258,7 +258,7 @@ class UserProfile extends Controller
             return view('dashboard.settings.payment-info', compact('title','user','count_ads','banks'));
         }
 
-         if ($request->isMethod('PUT')) {
+         if ($request->isMethod('POST')) {
 
             //dd($request);
             $request->validate([

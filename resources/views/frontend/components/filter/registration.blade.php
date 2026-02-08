@@ -3,12 +3,15 @@
         $registrations = ['Registered', 'Unregistered'];
         $contextFilters = [];
 
-        if(isset($brand) && isset($brand->id) && !isset($brands)) {
-            $contextFilters['brand'] = $brand->id;
-        } elseif(isset($subcat) && isset($subcat->id)) {
-            $contextFilters['sub_category'] = $subcat->id;
-        } elseif(isset($cat) && isset($cat->id)) {
-            $contextFilters['category'] = $cat->id;
+        // Use filterType variable set by controller for accurate context detection
+        if(isset($filterType)) {
+            if($filterType === 'brand' && isset($filterId)) {
+                $contextFilters['brand'] = $filterId;
+            } elseif($filterType === 'sub_category' && isset($filterId)) {
+                $contextFilters['sub_category'] = $filterId;
+            } elseif($filterType === 'category' && isset($filterId)) {
+                $contextFilters['category'] = $filterId;
+            }
         }
     @endphp
 
