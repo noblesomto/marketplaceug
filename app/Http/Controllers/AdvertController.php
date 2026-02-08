@@ -27,10 +27,12 @@ use App\Services\FeaturedAdPaginator;
 use App\Mail\ReportMail;
 use Mail;
 use Jenssegers\Agent\Agent;
+use App\Traits\HasUserSession;
 
 
 class AdvertController extends Controller
 {
+    use HasUserSession;
     public function index(Request $request)
     {
         $title = config('global.site_name') . " | " . config('global.site_title');
