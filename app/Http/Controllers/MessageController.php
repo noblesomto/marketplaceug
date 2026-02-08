@@ -15,10 +15,12 @@ use App\Events\NewMessageNotification;
 use App\Helpers\FileUploadHelper;
 use App\Models\ArchivedMessage;
 use App\Jobs\SendPushNotification;
+use App\Traits\HasUserSession;
 
 
 class MessageController extends Controller
 {
+    use HasUserSession;
 
 
     public function fetchMessages(Request $request, $id, $owner)

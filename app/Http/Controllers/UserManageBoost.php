@@ -11,9 +11,11 @@ use App\Models\User;
 use App\Models\BoostType;
 use App\Models\BoostDuration;
 use Carbon\Carbon;
+use App\Traits\HasUserSession;
 
 class UserManageBoost extends Controller
 {
+    use HasUserSession;
     public function boost_ad(Request $request, $id)
     {
         $title = "Boost Ad | " . config('global.site_name');
