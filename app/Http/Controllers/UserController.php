@@ -22,14 +22,16 @@ use Carbon\Carbon;
 use App\Rules\ReCaptcha;
 use Mail;
 use App\Mail\ReportMail;
+use App\Traits\HasUserSession;
 
 class UserController extends Controller
 {
+    use HasUserSession;
         public function index(Request $request)
-    {   
+    {
         $title = "User Dashboard - " . config('global.site_name');
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('users.user_id', $user_id)->first();
+        $user = $this->getUserFromSession();
+        $user_id = $user->user_id;
         $count_ads = Advert::where('user_id', $user_id)->count();
         $ads = Advert::with('firstImage')
                     ->orderBy('created_at', 'desc')
@@ -44,8 +46,8 @@ class UserController extends Controller
     public function my_ads(Request $request)
     {
         $title = "My Ads | " . config('global.site_name');
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('users.user_id', $user_id)->first();
+        $user = $this->getUserFromSession();
+        $user_id = $user->user_id;
         $ads = Advert::with('firstImage')
                     ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
