@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Brands;
 use App\Models\State;
 use Jenssegers\Agent\Agent;
+use App\Services\FilterService;
 
 /**
  * @group Search
@@ -605,6 +606,166 @@ class SearchController extends Controller
         return response()->json([
             'success' => true,
             'data' => $suggestions
+        ]);
+    }
+
+    /**
+     * Filter adverts by car details
+     *
+     * @OA\Post(
+     *     path="/api/search/filter-by-car",
+     *     summary="Filter adverts by car-specific details",
+     *     tags={"Search"},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="condition", type="string", description="Car condition", example="Nigerian Used"),
+     *             @OA\Property(property="fuel_type", type="string", description="Fuel type", example="Petrol"),
+     *             @OA\Property(property="transmission", type="string", description="Transmission type", example="Automatic"),
+     *             @OA\Property(property="registration", type="string", description="Registration status", example="Registered"),
+     *             @OA\Property(property="category", type="integer", description="Category ID"),
+     *             @OA\Property(property="sub_category", type="integer", description="Sub-category ID"),
+     *             @OA\Property(property="brand", type="integer", description="Brand ID"),
+     *             @OA\Property(property="location", type="string", description="State/Location"),
+     *             @OA\Property(property="min", type="integer", description="Minimum price"),
+     *             @OA\Property(property="max", type="integer", description="Maximum price"),
+     *             @OA\Property(property="per_page", type="integer", description="Items per page", example=20)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Filtered car adverts",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="pagination", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function filterByCarDetails(Request $request)
+    {
+        $filterService = new FilterService();
+
+        $query = Advert::with(['firstImage', 'user', 'carDetail'])
+            ->where('ad_status', 'active')
+            ->where('sold', 'No');
+
+        // Apply standard filters (category, location, price)
+        $filterService->applyContextFilters($query, $request);
+        $filterService->applyPriceFilters($query, $request);
+
+        // Apply car-specific filters
+        if ($request->hasAny(['condition', 'fuel_type', 'transmission', 'registration'])) {
+            $filterService->applyCarFilters($query, $request);
+        }
+
+        $perPage = $request->input('per_page', 20);
+        $adverts = $query->orderWithFeatured()
+            ->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $adverts->items(),
+            'pagination' => [
+                'total' => $adverts->total(),
+                'per_page' => $adverts->perPage(),
+                'current_page' => $adverts->currentPage(),
+                'last_page' => $adverts->lastPage(),
+                'from' => $adverts->firstItem(),
+                'to' => $adverts->lastItem(),
+                'has_more' => $adverts->hasMorePages()
+            ],
+            'filters_applied' => [
+                'condition' => $request->input('condition'),
+                'fuel_type' => $request->input('fuel_type'),
+                'transmission' => $request->input('transmission'),
+                'registration' => $request->input('registration'),
+                'category' => $request->input('category'),
+                'location' => $request->input('location'),
+                'price_range' => [
+                    'min' => $request->input('min'),
+                    'max' => $request->input('max')
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Filter adverts by phone details
+     *
+     * @OA\Post(
+     *     path="/api/search/filter-by-phone",
+     *     summary="Filter adverts by phone-specific details",
+     *     tags={"Search"},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="condition", type="string", description="Phone condition", example="Brand New"),
+     *             @OA\Property(property="device_type", type="string", description="Device type", example="Smartphone"),
+     *             @OA\Property(property="category", type="integer", description="Category ID"),
+     *             @OA\Property(property="sub_category", type="integer", description="Sub-category ID"),
+     *             @OA\Property(property="brand", type="integer", description="Brand ID"),
+     *             @OA\Property(property="location", type="string", description="State/Location"),
+     *             @OA\Property(property="min", type="integer", description="Minimum price"),
+     *             @OA\Property(property="max", type="integer", description="Maximum price"),
+     *             @OA\Property(property="per_page", type="integer", description="Items per page", example=20)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Filtered phone adverts",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="pagination", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function filterByPhoneDetails(Request $request)
+    {
+        $filterService = new FilterService();
+
+        $query = Advert::with(['firstImage', 'user', 'phoneDetail'])
+            ->where('ad_status', 'active')
+            ->where('sold', 'No');
+
+        // Apply standard filters (category, location, price)
+        $filterService->applyContextFilters($query, $request);
+        $filterService->applyPriceFilters($query, $request);
+
+        // Apply phone-specific filters
+        if ($request->hasAny(['condition', 'device_type'])) {
+            $filterService->applyPhoneFilters($query, $request);
+        }
+
+        $perPage = $request->input('per_page', 20);
+        $adverts = $query->orderWithFeatured()
+            ->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $adverts->items(),
+            'pagination' => [
+                'total' => $adverts->total(),
+                'per_page' => $adverts->perPage(),
+                'current_page' => $adverts->currentPage(),
+                'last_page' => $adverts->lastPage(),
+                'from' => $adverts->firstItem(),
+                'to' => $adverts->lastItem(),
+                'has_more' => $adverts->hasMorePages()
+            ],
+            'filters_applied' => [
+                'condition' => $request->input('condition'),
+                'device_type' => $request->input('device_type'),
+                'category' => $request->input('category'),
+                'location' => $request->input('location'),
+                'price_range' => [
+                    'min' => $request->input('min'),
+                    'max' => $request->input('max')
+                ]
+            ]
         ]);
     }
 }

@@ -110,6 +110,8 @@ Route::post('/search', [SearchController::class, 'search']);
 Route::post('/search/filter', [SearchController::class, 'filter']);
 Route::post('/search/filter-by-seller', [SearchController::class, 'filterBySeller']);
 Route::post('/search/filter-by-buydirect', [SearchController::class, 'filterByBuydirect']);
+Route::post('/search/filter-by-car', [SearchController::class, 'filterByCarDetails']);
+Route::post('/search/filter-by-phone', [SearchController::class, 'filterByPhoneDetails']);
 Route::get('/search/location/{location}/{slug}', [SearchController::class, 'locationSearch']);
 Route::get('/search/filters', [SearchController::class, 'getFilters']);
 Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
