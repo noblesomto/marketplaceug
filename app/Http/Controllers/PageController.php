@@ -221,20 +221,30 @@ class PageController extends Controller
                 'username' => 'required',
                 'password' => 'required|min:4',
             ]);
-            
+
             $username = $request->username;
             $password = $request->password;
 
-            $login = Admin::where('username', $username)
-               ->where('password', md5($password))
-               ->first();
-            if ($login) {
-                $admin_id = $login->admin_id;
-                $request->session()->put('admin_id', $admin_id);
+            $admin = Admin::where('username', $username)->first();
 
-               return redirect()->action([AdminController::class, 'index']);
+            if ($admin) {
+                // Check if password is bcrypt hashed (recommended)
+                if (Hash::check($password, $admin->password)) {
+                    $request->session()->put('admin_id', $admin->admin_id);
+                    return redirect()->action([AdminController::class, 'index']);
+                }
+
+                // Legacy MD5 check - migrate to bcrypt on successful login
+                if ($admin->password === md5($password)) {
+                    // Migrate to bcrypt
+                    $admin->password = Hash::make($password);
+                    $admin->save();
+
+                    $request->session()->put('admin_id', $admin->admin_id);
+                    return redirect()->action([AdminController::class, 'index']);
+                }
             }
-      
+
             return redirect("admin/login")->with('status',['text'=>'Sorry! you enter wrong credentials ','type'=>'danger']);
         }
 
