@@ -233,7 +233,7 @@
 
                     <!-- Vehicle Type -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type *</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Body Type <span class="text-red-500">*</span></label>
                         <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             @foreach(['Small Car','Station Wagon','Limousine','Convertible','SUV/Off Road Vehicle','Van/Bus','Coupe','Truck','Others'] as $vType)

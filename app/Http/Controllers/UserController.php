@@ -637,12 +637,19 @@ class UserController extends Controller
     }
 
     if ($request->isMethod('POST')) {
-        $request->validate([
+        // Build validation rules
+        $rules = [
             'name' => 'required',
             'subject' => 'required',
             'message' => 'required',
-            'g-recaptcha-response' => ['required', new ReCaptcha],
-        ]);
+        ];
+
+        // Add reCAPTCHA validation only if enabled
+        if (config('services.recaptcha.enabled', false)) {
+            $rules['g-recaptcha-response'] = ['required', new ReCaptcha];
+        }
+
+        $request->validate($rules);
 
         $message = ReportUser::updateOrCreate(
             [

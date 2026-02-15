@@ -124,12 +124,12 @@ class AdvertValidationService
         // Car-specific fields (if divCar is visible)
         if ($isVisible('divCar') && in_array($subcategoryId, [2, 21, 23])) {
             $rules['registration'] = 'required';
-            $rules['mileage'] = 'required|numeric';
+            //$rules['mileage'] = 'required|numeric';
             $rules['condition'] = 'required';
             $rules['fuel'] = 'required';
             $rules['transmission'] = 'required';
             $rules['vehicle_type'] = 'required';
-            $rules['doors'] = 'required';
+            //$rules['doors'] = 'required';
 
             // Model is required if specified in subcategory config OR if divModel is visible
             if ($isRequired('model') || $isVisible('divModel')) {

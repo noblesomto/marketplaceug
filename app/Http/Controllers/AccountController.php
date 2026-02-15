@@ -614,7 +614,8 @@ class AccountController extends Controller
 
         if ($request->isMethod('POST')) {
             try {
-                $validatedData = $request->validate([
+                // Build validation rules
+                $rules = [
                     'acc_type' => 'required',
                     'name' => ['required', 'string', 'max:100', new AllowedName],
                     'phone' => [
@@ -623,35 +624,44 @@ class AccountController extends Controller
                     ],
                     'email' => 'required|email|unique:users,email',
                     'password' => 'required|min:6',
-                    'g-recaptcha-response' => 'required',
-                ], [
-                    'g-recaptcha-response.required' => 'Security verification is required.',
-                ]);
+                ];
 
-                // Verify reCAPTCHA v3
-                $recaptchaResponse = $request->input('g-recaptcha-response');
-                $recaptchaSecret = config('services.recaptcha.secret_key');
+                $messages = [];
 
-                $verifyResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                    'secret' => $recaptchaSecret,
-                    'response' => $recaptchaResponse,
-                    'remoteip' => $request->ip()
-                ]);
+                // Add reCAPTCHA validation only if enabled
+                if (config('services.recaptcha.enabled', false)) {
+                    $rules['g-recaptcha-response'] = 'required';
+                    $messages['g-recaptcha-response.required'] = 'Security verification is required.';
+                }
 
-                $recaptchaData = $verifyResponse->json();
+                $validatedData = $request->validate($rules, $messages);
 
-                // Check if verification was successful and score is acceptable
-                if (!$recaptchaData['success'] || $recaptchaData['score'] < 0.5) {
-                    Log::warning('reCAPTCHA verification failed', [
-                        'email' => $validatedData['email'],
-                        'score' => $recaptchaData['score'] ?? 'N/A',
-                        'ip' => $request->ip(),
-                        'error_codes' => $recaptchaData['error-codes'] ?? []
+                // Verify reCAPTCHA v3 only if enabled
+                if (config('services.recaptcha.enabled', false)) {
+                    $recaptchaResponse = $request->input('g-recaptcha-response');
+                    $recaptchaSecret = config('services.recaptcha.secret_key');
+
+                    $verifyResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                        'secret' => $recaptchaSecret,
+                        'response' => $recaptchaResponse,
+                        'remoteip' => $request->ip()
                     ]);
 
-                    return redirect()->back()
-                        ->withInput($request->except('password'))
-                        ->withErrors(['g-recaptcha-response' => 'Security verification failed. Please try again.']);
+                    $recaptchaData = $verifyResponse->json();
+
+                    // Check if verification was successful and score is acceptable
+                    if (!$recaptchaData['success'] || $recaptchaData['score'] < 0.5) {
+                        Log::warning('reCAPTCHA verification failed', [
+                            'email' => $validatedData['email'],
+                            'score' => $recaptchaData['score'] ?? 'N/A',
+                            'ip' => $request->ip(),
+                            'error_codes' => $recaptchaData['error-codes'] ?? []
+                        ]);
+
+                        return redirect()->back()
+                            ->withInput($request->except('password'))
+                            ->withErrors(['g-recaptcha-response' => 'Security verification failed. Please try again.']);
+                    }
                 }
 
             } catch (ValidationException $e) {
