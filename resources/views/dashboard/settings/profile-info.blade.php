@@ -51,9 +51,8 @@
                 </svg>
             </button>
             <div class="accordion-content px-4 py-6 bg-white border-t">
-                <form method="POST" action="/user/profile-phone" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('user.profile.phone') }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
                     <div class="space-y-4">
                         <div class="">
                             <label class="text-sm">Phone Number</label>
@@ -84,9 +83,8 @@
                 </svg>
             </button>
             <div class="accordion-content hidden px-4 py-2 bg-white border-t">
-                <form method="POST" action="/user/change-password" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('user.change.password') }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
                     <div class="space-y-4">
                         <div class="">
                             <label class="text-sm">Current Password</label>
@@ -110,7 +108,7 @@
                             @if ($errors->has('password_confirmation'))
                                 <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
                             @endif
-                            <input type="password"  name="password_confirmation" placeholder="Confirm Password"  class="w-full px-3 py-2 border-b-2 border-2-gray-300" readonly>
+                            <input type="password"  name="password_confirmation" placeholder="Confirm Password"  class="w-full px-3 py-2 border-b-2 border-2-gray-300" required>
                         </div>
 
                         <div class="">

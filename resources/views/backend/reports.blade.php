@@ -145,7 +145,25 @@
 function confirmDelete(id) {
     if(confirm('Are you sure you want to delete this complaint?')) {
         if(id && id !== '#') {
-            window.location.href = '/admin/delete-complaint/' + id;
+            // Create form for DELETE request with CSRF token
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/delete-complaint/' + id;
+
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'DELETE';
+            form.appendChild(methodField);
+
+            document.body.appendChild(form);
+            form.submit();
         }
     }
     return false;

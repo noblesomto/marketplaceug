@@ -22,6 +22,7 @@ class MigrateToSpatiePermissionSeeder extends Seeder
         $this->createAdvertManagerRole();
         $this->createCustomerCareRole();
         $this->createResolutionRole();
+        $this->createSEOManagerRole();
 
         $this->command->info("Assigning roles to existing admins...");
         $this->assignRolesToAdmins();
@@ -63,22 +64,25 @@ class MigrateToSpatiePermissionSeeder extends Seeder
             'view_reports',
             'manage_report_status',
 
-            // Settings
+            // Settings & SEO
             'manage_shipping',
             'manage_settings',
+            'manage_seo',
+            'view_analytics',
 
+            // Payments & Blog
             'view_payments',
-        'manage_payments',
-        'view_settlements',
-        'manage_settlements',
-        'view_blog',
-        'create_blog',
-        'edit_blog',
-        'delete_blog',
+            'manage_payments',
+            'view_settlements',
+            'manage_settlements',
+            'view_blog',
+            'create_blog',
+            'edit_blog',
+            'delete_blog',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create([
+            Permission::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => 'admin'
             ]);
@@ -89,23 +93,23 @@ class MigrateToSpatiePermissionSeeder extends Seeder
 
     private function createSuperAdminRole()
     {
-        $superAdmin = SpatieRole::create([
+        $superAdmin = SpatieRole::firstOrCreate([
             'name' => 'super_admin',
             'guard_name' => 'admin'
         ]);
-        $superAdmin->givePermissionTo(Permission::all());
+        $superAdmin->syncPermissions(Permission::all());
 
         $this->command->info("✅ Super Admin role created with all permissions");
     }
 
     private function createAdvertManagerRole()
     {
-        $advertManager = SpatieRole::create([
+        $advertManager = SpatieRole::firstOrCreate([
             'name' => 'Advert_manager',
             'guard_name' => 'admin'
         ]);
 
-        $advertManager->givePermissionTo([
+        $advertManager->syncPermissions([
             'create_advert',
             'update_advert',
             'delete_advert',
@@ -128,13 +132,13 @@ class MigrateToSpatiePermissionSeeder extends Seeder
 
     private function createCustomerCareRole()
     {
-        $customerCare = SpatieRole::create([
+        $customerCare = SpatieRole::firstOrCreate([
             'name' => 'Customer_care',
             'guard_name' => 'admin'
         ]);
 
         // Has all Advert Manager permissions PLUS user management
-        $customerCare->givePermissionTo([
+        $customerCare->syncPermissions([
             // Advert Management
             'create_advert',
             'update_advert',
@@ -164,17 +168,33 @@ class MigrateToSpatiePermissionSeeder extends Seeder
 
     private function createResolutionRole()
     {
-        $resolution = SpatieRole::create([
+        $resolution = SpatieRole::firstOrCreate([
             'name' => 'Resolution',
             'guard_name' => 'admin'
         ]);
 
-        $resolution->givePermissionTo([
+        $resolution->syncPermissions([
             'view_reports',
             'manage_report_status',
         ]);
 
         $this->command->info("✅ Resolution role created");
+    }
+
+    private function createSEOManagerRole()
+    {
+        $seoManager = SpatieRole::firstOrCreate([
+            'name' => 'SEO_Manager',
+            'guard_name' => 'admin'
+        ]);
+
+        $seoManager->syncPermissions([
+            'manage_seo',
+            'view_analytics',
+            'manage_settings',
+        ]);
+
+        $this->command->info("✅ SEO Manager role created");
     }
 
     private function assignRolesToAdmins()
@@ -191,7 +211,7 @@ class MigrateToSpatiePermissionSeeder extends Seeder
         foreach ($admins as $admin) {
             // Admin ID 1 is always super admin
             if ($admin->id === 1) {
-                $admin->assignRole('super_admin');
+                $admin->syncRoles(['super_admin']);
                 $this->command->info("✅ Assigned super_admin to {$admin->username} (ID: {$admin->id})");
                 continue;
             }
@@ -199,7 +219,7 @@ class MigrateToSpatiePermissionSeeder extends Seeder
             // If your admins table has a 'role' or 'role_name' column
             if (isset($admin->role) && !empty($admin->role)) {
                 try {
-                    $admin->assignRole($admin->role);
+                    $admin->syncRoles([$admin->role]);
                     $this->command->info("✅ Assigned {$admin->role} to {$admin->username}");
                 } catch (\Exception $e) {
                     $this->command->warn("⚠️  Could not assign role '{$admin->role}' to {$admin->username}");
@@ -209,25 +229,15 @@ class MigrateToSpatiePermissionSeeder extends Seeder
 
             // Default: prompt for manual assignment
             $this->command->warn("⚠️  Admin {$admin->username} (ID: {$admin->id}, Email: {$admin->email}) needs role assignment");
-            $this->command->line("   Available roles: super_admin, Advert_manager, Customer_care, Resolution");
+            $this->command->line("   Available roles: super_admin, Advert_manager, Customer_care, Resolution, SEO_Manager");
         }
-
-        // MANUAL ASSIGNMENT SECTION
-        // Uncomment and fill in based on your actual admin users:
-
-        /*
-        $this->assignRoleByEmail('youremail@example.com', 'super_admin');
-        $this->assignRoleByEmail('manager@example.com', 'Advert_manager');
-        $this->assignRoleByEmail('support@example.com', 'Customer_care');
-        $this->assignRoleByEmail('resolution@example.com', 'Resolution');
-        */
     }
 
     private function assignRoleByEmail($email, $role)
     {
         $admin = Admin::where('email', $email)->first();
         if ($admin) {
-            $admin->assignRole($role);
+            $admin->syncRoles([$role]);
             $this->command->info("✅ Assigned {$role} to {$admin->username} ({$email})");
         } else {
             $this->command->warn("⚠️  Admin with email {$email} not found");

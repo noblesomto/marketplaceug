@@ -717,7 +717,25 @@ function confirmDelete(userId, userName) {
     confirmButton.textContent = 'Delete Account';
 
     confirmButton.onclick = function() {
-        window.location.href = `/admin/delete-user/${userId}`;
+        // Create form for DELETE request with CSRF token
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/delete-user/${userId}`;
+
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
+
+        const methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        form.appendChild(methodField);
+
+        document.body.appendChild(form);
+        form.submit();
     };
 
     modal.show();

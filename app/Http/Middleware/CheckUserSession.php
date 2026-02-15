@@ -56,7 +56,7 @@ class CheckUserSession
                     60 * 24 * 30, // 30 days
                     '/',
                     null,
-                    true,  // secure - set to true if using HTTPS
+                    $request->secure(),  // ✅ FIXED: Dynamic based on HTTPS
                     true,  // httpOnly
                     false, // raw
                     'Lax' // sameSite

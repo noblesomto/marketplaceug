@@ -124,13 +124,17 @@
                                                                 title="Edit Advertisement">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <a href="/admin/delete-advert/{{ $row->advert_id }}"
-                                                           class="btn btn-outline-danger btn-sm"
-                                                           onclick="return confirm('Are you sure you want to delete this advertisement? This action cannot be undone.');"
-                                                           data-bs-toggle="tooltip"
-                                                           title="Delete Advertisement">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
+                                                        <form action="{{ route('admin.delete.advert', $row->advert_id) }}" method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                    class="btn btn-outline-danger btn-sm"
+                                                                    onclick="return confirm('Are you sure you want to delete this advertisement? This action cannot be undone.');"
+                                                                    data-bs-toggle="tooltip"
+                                                                    title="Delete Advertisement">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

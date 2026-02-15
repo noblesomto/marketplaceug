@@ -41,8 +41,13 @@
                 </div>
 
                 <div class="mt-6 flex justify-center text-base text-gray-600">
-                    OTP not received? 
-                    <a href="/resend-otp" class="ml-2 font-semibold text-blue-600 hover:text-blue-800 underline">Resend OTP</a>
+                    OTP not received?
+                    <form method="POST" action="{{ route('resend.otp') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="ml-2 font-semibold text-blue-600 hover:text-blue-800 underline bg-transparent border-0 cursor-pointer hover:underline">
+                            Resend OTP
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>

@@ -178,8 +178,18 @@ function confirmAction(action, adTitle, id) {
         : `Are you sure you want to resume boosting "${adTitle}"?`;
 
     if(confirm(message)) {
-        const url = `/boost/payment-status/${id}/activate`;
-        window.location.href = url;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/boost/payment-status/${id}/activate`;
+
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
+
+        document.body.appendChild(form);
+        form.submit();
     }
     return false;
 }

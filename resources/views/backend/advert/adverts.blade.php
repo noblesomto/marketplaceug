@@ -160,10 +160,15 @@
                           </a>
                         @endif
 
-                        <a href="/admin/delete-ad/{{ $row->id }}" class="btn btn-sm btn-outline-dark"
-                           onclick="return confirm('Delete this advert permanently?')" data-bs-toggle="tooltip" title="Delete">
-                          <i class="bi bi-trash"></i>
-                        </a>
+                        <form action="{{ route('admin.delete.ad', $row->id) }}" method="POST" style="display: inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-outline-dark"
+                                  onclick="return confirm('Delete this advert permanently?')"
+                                  data-bs-toggle="tooltip" title="Delete">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>

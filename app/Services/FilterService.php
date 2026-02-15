@@ -50,20 +50,16 @@ class FilterService
      */
     public function applyPriceFilters(Builder $query, Request $request): Builder
     {
-        $min = $request->input('min');
-        $max = $request->input('max');
-        $range = $request->input('range');
-
-        if ($min !== null) {
-            $query->where('price', '>=', (int) $min);
+        if ($request->filled('min')) {
+            $query->where('price', '>=', (int) $request->input('min'));
         }
 
-        if ($max !== null) {
-            $query->where('price', '<=', (int) $max);
+        if ($request->filled('max')) {
+            $query->where('price', '<=', (int) $request->input('max'));
         }
 
-        if ($range) {
-            $this->applyPriceRange($query, $range);
+        if ($request->filled('range')) {
+            $this->applyPriceRange($query, $request->input('range'));
         }
 
         return $query;

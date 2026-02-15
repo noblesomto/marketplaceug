@@ -43,12 +43,16 @@
                                       title="Edit Category">
                                   <i class="fa fa-edit"></i>
                               </button>
-                              <a href="/admin/delete-category/{{ $row->id }}"
-                                 onclick="return confirm('Are you sure you want to delete this Category with the Subcategory and Brands?');"
-                                 class="btn btn-sm btn-danger"
-                                 title="Delete Category">
-                                  <i class="fa fa-trash"></i>
-                              </a>
+                              <form action="{{ route('admin.delete.category', $row->id) }}" method="POST" style="display: inline;">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit"
+                                          onclick="return confirm('Are you sure you want to delete this Category with the Subcategory and Brands?');"
+                                          class="btn btn-sm btn-danger"
+                                          title="Delete Category">
+                                      <i class="fa fa-trash"></i>
+                                  </button>
+                              </form>
                            </div>
                        </div>
                    </div>

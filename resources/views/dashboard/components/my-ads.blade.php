@@ -342,8 +342,25 @@
         cancelButtonText: 'Cancel'
       }).then((result) => {
         if (result.isConfirmed) {
-          // Redirect to delete URL
-          window.location.href = deleteUrl;
+          // Submit DELETE form with CSRF token
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = deleteUrl;
+
+          const csrfToken = document.createElement('input');
+          csrfToken.type = 'hidden';
+          csrfToken.name = '_token';
+          csrfToken.value = '{{ csrf_token() }}';
+          form.appendChild(csrfToken);
+
+          const methodField = document.createElement('input');
+          methodField.type = 'hidden';
+          methodField.name = '_method';
+          methodField.value = 'DELETE';
+          form.appendChild(methodField);
+
+          document.body.appendChild(form);
+          form.submit();
         }
       });
     }

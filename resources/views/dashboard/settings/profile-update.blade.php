@@ -12,9 +12,8 @@
        	<div class="">
 		            
 		        	<div class="max-w-2xl mx-auto bg-white p-3 md:p-10 mt-4 md:mt-10 mb-20 rounded-lg">
-				        <form method="POST" action="/user/profile" enctype="multipart/form-data">
+				        <form method="POST" action="{{ route('user.profile') }}" enctype="multipart/form-data">
 				            @csrf
-				            @method('PUT')
 				        <div class="mt-1 font-semibold text-xl">Personal Details:</div>
 
 				        <div class="mb-4 mt-4">
