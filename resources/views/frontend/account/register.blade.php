@@ -205,7 +205,9 @@
 </div>
 
 <div class="pb-10"></div>
+@if (config('services.recaptcha.enabled', false))
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+@endif
 <script>
     function showDiv(placeholderText) {
         document.getElementById('myDiv').classList.remove('hidden');
@@ -276,6 +278,7 @@
                 return;
             }
 
+            @if (config('services.recaptcha.enabled', false))
             // Check if reCAPTCHA is loaded
             if (typeof grecaptcha === 'undefined') {
                 alert('Security check is loading. Please wait a moment and try again.');
@@ -313,6 +316,10 @@
                         registerBtn.innerHTML = 'Register for Free';
                     });
             });
+            @else
+            // reCAPTCHA disabled, submit form directly
+            form.submit();
+            @endif
         });
     });
 </script>

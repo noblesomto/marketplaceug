@@ -53,13 +53,27 @@ class UserManageAdverts extends Controller
     {
         $title = "Post New Advert - " . config('global.site_name');
         $seller_id = $user_id = $request->session()->get('user_id');
+
+        // Check if user session exists
+        if (!$user_id) {
+            return redirect('/login')->with('error', 'Please login to post an ad.');
+        }
+
         $user = User::where('user_id', $user_id)->first();
+
+        // Check if user exists
+        if (!$user) {
+            $request->session()->forget('user_id');
+            return redirect('/login')->with('error', 'User not found. Please login again.');
+        }
+
         $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
         $followers = Followers::with(['user:user_id,id,email,name'])
             ->where('follow', $user_id)
             ->get();
+
         if ($user->disable_account=='yes') {
             $request->session()->forget('user_id');
             return redirect("login")->with('success', 'Logged Out successfully!');
@@ -72,6 +86,28 @@ class UserManageAdverts extends Controller
         //dd($followers);
 
         if ($request->isMethod('POST')) {
+            // ✅ EARLY VALIDATION: Validate critical required fields FIRST before processing
+            // This prevents 500 errors when fields are missing and provides proper validation messages
+            $request->validate([
+                'category' => 'required|integer|min:1',
+                'subcategory' => 'required|integer|min:1',
+                'description' => 'required|max:3500',
+                'ad_title' => 'required|max:75',
+                'brand' => 'required',
+                'state' => 'required',
+                'lga' => 'required',
+            ], [
+                'category.required' => 'Please select a category.',
+                'category.min' => 'Please select a valid category.',
+                'subcategory.required' => 'Please select a subcategory.',
+                'subcategory.min' => 'Please select a valid subcategory.',
+                'description.required' => 'Description is required.',
+                'ad_title.required' => 'Ad title is required.',
+                'brand.required' => 'Please select a brand/option.',
+                'state.required' => 'Please select a state.',
+                'lga.required' => 'Please select a location (LGA).',
+            ]);
+
             $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
             $category = (int) $request->input('category');
@@ -199,13 +235,15 @@ class UserManageAdverts extends Controller
             $user_id = $request->session()->get('user_id');
             $seller  = User::where('user_id', $user_id)->first();
 
-            // Dispatch job
-            PostAdvertJob::dispatch(
-                $advert,
-                $seller,
-                'New Ad',
-                $seller->name . ' has placed the ad "' . $advert->ad_title . '"',
-            );
+            // Dispatch job only if seller exists
+            if ($seller) {
+                PostAdvertJob::dispatch(
+                    $advert,
+                    $seller,
+                    'New Ad',
+                    $seller->name . ' has placed the ad "' . $advert->ad_title . '"',
+                );
+            }
 
 
             // Handle promotion
@@ -556,6 +594,11 @@ class UserManageAdverts extends Controller
 
     private function removeEmojis($text)
     {
+        // Return empty string if text is null or empty
+        if ($text === null || $text === '') {
+            return '';
+        }
+
         // Remove emojis using regex
         return preg_replace('/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1F900}-\x{1F9FF}\x{1FA00}-\x{1FA6F}\x{1FA70}-\x{1FAFF}\x{1F004}\x{1F0CF}\x{1F18E}\x{1F191}-\x{1F19A}\x{1F201}\x{1F21A}\x{1F22F}\x{1F232}-\x{1F236}\x{1F238}-\x{1F23A}\x{1F250}\x{1F251}]/u', '', $text);
     }

@@ -57,6 +57,7 @@ return [
         'redirect'      => env('FACEBOOK_REDIRECT_URL'),
     ],
     'recaptcha' => [
+        'enabled' => env('RECAPTCHA_ENABLED', false), // Set to false to disable temporarily
         'site_key' => env('GOOGLE_RECAPTCHA_KEY'),
         'secret_key' => env('GOOGLE_RECAPTCHA_SECRET'),
     ],

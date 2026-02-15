@@ -147,7 +147,19 @@ class MessageController extends Controller
     public function countUnreadMessages(Request $request)
     {
         $user_id = $request->session()->get('user_id');
+
+        // Return 0 if no user session
+        if (!$user_id) {
+            return response()->json(['unread_count' => 0]);
+        }
+
         $user = User::where('users.user_id', $user_id)->first();
+
+        // Return 0 if user not found
+        if (!$user) {
+            return response()->json(['unread_count' => 0]);
+        }
+
         $unreadCount = Message::where('receiver_id', $user->user_id)
             ->where('is_read', false)
             ->count();
