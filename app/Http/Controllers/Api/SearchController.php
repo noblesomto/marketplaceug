@@ -165,17 +165,15 @@ class SearchController extends Controller
         }
 
         // Price filters
-        $min = $request->input('min');
-        $max = $request->input('max');
+        if ($request->filled('min')) {
+            $query->where('price', '>=', (int) $request->input('min'));
+        }
+
+        if ($request->filled('max')) {
+            $query->where('price', '<=', (int) $request->input('max'));
+        }
+
         $range = $request->input('range');
-
-        if ($min !== null) {
-            $query->where('price', '>=', (int) $min);
-        }
-
-        if ($max !== null) {
-            $query->where('price', '<=', (int) $max);
-        }
 
         if ($range) {
             switch ($range) {

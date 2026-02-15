@@ -45,12 +45,16 @@
                                       title="Edit Brand">
                                   <i class="fa fa-edit"></i>
                               </button>
-                              <a href="/admin/delete-brand/{{ $row->id }}/{{ $cat->id }}"
-                                 onclick="return confirm('Are you sure you want to delete this Brand?');"
-                                 class="btn btn-sm btn-danger"
-                                 title="Delete Brand">
-                                  <i class="fa fa-trash"></i>
-                              </a>
+                              <form action="{{ route('admin.delete.brand', [$row->id, $cat->id]) }}" method="POST" style="display: inline;">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit"
+                                          onclick="return confirm('Are you sure you want to delete this Brand?');"
+                                          class="btn btn-sm btn-danger"
+                                          title="Delete Brand">
+                                      <i class="fa fa-trash"></i>
+                                  </button>
+                              </form>
                            </div>
                        </div>
                    </div>

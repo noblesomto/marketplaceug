@@ -119,10 +119,23 @@ class ShippingManager {
             this.shippingDiv.classList.toggle("hidden", !isShipping);
         }
 
+        // Auto-select first shipping option when shipping is enabled
+        if (isShipping) {
+            const shippingCheckboxes = document.querySelectorAll('input[name="shipping[]"]');
+            if (shippingCheckboxes.length > 0 && !this.hasAnyShippingSelected()) {
+                shippingCheckboxes[0].checked = true;
+            }
+        }
+
         // Clear error if switching to Pickup
         if (!isShipping && this.errorMsg) {
             this.errorMsg.classList.add("hidden");
         }
+    }
+
+    hasAnyShippingSelected() {
+        const selectedMethods = document.querySelectorAll('input[name="shipping[]"]:checked');
+        return selectedMethods.length > 0;
     }
 
     getShipmentValue() {

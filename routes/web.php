@@ -65,11 +65,20 @@ Route::get('auth/{provider}/callback', [AccountController::class, 'handleProvide
 
 
 //Account Section
-Route::match(['GET', 'POST'], '/login', [AccountController::class, 'login'])->name('login');
+// ✅ SECURITY: Rate limit login attempts (5 per minute to prevent brute force)
+Route::match(['GET', 'POST'], '/login', [AccountController::class, 'login'])
+    ->name('login')
+    ->middleware('throttle:5,1');
+
 Route::match(['GET', 'POST'], '/register', [AccountController::class, 'register'])->name('register');
 Route::get('/verifyaccount/{id}/{token}', [AccountController::class, 'verifyaccount'])->name('verify.account');
-Route::post('/resend-email', [AccountController::class, 'resend_email'])->name('activation.resend');
-Route::post('/authenticate', [AccountController::class, 'authenticate'])->name('authenticate');
+Route::get('/resend-email', [AccountController::class, 'resend_email'])->name('activation.resend');
+
+// ✅ SECURITY: Rate limit OTP authentication (10 per minute)
+Route::match(['GET', 'POST'], '/authenticate', [AccountController::class, 'authenticate'])
+    ->name('authenticate')
+    ->middleware('throttle:10,1');
+
 Route::post('/resend-otp', [AccountController::class, 'resend_otp'])->name('resend.otp');
 Route::match(['GET', 'POST'], '/forgot-password', [AccountController::class, 'forgot_password'])->name('forgot.password');
 Route::match(['GET', 'POST'], '/reset-password/{id}/{token}', [AccountController::class, 'reset_password'])->name('reset.password');
@@ -147,7 +156,7 @@ Route::get('/user/payment', [UserController::class, 'payments'])->name('user.pay
 Route::post('/user/confirm-delivery/{id}', [UserController::class, 'confirmDelivery'])->name('user.confirm.delivery')->middleware('usersession');
 Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->name('user.ad.shipping')->middleware('usersession');
 Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->name('user.update.shipping')->middleware('usersession');
-Route::post('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->name('user.ad.status')->middleware('usersession');
+Route::get('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->name('user.ad.status')->middleware('usersession');
 Route::get('/user/category', [UserController::class, 'category'])->name('user.category')->middleware('usersession');
 Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders')->middleware('usersession');
 Route::get('/user/messages', [UserController::class, 'messages'])->name('user.messages')->middleware('usersession');
@@ -155,7 +164,7 @@ Route::get('/user/archived-messages', [UserController::class, 'archivedMessages'
 Route::get('/user/feedbacks', [UserController::class, 'feedbacks'])->name('user.feedbacks')->middleware('usersession');
 Route::post('/user/add-wishlist/{id}', [UserController::class, 'add_wishlist'])->name('user.add.wishlist')->middleware('usersession');
 Route::get('/user/favourites', [UserController::class, 'favourites'])->name('user.favourites')->middleware('usersession');
-Route::post('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->name('user.mark.sold')->middleware('usersession');
+Route::get('/user/mark-sold/{id}', [UserController::class, 'advert_sold'])->name('user.mark.sold')->middleware('usersession');
 Route::post('/reviews/feedbacks/{id}', [UserController::class, 'submit_feedback'])->name('reviews.feedback')->middleware('usersession');
 Route::get('/reviews/seller/{id}', [UserController::class, 'reviews_seller'])->name('reviews.seller');
 Route::get('/user/notifications', [UserController::class, 'notifications'])->name('user.notifications')->middleware('usersession');
@@ -182,7 +191,7 @@ Route::middleware('usersession')->group(function () {
 Route::match(['GET', 'POST'], '/user/post-ad', [UserManageAdverts::class, 'post_ad'])->name('post.ad')->middleware('usersession');
 Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
 Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
-Route::get('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('delete.ad')->middleware('usersession');
+Route::delete('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('delete.ad')->middleware('usersession');
 //User Manage Boost
 Route::match(['GET', 'POST'], '/user/post-boost-ad/{id}', [UserManageBoost::class, 'post_boost_ad'])->name('post.boost.ad')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/make-payment/{id}', [UserManageBoost::class, 'make_payment'])->name('make.payment')->middleware('usersession');
@@ -236,8 +245,8 @@ Route::middleware(['adminsession','adminrole:Finance,super_admin'])->group(funct
     // Manage Settlements
     Route::get('/admin/pending-settlements', [ManagePayments::class, 'pending_settlements'])->name('admin.pending.settlements');
     Route::get('/admin/completed-settlements', [ManagePayments::class, 'completed_settlements'])->name('admin.completed.settlements');
-    Route::post('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement'])->name('admin.confirm.settlement');
-    Route::post('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
+    Route::get('/admin/confirm-settlement/{id}', [ManagePayments::class, 'confirm_settlement'])->name('admin.confirm.settlement');
+    Route::get('/admin/payout/{id}', [ManagePayments::class, 'sendPayout'])->name('payout.transfer');
 });
 
 
@@ -265,9 +274,9 @@ Route::middleware(['adminsession'])->group(function () {
         Route::get('/admin/active-adverts', [ManageAdverts::class, 'active_adverts'])->name('admin.active.adverts');
         Route::get('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts'])->name('admin.disabled.adverts');
         Route::get('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts'])->name('admin.sold.adverts');
-        Route::post('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->name('admin.advert.status');
-        Route::post('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->name('admin.sold.status');
-        Route::post('/admin/redirect-status/{id}/{status}', [ManageAdverts::class, 'redirect_status'])->name('admin.redirect.status');
+        Route::get('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->name('admin.advert.status');
+        Route::get('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->name('admin.sold.status');
+        Route::get('/admin/redirect-status/{id}/{status}', [ManageAdverts::class, 'redirect_status'])->name('admin.redirect.status');
         Route::match(['GET', 'POST'], '/admin/edit-ad/{id}', [ManageAdverts::class, 'edit_advert'])->name('admin.edit.advert');
         Route::delete('/admin/delete-ad/{id}', [ManageAdverts::class, 'delete_advert'])->name('admin.delete.ad');
     });
@@ -355,7 +364,8 @@ Route::middleware(['adminsession'])->group(function () {
     */
     Route::middleware(['admin.permission:view_reports,manage_report_status'])->group(function () {
         Route::get('/admin/view-reports', [AdminController::class, 'view_reports'])->name('admin.view.reports');
-        Route::post('/admin/report-status/{id}/{status}', [AdminController::class, 'report_status'])->name('admin.report.status');
+        Route::get('/admin/report-status/{id}/{status}', [AdminController::class, 'report_status'])->name('admin.report.status');
+        Route::delete('/admin/delete-complaint/{id}', [AdminController::class, 'deleteComplaint'])->name('admin.delete.complaint');
     });
 
     /*
@@ -372,8 +382,9 @@ Route::middleware(['adminsession'])->group(function () {
         Route::get('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->name('admin.disabled.users');
         Route::get('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->name('admin.view.user');
         Route::get('/admin/user-verification', [ManageUsers::class, 'user_verification'])->name('admin.user.verification');
-        Route::post('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->name('admin.verify.status');
+        Route::get('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->name('admin.verify.status');
         Route::get('/admin/users/search', [ManageUsers::class, 'search'])->name('admin.users.search');
+        Route::delete('/admin/delete-user/{id}', [ManageUsers::class, 'deleteUser'])->name('admin.delete.user');
     });
 
     /*

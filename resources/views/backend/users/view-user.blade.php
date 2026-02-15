@@ -213,11 +213,15 @@
                                             <!-- Delete User -->
                                             <div class="text-center">
                                                 <h6 class="text-muted mb-2">Delete Account</h6>
-                                                <a href="/admin/delete-user/{{ $user->user_id }}"
-                                                   class="btn btn-danger px-4"
-                                                   onclick="return confirm('WARNING: This will permanently delete the user account and all associated data. Continue?');">
-                                                    <i class="bi bi-trash me-1"></i> Delete
-                                                </a>
+                                                <form action="{{ route('admin.delete.user', $user->user_id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="btn btn-danger px-4"
+                                                            onclick="return confirm('WARNING: This will permanently delete the user account and all associated data. Continue?');">
+                                                        <i class="bi bi-trash me-1"></i> Delete
+                                                    </button>
+                                                </form>
                                             </div>
 
                                             <!-- Back Button -->

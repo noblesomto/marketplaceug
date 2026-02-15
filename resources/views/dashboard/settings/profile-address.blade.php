@@ -10,9 +10,8 @@
   
 		            
 		        	<div class="max-w-2xl mx-auto bg-white p-3 rounded-lg">
-				        <form method="POST" action="/user/profile-address" enctype="multipart/form-data">
+				        <form method="POST" action="{{ route('user.profile.address') }}" enctype="multipart/form-data">
 				            @csrf
-				            @method('PUT')
 				       
 				        <div class="mb-4 mt-1">
 				            

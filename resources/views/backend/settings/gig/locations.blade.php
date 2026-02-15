@@ -47,11 +47,15 @@
                             data-address="{{ $row->address }}">
                       Edit
                     </button>
-                    <a href="/settings/delete-gig-location/{{ $row->id }}"
-                       onclick="return confirm('Are you sure?');"
-                       class="btn btn-sm btn-danger">
-                      Delete
-                    </a>
+                    <form action="{{ route('settings.delete.gig.location', $row->id) }}" method="POST" style="display: inline;">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit"
+                              onclick="return confirm('Are you sure?');"
+                              class="btn btn-sm btn-danger">
+                        Delete
+                      </button>
+                    </form>
                   </td>
                 </tr>
                 @endforeach

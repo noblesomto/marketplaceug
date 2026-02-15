@@ -179,8 +179,19 @@ function confirmAction(action, adTitle, id) {
         : `Are you sure you want to resume boosting "${adTitle}"?`;
 
     if(confirm(message)) {
-        const url = `/boost/status/${id}/${action === 'stop' ? 'pending' : 'active'}`;
-        window.location.href = url;
+        const status = action === 'stop' ? 'pending' : 'active';
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/boost/status/${id}/${status}`;
+
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
+
+        document.body.appendChild(form);
+        form.submit();
     }
     return false;
 }

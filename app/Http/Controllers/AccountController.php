@@ -72,7 +72,7 @@ class AccountController extends Controller
     {
         return [
             'email' => 'required|email',
-            'password' => 'required|min:4',
+            'password' => 'required|min:8',
         ];
     }
 
@@ -523,6 +523,13 @@ class AccountController extends Controller
         }
 
         if ($request->isMethod('GET')) {
+            // ✅ SECURITY: Verify user has valid OTP session before showing page
+            $user_id = $request->session()->get('acc_id');
+
+            if (!$user_id) {
+                return redirect("/login")->with('error', 'Session expired. Please login again to receive OTP.');
+            }
+
             return view('frontend.account.authenticate', compact('title'));
         }
     }
@@ -883,7 +890,7 @@ class AccountController extends Controller
 
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:4',
+            'password' => 'required|min:8',
         ]);
 
         $admin = Admin::where('email', $request->email)->first();
@@ -912,7 +919,7 @@ class AccountController extends Controller
     if ($request->isMethod('POST')) {
         $request->validate([
             'username' => 'required',
-            'password' => 'required|min:4',
+            'password' => 'required|min:8',
         ]);
 
         $username = $request->username;

@@ -17,6 +17,7 @@ use App\Traits\HasUserSession;
 class SearchFilter extends Controller
 {
     use HasUserSession;
+
     public function search(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
@@ -249,17 +250,15 @@ class SearchFilter extends Controller
         }
 
         // 💰 Price Filters
-        $min = $request->input('min');
-        $max = $request->input('max');
+        if ($request->filled('min')) {
+            $query->where('price', '>=', (int) $request->input('min'));
+        }
+
+        if ($request->filled('max')) {
+            $query->where('price', '<=', (int) $request->input('max'));
+        }
+
         $range = $request->input('range');
-
-        if ($min !== null) {
-            $query->where('price', '>=', (int) $min);
-        }
-
-        if ($max !== null) {
-            $query->where('price', '<=', (int) $max);
-        }
 
         if ($range) {
             switch ($range) {
