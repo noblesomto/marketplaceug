@@ -28,6 +28,7 @@ CREATE TABLE `admins` (
   `username` varchar(255) NOT NULL,
   `email` varchar(225) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `token` varchar(100) DEFAULT NULL,
   `status` enum('active','inactive') NOT NULL DEFAULT 'active',
   `remember_token` varchar(225) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -339,6 +340,7 @@ CREATE TABLE `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(255) NOT NULL,
   `category_slug` varchar(255) NOT NULL,
+  `ui_config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`ui_config`)),
   `icon` text NOT NULL,
   `keywords` text DEFAULT NULL,
   `meta_description` text DEFAULT NULL,
@@ -820,6 +822,7 @@ CREATE TABLE `sub_categories` (
   `cat_id` bigint(20) unsigned NOT NULL,
   `sub_category` varchar(255) NOT NULL,
   `sub_cat_slug` varchar(255) NOT NULL,
+  `ui_config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`ui_config`)),
   `keywords` text DEFAULT NULL,
   `meta_title` text DEFAULT NULL,
   `meta_description` text DEFAULT NULL,
@@ -968,3 +971,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (60,'2026_01_21_101
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (61,'2026_01_24_131520_create_boost_types_table',26);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (62,'2026_01_24_131521_create_boost_durations_table',26);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (63,'2026_01_24_131556_add_boost_type_and_duration_to_advert_boosts_table',26);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (64,'2026_01_31_120000_add_ui_config_to_categories',27);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (65,'2026_02_08_105959_add_email_and_token_to_admins_table',28);

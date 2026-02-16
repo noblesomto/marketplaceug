@@ -29,6 +29,7 @@ use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
 use App\Services\AdvertValidationService;
+use App\Services\ImageQualityService;
 use App\Traits\ManagesImages;
 use App\Traits\HasUserSession;
 
@@ -86,27 +87,92 @@ class UserManageAdverts extends Controller
         //dd($followers);
 
         if ($request->isMethod('POST')) {
-            // ✅ EARLY VALIDATION: Validate critical required fields FIRST before processing
-            // This prevents 500 errors when fields are missing and provides proper validation messages
-            $request->validate([
-                'category' => 'required|integer|min:1',
-                'subcategory' => 'required|integer|min:1',
-                'description' => 'required|max:3500',
-                'ad_title' => 'required|max:75',
-                'brand' => 'required',
-                'state' => 'required',
-                'lga' => 'required',
-            ], [
-                'category.required' => 'Please select a category.',
-                'category.min' => 'Please select a valid category.',
-                'subcategory.required' => 'Please select a subcategory.',
-                'subcategory.min' => 'Please select a valid subcategory.',
-                'description.required' => 'Description is required.',
-                'ad_title.required' => 'Ad title is required.',
-                'brand.required' => 'Please select a brand/option.',
-                'state.required' => 'Please select a state.',
-                'lga.required' => 'Please select a location (LGA).',
-            ]);
+            // ✅ HANDLE IMAGE UPLOADS EARLY - Store temporarily in case of validation errors
+            $tempImages = [];
+            if ($request->hasFile('images')) {
+                $tempImages = $this->storeTemporaryImages($request->file('images'));
+            }
+
+            // ✅ TIER 1: IMAGE QUALITY VALIDATION
+            if ($request->hasFile('images')) {
+                $imageQualityService = new ImageQualityService();
+                $imageQualityErrors = [];
+                $imageQualityWarnings = [];
+                $totalQualityScore = 0;
+                $imageCount = 0;
+
+                foreach ($request->file('images') as $image) {
+                    $result = $imageQualityService->validateImage($image);
+                    $imageCount++;
+
+                    // Collect errors
+                    if (!$result['valid']) {
+                        $imageQualityErrors = array_merge($imageQualityErrors, $result['errors']);
+                    }
+
+                    // Collect warnings (but don't block upload)
+                    if (!empty($result['warnings'])) {
+                        $imageQualityWarnings = array_merge($imageQualityWarnings, $result['warnings']);
+                    }
+
+                    $totalQualityScore += $result['score'];
+                }
+
+                // If there are quality errors, reject the upload
+                if (!empty($imageQualityErrors)) {
+                    if (!empty($tempImages)) {
+                        $request->session()->flash('temp_images', $tempImages);
+                    }
+
+                    // Get recommendations
+                    $recommendations = $imageQualityService->getRecommendations([
+                        'valid' => false,
+                        'details' => [
+                            'width' => 0,
+                            'sharpness' => 0,
+                            'brightness' => 0
+                        ]
+                    ]);
+
+                    return back()->withErrors([
+                        'images' => array_merge(
+                            ['Image quality validation failed:'],
+                            array_slice($imageQualityErrors, 0, 3), // Show first 3 errors
+                            [''],
+                            ['Recommendations:'],
+                            $recommendations
+                        )
+                    ])->withInput();
+                }
+
+                // Log quality metrics
+                $avgScore = $imageCount > 0 ? round($totalQualityScore / $imageCount) : 0;
+                \Log::info('Image quality validation passed', [
+                    'image_count' => $imageCount,
+                    'average_score' => $avgScore,
+                    'quality_rating' => $imageQualityService->getQualityRating($avgScore),
+                    'warnings_count' => count($imageQualityWarnings)
+                ]);
+            }
+
+            // ✅ EARLY VALIDATION: Validate only CRITICAL required fields
+            // Only validate fields that are ALWAYS required, not conditional fields
+            // This prevents 500 errors and avoids validating hidden fields
+            try {
+                $request->validate([
+                    'ad_title' => 'required|max:75',
+                    'description' => 'required|max:3500',
+                ], [
+                    'ad_title.required' => 'Ad title is required.',
+                    'description.required' => 'Description is required.',
+                ]);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                // Validation failed - flash temp images to session
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
+                throw $e; // Re-throw to show validation errors
+            }
 
             $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
@@ -114,15 +180,38 @@ class UserManageAdverts extends Controller
             $description = $this->removeEmojis($request->input('description'));
             $request->merge(['description' => $description]);
 
+            // ✅ Check if temp images exist (from previous validation error)
+            $hasTempImages = !empty($request->input('temp_image_paths', []));
+
             // Use dynamic validation service based on Category UI Config
             $validationService = new AdvertValidationService();
-            $rules = $validationService->getRules($category, $subcat, false);
+            $rules = $validationService->getRules($category, $subcat, false, $hasTempImages);
 
-            $validatedData = $request->validate($rules);
+            // Custom validation messages
+            $messages = [
+                'images.required' => 'Please select at least one image.',
+                'images.*.image' => 'All files must be images.',
+                'images.*.mimes' => 'Images must be jpeg, png, jpg, or gif format.',
+                'images.*.max' => 'Each image must not exceed 20MB.',
+            ];
+
+            try {
+                $validatedData = $request->validate($rules, $messages);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                // Validation failed - flash temp images to session
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
+                throw $e; // Re-throw to show validation errors
+            }
 
             // Validate shipping requirements
             $shippingError = $validationService->validateShipping($request);
             if ($shippingError) {
+                // Flash temp images to session before redirecting
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
                 return back()->withErrors($shippingError)->withInput();
             }
 
@@ -153,7 +242,7 @@ class UserManageAdverts extends Controller
 
             $advert = Advert::create([
                 'ad_title'         => $adTitle,
-                'ad_type'          => $request->input('ad_type'),
+                'ad_type'          => $request->input('ad_type', 'Private'), // ✅ Default to 'Private' if not provided
                 'category'         => $request->input('category'),
                 'sub_category'     => $request->input('subcategory'),
                 'brand'            => $request->input('brand'),
@@ -163,7 +252,7 @@ class UserManageAdverts extends Controller
                 'expected_salary'  => $request->input('expected_salary'),
                 'item_condition'   => $request->input('item_condition'),
                 'price_type'       => $request->input('price_type'),
-                'buy_direct'       => $request->input('buy_direct'),
+                'buy_direct'       => $request->input('buy_direct', 'No'), // ✅ Default to 'No' if not provided
                 'state'            => $request->input('state'),
                 'lga'              => $request->input('lga'),
                 'state_slug'       => Str::slug($request->input('lga')),
@@ -172,20 +261,59 @@ class UserManageAdverts extends Controller
                 'meta_description' => $metaDescription,
                 'featured'         => "No",
                 'ad_id'            => $ad_id,
-                'shipment'         => $request->input('shipment'),
-                'show_contact'     => $request->input('show_contact'),
+                'shipment'         => $request->input('shipment', 'Pickup'), // ✅ Default to 'Pickup' if not provided
+                'show_contact'     => $request->input('show_contact', 'No'), // ✅ Default to 'No' if not provided
                 'quantity'         => $request->input('quantity') ?? 1,
                 'views'            => "0",
                 'ad_status'        => "active",
                 'user_id'          => $user_id,
-                'ad_image'         => "",
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
+            // ✅ Handle image uploads - Priority: temp images > new uploads > default
+            $tempImagePaths = $request->input('temp_image_paths', []);
+            $hasNewImages = $request->hasFile('images');
+            $hasTempImages = !empty($tempImagePaths);
 
-            if ($request->hasFile('images')) {
-            $this->handleImageUploads($request, $advert);
+            \Log::info("Image Processing Debug", [
+                'temp_paths' => $tempImagePaths,
+                'has_new_images' => $hasNewImages,
+                'has_temp_images' => $hasTempImages,
+            ]);
+
+            if ($hasTempImages || $hasNewImages) {
+                $imagesToProcess = [];
+
+                // First, collect temp images
+                if ($hasTempImages) {
+                    foreach ($tempImagePaths as $tempPath) {
+                        \Log::info("Checking temp image", ['path' => $tempPath, 'exists' => \Storage::disk('public')->exists($tempPath)]);
+                        if (\Storage::disk('public')->exists($tempPath)) {
+                            $imagesToProcess[] = [
+                                'type' => 'temp',
+                                'path' => $tempPath,
+                            ];
+                        }
+                    }
+                }
+
+                // Then, add new uploads
+                if ($hasNewImages) {
+                    foreach ($request->file('images') as $image) {
+                        if ($image && $image->isValid()) {
+                            $imagesToProcess[] = [
+                                'type' => 'new',
+                                'file' => $image,
+                            ];
+                        }
+                    }
+                }
+
+                \Log::info("Images to process", ['count' => count($imagesToProcess), 'data' => $imagesToProcess]);
+
+                // Process all images
+                $this->processAdvertImages($imagesToProcess, $advert);
             } elseif ($request->input('category') == 3) {
                 // Add default image for jobs category
                 $advert->addDefaultImage('jobs.png');
@@ -367,7 +495,6 @@ class UserManageAdverts extends Controller
             'shipment'        => $request->input('shipment'),
             'show_contact'    => $request->input('show_contact'),
             'quantity'        => $request->input('quantity') ?? 1,
-            'ad_image'        => "",
         ]);
 
         $messages = [];
@@ -601,6 +728,154 @@ class UserManageAdverts extends Controller
 
         // Remove emojis using regex
         return preg_replace('/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1F900}-\x{1F9FF}\x{1FA00}-\x{1FA6F}\x{1FA70}-\x{1FAFF}\x{1F004}\x{1F0CF}\x{1F18E}\x{1F191}-\x{1F19A}\x{1F201}\x{1F21A}\x{1F22F}\x{1F232}-\x{1F236}\x{1F238}-\x{1F23A}\x{1F250}\x{1F251}]/u', '', $text);
+    }
+
+    /**
+     * Store uploaded images temporarily in case of validation errors
+     * This allows images to be retained when form validation fails
+     *
+     * @param array $images Array of uploaded files
+     * @return array Array of temp image data
+     */
+    private function storeTemporaryImages($images)
+    {
+        $tempImages = [];
+        $tempDir = 'temp/post-ad-images';
+
+        // Create temp directory if it doesn't exist
+        if (!\Storage::disk('public')->exists($tempDir)) {
+            \Storage::disk('public')->makeDirectory($tempDir);
+        }
+
+        foreach ($images as $index => $image) {
+            if ($image && $image->isValid()) {
+                // Generate unique filename
+                $filename = uniqid('temp_') . '_' . time() . '_' . $index . '.' . $image->getClientOriginalExtension();
+
+                // Store in temp directory
+                $path = $image->storeAs($tempDir, $filename, 'public');
+
+                if ($path) {
+                    $tempImages[] = [
+                        'path' => $path,
+                        'url' => \Storage::disk('public')->url($path),
+                        'original_name' => $image->getClientOriginalName(),
+                        'size' => $image->getSize(),
+                    ];
+                }
+            }
+        }
+
+        return $tempImages;
+    }
+
+    /**
+     * Move temporary images to permanent advert images
+     *
+     * @param array $tempImages Array of temp image data
+     * @param Advert $advert The advert model
+     * @return void
+     */
+    /**
+     * Process both temp and new images for an advert using Spatie Media Library
+     *
+     * @param array $images Array of images to process (temp and new)
+     * @param Advert $advert The advert model
+     * @return void
+     */
+    private function processAdvertImages($images, $advert)
+    {
+        \Log::info("processAdvertImages called", [
+            'advert_id' => $advert->ad_id,
+            'images_count' => count($images)
+        ]);
+
+        foreach ($images as $index => $imageData) {
+            try {
+                $position = $index + 1;
+                \Log::info("Processing image {$index}", ['type' => $imageData['type']]);
+
+                if ($imageData['type'] === 'temp') {
+                    // Handle temp image - get full path from public disk root
+                    $tempPath = $imageData['path'];
+                    // ✅ Use Storage disk root, not hardcoded path
+                    $fullPath = \Storage::disk('public')->path($tempPath);
+
+                    \Log::info("Temp image processing", [
+                        'temp_path' => $tempPath,
+                        'full_path' => $fullPath,
+                        'file_exists' => file_exists($fullPath)
+                    ]);
+
+                    if (file_exists($fullPath)) {
+                        \Log::info("Adding temp media to Spatie", ['path' => $fullPath]);
+
+                        // Add media from temp file path using Spatie
+                        $media = $advert
+                            ->addMedia($fullPath)
+                            ->withCustomProperties([
+                                'position' => $position,
+                                'source' => 'temp'
+                            ])
+                            ->usingFileName(uniqid() . '.webp')
+                            ->toMediaCollection('images');
+
+                        $media->order_column = $position;
+                        $media->save();
+
+                        \Log::info("Temp media added successfully", [
+                            'media_id' => $media->id,
+                            'file_name' => $media->file_name
+                        ]);
+
+                        // Delete temp file after adding to media library
+                        @unlink($fullPath);
+                        \Log::info("Temp file deleted", ['path' => $fullPath]);
+                    } else {
+                        \Log::warning("Temp file not found", ['path' => $fullPath]);
+                    }
+                } elseif ($imageData['type'] === 'new') {
+                    // Handle new upload using Spatie
+                    $file = $imageData['file'];
+
+                    \Log::info("Adding new upload to Spatie", [
+                        'original_name' => $file->getClientOriginalName()
+                    ]);
+
+                    $media = $advert
+                        ->addMedia($file)
+                        ->withCustomProperties([
+                            'position' => $position,
+                            'original_name' => $file->getClientOriginalName()
+                        ])
+                        ->usingFileName(uniqid() . '.webp')
+                        ->toMediaCollection('images');
+
+                    $media->order_column = $position;
+                    $media->save();
+
+                    \Log::info("New media added successfully", [
+                        'media_id' => $media->id,
+                        'file_name' => $media->file_name
+                    ]);
+                }
+
+            } catch (\Exception $e) {
+                \Log::error("Failed to process image {$index} for advert {$advert->ad_id}: " . $e->getMessage(), [
+                    'exception' => get_class($e),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                continue;
+            }
+        }
+
+        // ✅ Spatie handles all images - no need to set ad_image column
+        // The firstImage() relationship will automatically get the first media
+        $mediaCount = $advert->getMedia('images')->count();
+        \Log::info("Images processed successfully", [
+            'advert_id' => $advert->ad_id,
+            'media_count' => $mediaCount
+        ]);
     }
 
 

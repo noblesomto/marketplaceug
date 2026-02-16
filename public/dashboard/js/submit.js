@@ -9,8 +9,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalContent = submitButton.innerHTML;
 
     form.addEventListener('submit', function(e) {
+        // ✅ DISABLE HIDDEN FIELDS TO PREVENT VALIDATION
+        // Hidden fields (salary, expected_salary, etc.) shouldn't be validated
+        const hiddenContainers = form.querySelectorAll('.hidden');
+        hiddenContainers.forEach(container => {
+            const inputs = container.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                // Mark as disabled so they won't be submitted
+                if (!input.hasAttribute('data-always-submit')) {
+                    input.setAttribute('data-was-disabled', 'true');
+                    input.disabled = true;
+                }
+            });
+        });
+
         // Check if form is valid before disabling
         if (!form.checkValidity()) {
+            // Re-enable fields if validation fails
+            const disabledInputs = form.querySelectorAll('[data-was-disabled]');
+            disabledInputs.forEach(input => {
+                input.disabled = false;
+                input.removeAttribute('data-was-disabled');
+            });
             return; // Let browser show validation messages
         }
 

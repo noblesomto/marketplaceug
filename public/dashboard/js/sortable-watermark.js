@@ -107,7 +107,12 @@ document.addEventListener("DOMContentLoaded", function () {
     form?.addEventListener("submit", function (e) {
         const validImages = fileList.filter((_, index) => !watermarkFlags[index]);
 
-        if (!validImages.length && typeof selectedCategoryId !== 'undefined' && selectedCategoryId != 3) {
+        // ✅ Check both new uploads AND temp images from previous submission
+        const tempImageInputs = document.querySelectorAll('input[name="temp_image_paths[]"]');
+        const tempImageCount = tempImageInputs.length;
+        const totalValidImageCount = validImages.length + tempImageCount;
+
+        if (!totalValidImageCount && typeof selectedCategoryId !== 'undefined' && selectedCategoryId != 3) {
             e.preventDefault();
             errorBox.textContent = "Please select at least one image without watermarks before submitting.";
             errorBox.classList.remove("hidden");

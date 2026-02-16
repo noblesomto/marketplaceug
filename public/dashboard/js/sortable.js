@@ -130,7 +130,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Validate before submit
     form.addEventListener("submit", function (e) {
-        if (fileList.length === 0) {
+        // ✅ Check both new uploads AND temp images from previous submission
+        const tempImageInputs = document.querySelectorAll('input[name="temp_image_paths[]"]');
+        const tempImageCount = tempImageInputs.length;
+        const totalImageCount = fileList.length + tempImageCount;
+
+        if (totalImageCount === 0) {
             showError("Please select at least one image.");
             e.preventDefault();
         }

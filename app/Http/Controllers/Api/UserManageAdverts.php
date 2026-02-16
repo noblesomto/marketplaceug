@@ -17,6 +17,8 @@ use App\Models\AdvertBoost;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Services\AdvertValidationService;
+use App\Services\ImageQualityService;
+use App\Traits\ManagesImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -30,6 +32,7 @@ use Illuminate\Support\Facades\Log;
  */
 class UserManageAdverts extends Controller
 {
+    use ManagesImages;
     /**
      * @OA\Get(
      *     path="/api/adverts/categories/{categoryId}/subcategories",
@@ -299,32 +302,79 @@ class UserManageAdverts extends Controller
                 'views' => "0",
                 'ad_status' => "1",
                 'user_id' => $user->user_id,
-                'ad_image' => "",
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
-            // Handle uploaded images
+            // ✅ TIER 1: Image Quality Validation
             if ($request->hasFile('images')) {
+                $imageQualityService = new ImageQualityService();
+                $imageQualityErrors = [];
+                $totalQualityScore = 0;
+                $imageCount = 0;
+
+                foreach ($request->file('images') as $image) {
+                    $result = $imageQualityService->validateImage($image);
+                    $imageCount++;
+
+                    if (!$result['valid']) {
+                        $imageQualityErrors = array_merge($imageQualityErrors, $result['errors']);
+                    }
+
+                    $totalQualityScore += $result['score'];
+                }
+
+                if (!empty($imageQualityErrors)) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => [
+                            'images' => array_slice($imageQualityErrors, 0, 3) // First 3 errors
+                        ],
+                        'recommendations' => $imageQualityService->getRecommendations([
+                            'valid' => false,
+                            'details' => []
+                        ])
+                    ], 422);
+                }
+
+                // Process images using Spatie Media Library
                 $images = $request->file('images');
                 $order = explode(',', $request->input('image_order', ''));
+
+                if (empty($order) || $order[0] === '') {
+                    // If no order specified, use sequential order
+                    $order = array_keys($images);
+                }
 
                 foreach ($order as $position => $index) {
                     if (!isset($images[$index]) || !$images[$index]->isValid()) continue;
 
-                    $uploadedFileName = FileUploadHelper::upload($images[$index], 'images');
+                    $media = $advert
+                        ->addMedia($images[$index])
+                        ->withCustomProperties([
+                            'position' => $position + 1,
+                            'original_name' => $images[$index]->getClientOriginalName()
+                        ])
+                        ->usingFileName(uniqid() . '.webp')
+                        ->toMediaCollection('images');
 
-                    $advert->images()->create([
-                        'image' => $uploadedFileName,
-                        'position' => $position + 1,
-                    ]);
+                    $media->order_column = $position + 1;
+                    $media->save();
                 }
-            } elseif ($category == 3) {
-                // Save default image for jobs
-                $advert->images()->create([
-                    'image' => 'jobs.png',
-                    'position' => 1,
+
+                // Log quality metrics
+                $avgScore = $imageCount > 0 ? round($totalQualityScore / $imageCount) : 0;
+                Log::info('API: Image quality validation passed', [
+                    'advert_id' => $advert->ad_id,
+                    'image_count' => $imageCount,
+                    'average_score' => $avgScore,
+                    'quality_rating' => $imageQualityService->getQualityRating($avgScore)
                 ]);
+
+            } elseif ($category == 3) {
+                // Add default image for jobs using Spatie
+                $advert->addDefaultImage('jobs.png');
             }
 
             // Store car-specific info
@@ -368,7 +418,8 @@ class UserManageAdverts extends Controller
 
             DB::commit();
 
-            $advert->load(['images', 'car', 'phone', 'shippings']);
+            // Load relationships (media instead of old images)
+            $advert->load(['media', 'car', 'phone', 'shippings']);
 
             return response()->json([
                 'success' => true,

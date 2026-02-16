@@ -24,6 +24,7 @@
                     <li><a href="/payments-refunds" class="hover:text-secondary-200">Payment & Refund</a></li>
                     <li><a href="/how-it-works" class="hover:text-secondary-200">How It Works</a></li>
                     <li><a href="https://wa.me/2348060615691" target="_blank" class="hover:text-secondary-200">Chat Support</a></li>
+                    <li><a href="/dmca-policy" class="hover:text-secondary-200">Copyright Infringement Policy</a></li>
                 </ul>
             </div>
 

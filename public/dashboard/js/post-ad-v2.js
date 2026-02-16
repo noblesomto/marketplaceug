@@ -344,4 +344,27 @@ function toggleShipping() {
             errorMsg.classList.add("hidden");
         }
     }
+
+    // Auto-select Buy Direct when Shipping is selected
+    if (isShipping) {
+        const buyDirectYes = document.querySelector('input[name="buy_direct"][value="Yes"]');
+        if (buyDirectYes && !buyDirectYes.checked) {
+            buyDirectYes.checked = true;
+        }
+    }
+}
+
+// Auto-select Shipping when Buy Direct is selected
+function toggleBuyDirect() {
+    const buyDirectYes = document.querySelector('input[name="buy_direct"][value="Yes"]');
+    const isBuyDirect = buyDirectYes?.checked;
+
+    if (isBuyDirect) {
+        // Auto-select Ship
+        const shipRadio = document.querySelector('input[name="shipment"][value="Ship"]');
+        if (shipRadio && !shipRadio.checked) {
+            shipRadio.checked = true;
+            toggleShipping(); // Show shipping options
+        }
+    }
 }

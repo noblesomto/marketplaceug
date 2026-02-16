@@ -43,6 +43,7 @@ Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('privacy
 Route::get('/cookie-policy', [PageController::class, 'cookie'])->name('cookie.policy');
 Route::get('/billing-policy', [PageController::class, 'billing'])->name('billing.policy');
 Route::get('/copyright-policy', [PageController::class, 'copyright'])->name('copyright.policy');
+Route::get('/dmca-policy', [PageController::class, 'dmca'])->name('dmca.policy');
 Route::get('/safety-tips', [PageController::class, 'safety'])->name('safety.tips');
 Route::get('/sell-online', [PageController::class, 'sell_online'])->name('sell.online');
 Route::get('/our-terms', [PageController::class, 'terms'])->name('terms');
@@ -54,7 +55,7 @@ Route::get('/blog/{slug}', [PageController::class, 'blog_details'])->name('blog.
 Route::get('/advertise-with-us', [PageController::class, 'advertise'])->name('advertise');
 Route::match(['GET', 'POST'], '/contact-us', [PageController::class, 'contact'])->name('contact');
 Route::get('/shipping', [PageController::class, 'shipping'])->name('shipping');
-Route::post('/email', [PageController::class, 'email'])->name('email');
+Route::get('/email', [PageController::class, 'email'])->name('email');
 
 Route::get('/robots.txt', [RobotsController::class, 'index']);
 
