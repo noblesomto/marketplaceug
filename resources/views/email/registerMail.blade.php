@@ -1,253 +1,186 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style type="text/css">
-        /* Base Styles */
-        body, table, td, a {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            font-family: 'Poppins', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<style type="text/css">
+    body, table, td, a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    table { border-collapse: collapse; }
+
+    img {
+        border: 0;
+        height: auto;
+        max-width: 100%;
+        display: block;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .header {
+        background-color: #4CAF50;
+        color: #ffffff;
+        text-align: center;
+        padding: 30px 25px;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .content {
+        background-color: #ffffff;
+        padding: 40px 35px;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555555;
+    }
+
+    .button {
+        background-color: #4CAF50;
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 14px 28px;
+        border-radius: 6px;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .box {
+        background: #f8f9fa;
+        padding: 25px;
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .footer {
+        background: #f8f9fa;
+        padding: 30px 25px;
+        text-align: center;
+        font-size: 14px;
+        color: #777777;
+    }
+
+    h3 {
+        color: #ff0000;
+        margin: 25px 0 10px 0;
+    }
+
+    /* SMALL DEVICE FIX */
+    @media screen and (max-width: 400px) {
+
+        .outer-padding {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
         }
-        
-        table {
-            border-collapse: collapse;
-            width: 100%;
+
+        .content {
+            padding: 25px 20px !important;
         }
-        
-        img {
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            max-width: 100%;
-            outline: none;
-            text-decoration: none;
-        }
-        
-        /* iOS Blue Links Fix */
-        a[x-apple-data-detectors] {
-            color: inherit !important;
-            text-decoration: none !important;
-            font-size: inherit !important;
-            font-family: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-        }
-        
-        /* Main Styles */
-        .email-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
+
         .header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-        }
-        
-        .logo {
-            max-height: 80px;
-        }
-        
-        .content-box {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-        }
-        
-        .greeting {
-            color: #172541;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .message {
-            color: #555555;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        
-        .otp-container {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 30px;
-            margin: 30px 0;
-            text-align: center;
-        }
-        
-        .otp-code {
-            color: #1d4b00;
-            font-size: 32px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            margin: 15px 0;
+            padding: 25px 20px !important;
+            font-size: 18px !important;
         }
 
-        .button{
-            background: #4CAF50;
-            color: #FFF !important;
-            font-size:18px;
-            font-weight: 600;
-            padding: 10px 20px;
-            text-decoration: none;
-            margin: 10px 5px;
-            border-radius: 20px;
+        .button {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            padding: 16px !important;
         }
-        
-        .meta-info {
-            color: #777777;
-            font-size: 14px;
-            margin-top: 30px;
+
+        .box {
+            padding: 18px !important;
         }
-        
+
         .footer {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 30px;
-            margin-top: 30px;
-            text-align: center;
+            padding: 25px 20px !important;
         }
-        
-        .help-link {
-            color: #172541;
-            font-weight: 500;
-            text-decoration: none;
-        }
-        
-        .help-link:hover {
-            text-decoration: underline;
-        }
-        
-        .signature {
-            color: #555555;
-            font-size: 16px;
-            margin-top: 30px;
-        }
-
-        /* Typography */
-        h1 {
-            color: white;
-            margin: 0 0 10px 0;
-            font-size: 24px;
-        }
-
-        h2 {
-            color: #2E7D32;
-            margin: 0 0 15px 0;
-            font-size: 20px;
-        }
-
-        h3 {
-            color: #FF0000;
-            margin: 0 0 12px 0;
-            font-size: 18px;
-        }
-
-        h4 {
-            color: #4CAF50;
-            margin: 0 0 12px 0;
-            font-size: 16px;
-        }
-        
-        /* Responsive Styles */
-        @media screen and (max-width: 600px) {
-            .content-box {
-                padding: 30px 20px;
-            }
-            
-            .greeting {
-                font-size: 24px;
-            }
-            
-            .otp-code {
-                font-size: 28px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0; padding: 0;">
-    <!-- Hidden Preheader Text -->
-    <div style="display: none; max-height: 0; overflow: hidden;">
-        Dear {{ $details['name'] }},  We're thrilled to have you here! Get ready to dive into your new account.
-    </div>
+<body style="background-color:#f4f4f4; width:100%; margin:0; padding:0;">
 
-    <!-- Email Container -->
-    <table class="email-container" align="center" border="0" cellpadding="0" cellspacing="0">
-        <!-- Header -->
-        <tr>
-            <td class="header">
-                <h1>Welcome to {{ config('global.email_title') }}</h1>
-            </td>
-        </tr>
-        
-        <!-- Main Content -->
-        <tr>
-            <td style="">
-                <table class="content-box" align="center" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 40px 30px;">
-                           
-                            <p class="message">
-                                Hi {{ $details['name'] }},<br><br>
-                                We're excited to have you get started. First, you need to confirm your account. Just click the button below.
-                            </p>
-                            
-                            <div class="otp-container">
+<!-- OUTER WRAPPER (Controls Side Padding Safely) -->
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td align="center" class="outer-padding" style="padding:20px 15px;">
 
-                                <div class=""><a href="{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}" target="_blank" class="button">Confirm Account</a></div>
-                                <div class="meta-info">
-                                    If that doesn't work, copy and paste the following link in your browser:<br><br>
-                                    <a href="{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}" target="_blank" style="color: #4CAF50;">{{  url('/verifyaccount/'. $details['user_id'].'/'.$details['token']) }}</a>
-                                </div>
-                            </div>
-                            
-                            <h3 class="">Important:</h3>
-                            <div class="message">
-                                <p>
-                                    Please note that we do not offer rewards for clicking links or completing tasks. Any such request is a scam and not from us.
-                                </p><br>
-                               <p>
-                                    If you have any questions, please <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">contact us on WhatsApp</a>. Our team is always available to assist you.
-                               </p>
-                            </div>
-                            
-                            <p class="signature">
-                                Cheers,<br>
-                                The {{ config('global.email_title') }} Team
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-                
-                <!-- Footer -->
-                <table class="footer" align="center" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td>
-                            <h2 style="font-size: 18px; color: #172541; margin-bottom: 15px;">Need more help?</h2>
-                            <p style="margin: 0;">
-                                <a href="{{ url('/contact-us') }}" class="help-link" target="_blank">
-                                    We're here to help you out
-                                </a>
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+<table class="container" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
+
+    <!-- HEADER -->
+    <tr>
+        <td class="header">
+            Welcome to {{ config('global.email_title') }}
+        </td>
+    </tr>
+
+    <!-- CONTENT -->
+    <tr>
+        <td class="content">
+            Hi {{ $details['name'] }},<br><br>
+
+            We're excited to have you onboard. Please confirm your account by clicking the button below.
+
+            <div class="box">
+                <a href="{{ url('/verifyaccount/'.$details['user_id'].'/'.$details['token']) }}"
+                   class="button" target="_blank">
+                    Confirm Account
+                </a>
+
+                <div style="margin-top:20px;font-size:13px;word-break:break-all;">
+                    If the button doesn’t work, copy and paste this link:<br><br>
+                    <a href="{{ url('/verifyaccount/'.$details['user_id'].'/'.$details['token']) }}"
+                       style="color:#4CAF50;">
+                        {{ url('/verifyaccount/'.$details['user_id'].'/'.$details['token']) }}
+                    </a>
+                </div>
+            </div>
+
+            <h3>Important:</h3>
+            We do not offer rewards for clicking links or completing tasks. Any such request is a scam.
+
+            <br><br>
+
+            Need help?
+            <a href="https://wa.me/2348060615691" target="_blank" style="color:#4CAF50;">
+                Contact us on WhatsApp
+            </a>
+
+            <br><br>
+
+            Cheers,<br>
+            The {{ config('global.email_title') }} Team
+        </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+        <td class="footer">
+            <strong>Need more help?</strong><br><br>
+            <a href="{{ url('/contact-us') }}" target="_blank" style="color:#172541;text-decoration:none;">
+                We're here to help you
+            </a>
+        </td>
+    </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
 </body>
 </html>

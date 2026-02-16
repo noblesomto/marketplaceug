@@ -58,6 +58,12 @@ class PageController extends Controller
         return view('frontend.pages.copyright', compact('title'));
     }
 
+    public function dmca()
+    {
+        $title = "Intellectual Property & Copyright Policy  | " . config('global.site_name');
+        return view('frontend.pages.dmca', compact('title'));
+    }
+
     public function safety()
     {   
         $title = "Tips for your safety  | " . config('global.site_name');

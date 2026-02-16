@@ -20,9 +20,10 @@ class AdvertValidationService
      * @param int $categoryId
      * @param int|null $subcategoryId
      * @param bool $isUpdate - If true, images are optional
+     * @param bool $hasTempImages - If true, images are optional (already uploaded)
      * @return array
      */
-    public function getRules(int $categoryId, ?int $subcategoryId = null, bool $isUpdate = false): array
+    public function getRules(int $categoryId, ?int $subcategoryId = null, bool $isUpdate = false, bool $hasTempImages = false): array
     {
         // Get UI config
         $uiConfig = $this->getUIConfig($categoryId, $subcategoryId);
@@ -39,8 +40,9 @@ class AdvertValidationService
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
         ];
 
-        // Images required only for create (not for jobs category)
-        if (!$isUpdate && $categoryId != 3) {
+        // ✅ Images required only for create (not for jobs category)
+        // Skip image requirement if temp images exist (from previous validation error)
+        if (!$isUpdate && $categoryId != 3 && !$hasTempImages) {
             $rules['images'] = 'required|array';
         }
 
@@ -68,8 +70,16 @@ class AdvertValidationService
             if (in_array($field, $uiConfig['hide'] ?? [])) {
                 return false;
             }
-            // If show array exists and field is not in it, check if it should be hidden by default
-            // For now, if not explicitly hidden, consider it potentially visible
+
+            // ✅ FIX: Financial fields must be EXPLICITLY shown
+            // salary/expectedSalary/price are mutually exclusive and category-specific
+            // They should ONLY be visible if explicitly in the "show" array
+            $financialFields = ['salary', 'expectedSalary', 'price'];
+            if (in_array($field, $financialFields)) {
+                return in_array($field, $uiConfig['show'] ?? []);
+            }
+
+            // For other fields, if not explicitly hidden, consider visible
             return true;
         };
 
