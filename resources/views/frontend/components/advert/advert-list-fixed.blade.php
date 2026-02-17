@@ -3,7 +3,7 @@
         <div class="h-full flex flex-col">
             <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
                 <!-- Image wrapper with fixed aspect ratio -->
-                <div class="w-full aspect-[4/3] overflow-hidden rounded-t-lg relative">
+                <div class="w-full h-[200px] lg:h-[220px] overflow-hidden rounded-t-lg relative">
                     @php
                     $image = $row->getFirstMedia('images');
                 @endphp

@@ -27,7 +27,7 @@
                         {{-- First 3 images: Eager load with high priority --}}
                         <img
                             alt="{{ $row->ad_title }}"
-                            class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            class="w-full h-[160px] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                             width="300"
                             height="262"
                             @if($loop->first)
@@ -44,7 +44,7 @@
                         {{-- Remaining images: Lazy load --}}
                         <img
                             alt="{{ $row->ad_title }}"
-                            class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                            class="w-full h-[160px] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                             width="300"
                             height="262"
                             loading="lazy"
@@ -161,7 +161,7 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full h-[160px] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
                         height="262"
                         loading="lazy"
@@ -277,7 +277,7 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full h-[160px] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
                         height="262"
                         loading="lazy"
@@ -393,7 +393,7 @@
 
                     <img
                         alt="{{ $row->ad_title }}"
-                        class="w-full aspect-[8/7] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
+                        class="w-full h-[160px] object-cover transition duration-300 ease-in-out hover:scale-110 rounded-lg"
                         width="300"
                         height="262"
                         loading="lazy"

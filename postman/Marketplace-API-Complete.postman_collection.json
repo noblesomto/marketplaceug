@@ -2,9 +2,9 @@
   "info": {
     "_postman_id": "marketplace-api-complete-6966c88f4114a",
     "name": "Marketplace Nigeria API - Complete",
-    "description": "Complete API collection for Marketplace Nigeria with sample data\n\n**Base URLs:**\n- Local: http://127.0.0.1:8030\n- Production: https://www.marketplace.ng\n\n**Authentication:**\nMost endpoints require Bearer token. Login first to get your token.\n\n**All requests include sample data - ready to test!**\n\n**Version:** 3.0\n**Generated:** 2026-01-21 (Updated Routes)",
+    "description": "Complete API collection for Marketplace Nigeria with sample data\n\n**Base URLs:**\n- Local: http://127.0.0.1:8030\n- Production: https://www.marketplace.ng\n\n**Authentication:**\nMost endpoints require Bearer token. Login first to get your token.\n\n**All requests include sample data - ready to test!**\n\n**Version:** 3.2\n**Generated:** 2026-01-21 (Updated Routes)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "3.1"
+    "version": "3.2"
   },
   "auth": {
     "type": "bearer",
@@ -6371,6 +6371,141 @@
         }
       ],
       "description": "**Database-Driven UI Configuration System**\n\nThis API provides dynamic show/hide rules for Post Ad and Edit Ad forms. Admins can configure which form fields should be visible or hidden for each category/subcategory without code changes.\n\n**Key Concepts:**\n\n1. **Category Config:** Base configuration applied when user selects a category\n   - Example: Jobs category shows \"salary\" field, hides \"price\" field\n\n2. **Subcategory Config:** Additional rules applied on top of category config\n   - Example: Cars subcategory shows car-specific fields (divCar, divModel)\n   - Rules are ADDITIVE, not replacements\n\n3. **Available Elements:**\n   - **Form Fields:** price, salary, expectedSalary, services, quantity\n   - **Sections:** divCar (car details), divPhone (phone details), divModel (model dropdown)\n   - **Options:** shipment, shipping, itemCondition, buyDirect\n\n4. **Custom Labels:**\n   - Admins can customize field labels per category\n   - Example: \"Select Job Type:\" for Jobs, \"Select Car Brand:\" for Cars\n\n5. **Required Fields (Subcategories Only):**\n   - Mark specific fields as required for certain subcategories\n   - Example: \"model\" required for Cars subcategory\n\n**Mobile Implementation Guide:**\n\n```javascript\n// 1. Fetch all configs on app start\nconst uiConfig = await fetch('/api/ui-config/all');\nlocalStorage.setItem('uiConfig', JSON.stringify(uiConfig));\n\n// 2. When user selects category\nfunction onCategorySelect(categoryId) {\n  const config = uiConfig.categories[categoryId];\n  \n  // Hide elements\n  config.hide.forEach(element => {\n    document.getElementById(element).style.display = 'none';\n  });\n  \n  // Show elements\n  config.show.forEach(element => {\n    document.getElementById(element).style.display = 'block';\n  });\n  \n  // Apply custom labels\n  if (config.labels?.brand) {\n    document.querySelector('#brandLabel').textContent = config.labels.brand;\n  }\n}\n\n// 3. When user selects subcategory (additive)\nfunction onSubcategorySelect(subcategoryId) {\n  const subConfig = uiConfig.subcategories[subcategoryId];\n  \n  // Apply subcategory-specific show/hide\n  // These are applied ON TOP of category rules\n  subConfig.hide?.forEach(element => {\n    document.getElementById(element).style.display = 'none';\n  });\n  \n  subConfig.show?.forEach(element => {\n    document.getElementById(element).style.display = 'block';\n  });\n  \n  // Mark required fields\n  subConfig.required?.forEach(field => {\n    document.querySelector(`[name=\"${field}\"]`).setAttribute('required', true);\n  });\n}\n```\n\n**Performance:**\n- Cached server-side for 24 hours\n- Mobile apps should cache locally and refresh daily\n- Fallback config embedded in app for offline support\n\n**Admin Panel:**\n- Admins manage configs at `/admin/category-ui`\n- Changes take effect immediately after cache clear\n- No code deployment required for UI changes"
+    },
+    {
+      "name": "10. Advertising",
+      "description": "**Public Advertising Endpoints**\n\nFetch and display active advertisement banners and sidebars in the mobile app.\n\n**No authentication required.**\n\n**Ad Types:**\n- `banner` \u2013 Full-width horizontal ads (top/bottom of screen)\n- `sidebar` \u2013 Smaller ads (in-feed or side panel)\n\n**Integration Notes:**\n- Poll this endpoint at app launch and cache for session duration\n- Open `url` in an in-app browser on tap\n- Record clicks via the click endpoint for analytics",
+      "item": [
+        {
+          "name": "Get Active Advertisements",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/advertising",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "advertising"
+              ],
+              "query": []
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `GET /api/advertising`\nController: `App\\Http\\Controllers\\Api\\AdvertisingController@index`\n\nReturns all active, non-expired advertisements grouped by type.\n\n**Query Parameters:**\n- `type` (optional): `banner` or `sidebar` \u2014 filter to a specific type\n\n**Response (no type filter):**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"banner\": [\n      {\n        \"id\": 1,\n        \"advert_id\": 12345,\n        \"company\": \"Acme Ltd\",\n        \"image_url\": \"https://marketplace.ng/uploads/advertising/ad.jpg\",\n        \"url\": \"https://acme.com\",\n        \"type\": \"banner\",\n        \"start_date\": \"2026-01-01T00:00:00.000000Z\",\n        \"expires_at\": \"2026-03-01 00:00:00\",\n        \"days_remaining\": 12\n      }\n    ],\n    \"sidebar\": []\n  },\n  \"total\": 1\n}\n```\n\n**Response (with ?type=banner):**\n```json\n{\n  \"success\": true,\n  \"data\": [ ... ],\n  \"total\": 1\n}\n```\n\n**Mobile Implementation:**\n```dart\n// Flutter example\nfinal response = await http.get(\n  Uri.parse('$baseUrl/api/advertising'),\n  headers: {'Accept': 'application/json'},\n);\nfinal ads = json.decode(response.body)['data'];\nfinal banners = ads['banner'];\nfinal sidebars = ads['sidebar'];\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Banner Ads Only",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/advertising?type=banner",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "advertising"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "banner",
+                  "description": "Filter: banner or sidebar"
+                }
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `GET /api/advertising?type=banner`\n\nFetch only banner-type advertisements.\n\n**Use Case:** Display a rotating banner carousel at the top of the home screen.\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"advert_id\": 12345,\n      \"company\": \"Acme Ltd\",\n      \"image_url\": \"https://marketplace.ng/uploads/advertising/banner.jpg\",\n      \"url\": \"https://acme.com\",\n      \"type\": \"banner\",\n      \"expires_at\": \"2026-03-01 00:00:00\",\n      \"days_remaining\": 12\n    }\n  ],\n  \"total\": 1\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Sidebar Ads Only",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/advertising?type=sidebar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "advertising"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "sidebar",
+                  "description": "Filter: banner or sidebar"
+                }
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `GET /api/advertising?type=sidebar`\n\nFetch only sidebar-type advertisements.\n\n**Use Case:** Display small promotional ads between listing cards in a feed."
+          },
+          "response": []
+        },
+        {
+          "name": "Track Ad Click",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/advertising/12345/click",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "advertising",
+                "12345",
+                "click"
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `GET /api/advertising/{advert_id}/click`\nController: `App\\Http\\Controllers\\Api\\AdvertisingController@click`\n\nRecord a click event and get the redirect URL. Call this BEFORE opening the advertiser's URL so clicks can be tracked.\n\n**URL Parameter:**\n- `{advert_id}` \u2013 The `advert_id` value from the advertisement object (NOT the `id`)\n\n**Response (200):**\n```json\n{\n  \"success\": true,\n  \"url\": \"https://acme.com\",\n  \"company\": \"Acme Ltd\"\n}\n```\n\n**Response (404):**\n```json\n{\n  \"success\": false,\n  \"message\": \"Advertisement not found\"\n}\n```\n\n**Mobile Implementation:**\n```dart\n// Flutter example - on ad tap\nFuture<void> onAdTap(int advertId) async {\n  final response = await http.get(\n    Uri.parse('$baseUrl/api/advertising/$advertId/click'),\n  );\n  if (response.statusCode == 200) {\n    final data = json.decode(response.body);\n    // Open URL in browser\n    await launchUrl(Uri.parse(data['url']));\n  }\n}\n```"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "variable": [
