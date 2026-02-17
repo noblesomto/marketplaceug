@@ -2,8 +2,8 @@
 <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="group">
     <div class="h-full flex flex-col">
         <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
-            <!-- Image wrapper with fixed aspect ratio -->
-            <div class="w-full aspect-[4/3.5] overflow-hidden rounded-t-lg relative">
+            <!-- Image wrapper with fixed height for consistent card layout -->
+            <div class="w-full h-[200px] lg:h-[220px] overflow-hidden rounded-t-lg relative">
                 @php
                     $image = $row->getFirstMedia('images');
                 @endphp

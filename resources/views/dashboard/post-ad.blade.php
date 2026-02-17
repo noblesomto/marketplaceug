@@ -662,6 +662,7 @@
                                     <li>• Minimum resolution: <strong>800×600px</strong> (Recommended: <strong>1200×900px</strong>)</li>
                                     <li>• Take photos in good lighting (natural daylight works best)</li>
                                     <li>• Hold steady and ensure subject is in focus</li>
+                                    <li>• Upload a minimum of atleast 3 images</li>
                                     <li>• Avoid screenshots, watermarked, or blurry images</li>
                                 </ul>
                             </div>

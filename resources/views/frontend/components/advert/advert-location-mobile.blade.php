@@ -1,7 +1,7 @@
 <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 h-full flex flex-col">
     <a href="{{ url($row->state_slug . '/' . $row->title_slug .'/'. $row->ad_id) }}" class="block group h-full flex flex-col">
         <!-- Image -->
-        <div class="aspect-[4/3] w-full overflow-hidden relative">
+        <div class="h-[180px] w-full overflow-hidden relative">
             @php
                 $image = $row->getFirstMedia('images');
                 $thumbSmUrl = $image && $image->hasGeneratedConversion('thumb-sm')

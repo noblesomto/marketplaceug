@@ -19,6 +19,7 @@ use App\Helpers\FileUploadHelper;
 use App\Services\AdvertValidationService;
 use App\Services\ImageQualityService;
 use App\Traits\ManagesImages;
+use App\Jobs\PostAdvertJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -418,6 +419,22 @@ class UserManageAdverts extends Controller
 
             DB::commit();
 
+            // ✅ Dispatch follower notification job
+            $seller = auth()->user();
+            if ($seller) {
+                PostAdvertJob::dispatch(
+                    $advert,
+                    $seller,
+                    'New Ad',
+                    $seller->name . ' has placed the ad "' . $advert->ad_title . '"'
+                );
+
+                Log::info('API: Follower notification job dispatched', [
+                    'advert_id' => $advert->ad_id,
+                    'seller_id' => $seller->id
+                ]);
+            }
+
             // Load relationships (media instead of old images)
             $advert->load(['media', 'car', 'phone', 'shippings']);
 
@@ -613,6 +630,9 @@ class UserManageAdverts extends Controller
         try {
             DB::beginTransaction();
 
+            // ✅ Capture old price BEFORE update for price change notification
+            $oldPrice = $advert->getOriginal('price');
+
             $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
             $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
             $filteredWords = array_filter($rawWords, function ($word) {
@@ -645,7 +665,6 @@ class UserManageAdverts extends Controller
                 'shipment' => $request->input('shipment'),
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
-                'ad_image' => "",
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
@@ -778,6 +797,24 @@ class UserManageAdverts extends Controller
             }
 
             DB::commit();
+
+            // ✅ Check if price changed and notify followers
+            $seller = auth()->user();
+            if ($advert->price != $oldPrice && $seller) {
+                PostAdvertJob::dispatch(
+                    $advert,
+                    $seller,
+                    'Price Update',
+                    $seller->name . ' updated the price of ' . $advert->ad_title
+                );
+
+                Log::info('API: Price update notification dispatched', [
+                    'advert_id' => $advert->ad_id,
+                    'seller_id' => $seller->id,
+                    'old_price' => $oldPrice,
+                    'new_price' => $advert->price
+                ]);
+            }
 
             $advert->load(['images', 'car', 'phone', 'shippings']);
 

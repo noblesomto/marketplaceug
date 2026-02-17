@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\DeviceTokenController;
 use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\BoostController;
 use App\Http\Controllers\Api\CategoryUIController;
+use App\Http\Controllers\Api\AdvertisingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,16 @@ Route::get('/search/location/{location}/{slug}', [SearchController::class, 'loca
 Route::get('/search/filters', [SearchController::class, 'getFilters']);
 Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
 Route::get('/search/load-more', [SearchController::class, 'loadMore']);
+
+/*
+|--------------------------------------------------------------------------
+| Advertising Routes (Public)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('advertising')->group(function () {
+    Route::get('/', [AdvertisingController::class, 'index']);       // GET /api/advertising?type=banner
+    Route::get('/{id}/click', [AdvertisingController::class, 'click']); // GET /api/advertising/{id}/click
+});
 
 /*
 |--------------------------------------------------------------------------
