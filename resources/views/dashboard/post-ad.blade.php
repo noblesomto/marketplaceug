@@ -121,7 +121,9 @@
                                 $isImageError = (
                                     str_contains(strtolower($error), 'image') &&
                                     (str_contains(strtolower($error), 'required') ||
-                                     str_contains(strtolower($error), 'select at least one'))
+                                     str_contains(strtolower($error), 'select at least') ||
+                                     str_contains(strtolower($error), 'upload at least') ||
+                                     str_contains(strtolower($error), 'minimum'))
                                 );
                                 $hasTempImages = session('temp_images') && count(session('temp_images')) > 0;
                                 $shouldHideError = $isImageError && $hasTempImages;
@@ -585,7 +587,7 @@
                 </div>
 
                 <!-- Buy Direct Section -->
-                <div id="buyDirect" class="bg-blue-50 border border-blue-100 rounded-xl p-5">
+                <div id="buyDirect" class="hidden bg-blue-50 border border-blue-100 rounded-xl p-5">
                     <label class="block text-md font-semibold text-blue-900 mb-4">Payment Method</label>
 
                     <div class="space-y-4">
@@ -662,7 +664,7 @@
                                     <li>• Minimum resolution: <strong>800×600px</strong> (Recommended: <strong>1200×900px</strong>)</li>
                                     <li>• Take photos in good lighting (natural daylight works best)</li>
                                     <li>• Hold steady and ensure subject is in focus</li>
-                                    <li>• Upload a minimum of atleast 3 images</li>
+                                    <li id="min-images-tip">• <strong>Minimum 3 images required</strong> to post your ad</li>
                                     <li>• Avoid screenshots, watermarked, or blurry images</li>
                                 </ul>
                             </div>
@@ -818,78 +820,93 @@
 <script>
 // Initialize Image Quality Validator
 const imageQualityValidator = new ImageQualityValidator();
-let selectedImages = [];
+// Accumulates files across multiple picker selections
+let accumulatedDT = new DataTransfer();
 let validationResults = [];
 
-// Function to remove validation result
-function removeValidationResult(index) {
-    const resultElement = document.getElementById(`validation-result-${index}`);
-    if (resultElement) {
-        resultElement.remove();
-
-        // Check if any validation results remain
-        const validationContainer = document.getElementById('validation-results');
-        const remainingResults = validationContainer.querySelectorAll('.image-validation-result');
-
-        if (remainingResults.length === 0) {
-            validationContainer.classList.add('hidden');
-            // Also hide error message if no results
-            const errorDiv = document.getElementById('image-error');
-            errorDiv.classList.add('hidden');
-        }
-    }
-}
-
-// Handle image selection and validation
-document.getElementById('imageUpload').addEventListener('change', async function(e) {
-    const files = Array.from(e.target.files);
+// Render and validate ALL currently accumulated files
+async function renderValidationResults() {
+    const imageInput    = document.getElementById('imageUpload');
     const validationContainer = document.getElementById('validation-results');
-    const errorDiv = document.getElementById('image-error');
+    const errorDiv      = document.getElementById('image-error');
+    const allFiles      = Array.from(accumulatedDT.files);
 
-    // Clear previous results
     validationContainer.innerHTML = '';
-    validationContainer.classList.add('hidden');
     errorDiv.classList.add('hidden');
     validationResults = [];
 
-    if (files.length === 0) return;
+    if (allFiles.length === 0) {
+        validationContainer.classList.add('hidden');
+        return;
+    }
 
     validationContainer.classList.remove('hidden');
 
-    // Validate each image
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const result = await imageQualityValidator.validateImage(file);
+    for (let i = 0; i < allFiles.length; i++) {
+        const result = await imageQualityValidator.validateImage(allFiles[i]);
         result.fileIndex = i;
         validationResults.push(result);
 
-        // Display validation result
-        const resultHTML = imageQualityValidator.generateResultHTML(result, file.name, i);
-        const resultDiv = document.createElement('div');
+        const resultHTML = imageQualityValidator.generateResultHTML(result, allFiles[i].name, i);
+        const resultDiv  = document.createElement('div');
         resultDiv.innerHTML = resultHTML;
         validationContainer.appendChild(resultDiv.firstElementChild);
-
-        // Only add to preview if valid or has warnings (not errors)
-        if (result.valid || result.errors.length === 0) {
-            selectedImages.push(file);
-        }
     }
 
-    // Show summary if there are any validation issues
-    const hasErrors = validationResults.some(r => !r.valid);
+    // Sync input.files with the accumulated set so the form submits all of them
+    imageInput.files = accumulatedDT.files;
 
+    const hasErrors = validationResults.some(r => !r.valid);
     if (hasErrors) {
         errorDiv.innerHTML = '<strong>⚠️ Quality Issues:</strong> Some images don\'t meet requirements. Fix or remove them before posting.';
         errorDiv.classList.remove('hidden');
+        return;
     }
 
-    // Log validation summary
-    console.log('Image Validation Summary:', {
-        total: files.length,
-        valid: validationResults.filter(r => r.valid).length,
-        invalid: validationResults.filter(r => !r.valid).length,
-        avgScore: (validationResults.reduce((sum, r) => sum + r.score, 0) / validationResults.length).toFixed(1)
+    const countValidation = imageQualityValidator.validateMinimumCount(accumulatedDT.files);
+    if (!countValidation.valid) {
+        errorDiv.innerHTML = '<strong>⚠️ Not Enough Images:</strong> ' + countValidation.error;
+        errorDiv.classList.remove('hidden');
+    }
+}
+
+// Remove a specific image by its index in the accumulated list
+function removeValidationResult(index) {
+    const newDT = new DataTransfer();
+    Array.from(accumulatedDT.files).forEach((file, i) => {
+        if (i !== index) newDT.items.add(file);
     });
+    accumulatedDT = newDT;
+    renderValidationResults();
+}
+
+// Each new picker selection ADDS to the accumulated list (not replaces)
+document.getElementById('imageUpload').addEventListener('change', function(e) {
+    Array.from(e.target.files).forEach(file => accumulatedDT.items.add(file));
+    renderValidationResults();
+});
+
+// ✅ MINIMUM IMAGE COUNT: Block form submission if fewer than 3 images
+document.querySelector('form[action="/user/post-ad"]').addEventListener('submit', function(e) {
+    const imageInput = document.getElementById('imageUpload');
+    const tempImagePaths = document.querySelectorAll('input[name="temp_image_paths[]"]');
+    const categoryId = parseInt(document.getElementById('category')?.value || 0);
+    const isJobsCategory = categoryId === 3 || categoryId === 18;
+
+    // Count total images: new uploads + retained temp images
+    const newImageCount = imageInput ? imageInput.files.length : 0;
+    const tempImageCount = tempImagePaths.length;
+    const totalImages = newImageCount + tempImageCount;
+
+    if (!isJobsCategory && totalImages < 3) {
+        e.preventDefault();
+        const errorDiv = document.getElementById('image-error');
+        if (errorDiv) {
+            errorDiv.innerHTML = '<strong>⚠️ Minimum 3 Images Required:</strong> Please upload at least 3 images to post your ad. You currently have ' + totalImages + '.';
+            errorDiv.classList.remove('hidden');
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
 });
 
 {{-- ✅ RESTORE OLD VALUES ON VALIDATION ERROR --}}
@@ -914,7 +931,6 @@ function removeTempImage(index) {
 window.addEventListener('load', function() {
     // Wait a bit to ensure all scripts are initialized
     setTimeout(async function() {
-        console.log('🔄 Starting form value restoration...');
 
         // Get old values from data attributes
         const oldCategory = document.getElementById('category')?.dataset.oldValue;
@@ -924,7 +940,6 @@ window.addEventListener('load', function() {
         const oldState = document.getElementById('state')?.dataset.oldValue;
         const oldLga = document.getElementById('lga')?.dataset.oldValue;
 
-        console.log('Old values found:', {oldCategory, oldSubcategory, oldBrand, oldModel, oldState, oldLga});
 
         // 🚗 PRESERVE CAR DETAIL VALUES BEFORE RESTORATION
         // Store current values from car fields before JavaScript clears them
@@ -941,7 +956,6 @@ window.addEventListener('load', function() {
                     carFieldValues[field.name] = field.value;
                 }
             });
-            console.log('🚗 Car field values preserved:', carFieldValues);
         }
 
         // 📱 PRESERVE PHONE DETAIL VALUES
@@ -953,7 +967,6 @@ window.addEventListener('load', function() {
                     phoneFieldValues[field.name] = field.value;
                 }
             });
-            console.log('📱 Phone field values preserved:', phoneFieldValues);
         }
 
         // Helper function to wait for dropdown to be populated
@@ -962,10 +975,8 @@ window.addEventListener('load', function() {
                 const startTime = Date.now();
                 const checkOptions = () => {
                     if (select.options.length > minOptions) {
-                        console.log(`✅ ${select.id} populated with ${select.options.length} options`);
                         resolve();
                     } else if (Date.now() - startTime > maxWait) {
-                        console.warn(`⏱️ Timeout waiting for ${select.id} to populate`);
                         reject();
                     } else {
                         setTimeout(checkOptions, 150);
@@ -979,7 +990,6 @@ window.addEventListener('load', function() {
         const setSelectValue = async (selectId, value, waitForPopulation = true) => {
             const select = document.getElementById(selectId);
             if (!select || !value) {
-                console.warn(`⚠️ ${selectId} not found or no value to set`);
                 return false;
             }
 
@@ -993,7 +1003,6 @@ window.addEventListener('load', function() {
 
                 // Verify it was set
                 if (select.value == value) {
-                    console.log(`✅ ${selectId} set to: ${value}`);
                     // Trigger change event
                     select.dispatchEvent(new Event('change', { bubbles: true }));
                     return true;
@@ -1010,31 +1019,26 @@ window.addEventListener('load', function() {
         try {
             // Restore category → subcategory → brand → model chain
             if (oldCategory) {
-                console.log('📂 Restoring category:', oldCategory);
                 const categorySelect = document.getElementById('category');
                 if (categorySelect) {
                     // Set category (already populated)
                     categorySelect.value = oldCategory;
-                    console.log('✅ Category set to:', oldCategory);
 
                     // Trigger change to populate subcategories
                     categorySelect.dispatchEvent(new Event('change', { bubbles: true }));
 
                     // Wait for subcategories to load, then restore
                     if (oldSubcategory) {
-                        console.log('📂 Waiting for subcategories...');
                         await waitForOptions(document.getElementById('subcategory'));
                         await setSelectValue('subcategory', oldSubcategory);
 
                         // Wait for brands to load, then restore
                         if (oldBrand) {
-                            console.log('📂 Waiting for brands...');
                             await waitForOptions(document.getElementById('brand'));
                             await setSelectValue('brand', oldBrand);
 
                             // Wait for models to load, then restore
                             if (oldModel) {
-                                console.log('📂 Waiting for models...');
                                 await waitForOptions(document.getElementById('model'));
                                 await setSelectValue('model', oldModel);
                             }
@@ -1045,12 +1049,10 @@ window.addEventListener('load', function() {
 
             // Restore state → LGA chain (independent of category)
             if (oldState) {
-                console.log('🌍 Restoring state:', oldState);
                 const stateSelect = document.getElementById('state');
                 if (stateSelect) {
                     // State is already populated, just set value
                     stateSelect.value = oldState;
-                    console.log('✅ State set to:', oldState);
 
                     // Trigger LGA population
                     if (typeof toggleLGA === 'function') {
@@ -1061,7 +1063,6 @@ window.addEventListener('load', function() {
 
                     // Wait for LGAs to load, then restore
                     if (oldLga) {
-                        console.log('📂 Waiting for LGAs...');
                         await waitForOptions(document.getElementById('lga'));
                         await setSelectValue('lga', oldLga);
                     }
@@ -1071,7 +1072,6 @@ window.addEventListener('load', function() {
             // Restore shipping visibility if "Ship" was selected
             const shipmentShip = document.querySelector('input[name="shipment"][value="Ship"]');
             if (shipmentShip && shipmentShip.checked) {
-                console.log('🚚 Restoring shipping visibility');
                 const shippingDiv = document.getElementById('shipping');
                 if (shippingDiv) {
                     shippingDiv.classList.remove('hidden');
@@ -1083,7 +1083,6 @@ window.addEventListener('load', function() {
             await new Promise(resolve => setTimeout(resolve, 300));
 
             if (Object.keys(carFieldValues).length > 0) {
-                console.log('🚗 Restoring car detail values...');
                 const divCar = document.getElementById('divCar');
                 if (divCar && !divCar.classList.contains('hidden')) {
                     Object.keys(carFieldValues).forEach(fieldName => {
@@ -1105,26 +1104,21 @@ window.addEventListener('load', function() {
                                 // Restore input/select values
                                 field.value = carFieldValues[fieldName];
                             }
-                            console.log(`  ✅ Restored ${fieldName}:`, carFieldValues[fieldName]);
                         }
                     });
-                    console.log('✅ Car details restored!');
                 }
             }
 
             // 📱 RESTORE PHONE DETAIL VALUES
             if (Object.keys(phoneFieldValues).length > 0) {
-                console.log('📱 Restoring phone detail values...');
                 const divPhone = document.getElementById('divPhone');
                 if (divPhone && !divPhone.classList.contains('hidden')) {
                     Object.keys(phoneFieldValues).forEach(fieldName => {
                         const field = document.querySelector(`[name="${fieldName}"]`);
                         if (field) {
                             field.value = phoneFieldValues[fieldName];
-                            console.log(`  ✅ Restored ${fieldName}:`, phoneFieldValues[fieldName]);
                         }
                     });
-                    console.log('✅ Phone details restored!');
                 }
             }
 
@@ -1138,7 +1132,6 @@ window.addEventListener('load', function() {
                     const salaryError = document.querySelector('.salary-error');
                     if (salaryError) {
                         salaryError.style.display = 'none';
-                        console.log('🔒 Hidden salary validation error (field not visible)');
                     }
                 }
 
@@ -1146,12 +1139,10 @@ window.addEventListener('load', function() {
                     const expectedSalaryError = document.querySelector('.expected-salary-error');
                     if (expectedSalaryError) {
                         expectedSalaryError.style.display = 'none';
-                        console.log('🔒 Hidden expected_salary validation error (field not visible)');
                     }
                 }
             }, 100);
 
-            console.log('✅ Form restoration completed!');
         } catch (error) {
             console.error('❌ Error during form restoration:', error);
         }

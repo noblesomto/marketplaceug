@@ -47,6 +47,9 @@
                                 : $image->getUrl('thumbnail'))
                             : asset('frontend/images/default.png') }}"
                         alt="{{ $row->ad_title }}"
+                        width="800" height="600"
+                        loading="{{ $loop->index < 2 ? 'eager' : 'lazy' }}"
+                        decoding="async"
                         class="w-full h-full object-cover"
                     />
                   <div class="absolute top-1 right-1 space-y-1">
@@ -200,6 +203,9 @@
                                 : $image->getUrl('thumbnail'))
                             : asset('frontend/images/default.png') }}"
                         alt="{{ $row->ad_title }}"
+                        width="800" height="600"
+                        loading="{{ $loop->index < 2 ? 'eager' : 'lazy' }}"
+                        decoding="async"
                         class="w-full h-full object-cover"
                     />
                   <div class="absolute top-1 right-1 space-y-1">
@@ -355,6 +361,9 @@
                                 : $image->getUrl('thumbnail'))
                             : asset('frontend/images/default.png') }}"
                         alt="{{ $row->ad_title }}"
+                        width="800" height="600"
+                        loading="{{ $loop->index < 2 ? 'eager' : 'lazy' }}"
+                        decoding="async"
                         class="w-full h-full object-cover"
                     />
                   <div class="absolute top-1 right-1 space-y-1">
@@ -509,6 +518,9 @@
                                 : $image->getUrl('thumbnail'))
                             : asset('frontend/images/default.png') }}"
                         alt="{{ $row->ad_title }}"
+                        width="800" height="600"
+                        loading="{{ $loop->index < 2 ? 'eager' : 'lazy' }}"
+                        decoding="async"
                         class="w-full h-full object-cover"
                     />
                   <div class="absolute top-1 right-1 space-y-1">

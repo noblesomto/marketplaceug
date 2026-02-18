@@ -38,6 +38,7 @@
 	font-family: 'Helvetica';
 	font-style: normal;
 	font-weight: normal;
+	font-display: swap;
 	src:  url('../public/assets/fonts/Helvetica.woff') format('woff');
 }
 

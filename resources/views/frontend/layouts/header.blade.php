@@ -9,10 +9,6 @@
      {{-- Preload critical font --}}
 <link rel="preload" href="{{ asset('assets/bootstrap-icons.woff2') }}" as="font" type="font/woff2" crossorigin>
 
-{{-- Preload LCP image if you know it --}}
-<link rel="preload" href="{{ asset('images/logo.png') }}" as="image">
-
-
      <!-- SEO Meta Tags -->
     <meta name="description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.">
     <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
@@ -95,23 +91,18 @@ $websiteSchema = [
             $firstMedia = $gallery[0]->getFirstMedia('images');
         @endphp
         @if($firstMedia)
+            {{-- Mobile: preload thumb-sm (600×450) --}}
             <link rel="preload" as="image"
                   href="{{ $firstMedia->hasGeneratedConversion('thumb-sm') ? $firstMedia->getUrl('thumb-sm') : $firstMedia->getUrl('thumbnail') }}"
+                  media="(max-width: 767px)"
+                  fetchpriority="high">
+            {{-- Desktop: preload thumb-md (800×600) --}}
+            <link rel="preload" as="image"
+                  href="{{ $firstMedia->hasGeneratedConversion('thumb-md') ? $firstMedia->getUrl('thumb-md') : $firstMedia->getUrl('thumbnail') }}"
+                  media="(min-width: 768px)"
                   fetchpriority="high">
         @endif
     @endif
-
-    @if(isset($listings[0]))
-        @php
-            $firstImage = $listings[0]->getFirstMedia('images');
-        @endphp
-        @if($firstImage)
-            <link rel="preload" as="image"
-                  href="{{ $firstImage->hasGeneratedConversion('thumb-sm') ? $firstImage->getUrl('thumb-sm') : $firstImage->getUrl('thumbnail') }}"
-                  fetchpriority="high"
-                  media="(max-width: 640px)">
-        @endif
-    @endif  {{-- This was missing --}}
 
 @include('frontend.layouts.header-links')
 

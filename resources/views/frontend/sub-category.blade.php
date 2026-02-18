@@ -223,11 +223,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const adsContainer = document.getElementById('ads-container');
 
     const filters = {
-        @if(isset($filterType) && isset($filterId))
-        {{ $filterType }}: {{ $filterIsString ?? false ? "'".$filterId."'" : $filterId }}
+        @if(isset($subcat))
+        sub_category: {{ $subcat->id }},
         @endif
         @if(isset($location))
-        , location: '{{ $location }}'
+        location: '{{ $location }}',
         @endif
     };
 
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ...filters
             });
 
-            fetch(`{{ route('adverts.loadMore') }}?${params}`)
+            fetch(`{{ route('search.loadMore') }}?${params}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.html) {

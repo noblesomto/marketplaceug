@@ -189,7 +189,8 @@ class UserManageAdverts extends Controller
 
             // Custom validation messages
             $messages = [
-                'images.required' => 'Please select at least one image.',
+                'images.required' => 'Please upload at least 3 images.',
+                'images.min'      => 'Please upload at least 3 images.',
                 'images.*.image' => 'All files must be images.',
                 'images.*.mimes' => 'Images must be jpeg, png, jpg, or gif format.',
                 'images.*.max' => 'Each image must not exceed 20MB.',
@@ -314,8 +315,8 @@ class UserManageAdverts extends Controller
 
                 // Process all images
                 $this->processAdvertImages($imagesToProcess, $advert);
-            } elseif ($request->input('category') == 3) {
-                // Add default image for jobs category
+            } elseif (in_array($request->input('category'), [3, 18])) {
+                // Add default image for jobs/CV categories
                 $advert->addDefaultImage('jobs.png');
             }
 
@@ -514,14 +515,11 @@ class UserManageAdverts extends Controller
                 $currentImageCount = $advert->getMedia('images')->count();
                 $requestedDeleteCount = count($deletedImages);
 
-                // Validate: must have at least 1 image remaining
-                if ($currentImageCount <= 1) {
+                // Validate: must have at least 3 images remaining
+                $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
+                if ($remainingAfterDelete < 3) {
                     return redirect()->back()->withErrors([
-                        'deleted_images' => 'Cannot delete image. Advert must have at least one image.'
-                    ]);
-                } elseif ($requestedDeleteCount >= $currentImageCount) {
-                    return redirect()->back()->withErrors([
-                        'deleted_images' => 'Cannot delete all images. At least one image must remain.'
+                        'deleted_images' => 'Cannot delete those images. Adverts must have at least 3 images.'
                     ]);
                 } else {
                     // Proceed with deletion
@@ -616,18 +614,20 @@ class UserManageAdverts extends Controller
             $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
         }
 
-        // Validate final image count - ensure at least 1 image exists
+        // Validate final image count - ensure at least 3 images exist
         $finalImageCount = $advert->getMedia('images')->count();
 
-        if ($finalImageCount < 1) {
-            if ($category == 3) {
-                // Add default image for jobs category if no images exist
-                $advert->addDefaultImage('jobs.png');
-                $messages[] = "Default job image added";
+        if ($finalImageCount < 3) {
+            if (in_array($category, [3, 18])) {
+                // Add default image for jobs/CV categories if no images exist
+                if ($finalImageCount < 1) {
+                    $advert->addDefaultImage('jobs.png');
+                    $messages[] = "Default job image added";
+                }
             } else {
-                // For all other categories, at least 1 image is required
+                // For all other categories, at least 3 images are required
                 return redirect()->back()->withErrors([
-                    'images' => 'Advert must have at least one image. Please upload an image.'
+                    'images' => 'Advert must have at least 3 images. Please upload more images.'
                 ])->withInput();
             }
         }

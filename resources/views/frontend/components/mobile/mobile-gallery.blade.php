@@ -34,7 +34,7 @@
                                 fetchpriority="high"
                             @endif
                             @if($media)
-                                srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                                srcset="{{ $thumbnailUrl }} 400w, {{ $thumbSmUrl }} 600w"
                                 sizes="(max-width: 768px) 45vw, 25vw"
                             @endif
                             src="{{ $thumbSmUrl }}"
@@ -49,7 +49,7 @@
                             height="262"
                             loading="lazy"
                             @if($media)
-                                srcset="{{ $thumbSmUrl }} 300w, {{ $thumbnailUrl }} 150w"
+                                srcset="{{ $thumbnailUrl }} 400w, {{ $thumbSmUrl }} 600w"
                                 sizes="(max-width: 768px) 45vw, 25vw"
                             @endif
                             src="{{ $thumbSmUrl }}"

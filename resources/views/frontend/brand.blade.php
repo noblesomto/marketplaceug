@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ...filters
             });
 
-            fetch(`{{ route('adverts.loadMore') }}?${params}`)
+            fetch(`{{ route('search.loadMore') }}?${params}`)
                 .then(response => response.json())
                 .then(data => {
                     // Append new ads

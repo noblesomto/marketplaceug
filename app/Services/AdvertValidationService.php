@@ -42,8 +42,8 @@ class AdvertValidationService
 
         // ✅ Images required only for create (not for jobs category)
         // Skip image requirement if temp images exist (from previous validation error)
-        if (!$isUpdate && $categoryId != 3 && !$hasTempImages) {
-            $rules['images'] = 'required|array';
+        if (!$isUpdate && !in_array($categoryId, [3, 18]) && !$hasTempImages) {
+            $rules['images'] = 'required|array|min:3';
         }
 
         // Add conditional rules based on UI config

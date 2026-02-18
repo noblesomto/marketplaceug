@@ -15,8 +15,9 @@
                             : $image->getUrl('thumbnail'))
                         : asset('frontend/images/default.png') }}"
                     alt="{{ $row->ad_title }}"
-                    fetchpriority="high"
+                    width="800" height="600"
                     loading="lazy"
+                    decoding="async"
                     class="w-full h-full object-cover"
                 />
 

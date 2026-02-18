@@ -339,6 +339,15 @@ class UserManageAdverts extends Controller
                     ], 422);
                 }
 
+                // Enforce minimum 3 images for non-jobs/CV categories
+                if (!in_array($category, [3, 18]) && $imageCount < 3) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['images' => ['Please upload at least 3 images.']]
+                    ], 422);
+                }
+
                 // Process images using Spatie Media Library
                 $images = $request->file('images');
                 $order = explode(',', $request->input('image_order', ''));
@@ -373,8 +382,8 @@ class UserManageAdverts extends Controller
                     'quality_rating' => $imageQualityService->getQualityRating($avgScore)
                 ]);
 
-            } elseif ($category == 3) {
-                // Add default image for jobs using Spatie
+            } elseif (in_array($category, [3, 18])) {
+                // Add default image for jobs/CV categories using Spatie
                 $advert->addDefaultImage('jobs.png');
             }
 
@@ -684,17 +693,13 @@ class UserManageAdverts extends Controller
                     $requestedDeleteCount = count($deletedImages);
                     $hasNewImages = $request->hasFile('images');
 
-                    // Validate: must have at least 1 image remaining (unless category 3 - Jobs)
-                    if ($category != 3) {
-                        if ($currentImageCount <= 1 && !$hasNewImages) {
+                    // Validate: must have at least 3 images remaining (unless Jobs/CV categories)
+                    if (!in_array($category, [3, 18])) {
+                        $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
+                        if ($remainingAfterDelete < 3 && !$hasNewImages) {
                             return response()->json([
                                 'success' => false,
-                                'errors' => ['deleted_images' => ['Cannot delete image. Advert must have at least one image.']]
-                            ], 422);
-                        } elseif ($requestedDeleteCount >= $currentImageCount && !$hasNewImages) {
-                            return response()->json([
-                                'success' => false,
-                                'errors' => ['deleted_images' => ['Cannot delete all images. At least one image must remain.']]
+                                'errors' => ['deleted_images' => ['Cannot delete those images. Adverts must have at least 3 images.']]
                             ], 422);
                         }
                     }
@@ -739,22 +744,24 @@ class UserManageAdverts extends Controller
                 }
             }
 
-            // Validate final image count - ensure at least 1 image exists
+            // Validate final image count - ensure at least 3 images exist
             $finalImageCount = $advert->images()->count();
 
-            if ($finalImageCount < 1) {
-                if ($category == 3) {
-                    // Add default image for jobs category if no images exist
-                    $advert->images()->create([
-                        'image' => 'jobs.png',
-                        'position' => 1,
-                    ]);
+            if ($finalImageCount < 3) {
+                if (in_array($category, [3, 18])) {
+                    // Jobs/CV category: add default image if none exist
+                    if ($finalImageCount < 1) {
+                        $advert->images()->create([
+                            'image' => 'jobs.png',
+                            'position' => 1,
+                        ]);
+                    }
                 } else {
-                    // For all other categories, at least 1 image is required
+                    // For all other categories, at least 3 images are required
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'errors' => ['images' => ['Advert must have at least one image. Please upload an image.']]
+                        'errors' => ['images' => ['Advert must have at least 3 images. Please upload more images.']]
                     ], 422);
                 }
             }
@@ -881,8 +888,8 @@ class UserManageAdverts extends Controller
                 ], 404);
             }
 
-            // Delete media images except job category
-            if ($advert->category != 3) {
+            // Delete media images except jobs/CV categories
+            if (!in_array($advert->category, [3, 18])) {
                 $advert->clearMediaCollection('images');
             }
 

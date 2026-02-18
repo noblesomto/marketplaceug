@@ -24,7 +24,7 @@
                         fetchpriority="high"
                     @endif
                     @if($image)
-                        srcset="{{ $thumbnailUrl }} 200w, {{ $thumbSmUrl }} 400w"
+                        srcset="{{ $thumbnailUrl }} 400w, {{ $thumbSmUrl }} 600w"
                         sizes="50vw"
                     @endif
                 />
@@ -36,7 +36,7 @@
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                     @if($image)
-                        srcset="{{ $thumbnailUrl }} 200w, {{ $thumbSmUrl }} 400w"
+                        srcset="{{ $thumbnailUrl }} 400w, {{ $thumbSmUrl }} 600w"
                         sizes="50vw"
                     @endif
                 />
