@@ -268,6 +268,23 @@ class ImageQualityValidator {
     }
 
     /**
+     * Validate that enough images have been selected
+     * @param {FileList|Array} files - Selected image files
+     * @param {number} minCount - Minimum required (default: 3)
+     * @returns {Object} {valid: boolean, error: string|null}
+     */
+    validateMinimumCount(files, minCount = 3) {
+        const count = files ? files.length : 0;
+        if (count < minCount) {
+            return {
+                valid: false,
+                error: `Please upload at least ${minCount} images. You have selected ${count}.`
+            };
+        }
+        return { valid: true, error: null };
+    }
+
+    /**
      * Display quality tips
      * @returns {string} HTML with tips
      */

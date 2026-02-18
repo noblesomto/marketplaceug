@@ -96,7 +96,7 @@ const CONFIG = {
 
 
     // Elements that start hidden on page load
-    initiallyHidden: ["divCar", "divPhone", "divModel", "salary", "expectedSalary", "services"],
+    initiallyHidden: ["divCar", "divPhone", "divModel", "salary", "expectedSalary", "services", "buyDirect"],
 
     // All manageable element IDs
     managedElements: [
@@ -306,6 +306,18 @@ class ShippingManager {
             this.shippingDiv.classList.toggle("hidden", !isShipping);
         }
 
+        // Show buyDirect only when "Shipping Possible" is selected and the shipment
+        // section is visible (i.e. not hidden by category rules)
+        const shipmentSection = document.getElementById("shipment");
+        const buyDirectDiv = document.getElementById("buyDirect");
+        if (buyDirectDiv && shipmentSection && !shipmentSection.classList.contains("hidden")) {
+            if (isShipping) {
+                buyDirectDiv.classList.remove("hidden");
+            } else {
+                buyDirectDiv.classList.add("hidden");
+            }
+        }
+
         // Clear error if switching to Pickup
         if (!isShipping && this.errorMsg) {
             this.errorMsg.classList.add("hidden");
@@ -378,6 +390,19 @@ class FormController {
             // Apply visibility rules (this now resets all elements first)
             this.visibilityManager.applyCategoryRules(categoryId);
 
+            // Re-apply shipping state so buyDirect respects the Ship/Pickup selection
+            this.shippingManager.toggleShippingVisibility();
+
+            // Hide the minimum-images tip for Jobs/CV categories (IDs 3 & 18) — no images required
+            const minImagesTip = document.getElementById("min-images-tip");
+            if (minImagesTip) {
+                if (categoryId === "3" || categoryId === "18") {
+                    minImagesTip.classList.add("hidden");
+                } else {
+                    minImagesTip.classList.remove("hidden");
+                }
+            }
+
             // Fetch and populate subcategories
             await DropdownManager.fetchAndPopulate(
                 `/fetch-subcat/${categoryId}`,
@@ -428,6 +453,9 @@ class FormController {
 
             // Apply subcategory-specific visibility rules
             this.visibilityManager.applySubcategoryRules(subcategoryId);
+
+            // Re-apply shipping state so buyDirect respects the Ship/Pickup selection
+            this.shippingManager.toggleShippingVisibility();
 
             // Update label based on subcategory
             LabelManager.updateSubCategoryLabel(subcategoryId);
@@ -501,14 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // LEGACY FUNCTION SUPPORT (for backward compatibility)
 // ============================================================================
 
-// Legacy function for backward compatibility - redirects to new implementation
-function showHideDiv(categoryId, subcategoryId) {
-    console.warn('showHideDiv() is deprecated. The new system handles this automatically.');
-    // If you need to manually trigger visibility, use:
-    // const formController = new FormController();
-    // formController.visibilityManager.applyCategoryRules(categoryId);
-    // formController.visibilityManager.applySubcategoryRules(subcategoryId);
-}
+// Legacy no-op kept for backward compatibility
+function showHideDiv() {}
 
 // Keep this function if it's called elsewhere in your codebase
 function toggleShipping() {
@@ -517,6 +539,17 @@ function toggleShipping() {
 
     if (shippingDiv) {
         shippingDiv.classList.toggle("hidden", !isShipping);
+    }
+
+    // Show buyDirect only when Shipping Possible is selected
+    const shipmentSection = document.getElementById("shipment");
+    const buyDirectDiv = document.getElementById("buyDirect");
+    if (buyDirectDiv && shipmentSection && !shipmentSection.classList.contains("hidden")) {
+        if (isShipping) {
+            buyDirectDiv.classList.remove("hidden");
+        } else {
+            buyDirectDiv.classList.add("hidden");
+        }
     }
 
     if (!isShipping) {

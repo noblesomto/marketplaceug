@@ -200,58 +200,53 @@ class Advert extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // Optimized version - no size constraints, just format and quality optimization
+        // Optimized version - full-size for detail/gallery pages
         $this->addMediaConversion('optimized')
             ->format('webp')
-            ->quality(65)
+            ->quality(80)
             ->width(1600)
             ->fit(Fit::Max)
-            ->optimize()
             ->performOnCollections('images')
             ->nonQueued();
 
-        // Responsive versions
+        // Large – social sharing, detail pages
         $this->addMediaConversion('large')
             ->format('webp')
-            ->quality(70)
+            ->quality(80)
             ->width(1200)
             ->fit(Fit::Max)
-            ->optimize()
             ->performOnCollections('images')
             ->nonQueued();
 
-
+        // Square thumbnail – fallback
         $this->addMediaConversion('thumbnail')
             ->format('webp')
-            ->quality(70)
-            ->width(300)
-            ->height(300)
+            ->quality(80)
+            ->width(400)
+            ->height(400)
             ->fit(Fit::Crop)
-            ->optimize()
             ->performOnCollections('images')
             ->nonQueued();
 
-        // New – mobile optimized
+        // Mobile card – 2× resolution for HiDPI screens (displayed at ~300×225)
         $this->addMediaConversion('thumb-sm')
             ->format('webp')
-            ->quality(60)
-            ->width(300)
-            ->height(225)
+            ->quality(80)
+            ->width(600)
+            ->height(450)
             ->fit(Fit::Crop)
-            ->optimize()
             ->performOnCollections('images')
-            ->nonQueued(); // Add this
+            ->nonQueued();
 
-        // New – desktop optimized
+        // Desktop card – 2× resolution for HiDPI screens (displayed at ~400×300)
         $this->addMediaConversion('thumb-md')
             ->format('webp')
-            ->quality(60)
-            ->width(400)
-            ->height(300)
+            ->quality(80)
+            ->width(800)
+            ->height(600)
             ->fit(Fit::Crop)
-            ->optimize()
             ->performOnCollections('images')
-            ->nonQueued(); // Add this
+            ->nonQueued();
 
 
     }
