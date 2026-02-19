@@ -321,15 +321,18 @@ if (!function_exists('get_brands_with_advert_count')) {
 if (!function_exists('getUserNotifications')) {
     function getUserNotifications($limit = 10)
     {
-        $userCode = Session::get('user_id'); // your 5-char session value
-        $user     = User::where('user_id', $userCode)->first();
+        // Try session first (web), then fall back to API token auth
+        // Auth::id() returns the model's primary key (user_id = 5-char code)
+        $userCode = Session::get('user_id') ?? (Auth::check() ? Auth::id() : null);
+
+        $user = User::where('user_id', $userCode)->first();
 
         if (!$user) {
-            return collect(); // no logged in user
+            return collect();
         }
 
         return Notification::with('seller', 'advert')
-            ->where('user_id', $user->id) // FK is users.id
+            ->where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
@@ -339,8 +342,11 @@ if (!function_exists('getUserNotifications')) {
 if (!function_exists('getUserNotificationCount')) {
     function getUserNotificationCount()
     {
-        $userCode = Session::get('user_id');
-        $user     = User::where('user_id', $userCode)->first();
+        // Try session first (web), then fall back to API token auth
+        // Auth::id() returns the model's primary key (user_id = 5-char code)
+        $userCode = Session::get('user_id') ?? (Auth::check() ? Auth::id() : null);
+
+        $user = User::where('user_id', $userCode)->first();
 
         if (!$user) {
             return 0;

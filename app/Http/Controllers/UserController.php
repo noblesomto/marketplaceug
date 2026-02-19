@@ -324,12 +324,11 @@ class UserController extends Controller
         $userId = $request->session()->get('user_id');
         $user = User::findOrFail($userId);
 
-        // Eager load advert and its firstImage
-        $buyAds = Payment::with(['advert.firstImage','shipping'])
+        $buyAds = Payment::with(['advert.media', 'shipping'])
             ->where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        //dd($buyAds);
+
         return view('dashboard.payments', [
             'title' => "Buy Direct Adverts | " . config('global.site_name'),
             'user' => $user,

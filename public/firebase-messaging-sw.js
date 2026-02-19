@@ -7,13 +7,15 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compa
 // Initialize the Firebase app in the service worker
 // 🔥 IMPORTANT: Replace with YOUR Firebase config
 firebase.initializeApp({
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAJ4cUzBdwCS6117NhnqZwtvom8V5qoizQ",
+    authDomain: "marketplacenaija.firebaseapp.com",
+    projectId: "marketplacenaija",
+    storageBucket: "marketplacenaija.firebasestorage.app",
+    messagingSenderId: "1012615360042",
+    appId: "1:1012615360042:web:e440cb7833d7732af99d53"
 });
+
+
 
 // Retrieve an instance of Firebase Messaging
 const messaging = firebase.messaging();

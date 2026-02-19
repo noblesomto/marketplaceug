@@ -57,6 +57,7 @@ class UserStatsController extends Controller
      *   "message": "User not authenticated"
      * }
      */
+    // GET /api/user/stats
     public function getUserStats(Request $request)
     {
         try {
@@ -116,6 +117,7 @@ class UserStatsController extends Controller
      *   "error": "Error details"
      * }
      */
+    // GET /api/user/{userId}/followers
     public function getUserFollowers($userId)
     {
         try {
@@ -181,6 +183,7 @@ class UserStatsController extends Controller
      *   "message": "User not found"
      * }
      */
+    // GET /api/user/{userId}/feedback
     public function getUserFeedback($userId)
     {
         try {
@@ -233,6 +236,7 @@ class UserStatsController extends Controller
      *   "message": "User not authenticated"
      * }
      */
+    // GET /api/user/unread-messages
     public function getUnreadMessagesCount()
     {
         try {
@@ -302,6 +306,7 @@ class UserStatsController extends Controller
      *   "message": "User not authenticated"
      * }
      */
+    // GET /api/user/notifications
     public function getNotifications(Request $request)
     {
         try {

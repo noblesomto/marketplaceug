@@ -428,17 +428,17 @@ class UserManageAdverts extends Controller
 
             DB::commit();
 
-            // ✅ Dispatch follower notification job
+            // Notify followers after response is sent (no queue worker required)
             $seller = auth()->user();
             if ($seller) {
-                PostAdvertJob::dispatch(
+                PostAdvertJob::dispatchAfterResponse(
                     $advert,
                     $seller,
                     'New Ad',
                     $seller->name . ' has placed the ad "' . $advert->ad_title . '"'
                 );
 
-                Log::info('API: Follower notification job dispatched', [
+                Log::info('API: Follower notification dispatched after response', [
                     'advert_id' => $advert->ad_id,
                     'seller_id' => $seller->id
                 ]);
@@ -523,7 +523,8 @@ class UserManageAdverts extends Controller
                 'advert' => $advert,
                 'subcategories' => $subcategories,
                 'brands' => $brands,
-                'models' => $models
+                'models' => $models,
+                'user' => $user
             ]
         ]);
     }
@@ -805,17 +806,17 @@ class UserManageAdverts extends Controller
 
             DB::commit();
 
-            // ✅ Check if price changed and notify followers
+            // Notify followers of price change after response is sent (no queue worker required)
             $seller = auth()->user();
             if ($advert->price != $oldPrice && $seller) {
-                PostAdvertJob::dispatch(
+                PostAdvertJob::dispatchAfterResponse(
                     $advert,
                     $seller,
                     'Price Update',
                     $seller->name . ' updated the price of ' . $advert->ad_title
                 );
 
-                Log::info('API: Price update notification dispatched', [
+                Log::info('API: Price update notification dispatched after response', [
                     'advert_id' => $advert->ad_id,
                     'seller_id' => $seller->id,
                     'old_price' => $oldPrice,

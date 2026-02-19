@@ -49,10 +49,15 @@ class PostAdvertJob implements ShouldQueue
         $notifications = [];
 
         foreach ($followers as $follower) {
+            // Skip if the follower's user account was deleted
+            if (!$follower->user) {
+                continue;
+            }
+
             // Create in-app notification
             $notifications[] = [
-                'user_id'    => $follower->user->id,  // buyer
-                'seller_id'  => $this->seller->id,    // seller
+                'user_id'    => $follower->user->id,
+                'seller_id'  => $this->seller->id,
                 'advert_id'  => $this->advert->id,
                 'type'       => $this->type,
                 'message'    => $this->message,
@@ -61,20 +66,26 @@ class PostAdvertJob implements ShouldQueue
             ];
 
             // Send email per follower
-            Mail::to($follower->user->email)->queue(
-                new NewAdMail([
-                    'advert'     => $this->advert->ad_title,
-                    'state_slug' => $this->advert->state_slug,
-                    'title_slug' => $this->advert->title_slug,
-                    'ad_id'      => $this->advert->ad_id,
-                    'name'       => $follower->user->name,
-                    'sellerName' => $this->seller->name,
-                    'type'       => $this->type,
-                ])
-            );
+            try {
+                Mail::to($follower->user->email)->queue(
+                    new NewAdMail([
+                        'advert'     => $this->advert->ad_title,
+                        'state_slug' => $this->advert->state_slug,
+                        'title_slug' => $this->advert->title_slug,
+                        'ad_id'      => $this->advert->ad_id,
+                        'name'       => $follower->user->name,
+                        'sellerName' => $this->seller->name,
+                        'type'       => $this->type,
+                    ])
+                );
+            } catch (\Exception $e) {
+                Log::error('PostAdvertJob: failed to queue email', [
+                    'follower_id' => $follower->user->id,
+                    'error'       => $e->getMessage(),
+                ]);
+            }
 
-            // 🆕 NEW: Dispatch push notification to follower
-            // Wrapped in try-catch to prevent breaking existing flow
+            // Send push notification
             try {
                 SendFollowerPushNotification::dispatch(
                     $follower->user,
@@ -84,12 +95,9 @@ class PostAdvertJob implements ShouldQueue
                     $this->message
                 );
             } catch (\Exception $e) {
-                // Log but don't break the job
-                Log::error('Failed to dispatch push notification for follower', [
+                Log::error('PostAdvertJob: failed to dispatch push notification', [
                     'follower_id' => $follower->user->id,
-                    'seller_id' => $this->seller->id,
-                    'advert_id' => $this->advert->id,
-                    'error' => $e->getMessage(),
+                    'error'       => $e->getMessage(),
                 ]);
             }
         }

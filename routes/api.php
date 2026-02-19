@@ -347,6 +347,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/stats', [UserStatsController::class, 'getUserStats']);
         Route::get('/unread-messages', [UserStatsController::class, 'getUnreadMessagesCount']);
         Route::get('/notifications', [UserStatsController::class, 'getNotifications']);
+        Route::delete('/delete-notification/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteNotification']);
     });
 
     // Public user data (still protected but can view others)
