@@ -628,7 +628,7 @@ class AdvertController extends Controller
         return view('frontend.adverts', compact('title', 'ads', 'user', 'categories','mobile'));
     }
 
-   public function seller(Request $request, $id, $ad)
+   public function seller(Request $request, $name, $id)
     {
         // Check if owner exists
         $owner = User::where('user_id', $id)->first();
@@ -636,15 +636,6 @@ class AdvertController extends Controller
             return redirect('/');
         }
 
-        // Check if ad exists and belongs to this seller
-        $ad = Advert::with('firstImage', 'owner')
-            ->where('id', $ad)
-            ->where('user_id', $id)
-            ->first();
-
-        if (!$ad) {
-            return redirect('/');
-        }
 
         // Fetch seller's other ads
         $ads = Advert::with('firstImage', 'owner')
@@ -662,24 +653,21 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->activeNotRecentlySold()->count();
 
-        return view('frontend.seller-adverts', compact('title', 'ads', 'ad', 'user', 'owner', 'categories', 'count_ads', 'hasMore')); // Add hasMore to compact
+        return view('frontend.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories', 'count_ads', 'hasMore')); // Add hasMore to compact
     }
 
-    public function loadMoreSellerAds(Request $request, $id, $ad)
+    public function loadMoreSellerAds(Request $request, $name, $id)
     {
-        // Check if owner exists
         $owner = User::where('user_id', $id)->first();
         if (!$owner) {
             return response()->json(['error' => 'Seller not found'], 404);
         }
 
-        // Fetch seller's other ads (excluding the current ad)
         $ads = Advert::with('firstImage', 'owner')
             ->where('user_id', $id)
-            ->where('id', '!=', $ad)
             ->activeNotRecentlySold()
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(20);
 
         return response()->json([
             'html' => view('frontend.components.advert.advert-list', ['ads' => $ads])->render(),

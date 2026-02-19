@@ -15,12 +15,12 @@
              <div class="flex w-full">
                   <div class="w-2/6 mr-1 relative bg-gray-50">
                    <a href="{{ isset($row->advert->state_slug, $row->advert->title_slug, $row->advert->ad_id) ? url($row->advert->state_slug . '/' . $row->advert->title_slug .'/'. $row->advert->ad_id) : '#' }}">
-                     @if(isset($row->advert->firstImage->image))
-                       <img class="h-24 md:h-48 object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" alt="Ad image">
-                     @else
-                       <img class="h-24 md:h-48 object-cover" src="{{ asset('images/default-ad.jpg') }}" alt="Default ad image">
-                     @endif
-                   </a>
+                        @if($row->advert && $row->advert->hasMedia('images'))
+                            <img src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') }}" alt="{{ $row->advert->clean_title }}">
+                        @else
+                            <img src="{{ asset('frontend/images/default.png') }}" alt="Default ad image">
+                        @endif
+                    </a>
                   </div>
                   <div class="w-4/6 relative">
                     <div class="flex justify-between text-xs">
@@ -49,9 +49,9 @@
                     <div class="text-sm mt-2 hidden lg:block">
                       {!! Str::limit(strip_tags($row->advert->description ?? 'No description available', 80)) !!}
                     </div>
-                    <div class="flex justify-between items-center text-dark_green font-bold text-base my-1 lg:my-3">
-                        <div class="mr-4">₦ {{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}</div>
-                        <div class="capitalize w-36 px-3 py-0 lg:py-1 text-center rounded {{ ($row->payment_status ?? '') === 'paid' ? 'bg-green-200' : 'bg-yellow-200' }}">
+                    <div class="flex justify-between gap-2 items-center text-dark_green font-bold text-sm my-1 lg:my-3">
+                        <div class="text-wrap">₦ {{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}</div>
+                        <div class="capitalize w-28 px-3 py-0 lg:py-1 text-center rounded {{ ($row->payment_status ?? '') === 'paid' ? 'bg-green-200' : 'bg-yellow-200' }}">
                             {{ $row->payment_status ?? 'pending' }}
                         </div>
                     </div>

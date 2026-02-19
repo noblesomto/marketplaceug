@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Wishlist;
 use App\Models\Category;
 use App\Models\Followers;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -884,6 +885,30 @@ class UserController extends Controller
      *     )
      * )
      */
+    // DELETE /api/user/delete-notification/{id}
+    public function deleteNotification($id)
+    {
+        $user = auth()->user();
+
+        $notification = Notification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$notification) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification not found'
+            ], 404);
+        }
+
+        $notification->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification deleted'
+        ]);
+    }
+
     public function toggleFollow(Request $request)
     {
         $validator = Validator::make($request->all(), [

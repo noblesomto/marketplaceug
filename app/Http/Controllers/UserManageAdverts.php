@@ -364,9 +364,9 @@ class UserManageAdverts extends Controller
             $user_id = $request->session()->get('user_id');
             $seller  = User::where('user_id', $user_id)->first();
 
-            // Dispatch job only if seller exists
+            // Notify followers after response is sent (no queue worker required)
             if ($seller) {
-                PostAdvertJob::dispatch(
+                PostAdvertJob::dispatchAfterResponse(
                     $advert,
                     $seller,
                     'New Ad',
@@ -670,8 +670,9 @@ class UserManageAdverts extends Controller
         $seller  = User::where('user_id', $user_id)->first();
 
 
+        // Notify followers of price change after response is sent (no queue worker required)
         if ($advert->price != $oldPrice) {
-            PostAdvertJob::dispatch(
+            PostAdvertJob::dispatchAfterResponse(
                 $advert,
                 $seller,
                 'Price Update',

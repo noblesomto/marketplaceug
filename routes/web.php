@@ -107,12 +107,10 @@ Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertContro
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct'])->name('buy.direct');
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping'])->name('calculate.shipping');
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');
-Route::get('/seller/{id}', function() {
-    return redirect('/');
-})->name('seller.redirect');
+Route::get('/seller/{id}', function() {  return redirect('/'); })->name('seller.redirect');
 
-Route::get('/seller/{id}/{ad}', [AdvertController::class, 'seller'])->name('seller');
-Route::get('/seller/{id}/{ad}/load-more', [AdvertController::class, 'loadMoreSellerAds'])->name('seller.ads.loadMore');
+Route::get('/seller/{name}/{id}', [AdvertController::class, 'seller'])->name('seller');
+Route::get('/seller/{name}/{id}/load-more', [AdvertController::class, 'loadMoreSellerAds'])->name('seller.ads.loadMore');
 Route::match(['GET', 'POST'], '/report-ad/{id}', [AdvertController::class, 'report_advert'])->middleware('usersession')->name('report.ad');
 Route::match(['GET', 'POST'], '/apply/{id}', [AdvertController::class, 'apply_job'])->middleware('usersession')->name('apply.job');
 

@@ -4,7 +4,7 @@
     <!-- User Profile Info -->
     <div class="p-5 border-b border-gray-100">
         <div class="flex items-start gap-3">
-            <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="shrink-0 relative">
+            <a href="/seller/{{ \Illuminate\Support\Str::slug($ad->owner->name) }}/{{ $ad->owner->user_id }}" class="shrink-0 relative">
                 @if($ad->owner->profile_picture == "")
                     <div class="w-12 h-12 rounded-full bg-green-100 text-dark_green flex items-center justify-center font-bold text-lg">
                         {{ strtoupper(substr($ad->owner->name, 0, 1)) }}
@@ -19,7 +19,7 @@
                 @endif
             </a>
             <div class="min-w-0 flex-1">
-                <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="block font-bold text-gray-900 truncate hover:text-dark_green">{{ $ad->owner->name }}</a>
+                <a href="/seller/{{ \Illuminate\Support\Str::slug($ad->owner->name) }}/{{ $ad->owner->user_id }}" class="block font-bold text-gray-900 truncate hover:text-dark_green">{{ $ad->owner->name }}</a>
                 <div class="text-xs text-gray-500 mt-0.5" data-nosnippet>
                     Active since {{ date('j F Y', strtotime($ad->owner->created_at)) }}
                 </div>
@@ -87,7 +87,7 @@
                 <span class="text-xs text-gray-500">Reviews</span>
             </div>
         </a>
-        <a class="p-3 text-center" href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}">
+        <a class="p-3 text-center" href="/seller/{{ \Illuminate\Support\Str::slug($ad->owner->name) }}/{{ $ad->owner->user_id }}">
             <div class="">
                 <span class="block font-bold text-gray-800 text-lg hover:text-dark_green">{{ $count_ads ?? 0 }}</span>
                 <span class="text-xs text-gray-500">Ads Online</span>

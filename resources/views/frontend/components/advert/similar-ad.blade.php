@@ -9,7 +9,7 @@
                     {{ \Illuminate\Support\Str::title(optional($ad->owner)->name ?? 'unknown') }}
                 </span>
             </h3>
-            <a href="/seller/{{ $ad->owner->user_id }}/{{ $ad->id }}" class="text-sm font-semibold text-dark_green hover:underline shrink-0">View All</a>
+            <a href="/seller/{{ \Illuminate\Support\Str::slug($ad->owner->name) }}/{{ $ad->owner->user_id }}" class="text-sm font-semibold text-dark_green hover:underline shrink-0">View All</a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             @foreach ($adverts as $row)
