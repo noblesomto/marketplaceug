@@ -153,7 +153,7 @@
 </div>
 
 {{-- ===================== MAIN CONTENT ===================== --}}
-<section class="w-full max-w-[95rem] mx-auto px-4 mt-6 pb-20">
+<section class="w-full max-w-[95rem] mx-auto mt-6 pb-20">
     <div class="grid grid-cols-12 gap-5">
 
         {{-- Left sidebar (desktop only) --}}
@@ -165,7 +165,7 @@
         <div class="col-span-12 lg:col-span-8">
 
             {{-- Section header --}}
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-4 px-2">
                 <h2 class="text-base font-semibold text-gray-800">
                     {{ $count_ads }} {{ Str::plural('listing', $count_ads) }} by {{ $owner->name }}
                 </h2>

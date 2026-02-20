@@ -340,8 +340,10 @@ class AdvertController extends Controller
     }
 
     /**
-     * Get adverts by seller
-     * GET /api/adverts/seller/{seller_id}
+     * Get seller storefront — profile, ratings, followers and paginated ads
+     * GET /api/adverts/seller/{seller_id}?page=1&per_page=20
+     *
+     * seller_id: the seller's unique user_id (5-char code)
      */
     public function sellerAdverts($seller_id, Request $request)
     {
@@ -354,20 +356,41 @@ class AdvertController extends Controller
             ], 404);
         }
 
+        $perPage = (int) $request->get('per_page', 20);
+
         $ads = Advert::with('firstImage', 'owner')
             ->where('user_id', $seller_id)
             ->activeNotRecentlySold()
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate($perPage);
 
-        $count_ads = Advert::where('user_id', $seller_id)->count();
+        $feedbackAverages = get_user_feedback_averages($owner->user_id);
+        $feedbackLabels   = feedback_rating_labels($owner->user_id);
 
         return response()->json([
             'success' => true,
             'data' => [
+                'seller' => [
+                    'user_id'      => $owner->user_id,
+                    'name'         => $owner->name,
+                    'slug'         => \Illuminate\Support\Str::slug($owner->name),
+                    'store_url'    => url('/seller/' . \Illuminate\Support\Str::slug($owner->name) . '/' . $owner->user_id),
+                    'avatar_url'   => $owner->profile_thumbnail_url,
+                    'acc_type'     => $owner->acc_type,
+                    'verified'     => $owner->verified === 'yes',
+                    'city'         => $owner->city,
+                    'state'        => $owner->state,
+                    'member_since' => $owner->created_at->format('F Y'),
+                    'followers'    => countUserFollowers($owner->user_id),
+                    'ads_count'    => Advert::where('user_id', $seller_id)->activeNotRecentlySold()->count(),
+                    'feedback' => [
+                        'review_count' => $feedbackAverages['count'] ?? 0,
+                        'satisfaction' => $feedbackLabels['satisfaction'],
+                        'friendly'     => $feedbackLabels['friendly'],
+                        'reliable'     => $feedbackLabels['reliable'],
+                    ],
+                ],
                 'ads' => $ads,
-                'owner' => $owner,
-                'count_ads' => $count_ads
             ]
         ]);
     }
