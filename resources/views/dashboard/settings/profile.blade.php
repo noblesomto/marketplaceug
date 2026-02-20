@@ -38,6 +38,16 @@
             </div>
         </a>
 
+        <a href="/seller/{{ \Illuminate\Support\Str::slug($user->name) }}/{{ $user->user_id }}"
+            class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
+            <span class="mr-2">
+                <i class="bi bi-shop"></i>
+            </span>
+            <div class="flex flex-col">
+                <span class="font-semibold">My Marketplace</span>
+                <span class="text-sm">View and share store front</span>
+            </div>
+        </a>
         <a href="/user/feedbacks"
             class="flex justify-start items-center  w-full py-2 space-x-2 text-lg  border-b border-b-gray-300">
             <span class="mr-2">
