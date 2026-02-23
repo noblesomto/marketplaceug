@@ -6084,7 +6084,7 @@
       "name": "User   Wishlist",
       "item": [
         {
-          "name": "User Wishlist",
+          "name": "Get Wishlist",
           "request": {
             "method": "GET",
             "header": [
@@ -6100,7 +6100,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/user/wishlist",
+              "raw": "{{base_url}}/api/user/wishlist?per_page=20",
               "host": [
                 "{{base_url}}"
               ],
@@ -6108,9 +6108,22 @@
                 "api",
                 "user",
                 "wishlist"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "20",
+                  "description": "Items per page (default: 20)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number",
+                  "disabled": true
+                }
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/wishlist`\nController: `App\\Http\\Controllers\\Api\\UserController@wishlist`",
+            "description": "🔒 **Requires Authentication**\n\nEndpoint: `GET /api/user/wishlist`\nController: `App\\Http\\Controllers\\Api\\UserController@wishlist`\n\nReturns the authenticated user's paginated wishlist (active adverts only).\n\n**Response shape:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"current_page\": 1,\n    \"data\": [ { ...advert with firstImage... } ],\n    \"total\": 5,\n    \"per_page\": 20\n  }\n}\n```",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6125,7 +6138,7 @@
           "response": []
         },
         {
-          "name": "User Wishlist  AdId ",
+          "name": "Add to Wishlist",
           "request": {
             "method": "POST",
             "header": [
@@ -6133,15 +6146,10 @@
                 "key": "Accept",
                 "value": "application/json",
                 "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/user/wishlist/{adId}",
+              "raw": "{{base_url}}/api/user/wishlist/{{ad_id}}",
               "host": [
                 "{{base_url}}"
               ],
@@ -6149,10 +6157,10 @@
                 "api",
                 "user",
                 "wishlist",
-                "{adId}"
+                "{{ad_id}}"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@addToWishlist`",
+            "description": "🔒 **Requires Authentication**\n\nEndpoint: `POST /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@addToWishlist`\n\nAdds an advert to the authenticated user's wishlist. No request body required.\n\n**URL parameter:**\n- `adId`: The advert's integer `id`\n\n**Success (201):**\n```json\n{ \"success\": true, \"message\": \"Added to wishlist successfully\" }\n```\n\n**Already in wishlist (409):**\n```json\n{ \"success\": false, \"message\": \"Already in wishlist\" }\n```\n\n**Advert not found (404):**\n```json\n{ \"success\": false, \"message\": \"Advert not found\" }\n```",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6162,21 +6170,12 @@
                   "type": "string"
                 }
               ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"note\": \"Interested in this item\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
           },
           "response": []
         },
         {
-          "name": "User Wishlist  AdId ",
+          "name": "Remove from Wishlist",
           "request": {
             "method": "DELETE",
             "header": [
@@ -6184,15 +6183,10 @@
                 "key": "Accept",
                 "value": "application/json",
                 "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/user/wishlist/{adId}",
+              "raw": "{{base_url}}/api/user/wishlist/{{ad_id}}",
               "host": [
                 "{{base_url}}"
               ],
@@ -6200,10 +6194,48 @@
                 "api",
                 "user",
                 "wishlist",
-                "{adId}"
+                "{{ad_id}}"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `DELETE /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@removeFromWishlist`",
+            "description": "🔒 **Requires Authentication**\n\nEndpoint: `DELETE /api/user/wishlist/{adId}`\nController: `App\\Http\\Controllers\\Api\\UserController@removeFromWishlist`\n\nRemoves an advert from the authenticated user's wishlist.\n\n**URL parameter:**\n- `adId`: The advert's integer `id`\n\n**Success (200):**\n```json\n{ \"success\": true, \"message\": \"Removed from wishlist successfully\" }\n```\n\n**Not in wishlist (404):**\n```json\n{ \"success\": false, \"message\": \"Item not in wishlist\" }\n```",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/wishlist/{{ad_id}}/toggle",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "wishlist",
+                "{{ad_id}}",
+                "toggle"
+              ]
+            },
+            "description": "🔒 **Requires Authentication**\n\nEndpoint: `POST /api/user/wishlist/{adId}/toggle`\nController: `App\\Http\\Controllers\\Api\\UserController@toggleWishlist`\n\nAdds the advert if it is not in the wishlist; removes it if it already is. Ideal for a single heart/bookmark button in the UI.\n\n**URL parameter:**\n- `adId`: The advert's integer `id`\n\n**Added (200):**\n```json\n{ \"success\": true, \"message\": \"Added to wishlist\", \"in_wishlist\": true }\n```\n\n**Removed (200):**\n```json\n{ \"success\": true, \"message\": \"Removed from wishlist\", \"in_wishlist\": false }\n```\n\n**Advert not found (404):**\n```json\n{ \"success\": false, \"message\": \"Advert not found\" }\n```",
             "auth": {
               "type": "bearer",
               "bearer": [

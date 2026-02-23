@@ -284,7 +284,7 @@ class UserController extends Controller
      *     )
      * )
      */
-    /**
+    // POST /api/user/wishlist/{adId}
     public function addToWishlist($adId)
     {
         $user = auth()->user();
@@ -309,8 +309,8 @@ class UserController extends Controller
         }
 
         Wishlist::create([
-            'user_id' => $user->user_id,
-            'advert_id' => $adId
+            'user_id'   => $user->user_id,
+            'advert_id' => $adId,
         ]);
 
         return response()->json([
@@ -318,7 +318,6 @@ class UserController extends Controller
             'message' => 'Added to wishlist successfully'
         ], 201);
     }
-    **/
 
     /**
      * @OA\Delete(
@@ -347,7 +346,7 @@ class UserController extends Controller
      *     )
      * )
      */
-    /**
+    // DELETE /api/user/wishlist/{adId}
     public function removeFromWishlist($adId)
     {
         $user = auth()->user();
@@ -370,8 +369,6 @@ class UserController extends Controller
             'message' => 'Removed from wishlist successfully'
         ]);
     }
-
-    **/
 
     /**
      * @OA\Post(

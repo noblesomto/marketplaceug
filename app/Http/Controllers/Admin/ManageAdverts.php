@@ -174,6 +174,10 @@ class ManageAdverts extends Controller
         $category = (int) $request->input('category');
         $oldPrice = $advert->getOriginal('price');
 
+        // Strip HTML tags from Trix-submitted description before length validation
+        $plainDescription = strip_tags($request->input('description', ''));
+        $request->merge(['description' => $plainDescription]);
+
         $rules = [
             'ad_title' => 'required|max:75',
             'category'    => 'required',
