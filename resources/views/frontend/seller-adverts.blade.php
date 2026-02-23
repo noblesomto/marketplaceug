@@ -119,7 +119,7 @@
             </div>
             <div>
                 @if($loggedIn && $isOwner)
-                    <span>Share your page to reach more customers</span>
+                    <span>Share your store link to reach more buyers</span>
                 @endif
             </div>
 

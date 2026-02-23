@@ -103,15 +103,15 @@ class AdvertValidationService
             $rules['expected_salary'] = 'required';
         }
 
-        // Price field - required by default unless salary or expectedSalary are visible
+        // Price field - required by default unless salary/expectedSalary visible OR contact_price=yes
         if ($priceVisible) {
             // If salary or expectedSalary are shown, price is not required
             if ($salaryVisible || $expectedSalaryVisible) {
                 $rules['price'] = 'nullable|numeric';
             } else {
-                // Price is required by default
-                $rules['price'] = 'required|numeric';
-                $rules['price_type'] = 'required';
+                // Price is required unless user selected "Contact for Price"
+                $rules['price']      = 'required_unless:contact_price,yes|nullable|numeric';
+                $rules['price_type'] = 'required_unless:contact_price,yes';
             }
         }
 
@@ -133,12 +133,13 @@ class AdvertValidationService
 
         // Car-specific fields (if divCar is visible)
         if ($isVisible('divCar') && in_array($subcategoryId, [2, 21, 23])) {
-            $rules['registration'] = 'required';
-            //$rules['mileage'] = 'required|numeric';
-            $rules['condition'] = 'required';
-            $rules['fuel'] = 'required';
-            $rules['transmission'] = 'required';
-            $rules['vehicle_type'] = 'required';
+            $rules['registration']   = 'required';
+            //$rules['mileage']      = 'required|numeric';
+            $rules['condition']      = 'required';
+            $rules['fuel']           = 'required';
+            $rules['transmission']   = 'required';
+            $rules['vehicle_type']   = 'required';
+            $rules['exterior_color'] = 'required';
             //$rules['doors'] = 'required';
 
             // Model is required if specified in subcategory config OR if divModel is visible
