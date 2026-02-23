@@ -117,6 +117,11 @@
                     </button>
                 @endif
             </div>
+            <div>
+                @if($loggedIn && $isOwner)
+                    <span>Share your page to reach more customers</span>
+                @endif
+            </div>
 
         </div>
     </div>

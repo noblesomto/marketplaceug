@@ -1,5 +1,10 @@
 @include('backend.layouts.header')
 @include('backend.layouts.nav')
+<style>
+  /* Make .hidden work with CategoryUIManager (which uses Tailwind-style hidden class) */
+  .hidden { display: none !important; }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -35,14 +40,6 @@
             <form action="/admin/edit-ad/{{ $advert->id }}" id="advertForm" method="POST" role="form" enctype="multipart/form-data">
               @csrf 
               
-               <!-- Loading Spinner for Editor -->
-            <div id="editor-loading" class="text-center py-4">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading editor...</span>
-              </div>
-              <p class="mt-2 text-muted">Loading editor...</p>
-            </div>
-
               <!-- Bid/Request Section -->
               <div class="row mb-3 pb-3 border-bottom">
                 <div class="col-md-2">
@@ -129,7 +126,7 @@
                         @endforeach
                       </select>
                     </div>
-                    <div id="divModel" class="col-md-4 {{ in_array($advert->sub_category, [2]) ? '' : 'd-none' }}">
+                    <div id="divModel" class="col-md-4 {{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
                       <select id="model" name="model" class="form-select" data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}">
                         <option value="">Select Model</option>
                         @foreach($models as $model)
@@ -150,7 +147,7 @@
               </div>
 
               <!-- Item Condition -->
-              <div id="itemCondition" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2,6]) ? 'd-none' : '' }}">
+              <div id="itemCondition" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
                 <div class="col-md-2">
                   <label class="form-label fw-bold">Item Condition *</label>
                 </div>
@@ -168,7 +165,7 @@
               </div>
 
               <!-- Car Details (Conditionally Shown) -->
-              <div id="divCar" class="p-2 {{ $advert->sub_category == 2 ? '' : 'd-none' }}">
+              <div id="divCar" class="p-2 {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
                 @if($advert->car)
                     <div class="container-fluid">
                         <!-- Mileage -->
@@ -596,7 +593,7 @@
               </div>
 
               <!-- Phone Details (Conditionally Shown) -->
-              <div id="divPhone" class="mt-4 p-4 {{ $advert->sub_category == 6 ? '' : 'd-none' }}">
+              <div id="divPhone" class="mt-4 p-4 {{ $advert->sub_category == 6 ? '' : 'hidden' }}">
                 @if($advert->phone)
                     <div class="container-fluid">
                         <!-- Phone Color -->
@@ -815,8 +812,9 @@
                   @endif
                   <select id="salary" name="salary" class="form-select w-50">
                     <option value="">--Select Salary--</option>
-                    <option value="Commission" {{ $advert->salary == 'Commission' ? 'selected' : '' }}>Commission</option>
-                    <!-- Other salary options -->
+                    @foreach(['Commission','Below ₦20,000','₦20,000 - ₦40,000','₦40,000 - ₦60,000','₦60,000 - ₦80,000','₦80,000 - ₦100,000','₦100,000 - ₦150,000','₦150,000 - ₦200,000','₦200,000 - ₦300,000','₦300,000 - ₦500,000','Above ₦500,000'] as $sal)
+                      <option value="{{ $sal }}" {{ $advert->salary == $sal ? 'selected' : '' }}>{{ $sal }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
@@ -832,7 +830,9 @@
                   @endif
                   <select id="expected_salary" name="expected_salary" class="form-select w-50">
                     <option value="">--Select Expected Salary--</option>
-                    <!-- Expected salary options -->
+                    @foreach(['Below ₦50,000','₦50,000 - ₦75,000','₦75,000 - ₦100,000','₦100,000 - ₦150,000','₦150,000 - ₦200,000','₦200,000 - ₦300,000','₦300,000 - ₦500,000','Above ₦500,000'] as $expSal)
+                      <option value="{{ $expSal }}" {{ $advert->expected_salary == $expSal ? 'selected' : '' }}>{{ $expSal }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
@@ -853,7 +853,7 @@
            
 
               <!-- Buy Direct Section -->
-              <div id="buyDirect" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2]) ? 'd-none' : '' }}">
+              <div id="buyDirect" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
                 <div class="col-md-2">
                   <label class="form-label fw-bold">Bid/request</label>
                 </div>
@@ -913,7 +913,8 @@
                     <span class="text-danger">{{ $errors->first('description') }}</span>
                   @endif
                  
-                  <textarea id="tinymce-editor" name="description" class="d-none" required>{{ old('description', $advert->description ?? '') }}</textarea>
+                  <input id="content" type="hidden" name="description" value="{{ old('description', $advert->description ?? '') }}" required>
+                  <trix-editor input="content" class="border rounded" style="min-height: 200px;"></trix-editor>
                   <div class="form-text">
                     <span id="word-count">0</span>/3500 characters
                   </div>
@@ -1069,11 +1070,12 @@
     </div>
   </section>
 </main>
-<script src="https://cdn.tiny.cloud/1/lncr7awyr7i6uo7uglrisq0cw4hiscgxu46i1jieb0ksqfxx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
+<script src="{{ asset('dashboard/js/category-ui-manager.js') }}"></script>
 <script src="{{ asset('backend/js/edit-advert.js') }}"></script>
 <script src="{{ asset('backend/js/edit-sortable.js') }}"></script>
 
@@ -1084,6 +1086,17 @@
     state: @json($advert->state ?? ''),
     lga: @json($advert->lga ?? '')
   };
+</script>
+
+<script>
+    document.getElementById('advertForm').addEventListener('submit', function () {
+        const btn = this.querySelector('button[type="submit"]');
+        if (!btn) return;
+        btn.disabled = true;
+        btn.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>' +
+            'Updating...';
+    });
 </script>
 
 @include('backend.layouts.footer')
