@@ -5,7 +5,7 @@
               <div class="flex-[45%] xs-max:flex-[42%] sm:flex-[42%] lg:flex-[35%] mr-1 relative h-full p-2">
                 <img alt="{{ $row->ad_title }}" class="w-full h-full object-cover" src="{{ $row->hasMedia('images') ? $row->getFirstMediaUrl('images', 'thumbnail') : asset('frontend/images/default.png') }}" onerror="this.onerror=null;this.src='{{ asset('frontend/images/default.png') }}';">
                 <div class="absolute top-3 right-3 flex space-x-1">
-                    @if($row->owner->verified=='yes')
+                    @if(optional($row->owner)->verified=='yes')
                         <div class="bg-green-50  px-1 rounded text-[14px]">
                             <span title="verified User">
                                 <i class="bi bi-patch-check-fill text-secondary_dark"></i>
@@ -83,12 +83,18 @@
                     <div class="flex justify-between">
                         <div class="flex-col space-y-2 pb-2">
                             @if($row->sub_category == 2)
+                                @if(optional($row->car)->condition)
                                 <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->condition }}</span>
+                                @endif
+                                @if(optional($row->car)->registration)
                                 <div class="flex items-center">
                                     <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->car->registration }}</span>
                                 </div>
+                                @endif
                             @elseif($row->sub_category == 6)
+                                @if(optional($row->phone)->condition)
                                 <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->phone->condition }}</span>
+                                @endif
                             @elseif(!empty($row->item_condition))
                                 <span class="bg-gray-100 p-1 mr-2 text-xs">{{ $row->item_condition }}</span>
                             @endif

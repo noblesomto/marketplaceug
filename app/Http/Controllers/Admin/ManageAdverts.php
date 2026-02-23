@@ -205,23 +205,26 @@ class ManageAdverts extends Controller
             ];
         } else {
             $rules += [
-                'price'      => 'required|numeric',
-                'price_type' => 'required',
+                'price'      => 'required_unless:contact_price,yes|nullable|numeric',
+                'price_type' => 'required_unless:contact_price,yes',
             ];
         }
 
         // Subcategory-specific rules
         switch ($subcat) {
             case 2:
+            case 21:
+            case 23:
                 $rules += [
-                    'model'        => 'required',
-                    'registration' => 'required',
-                    'mileage'      => 'required|numeric',
-                    'condition'    => 'required',
-                    'fuel'         => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors'        => 'required',
+                    'model'          => 'required',
+                    'registration'   => 'required',
+                    'mileage'        => 'required|numeric',
+                    'condition'      => 'required',
+                    'fuel'           => 'required',
+                    'transmission'   => 'required',
+                    'vehicle_type'   => 'required',
+                    'doors'          => 'required',
+                    'exterior_color' => 'required',
                 ];
                 break;
 
@@ -234,8 +237,8 @@ class ManageAdverts extends Controller
                 break;
         }
 
-        // Item condition rule (skip if category is 3 or 18, OR subcat is 2 or 6)
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
+        // Item condition rule (skip if category is 3 or 18, OR subcat is a car/phone subcat)
+        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
             $rules['item_condition'] = 'required';
         }
 
@@ -386,9 +389,9 @@ if ($request->has('deleted_images') && !empty($request->input('deleted_images'))
             $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
         }
 
-        // Update Car details
-        if ($subcat === 2 && $advert->car) {
-            $advert->car->update([
+        // Update Car details (upsert: update if exists, create if missing)
+        if (in_array($subcat, [2, 21, 23])) {
+            $carData = [
                 'cat_id'            => $request->input('category'),
                 'brand_id'          => $request->input('brand'),
                 'model'             => $request->input('model'),
@@ -404,7 +407,14 @@ if ($request->has('deleted_images') && !empty($request->input('deleted_images'))
                 'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
                 'interior'          => json_encode($request->input('interior')),
                 'security'          => json_encode($request->input('security')),
-            ]);
+            ];
+            if ($advert->car) {
+                $advert->car->update($carData);
+            } else {
+                $car = new CarDetail(array_merge($carData, ['car_id' => rand(10000, 99999)]));
+                $car->advert()->associate($advert);
+                $car->save();
+            }
         }
 
         // Update Phone details

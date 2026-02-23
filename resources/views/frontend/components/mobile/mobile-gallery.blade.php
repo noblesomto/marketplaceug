@@ -58,7 +58,7 @@
                     @endif
 
                     <div class="absolute top-2 right-2 space-y-1">
-                        @if($row->owner->verified=='yes')
+                        @if(optional($row->owner)->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-secondary_dark"></i>
@@ -174,7 +174,7 @@
                     />
 
                     <div class="absolute top-2 right-2 space-y-1">
-                        @if($row->owner->verified=='yes')
+                        @if(optional($row->owner)->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-secondary_dark"></i>
@@ -290,7 +290,7 @@
                     />
 
                     <div class="absolute top-2 right-2 space-y-1">
-                        @if($row->owner->verified=='yes')
+                        @if(optional($row->owner)->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-secondary_dark"></i>
@@ -406,7 +406,7 @@
                     />
 
                     <div class="absolute top-2 right-2 space-y-1">
-                        @if($row->owner->verified=='yes')
+                        @if(optional($row->owner)->verified=='yes')
                             <div class="bg-green-50 px-1 rounded text-[14px]">
                                 <span title="verified User">
                                     <i class="bi bi-patch-check-fill text-secondary_dark"></i>

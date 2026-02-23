@@ -43,7 +43,7 @@
             @endif
 
             <div class="absolute top-1 right-1 space-y-1">
-                @if($row->owner->verified=='yes')
+                @if(optional($row->owner)->verified=='yes')
                     <div class="bg-green-50 px-0.5 rounded text-[14px]">
                         <span title="verified User">
                             <i class="bi bi-patch-check-fill text-secondary_dark"></i>

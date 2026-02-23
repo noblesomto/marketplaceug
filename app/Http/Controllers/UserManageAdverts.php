@@ -632,9 +632,9 @@ class UserManageAdverts extends Controller
             }
         }
 
-        // Update Car details
+        // Update Car details (upsert: update if exists, create if missing)
         if (in_array($subcat, [2, 21, 23])) {
-            $advert->car->update([
+            $carData = [
                 'cat_id'            => $request->input('category'),
                 'brand_id'          => $request->input('brand'),
                 'model'             => $request->input('model'),
@@ -650,7 +650,14 @@ class UserManageAdverts extends Controller
                 'exterior_equipment'=> json_encode($request->input('exterior_equipment')),
                 'interior'          => json_encode($request->input('interior')),
                 'security'          => json_encode($request->input('security')),
-            ]);
+            ];
+            if ($advert->car) {
+                $advert->car->update($carData);
+            } else {
+                $car = new CarDetail(array_merge($carData, ['car_id' => rand(10000, 99999)]));
+                $car->advert()->associate($advert);
+                $car->save();
+            }
         }
 
         // Update Phone details
