@@ -47,9 +47,16 @@
       </div>
 
       {{-- Related tag: z-[2] sits above the stretched card link (z-[1]) --}}
-      <a href="/related/{{ $row->ad_id }}" class="absolute bottom-1 left-2 z-[2] text-white drop-shadow">
-        <i class="bi bi-stars text-2xl text-yellow-300"></i>
-      </a>
+      <a href="/related/{{ $row->ad_id }}"
+           class="absolute bottom-2 left-2 z-[2]
+                  w-10 h-10
+                  flex items-center justify-center
+                  rounded-full
+                  bg-black/20 backdrop-blur-sm
+                  shadow-md
+                  hover:bg-black/60 transition">
+            <i class="bi bi-stars text-yellow-100 text-xl"></i>
+        </a>
 
       <!-- Price badge -->
       <div class="absolute bottom-0 right-0 bg-secondary_dark text-white h-6 px-2 text-sm font-semibold flex items-center">
