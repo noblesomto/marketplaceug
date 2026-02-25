@@ -83,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/adverts', [AdvertController::class, 'index']);
+Route::get('/adverts/{id}/related', [AdvertController::class, 'related']);
 Route::get('/adverts/{id}', [AdvertController::class, 'show']);
 Route::get('/adverts/seller/{seller_id}', [AdvertController::class, 'sellerAdverts']);
 Route::get('/categories', [AdvertController::class, 'categories']);

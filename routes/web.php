@@ -104,6 +104,8 @@ Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertContro
 
 
 
+Route::get('/related/{ad_id}', [AdvertController::class, 'related'])->name('related.ads');
+Route::get('/related/{ad_id}/load-more', [AdvertController::class, 'relatedLoadMore'])->name('related.ads.loadMore');
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct'])->name('buy.direct');
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping'])->name('calculate.shipping');
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');

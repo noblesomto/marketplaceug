@@ -340,6 +340,163 @@ class AdvertController extends Controller
     }
 
     /**
+     * Get related adverts for a given ad.
+     *
+     * Returns ads in the SAME category AND same sub-category.
+     * For vehicles (category 1) the same car model is ranked highest.
+     * Results ordered by relevance:
+     *   Cars  → 1) same model + similar title  2) same model  3) similar title  4) rest
+     *   Other → 1) similar title  2) rest
+     *
+     * @group Adverts
+     *
+     * @urlParam id integer required The ad_id of the source advert. Example: 12345
+     * @queryParam page integer Page number. Default: 1. Example: 1
+     * @queryParam per_page integer Items per page (max 40). Default: 20. Example: 20
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": [
+     *     {
+     *       "id": 10,
+     *       "ad_id": 54321,
+     *       "ad_title": "Toyota Camry 2020",
+     *       "price": 8500000,
+     *       "contact_price": "no",
+     *       "price_type": "Fixed",
+     *       "state": "Lagos",
+     *       "state_slug": "lagos",
+     *       "title_slug": "toyota-camry-2020",
+     *       "category": 1,
+     *       "sub_category": 2,
+     *       "car_model_id": "15",
+     *       "buy_direct": "No",
+     *       "featured": "No",
+     *       "sold": "No",
+     *       "views": 80,
+     *       "image_thumb": "https://marketplace.ng/...",
+     *       "image_optimized": "https://marketplace.ng/..."
+     *     }
+     *   ],
+     *   "meta": {
+     *     "total": 30,
+     *     "page": 1,
+     *     "per_page": 20,
+     *     "has_more": true,
+     *     "source_ad": {
+     *       "ad_id": 12345,
+     *       "ad_title": "Toyota Camry 2020",
+     *       "category": 1,
+     *       "sub_category": 2,
+     *       "car_model_id": "15"
+     *     }
+     *   }
+     * }
+     * @response 404 {
+     *   "success": false,
+     *   "message": "Advert not found"
+     * }
+     */
+    public function related(Request $request, $id)
+    {
+        $ad = Advert::where('ad_id', $id)->first();
+
+        if (!$ad) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found',
+            ], 404);
+        }
+
+        $perPage = min((int) $request->get('per_page', 20), 40);
+        $page    = max(1, (int) $request->get('page', 1));
+
+        // First 2 words of the title for keyword matching
+        $titleWords = array_filter(explode(' ', $ad->ad_title));
+        $keyword    = implode(' ', array_slice(array_values($titleWords), 0, 2));
+
+        // Progressive fallback — tries each level until results are found:
+        //   1. category + sub_category + brand
+        //   2. category + sub_category
+        //   3. category only
+        //   4. any active ads (last resort)
+        $baseQuery = (function () use ($ad, $keyword) {
+            $titleOrder = ['CASE WHEN ad_title LIKE ? THEN 1 ELSE 2 END ASC, RAND()', ['%' . $keyword . '%']];
+            $base       = fn () => Advert::where('id', '!=', $ad->id)->activeNotRecentlySold();
+
+            if ($ad->brand) {
+                $q = $base()
+                    ->where('category', $ad->category)
+                    ->where('sub_category', $ad->sub_category)
+                    ->where('brand', $ad->brand);
+                if ((clone $q)->count() > 0) {
+                    return $q->orderByRaw(...$titleOrder);
+                }
+            }
+
+            if ($ad->sub_category) {
+                $q = $base()
+                    ->where('category', $ad->category)
+                    ->where('sub_category', $ad->sub_category);
+                if ((clone $q)->count() > 0) {
+                    return $q->orderByRaw(...$titleOrder);
+                }
+            }
+
+            $q = $base()->where('category', $ad->category);
+            if ((clone $q)->count() > 0) {
+                return $q->orderByRaw(...$titleOrder);
+            }
+
+            return $base()->inRandomOrder();
+        })();
+
+        $total = (clone $baseQuery)->count();
+        $ads   = $baseQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
+
+        $data = $ads->map(function ($advert) {
+            return [
+                'id'             => $advert->id,
+                'ad_id'          => $advert->ad_id,
+                'ad_title'       => $advert->ad_title,
+                'price'          => $advert->price,
+                'contact_price'  => $advert->contact_price,
+                'price_type'     => $advert->price_type,
+                'state'          => $advert->state,
+                'state_slug'     => $advert->state_slug,
+                'title_slug'     => $advert->title_slug,
+                'category'       => $advert->category,
+                'sub_category'   => $advert->sub_category,
+                'brand_id'       => $advert->brand ?: null,
+                'buy_direct'     => $advert->buy_direct,
+                'featured'       => $advert->featured,
+                'sold'           => $advert->sold,
+                'views'          => $advert->views,
+                'image_thumb'    => $advert->getFirstImageUrl('thumbnail'),
+                'image_optimized'=> $advert->getFirstImageUrl('optimized'),
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data'    => $data,
+            'meta'    => [
+                'total'      => $total,
+                'page'       => $page,
+                'per_page'   => $perPage,
+                'has_more'   => $total > ($page * $perPage),
+                'source_ad'  => [
+                    'ad_id'        => $ad->ad_id,
+                    'ad_title'     => $ad->ad_title,
+                    'category'     => $ad->category,
+                    'sub_category' => $ad->sub_category,
+                    'brand_id'     => $ad->brand ?: null,
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * Get seller storefront — profile, ratings, followers and paginated ads
      * GET /api/adverts/seller/{seller_id}?page=1&per_page=20
      *

@@ -47,7 +47,12 @@ class User extends Authenticatable implements HasMedia
         'account_number',
         'remember_token',
         'otp_expires_at',
-        'push_notifications_enabled'
+        'push_notifications_enabled',
+        'google_id',
+        'facebook_id',
+        'avatar',
+        'last_login_ip',
+        'last_login_at',
     ];
 
     /**

@@ -576,6 +576,157 @@ class AdvertController extends Controller
 
     // REMOVED: chat() method - duplicate functionality, replaced by MessageController::showMessages()
 
+    /*
+    |--------------------------------------------------------------------------
+    | Related Ads — progressive fallback
+    |--------------------------------------------------------------------------
+    | Filter levels (tries each until results are found):
+    |   1. category + sub_category + brand   (most specific)
+    |   2. category + sub_category           (drop brand)
+    |   3. category only                     (drop sub_category)
+    |   4. any active ads                    (last resort)
+    |
+    | Within whichever level has results, ads whose title contains the keyword
+    | (first 2 words of the source title) are ranked first, rest are random.
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Build the related-ads query with progressive fallback.
+     * Returns the first level that has at least one result.
+     */
+    private function buildRelatedQuery(Advert $ad, string $keyword)
+    {
+        $titleOrder = ['CASE WHEN ad_title LIKE ? THEN 1 ELSE 2 END ASC, RAND()', ['%' . $keyword . '%']];
+
+        $base = fn() => Advert::with('firstImage', 'owner')
+            ->where('id', '!=', $ad->id)
+            ->activeNotRecentlySold();
+
+        // Level 1: category + sub_category + brand
+        if ($ad->brand) {
+            $q = $base()
+                ->where('category', $ad->category)
+                ->where('sub_category', $ad->sub_category)
+                ->where('brand', $ad->brand);
+
+            if ((clone $q)->count() > 0) {
+                return $q->orderByRaw(...$titleOrder);
+            }
+        }
+
+        // Level 2: category + sub_category
+        if ($ad->sub_category) {
+            $q = $base()
+                ->where('category', $ad->category)
+                ->where('sub_category', $ad->sub_category);
+
+            if ((clone $q)->count() > 0) {
+                return $q->orderByRaw(...$titleOrder);
+            }
+        }
+
+        // Level 3: category only
+        $q = $base()->where('category', $ad->category);
+
+        if ((clone $q)->count() > 0) {
+            return $q->orderByRaw(...$titleOrder);
+        }
+
+        // Level 4: any active ads (last resort)
+        return $base()->inRandomOrder();
+    }
+
+    public function related(Request $request, $ad_id)
+    {
+        $ad = Advert::with('firstImage', 'owner')->where('ad_id', $ad_id)->firstOrFail();
+
+        $cat = Category::find($ad->category);
+        if (!$cat) {
+            return redirect('/');
+        }
+
+        $subcat = SubCategory::find($ad->sub_category);
+
+        // First 2 words of the title for keyword matching
+        $titleWords = array_filter(explode(' ', $ad->ad_title));
+        $keyword    = implode(' ', array_slice(array_values($titleWords), 0, 2));
+
+        $agent    = new Agent();
+        $isMobile = $request->has('view')
+            ? $request->get('view') === 'mobile'
+            : ($agent->isMobile() || $agent->isTablet());
+
+        $perPage   = 20;
+        $page      = $request->get('page', 1);
+        $baseQuery = $this->buildRelatedQuery($ad, $keyword);
+
+        $total   = (clone $baseQuery)->count();
+        $ads     = $baseQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
+        $hasMore = $total > ($page * $perPage);
+
+        // Sidebar: subcategory list for the parent category
+        $count_cat  = Advert::activeNotRecentlySold()->where('category', $cat->id)->count();
+        $categories = DB::table('sub_categories')
+            ->leftJoin('adverts', function ($join) {
+                $join->on('sub_categories.id', '=', 'adverts.sub_category')
+                    ->where('adverts.ad_status', 1)
+                    ->where(function ($q) {
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                          ->orWhereNull('adverts.sold_date');
+                    });
+            })
+            ->where('sub_categories.cat_id', $cat->id)
+            ->select(
+                'sub_categories.id',
+                'sub_categories.sub_category',
+                'sub_categories.sub_cat_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+
+        $user_id = $request->session()->get('user_id');
+        $user    = User::where('user_id', $user_id)->first();
+        $title   = config('global.site_name') . ' | Related: ' . $ad->ad_title;
+
+        return view('frontend.related', compact(
+            'title', 'ads', 'user', 'categories', 'cat', 'count_cat',
+            'hasMore', 'isMobile', 'ad', 'subcat'
+        ));
+    }
+
+    public function relatedLoadMore(Request $request, $ad_id)
+    {
+        $ad = Advert::where('ad_id', $ad_id)->firstOrFail();
+
+        $titleWords = array_filter(explode(' ', $ad->ad_title));
+        $keyword    = implode(' ', array_slice(array_values($titleWords), 0, 2));
+
+        $agent    = new Agent();
+        $isMobile = $agent->isMobile() || $agent->isTablet();
+        $perPage  = 20;
+        $page     = $request->get('page', 2);
+
+        $baseQuery = $this->buildRelatedQuery($ad, $keyword);
+        $total     = (clone $baseQuery)->count();
+        $ads       = $baseQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
+
+        $html = '';
+        foreach ($ads as $row) {
+            $view = $isMobile
+                ? 'frontend.components.advert.advert-card-mobile'
+                : 'frontend.components.advert.advert-card';
+            $html .= view($view, compact('row'))->render();
+        }
+
+        return response()->json([
+            'html'    => $html,
+            'hasMore' => $total > ($page * $perPage),
+        ]);
+    }
+
     public function adverts(Request $request)
     {
         $title = config('global.site_name').' | '.config('global.site_title');
