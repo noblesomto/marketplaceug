@@ -74,6 +74,11 @@ class ManageAdvertising extends Controller
             $advert->type = $request->type;
             $advert->status = $request->status;
 
+            // Reset start_date when reactivating so the duration window starts fresh
+            if ($request->status === 'active') {
+                $advert->start_date = Carbon::now();
+            }
+
             // Handle image upload if provided
             if ($request->hasFile('advert_image')) {
                 // Delete old image if it exists

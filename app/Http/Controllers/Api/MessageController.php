@@ -287,7 +287,7 @@ class MessageController extends Controller
             return [
                 'advert_id' => $conversation->advert_id,
                 'advert' => Advert::with('firstImage')->find($conversation->advert_id),
-                'other_user' => User::find($otherUserId),
+                'other_user' => User::where('user_id', $otherUserId)->first(),
                 'last_message' => $lastMessage,
                 'last_message_date' => $conversation->last_message_date,
                 'unread_count' => $unreadCount,
@@ -519,7 +519,7 @@ class MessageController extends Controller
             ->paginate($request->get('per_page', 20));
 
         $archived->getCollection()->transform(function ($item) {
-            $item->other_user = User::find($item->other_user_id);
+            $item->other_user = User::where('user_id', $item->other_user_id)->first();
             return $item;
         });
 

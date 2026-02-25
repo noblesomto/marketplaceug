@@ -18,4 +18,8 @@ class Advertising extends Model
         'type',
         'status',
     ];
+
+    protected $casts = [
+        'duration' => 'integer',
+    ];
 }

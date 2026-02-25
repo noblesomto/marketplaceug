@@ -622,6 +622,53 @@
           "response": []
         },
         {
+          "name": "Related Ads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/adverts/{{advert_id}}/related?page=1&per_page=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "adverts",
+                "{{advert_id}}",
+                "related"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20",
+                  "description": "Items per page, max 40 (default: 20)"
+                }
+              ]
+            },
+            "description": "🌐 **Public Endpoint**\n\nEndpoint: `GET /api/adverts/{id}/related`\nController: `App\\Http\\Controllers\\Api\\AdvertController@related`\n\nReturns paginated ads related to the given `ad_id`, ordered by relevance:\n1. Same sub-category **and** similar title (highest priority)\n2. Same sub-category only\n3. Similar title only\n\n**URL parameter:**\n- `id`: The `ad_id` of the source advert (not the DB primary key)\n\n**Query parameters:**\n- `page` (optional, default 1)\n- `per_page` (optional, default 20, max 40)\n\n**Web equivalent:** `GET /related/{ad_id}`\n\n**Response shape:**\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 10,\n      \"ad_id\": 54321,\n      \"ad_title\": \"iPhone 14 Pro 256GB\",\n      \"price\": 500000,\n      \"contact_price\": \"no\",\n      \"price_type\": \"Fixed\",\n      \"state\": \"Lagos\",\n      \"state_slug\": \"lagos\",\n      \"title_slug\": \"iphone-14-pro-256gb\",\n      \"category\": 4,\n      \"sub_category\": 6,\n      \"buy_direct\": \"No\",\n      \"featured\": \"No\",\n      \"sold\": \"No\",\n      \"views\": 120,\n      \"image_thumb\": \"https://marketplace.ng/...\",\n      \"image_optimized\": \"https://marketplace.ng/...\"\n    }\n  ],\n  \"meta\": {\n    \"total\": 45,\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": true,\n    \"source_ad\": {\n      \"ad_id\": 12345,\n      \"ad_title\": \"iPhone 14 Pro\",\n      \"category\": 4,\n      \"sub_category\": 6\n    }\n  }\n}\n```",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Seller Storefront",
           "request": {
             "method": "GET",

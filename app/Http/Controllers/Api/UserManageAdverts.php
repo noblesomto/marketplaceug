@@ -264,6 +264,25 @@ class UserManageAdverts extends Controller
             ], 422);
         }
 
+        // Duplicate check: same user + title + category/subcategory, active or posted in last 24h
+        $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title', ''));
+        $duplicateExists = Advert::where('user_id', $user->user_id)
+            ->where('ad_title', $adTitle)
+            ->where('category', $category)
+            ->where('sub_category', $subcat)
+            ->where(function ($q) {
+                $q->where('ad_status', 'active')
+                  ->orWhere('created_at', '>=', now()->subHours(24));
+            })
+            ->exists();
+
+        if ($duplicateExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You already have an active listing with this title in the same category.',
+            ], 422);
+        }
+
         try {
             DB::beginTransaction();
 

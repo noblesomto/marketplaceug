@@ -57,7 +57,7 @@ class AdvertisingController extends Controller
         }
 
         $ads = $query->get()->map(function ($ad) {
-            $expiresAt = Carbon::parse($ad->start_date)->addDays($ad->duration);
+            $expiresAt = Carbon::parse($ad->start_date)->addDays((int) $ad->duration);
 
             return [
                 'id'            => $ad->id,
