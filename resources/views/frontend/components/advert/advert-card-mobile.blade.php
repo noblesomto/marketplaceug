@@ -72,7 +72,7 @@
         </div>
 
         {{-- Related tag: top-8 keeps it below the boost badge and away from the fixed mobile footer --}}
-        <a href="/related/{{ $row->ad_id }}" class="absolute top-8 left-2 z-[2] w-8 h-8
+        <a href="/related/{{ $row->ad_id }}" class="absolute bottom-2 left-2 z-[2] w-8 h-8
                   flex items-center justify-center
                   rounded-full
                   bg-black/20 backdrop-blur-sm
