@@ -234,18 +234,18 @@ class UserManageAdverts extends Controller
             // Duplicate check: same user + same title + same category/subcategory
             // Only blocks active ads OR ads posted within the last 24 hours (anti-abuse window).
             // This allows legitimate re-listing after a sale/deletion without permanently blocking sellers.
-            $exists = Advert::where(‘user_id’, $user_id)
-                ->where(‘ad_title’, $adTitle)
-                ->where(‘category’, $request->input(‘category’))
-                ->where(‘sub_category’, $request->input(‘subcategory’))
+            $exists = Advert::where('user_id', $user_id)
+                ->where('ad_title', $adTitle)
+                ->where('category', $request->input('category'))
+                ->where('sub_category', $request->input('subcategory'))
                 ->where(function ($q) {
-                    $q->where(‘ad_status’, ‘active’)
-                      ->orWhere(‘created_at’, ‘>=’, now()->subHours(24));
+                    $q->where('ad_status', 'active')
+                      ->orWhere('created_at', '>=', now()->subHours(24));
                 })
                 ->exists();
 
             if ($exists) {
-                return redirect(‘/user/my-ads’)->with(‘error’, "You already have an active listing with this title in the same category. Please edit the existing ad or wait before re-listing.");
+                return redirect('/user/my-ads')->with('error', "You already have an active listing with this title in the same category. Please edit the existing ad or wait before re-listing.");
             }
 
             $advert = Advert::create([
