@@ -46,9 +46,9 @@
         @endif
       </div>
 
-      {{-- Related tag: z-[2] sits above the stretched card link (z-[1]) --}}
+      {{-- Related tag: top-8 keeps it below the boost badge and away from the fixed mobile footer --}}
       <a href="/related/{{ $row->ad_id }}"
-           class="absolute bottom-2 left-2 z-[2]
+           class="absolute top-8 left-2 z-[2]
                   w-10 h-10
                   flex items-center justify-center
                   rounded-full

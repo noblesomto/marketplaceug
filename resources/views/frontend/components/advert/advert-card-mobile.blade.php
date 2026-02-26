@@ -71,9 +71,14 @@
             @endif
         </div>
 
-        {{-- Related tag: z-[2] sits above the stretched card link (z-[1]) --}}
-        <a href="/related/{{ $row->ad_id }}" class="absolute bottom-1 left-2 z-[2] text-white drop-shadow">
-            <i class="bi bi-stars text-2xl text-yellow-300"></i>
+        {{-- Related tag: top-8 keeps it below the boost badge and away from the fixed mobile footer --}}
+        <a href="/related/{{ $row->ad_id }}" class="absolute top-8 left-2 z-[2] w-8 h-8
+                  flex items-center justify-center
+                  rounded-full
+                  bg-black/20 backdrop-blur-sm
+                  shadow-md
+                  hover:bg-black/60 transition">
+            <i class="bi bi-stars text-2xl text-yellow-100"></i>
         </a>
     </div>
 
