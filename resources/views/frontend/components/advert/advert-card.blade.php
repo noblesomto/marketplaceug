@@ -56,7 +56,7 @@
         <div class="relative -mt-10 mb-2 flex justify-between items-end">
             <div>
                 {{-- Related tag: z-[2] sits above the stretched card link (z-[1]) --}}
-                <a href="/related/{{ $row->ad_id }}" class="relative z-[2] px-1 w-10 h-10
+                <a href="/related/{{ $row->ad_id }}" class="relative z-[2] ml-2  px-1 w-10 h-10
                   flex items-center justify-center
                   rounded-full
                   bg-black/20 backdrop-blur-sm
