@@ -216,10 +216,139 @@
             <svg class="w-5 h-5 mr-2 text-dark_green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
             Description
         </h2>
-        <div class="prose prose-sm sm:prose-base text-gray-700 max-w-none bg-gray-50 p-3" itemprop="description">
-            {!! $ad->description ?? '' !!}
+        @php
+            $rawDesc = $ad->description ?? '';
+
+            // Trix wraps content in block tags (<div>, <p>, <ul> …)
+            $hasBlockHtml = (bool) preg_match('/<(div|p|ul|ol|h[1-6]|blockquote|pre)\b/i', $rawDesc);
+
+            if ($hasBlockHtml) {
+                // Trix / rich-text output — render as-is, CSS handles styling
+                $desc = $rawDesc;
+
+            } elseif (str_contains($rawDesc, '•')) {
+                // Plain-text with bullet characters — convert to structured HTML.
+                //
+                // Strategy:
+                //   1. Put each bullet on its own line.
+                //   2. Walk lines; non-bullet lines are paragraphs / section labels.
+                //   3. A "section label" is a capitalised phrase ending with ":"
+                //      that appears at the END of a segment (e.g. "Technical data:"
+                //      or an embedded "…webcam Condition:").
+                //   4. Consecutive bullet lines are wrapped in <ul>.
+
+                $text  = preg_replace('/\s*•\s*/', "\n• ", $rawDesc);
+                $lines = array_filter(array_map('trim', explode("\n", $text)));
+
+                // Matches "…anything… SectionLabel:" at end of string.
+                // Requires capital start + ≥2 more chars (prevents matching "HP:").
+                $secPat = '/^(.*)\s+([A-Z][^:\s][^:]{1,30}:)\s*$/';
+
+                $html    = '';
+                $listBuf = [];
+
+                $flush = static function () use (&$html, &$listBuf) {
+                    if (empty($listBuf)) return;
+                    $html .= '<ul>';
+                    foreach ($listBuf as $li) {
+                        $html .= '<li>' . e($li) . '</li>';
+                    }
+                    $html .= '</ul>';
+                    $listBuf = [];
+                };
+
+                foreach ($lines as $line) {
+                    if (str_starts_with($line, '•')) {
+                        $item = trim(mb_substr($line, 1)); // strip the • (3-byte UTF-8 char)
+
+                        // Bullet whose tail contains a new section label?
+                        // e.g. "…backlit keyboard, webcam Condition:"
+                        if (preg_match($secPat, $item, $m)) {
+                            if (trim($m[1]) !== '') $listBuf[] = trim($m[1]);
+                            $flush();
+                            $html .= '<p class="ad-sec">' . e(trim($m[2])) . '</p>';
+                        } else {
+                            $listBuf[] = $item;
+                        }
+                    } else {
+                        // Non-bullet: paragraph or standalone section label
+                        $flush();
+                        if ($line === '') continue;
+
+                        if (preg_match($secPat, $line, $m)) {
+                            // Intro text + embedded section label at end
+                            if (trim($m[1]) !== '') {
+                                $html .= '<p>' . e(trim($m[1])) . '</p>';
+                            }
+                            $html .= '<p class="ad-sec">' . e(trim($m[2])) . '</p>';
+                        } else {
+                            $html .= '<p>' . e($line) . '</p>';
+                        }
+                    }
+                }
+                $flush();
+                $desc = $html;
+
+            } else {
+                // Pure plain text — at least preserve newlines as breaks
+                $desc = nl2br(e($rawDesc));
+            }
+        @endphp
+        <div id="description" class="ad-description text-gray-800 text-sm sm:text-base leading-relaxed max-w-none bg-gray-50 rounded p-4" itemprop="description">
+            {!! $desc !!}
         </div>
     </section>
+
+    <style>
+        /* ── Plain text (nl2br output) ───────────────────────── */
+        .ad-description br { display: block; margin-bottom: .5rem; }
+
+        /* ── Trix block elements ─────────────────────────────── */
+        .ad-description div,
+        .ad-description p  { margin-bottom: .75rem; line-height: 1.75; }
+        .ad-description div:last-child,
+        .ad-description p:last-child { margin-bottom: 0; }
+
+        /* Empty Trix lines (<div><br></div>) — give them breathing room */
+        .ad-description div:has(> br:only-child) { margin-bottom: .25rem; }
+
+        /* Headings */
+        .ad-description h1 { font-size: 1.25rem; font-weight: 700; margin: 1.25rem 0 .5rem; }
+        .ad-description h2 { font-size: 1.125rem; font-weight: 700; margin: 1rem 0 .5rem; }
+        .ad-description h3 { font-size: 1rem; font-weight: 600; margin: .75rem 0 .4rem; }
+
+        /* Lists */
+        .ad-description ul { list-style: disc;    padding-left: 1.5rem; margin-bottom: 1rem; }
+        .ad-description ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .ad-description li { margin-bottom: .35rem; line-height: 1.7; }
+
+        /* Inline */
+        .ad-description strong, .ad-description b { font-weight: 600; }
+        .ad-description em,     .ad-description i { font-style: italic; }
+        .ad-description del { text-decoration: line-through; color: #6b7280; }
+
+        /* Links */
+        .ad-description a { color: #16a34a; text-decoration: underline; word-break: break-all; }
+
+        /* Blockquote */
+        .ad-description blockquote {
+            border-left: 3px solid #d1d5db;
+            padding-left: 1rem;
+            color: #6b7280;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        /* Code */
+        .ad-description pre  { background: #f3f4f6; padding: .75rem; border-radius: .375rem; overflow-x: auto; font-size: .85rem; margin-bottom: 1rem; }
+        .ad-description code { font-family: monospace; background: #f3f4f6; padding: .1rem .3rem; border-radius: .25rem; font-size: .85rem; }
+
+        /* Section labels generated from bullet parsing (e.g. "Technical data:", "Condition:") */
+        .ad-description .ad-sec { font-weight: 700; color: #1f2937; margin-top: 1.25rem; margin-bottom: .25rem; }
+
+        /* Overflow safety */
+        .ad-description { word-break: break-word; overflow-wrap: break-word; }
+    </style>
 
 
         @if ($isMobile)

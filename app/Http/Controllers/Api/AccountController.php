@@ -112,13 +112,7 @@ class AccountController extends Controller
             ], 401);
         }
 
-        // Check if trusted device
-        if ($this->isTrustedDevice($user, $request)) {
-            return $this->completeLogin($user, $request);
-        }
-
-        // Send OTP
-        return $this->sendOTP($user, $request);
+        return $this->completeLogin($user, $request);
     }
 
     /**

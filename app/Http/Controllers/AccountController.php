@@ -61,11 +61,7 @@ class AccountController extends Controller
             return redirect('/login')->with('error', 'Sorry, the password does not match.');
         }
 
-        if ($this->isTrustedDevice($user, $request)) {
-            return $this->loginUser($request, $user);
-        }
-
-        return $this->triggerOtpLogin($request, $user);
+        return $this->loginUser($request, $user);
     }
 
     protected function loginValidationRules()
