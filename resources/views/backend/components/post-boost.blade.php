@@ -18,7 +18,7 @@
                            data-boost-id="{{ $type->id }}"
                            data-boost-name="{{ $type->name }}">
                     <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center">
-                        <svg class="text-white h-3 w-3 hidden peer-checked:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="text-white h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
@@ -48,7 +48,11 @@
             <label class="w-full flex justify-start cursor-pointer">
                 <div class="flex-[1] flex justify-center gap-2">
                     <input type="radio" name="promotion" id="highlight" value="highlight" class="hidden peer" onclick="toggleRadio(this)">
-                    <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center"></div>
+                    <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center">
+                        <svg class="text-white h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="flex-[11] -mt-2">
                     <div class="space-y-1">
@@ -69,7 +73,7 @@
                 <div class="flex-[1] flex justify-center gap-2">
                     <input type="radio" name="promotion" id="repeated" value="repeated" class="hidden peer" onclick="toggleRadio(this)">
                     <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center">
-                        <svg class="text-white h-3 w-3 hidden peer-checked:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="text-white h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
@@ -93,7 +97,7 @@
                 <div class="flex-[1] flex justify-center gap-2">
                     <input type="radio" name="promotion" id="top" value="top" class="hidden peer" onclick="toggleRadio(this)">
                     <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center">
-                        <svg class="text-white h-3 w-3 hidden peer-checked:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="text-white h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
@@ -117,7 +121,7 @@
                 <div class="flex-[1] flex justify-center gap-2">
                     <input type="radio" name="promotion" id="gallery" value="gallery" class="hidden peer" onclick="toggleRadio(this)">
                     <div class="h-5 w-5 border border-primary rounded bg-white peer-checked:bg-dark_green peer-checked:border-dark_green flex items-center justify-center">
-                        <svg class="text-white h-3 w-3 hidden peer-checked:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="text-white h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>

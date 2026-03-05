@@ -2,67 +2,72 @@
 <div class="group relative h-full flex flex-col">
     <div class="bg-white rounded-lg shadow-md group-hover:shadow-lg border border-gray-200 flex flex-col h-full">
 
-        <!-- Image wrapper with fixed height for consistent card layout -->
-        <div class="w-full h-[200px] lg:h-[220px] overflow-hidden rounded-t-lg relative">
+        <!-- Image wrapper: outer div is the position context (no overflow-hidden so stars can hang below) -->
+        <div class="w-full h-[200px] lg:h-[220px] relative">
             @php
                 $image = $row->getFirstMedia('images');
             @endphp
 
-            <img
-                src="{{ $image
-                    ? ($image->hasGeneratedConversion('thumb-md')
-                        ? $image->getUrl('thumb-md')
-                        : $image->getUrl('thumbnail'))
-                    : asset('frontend/images/default.png') }}"
-                alt="{{ $row->ad_title }}"
-                width="800" height="600"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-cover"
-            />
+            <!-- Inner div clips the image to rounded top corners -->
+            <div class="absolute inset-0 overflow-hidden rounded-t-lg">
+                <img
+                    src="{{ $image
+                        ? ($image->hasGeneratedConversion('thumb-md')
+                            ? $image->getUrl('thumb-md')
+                            : $image->getUrl('thumbnail'))
+                        : asset('frontend/images/default.png') }}"
+                    alt="{{ $row->ad_title }}"
+                    width="800" height="600"
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full h-full object-cover"
+                />
 
-            <div class="absolute top-1 right-1 flex space-x-2">
-                @if(optional($row->owner)->verified=='yes')
-                    <div class="bg-green-50  px-1 rounded text-[14px]">
-                        <span title="verified User">
-                            <i class="bi bi-patch-check-fill text-secondary_dark"></i>
+                <div class="absolute top-1 right-1 flex space-x-2">
+                    @if(optional($row->owner)->verified=='yes')
+                        <div class="bg-green-50  px-1 rounded text-[14px]">
+                            <span title="verified User">
+                                <i class="bi bi-patch-check-fill text-secondary_dark"></i>
+                            </span>
+                        </div>
+                    @endif
+                    @if($row->views >= setViews())
+                    <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
+                        <span title="Popuplar Ad">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                                <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
+                            </svg>
                         </span>
                     </div>
-                @endif
-                @if($row->views >= setViews())
-                <div class="bg-white opacity-8 flex space-x-2 py-1 px-2 rounded text-[13px]">
-                    <span title="Popuplar Ad">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
-                            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
-                        </svg>
-                    </span>
+                    @endif
                 </div>
-                @endif
-            </div>
-            <div class="absolute top-1 left-2">
-                @if ($row->featured == 'Yes')
-                    <div class="bg-gray-50 inline-block px-1 py-0.5 rounded text-[12px]" title="Boosted Ad">
-                        <span>
-                            <i class="bi bi-rocket-takeoff"></i>
-                        </span>
-                        <span class="font-semibold">Boost</span>
-                    </div>
-                @endif
+                <div class="absolute top-1 left-2">
+                    @if ($row->featured == 'Yes')
+                        <div class="bg-gray-50 inline-block px-1 py-0.5 rounded text-[12px]" title="Boosted Ad">
+                            <span>
+                                <i class="bi bi-rocket-takeoff"></i>
+                            </span>
+                            <span class="font-semibold">Boost</span>
+                        </div>
+                    @endif
+                </div>
             </div>
 
+            {{-- Stars button: absolute within the outer (non-clipping) wrapper.
+                 bottom: -38px positions the button so its top is 2px above the image's
+                 bottom edge — the button hangs 38px below the image, 2px inside it. --}}
+            <a href="/related/{{ $row->ad_id }}"
+               class="absolute z-[2] left-2 w-8 h-8
+                      flex items-center justify-center
+                      rounded-full bg-black/20 backdrop-blur-sm
+                      shadow-md hover:bg-black/60 transition"
+               style="bottom: 10px">
+                <i class="bi bi-stars text-2xl text-yellow-100"></i>
+            </a>
         </div>
 
-        <!-- Price and Related tag -->
-        <div class="relative -mt-10 mb-2 flex justify-between items-end">
-            <div>
-                {{-- Related tag: z-[2] sits above the stretched card link (z-[1]) --}}
-                <a href="/related/{{ $row->ad_id }}" class="relative z-[2] ml-2  px-1 w-10 h-10
-                  flex items-center justify-center
-                  rounded-full
-                  bg-black/20 backdrop-blur-sm
-                  shadow-md
-                  hover:bg-black/60 transition"><i class="bi bi-stars text-2xl text-yellow-100"></i></a>
-            </div>
+        <!-- Price badge -->
+        <div class="relative -mt-10 mb-2 flex justify-end">
             <div class="price-badge">
                 @if($row->category==3)
                     <div class="bg-secondary_dark text-white h-8 px-2 text-sm font-semibold inline-flex items-center">

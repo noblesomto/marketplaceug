@@ -246,7 +246,24 @@ class UserManageAdverts extends Controller
         $validationService = new AdvertValidationService();
         $rules = $validationService->getRules($category, $subcat, false);
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'images.required'         => 'Please upload at least 3 images.',
+            'images.min'              => 'Please upload at least 3 images.',
+            'condition.required'      => 'Please select the vehicle condition.',
+            'registration.required'   => 'Please select the vehicle registration status.',
+            'fuel.required'           => 'Please select the fuel type.',
+            'transmission.required'   => 'Please select the transmission type.',
+            'vehicle_type.required'   => 'Please select the body/vehicle type.',
+            'exterior_color.required' => 'Please select the exterior color.',
+            'model.required'          => 'Please select the vehicle model.',
+            'model.exists'            => 'The selected model is invalid.',
+            'model.min'               => 'Please select a valid vehicle model.',
+            'phone_color.required'    => 'Please select the phone color.',
+            'phone_condition.required'=> 'Please select the phone condition.',
+            'device.required'         => 'Please select the device storage/variant.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json([
@@ -647,7 +664,22 @@ class UserManageAdverts extends Controller
         $validationService = new AdvertValidationService();
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'condition.required'      => 'Please select the vehicle condition.',
+            'registration.required'   => 'Please select the vehicle registration status.',
+            'fuel.required'           => 'Please select the fuel type.',
+            'transmission.required'   => 'Please select the transmission type.',
+            'vehicle_type.required'   => 'Please select the body/vehicle type.',
+            'exterior_color.required' => 'Please select the exterior color.',
+            'model.required'          => 'Please select the vehicle model.',
+            'model.exists'            => 'The selected model is invalid.',
+            'model.min'               => 'Please select a valid vehicle model.',
+            'phone_color.required'    => 'Please select the phone color.',
+            'phone_condition.required'=> 'Please select the phone condition.',
+            'device.required'         => 'Please select the device storage/variant.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json([
@@ -786,40 +818,50 @@ class UserManageAdverts extends Controller
                 }
             }
 
-            // Update Car details
+            // Update Car details (upsert: update if exists, create if missing)
             if (in_array($subcat, [2, 21, 23])) {
+                $carData = [
+                    'cat_id'             => $request->input('category'),
+                    'brand_id'           => $request->input('brand'),
+                    'model'              => $request->input('model'),
+                    'mileage'            => $request->input('mileage'),
+                    'condition'          => $request->input('condition'),
+                    'registration'       => $request->input('registration'),
+                    'fuel'               => $request->input('fuel'),
+                    'transmission'       => $request->input('transmission'),
+                    'vehicle_type'       => $request->input('vehicle_type'),
+                    'doors'              => $request->input('doors'),
+                    'exterior_color'     => $request->input('exterior_color'),
+                    'material_interior'  => $request->input('material_interior'),
+                    'exterior_equipment' => json_encode($request->input('exterior_equipment', [])),
+                    'interior'           => json_encode($request->input('interior', [])),
+                    'security'           => json_encode($request->input('security', [])),
+                ];
                 if ($advert->car) {
-                    $advert->car->update([
-                        'cat_id' => $request->input('category'),
-                        'brand_id' => $request->input('brand'),
-                        'model' => $request->input('model'),
-                        'mileage' => $request->input('mileage'),
-                        'condition' => $request->input('condition'),
-                        'registration' => $request->input('registration'),
-                        'fuel' => $request->input('fuel'),
-                        'transmission' => $request->input('transmission'),
-                        'vehicle_type' => $request->input('vehicle_type'),
-                        'doors' => $request->input('doors'),
-                        'exterior_color' => $request->input('exterior_color'),
-                        'material_interior' => $request->input('material_interior'),
-                        'exterior_equipment' => json_encode($request->input('exterior_equipment', [])),
-                        'interior' => json_encode($request->input('interior', [])),
-                        'security' => json_encode($request->input('security', [])),
-                    ]);
+                    $advert->car->update($carData);
+                } else {
+                    $car = new CarDetail(array_merge($carData, ['car_id' => rand(10000, 99999)]));
+                    $car->advert()->associate($advert);
+                    $car->save();
                 }
             }
 
-            // Update Phone details
+            // Update Phone details (upsert: update if exists, create if missing)
             if ($subcat === 6) {
+                $phoneData = [
+                    'cat_id'    => $request->input('category'),
+                    'brand_id'  => $request->input('brand'),
+                    'model'     => $request->input('model'),
+                    'color'     => $request->input('phone_color'),
+                    'device'    => $request->input('device'),
+                    'condition' => $request->input('phone_condition'),
+                ];
                 if ($advert->phone) {
-                    $advert->phone->update([
-                        'cat_id' => $request->input('category'),
-                        'brand_id' => $request->input('brand'),
-                        'model' => $request->input('model'),
-                        'color' => $request->input('phone_color'),
-                        'device' => $request->input('device'),
-                        'condition' => $request->input('phone_condition'),
-                    ]);
+                    $advert->phone->update($phoneData);
+                } else {
+                    $phone = new PhoneDetail(array_merge($phoneData, ['phone_id' => rand(10000, 99999)]));
+                    $phone->advert()->associate($advert);
+                    $phone->save();
                 }
             }
 

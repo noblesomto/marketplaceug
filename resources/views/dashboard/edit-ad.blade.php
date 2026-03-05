@@ -143,22 +143,23 @@
                     </div>
 
                     <!-- Model (Conditional) -->
-                    <div id="divModel" class="{{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
+                    <div id="divModel" class="{{ in_array($advert->sub_category, [2, 21, 23]) ? '' : 'hidden' }}">
                         <label for="model" class="block text-sm font-semibold text-gray-700 mb-2">Model</label>
                         <select id="model" name="model" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base"
-                            data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}">
+                            data-selected="{{ in_array($advert->sub_category, [2, 21, 23]) ? optional($advert->car)->model : '' }}">
                             <option value="">Select Model</option>
                             @foreach($models as $model)
                                 <option value="{{ $model->id }}"
-                                    {{ ($advert->sub_category == 2 && optional($advert->car)->model == $model->id) || ($advert->sub_category == 6 && optional($advert->phone)->model == $model->id) ? 'selected' : '' }}>
+                                    {{ in_array($advert->sub_category, [2, 21, 23]) && optional($advert->car)->model == $model->id ? 'selected' : '' }}>
                                     {{ $model->model }}
                                 </option>
                             @endforeach
                         </select>
+                        @error('model') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Item Condition -->
-                    <div id="itemCondition" class="{{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
+                    <div id="itemCondition" class="{{ in_array($advert->sub_category, [2, 6, 21, 22, 23]) ? 'hidden' : '' }}">
                         <label for="pr" class="block text-sm font-semibold text-gray-700 mb-2">Item Condition <span class="text-red-500">*</span></label>
                         <select id="pr" name="item_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Please Choose</option>
@@ -172,19 +173,18 @@
         </div>
 
         <!-- CARD 2: Vehicle Specifics (Conditional) -->
-        <div id="divCar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
+        <div id="divCar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden {{ in_array($advert->sub_category, [2, 21, 23]) ? '' : 'hidden' }}">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                 <h2 class="text-base lg:text-lg font-semibold text-gray-800">Vehicle Specifics</h2>
             </div>
 
-            @if($advert->car)
             <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Mileage -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Mileage *</label>
                         <div class="flex">
-                            <input type="text" name="mileage" placeholder="0" value="{{ $advert->car->mileage }}" class="block w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
+                            <input type="text" name="mileage" placeholder="0" value="{{ optional($advert->car)->mileage }}" class="block w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:ring-dark_green focus:border-dark_green text-base">
                             <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border border-gray-300 bg-gray-50 text-gray-500 text-sm">Km</span>
                         </div>
                     </div>
@@ -194,10 +194,11 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Condition *</label>
                         <select name="condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
-                            <option value="Local used" {{ $advert->car->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
-                            <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
-                            <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
+                            <option value="Local used" {{ optional($advert->car)->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
+                            <option value="Foreign used" {{ optional($advert->car)->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
+                            <option value="Brand new" {{ optional($advert->car)->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
                         </select>
+                        @error('condition') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Registration -->
@@ -205,9 +206,10 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Registration</label>
                         <select name="registration" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">--Select Type--</option>
-                            <option value="Registered" {{ $advert->car->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
-                            <option value="Unregistered" {{ $advert->car->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
+                            <option value="Registered" {{ optional($advert->car)->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
+                            <option value="Unregistered" {{ optional($advert->car)->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                         </select>
+                        @error('registration') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Fuel -->
@@ -216,9 +218,10 @@
                         <select name="fuel" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             @foreach(['Petrol','Diesel','Natural gas CNG','LPG','Hybrid','Electric'] as $fuelType)
-                                <option value="{{ $fuelType }}" {{ $advert->car->fuel === $fuelType ? 'selected' : '' }}>{{ $fuelType }}</option>
+                                <option value="{{ $fuelType }}" {{ optional($advert->car)->fuel === $fuelType ? 'selected' : '' }}>{{ $fuelType }}</option>
                             @endforeach
                         </select>
+                        @error('fuel') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Transmission -->
@@ -226,9 +229,13 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Transmission *</label>
                         <select name="transmission" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
-                            <option value="Automatic" {{ $advert->car->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
-                            <option value="Manually" {{ $advert->car->transmission == 'Manually' ? 'selected' : '' }}>Manual</option>
+                            <option value="Automatic" {{ optional($advert->car)->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
+                            <option value="Manual" {{ optional($advert->car)->transmission == 'Manual' ? 'selected' : '' }}>Manual</option>
+                            <option value="CVT" {{ optional($advert->car)->transmission == 'CVT' ? 'selected' : '' }}>CVT</option>
+                            <option value="AMT" {{ optional($advert->car)->transmission == 'AMT' ? 'selected' : '' }}>AMT</option>
+                            <option value="Other" {{ optional($advert->car)->transmission == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
+                        @error('transmission') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Vehicle Type -->
@@ -237,9 +244,10 @@
                         <select name="vehicle_type" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
                             @foreach(['Small Car','Station Wagon','Limousine','Convertible','SUV/Off Road Vehicle','Van/Bus','Coupe','Truck','Others'] as $vType)
-                                <option value="{{ $vType }}" {{ $advert->car->vehicle_type === $vType ? 'selected' : '' }}>{{ $vType }}</option>
+                                <option value="{{ $vType }}" {{ optional($advert->car)->vehicle_type === $vType ? 'selected' : '' }}>{{ $vType }}</option>
                             @endforeach
                         </select>
+                        @error('vehicle_type') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Exterior Color -->
@@ -247,11 +255,12 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Exterior Color *</label>
                         <select id="exterior_color" name="exterior_color" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Choose Color</option>
-                            @php $carColors = ['Black' => 'Black','White' => 'White','Gray' => 'Gray','Silver' => 'Silver','Blue' => 'Blue','Red' => 'Red','Other' => 'Other']; @endphp
-                             @foreach($carColors as $value => $label)
+                            @php $carColors = ['Black'=>'Black','White'=>'White','Gray'=>'Gray','Silver'=>'Silver','Blue'=>'Blue','Red'=>'Red','Gold'=>'Gold','Green'=>'Green','Beige'=>'Beige','Brown'=>'Brown','Yellow'=>'Yellow','Orange'=>'Orange','Purple'=>'Purple','Maroon'=>'Maroon','Burgundy'=>'Burgundy','Bronze'=>'Bronze','Champagne'=>'Champagne','Pearl White'=>'Pearl White','Gunmetal'=>'Gunmetal Gray','Midnight Blue'=>'Midnight Blue','Navy Blue'=>'Navy Blue','Olive Green'=>'Olive Green','Charcoal'=>'Charcoal','Matte Black'=>'Matte Black','Two Tone'=>'Two-Tone','Gradient'=>'Gradient','Chameleon'=>'Chameleon','Custom Wrap'=>'Custom Wrap','Chrome'=>'Chrome','Camo'=>'Camouflage','Others'=>'Others']; @endphp
+                            @foreach($carColors as $value => $label)
                                 <option value="{{ $value }}" {{ optional($advert->car)->exterior_color === $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
+                        @error('exterior_color') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Doors -->
@@ -260,7 +269,7 @@
                         <select name="doors" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                              <option value="">Please Choose</option>
                             @foreach(['1 Door','2 Doors','3 Doors','4 Doors'] as $door)
-                                <option value="{{ $door }}" {{ $advert->car->doors == $door ? 'selected' : '' }}>{{ $door }}</option>
+                                <option value="{{ $door }}" {{ optional($advert->car)->doors == $door ? 'selected' : '' }}>{{ $door }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -271,7 +280,7 @@
                         <select name="material_interior" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                              <option value="">Please Choose</option>
                             @foreach(['Full Grain Leather','Partial Leather','Material','Velour', 'Alcantara'] as $mat)
-                                <option value="{{ $mat }}" {{ $advert->car->material_interior == $mat ? 'selected' : '' }}>{{ $mat }}</option>
+                                <option value="{{ $mat }}" {{ optional($advert->car)->material_interior == $mat ? 'selected' : '' }}>{{ $mat }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -285,7 +294,7 @@
                         <!-- Exterior Eq -->
                         <div>
                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Exterior</span>
-                            @php $selExt = json_decode($advert->car->exterior_equipment) ?? []; @endphp
+                            @php $selExt = json_decode(optional($advert->car)->exterior_equipment) ?? []; @endphp
                             <div class="space-y-3">
                                 @foreach(['Trailer hitch', 'Parking assistance', 'Alloy wheels', 'Xenon/LED headlights'] as $item)
                                 <label class="flex items-center group cursor-pointer">
@@ -299,7 +308,7 @@
                         <!-- Interior Eq -->
                         <div>
                              <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Interior</span>
-                             @php $selInt = json_decode($advert->car->interior) ?? []; @endphp
+                             @php $selInt = json_decode(optional($advert->car)->interior) ?? []; @endphp
                              <div class="space-y-3">
                                  @foreach(['Air conditioning', 'Navigation system', 'Radio/tuner', 'Bluetooth', 'Seat heating', 'Cruise control', 'Sunroof/panoramic roof'] as $item)
                                 <label class="flex items-center group cursor-pointer">
@@ -313,7 +322,7 @@
                         <!-- Security -->
                          <div>
                              <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Security</span>
-                             @php $selSec = json_decode($advert->car->security) ?? []; @endphp
+                             @php $selSec = json_decode(optional($advert->car)->security) ?? []; @endphp
                              <div class="space-y-3">
                                  @foreach(['Anti-lock braking system (ABS)', 'Service history maintained', 'Airbags', 'Alarm system'] as $item)
                                 <label class="flex items-center group cursor-pointer">
@@ -327,7 +336,6 @@
                     </div>
                 </div>
             </div>
-            @endif
         </div>
 
         <!-- CARD 3: Phone Details (Conditional) -->
@@ -335,7 +343,6 @@
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                 <h2 class="text-base lg:text-lg font-semibold text-gray-800">Device Details</h2>
             </div>
-             @if($advert->phone)
             <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Phone Color -->
@@ -343,36 +350,38 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Color *</label>
                         <select name="phone_color" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Choose Color</option>
-                             @foreach(['Black','White','Gray','Silver','Gold','Blue','Red','Green'] as $pColor)
+                            @foreach(['Black','White','Gray','Silver','Gold','Blue','Red','Green','Yellow','Orange','Purple','Pink','Rose Gold','Bronze','Copper','Midnight','Space Gray','Midnight Green','Lavender','Aqua','Teal','Turquoise','Coral','Champagne','Graphite','Starlight','Twilight','Gradient','Transparent','Others'] as $pColor)
                                 <option value="{{ $pColor }}" {{ optional($advert->phone)->color === $pColor ? 'selected' : '' }}>{{ $pColor }}</option>
                             @endforeach
                         </select>
+                        @error('phone_color') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Device -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Device Type *</label>
                         <select name="device" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
-                             <option value="">Please Choose</option>
+                            <option value="">Please Choose</option>
                             @foreach(['Device','Accessories','Device & Accessories'] as $dType)
-                                <option value="{{ $dType }}" {{ $advert->phone->device == $dType ? 'selected' : '' }}>{{ $dType }}</option>
+                                <option value="{{ $dType }}" {{ optional($advert->phone)->device == $dType ? 'selected' : '' }}>{{ $dType }}</option>
                             @endforeach
                         </select>
+                        @error('device') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Condition -->
                     <div class="md:col-span-2">
-                         <label class="block text-sm font-semibold text-gray-700 mb-2">Condition *</label>
-                         <select name="phone_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Condition *</label>
+                        <select name="phone_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
                             <option value="">Please Choose</option>
-                            @foreach(['New - Unboxed', 'Foreign Used - No Packaging', 'Used - Very Good', 'Used - Good', 'Used - In Order', 'Used -Defect'] as $pCond)
-                                <option value="{{ $pCond }}" {{ $advert->phone->condition == $pCond ? 'selected' : '' }}>{{ $pCond }}</option>
+                            @foreach(['New - Unboxed', 'Foreign Used - No Packaging', 'Used - Very Good', 'Used - Good', 'Used - In Order', 'Used - Defect'] as $pCond)
+                                <option value="{{ $pCond }}" {{ optional($advert->phone)->condition == $pCond ? 'selected' : '' }}>{{ $pCond }}</option>
                             @endforeach
                         </select>
+                        @error('phone_condition') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
-            @endif
         </div>
 
         <!-- CARD 4: Financials -->
@@ -479,7 +488,7 @@
                 </div>
 
                 <!-- Buy Direct -->
-                <div id="buyDirect" class="bg-blue-50 border border-blue-100 rounded-xl p-5 {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
+                <div id="buyDirect" class="bg-blue-50 border border-blue-100 rounded-xl p-5 {{ in_array($advert->sub_category, [2, 21, 23]) ? 'hidden' : '' }}">
                     <label class="block text-md font-semibold text-blue-900 mb-4">Payment Method</label>
                     <div class="space-y-4">
                         <div class="flex items-start">

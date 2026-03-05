@@ -199,7 +199,7 @@
                     <!-- Subcategory -->
                     <div>
                         <label for="subcategory" class="block text-sm font-semibold text-gray-700 mb-2">Sub Category <span class="text-red-500">*</span></label>
-                        <select id="subcategory" name="subcategory" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" data-old-value="{{ old('subcategory') }}" onchange="showHideDiv()" required>
+                        <select id="subcategory" name="subcategory" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" data-old-value="{{ old('subcategory') }}" required>
                             <option value="">Select Subcategory</option>
                         </select>
                     </div>
@@ -218,6 +218,7 @@
                         <select id="model" name="model" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" data-old-value="{{ old('model') }}">
                             <option value="">Select Model</option>
                         </select>
+                        @error('model') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Item Condition -->
@@ -252,6 +253,7 @@
                             <option value="Foreign used" {{ old('condition') == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
                             <option value="Brand new" {{ old('condition') == 'Brand new' ? 'selected' : '' }}>Brand new</option>
                         </select>
+                        @error('condition') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Mileage -->
@@ -273,6 +275,7 @@
                             <option value="Registered" {{ old('registration') == 'Registered' ? 'selected' : '' }}>Registered</option>
                             <option value="Unregistered" {{ old('registration') == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                         </select>
+                        @error('registration') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Fuel -->
@@ -287,6 +290,7 @@
                             <option value="Hybrid" {{ old('fuel') == 'Hybrid' ? 'selected' : '' }}>Hybrid</option>
                             <option value="Electric" {{ old('fuel') == 'Electric' ? 'selected' : '' }}>Electric</option>
                         </select>
+                        @error('fuel') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Transmission -->
@@ -300,6 +304,7 @@
                             <option value="AMT" {{ old('transmission') == 'AMT' ? 'selected' : '' }}>AMT</option>
                             <option value="Other" {{ old('transmission') == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
+                        @error('transmission') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Vehicle Type -->
@@ -317,6 +322,7 @@
                             <option value="Truck" {{ old('vehicle_type') == 'Truck' ? 'selected' : '' }}>Truck</option>
                             <option value="Others" {{ old('vehicle_type') == 'Others' ? 'selected' : '' }}>Others</option>
                         </select>
+                        @error('vehicle_type') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Color -->
@@ -331,6 +337,7 @@
                                 <option value="{{ $value }}" {{ old('exterior_color') == $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
+                        @error('exterior_color') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Doors -->
@@ -664,7 +671,7 @@
                                     <li>• Minimum resolution: <strong>800×600px</strong> (Recommended: <strong>1200×900px</strong>)</li>
                                     <li>• Take photos in good lighting (natural daylight works best)</li>
                                     <li>• Hold steady and ensure subject is in focus</li>
-                                    <li id="min-images-tip">• <strong>Minimum 3 images required</strong> to post your ad. You can upload up to 20 images</li>
+                                    <li id="min-images-tip">• <strong>Minimum of 3 images required</strong> to post your ad. You can upload up to 20 images</li>
                                     <li>• Avoid screenshots, watermarked, or blurry images</li>
                                 </ul>
                             </div>

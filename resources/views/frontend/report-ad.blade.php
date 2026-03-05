@@ -61,6 +61,14 @@
                 <input type="email" id="email" name="email" placeholder="Email Address" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $user->email }}" readonly>
             </div>
 
+            <div class="mb-6 mt-4">
+                @if ($errors->has('phone'))
+                    <span class="text-red-900 my-1">{{ $errors->first('phone') }}</span>
+                @endif
+                <label class="text-sm font-semibold">Phone *</label>
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $user->phone }}" readonly>
+            </div>
+
             <div class="mb-4 mt-4">
                 @if ($errors->has('message'))
                     <span class="text-red-700 py-1">{{ $errors->first('message') }}</span>

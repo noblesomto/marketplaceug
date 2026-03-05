@@ -60,6 +60,7 @@
                                             <td>
                                                 <div class="d-flex flex-column">
                                                     <span class="fw-medium">{{ $row->user->name ?? 'Unknown User' }}</span>
+                                                    <small class="text-muted">{{ $row->user->phone ?? 'No phone' }}</small>
                                                     <small class="text-muted">{{ $row->user->email ?? 'No email' }}</small>
                                                 </div>
                                             </td>
