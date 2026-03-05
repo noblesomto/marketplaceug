@@ -131,38 +131,31 @@ class AdvertValidationService
             }
         }
 
-        // Car-specific fields (if divCar is visible)
-        if ($isVisible('divCar') && in_array($subcategoryId, [2, 21, 23])) {
-            $rules['registration']   = 'required';
-            //$rules['mileage']      = 'required|numeric';
+        // Car-specific fields — always required for car subcategories regardless of UI config.
+        // Do NOT gate this on $isVisible('divCar'): UI config is a frontend concern only,
+        // and a stale cache / missing config would silently skip all car validation.
+        if (in_array($subcategoryId, [2, 21, 23])) {
             $rules['condition']      = 'required';
+            $rules['registration']   = 'required';
             $rules['fuel']           = 'required';
             $rules['transmission']   = 'required';
             $rules['vehicle_type']   = 'required';
             $rules['exterior_color'] = 'required';
-            //$rules['doors'] = 'required';
-
-            // Model is required if specified in subcategory config OR if divModel is visible
-            if ($isRequired('model') || $isVisible('divModel')) {
-                $rules['model'] = 'required';
-            }
+            // model is an integer FK into the models table — must exist and be non-zero
+            $rules['model']          = 'required|numeric|min:1|exists:models,id';
         }
 
-        // Phone-specific fields (if divPhone is visible)
-        if ($isVisible('divPhone') && $subcategoryId == 6) {
-            $rules['phone_color'] = 'required';
+        // Phone-specific fields — always required for phone subcategory
+        if ($subcategoryId == 6) {
+            $rules['phone_color']     = 'required';
             $rules['phone_condition'] = 'required';
-            $rules['device'] = 'required';
-
-            // Model is required if specified in subcategory config OR if divModel is visible
-            if ($isRequired('model') || $isVisible('divModel')) {
-                $rules['model'] = 'required';
-            }
+            $rules['device']          = 'required';
+            // model dropdown is not shown for phones — no model required
         }
 
-        // Generic model requirement (for other subcategories that require model)
+        // Generic model requirement (for other subcategories that declare model required)
         if ($isRequired('model') && !isset($rules['model'])) {
-            $rules['model'] = 'required';
+            $rules['model'] = 'required|numeric|min:1|exists:models,id';
         }
 
         return $rules;

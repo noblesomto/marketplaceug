@@ -69,25 +69,26 @@ function setupNotifications() {
         fetch(UNREAD_URL)
             .then(response => response.json())
             .then(data => {
+                const count = data.count ?? data.unread_count ?? 0;
                 const badges = document.querySelectorAll('.unread-badge');
                 badges.forEach(badge => {
-                    if (data.count > 0) {
+                    if (count > 0) {
                         badge.style.display = 'flex';
-                        badge.textContent = data.count;
+                        badge.textContent = count > 99 ? '99+' : count;
                     } else {
                         badge.style.display = 'none';
                     }
                 });
 
                 // Only show notification if count increased
-                if (previousCount !== null && data.count > previousCount) {
-                    showNotification("📩 New Message", `You have ${data.count} unread message(s).`);
+                if (previousCount !== null && count > previousCount) {
+                    showNotification("📩 New Message", `You have ${count} unread message(s).`);
                     if (notificationSound) {
                         notificationSound.play().catch(e => console.warn('Sound failed:', e));
                     }
                 }
 
-                previousCount = data.count;
+                previousCount = count;
             })
             .catch(error => {
                 console.error("Unread message check failed:", error);

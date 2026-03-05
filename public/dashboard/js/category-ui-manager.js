@@ -52,10 +52,10 @@ class CategoryUIManager {
                     required: ["model"]
                 },
                 "6": {
-                    show: ["divPhone", "divModel", "shipment"],
-                    hide: ["itemCondition"],
+                    show: ["divPhone", "shipment"],
+                    hide: ["divModel", "itemCondition"],
                     labels: { brand: "Select Option:" },
-                    required: ["model"]
+                    required: []
                 },
                 "16": { show: ["shipment"], hide: ["itemCondition"] },
                 "17": { show: ["shipment"], hide: ["itemCondition"] },

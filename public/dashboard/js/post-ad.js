@@ -58,7 +58,7 @@ const CONFIG = {
             hide: ["shipment", "buyDirect", "divCar", "divModel"]
         },
         "6": { // Phones
-            show: ["divPhone", "shipment"],
+            show: ["divPhone", "divModel", "shipment"],
             hide: ["itemCondition"]
         },
         "16": { // Birds
@@ -487,7 +487,7 @@ class FormController {
 
             // Get current subcategory to determine correct placeholder
             const currentSubcategory = this.subcategorySelect?.value;
-            const placeholder = ['2', '21', '23'].includes(currentSubcategory)
+            const placeholder = ['2', '6', '21', '23'].includes(currentSubcategory)
                 ? "Select Model"
                 : "Select Option";
 

@@ -146,7 +146,7 @@ Route::get('/chat-buyer/{user_id}/{id}', [MessageController::class, 'chat_buyer'
 
 Route::get('/chat/{advertId}/{receiverId}', [MessageController::class, 'showMessages'])->name('chat.show')->middleware('usersession');
 Route::post('/chat/{advertId}/{receiverId}', [MessageController::class, 'sendMessage'])->name('chat.sendMessage')->middleware('usersession');
-Route::get('/unread-messages-count', [MessageController::class, 'countUnreadMessages']);
+Route::get('/unread-messages-count', [MessageController::class, 'countUnreadMessages'])->name('unread.messages.count');
 Route::get('/payment/mark-received/{id}', [MessageController::class, 'mark_received'])->middleware('usersession');
 
 //User Dashboard Section

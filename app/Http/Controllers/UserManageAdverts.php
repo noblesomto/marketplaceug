@@ -189,11 +189,25 @@ class UserManageAdverts extends Controller
 
             // Custom validation messages
             $messages = [
-                'images.required' => 'Please upload at least 3 images.',
-                'images.min'      => 'Please upload at least 3 images.',
-                'images.*.image' => 'All files must be images.',
-                'images.*.mimes' => 'Images must be jpeg, png, jpg, or gif format.',
-                'images.*.max' => 'Each image must not exceed 20MB.',
+                'images.required'         => 'Please upload at least 3 images.',
+                'images.min'              => 'Please upload at least 3 images.',
+                'images.*.image'          => 'All files must be images.',
+                'images.*.mimes'          => 'Images must be jpeg, png, jpg, or gif format.',
+                'images.*.max'            => 'Each image must not exceed 20MB.',
+                // Car-specific messages
+                'condition.required'      => 'Please select the vehicle condition.',
+                'registration.required'   => 'Please select the vehicle registration status.',
+                'fuel.required'           => 'Please select the fuel type.',
+                'transmission.required'   => 'Please select the transmission type.',
+                'vehicle_type.required'   => 'Please select the body/vehicle type.',
+                'exterior_color.required' => 'Please select the exterior color.',
+                'model.required'          => 'Please select the vehicle model.',
+                'model.exists'            => 'The selected model is invalid. Please select a valid model.',
+                'model.min'               => 'Please select a valid vehicle model.',
+                // Phone-specific messages
+                'phone_color.required'    => 'Please select the phone color.',
+                'phone_condition.required'=> 'Please select the phone condition.',
+                'device.required'         => 'Please select the device storage/variant.',
             ];
 
             try {
@@ -667,17 +681,23 @@ class UserManageAdverts extends Controller
             }
         }
 
-        // Update Phone details
-        if ($subcat === 6 && $advert->phone) {
-            $advert->phone->update([
-                'phone_id'  => rand(10000, 99999),
+        // Update Phone details (upsert: update if exists, create if missing)
+        if ($subcat === 6) {
+            $phoneData = [
                 'cat_id'    => $request->input('category'),
                 'brand_id'  => $request->input('brand'),
                 'model'     => $request->input('model'),
                 'color'     => $request->input('phone_color'),
                 'device'    => $request->input('device'),
                 'condition' => $request->input('phone_condition'),
-            ]);
+            ];
+            if ($advert->phone) {
+                $advert->phone->update($phoneData);
+            } else {
+                $phone = new PhoneDetail(array_merge($phoneData, ['phone_id' => rand(10000, 99999)]));
+                $phone->advert()->associate($advert);
+                $phone->save();
+            }
         }
 
         $user_id = $request->session()->get('user_id');

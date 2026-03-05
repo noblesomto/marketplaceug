@@ -1329,6 +1329,7 @@ public function buy_direct_payment(Request $request, $id)
             // Build validation rules
             $rules = [
                 'name' => 'required',
+                'phone' => 'required',
                 'subject' => 'required',
                 'message' => 'required',
             ];
@@ -1346,6 +1347,7 @@ public function buy_direct_payment(Request $request, $id)
                     'user_id' => $user_id,
                 ],
                 [
+                    'phone' => $request->phone,
                     'subject' => $request->subject,
                     'message' => $request->message,
                 ]
