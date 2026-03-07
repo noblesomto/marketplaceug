@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AdSetting;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Cache;
@@ -43,7 +44,9 @@ class AdvertValidationService
         // ✅ Images required only for create (not for jobs category)
         // Skip image requirement if temp images exist (from previous validation error)
         if (!$isUpdate && !in_array($categoryId, [3, 18]) && !$hasTempImages) {
-            $rules['images'] = 'required|array|min:3';
+            $minImages = (int) AdSetting::getValue('min_images', 3);
+            $maxImages = (int) AdSetting::getValue('max_images', 8);
+            $rules['images'] = "required|array|min:{$minImages}|max:{$maxImages}";
         }
 
         // Add conditional rules based on UI config

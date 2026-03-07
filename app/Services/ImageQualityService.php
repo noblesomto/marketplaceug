@@ -44,12 +44,13 @@ class ImageQualityService
     const MAX_BRIGHTNESS = 220; // Above this = too bright
 
     /**
-     * Validate image quality
+     * Validate image quality.
      *
      * @param UploadedFile $file
+     * @param int $strictness  1 (lenient) – 10 (strictest)
      * @return array ['valid' => bool, 'errors' => array, 'warnings' => array, 'score' => int, 'details' => array]
      */
-    public function validateImage(UploadedFile $file): array
+    public function validateImage(UploadedFile $file, int $strictness = 7): array
     {
         $result = [
             'valid' => true,
@@ -58,6 +59,11 @@ class ImageQualityService
             'score' => 100,
             'details' => []
         ];
+
+        // Strictness 1: accept anything — skip all quality checks
+        if ($strictness <= 1) {
+            return $result;
+        }
 
         try {
             // Check file size first (before loading image)
@@ -81,6 +87,11 @@ class ImageQualityService
                 );
             }
 
+            // Strictness 2: file size only — skip all image-analysis checks
+            if ($strictness <= 2) {
+                return $result;
+            }
+
             // Load image
             $image = Image::read($file->getPathname());
 
@@ -95,7 +106,7 @@ class ImageQualityService
                 'size_formatted' => $this->formatFileSize($fileSize),
             ];
 
-            // Check minimum dimensions
+            // Strictness 3+: minimum resolution check
             if ($width < self::MIN_WIDTH || $height < self::MIN_HEIGHT) {
                 $result['valid'] = false;
                 $result['errors'][] = sprintf(
@@ -120,12 +131,33 @@ class ImageQualityService
                 $result['score'] -= 15;
             }
 
-            // Calculate quality score
+            // Strictness 4: skip quality score, sharpness, brightness
+            if ($strictness <= 4) {
+                return $result;
+            }
+
+            // Strictness 5+: quality score check
             $qualityScore = $this->calculateQualityScore($image, $fileSize);
             $result['details']['quality_score'] = $qualityScore;
             $result['score'] = min($result['score'], $qualityScore);
 
-            // Check blur/sharpness (basic)
+            // Strictness 9-10 uses a higher quality threshold
+            $minScore = $strictness >= 9 ? 60 : self::MIN_QUALITY_SCORE;
+
+            if ($result['score'] < $minScore) {
+                $result['valid'] = false;
+                $result['errors'][] = sprintf(
+                    'Overall image quality is too low (score: %d/100). Please use a higher quality photo.',
+                    $result['score']
+                );
+            }
+
+            // Strictness 6: skip sharpness and brightness
+            if ($strictness <= 6) {
+                return $result;
+            }
+
+            // Strictness 7+: sharpness check
             $sharpness = $this->detectSharpness($image);
             $result['details']['sharpness'] = $sharpness;
 
@@ -137,7 +169,12 @@ class ImageQualityService
                 $result['score'] -= 20;
             }
 
-            // Check brightness
+            // Strictness 8: skip brightness
+            if ($strictness <= 8) {
+                return $result;
+            }
+
+            // Strictness 9+: brightness check
             $brightness = $this->detectBrightness($image);
             $result['details']['brightness'] = $brightness;
 
@@ -153,15 +190,6 @@ class ImageQualityService
                     $brightness
                 );
                 $result['score'] -= 10;
-            }
-
-            // Final quality check
-            if ($result['score'] < self::MIN_QUALITY_SCORE) {
-                $result['valid'] = false;
-                $result['errors'][] = sprintf(
-                    'Overall image quality is too low (score: %d/100). Please use a higher quality photo.',
-                    $result['score']
-                );
             }
 
             \Log::info('Image quality validation', [

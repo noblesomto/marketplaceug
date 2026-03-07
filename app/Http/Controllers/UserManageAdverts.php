@@ -28,6 +28,7 @@ use App\Models\Notification;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
 use App\Jobs\PostAdvertJob;
+use App\Models\AdSetting;
 use App\Services\AdvertValidationService;
 use App\Services\ImageQualityService;
 use App\Traits\ManagesImages;
@@ -100,9 +101,10 @@ class UserManageAdverts extends Controller
                 $imageQualityWarnings = [];
                 $totalQualityScore = 0;
                 $imageCount = 0;
+                $strictness = (int) AdSetting::getValue('image_strictness', 7);
 
                 foreach ($request->file('images') as $image) {
-                    $result = $imageQualityService->validateImage($image);
+                    $result = $imageQualityService->validateImage($image, $strictness);
                     $imageCount++;
 
                     // Collect errors
@@ -189,8 +191,9 @@ class UserManageAdverts extends Controller
 
             // Custom validation messages
             $messages = [
-                'images.required'         => 'Please upload at least 3 images.',
-                'images.min'              => 'Please upload at least 3 images.',
+                'images.required'         => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
+                'images.min'              => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
+                'images.max'              => 'You may upload a maximum of ' . AdSetting::getValue('max_images', 8) . ' images.',
                 'images.*.image'          => 'All files must be images.',
                 'images.*.mimes'          => 'Images must be jpeg, png, jpg, or gif format.',
                 'images.*.max'            => 'Each image must not exceed 20MB.',
@@ -409,8 +412,10 @@ class UserManageAdverts extends Controller
             // Get active boost types and durations for optional boost during post
             $boostTypes = BoostType::active()->ordered()->get();
             $boostDurations = BoostDuration::active()->ordered()->get();
+            $minImages = (int) AdSetting::getValue('min_images', 3);
+            $maxImages = (int) AdSetting::getValue('max_images', 8);
 
-            return view('dashboard.post-ad', compact('title', 'categories', 'user', 'shippings', 'states', 'boostTypes', 'boostDurations'));
+            return view('dashboard.post-ad', compact('title', 'categories', 'user', 'shippings', 'states', 'boostTypes', 'boostDurations', 'minImages', 'maxImages'));
         }
     }
 
@@ -452,6 +457,9 @@ class UserManageAdverts extends Controller
             return $this->update_ad($request, $advert);
         }
 
+        $minImages = (int) AdSetting::getValue('min_images', 3);
+        $maxImages = (int) AdSetting::getValue('max_images', 8);
+
         return view('dashboard.edit-ad', compact(
             'title',
             'categories',
@@ -462,7 +470,9 @@ class UserManageAdverts extends Controller
             'models',
             'registration',
             'states',
-            'shippings'
+            'shippings',
+            'minImages',
+            'maxImages'
         ));
     }
 
@@ -471,6 +481,10 @@ class UserManageAdverts extends Controller
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
         $oldPrice = $advert->getOriginal('price');
+
+        $minImages  = (int) AdSetting::getValue('min_images', 3);
+        $maxImages  = (int) AdSetting::getValue('max_images', 8);
+        $strictness = (int) AdSetting::getValue('image_strictness', 7);
 
         $description = $this->removeEmojis($request->input('description'));
         $request->merge(['description' => $description]);
@@ -536,11 +550,11 @@ class UserManageAdverts extends Controller
                 $currentImageCount = $advert->getMedia('images')->count();
                 $requestedDeleteCount = count($deletedImages);
 
-                // Validate: must have at least 3 images remaining
+                // Validate: must have at least $minImages remaining
                 $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
-                if ($remainingAfterDelete < 3) {
+                if ($remainingAfterDelete < $minImages) {
                     return redirect()->back()->withErrors([
-                        'deleted_images' => 'Cannot delete those images. Adverts must have at least 3 images.'
+                        'deleted_images' => "Cannot delete those images. Adverts must have at least {$minImages} image" . ($minImages === 1 ? '' : 's') . "."
                     ]);
                 } else {
                     // Proceed with deletion
@@ -583,7 +597,30 @@ class UserManageAdverts extends Controller
         // Upload new images BEFORE reordering existing ones
         $newImagesUploaded = 0;
         if ($request->hasFile('images')) {
-            // Debug: Check what files we're receiving
+            // Quality validation for newly added images
+            $imageQualityService = new ImageQualityService();
+            $qualityErrors = [];
+            foreach ($request->file('images') as $image) {
+                $result = $imageQualityService->validateImage($image, $strictness);
+                if (!$result['valid']) {
+                    $qualityErrors = array_merge($qualityErrors, $result['errors']);
+                }
+            }
+            if (!empty($qualityErrors)) {
+                return redirect()->back()->withErrors([
+                    'images' => array_merge(['Image quality validation failed:'], array_slice($qualityErrors, 0, 3)),
+                ])->withInput();
+            }
+
+            // Max images guard: current (after deletions) + new must not exceed maxImages
+            $currentAfterDeletion = $advert->fresh()->getMedia('images')->count();
+            $incomingCount = count($request->file('images'));
+            if (!in_array($category, [3, 18]) && ($currentAfterDeletion + $incomingCount) > $maxImages) {
+                return redirect()->back()->withErrors([
+                    'images' => "Too many images. Maximum allowed is {$maxImages}. You currently have {$currentAfterDeletion} and are uploading {$incomingCount} more.",
+                ])->withInput();
+            }
+
             \Log::info('Files received for upload:', [
                 'count' => count($request->file('images')),
                 'files' => array_map(function($file) {
@@ -635,10 +672,10 @@ class UserManageAdverts extends Controller
             $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
         }
 
-        // Validate final image count - ensure at least 3 images exist
+        // Validate final image count
         $finalImageCount = $advert->getMedia('images')->count();
 
-        if ($finalImageCount < 3) {
+        if ($finalImageCount < $minImages) {
             if (in_array($category, [3, 18])) {
                 // Add default image for jobs/CV categories if no images exist
                 if ($finalImageCount < 1) {
@@ -646,9 +683,8 @@ class UserManageAdverts extends Controller
                     $messages[] = "Default job image added";
                 }
             } else {
-                // For all other categories, at least 3 images are required
                 return redirect()->back()->withErrors([
-                    'images' => 'Advert must have at least 3 images. Please upload more images.'
+                    'images' => "Advert must have at least {$minImages} image" . ($minImages === 1 ? '' : 's') . ". Please upload more images."
                 ])->withInput();
             }
         }

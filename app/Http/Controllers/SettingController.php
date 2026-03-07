@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\AdSetting;
 use App\Models\Shipping;
 use App\Models\User;
 use App\Models\Admin;
@@ -114,6 +115,41 @@ class SettingController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function imageSettings(Request $request)
+    {
+        $title = "Ad Image Settings | " . config('global.site_name');
+
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'max_images'       => 'required|integer|min:1|max:20',
+                'min_images'       => 'required|integer|min:1',
+                'image_strictness' => 'required|integer|min:1|max:10',
+            ]);
+
+            // min_images cannot exceed max_images
+            if ($request->min_images > $request->max_images) {
+                return back()->withInput()->with('status', [
+                    'type' => 'danger',
+                    'text' => 'Minimum images cannot be greater than maximum images.',
+                ]);
+            }
+
+            AdSetting::setValue('max_images',       $request->max_images);
+            AdSetting::setValue('min_images',       $request->min_images);
+            AdSetting::setValue('image_strictness', $request->image_strictness);
+
+            return back()->with('status', ['type' => 'success', 'text' => 'Image settings updated successfully.']);
+        }
+
+        $settings = [
+            'max_images'       => (int) AdSetting::getValue('max_images',       8),
+            'min_images'       => (int) AdSetting::getValue('min_images',       3),
+            'image_strictness' => (int) AdSetting::getValue('image_strictness', 7),
+        ];
+
+        return view('backend.settings.ad-image-settings', compact('title', 'settings'));
     }
 
     public function manageAdmin(Request $request)

@@ -535,6 +535,17 @@
                 <div>
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Product Photos</label>
 
+                     <div class="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-100 text-sm text-blue-800">
+                         Must keep at least <strong>{{ $minImages }}</strong> image{{ $minImages === 1 ? '' : 's' }}. Maximum <strong>{{ $maxImages }}</strong> images allowed.
+                     </div>
+
+                     @error('images')
+                         <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-800 text-sm font-medium">{{ $message }}</div>
+                     @enderror
+                     @error('deleted_images')
+                         <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-800 text-sm font-medium">{{ $message }}</div>
+                     @enderror
+
                      <!-- Dropzone -->
                      <div class="border-2 border-dashed border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-dark_green transition-colors relative group mb-6">
                         <label for="imageUpload" class="cursor-pointer flex flex-col items-center justify-center py-8 w-full h-full z-10">
@@ -545,6 +556,7 @@
                                 </svg>
                             </div>
                             <span class="text-sm font-medium text-gray-900">Add more photos</span>
+                            <span class="text-xs text-gray-500 mt-1">PNG, JPG, WebP up to 20MB (Max {{ $maxImages }} images total)</span>
                         </label>
                         <input name="images[]" type="file" id="imageUpload" multiple class="hidden" accept="image/*">
                         <input type="hidden" name="existing_image_order" id="existing_image_order">
@@ -631,6 +643,10 @@
 <link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
 <!-- Scripts maintained -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    window.MIN_IMAGES = {{ $minImages }};
+    window.MAX_IMAGES = {{ $maxImages }};
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>

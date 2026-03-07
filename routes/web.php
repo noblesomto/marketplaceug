@@ -426,6 +426,9 @@ Route::middleware(['adminsession'])->group(function () {
             Route::put('/{id}', [ManageAdminUsers::class, 'update']);
             Route::delete('/{id}', [ManageAdminUsers::class, 'destroy']);
         });
+
+        // Ad Image Settings
+        Route::match(['GET', 'POST'], '/settings/ad-images', [SettingController::class, 'imageSettings'])->name('admin.ad.image.settings');
     });
 });
 
