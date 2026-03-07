@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const preview = document.getElementById("preview");
     const errorBox = document.getElementById("image-error");
     const form = input.closest("form");
+    const MAX_IMAGES = window.MAX_IMAGES || 8;
 
     let fileList = [];
     let sortableInstance = null;
@@ -21,8 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (fileList.length + newFiles.length > 20) {
-            showError("Max 20 images allowed.");
+        if (fileList.length + newFiles.length > MAX_IMAGES) {
+            showError("Max " + MAX_IMAGES + " images allowed.");
             return;
         }
 

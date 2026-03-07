@@ -36,6 +36,23 @@ if (existingPreview) {
 }
 
 fileInput?.addEventListener("change", function () {
+    const maxImages = window.MAX_IMAGES || 8;
+    const existingCount = existingPreview
+        ? existingPreview.querySelectorAll(".image-container").length
+        : 0;
+    const incomingCount = fileInput.files.length;
+
+    if (existingCount + incomingCount > maxImages) {
+        const errorDiv = document.getElementById('image-error');
+        if (errorDiv) {
+            errorDiv.textContent = "Too many images. Maximum " + maxImages + " allowed. You currently have " + existingCount + " and are adding " + incomingCount + " more.";
+            errorDiv.classList.remove("hidden");
+            errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        fileInput.value = '';
+        return;
+    }
+
     Array.from(fileInput.files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function (e) {

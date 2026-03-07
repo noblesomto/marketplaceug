@@ -286,6 +286,12 @@
 
 
         <li>
+          <a href="/settings/ad-images">
+            <i class="bi bi-circle"></i><span>Ad Image Settings</span>
+          </a>
+        </li>
+
+        <li>
           <a href="/settings/change-password">
             <i class="bi bi-circle"></i><span>Change Password</span>
           </a>

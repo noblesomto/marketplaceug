@@ -671,7 +671,7 @@
                                     <li>• Minimum resolution: <strong>800×600px</strong> (Recommended: <strong>1200×900px</strong>)</li>
                                     <li>• Take photos in good lighting (natural daylight works best)</li>
                                     <li>• Hold steady and ensure subject is in focus</li>
-                                    <li id="min-images-tip">• <strong>Minimum of 3 images required</strong> to post your ad. You can upload up to 20 images</li>
+                                    <li id="min-images-tip">• <strong>Minimum of {{ $minImages }} image{{ $minImages === 1 ? '' : 's' }} required</strong> to post your ad. You can upload up to {{ $maxImages }} images</li>
                                     <li>• Avoid screenshots, watermarked, or blurry images</li>
                                 </ul>
                             </div>
@@ -690,7 +690,7 @@
                                 </svg>
                             </div>
                             <span class="text-sm font-medium text-gray-900">Click to upload or drag images here</span>
-                            <span class="text-xs text-gray-500 mt-1">PNG, JPG, WebP up to 20MB (Max 20 images)</span>
+                            <span class="text-xs text-gray-500 mt-1">PNG, JPG, WebP up to 20MB (Max {{ $maxImages }} images)</span>
                         </label>
                         <input id="imageUpload" name="images[]" type="file" multiple accept="image/*" class="hidden">
                     </div>
@@ -810,6 +810,10 @@
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    window.MIN_IMAGES = {{ $minImages }};
+    window.MAX_IMAGES = {{ $maxImages }};
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
 
@@ -870,7 +874,7 @@ async function renderValidationResults() {
         return;
     }
 
-    const countValidation = imageQualityValidator.validateMinimumCount(accumulatedDT.files);
+    const countValidation = imageQualityValidator.validateMinimumCount(accumulatedDT.files, {{ $minImages }});
     if (!countValidation.valid) {
         errorDiv.innerHTML = '<strong>⚠️ Not Enough Images:</strong> ' + countValidation.error;
         errorDiv.classList.remove('hidden');
@@ -905,11 +909,22 @@ document.querySelector('form[action="/user/post-ad"]').addEventListener('submit'
     const tempImageCount = tempImagePaths.length;
     const totalImages = newImageCount + tempImageCount;
 
-    if (!isJobsCategory && totalImages < 3) {
+    const minRequired = {{ $minImages }};
+    const maxAllowed  = {{ $maxImages }};
+
+    if (!isJobsCategory && totalImages < minRequired) {
         e.preventDefault();
         const errorDiv = document.getElementById('image-error');
         if (errorDiv) {
-            errorDiv.innerHTML = '<strong>⚠️ Minimum 3 Images Required:</strong> Please upload at least 3 images to post your ad. You currently have ' + totalImages + '.';
+            errorDiv.innerHTML = '<strong>⚠️ Minimum ' + minRequired + ' Image' + (minRequired === 1 ? '' : 's') + ' Required:</strong> Please upload at least ' + minRequired + ' images to post your ad. You currently have ' + totalImages + '.';
+            errorDiv.classList.remove('hidden');
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    } else if (!isJobsCategory && totalImages > maxAllowed) {
+        e.preventDefault();
+        const errorDiv = document.getElementById('image-error');
+        if (errorDiv) {
+            errorDiv.innerHTML = '<strong>⚠️ Too Many Images:</strong> Maximum ' + maxAllowed + ' images allowed. You currently have ' + totalImages + '.';
             errorDiv.classList.remove('hidden');
             errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
