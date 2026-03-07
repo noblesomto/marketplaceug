@@ -36,14 +36,30 @@ if (existingPreview) {
 }
 
 fileInput?.addEventListener("change", function () {
+    const maxImages = window.MAX_IMAGES || 8;
+    const existingCount = existingPreview
+        ? existingPreview.querySelectorAll(".image-container").length
+        : 0;
+    const incomingCount = fileInput.files.length;
+
+    if (existingCount + incomingCount > maxImages) {
+        const errorDiv = document.getElementById('image-error');
+        if (errorDiv) {
+            errorDiv.textContent = "Too many images. Maximum " + maxImages + " allowed. You currently have " + existingCount + " and are adding " + incomingCount + " more.";
+            errorDiv.classList.remove("d-none", "hidden");
+        }
+        fileInput.value = '';
+        return;
+    }
+
     Array.from(fileInput.files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function (e) {
             const newImage = document.createElement("div");
-            newImage.classList.add("relative", "group", "cursor-move", "image-container");
+            newImage.classList.add("col-6", "col-md-3", "position-relative", "image-container");
             newImage.innerHTML = `
-                <img src="${e.target.result}" class="w-full h-auto rounded-lg shadow">
-                <button type="button" class="absolute top-0 right-0 w-6 h-6 text-red-500 bg-white rounded-full hover:bg-red-100 delete-image flex items-center justify-center">&times;</button>
+                <img src="${e.target.result}" class="img-fluid rounded shadow-sm">
+                <button type="button" class="btn btn-sm btn-light text-danger border-0 position-absolute top-0 end-0 translate-middle rounded-circle delete-image d-flex align-items-center justify-content-center" style="width:24px;height:24px;">&times;</button>
             `;
             existingPreview.appendChild(newImage);
         };

@@ -126,16 +126,12 @@
                         @endforeach
                       </select>
                     </div>
-                    <div id="divModel" class="col-md-4 {{ in_array($advert->sub_category, [2]) ? '' : 'hidden' }}">
-                      <select id="model" name="model" class="form-select" data-selected="{{ $advert->sub_category == 2 ? optional($advert->car)->model : ($advert->sub_category == 6 ? optional($advert->phone)->model : '') }}">
+                    <div id="divModel" class="col-md-4 {{ in_array($advert->sub_category, [2, 21, 23]) ? '' : 'hidden' }}">
+                      <select id="model" name="model" class="form-select" data-selected="{{ in_array($advert->sub_category, [2, 21, 23]) ? optional($advert->car)->model : '' }}">
                         <option value="">Select Model</option>
                         @foreach($models as $model)
-                          <option value="{{ $model->id }}" 
-                            {{
-                              ($advert->sub_category == 2 && optional($advert->car)->model == $model->id) ||
-                              ($advert->sub_category == 6 && optional($advert->phone)->model == $model->id)
-                                ? 'selected' : ''
-                            }}
+                          <option value="{{ $model->id }}"
+                            {{ in_array($advert->sub_category, [2, 21, 23]) && optional($advert->car)->model == $model->id ? 'selected' : '' }}
                           >
                             {{ $model->model }}
                           </option>
@@ -147,7 +143,7 @@
               </div>
 
               <!-- Item Condition -->
-              <div id="itemCondition" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2,6]) ? 'hidden' : '' }}">
+              <div id="itemCondition" class="row mb-3 pb-3 border-bottom {{ (in_array($advert->category, [1, 3, 7, 11, 18]) || in_array($advert->sub_category, [2, 6, 16, 17, 18, 19, 21, 23])) ? 'hidden' : '' }}">
                 <div class="col-md-2">
                   <label class="form-label fw-bold">Item Condition *</label>
                 </div>
@@ -165,39 +161,38 @@
               </div>
 
               <!-- Car Details (Conditionally Shown) -->
-              <div id="divCar" class="p-2 {{ $advert->sub_category == 2 ? '' : 'hidden' }}">
-                @if($advert->car)
-                    <div class="container-fluid">
-                        <!-- Mileage -->
-                        <div class="row py-3 border-bottom border-gray-200">
-                            <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Mileage *</div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                @if ($errors->has('mileage'))
-                                    <span class="text-danger">{{ $errors->first('mileage') }}</span>
-                                @endif
-                                <div class="d-flex w-50">
-                                    <input type="text" name="mileage" placeholder="mileage" class="form-control me-2" value="{{ $advert->car->mileage }}">
-                                    <span class="mt-2">Km</span>
-                                </div>
+              <div id="divCar" class="p-2 {{ in_array($advert->sub_category, [2, 21, 23]) ? '' : 'hidden' }}">
+                <div class="container-fluid">
+                    <!-- Mileage -->
+                    <div class="row py-3 border-bottom border-gray-200">
+                        <div class="col-12 col-md-2">
+                            <div class="fw-semibold">Mileage *</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            @if ($errors->has('mileage'))
+                                <span class="text-danger">{{ $errors->first('mileage') }}</span>
+                            @endif
+                            <div class="d-flex w-50">
+                                <input type="text" name="mileage" placeholder="mileage" class="form-control me-2" value="{{ optional($advert->car)->mileage }}">
+                                <span class="mt-2">Km</span>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Vehicle Condition -->
-                        <div class="row py-3 border-bottom border-gray-200">
-                            <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Vehicle Condition *</div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                @if ($errors->has('condition'))
-                                    <span class="text-danger">{{ $errors->first('condition') }}</span>
-                                @endif
-                                <select id="pr" name="condition" class="form-select w-50">
-                                    <option value="">Please Choose</option>
-                                    <option value="Local used" {{ $advert->car->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
-                                    <option value="Foreign used" {{ $advert->car->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
-                                    <option value="Brand new" {{ $advert->car->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
+                    <!-- Vehicle Condition -->
+                    <div class="row py-3 border-bottom border-gray-200">
+                        <div class="col-12 col-md-2">
+                            <div class="fw-semibold">Vehicle Condition *</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            @if ($errors->has('condition'))
+                                <span class="text-danger">{{ $errors->first('condition') }}</span>
+                            @endif
+                            <select id="pr" name="condition" class="form-select w-50">
+                                <option value="">Please Choose</option>
+                                <option value="Local used" {{ optional($advert->car)->condition == 'Local used' ? 'selected' : '' }}> Local used</option>
+                                <option value="Foreign used" {{ optional($advert->car)->condition == 'Foreign used' ? 'selected' : '' }}>Foreign used</option>
+                                <option value="Brand new" {{ optional($advert->car)->condition == 'Brand new' ? 'selected' : '' }}>Brand new</option>
                                 </select>
                             </div>
                         </div>
@@ -214,8 +209,8 @@
                                 <div class="d-flex w-50">
                                     <select id="pr" name="registration" class="form-select">
                                         <option value="">--Select Type--</option>
-                                        <option value="Registered" {{ $advert->car->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
-                                        <option value="Unregistered" {{ $advert->car->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
+                                        <option value="Registered" {{ optional($advert->car)->registration == 'Registered' ? 'selected' : '' }}>Registered</option>
+                                        <option value="Unregistered" {{ optional($advert->car)->registration == 'Unregistered' ? 'selected' : '' }}>Unregistered</option>
                                     </select>
                                 </div>
                             </div>
@@ -242,7 +237,7 @@
                                     ] as $fuelType)
                                         <option 
                                             value="{{ $fuelType }}" 
-                                            {{ $advert->car->fuel === $fuelType ? 'selected' : '' }}
+                                            {{ optional($advert->car)->fuel === $fuelType ? 'selected' : '' }}
                                         >
                                             {{ $fuelType }}
                                         </option>
@@ -262,8 +257,8 @@
                                 @endif
                                 <select id="pr" name="transmission" class="form-select w-50">
                                     <option value="">Please Choose</option>
-                                    <option value="Automatic" {{ $advert->car->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
-                                    <option value="Manually" {{ $advert->car->transmission == 'Manually' ? 'selected' : '' }}>Manually</option>
+                                    <option value="Automatic" {{ optional($advert->car)->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
+                                    <option value="Manually" {{ optional($advert->car)->transmission == 'Manually' ? 'selected' : '' }}>Manually</option>
                                 </select>
                             </div>
                         </div>
@@ -292,7 +287,7 @@
                                     ] as $vehicleType)
                                         <option 
                                             value="{{ $vehicleType }}"
-                                            {{ $advert->car->vehicle_type === $vehicleType ? 'selected' : '' }}
+                                            {{ optional($advert->car)->vehicle_type === $vehicleType ? 'selected' : '' }}
                                         >
                                             {{ $vehicleType }}
                                         </option>
@@ -376,10 +371,10 @@
                                 @endif
                                 <select id="pr" name="doors" class="form-select w-50">
                                     <option value="">Please Choose</option>
-                                    <option value="1 Door" {{ $advert->car->doors == '1 Door' ? 'selected' : '' }}>1 Door</option>
-                                    <option value="2 Doors" {{ $advert->car->doors == '2 Doors' ? 'selected' : '' }}>2 Doors</option>
-                                    <option value="3 Doors" {{ $advert->car->doors == '3 Doors' ? 'selected' : '' }}>3 Doors</option>
-                                    <option value="4 Doors" {{ $advert->car->doors == '4 Doors' ? 'selected' : '' }}>4 Doors</option>
+                                    <option value="1 Door" {{ optional($advert->car)->doors == '1 Door' ? 'selected' : '' }}>1 Door</option>
+                                    <option value="2 Doors" {{ optional($advert->car)->doors == '2 Doors' ? 'selected' : '' }}>2 Doors</option>
+                                    <option value="3 Doors" {{ optional($advert->car)->doors == '3 Doors' ? 'selected' : '' }}>3 Doors</option>
+                                    <option value="4 Doors" {{ optional($advert->car)->doors == '4 Doors' ? 'selected' : '' }}>4 Doors</option>
                                 </select>
                             </div>
                         </div>
@@ -407,7 +402,7 @@
                                     
                                     @foreach($interiorMaterials as $material)
                                         <option value="{{ $material }}" 
-                                            @if($advert->car->material_interior == $material) selected @endif>
+                                            @if(optional($advert->car)->material_interior == $material) selected @endif>
                                             {{ $material }}
                                         </option>
                                     @endforeach
@@ -431,7 +426,7 @@
                                                     'Alloy wheels',
                                                     'Xenon/LED headlights'
                                                 ];
-                                                $selectedEquipment = json_decode($advert->car->exterior_equipment) ?? [];
+                                                $selectedEquipment = json_decode(optional($advert->car)->exterior_equipment) ?? [];
                                             @endphp
 
                                             @foreach(array_slice($exteriorEquipment, 0, 2) as $equipment)
@@ -489,7 +484,7 @@
                                             'Cruise control',
                                             'Non-smoking vehicle'
                                         ];
-                                        $selectedInterior = json_decode($advert->car->interior) ?? [];
+                                        $selectedInterior = json_decode(optional($advert->car)->interior) ?? [];
                                     @endphp
                                     
                                     <div class="col-6">
@@ -548,7 +543,7 @@
                                             'Traction control',
                                             'ISOFIX child seat mounts'
                                         ];
-                                        $selectedSecurity = json_decode($advert->car->security) ?? [];
+                                        $selectedSecurity = json_decode(optional($advert->car)->security) ?? [];
                                     @endphp
                                     
                                     <div class="col-6">
@@ -589,13 +584,11 @@
                             </div>
                         </div>
                     </div>
-                @endif
               </div>
 
               <!-- Phone Details (Conditionally Shown) -->
               <div id="divPhone" class="mt-4 p-4 {{ $advert->sub_category == 6 ? '' : 'hidden' }}">
-                @if($advert->phone)
-                    <div class="container-fluid">
+                <div class="container-fluid">
                         <!-- Phone Color -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-4">
@@ -680,7 +673,7 @@
                                     
                                     @foreach($deviceTypes as $value => $label)
                                         <option value="{{ $value }}" 
-                                                {{ $advert->phone->device == $value ? 'selected' : '' }}>
+                                                {{ optional($advert->phone)->device == $value ? 'selected' : '' }}>
                                             {{ $label }}
                                         </option>
                                     @endforeach
@@ -706,13 +699,13 @@
                                             'Used - Very Good' => 'Very Good (Well-maintained item with barely visible signs of wear)',
                                             'Used - Good' => 'Good (Used item with visible signs of wear)',
                                             'Used - In Order' => 'In Order (Used item with clearly visible signs of wear, but still usable)',
-                                            'Used -Defect' => 'Defect (Defective item suitable for repair or spare parts)'
+                                            'Used - Defect' => 'Defect (Defective item suitable for repair or spare parts)'
                                         ];
                                     @endphp
                                     
                                     @foreach($phoneConditions as $value => $label)
                                         <option value="{{ $value }}" 
-                                                {{ $advert->phone->condition == $value ? 'selected' : '' }}
+                                                {{ optional($advert->phone)->condition == $value ? 'selected' : '' }}
                                                 {!! $value !== 'New - Unboxed' ? 'data-description="'.htmlspecialchars($label).'"' : '' !!}>
                                             {!! $label !!}
                                         </option>
@@ -721,7 +714,6 @@
                             </div>
                         </div>
                     </div>
-                @endif
               </div>
 
               <!-- Shipment Section -->
@@ -754,7 +746,7 @@
                       @foreach($shippings as $row)
                         <div class="border border-primary rounded p-2 mt-2">
                           <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="shipping[]" value="{{ $row->id }}" id="shipping-{{ $row->id }}">
+                            <input class="form-check-input" type="checkbox" name="shipping[]" value="{{ $row->id }}" id="shipping-{{ $row->id }}" {{ in_array($row->id, $selectedShippingIds) ? 'checked' : '' }}>
                             <label class="form-check-label d-flex flex-column" for="shipping-{{ $row->id }}">
                               <div class="d-flex align-items-center">
                                 <span><img class="w-10" src="{{ asset('uploads/shipping/'.$row->logo) }}"></span>
@@ -853,7 +845,7 @@
            
 
               <!-- Buy Direct Section -->
-              <div id="buyDirect" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2]) ? 'hidden' : '' }}">
+              <div id="buyDirect" class="row mb-3 pb-3 border-bottom {{ in_array($advert->sub_category, [2, 21, 23]) ? 'hidden' : '' }}">
                 <div class="col-md-2">
                   <label class="form-label fw-bold">Bid/request</label>
                 </div>
@@ -930,9 +922,10 @@
 
     <!-- Middle Column -->
     <div class="col-12 col-md-5 mb-3 mb-md-0">
-        @if ($errors->has('images[]'))
-            <span class="text-danger small">{{ $errors->first('images[]') }}</span>
-        @endif
+        @error('images')
+            <span class="text-danger small">{{ $message }}</span>
+        @enderror
+        <div id="image-error" class="text-danger small d-none"></div>
 
         <div class="d-flex align-items-start border border-2 border-secondary border-dashed p-2 rounded">
             <!-- Camera Icon for File Upload -->
@@ -978,7 +971,7 @@
     <div class="col-12 col-md-3">
         <div class="small">
             <span class="fw-semibold">Tip:</span>
-            Up to 20 images with a maximum size of 12 MB. To keep listings clear, please avoid uploading images with watermarks or text.
+            Min {{ $minImages }}, max {{ $maxImages }} images. Maximum file size 20 MB. Avoid watermarks or text overlays.
         </div>
     </div>
 </div>
@@ -1074,6 +1067,10 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+  window.MIN_IMAGES = {{ $minImages }};
+  window.MAX_IMAGES = {{ $maxImages }};
+</script>
 <script src="{{ asset('frontend/js/lga.js') }}"></script>
 <script src="{{ asset('dashboard/js/category-ui-manager.js') }}"></script>
 <script src="{{ asset('backend/js/edit-advert.js') }}"></script>

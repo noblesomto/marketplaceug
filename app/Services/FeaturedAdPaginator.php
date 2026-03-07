@@ -77,13 +77,18 @@ class FeaturedAdPaginator
             $ads = $this->getRegularAds();
         }
 
-        $hasMore = $this->hasMoreAds();
+        $total   = $this->getTotalCount();
+        $hasMore = $total > $this->page * $this->perPage;
 
         return [
-            'ads' => $ads,
-            'hasMore' => $hasMore,
-            'nextPage' => $this->page + 1,
-            'featuredCount' => $this->page === 1 ? $featured->count() : 0 // For frontend debugging
+            'ads'          => $ads,
+            'hasMore'      => $hasMore,
+            'nextPage'     => $this->page + 1,
+            'current_page' => $this->page,
+            'per_page'     => $this->perPage,
+            'total'        => $total,
+            'last_page'    => $this->perPage > 0 ? (int) ceil($total / $this->perPage) : 1,
+            'featuredCount' => $this->page === 1 ? $featured->count() : 0,
         ];
     }
 
@@ -136,10 +141,8 @@ class FeaturedAdPaginator
             ->get();
     }
 
-    protected function hasMoreAds(): bool
+    protected function getTotalCount(): int
     {
-        $offset = $this->page * $this->perPage;
-
         $query = Advert::where('ad_status', 'active')
             ->where(function ($q) {
                 $q->where('sold', '!=', 'Yes')
@@ -155,8 +158,7 @@ class FeaturedAdPaginator
 
         $this->applyFilters($query);
 
-        $totalCount = $query->count();
-        return $totalCount > $offset;
+        return $query->count();
     }
 
     protected function applyFilters($query)

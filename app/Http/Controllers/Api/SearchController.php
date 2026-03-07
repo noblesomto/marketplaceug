@@ -374,7 +374,7 @@ class SearchController extends Controller
                     ->where('state', $location)
                     ->where('category', $cat->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(request()->input('per_page', 10));
 
         $count_cat = Advert::activeNotRecentlySold()
                           ->where('category', $cat->id)
@@ -415,7 +415,7 @@ class SearchController extends Controller
                     ->where('state', $location)
                     ->where('sub_category', $subcat->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(request()->input('per_page', 10));
 
         $count_subcat = Advert::activeNotRecentlySold()
                             ->where('sub_category', $subcat->id)
@@ -455,7 +455,7 @@ class SearchController extends Controller
                     ->where('state', $location)
                     ->where('brand', $brand->id)
                     ->orderWithFeatured()
-                    ->paginate(10);
+                    ->paginate(request()->input('per_page', 10));
 
         $count_brand = Advert::activeNotRecentlySold()
                         ->where('brand', $brand->id)
@@ -528,12 +528,12 @@ class SearchController extends Controller
         return response()->json([
             'success' => true,
             'data' => $ads->items(),
-            'has_more' => $ads->hasMorePages(),
             'pagination' => [
                 'current_page' => $ads->currentPage(),
-                'last_page' => $ads->lastPage(),
-                'per_page' => $ads->perPage(),
-                'total' => $ads->total()
+                'last_page'    => $ads->lastPage(),
+                'per_page'     => $ads->perPage(),
+                'total'        => $ads->total(),
+                'has_more'     => $ads->hasMorePages(),
             ]
         ]);
     }

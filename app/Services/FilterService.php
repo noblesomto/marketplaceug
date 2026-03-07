@@ -109,11 +109,11 @@ class FilterService
 
             if ($sellerType === 'verified') {
                 $query->whereHas('user', function ($q) {
-                    $q->where('verified', 'Yes');
+                    $q->where('verified', 'yes');
                 });
             } elseif ($sellerType === 'unverified') {
                 $query->whereHas('user', function ($q) {
-                    $q->where('verified', 'No');
+                    $q->where('verified', 'no');
                 });
             }
         }
@@ -134,9 +134,9 @@ class FilterService
             $buyDirect = $request->buydirect;
 
             if ($buyDirect === 'yes') {
-                $query->where('buydirect', 'Yes');
+                $query->where('buy_direct', 'Yes');
             } elseif ($buyDirect === 'no') {
-                $query->where('buydirect', 'No');
+                $query->where('buy_direct', 'No');
             }
         }
 

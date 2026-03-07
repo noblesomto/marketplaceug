@@ -481,11 +481,12 @@ class AdvertController extends Controller
             'success' => true,
             'data'    => $data,
             'meta'    => [
-                'total'      => $total,
-                'page'       => $page,
-                'per_page'   => $perPage,
-                'has_more'   => $total > ($page * $perPage),
-                'source_ad'  => [
+                'total'        => $total,
+                'current_page' => $page,
+                'per_page'     => $perPage,
+                'last_page'    => $perPage > 0 ? (int) ceil($total / $perPage) : 1,
+                'has_more'     => $total > ($page * $perPage),
+                'source_ad'    => [
                     'ad_id'        => $ad->ad_id,
                     'ad_title'     => $ad->ad_title,
                     'category'     => $ad->category,
@@ -630,12 +631,18 @@ class AdvertController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $result['ads'],
-                'cat' => $cat,
-                'count_cat' => $count_cat,
+                'ads'           => $result['ads'],
+                'cat'           => $cat,
+                'count_cat'     => $count_cat,
                 'subcategories' => $subcategories,
-                'has_more' => $result['hasMore'],
-                'next_page' => $result['nextPage']
+            ],
+            'pagination' => [
+                'has_more'     => $result['hasMore'],
+                'next_page'    => $result['nextPage'],
+                'current_page' => $result['current_page'],
+                'per_page'     => $result['per_page'],
+                'total'        => $result['total'],
+                'last_page'    => $result['last_page'],
             ]
         ]);
     }
@@ -693,12 +700,18 @@ class AdvertController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $result['ads'],
-                'subcat' => $subcat,
-                'count_subcat' => $count_subcat,
-                'brands' => $brands,
-                'has_more' => $result['hasMore'],
-                'next_page' => $result['nextPage']
+                'ads'         => $result['ads'],
+                'subcat'      => $subcat,
+                'count_subcat'=> $count_subcat,
+                'brands'      => $brands,
+            ],
+            'pagination' => [
+                'has_more'     => $result['hasMore'],
+                'next_page'    => $result['nextPage'],
+                'current_page' => $result['current_page'],
+                'per_page'     => $result['per_page'],
+                'total'        => $result['total'],
+                'last_page'    => $result['last_page'],
             ]
         ]);
     }
@@ -752,12 +765,18 @@ class AdvertController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $result['ads'],
-                'brand' => $brand,
-                'subcat' => $subcat,
+                'ads'          => $result['ads'],
+                'brand'        => $brand,
+                'subcat'       => $subcat,
                 'count_subcat' => $count_subcat,
-                'has_more' => $result['hasMore'],
-                'next_page' => $result['nextPage']
+            ],
+            'pagination' => [
+                'has_more'     => $result['hasMore'],
+                'next_page'    => $result['nextPage'],
+                'current_page' => $result['current_page'],
+                'per_page'     => $result['per_page'],
+                'total'        => $result['total'],
+                'last_page'    => $result['last_page'],
             ]
         ]);
     }
@@ -776,10 +795,16 @@ class AdvertController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'ads' => $result['ads'],
+                'ads'      => $result['ads'],
                 'location' => $state_slug,
-                'has_more' => $result['hasMore'],
-                'next_page' => $result['nextPage']
+            ],
+            'pagination' => [
+                'has_more'     => $result['hasMore'],
+                'next_page'    => $result['nextPage'],
+                'current_page' => $result['current_page'],
+                'per_page'     => $result['per_page'],
+                'total'        => $result['total'],
+                'last_page'    => $result['last_page'],
             ]
         ]);
     }
@@ -958,8 +983,14 @@ class AdvertController extends Controller
             'success' => true,
             'data' => [
                 'ads' => $result['ads'],
-                'has_more' => $result['hasMore'],
-                'next_page' => $result['nextPage']
+            ],
+            'pagination' => [
+                'has_more'     => $result['hasMore'],
+                'next_page'    => $result['nextPage'],
+                'current_page' => $result['current_page'],
+                'per_page'     => $result['per_page'],
+                'total'        => $result['total'],
+                'last_page'    => $result['last_page'],
             ]
         ]);
     }

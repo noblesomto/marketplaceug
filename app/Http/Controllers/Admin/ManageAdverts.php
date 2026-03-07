@@ -21,6 +21,7 @@ use App\Helpers\ContentHelper;
 use Illuminate\Support\Str;
 use App\Traits\ManagesImages;
 use Illuminate\Validation\ValidationException;
+use App\Models\AdSetting;
 
 class ManageAdverts extends Controller
 {
@@ -126,7 +127,7 @@ class ManageAdverts extends Controller
         $categories = Category::orderBy('category','asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
-        $advert = Advert::with(['user','images', 'car', 'phone'])
+        $advert = Advert::with(['user','images', 'car', 'phone', 'shippings'])
             ->where('id', $id)
             ->firstOrFail();
         $subcategories = SubCategory::where('cat_id', $advert->category)->get();
@@ -136,22 +137,15 @@ class ManageAdverts extends Controller
         if ($advert->brand) {
             $models = Models::where('brand_id', $advert->brand)->get();
         }
-        //dd($models);
 
-        // Parse car registration if exists
-        $registration = [];
-        if ($advert->car_details) {
-            $regParts = explode(' ', $advert->car_details->registration);
-            $registration = [
-                'month' => $regParts[0] ?? '',
-                'year' => $regParts[1] ?? ''
-            ];
-        }
+        $selectedShippingIds = $advert->shippings->pluck('id')->toArray();
+
+        $minImages = (int) AdSetting::getValue('min_images', 3);
+        $maxImages = (int) AdSetting::getValue('max_images', 8);
 
         if ($request->isMethod('POST')) {
             return $this->update_ad($request, $advert);
         }
-
 
         return view('backend.advert.edit-advert', compact(
             'title',
@@ -161,9 +155,11 @@ class ManageAdverts extends Controller
             'subcategories',
             'brands',
             'models',
-            'registration',
             'states',
-            'shippings'
+            'shippings',
+            'selectedShippingIds',
+            'minImages',
+            'maxImages'
         ));
     }
 
@@ -218,7 +214,6 @@ class ManageAdverts extends Controller
                 $rules += [
                     'model'          => 'required',
                     'registration'   => 'required',
-                    'mileage'        => 'required|numeric',
                     'condition'      => 'required',
                     'fuel'           => 'required',
                     'transmission'   => 'required',
@@ -237,8 +232,12 @@ class ManageAdverts extends Controller
                 break;
         }
 
-        // Item condition rule (skip if category is 3 or 18, OR subcat is a car/phone subcat)
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6, 21, 23])) {
+        // Item condition — required only when the UI actually shows it.
+        // Categories that hide it: Services(1), Jobs(3), Real Estate(7), Local Biz(11), CVs(18)
+        // Subcategories that hide it: Cars(2), Phones(6), Real-estate subcats(16-19), Trucks(21), Bikes(23)
+        $skipItemConditionCategories = [1, 3, 7, 11, 18];
+        $skipItemConditionSubcats    = [2, 6, 16, 17, 18, 19, 21, 23];
+        if (!in_array($category, $skipItemConditionCategories) && !in_array($subcat, $skipItemConditionSubcats)) {
             $rules['item_condition'] = 'required';
         }
 
