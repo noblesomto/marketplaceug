@@ -300,9 +300,10 @@ class MessageController extends Controller
             'data' => $conversations->items(),
             'pagination' => [
                 'current_page' => $conversations->currentPage(),
-                'last_page' => $conversations->lastPage(),
-                'per_page' => $conversations->perPage(),
-                'total' => $conversations->total()
+                'last_page'    => $conversations->lastPage(),
+                'per_page'     => $conversations->perPage(),
+                'total'        => $conversations->total(),
+                'has_more'     => $conversations->hasMorePages()
             ]
         ]);
     }

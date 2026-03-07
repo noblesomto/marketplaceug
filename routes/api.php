@@ -83,16 +83,17 @@ Route::middleware('auth:sanctum')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/adverts', [AdvertController::class, 'index']);
+// Static paths must come before wildcard {id} routes
+Route::get('/adverts/featured', [AdvertController::class, 'featuredAdverts']);
+Route::get('/adverts/load-more', [AdvertController::class, 'loadMore']);
+Route::get('/adverts/seller/{seller_id}', [AdvertController::class, 'sellerAdverts']);
 Route::get('/adverts/{id}/related', [AdvertController::class, 'related']);
 Route::get('/adverts/{id}', [AdvertController::class, 'show']);
-Route::get('/adverts/seller/{seller_id}', [AdvertController::class, 'sellerAdverts']);
 Route::get('/categories', [AdvertController::class, 'categories']);
 Route::get('/categories/{category_slug}', [AdvertController::class, 'categoryAdverts']);
 Route::get('/categories/{category_slug}/{subcat_slug}', [AdvertController::class, 'subcategoryAdverts']);
 Route::get('/brands/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brandAdverts']);
 Route::get('/location/{state_slug}', [AdvertController::class, 'locationAdverts']);
-Route::get('/adverts/featured', [AdvertController::class, 'featuredAdverts']);
-Route::get('/adverts/load-more', [AdvertController::class, 'loadMore']);
 
 // Protected Advert Routes
 Route::middleware('auth:sanctum')->group(function () {

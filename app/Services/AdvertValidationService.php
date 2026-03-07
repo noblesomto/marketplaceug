@@ -125,8 +125,12 @@ class AdvertValidationService
 
         // Item condition (only if visible and not excluded by category/subcat)
         if ($isVisible('itemCondition')) {
-            $skipItemConditionCategories = [3, 11, 18]; // Jobs, Services, CVs
-            $skipItemConditionSubcats = [2, 6, 21, 22, 23, 24, 25]; // Cars, Phones, etc.
+            // Must match category-ui-manager.js hide rules exactly.
+            // Categories that hide itemCondition: Services(1), Jobs(3), Real Estate(7), Local Biz(11), CVs(18)
+            // Subcategories that hide itemCondition: Cars(2), Phones(6), Real-estate subcats(16-19), Trucks(21), Bikes(23)
+            // NOTE: subcats 22 (Motorcycles), 24 (Parts), 25 (Accessories) SHOW itemCondition — do NOT skip them.
+            $skipItemConditionCategories = [1, 3, 7, 11, 18];
+            $skipItemConditionSubcats    = [2, 6, 16, 17, 18, 19, 21, 23];
 
             if (!in_array($categoryId, $skipItemConditionCategories) &&
                 !in_array($subcategoryId, $skipItemConditionSubcats)) {

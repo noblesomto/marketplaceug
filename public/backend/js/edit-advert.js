@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }
                     brandSelect.appendChild(opt);
                 });
-                if (brandSelect.value && (subcategoryId == 2 || subcategoryId == 6)) {
+                if (brandSelect.value && [2, 21, 23].includes(parseInt(subcategoryId))) {
                     brandSelect.dispatchEvent(new Event('change'));
                 }
             })
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const brandId       = this.value;
         const subcategoryId = subcategorySelect.value;
 
-        if (!brandId || !(subcategoryId == 2 || subcategoryId == 6)) {
+        if (!brandId || ![2, 21, 23].includes(parseInt(subcategoryId))) {
             if (modelSelect) modelSelect.innerHTML = '<option value="">Select Model</option>';
             return;
         }

@@ -159,7 +159,7 @@
                     </div>
 
                     <!-- Item Condition -->
-                    <div id="itemCondition" class="{{ in_array($advert->sub_category, [2, 6, 21, 22, 23]) ? 'hidden' : '' }}">
+                    <div id="itemCondition" class="{{ (in_array($advert->category, [1, 3, 7, 11, 18]) || in_array($advert->sub_category, [2, 6, 16, 17, 18, 19, 21, 23])) ? 'hidden' : '' }}">
                         <label for="pr" class="block text-sm font-semibold text-gray-700 mb-2">Item Condition <span class="text-red-500">*</span></label>
                         <select id="pr" name="item_condition" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base">
                             <option value="">Please Choose</option>
