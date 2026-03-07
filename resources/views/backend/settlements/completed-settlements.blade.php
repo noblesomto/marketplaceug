@@ -56,40 +56,37 @@
                                     @forelse($payments as $row)
                                         <tr>
                                             <td>
-                                                @if($row->advert->firstImage->image ?? false)
-                                                    <img src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}"
-                                                         class="rounded"
-                                                         width="60"
-                                                         height="60"
-                                                         alt="{{ $row->advert->ad_title }}"
-                                                         style="width: 60px; height: 50px; object-fit: cover;">
+                                                <img src="{{ optional($row->advert)->firstImage ? $row->advert->firstImage->getUrl('thumbnail') : asset('frontend/images/default.png') }}"
+                                                     class="rounded"
+                                                     alt="{{ optional($row->advert)->ad_title ?? 'Ad Image' }}"
+                                                     style="width: 60px; height: 50px; object-fit: cover;">
+                                            </td>
+                                            <td>
+                                                <h6 class="mb-0 fw-semibold">{{ optional($row->advert)->ad_title ?? 'N/A' }}</h6>
+                                                <small class="text-muted">ID: {{ optional($row->advert)->id ?? 'N/A' }}</small>
+                                            </td>
+                                            <td>
+                                                @if(optional($row->advert)->owner)
+                                                    <a href="/admin/view-user/{{ $row->advert->owner->user_id }}" class="text-primary fw-medium">
+                                                        {{ $row->advert->owner->name }}
+                                                    </a>
                                                 @else
-                                                    <img src="{{ asset('frontend/images/default.png') }}"
-                                                         class="rounded"
-                                                         width="60"
-                                                         height="60"
-                                                         alt="Default Image"
-                                                         style="object-fit: cover;">
+                                                    <span class="text-muted">User not found</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title }}</h6>
-                                                <small class="text-muted">ID: {{ $row->advert->id }}</small>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/view-user/{{ $row->user->user_id }}" class="text-primary fw-medium">
-                                                    {{ $row->advert->owner->name }}
-                                                </a>
-                                            </td>
                                             <td class="fw-bold text-success">
-                                                ₦{{ number_format($row->advert->price, 2) }}
+                                                ₦{{ number_format(optional($row->advert)->price ?? 0, 2) }}
                                             </td>
                                             <td>
-                                                <div class="small">
-                                                    <div class="fw-medium">{{ $row->advert->owner->bank_name }}</div>
-                                                    <div>{{ $row->advert->owner->account_name }}</div>
-                                                    <div class="text-muted font-monospace">{{ $row->advert->owner->account_number }}</div>
-                                                </div>
+                                                @if(optional($row->advert)->owner)
+                                                    <div class="small">
+                                                        <div class="fw-medium">{{ $row->advert->owner->bank_name ?? 'N/A' }}</div>
+                                                        <div>{{ $row->advert->owner->account_name ?? 'N/A' }}</div>
+                                                        <div class="text-muted font-monospace">{{ $row->advert->owner->account_number ?? 'N/A' }}</div>
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">Bank details not available</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <span class="badge rounded-pill text-capitalize

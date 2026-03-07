@@ -56,37 +56,29 @@
                                     @forelse($payments as $row)
                                         <tr>
                                             <td>
-                                                @if(($row->advert->firstImage->image ?? false) && file_exists(public_path('uploads/images/' . $row->advert->firstImage->image)))
-                                                    <img src="{{ asset('uploads/images/' . $row->advert->firstImage->image) }}"
-                                                         style="width: 60px; height: 50px; object-fit: cover;"
-                                                         alt="{{ $row->advert->ad_title ?? 'Ad Image' }}"
-                                                         class="rounded">
-                                                @else
-                                                    <img src="{{ asset('frontend/images/default.png') }}"
-                                                         class="rounded"
-                                                         width="60"
-                                                         height="60"
-                                                         alt="Default Image">
-                                                @endif
+                                                <img src="{{ optional($row->advert)->firstImage ? $row->advert->firstImage->getUrl('thumbnail') : asset('frontend/images/default.png') }}"
+                                                     class="rounded"
+                                                     alt="{{ optional($row->advert)->ad_title ?? 'Ad Image' }}"
+                                                     style="width: 60px; height: 50px; object-fit: cover;">
                                             </td>
                                             <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title ?? 'N/A' }}</h6>
-                                                <small class="text-muted">ID: {{ $row->advert->id ?? 'N/A' }}</small>
+                                                <h6 class="mb-0 fw-semibold">{{ optional($row->advert)->ad_title ?? 'N/A' }}</h6>
+                                                <small class="text-muted">ID: {{ optional($row->advert)->id ?? 'N/A' }}</small>
                                             </td>
                                             <td>
-                                                @if($row->advert->owner ?? false)
-                                                    <a href="/admin/view-user/{{ $row->advert->owner->user_id ?? '#' }}" class="text-primary text-decoration-none">
-                                                        {{ $row->advert->owner->name ?? 'Unknown User' }}
+                                                @if(optional($row->advert)->owner)
+                                                    <a href="/admin/view-user/{{ $row->advert->owner->user_id }}" class="text-primary text-decoration-none">
+                                                        {{ $row->advert->owner->name }}
                                                     </a>
                                                 @else
                                                     <span class="text-muted">User not found</span>
                                                 @endif
                                             </td>
                                             <td class="fw-bold text-success">
-                                                ₦{{ number_format($row->advert->price ?? 0, 2) }}
+                                                ₦{{ number_format(optional($row->advert)->price ?? 0, 2) }}
                                             </td>
                                             <td>
-                                                @if($row->advert->owner ?? false)
+                                                @if(optional($row->advert)->owner)
                                                     <div class="small">
                                                         <div><strong>{{ $row->advert->owner->bank_name ?? 'N/A' }}</strong></div>
                                                         <div>{{ $row->advert->owner->account_name ?? 'N/A' }}</div>
@@ -97,9 +89,9 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <span class="badge rounded-pill text-capitalize
-                                                    {{ ($row->seller_settlement ?? 'no') === 'yes' ? 'bg-success' : 'bg-secondary' }}">
-                                                    {{ $row->seller_settlement ?? 'no' }}
+                                                <span class="badge rounded-pill
+                                                    {{ ($row->seller_settlement ?? 'no') === 'yes' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                    {{ ($row->seller_settlement ?? 'no') === 'yes' ? 'Settled' : 'Pending' }}
                                                 </span>
                                             </td>
                                             <td class="text-center">
