@@ -38,7 +38,9 @@ class AdminController extends Controller
                 'unverified' => User::where('verified', 0)->count(),
                 'new_today' => User::whereDate('created_at', Carbon::today())->count(),
                 'new_this_week' => User::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count(),
-                'new_this_month' => User::whereMonth('created_at', Carbon::now()->month)->count(),
+                'new_last_week' => User::whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count(),
+                'new_this_month' => User::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count(),
+                'new_last_month' => User::whereMonth('created_at', Carbon::now()->subMonth()->month)->whereYear('created_at', Carbon::now()->subMonth()->year)->count(),
             ];
         }
 
@@ -52,7 +54,9 @@ class AdminController extends Controller
                 'disabled' => Advert::where('ad_status', 'disabled')->count(),
                 'new_today' => Advert::whereDate('created_at', Carbon::today())->count(),
                 'new_this_week' => Advert::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count(),
-                'new_this_month' => Advert::whereMonth('created_at', Carbon::now()->month)->count(),
+                'new_last_week' => Advert::whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count(),
+                'new_this_month' => Advert::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count(),
+                'new_last_month' => Advert::whereMonth('created_at', Carbon::now()->subMonth()->month)->whereYear('created_at', Carbon::now()->subMonth()->year)->count(),
             ];
         }
 
@@ -64,7 +68,10 @@ class AdminController extends Controller
                 'completed' => AdvertBoost::where('boost_status', 'completed')->count(),
                 'unpaid' => AdvertBoost::where('payment_status', 'unpaid')->count(),
                 'revenue_today' => AdvertBoost::where('payment_status', 'paid')->whereDate('created_at', Carbon::today())->sum('amount'),
-                'revenue_this_month' => AdvertBoost::where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->month)->sum('amount'),
+                'revenue_this_week' => AdvertBoost::where('payment_status', 'paid')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('amount'),
+                'revenue_last_week' => AdvertBoost::where('payment_status', 'paid')->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('amount'),
+                'revenue_this_month' => AdvertBoost::where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('amount'),
+                'revenue_last_month' => AdvertBoost::where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->subMonth()->month)->whereYear('created_at', Carbon::now()->subMonth()->year)->sum('amount'),
             ];
         }
 

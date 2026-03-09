@@ -96,7 +96,7 @@ Route::get('/listings', [AdvertController::class, 'adverts'])->name('listings');
 Route::get('/load-more-ads-desktop', [AdvertController::class, 'loadMoreAds'])->name('load.more.ads.desktop');
 Route::get('/load-more-ads-mobile', [AdvertController::class, 'loadMoreAdsMobile'])->name('load.more.ads.mobile');
 Route::get('/all-categories', [AdvertController::class, 'all_categories'])->name('all.categories');
-Route::get('/category/{category_slug}', [AdvertController::class, 'category'])->name('category');
+Route::get('/category/{category_slug}', [AdvertController::class, 'mainCategory'])->name('category');
 Route::get('/category/all-{slug}', [AdvertController::class, 'all_category'])->name('category.all');
 Route::get('/category/{category_slug}/{subcat_slug}', [AdvertController::class, 'sub_category'])->name('subcategory');
 Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertController::class, 'all_subcat'])->name('subcategory.all');
@@ -189,7 +189,7 @@ Route::middleware('usersession')->group(function () {
 });
 
 //User Manage Ads
-Route::match(['GET', 'POST'], '/user/post-ad', [UserManageAdverts::class, 'post_ad'])->name('post.ad')->middleware('usersession');
+Route::match(['GET', 'POST'], '/user/post-ad', [UserManageAdverts::class, 'post_ad'])->name('post.ad')->middleware(['usersession', 'profile.complete:phone']);
 Route::get('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('edit.ad')->middleware('usersession');
 Route::post('/user/edit-ad/{id}', [UserManageAdverts::class, 'edit_ad'])->name('update.ad')->middleware('usersession');
 Route::delete('/user/delete-ad/{id}', [UserManageAdverts::class, 'delete_ad'])->name('delete.ad')->middleware('usersession');
@@ -203,6 +203,7 @@ Route::post('/boost/upload-proof', [UserManageBoost::class, 'upload_proof'])->na
 //User Profile
 Route::get('/user/about-account', [UserProfile::class, 'about_account'])->name('user.about.account')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/profile', [UserProfile::class, 'profile'])->name('user.profile')->middleware('usersession');
+Route::match(['GET', 'POST'], '/user/profile-update', [UserProfile::class, 'profileUpdate'])->name('user.profile.update')->middleware('usersession');
 Route::get('/user/settings', [UserProfile::class, 'settings'])->name('user.settings')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/profile-address', [UserProfile::class, 'profile_address'])->name('user.profile.address')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/profile-info', [UserProfile::class, 'profile_info'])->name('user.profile.info')->middleware('usersession');

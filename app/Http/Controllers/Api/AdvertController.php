@@ -588,6 +588,90 @@ class AdvertController extends Controller
      * Get adverts by category
      * GET /api/categories/{category_slug}
      */
+    /**
+     * Get subcategories for a category with ad counts and thumbnail images
+     * GET /api/categories/{category_slug}/subcategories
+     */
+    public function categorySubcategories($category_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->first();
+
+        if (!$cat) {
+            return response()->json(['success' => false, 'message' => 'Category not found'], 404);
+        }
+
+        $subcategories = DB::table('sub_categories')
+            ->leftJoin('adverts', function ($join) {
+                $join->on('sub_categories.id', '=', 'adverts.sub_category')
+                    ->where('adverts.ad_status', 1)
+                    ->where(function ($q) {
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                          ->orWhereNull('adverts.sold_date');
+                    });
+            })
+            ->where('sub_categories.cat_id', $cat->id)
+            ->select(
+                'sub_categories.id',
+                'sub_categories.sub_category',
+                'sub_categories.sub_cat_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->orderBy('sub_categories.sub_category', 'asc')
+            ->get();
+
+        // One representative thumbnail per subcategory (2 queries total)
+        $firstAdIds = Advert::activeNotRecentlySold()
+            ->whereIn('sub_category', $subcategories->pluck('id'))
+            ->select('sub_category', DB::raw('MIN(id) as first_ad_id'))
+            ->groupBy('sub_category')
+            ->pluck('first_ad_id', 'sub_category');
+
+        $firstAds = Advert::with('firstImage')
+            ->whereIn('id', $firstAdIds->values())
+            ->get()
+            ->keyBy('id');
+
+        $subcatImages = [];
+        foreach ($firstAdIds as $subcatId => $adId) {
+            $ad = $firstAds->get($adId);
+            if ($ad && $ad->firstImage) {
+                $media = $ad->firstImage;
+                $subcatImages[$subcatId] = $media->hasGeneratedConversion('thumbnail')
+                    ? $media->getUrl('thumbnail')
+                    : $media->getUrl();
+            }
+        }
+
+        $total_ads = Advert::activeNotRecentlySold()->where('category', $cat->id)->count();
+
+        $result = $subcategories->map(function ($subcat) use ($subcatImages) {
+            return [
+                'id'            => $subcat->id,
+                'name'          => $subcat->sub_category,
+                'slug'          => $subcat->sub_cat_slug,
+                'advert_count'  => (int) $subcat->advert_count,
+                'thumbnail_url' => $subcatImages[$subcat->id] ?? null,
+            ];
+        })->values();
+
+        return response()->json([
+            'success' => true,
+            'category' => [
+                'id'         => $cat->id,
+                'name'       => $cat->category,
+                'slug'       => $cat->category_slug,
+                'total_ads'  => $total_ads,
+            ],
+            'subcategories' => $result,
+            'total'         => $result->count(),
+        ]);
+    }
+
+    /**
+     * Get adverts by category
+     * GET /api/categories/{category_slug}
+     */
     public function categoryAdverts($category_slug, Request $request)
     {
         $cat = Category::where('category_slug', $category_slug)->first();

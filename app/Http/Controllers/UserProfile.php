@@ -34,7 +34,41 @@ class UserProfile extends Controller
         $hasMore = $ads->hasMorePages();
 
         return view('dashboard.settings.profile', compact('title','user','count_ads','ads','hasMore'));
+    }
 
+    public function profileUpdate(Request $request)
+    {
+        $title = "Update Profile | " . config('global.site_name');
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->firstOrFail();
+        $count_ads = Advert::where('user_id', $user_id)->count();
+
+        if ($request->isMethod('GET')) {
+            return view('dashboard.settings.profile-update', compact('title', 'user', 'count_ads'));
+        }
+
+        $request->validate([
+            'name'          => 'required|string|max:100',
+            'phone'         => ['required', new NigerianPhoneNumber(), \Illuminate\Validation\Rule::unique('users', 'phone')->ignore($user_id, 'user_id')],
+            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
+        ]);
+
+        DB::table('users')->where('user_id', $user_id)->update([
+            'name'  => $request->input('name'),
+            'phone' => $request->input('phone'),
+        ]);
+
+        if ($request->hasFile('profile_image')) {
+            $user->clearMediaCollection('profile_image');
+            $user->addMediaFromRequest('profile_image')
+                ->toMediaCollection('profile_image');
+        }
+
+        // If the user was redirected here by RequireProfileComplete, send them back
+        $intended = $request->session()->pull('url.intended');
+
+        return redirect($intended ?? route('user.index'))
+            ->with('success', 'Profile updated successfully!');
     }
 
     public function about_account(Request $request)

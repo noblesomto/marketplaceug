@@ -1518,6 +1518,41 @@
           "response": []
         },
         {
+          "name": "Category Subcategories (Mobile)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories/{category_slug}/subcategories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{category_slug}",
+                "subcategories"
+              ]
+            },
+            "description": "📱 **Mobile Endpoint — Public**\n\nEndpoint: `GET /api/categories/{category_slug}/subcategories`\nController: `App\\Http\\Controllers\\Api\\AdvertController@categorySubcategories`\n\nReturns all subcategories under a category with live ad counts and a representative thumbnail image from the first active ad in each subcategory. Designed for the mobile category-browse screen (subcategory list view).\n\n**Path params:**\n- `category_slug` — e.g. `vehicles`, `phones-tablets`\n\n**Response shape:**\n```json\n{\n  \"success\": true,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"Vehicles\",\n    \"slug\": \"vehicles\",\n    \"total_ads\": 45230\n  },\n  \"subcategories\": [\n    {\n      \"id\": 2,\n      \"name\": \"Cars\",\n      \"slug\": \"cars\",\n      \"advert_count\": 12500,\n      \"thumbnail_url\": \"https://...\"\n    }\n  ],\n  \"total\": 8\n}\n```\n\n**Notes:**\n- Subcategories are sorted **alphabetically** by name\n- `thumbnail_url` is `null` if no active ads exist in that subcategory\n- `advert_count` only counts active, non-recently-sold ads\n- No pagination — all subcategories returned in a single response",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Categories  Category Slug   Subcat Slug ",
           "request": {
             "method": "GET",
