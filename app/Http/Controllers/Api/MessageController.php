@@ -262,10 +262,10 @@ class MessageController extends Controller
             }
         }
 
-        $conversations = $query->paginate($request->get('per_page', 20));
+        $rawConversations = $query->get();
 
         // Load relationships
-        $conversations->getCollection()->transform(function ($conversation) use ($user) {
+        $conversations = $rawConversations->map(function ($conversation) use ($user) {
             $otherUserId = $conversation->sender_id == $user->user_id
                 ? $conversation->receiver_id
                 : $conversation->sender_id;
@@ -297,14 +297,8 @@ class MessageController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $conversations->items(),
-            'pagination' => [
-                'current_page' => $conversations->currentPage(),
-                'last_page'    => $conversations->lastPage(),
-                'per_page'     => $conversations->perPage(),
-                'total'        => $conversations->total(),
-                'has_more'     => $conversations->hasMorePages()
-            ]
+            'data' => $conversations->values(),
+            'total' => $conversations->count(),
         ]);
     }
 

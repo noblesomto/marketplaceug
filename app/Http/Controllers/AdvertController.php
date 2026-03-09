@@ -894,6 +894,76 @@ class AdvertController extends Controller
         ]);
     }
 
+    public function mainCategory(Request $request, $category_slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $title = config('global.site_name') . ' | ' . $cat->category;
+
+        $result = (new FeaturedAdPaginator(1))
+            ->filters(['category' => $cat->id])
+            ->get();
+
+        $ads = $result['ads'];
+        $hasMore = $result['hasMore'];
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        $count_cat = Advert::activeNotRecentlySold()
+            ->where('category', $cat->id)
+            ->count();
+
+        $categories = DB::table('sub_categories')
+            ->leftJoin('adverts', function ($join) {
+                $join->on('sub_categories.id', '=', 'adverts.sub_category')
+                    ->where('adverts.ad_status', 1)
+                    ->where(function ($q) {
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                          ->orWhereNull('adverts.sold_date');
+                    });
+            })
+            ->where('sub_categories.cat_id', $cat->id)
+            ->select(
+                'sub_categories.id',
+                'sub_categories.sub_category',
+                'sub_categories.sub_cat_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->orderBy('sub_categories.sub_category', 'asc')
+            ->get();
+
+        // One representative thumbnail per subcategory for mobile list (2 queries)
+        $firstAdIds = Advert::activeNotRecentlySold()
+            ->whereIn('sub_category', $categories->pluck('id'))
+            ->select('sub_category', DB::raw('MIN(id) as first_ad_id'))
+            ->groupBy('sub_category')
+            ->pluck('first_ad_id', 'sub_category');
+
+        $firstAds = Advert::with('firstImage')
+            ->whereIn('id', $firstAdIds->values())
+            ->get()
+            ->keyBy('id');
+
+        $subcatImages = [];
+        foreach ($firstAdIds as $subcatId => $adId) {
+            $ad = $firstAds->get($adId);
+            if ($ad && $ad->firstImage) {
+                $media = $ad->firstImage;
+                $subcatImages[$subcatId] = $media->hasGeneratedConversion('thumbnail')
+                    ? $media->getUrl('thumbnail')
+                    : $media->getUrl();
+            }
+        }
+
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+
+        return view('frontend.main-category', compact(
+            'title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'subcatImages', 'isMobile'
+        ));
+    }
+
 
         public function category(Request $request, $category_slug)
     {

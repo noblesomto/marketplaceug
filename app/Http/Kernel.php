@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'adminsession' => \App\Http\Middleware\CheckAdminSession::class,
         'usersession' => \App\Http\Middleware\CheckUserSession::class,
+        'profile.complete' => \App\Http\Middleware\RequireProfileComplete::class,
         'shipsession' => \App\Http\Middleware\CheckShipSession::class,
         'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         'adminpermission' => \App\Http\Middleware\AdminPermission::class,
