@@ -7,6 +7,10 @@
 
 @include('frontend.layouts.nav')
 @include('frontend.components.mobile.mobile-nav')
+@include('frontend.components.mobile.mobile-category-header', [
+    'backUrl'   => url('/all-categories'),
+    'pageTitle' => $cat->category,
+])
 @include('frontend.layouts.search')
 
 

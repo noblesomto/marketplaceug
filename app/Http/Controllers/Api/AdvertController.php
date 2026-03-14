@@ -614,9 +614,10 @@ class AdvertController extends Controller
                 'sub_categories.id',
                 'sub_categories.sub_category',
                 'sub_categories.sub_cat_slug',
+                'sub_categories.icon',
                 DB::raw('COUNT(adverts.id) as advert_count')
             )
-            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', 'sub_categories.icon')
             ->orderBy('sub_categories.sub_category', 'asc')
             ->get();
 
@@ -651,6 +652,7 @@ class AdvertController extends Controller
                 'name'          => $subcat->sub_category,
                 'slug'          => $subcat->sub_cat_slug,
                 'advert_count'  => (int) $subcat->advert_count,
+                'icon_url'      => $subcat->icon ? asset('frontend/images/subcategory-icons/' . $subcat->icon) : null,
                 'thumbnail_url' => $subcatImages[$subcat->id] ?? null,
             ];
         })->values();
@@ -706,11 +708,18 @@ class AdvertController extends Controller
                 'sub_categories.id',
                 'sub_categories.sub_category',
                 'sub_categories.sub_cat_slug',
+                'sub_categories.icon',
                 DB::raw('COUNT(adverts.id) as advert_count')
             )
-            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', 'sub_categories.icon')
             ->orderBy('advert_count', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($subcat) {
+                $subcat->icon_url = $subcat->icon
+                    ? asset('frontend/images/subcategory-icons/' . $subcat->icon)
+                    : null;
+                return $subcat;
+            });
 
         return response()->json([
             'success' => true,
