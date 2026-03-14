@@ -6,7 +6,10 @@
 @endif
 
 @include('frontend.layouts.nav')
-@include('frontend.components.mobile.mobile-nav')
+@include('frontend.components.mobile.mobile-category-header-nav', [
+    'backUrl'   => url('/category/' . $cat->category_slug),
+    'pageTitle' => $subcat->sub_category,
+])
 @include('frontend.layouts.search')
 
 

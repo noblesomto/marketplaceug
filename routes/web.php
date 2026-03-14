@@ -331,6 +331,7 @@ Route::middleware(['adminsession'])->group(function () {
         Route::delete('/admin/delete-category/{id}', [ManageCategories::class, 'delete_category'])->name('admin.delete.category');
         Route::match(['GET', 'POST'], '/admin/sub-category/{id}', [ManageCategories::class, 'sub_category'])->name('admin.sub.category');
         Route::delete('/admin/delete-subcategory/{id}/{cat}', [ManageCategories::class, 'delete_subcategory'])->name('admin.delete.subcategory');
+        Route::delete('/admin/delete-subcategory-icon/{id}', [ManageCategories::class, 'delete_subcategory_icon'])->name('admin.delete.subcategory.icon');
         Route::match(['GET', 'POST'], '/admin/brand/{id}', [ManageCategories::class, 'brand'])->name('admin.brand');
         Route::delete('/admin/delete-brand/{id}/{cat}', [ManageCategories::class, 'delete_brand'])->name('admin.delete.brand');
         Route::match(['GET', 'POST'], '/admin/model/{id}', [ManageCategories::class, 'model'])->name('admin.model');

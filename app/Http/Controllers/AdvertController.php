@@ -927,9 +927,10 @@ class AdvertController extends Controller
                 'sub_categories.id',
                 'sub_categories.sub_category',
                 'sub_categories.sub_cat_slug',
+                'sub_categories.icon',
                 DB::raw('COUNT(adverts.id) as advert_count')
             )
-            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug', 'sub_categories.icon')
             ->orderBy('sub_categories.sub_category', 'asc')
             ->get();
 

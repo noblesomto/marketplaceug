@@ -98,35 +98,63 @@ class ManageCategories extends Controller
     if ($request->isMethod('POST')) {
         $request->validate([
             'sub_category' => 'required',
-            'category' => 'required',
-            'meta_title' => 'nullable|max:255',
-            'meta_description' => 'nullable|max:500',
-            'keywords' => 'nullable|max:500',
+            'category'     => 'required',
+            'icon'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'meta_title'        => 'nullable|max:255',
+            'meta_description'  => 'nullable|max:500',
+            'keywords'          => 'nullable|max:500',
         ]);
+
+        // Handle icon upload
+        $iconFilename = null;
+        if ($request->hasFile('icon')) {
+            $file = $request->file('icon');
+            $iconFilename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
+            $file->move(public_path('frontend/images/subcategory-icons'), $iconFilename);
+        }
 
         // Check if it's an update or create
         if ($request->has('subcategory_id') && $request->input('subcategory_id')) {
             // Update existing subcategory
             $subcategory = SubCategory::find($request->input('subcategory_id'));
             if ($subcategory) {
-                $subcategory->update([
-                    'cat_id' => $request->input('category'),
-                    'sub_category' => $request->input('sub_category'),
-                    'meta_title' => $request->input('meta_title'),
+                $updateData = [
+                    'cat_id'           => $request->input('category'),
+                    'sub_category'     => $request->input('sub_category'),
+                    'meta_title'       => $request->input('meta_title'),
                     'meta_description' => $request->input('meta_description'),
-                    'keywords' => $request->input('keywords'),
-                ]);
+                    'keywords'         => $request->input('keywords'),
+                ];
 
+                if ($iconFilename) {
+                    // Delete old icon if it exists
+                    if ($subcategory->icon) {
+                        $oldPath = public_path('frontend/images/subcategory-icons/' . $subcategory->icon);
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
+                    }
+                    $updateData['icon'] = $iconFilename;
+                } elseif ($request->boolean('remove_icon') && $subcategory->icon) {
+                    $oldPath = public_path('frontend/images/subcategory-icons/' . $subcategory->icon);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                    $updateData['icon'] = null;
+                }
+
+                $subcategory->update($updateData);
                 $message = 'Sub Category successfully updated';
             }
         } else {
             // Create new subcategory
             $subcategory = SubCategory::create([
-                'cat_id' => $request->input('category'),
-                'sub_category' => $request->input('sub_category'),
-                'meta_title' => $request->input('meta_title'),
+                'cat_id'           => $request->input('category'),
+                'sub_category'     => $request->input('sub_category'),
+                'icon'             => $iconFilename,
+                'meta_title'       => $request->input('meta_title'),
                 'meta_description' => $request->input('meta_description'),
-                'keywords' => $request->input('keywords'),
+                'keywords'         => $request->input('keywords'),
             ]);
 
             $message = 'Sub Category successfully published';
@@ -143,6 +171,15 @@ class ManageCategories extends Controller
     public function delete_subcategory($id, $cat)
     {
         $subcat = SubCategory::where('id', $id)->first();
+
+        // Delete icon file from disk
+        if ($subcat && $subcat->icon) {
+            $iconPath = public_path('frontend/images/subcategory-icons/' . $subcat->icon);
+            if (file_exists($iconPath)) {
+                unlink($iconPath);
+            }
+        }
+
         $subcat->delete();
         $brand = Brands::where('subcat_id', $id)->first();
         if($brand !=null){
@@ -150,7 +187,21 @@ class ManageCategories extends Controller
         }
 
         return redirect("admin/sub-category/".$cat)->with('status', ['text'=>'Sub Category was deleted','type'=>'success']);
+    }
 
+    public function delete_subcategory_icon($id)
+    {
+        $subcat = SubCategory::findOrFail($id);
+
+        if ($subcat->icon) {
+            $iconPath = public_path('frontend/images/subcategory-icons/' . $subcat->icon);
+            if (file_exists($iconPath)) {
+                unlink($iconPath);
+            }
+            $subcat->update(['icon' => null]);
+        }
+
+        return redirect()->back()->with('status', ['text' => 'Icon removed successfully', 'type' => 'success']);
     }
 
     public function brand(Request $request, $id)
