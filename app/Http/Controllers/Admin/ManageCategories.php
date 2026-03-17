@@ -110,7 +110,7 @@ class ManageCategories extends Controller
         if ($request->hasFile('icon')) {
             $file = $request->file('icon');
             $iconFilename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-            $file->move(public_path('frontend/images/subcategory-icons'), $iconFilename);
+            $file->move(self::iconUploadPath(), $iconFilename);
         }
 
         // Check if it's an update or create
@@ -129,14 +129,14 @@ class ManageCategories extends Controller
                 if ($iconFilename) {
                     // Delete old icon if it exists
                     if ($subcategory->icon) {
-                        $oldPath = public_path('frontend/images/subcategory-icons/' . $subcategory->icon);
+                        $oldPath = self::iconUploadPath($subcategory->icon);
                         if (file_exists($oldPath)) {
                             unlink($oldPath);
                         }
                     }
                     $updateData['icon'] = $iconFilename;
                 } elseif ($request->boolean('remove_icon') && $subcategory->icon) {
-                    $oldPath = public_path('frontend/images/subcategory-icons/' . $subcategory->icon);
+                    $oldPath = self::iconUploadPath($subcategory->icon);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
                     }
@@ -174,7 +174,7 @@ class ManageCategories extends Controller
 
         // Delete icon file from disk
         if ($subcat && $subcat->icon) {
-            $iconPath = public_path('frontend/images/subcategory-icons/' . $subcat->icon);
+            $iconPath = self::iconUploadPath($subcat->icon);
             if (file_exists($iconPath)) {
                 unlink($iconPath);
             }
@@ -194,7 +194,7 @@ class ManageCategories extends Controller
         $subcat = SubCategory::findOrFail($id);
 
         if ($subcat->icon) {
-            $iconPath = public_path('frontend/images/subcategory-icons/' . $subcat->icon);
+            $iconPath = self::iconUploadPath($subcat->icon);
             if (file_exists($iconPath)) {
                 unlink($iconPath);
             }
@@ -342,6 +342,23 @@ class ManageCategories extends Controller
         $model = Models::where('brand_id', $cat_id)->get();
         //dd($model);
         return response()->json($model);
+    }
+
+    /**
+     * Resolve the correct filesystem path for subcategory icon storage.
+     *
+     * On the server, the webroot is public_html/ (a sibling of marketplace/),
+     * not marketplace/public/. Set PUBLIC_ASSETS_PATH in .env to the absolute
+     * path of public_html/ on the server. Locally, falls back to public_path().
+     *
+     * Server .env example:
+     *   PUBLIC_ASSETS_PATH=/home/admin/domains/marketplace.ng/public_html
+     */
+    private static function iconUploadPath(string $filename = ''): string
+    {
+        $base = rtrim(env('PUBLIC_ASSETS_PATH', public_path()), '/');
+        $dir  = $base . '/frontend/images/subcategory-icons';
+        return $filename ? $dir . '/' . $filename : $dir;
     }
 
 }
