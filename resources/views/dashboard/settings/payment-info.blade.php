@@ -13,7 +13,6 @@
 		        	<div class="max-w-2xl mx-auto bg-white p-3 md:p-10 mt-4 mb-20 rounded-lg">
 				        <form method="POST" action="/user/payments" enctype="multipart/form-data">
 				            @csrf
-				            @method('PUT')
 				        <div class="mt-1 font-semibold text-xl">Account Details:</div>
 
 				        <div class="mb-4 mt-4">

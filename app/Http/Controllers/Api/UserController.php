@@ -475,16 +475,57 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $wishlist = Advert::with('firstImage')
+        $wishlist = Advert::with(['firstImage', 'car', 'phone'])
             ->whereHas('wishlists', function($query) use ($user) {
                 $query->where('user_id', $user->user_id);
             })
             ->orderBy('created_at', 'desc')
             ->paginate($request->get('per_page', 20));
 
+        $wishlist->getCollection()->transform(function ($ad) {
+            return [
+                'id'          => $ad->id,
+                'ad_id'       => $ad->ad_id,
+                'ad_title'    => $ad->ad_title,
+                'description' => $ad->description,
+                'price'       => $ad->price,
+                'price_type'  => $ad->price_type,
+                'state'       => $ad->state,
+                'lga'         => $ad->lga,
+                'condition'   => $ad->condition,
+                'buy_direct'  => $ad->buy_direct,
+                'sold'        => $ad->sold,
+                'sold_date'   => $ad->sold_date,
+                'featured'    => $ad->featured,
+                'ad_status'   => $ad->ad_status,
+                'category'    => $ad->category,
+                'sub_category'=> $ad->sub_category,
+                'created_at'  => $ad->created_at,
+                'image_thumb' => $ad->firstImage
+                    ? ($ad->firstImage->hasGeneratedConversion('thumbnail')
+                        ? $ad->firstImage->getUrl('thumbnail')
+                        : $ad->firstImage->getUrl())
+                    : null,
+                'image_large' => $ad->firstImage
+                    ? ($ad->firstImage->hasGeneratedConversion('large')
+                        ? $ad->firstImage->getUrl('large')
+                        : $ad->firstImage->getUrl())
+                    : null,
+                'car'   => $ad->car,
+                'phone' => $ad->phone,
+            ];
+        });
+
         return response()->json([
             'success' => true,
-            'data' => $wishlist
+            'data'    => $wishlist->items(),
+            'pagination' => [
+                'total'        => $wishlist->total(),
+                'per_page'     => $wishlist->perPage(),
+                'current_page' => $wishlist->currentPage(),
+                'last_page'    => $wishlist->lastPage(),
+                'has_more'     => $wishlist->hasMorePages(),
+            ],
         ]);
     }
 

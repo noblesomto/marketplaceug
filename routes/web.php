@@ -209,7 +209,7 @@ Route::match(['GET', 'POST'], '/user/profile-address', [UserProfile::class, 'pro
 Route::match(['GET', 'POST'], '/user/profile-info', [UserProfile::class, 'profile_info'])->name('user.profile.info')->middleware('usersession');
 Route::get('/user/get-verified', [UserProfile::class, 'get_verified'])->name('user.get.verified')->middleware('usersession');
 Route::post('/user/submit-verification', [UserProfile::class, 'submit_verification'])->name('user.submit.verification')->middleware('usersession');
-Route::get('/user/payments', [UserProfile::class, 'payment_info'])->name('user.payment.info')->middleware('usersession');
+Route::match(['GET', 'POST'], '/user/payments', [UserProfile::class, 'payment_info'])->name('user.payment.info')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/profile-phone', [UserProfile::class, 'profile_phone'])->name('user.profile.phone')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/change-password', [UserProfile::class, 'change_password'])->name('user.change.password')->middleware('usersession');
 Route::match(['GET', 'POST'], '/user/disable-account', [UserProfile::class, 'disable_account'])->name('user.disable.account')->middleware('usersession');
