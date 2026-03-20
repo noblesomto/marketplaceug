@@ -22,35 +22,30 @@ class ManageCategories extends Controller
 
     if ($request->isMethod('POST')) {
         $request->validate([
-            'category' => 'required',
-            'meta_title' => 'nullable|max:255',
+            'category'         => 'required',
+            'seo_group'        => 'nullable|in:product,property,service',
+            'meta_title'       => 'nullable|max:255',
             'meta_description' => 'nullable|max:500',
-            'keywords' => 'nullable|max:500',
+            'keywords'         => 'nullable|max:500',
         ]);
+
+        $fields = [
+            'category'         => $request->input('category'),
+            'seo_group'        => $request->input('seo_group', 'product'),
+            'meta_title'       => $request->input('meta_title'),
+            'meta_description' => $request->input('meta_description'),
+            'keywords'         => $request->input('keywords'),
+        ];
 
         // Check if it's an update or create
         if ($request->has('category_id') && $request->input('category_id')) {
-            // Update existing category
             $category = Category::find($request->input('category_id'));
             if ($category) {
-                $category->update([
-                    'category' => $request->input('category'),
-                    'meta_title' => $request->input('meta_title'),
-                    'meta_description' => $request->input('meta_description'),
-                    'keywords' => $request->input('keywords'),
-                ]);
-
+                $category->update($fields);
                 $message = 'Category successfully updated';
             }
         } else {
-            // Create new category
-            $category = Category::create([
-                'category' => $request->input('category'),
-                'meta_title' => $request->input('meta_title'),
-                'meta_description' => $request->input('meta_description'),
-                'keywords' => $request->input('keywords'),
-            ]);
-
+            Category::create($fields);
             $message = 'Category successfully published';
         }
 

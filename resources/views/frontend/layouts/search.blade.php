@@ -36,19 +36,53 @@
                 <div class="col-span-3 xl:col-span-2">
                     <div class="relative">
                         @php
+                            // Keys = DB values (must match adverts.state exactly), Values = display labels
                             $states = [
-                                'Abia', 'Adamawa', 'AkwaIbom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River',
-                                'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
-                                'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo',
-                                'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
+                                'Abia'          => 'Abia',
+                                'Adamawa'       => 'Adamawa',
+                                'Akwa Ibom'     => 'Akwa Ibom',
+                                'Anambra'       => 'Anambra',
+                                'Bauchi'        => 'Bauchi',
+                                'Bayelsa'       => 'Bayelsa',
+                                'Benue'         => 'Benue',
+                                'Borno'         => 'Borno',
+                                'Cross River'   => 'Cross River',
+                                'Delta'         => 'Delta',
+                                'Ebonyi'        => 'Ebonyi',
+                                'Edo'           => 'Edo',
+                                'Ekiti'         => 'Ekiti',
+                                'Enugu'         => 'Enugu',
+                                'FCT - Abuja'   => 'FCT - Abuja',
+                                'Gombe'         => 'Gombe',
+                                'Imo'           => 'Imo',
+                                'Jigawa'        => 'Jigawa',
+                                'Kaduna'        => 'Kaduna',
+                                'Kano'          => 'Kano',
+                                'Katsina'       => 'Katsina',
+                                'Kebbi'         => 'Kebbi',
+                                'Kogi'          => 'Kogi',
+                                'Kwara'         => 'Kwara',
+                                'Lagos'         => 'Lagos',
+                                'Nasarawa'      => 'Nasarawa',
+                                'Niger'         => 'Niger',
+                                'Ogun'          => 'Ogun',
+                                'Ondo'          => 'Ondo',
+                                'Osun'          => 'Osun',
+                                'Oyo'           => 'Oyo',
+                                'Plateau'       => 'Plateau',
+                                'Rivers'        => 'Rivers',
+                                'Sokoto'        => 'Sokoto',
+                                'Taraba'        => 'Taraba',
+                                'Yobe'          => 'Yobe',
+                                'Zamfara'       => 'Zamfara',
                             ];
                         @endphp
                         <label for="location" class="sr-only">Location</label>
                         <select name="location"
                                 class="block appearance-none w-full h-10 bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 text-sm">
                             <option value="" selected="selected">Location</option>
-                            @foreach ($states as $state)
-                                <option value="{{ $state }}">{{ $state }}</option>
+                            @foreach ($states as $value => $label)
+                                <option value="{{ $value }}">{{ $label }}</option>
                             @endforeach
                         </select>
 

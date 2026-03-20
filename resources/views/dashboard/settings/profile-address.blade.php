@@ -48,7 +48,7 @@
     <option value="" {{ old('state', $user->state ?? '') == '' ? 'selected' : '' }}>- Select State -</option>
     <option value="Abia" {{ old('state', $user->state ?? '') == 'Abia' ? 'selected' : '' }}>Abia</option>
     <option value="Adamawa" {{ old('state', $user->state ?? '') == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>
-    <option value="AkwaIbom" {{ old('state', $user->state ?? '') == 'AkwaIbom' ? 'selected' : '' }}>AkwaIbom</option>
+    <option value="Akwa Ibom" {{ old('state', $user->state ?? '') == 'Akwa Ibom' ? 'selected' : '' }}>Akwa Ibom</option>
     <option value="Anambra" {{ old('state', $user->state ?? '') == 'Anambra' ? 'selected' : '' }}>Anambra</option>
     <option value="Bauchi" {{ old('state', $user->state ?? '') == 'Bauchi' ? 'selected' : '' }}>Bauchi</option>
     <option value="Bayelsa" {{ old('state', $user->state ?? '') == 'Bayelsa' ? 'selected' : '' }}>Bayelsa</option>
@@ -60,7 +60,7 @@
     <option value="Edo" {{ old('state', $user->state ?? '') == 'Edo' ? 'selected' : '' }}>Edo</option>
     <option value="Ekiti" {{ old('state', $user->state ?? '') == 'Ekiti' ? 'selected' : '' }}>Ekiti</option>
     <option value="Enugu" {{ old('state', $user->state ?? '') == 'Enugu' ? 'selected' : '' }}>Enugu</option>
-    <option value="FCT" {{ old('state', $user->state ?? '') == 'FCT' ? 'selected' : '' }}>FCT</option>
+    <option value="FCT - Abuja" {{ old('state', $user->state ?? '') == 'FCT - Abuja' ? 'selected' : '' }}>FCT - Abuja</option>
     <option value="Gombe" {{ old('state', $user->state ?? '') == 'Gombe' ? 'selected' : '' }}>Gombe</option>
     <option value="Imo" {{ old('state', $user->state ?? '') == 'Imo' ? 'selected' : '' }}>Imo</option>
     <option value="Jigawa" {{ old('state', $user->state ?? '') == 'Jigawa' ? 'selected' : '' }}>Jigawa</option>

@@ -26,6 +26,15 @@
                        <div class="row ">
                            <div class="col-sm-7">
                                <strong>{{ $row->category }}</strong>
+                               <br>
+                               @php
+                                   $groupLabels = ['product' => 'Product', 'property' => 'Property', 'service' => 'Service'];
+                                   $groupColors = ['product' => 'primary', 'property' => 'success', 'service' => 'warning'];
+                                   $grp = $row->seo_group ?? 'product';
+                               @endphp
+                               <span class="badge bg-{{ $groupColors[$grp] ?? 'secondary' }} bg-opacity-10 text-{{ $groupColors[$grp] ?? 'secondary' }} border border-{{ $groupColors[$grp] ?? 'secondary' }}" style="font-size:0.7rem;">
+                                   {{ $groupLabels[$grp] ?? $grp }}
+                               </span>
                                @if($row->meta_title)
                                    <br><small class="text-muted">Meta: {{ Str::limit($row->meta_title, 30) }}</small>
                                @endif
@@ -37,6 +46,7 @@
                               <button type="button" class="btn btn-sm btn-warning edit-category"
                                       data-id="{{ $row->id }}"
                                       data-category="{{ $row->category }}"
+                                      data-seo-group="{{ $row->seo_group ?? 'product' }}"
                                       data-meta-title="{{ $row->meta_title }}"
                                       data-meta-description="{{ $row->meta_description }}"
                                       data-keywords="{{ $row->keywords }}"
@@ -85,6 +95,18 @@
                                 @endif
                                 <input type="text" name="category" id="category" class="form-control"
                                        placeholder="Category Name" value="{{ old('category') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="seo_group" class="col-sm-2 col-form-label">SEO Group</label>
+                            <div class="col-sm-10">
+                                <select name="seo_group" id="seo_group" class="form-select">
+                                    <option value="product">Product — "Buy … Online" (Electronics, Fashion, Vehicles, etc.)</option>
+                                    <option value="property">Property — "… for Rent &amp; Sale" (Real Estate, Land, Shortlets)</option>
+                                    <option value="service">Service — "Find …" (Jobs, Artisans, Freelancers)</option>
+                                </select>
+                                <small class="text-muted">Controls the SEO title &amp; description formula shown on the category page.</small>
                             </div>
                         </div>
 
@@ -156,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryForm = document.getElementById('category-form');
     const categoryIdInput = document.getElementById('category_id');
     const categoryNameInput = document.getElementById('category');
+    const seoGroupInput = document.getElementById('seo_group');
     const metaTitleInput = document.getElementById('meta_title');
     const metaDescriptionInput = document.getElementById('meta_description');
     const keywordsInput = document.getElementById('keywords');
@@ -165,6 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const categoryId = this.getAttribute('data-id');
             const categoryName = this.getAttribute('data-category');
+            const seoGroup = this.getAttribute('data-seo-group') || 'product';
             const metaTitle = this.getAttribute('data-meta-title');
             const metaDescription = this.getAttribute('data-meta-description');
             const keywords = this.getAttribute('data-keywords');
@@ -172,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fill the form with category data
             categoryIdInput.value = categoryId;
             categoryNameInput.value = categoryName;
+            seoGroupInput.value = seoGroup;
             metaTitleInput.value = metaTitle || '';
             metaDescriptionInput.value = metaDescription || '';
             keywordsInput.value = keywords || '';
@@ -208,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetForm() {
         categoryIdInput.value = '';
         categoryNameInput.value = '';
+        seoGroupInput.value = 'product';
         metaTitleInput.value = '';
         metaDescriptionInput.value = '';
         keywordsInput.value = '';
