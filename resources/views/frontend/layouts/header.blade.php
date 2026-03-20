@@ -9,29 +9,36 @@
      {{-- Preload critical font --}}
 <link rel="preload" href="{{ asset('assets/bootstrap-icons.woff2') }}" as="font" type="font/woff2" crossorigin>
 
+@php
+    // Fallback values used on all pages that don't pass SEO variables (homepage, ad detail, blog, etc.)
+    $defaultDesc = "Marketplace Naija is Nigeria's trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.";
+    $metaDesc      = $seoDesc      ?? $defaultDesc;
+    $metaTitle     = $seoTitle     ?? $title ?? 'Marketplace Naija';
+    $metaCanonical = $seoCanonical ?? url()->current();
+@endphp
+
      <!-- SEO Meta Tags -->
-    <meta name="description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.">
+    <meta name="description" content="{{ $metaDesc }}">
     <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
     <meta name="author" content="Marketplace Naija">
 
+    <!-- Canonical URL — always points to the clean URL (no query params/page numbers) -->
+    <link rel="canonical" href="{{ $metaCanonical }}" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:site_name" content="Marketplace Naija">
-    <meta property="og:title" content="{{ $title ?? 'Marketplace Naija' }}">
-    <meta property="og:description" content="Marketplace Naija is Nigeria's trusted classifieds site. Post free ads to sell fast or find cars, jobs, electronics, property and more near you.">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:url" content="{{ $metaCanonical }}">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $title ?? 'Marketplace Naija' }}">
-    <meta name="twitter:description" content="Marketplace Naija is Nigeria’s trusted classifieds site. Post free ads to sell fast or find cars, jobs, electronics, property and more near you.">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
     <meta name="twitter:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
-
-     <!-- Canonical URL -->
-    <link rel="canonical" href="{{ url()->current() }}" />
 
 <!-- JSON-LD Organization Schema -->
 @php

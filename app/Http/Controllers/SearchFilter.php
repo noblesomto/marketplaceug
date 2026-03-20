@@ -13,10 +13,11 @@ use App\Models\User;
 use App\Models\State;
 use Jenssegers\Agent\Agent;
 use App\Traits\HasUserSession;
+use App\Traits\GeneratesSeoMeta;
 
 class SearchFilter extends Controller
 {
-    use HasUserSession;
+    use HasUserSession, GeneratesSeoMeta;
 
     public function search(Request $request)
     {
@@ -103,8 +104,9 @@ class SearchFilter extends Controller
 
     public function location_category(Request $request, $location, $slug)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
         $cat = Category::where('category_slug', $slug)->firstOrFail();
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $location);
+        $title = $seo['seoTitle'];
 
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
@@ -124,13 +126,11 @@ class SearchFilter extends Controller
         $agent = new Agent();
         $isMobile = $agent->isMobile();
 
-        // Use the merged category view with location context
-        return view('frontend.category', compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore', 'isMobile', 'location'));
+        return view('frontend.category', array_merge(compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore', 'isMobile', 'location'), $seo));
     }
 
     public function location_subcat(Request $request, $location, $slug)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
         $subcat = SubCategory::where('sub_cat_slug', $slug)->firstOrFail();
 
         $ads = Advert::with('firstImage')
@@ -164,19 +164,19 @@ class SearchFilter extends Controller
             ->orderBy('advert_count', 'desc')
             ->get();
 
-        $cat = $subcat->category;
+        $cat   = $subcat->category;
+        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $location);
+        $title = $seo['seoTitle'];
 
         $hasMore = $ads->hasMorePages();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
 
-        // Use the merged sub-category view with location context
-        return view('frontend.sub-category', compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore', 'isMobile', 'location', 'brands', 'cat'));
+        return view('frontend.sub-category', array_merge(compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore', 'isMobile', 'location', 'brands', 'cat'), $seo));
     }
 
     public function location_brand(Request $request, $location, $slug)
     {
-        $title = config('global.site_name').' | '.config('global.site_title');
         $brand = Brands::where('brand_slug', $slug)->firstOrFail();
 
         $ads = Advert::with('firstImage')
@@ -217,12 +217,16 @@ class SearchFilter extends Controller
                         ->where('sub_category', $brand->subcat_id)
                         ->count();
 
+        $seoName = $brand->brand . ($subcat ? ' ' . $subcat->sub_category : '');
+        $seoGrp  = $cat->seo_group ?? 'product';
+        $seo     = $this->buildSeoMeta($seoName, $seoGrp, url("/{$location}/{$slug}"), $location);
+        $title   = $seo['seoTitle'];
+
         $hasMore = $ads->hasMorePages();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
 
-        // Use the merged brand view with location context
-        return view('frontend.brand', compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat'));
+        return view('frontend.brand', array_merge(compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat'), $seo));
     }
 
     public function filter(Request $request)

@@ -28,11 +28,12 @@ use App\Mail\ReportMail;
 use Mail;
 use Jenssegers\Agent\Agent;
 use App\Traits\HasUserSession;
+use App\Traits\GeneratesSeoMeta;
 
 
 class AdvertController extends Controller
 {
-    use HasUserSession;
+    use HasUserSession, GeneratesSeoMeta;
     public function index(Request $request)
     {
         $title = config('global.site_name') . " | " . config('global.site_title');
@@ -897,7 +898,8 @@ class AdvertController extends Controller
     public function mainCategory(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $title = config('global.site_name') . ' | ' . $cat->category;
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+        $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['category' => $cat->id])
@@ -960,16 +962,17 @@ class AdvertController extends Controller
         $agent = new Agent();
         $isMobile = $agent->isMobile();
 
-        return view('frontend.main-category', compact(
+        return view('frontend.main-category', array_merge(compact(
             'title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'subcatImages', 'isMobile'
-        ));
+        ), $seo));
     }
 
 
         public function category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $title = config('global.site_name') . ' | ' . $cat->category;
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+        $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['category' => $cat->id])
@@ -1012,7 +1015,7 @@ class AdvertController extends Controller
             $agent = new Agent();
             $isMobile = $agent->isMobile();
 
-        return view('frontend.category', compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore','isMobile'));
+        return view('frontend.category', array_merge(compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'isMobile'), $seo));
     }
 
     public function sub_category(Request $request, $category_slug, $subcat_slug)
@@ -1020,7 +1023,8 @@ class AdvertController extends Controller
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
-        $title = config('global.site_name') . ' | ' . $subcat->sub_category;
+        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}"), $request->get('location', 'Nigeria'));
+        $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['sub_category' => $subcat->id])
@@ -1058,7 +1062,7 @@ class AdvertController extends Controller
 
         $agent = new Agent();
         $isMobile = $agent->isMobile();
-        return view('frontend.sub-category', compact('title', 'ads', 'user', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId','isMobile'));
+        return view('frontend.sub-category', array_merge(compact('title', 'ads', 'user', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile'), $seo));
     }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
@@ -1067,7 +1071,8 @@ class AdvertController extends Controller
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
         $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
 
-        $title = config('global.site_name') . ' | ' . $brand->brand;
+        $seo   = $this->buildSeoMeta($brand->brand . ' ' . $subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}/{$brand->brand_slug}"), $request->get('location', 'Nigeria'));
+        $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['brand' => $brand->id])
@@ -1104,7 +1109,7 @@ class AdvertController extends Controller
             $agent = new Agent();
             $isMobile = $agent->isMobile();
 
-        return view('frontend.brand', compact('title', 'ads', 'user', 'brand', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore','filterType', 'filterId','isMobile'));
+        return view('frontend.brand', array_merge(compact('title', 'ads', 'user', 'brand', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile'), $seo));
     }
 
         public function location($location)
@@ -1464,4 +1469,5 @@ public function buy_direct_payment(Request $request, $id)
 
         }
     }
+
 }
