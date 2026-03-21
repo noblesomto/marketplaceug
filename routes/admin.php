@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ManageAdverts;
 use App\Http\Controllers\Admin\ManageBoost;
 use App\Http\Controllers\Admin\ManageCategories;

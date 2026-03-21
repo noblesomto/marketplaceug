@@ -17,7 +17,7 @@ class AdminBoostTypeController extends Controller
         $title = "Manage Boost Types - " . config('global.site_name');
         $boostTypes = BoostType::ordered()->get();
 
-        return view('backend.settings.boost-types.index', compact('title', 'boostTypes'));
+        return view('admin.settings.boost-types.index', compact('title', 'boostTypes'));
     }
 
     /**

@@ -8,7 +8,7 @@ use App\Models\AdvertImage;
 use App\Models\Brands;
 use App\Models\CarDetail;
 use App\Models\Category;
-use App\Models\Models;
+use App\Models\VehicleModel;
 use App\Models\PhoneDetail;
 use App\Models\SubCategory;
 use App\Models\User;
@@ -263,13 +263,13 @@ class AdvertController extends Controller
         // Car details
         $data['car'] = CarDetail::where('advert_id', $id)->first();
         if ($data['car']) {
-            $data['model'] = Models::find($data['car']->model);
+            $data['model'] = VehicleModel::find($data['car']->model);
         }
 
         // Phone details
         $data['phone'] = PhoneDetail::where('advert_id', $id)->first();
         if ($data['phone']) {
-            $data['model'] = Models::find($data['phone']->model);
+            $data['model'] = VehicleModel::find($data['phone']->model);
         }
 
 

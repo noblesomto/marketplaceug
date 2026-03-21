@@ -45,7 +45,7 @@ class ManageAdvertising extends Controller
             return redirect()->back()->with('status', ['text'=>'Advert  Successfully published','type'=>'success']);
         }
         if ($request->isMethod('GET')) {
-            return view('backend.advertising.create-advert', compact('title', 'adverts'));
+            return view('admin.advertising.create-advert', compact('title', 'adverts'));
         }
 
     }

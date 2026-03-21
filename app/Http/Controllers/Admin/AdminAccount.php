@@ -74,7 +74,7 @@ class AdminAccount extends Controller
             ->with('error', 'Invalid email or password.');
     }
 
-    return view('frontend.account.admin', compact('title'));
+    return view('public.account.admin', compact('title'));
 }
 
     /**
@@ -124,7 +124,7 @@ class AdminAccount extends Controller
             }
         }
 
-        return view('frontend.account.admin-forgot-password', compact('title'));
+        return view('public.account.admin-forgot-password', compact('title'));
     }
 
     /**
@@ -144,7 +144,7 @@ class AdminAccount extends Controller
 
         if ($request->isMethod('GET')) {
             if ($token == $storedToken && $storedToken !== null) {
-                return view('frontend.account.admin-reset-password', compact('title', 'admin_id', 'token'));
+                return view('public.account.admin-reset-password', compact('title', 'admin_id', 'token'));
             } else {
                 return redirect()->route('admin.login')
                     ->with('error', 'Invalid or expired reset token.');

@@ -18,7 +18,7 @@ class RolePermissionController extends Controller
         $permissions = Permission::where('guard_name', 'admin')->get();
         $admins = Admin::with('roles')->get();
 
-        return view('backend.roles.roles', compact('roles','permissions','admins','title'));
+        return view('admin.roles.roles', compact('roles','permissions','admins','title'));
     }
 
     public function storeRole(Request $request)

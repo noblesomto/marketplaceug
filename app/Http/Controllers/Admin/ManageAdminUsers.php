@@ -15,7 +15,7 @@ class ManageAdminUsers extends Controller
         $title = "Manage Admins - " . config('global.site_name');
         $admins = Admin::get();
 
-        return view('backend.settings.admins.users', compact('title','admins'));
+        return view('admin.settings.admins.users', compact('title','admins'));
 
     }
 

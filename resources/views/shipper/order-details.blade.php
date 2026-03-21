@@ -1,5 +1,5 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('public.layouts.header')
+@include('public.layouts.nav')
 
 
 
@@ -93,7 +93,7 @@
     </div>
 </div>
 
-@include('frontend.components.flash-message')
+@include('public.components.flash-message')
 
 <div class="max-w-5xl mx-auto bg-white p-3 md:p-10  pb-20 mb-5 rounded-lg">
     <div class="flex justify-center mb-4">
@@ -140,6 +140,6 @@
 </div>
 </section>
 
-@include('frontend.layouts.footer')
+@include('public.layouts.footer')
 
 
