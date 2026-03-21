@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\UpdateProfileRequest;
+use App\Http\Requests\User\UpdatePaymentInfoRequest;
+use App\Http\Requests\User\ChangePasswordRequest;
+use App\Http\Requests\User\SubmitVerificationRequest;
 use App\Models\User;
 use App\Models\Advert;
 use App\Models\Bank;
@@ -36,7 +40,7 @@ class UserProfile extends Controller
         return view('dashboard.settings.profile', compact('title','user','count_ads','ads','hasMore'));
     }
 
-    public function profileUpdate(Request $request)
+    public function profileUpdate(UpdateProfileRequest $request)
     {
         $title = "Update Profile | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
@@ -46,12 +50,6 @@ class UserProfile extends Controller
         if ($request->isMethod('GET')) {
             return view('dashboard.settings.profile-update', compact('title', 'user', 'count_ads'));
         }
-
-        $request->validate([
-            'name'          => 'required|string|max:100',
-            'phone'         => ['required', new NigerianPhoneNumber(), \Illuminate\Validation\Rule::unique('users', 'phone')->ignore($user_id, 'user_id')],
-            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
-        ]);
 
         DB::table('users')->where('user_id', $user_id)->update([
             'name'  => $request->input('name'),
@@ -216,17 +214,10 @@ class UserProfile extends Controller
 
 
 
-    public function submit_verification(Request $request)
+    public function submit_verification(SubmitVerificationRequest $request)
     {
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->firstOrFail();
-
-        $request->validate([
-            'document_number' => 'required|string|max:255',
-            'document_type'   => 'nullable|string|max:255',
-            'document_file'   => 'required|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
-            'proof_address'   => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
-        ]);
 
         $verification = UserVerification::updateOrCreate(
             ['user_id' => $user_id],
@@ -281,7 +272,7 @@ class UserProfile extends Controller
 
 
 
-    public function payment_info(Request $request)
+    public function payment_info(UpdatePaymentInfoRequest $request)
     {
         $title = "Payment Information | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
@@ -293,14 +284,6 @@ class UserProfile extends Controller
         }
 
          if ($request->isMethod('POST')) {
-
-            //dd($request);
-            $request->validate([
-                'bank_name' => 'required',
-                'paystack_bank_code' => 'required',
-                'account_number' => 'required',
-                'account_name' => 'required',
-            ]);
 
 
             $user = DB::table('users')
@@ -317,17 +300,12 @@ class UserProfile extends Controller
         }
     }
 
-    public function change_password(Request $request)
+    public function change_password(ChangePasswordRequest $request)
     {
         $title = "My Profile | " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
-
-        $request->validate([
-            'old_password' => 'required',
-            'password' => 'required|min:6|confirmed',
-        ]);
 
         $password = $request->old_password;
 

@@ -584,6 +584,11 @@ class UserController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
 
+        // Stamp the time the user opened this page — resets the badge counter
+        // without touching individual is_read states on each notification.
+        $user->notifications_seen_at = now();
+        $user->save();
+
         $notifications = Notification::with([
                 'advert.owner',
                 'advert.media' // Add this to eager load Spatie media
