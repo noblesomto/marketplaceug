@@ -30,11 +30,14 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Traits\HasUserSession;
+use App\Services\Auth\CookieSessionService;
 
 
 class AccountController extends Controller
 {
     use HasUserSession;
+
+    public function __construct(private CookieSessionService $cookieService) {}
     public function login(Request $request)
     {
         if ($request->isMethod('GET')) {
@@ -149,40 +152,8 @@ class AccountController extends Controller
 
         // Handle "remember device" (does both: OTP skip + stay logged in)
         if ($request->has('remember_device')) {
-            // 1. Trusted device (OTP skip) - extended to 90 days
             $this->storeTrustedDevice($request, $user);
-
-            // ✅ FIXED: Determine if HTTPS is being used
-            $isSecure = $request->secure();
-
-            cookie()->queue(cookie(
-                'trusted_device',
-                $this->generateDeviceHash($request),
-                60 * 24 * 90,  // ✅ CHANGED: 90 days instead of 30
-                '/',
-                null,
-                $isSecure,     // ✅ FIXED: Only true on HTTPS
-                true,          // httpOnly
-                false,         // raw
-                'Lax'          // sameSite
-            ));
-
-            // 2. Persistent login (stay logged in)
-            $token = Str::random(60);
-            DB::table('users')->where('user_id', $user->user_id)
-                ->update(['remember_token' => hash('sha256', $token)]);
-
-            cookie()->queue(cookie(
-                'remember_login',
-                $token,
-                60 * 24 * 90,         // ✅ CHANGED: 90 days instead of 30
-                '/',
-                null,
-                $isSecure,            // ✅ FIXED: Only true on HTTPS
-                true,                 // httpOnly
-                false,                // raw
-                'Lax'                 // sameSite
-            ));
+            $this->cookieService->issueRememberCookies($request, $user);
         }
 
         // Update login activity
@@ -252,9 +223,9 @@ class AccountController extends Controller
         }
     }
 
-    protected function generateDeviceHash(Request $request)
+    protected function generateDeviceHash(Request $request): string
     {
-        return sha1($request->userAgent()); // no IP, keeps hash stable
+        return $this->cookieService->generateDeviceHash($request);
     }
 
     protected function storeTrustedDevice(Request $request, $user)
@@ -463,38 +434,7 @@ class AccountController extends Controller
                 // ✅ Store trusted device and set cookies after OTP verification
                 if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
                     $this->storeTrustedDevice($request, $login);
-
-                    $isSecure = $request->secure();
-
-                    // Set trusted device cookie
-                    cookie()->queue(cookie(
-                        'trusted_device',
-                        $this->generateDeviceHash($request),
-                        60 * 24 * 90,
-                        '/',
-                        null,
-                        $isSecure,
-                        true,
-                        false,
-                        'Lax'
-                    ));
-
-                    // Set remember login cookie
-                    $token = Str::random(60);
-                    DB::table('users')->where('user_id', $login->user_id)
-                        ->update(['remember_token' => hash('sha256', $token)]);
-
-                    cookie()->queue(cookie(
-                        'remember_login',
-                        $token,
-                        60 * 24 * 90,
-                        '/',
-                        null,
-                        $isSecure,
-                        true,
-                        false,
-                        'Lax'
-                    ));
+                    $this->cookieService->issueRememberCookies($request, $login);
                 }
 
                 return redirect()->intended(action([UserProfile::class, 'profile']));

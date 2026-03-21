@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\FeaturedAdPaginator;
+use App\Services\AdvertQueryService;
+use App\Services\FilterService;
 use App\Mail\ReportMail;
 use Mail;
 use Jenssegers\Agent\Agent;
@@ -35,6 +37,11 @@ use App\Traits\GeneratesSeoMeta;
 class AdvertController extends Controller
 {
     use HasUserSession, GeneratesSeoMeta;
+
+    public function __construct(
+        private AdvertQueryService $advertQueryService,
+        private FilterService $filterService,
+    ) {}
     public function index(Request $request)
     {
         $title = config('global.site_name') . " | " . config('global.site_title');
@@ -577,67 +584,7 @@ class AdvertController extends Controller
 
 
     // REMOVED: chat() method - duplicate functionality, replaced by MessageController::showMessages()
-
-    /*
-    |--------------------------------------------------------------------------
-    | Related Ads — progressive fallback
-    |--------------------------------------------------------------------------
-    | Filter levels (tries each until results are found):
-    |   1. category + sub_category + brand   (most specific)
-    |   2. category + sub_category           (drop brand)
-    |   3. category only                     (drop sub_category)
-    |   4. any active ads                    (last resort)
-    |
-    | Within whichever level has results, ads whose title contains the keyword
-    | (first 2 words of the source title) are ranked first, rest are random.
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Build the related-ads query with progressive fallback.
-     * Returns the first level that has at least one result.
-     */
-    private function buildRelatedQuery(Advert $ad, string $keyword)
-    {
-        $titleOrder = ['CASE WHEN ad_title LIKE ? THEN 1 ELSE 2 END ASC, RAND()', ['%' . $keyword . '%']];
-
-        $base = fn() => Advert::with('firstImage', 'owner')
-            ->where('id', '!=', $ad->id)
-            ->activeNotRecentlySold();
-
-        // Level 1: category + sub_category + brand
-        if ($ad->brand) {
-            $q = $base()
-                ->where('category', $ad->category)
-                ->where('sub_category', $ad->sub_category)
-                ->where('brand', $ad->brand);
-
-            if ((clone $q)->count() > 0) {
-                return $q->orderByRaw(...$titleOrder);
-            }
-        }
-
-        // Level 2: category + sub_category
-        if ($ad->sub_category) {
-            $q = $base()
-                ->where('category', $ad->category)
-                ->where('sub_category', $ad->sub_category);
-
-            if ((clone $q)->count() > 0) {
-                return $q->orderByRaw(...$titleOrder);
-            }
-        }
-
-        // Level 3: category only
-        $q = $base()->where('category', $ad->category);
-
-        if ((clone $q)->count() > 0) {
-            return $q->orderByRaw(...$titleOrder);
-        }
-
-        // Level 4: any active ads (last resort)
-        return $base()->inRandomOrder();
-    }
+    // REMOVED: buildRelatedQuery() — moved to App\Services\AdvertQueryService
 
     public function related(Request $request, $ad_id)
     {
@@ -661,7 +608,7 @@ class AdvertController extends Controller
 
         $perPage   = 20;
         $page      = $request->get('page', 1);
-        $baseQuery = $this->buildRelatedQuery($ad, $keyword);
+        $baseQuery = $this->advertQueryService->buildRelatedQuery($ad, $keyword);
 
         $total   = (clone $baseQuery)->count();
         $ads     = $baseQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
@@ -711,15 +658,15 @@ class AdvertController extends Controller
         $perPage  = 20;
         $page     = $request->get('page', 2);
 
-        $baseQuery = $this->buildRelatedQuery($ad, $keyword);
+        $baseQuery = $this->advertQueryService->buildRelatedQuery($ad, $keyword);
         $total     = (clone $baseQuery)->count();
         $ads       = $baseQuery->skip(($page - 1) * $perPage)->take($perPage)->get();
 
         $html = '';
         foreach ($ads as $row) {
             $view = $isMobile
-                ? 'frontend.components.advert.advert-card-mobile'
-                : 'frontend.components.advert.advert-card';
+                ? 'public.components.advert.advert-card-mobile'
+                : 'public.components.advert.advert-card';
             $html .= view($view, compact('row'))->render();
         }
 
@@ -876,23 +823,10 @@ class AdvertController extends Controller
             ->filters($filters)
             ->get();
 
-        $agent = new Agent();
-        $html = '';
-
-        if ($agent->isMobile()) {
-            foreach ($result['ads'] as $row) {
-                $html .= view('public.components.advert.advert-card-mobile', compact('row'))->render();
-            }
-        } else {
-            foreach ($result['ads'] as $row) {
-                $html .= view('public.components.advert.advert-card', compact('row'))->render();
-            }
-        }
-
         return response()->json([
-            'html' => $html,
-            'hasMore' => $result['hasMore'],
-            'nextPage' => $result['nextPage']
+            'html'     => $this->filterService->renderAdvertCards($result['ads']),
+            'hasMore'  => $result['hasMore'],
+            'nextPage' => $result['nextPage'],
         ]);
     }
 
@@ -1041,20 +975,7 @@ class AdvertController extends Controller
             ->where('sub_category', $subcat->id)
             ->count();
 
-        $brands = DB::table('brands')
-            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $subcat->id)
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
-            })
-            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-            ->orderBy('advert_count', 'desc')
-            ->get();
+        $brands = $this->advertQueryService->getBrandsForSubcat($subcat->id);
 
         // IMPORTANT: Set these variables for the JavaScript
         $filterType = 'sub_category';
@@ -1089,20 +1010,7 @@ class AdvertController extends Controller
             ->where('sub_category', $subcat->id)
             ->count();
 
-        $brands = DB::table('brands')
-            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $subcat->id)
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
-            })
-            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-            ->orderBy('advert_count', 'desc')
-            ->get();
+        $brands = $this->advertQueryService->getBrandsForSubcat($subcat->id);
 
             $filterType = 'brand';
             $filterId = $brand->id;
@@ -1187,20 +1095,7 @@ class AdvertController extends Controller
             ->where('sub_category', $subcat->id)
             ->count();
 
-        $brands = DB::table('brands')
-            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $subcat->id)
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
-            })
-            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
-            ->orderBy('advert_count', 'desc')
-            ->get();
+        $brands = $this->advertQueryService->getBrandsForSubcat($subcat->id);
 
         // CHANGED: Added $hasMore to compact
         return view('public.all-subcat', compact('title','ads','user','cat','brands','subcat','count_subcat','subcat_slug', 'hasMore'));
@@ -1208,45 +1103,50 @@ class AdvertController extends Controller
 
 
 
-    public function all_cateory(Request $request, $category_slug)
+    public function all_category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/all-{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+        $title = $seo['seoTitle'];
 
-        $title = config('global.site_name') . ' | ' . $subcat->sub_category . ' - All Brands';
+        $result = (new FeaturedAdPaginator(1))
+            ->filters(['category' => $cat->id])
+            ->get();
 
-        // Main ads query with scope
-        $ads = Advert::with('firstImage')
-                    ->activeNotRecentlySold()
-                    ->where('sub_category', $subcat->id)
-                    ->orderBy('created_at', 'asc')
-                    ->paginate(20);
+        $ads     = $result['ads'];
+        $hasMore = $result['hasMore'];
 
         $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
+        $user    = User::where('user_id', $user_id)->first();
 
-        // Count with scope
-        $count_subcat = Advert::activeNotRecentlySold()
-                            ->where('sub_category', $subcat->id)
-                            ->count();
+        $count_cat = Advert::activeNotRecentlySold()
+            ->where('category', $cat->id)
+            ->count();
 
-        // Brands query with filtering
-        $brands = DB::table('brands')
-            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
-            ->where('brands.subcat_id', $subcat->id)
-            // Add active and not recently sold conditions
-            ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
+        $categories = DB::table('sub_categories')
+            ->leftJoin('adverts', function ($join) {
+                $join->on('sub_categories.id', '=', 'adverts.sub_category')
+                    ->where('adverts.ad_status', 1)
+                    ->where(function ($q) {
+                        $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                          ->orWhereNull('adverts.sold_date');
+                    });
             })
-            ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
-            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->where('sub_categories.cat_id', $cat->id)
+            ->select(
+                'sub_categories.id',
+                'sub_categories.sub_category',
+                'sub_categories.sub_cat_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('sub_categories.id', 'sub_categories.sub_category', 'sub_categories.sub_cat_slug')
             ->orderBy('advert_count', 'desc')
             ->get();
 
-        return view('public.all-subcat', compact('title','ads','user','brands','subcat','count_subcat','subcat_slug'));
+        $agent    = new Agent();
+        $isMobile = $agent->isMobile();
+
+        return view('public.category', array_merge(compact('title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'isMobile'), $seo));
     }
 
     public function mobile_category(Request $request, $id, $slug)
