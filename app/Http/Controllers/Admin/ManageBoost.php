@@ -27,7 +27,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
             //dd($adverts);
-            return view('backend.adboost.index', compact('title', 'page_title', 'adverts'));
+            return view('admin.adboost.index', compact('title', 'page_title', 'adverts'));
     }
 
     public function status($id, $status)
@@ -75,7 +75,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.completed', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.completed', compact('title', 'page_title', 'adverts'));
     }
 
     public function unpaid(Request $request)
@@ -92,7 +92,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
     }
 
     public function paid(Request $request)
@@ -113,7 +113,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
     }
 
 

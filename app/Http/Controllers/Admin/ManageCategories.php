@@ -10,7 +10,7 @@ use App\Http\Requests\Admin\StoreBrandRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Brands;
-use App\Models\Models;
+use App\Models\VehicleModel;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -49,7 +49,7 @@ class ManageCategories extends Controller
     }
 
     if ($request->isMethod('GET')) {
-        return view('backend.category.category', compact('title', 'category', 'sub_category'));
+        return view('admin.category.category', compact('title', 'category', 'sub_category'));
     }
 }
 
@@ -147,7 +147,7 @@ class ManageCategories extends Controller
     }
 
     if ($request->isMethod('GET')) {
-        return view('backend.category.sub-category', compact('title', 'cat','subcat'));
+        return view('admin.category.sub-category', compact('title', 'cat','subcat'));
     }
 }
 
@@ -227,7 +227,7 @@ class ManageCategories extends Controller
     }
 
     if ($request->isMethod('GET')) {
-        return view('backend.category.brand', compact('title', 'brand','cat'));
+        return view('admin.category.brand', compact('title', 'brand','cat'));
     }
 }
 
@@ -235,7 +235,7 @@ class ManageCategories extends Controller
     {
         $title = "Models - " . config('global.site_name');
         $brand = Brands::where('id', $id)->first();
-        $model = Models::where('brand_id', $id)->orderBy('model','asc')->get();
+        $model = VehicleModel::where('brand_id', $id)->orderBy('model','asc')->get();
 
         if ($request->isMethod('POST')) {
             $request->validate([
@@ -250,7 +250,7 @@ class ManageCategories extends Controller
             // Check if it's an update or create
             if ($request->has('model_id') && $request->input('model_id')) {
                 // Update existing model
-                $model = Models::find($request->input('model_id'));
+                $model = VehicleModel::find($request->input('model_id'));
                 if ($model) {
                     $model->update([
                         'brand_id' => $request->input('brand'),
@@ -265,7 +265,7 @@ class ManageCategories extends Controller
                 }
             } else {
                 // Create new model
-                $model = Models::create([
+                $model = VehicleModel::create([
                     'brand_id' => $request->input('brand'),
                     'model' => $request->input('model'),
                     'meta_title' => $request->input('meta_title'),
@@ -281,13 +281,13 @@ class ManageCategories extends Controller
         }
 
         if ($request->isMethod('GET')) {
-            return view('backend.category.model', compact('title', 'model','brand'));
+            return view('admin.category.model', compact('title', 'model','brand'));
         }
     }
 
     public function delete_model($id, $cat)
     {
-        $model = Models::where('id', $id)->first();
+        $model = VehicleModel::where('id', $id)->first();
         $model->delete();
 
         return redirect("admin/model/".$cat)->with('status', ['text'=>'Model was deleted','type'=>'success']);
@@ -315,7 +315,7 @@ class ManageCategories extends Controller
 
     public function fetch_model($cat_id)
     {
-        $model = Models::where('brand_id', $cat_id)->get();
+        $model = VehicleModel::where('brand_id', $cat_id)->get();
         //dd($model);
         return response()->json($model);
     }

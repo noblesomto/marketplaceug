@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RobotsController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\AdvertController;
-use App\Http\Controllers\SearchFilter;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\PaystackController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Pages\RobotsController;
+use App\Http\Controllers\Pages\PageController;
+use App\Http\Controllers\User\AdvertController;
+use App\Http\Controllers\Shop\SearchFilter;
+use App\Http\Controllers\Shop\LocationController;
+use App\Http\Controllers\User\MessageController;
+use App\Http\Controllers\User\PaystackController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\ManageCategories;
 
 /*

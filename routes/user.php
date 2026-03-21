@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserProfile;
-use App\Http\Controllers\UserManageAdverts;
-use App\Http\Controllers\UserManageBoost;
-use App\Http\Controllers\BlockUser;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\PaystackController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserProfile;
+use App\Http\Controllers\User\UserManageAdverts;
+use App\Http\Controllers\User\UserManageBoost;
+use App\Http\Controllers\User\BlockUser;
+use App\Http\Controllers\User\MessageController;
+use App\Http\Controllers\User\PaystackController;
 
 /*
 |--------------------------------------------------------------------------

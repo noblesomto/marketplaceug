@@ -19,7 +19,7 @@ class ManageUsers extends Controller
         $page_title = "Active Users";
         $users = User::where('acc_status', 1)->where('disable_account', "no")->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend..users.active-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
     }
 
     public function unverified_users(Request $request)
@@ -28,7 +28,7 @@ class ManageUsers extends Controller
         $page_title = "Unverified Users";
         $users = User::where('acc_status', 0)->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.users.unverified-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.unverified-users', compact('title', 'users', 'page_title'));
     }
 
     public function disabled_users(Request $request)
@@ -37,7 +37,7 @@ class ManageUsers extends Controller
         $page_title = "Disabled Users";
         $users = User::where('acc_status', 1)->where('disable_account', "yes")->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.users.active-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
     }
 
     public function disable_status($id, $status)
@@ -127,7 +127,7 @@ class ManageUsers extends Controller
             ->where('seller_settlement', "no")
             ->where('user_id', $id)
             ->sum('amount_paid');
-        return view('backend.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
+        return view('admin.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
     }
 
     public function delete_user($user_id,$status)
@@ -159,7 +159,7 @@ class ManageUsers extends Controller
         $page_title = "User Verification";
         $users = UserVerification::with('user')->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('backend.users.user-verification', compact('title', 'users', 'page_title'));
+        return view('admin.users.user-verification', compact('title', 'users', 'page_title'));
     }
 
     public function verify_status($id, $status, $verify)

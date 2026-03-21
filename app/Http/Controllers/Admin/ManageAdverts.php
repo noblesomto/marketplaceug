@@ -12,7 +12,7 @@ use App\Models\Category;
 use App\Models\Message;
 use App\Models\SubCategory;
 use App\Models\Brands;
-use App\Models\Models;
+use App\Models\VehicleModel;
 use App\Models\State;
 use App\Models\CarDetail;
 use App\Models\PhoneDetail;
@@ -61,7 +61,7 @@ class ManageAdverts extends Controller
 
         $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.advert.adverts', compact('title', 'page_title','adverts'));
+        return view('admin.advert.adverts', compact('title', 'page_title','adverts'));
     }
 
     public function disabled_adverts(Request $request)
@@ -80,7 +80,7 @@ class ManageAdverts extends Controller
 
         $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.advert.adverts', compact('title', 'page_title', 'adverts'));
+        return view('admin.advert.adverts', compact('title', 'page_title', 'adverts'));
     }
 
     // all adverts method
@@ -98,7 +98,7 @@ class ManageAdverts extends Controller
 
         $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.advert.adverts', compact('title', 'page_title', 'adverts'));
+        return view('admin.advert.adverts', compact('title', 'page_title', 'adverts'));
     }
 
     // sold adverts
@@ -117,7 +117,7 @@ class ManageAdverts extends Controller
 
         $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
-         return view('backend.advert.sold-adverts', compact('title', 'page_title','adverts'));
+         return view('admin.advert.sold-adverts', compact('title', 'page_title','adverts'));
     }
 
     public function edit_advert(Request $request, $id)
@@ -135,7 +135,7 @@ class ManageAdverts extends Controller
 
         $models = collect();
         if ($advert->brand) {
-            $models = Models::where('brand_id', $advert->brand)->get();
+            $models = VehicleModel::where('brand_id', $advert->brand)->get();
         }
 
         $selectedShippingIds = $advert->shippings->pluck('id')->toArray();
@@ -147,7 +147,7 @@ class ManageAdverts extends Controller
             return $this->update_ad($request, $advert);
         }
 
-        return view('backend.advert.edit-advert', compact(
+        return view('admin.advert.edit-advert', compact(
             'title',
             'page_title',
             'categories',

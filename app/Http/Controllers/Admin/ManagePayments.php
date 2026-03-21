@@ -37,7 +37,7 @@ class ManagePayments extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
         //dd($payments);
-        return view('backend.payments.completed-payments', compact('title', 'page_title', 'payments'));
+        return view('admin.payments.completed-payments', compact('title', 'page_title', 'payments'));
     }
 
     public function pending_payments(Request $request)
@@ -51,7 +51,7 @@ class ManagePayments extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate(20);
             //dd($payments);
-        return view('backend.payments.pending-payments', compact('title', 'page_title', 'payments'));
+        return view('admin.payments.pending-payments', compact('title', 'page_title', 'payments'));
     }
 
     public function update_payment(Request $request,$id)
@@ -163,7 +163,7 @@ class ManagePayments extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
         //dd($payments);
-        return view('backend.settlements.pending-settlements', compact('title', 'page_title', 'payments'));
+        return view('admin.settlements.pending-settlements', compact('title', 'page_title', 'payments'));
     }
 
 
@@ -182,7 +182,7 @@ class ManagePayments extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
         //dd($payments);
-        return view('backend.settlements.completed-settlements', compact('title', 'page_title', 'payments'));
+        return view('admin.settlements.completed-settlements', compact('title', 'page_title', 'payments'));
     }
 
     public function confirm_settlement($id)

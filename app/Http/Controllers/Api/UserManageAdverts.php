@@ -8,7 +8,7 @@ use App\Models\AdvertImage;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Brands;
-use App\Models\Models;
+use App\Models\VehicleModel;
 use App\Models\State;
 use App\Models\Shipping;
 use App\Models\CarDetail;
@@ -122,7 +122,7 @@ class UserManageAdverts extends Controller
      */
     public function fetchModels($brandId)
     {
-        $models = Models::where('brand_id', $brandId)->get();
+        $models = VehicleModel::where('brand_id', $brandId)->get();
 
         return response()->json([
             'success' => true,
@@ -551,7 +551,7 @@ class UserManageAdverts extends Controller
 
         $subcategories = SubCategory::where('cat_id', $advert->category)->get();
         $brands = Brands::where('subcat_id', $advert->sub_category)->get();
-        $models = Models::where('brand_id', $advert->brand)->get();
+        $models = VehicleModel::where('brand_id', $advert->brand)->get();
 
         return response()->json([
             'success' => true,

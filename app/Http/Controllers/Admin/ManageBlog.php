@@ -15,14 +15,14 @@ class ManageBlog extends Controller
         $title = "Blog Posts | " . config('global.site_name');
         $page_title = "Blog Posts | " . config('global.site_name');
         $blogs = Blog::latest()->paginate(10);
-        return view('backend.blogs.index', compact('blogs','title','page_title'));
+        return view('admin.blogs.index', compact('blogs','title','page_title'));
     }
 
     public function create()
     {
         $title = "Blog Posts | " . config('global.site_name');
         $page_title = "Blog Posts | " . config('global.site_name');
-        return view('backend.blogs.create',  compact('title','page_title'));
+        return view('admin.blogs.create',  compact('title','page_title'));
     }
 
     public function store(Request $request)
@@ -58,7 +58,7 @@ class ManageBlog extends Controller
     {
         $title = "Blog Posts | " . config('global.site_name');
         $page_title = "Blog Posts | " . config('global.site_name');
-        return view('backend.blogs.edit', compact('blog','title','page_title'));
+        return view('admin.blogs.edit', compact('blog','title','page_title'));
     }
 
     public function update(Request $request, Blog $blog)
@@ -113,7 +113,7 @@ class ManageBlog extends Controller
     {
         $title = "Blog Posts | " . config('global.site_name');
         $page_title = "Blog Posts | " . config('global.site_name');
-        return view('backend.blogs.show', compact('blog','title','page_title'));
+        return view('admin.blogs.show', compact('blog','title','page_title'));
     }
 
     public function upload(Request $request)

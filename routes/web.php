@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdvertController;
-use App\Http\Controllers\SearchFilter;
+use App\Http\Controllers\User\AdvertController;
+use App\Http\Controllers\Shop\SearchFilter;
 
 /*
 |--------------------------------------------------------------------------

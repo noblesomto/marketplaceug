@@ -17,7 +17,7 @@ class AdminBoostDurationController extends Controller
         $title = "Manage Boost Durations - " . config('global.site_name');
         $durations = BoostDuration::ordered()->get();
 
-        return view('backend.settings.boost-durations.index', compact('title', 'durations'));
+        return view('admin.settings.boost-durations.index', compact('title', 'durations'));
     }
 
     /**

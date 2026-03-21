@@ -1,5 +1,5 @@
-@include('backend.layouts.header')
-@include('backend.layouts.nav')
+@include('admin.layouts.header')
+@include('admin.layouts.nav')
 
 <main id="main" class="main">
 
@@ -197,7 +197,7 @@
 
 </main><!-- End #main -->
 
-@include('backend.layouts.footer')
+@include('admin.layouts.footer')
 
 <script>
     // Auto-dismiss alerts after 5 seconds

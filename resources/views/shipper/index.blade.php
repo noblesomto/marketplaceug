@@ -1,5 +1,5 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('public.layouts.header')
+@include('public.layouts.nav')
 
 
 
@@ -9,7 +9,7 @@
         <div class="flex justify-center">
             <h3 class="text-2xl font-bold">Shipping Code</h3>
         </div>
-        @include('frontend.components.flash-message')
+        @include('public.components.flash-message')
         <form method="POST" action="/shipper/get-shipping">
             @csrf
 
@@ -37,6 +37,6 @@
     </div>
 </section>
 
-@include('frontend.layouts.footer')
+@include('public.layouts.footer')
 
 
