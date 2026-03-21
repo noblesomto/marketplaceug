@@ -15,7 +15,10 @@ return new class extends Migration
             $table->unsignedBigInteger('cat_id')->nullable()->after('id');
             $table->unsignedBigInteger('subcat_id')->nullable()->after('cat_id');
             $table->integer('model_id')->nullable()->after('brand_id');
-            $table->text('keywords')->nullable()->after('model_slug');
+            // keywords may already exist on live — only add if missing
+            if (!Schema::hasColumn('models', 'keywords')) {
+                $table->text('keywords')->nullable()->after('model_slug');
+            }
         });
     }
 

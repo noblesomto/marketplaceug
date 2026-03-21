@@ -387,9 +387,7 @@ class AccountController extends Controller
                 'last_login_at' => now(),
             ]);
 
-        return session()->has('url.intended')
-            ? redirect(session()->get('url.intended'))
-            : redirect()->action([UserProfile::class, 'profile']);
+        return redirect()->intended(action([UserProfile::class, 'profile']));
     }
 
 
@@ -496,12 +494,7 @@ class AccountController extends Controller
                     ));
                 }
 
-                if ($request->session()->has('previous_url')) {
-                    $previous_url = $request->session()->get('previous_url');
-                    return redirect($previous_url);
-                } else {
-                    return redirect()->action([UserProfile::class, 'profile']);
-                }
+                return redirect()->intended(action([UserProfile::class, 'profile']));
             } else {
                 // ✅ SECURITY 2: Increment failed attempt counter
                 Cache::put($cacheKey, $attempts + 1, now()->addHour()); // 1 hour expiry

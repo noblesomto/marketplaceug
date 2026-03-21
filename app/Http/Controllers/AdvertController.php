@@ -1280,8 +1280,7 @@ class AdvertController extends Controller
         //dd($data['ad']);
         if(empty($user)) {
             $request->session()->forget('user_id');
-            $currentURL = url()->current();
-            $request->session()->put('previous_url', $currentURL);
+            $request->session()->put('url.intended', url()->current());
             return redirect('/login')->with('error','Sorry, you need to login to Use Buy Direct');
         }
 
