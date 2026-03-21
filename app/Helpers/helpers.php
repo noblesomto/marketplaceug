@@ -343,7 +343,6 @@ if (!function_exists('getUserNotificationCount')) {
     function getUserNotificationCount()
     {
         // Try session first (web), then fall back to API token auth
-        // Auth::id() returns the model's primary key (user_id = 5-char code)
         $userCode = Session::get('user_id') ?? (Auth::check() ? Auth::id() : null);
 
         $user = User::where('user_id', $userCode)->first();
@@ -352,8 +351,17 @@ if (!function_exists('getUserNotificationCount')) {
             return 0;
         }
 
-        return Notification::where('user_id', $user->id)
-            ->where('is_read', false)
-            ->count();
+        $query = Notification::where('user_id', $user->id);
+
+        // If user has visited the notifications page before, only count
+        // notifications created after their last visit. Otherwise fall back
+        // to the legacy is_read flag so existing unread items still show.
+        if ($user->notifications_seen_at) {
+            $query->where('created_at', '>', $user->notifications_seen_at);
+        } else {
+            $query->where('is_read', false);
+        }
+
+        return $query->count();
     }
 }

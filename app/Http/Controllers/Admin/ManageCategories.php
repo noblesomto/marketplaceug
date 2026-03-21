@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\StoreSubCategoryRequest;
+use App\Http\Requests\Admin\StoreBrandRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Brands;
@@ -14,20 +17,13 @@ use Carbon\Carbon;
 class ManageCategories extends Controller
 {
 
-    public function category(Request $request)
+    public function category(StoreCategoryRequest $request)
 {
     $title = "Category - " . config('global.site_name');
     $category = Category::orderBy('category','asc')->get();
     $sub_category = SubCategory::orderBy('sub_category','asc')->get();
 
     if ($request->isMethod('POST')) {
-        $request->validate([
-            'category'         => 'required',
-            'seo_group'        => 'nullable|in:product,property,service',
-            'meta_title'       => 'nullable|max:255',
-            'meta_description' => 'nullable|max:500',
-            'keywords'         => 'nullable|max:500',
-        ]);
 
         $fields = [
             'category'         => $request->input('category'),
@@ -84,21 +80,13 @@ class ManageCategories extends Controller
         return response()->json($category);
     }
 
-    public function sub_category(Request $request, $id)
+    public function sub_category(StoreSubCategoryRequest $request, $id)
 {
     $title = "Sub Category - " . config('global.site_name');
     $cat = Category::where('id', $id)->first();
     $subcat = SubCategory::where('cat_id', $id)->orderBy('sub_category','asc')->get();
 
     if ($request->isMethod('POST')) {
-        $request->validate([
-            'sub_category' => 'required',
-            'category'     => 'required',
-            'icon'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
-            'meta_title'        => 'nullable|max:255',
-            'meta_description'  => 'nullable|max:500',
-            'keywords'          => 'nullable|max:500',
-        ]);
 
         // Handle icon upload
         $iconFilename = null;
@@ -199,20 +187,13 @@ class ManageCategories extends Controller
         return redirect()->back()->with('status', ['text' => 'Icon removed successfully', 'type' => 'success']);
     }
 
-    public function brand(Request $request, $id)
+    public function brand(StoreBrandRequest $request, $id)
 {
     $title = "Brands - " . config('global.site_name');
     $cat = SubCategory::where('id', $id)->first();
     $brand = Brands::where('subcat_id', $id)->orderBy('brand','asc')->get();
 
     if ($request->isMethod('POST')) {
-        $request->validate([
-            'sub_category' => 'required',
-            'brand' => 'required',
-            'meta_title' => 'nullable|max:255',
-            'meta_description' => 'nullable|max:500',
-            'keywords' => 'nullable|max:500',
-        ]);
 
         // Check if it's an update or create
         if ($request->has('brand_id') && $request->input('brand_id')) {
