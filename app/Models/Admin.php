@@ -1,29 +1,35 @@
 <?php
-
+// app/Models/Admin.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Change from Model
+use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends Model
+class Admin extends Authenticatable // Change from Model
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
-    protected $fillable = ['admin_id', 'username', 'email','password'];
+    protected $guard_name = 'admin'; // Specify admin guard
 
-    public function roles()
+    protected $fillable = ['admin_id', 'username','remember_token', 'email', 'password'];
+
+    protected $hidden = ['password', 'remember_token'];
+
+    // Keep your old methods for backward compatibility during transition
+    public function oldRoles()
     {
         return $this->belongsToMany(Role::class, 'admin_roles');
     }
 
-    public function hasRole($role)
+    public function hasOldRole($role)
     {
-        return $this->roles->contains('name', $role);
+        return $this->oldRoles->contains('name', $role);
     }
 
-    public function hasPermission($permission)
+    public function hasOldPermission($permission)
     {
-        foreach ($this->roles as $role) {
+        foreach ($this->oldRoles as $role) {
             if ($role->permissions->contains('name', $permission)) {
                 return true;
             }
@@ -37,10 +43,7 @@ class Admin extends Model
         if ($this->id === 1) {
             return true;
         }
-
         // Option B: check if the admin has explicit super_admin role
         return $this->hasRole('super_admin');
     }
-
 }
-

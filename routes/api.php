@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AdvertController;
@@ -13,51 +12,155 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserManageAdverts;
 use App\Http\Controllers\Api\UserProfile;
+use App\Http\Controllers\Api\BlockUserController;
+use App\Http\Controllers\Api\UserManageBoostController;
+use App\Http\Controllers\Api\UserStatsController;
+use App\Http\Controllers\Api\AdvertStatsController;
+use App\Http\Controllers\Api\DeviceTokenController;
+use App\Http\Controllers\Api\NotificationSettingsController;
+use App\Http\Controllers\Api\BoostController;
+use App\Http\Controllers\Api\CategoryUIController;
+use App\Http\Controllers\Api\AdvertisingController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
 
 
-Route::post('/login', [AccountController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Device Token Management
+    Route::prefix('device-tokens')->group(function () {
+        Route::get('/', [DeviceTokenController::class, 'index']);
+        Route::post('/', [DeviceTokenController::class, 'store']);
+        Route::delete('/{id}', [DeviceTokenController::class, 'destroy']);
+    });
+
+    // Notification Settings
+    Route::prefix('notification-settings')->group(function () {
+        Route::get('/', [NotificationSettingsController::class, 'show']);
+        Route::put('/', [NotificationSettingsController::class, 'update']);
+    });
+
+    // Test Push Notifications (Local/Development only)
+    Route::prefix('test')->group(function () {
+        Route::post('/notification', [\App\Http\Controllers\Api\TestNotificationController::class, 'sendTest']);
+        Route::get('/my-tokens', [\App\Http\Controllers\Api\TestNotificationController::class, 'getMyTokens']);
+    });
+
+});
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes (Public)
+|--------------------------------------------------------------------------
+*/
 Route::post('/register', [AccountController::class, 'register']);
+Route::post('/login', [AccountController::class, 'login']);
+Route::post('/verify-otp', [AccountController::class, 'verifyOTP']);
+Route::post('/resend-otp', [AccountController::class, 'resendOTP']);
 Route::get('/verify/{email}/{token}', [AccountController::class, 'verifyAccount']);
+Route::post('/resend-verification', [AccountController::class, 'resendVerification']);
 Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'resetPassword']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return response()->json($request->user());
-    });
+// Social Authentication
+Route::post('/auth/social', [AccountController::class, 'socialLogin']);
+Route::get('/auth/{provider}/redirect', [AccountController::class, 'socialRedirect']);
+Route::get('/auth/{provider}/callback', [AccountController::class, 'socialCallback']);
 
+// Protected Authentication Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AccountController::class, 'user']);
     Route::post('/logout', [AccountController::class, 'logout']);
+    Route::delete('/trusted-device/{device_id}', [AccountController::class, 'removeTrustedDevice']);
 });
 
-
+/*
+|--------------------------------------------------------------------------
+| Advert Routes (Public)
+|--------------------------------------------------------------------------
+*/
 Route::get('/adverts', [AdvertController::class, 'index']);
+// Static paths must come before wildcard {id} routes
 Route::get('/adverts/featured', [AdvertController::class, 'featuredAdverts']);
-Route::get('/adverts/{id}', [AdvertController::class, 'show']);
+Route::get('/adverts/load-more', [AdvertController::class, 'loadMore']);
 Route::get('/adverts/seller/{seller_id}', [AdvertController::class, 'sellerAdverts']);
+Route::get('/adverts/{id}/related', [AdvertController::class, 'related']);
+Route::get('/adverts/{id}', [AdvertController::class, 'show']);
 Route::get('/categories', [AdvertController::class, 'categories']);
 Route::get('/categories/{category_slug}', [AdvertController::class, 'categoryAdverts']);
+Route::get('/categories/{category_slug}/subcategories', [AdvertController::class, 'categorySubcategories']);
 Route::get('/categories/{category_slug}/{subcat_slug}', [AdvertController::class, 'subcategoryAdverts']);
 Route::get('/brands/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brandAdverts']);
+Route::get('/location/{state_slug}', [AdvertController::class, 'locationAdverts']);
 
+// Protected Advert Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/adverts/{id}/report', [AdvertController::class, 'reportAdvert']);
     Route::post('/adverts/{id}/apply', [AdvertController::class, 'applyJob']);
+    Route::get('/adverts/{id}/buy-direct', [AdvertController::class, 'buy_direct']);
+    Route::post('/adverts/{id}/buy-direct-payment', [AdvertController::class, 'buy_direct_payment']);
+    Route::post('/shipping/calculate/{id}', [AdvertController::class, 'calculate_shipping']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Search Routes (Public & Enhanced)
+|--------------------------------------------------------------------------
+*/
+Route::post('/search', [SearchController::class, 'search']);
+Route::post('/search/filter', [SearchController::class, 'filter']);
+Route::post('/search/filter-by-seller', [SearchController::class, 'filterBySeller']);
+Route::post('/search/filter-by-buydirect', [SearchController::class, 'filterByBuydirect']);
+Route::post('/search/filter-by-car', [SearchController::class, 'filterByCarDetails']);
+Route::post('/search/filter-by-phone', [SearchController::class, 'filterByPhoneDetails']);
+Route::get('/search/location/{location}/{slug}', [SearchController::class, 'locationSearch']);
+Route::get('/search/filters', [SearchController::class, 'getFilters']);
+Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
+Route::get('/search/load-more', [SearchController::class, 'loadMore']);
 
-// Location routes
+/*
+|--------------------------------------------------------------------------
+| Advertising Routes (Public)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('advertising')->group(function () {
+    Route::get('/', [AdvertisingController::class, 'index']);       // GET /api/advertising?type=banner
+    Route::get('/{id}/click', [AdvertisingController::class, 'click']); // GET /api/advertising/{id}/click
+});
+
+/*
+|--------------------------------------------------------------------------
+| Location & Shipping Routes (Public)
+|--------------------------------------------------------------------------
+*/
 Route::get('/locations/states', [LocationController::class, 'getStates']);
 Route::get('/locations/states/{state_id}/cities', [LocationController::class, 'getCitiesByState']);
 Route::get('/locations/states/{state_id}/details', [LocationController::class, 'getStateWithCities']);
 Route::get('/locations/cities', [LocationController::class, 'searchCities']);
 Route::get('/locations/cities/{city_id}', [LocationController::class, 'getCity']);
 
-// Shipping routes
-Route::post('/shipping/calculate', [LocationController::class, 'calculateShippingCost']);
 
+/*
+|--------------------------------------------------------------------------
+| Category UI Configuration Routes (Public)
+|--------------------------------------------------------------------------
+| Database-driven UI configuration for Post Ad and Edit Ad forms
+| Heavily cached for performance (24 hours)
+*/
+Route::get('/ui-config/all', [CategoryUIController::class, 'getUIConfig']);
+Route::get('/ui-config/category/{id}', [CategoryUIController::class, 'getCategoryConfig']);
+Route::get('/ui-config/subcategory/{id}', [CategoryUIController::class, 'getSubcategoryConfig']);
+Route::post('/ui-config/clear-cache', [CategoryUIController::class, 'clearCache']); // For admin use
 
+/*
+|--------------------------------------------------------------------------
+| Message Routes (Protected)
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:sanctum')->group(function () {
-    // Messages
     Route::post('/messages', [MessageController::class, 'sendMessage']);
     Route::get('/messages/conversation/{advertId}/{receiverId}', [MessageController::class, 'getConversation']);
     Route::get('/messages/advert/{advertId}', [MessageController::class, 'getAdvertMessages']);
@@ -66,13 +169,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/messages/{messageId}/read', [MessageController::class, 'markAsRead']);
     Route::put('/messages/conversation/{advertId}/{userId}/read', [MessageController::class, 'markConversationAsRead']);
 
-    // Payments
+    // Archive functionality
+    Route::post('/messages/archive', [MessageController::class, 'archive']);
+    Route::post('/messages/unarchive', [MessageController::class, 'unarchive']);
+    Route::get('/messages/archived', [MessageController::class, 'getArchivedConversations']);
+
+    // Payment status
     Route::post('/payments/{paymentId}/mark-delivered', [MessageController::class, 'markAsDelivered']);
 });
 
-
+/*
+|--------------------------------------------------------------------------
+| Payment Routes (Protected)
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:sanctum')->group(function () {
-    // Payment routes
     Route::post('/payments/initialize', [PaystackController::class, 'initializePayment']);
     Route::post('/payments/initialize-boost', [PaystackController::class, 'initializeBoost']);
     Route::get('/payments/{paymentId}', [PaystackController::class, 'getPayment']);
@@ -83,108 +194,199 @@ Route::middleware('auth:sanctum')->group(function () {
 // Public callback route (no auth required)
 Route::post('/payments/callback', [PaystackController::class, 'handleCallback']);
 
-
-
-// Search routes
-Route::get('/search', [SearchController::class, 'search']);
-Route::get('/search/location/{location}/{slug}', [SearchController::class, 'locationSearch']);
-Route::get('/search/filters', [SearchController::class, 'getFilters']);
-Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    // User dashboard
-    Route::get('/user/dashboard', [UserController::class, 'dashboard']);
-    Route::get('/user/categories', [UserController::class, 'categories']);
+/*
+|--------------------------------------------------------------------------
+| User Dashboard Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [UserController::class, 'dashboard']);
+    Route::get('/categories', [UserController::class, 'categories']);
 
     // Messages
-    Route::get('/user/messages/conversations', [UserController::class, 'conversations']);
+    Route::get('/messages/conversations', [UserController::class, 'conversations']);
 
     // Ads management
-    Route::get('/user/ads', [UserController::class, 'myAds']);
-    Route::patch('/user/ads/{adId}/status', [UserController::class, 'updateAdStatus']);
-    Route::patch('/user/ads/{adId}/mark-sold', [UserController::class, 'markAsSold']);
+    Route::get('/ads', [UserController::class, 'myAds']);
+    Route::patch('/ads/{adId}/status', [UserController::class, 'updateAdStatus']);
+    Route::patch('/ads/{adId}/mark-sold', [UserController::class, 'markAsSold']);
 
     // Wishlist
-    Route::get('/user/wishlist', [UserController::class, 'wishlist']);
-    Route::post('/user/wishlist/{adId}', [UserController::class, 'addToWishlist']);
-    Route::delete('/user/wishlist/{adId}', [UserController::class, 'removeFromWishlist']);
+    Route::get('/wishlist', [UserController::class, 'wishlist']);
+    Route::post('/wishlist/{adId}', [UserController::class, 'addToWishlist']);
+    Route::delete('/wishlist/{adId}', [UserController::class, 'removeFromWishlist']);
+    Route::post('/wishlist/{adId}/toggle', [UserController::class, 'toggleWishlist']);
 
     // Payments
-    Route::get('/user/payments', [UserController::class, 'payments']);
-    Route::post('/user/payments/{paymentId}/confirm-delivery', [UserController::class, 'confirmDelivery']);
-    Route::patch('/user/payments/{paymentId}/shipping-status', [UserController::class, 'updateShippingStatus']);
+    Route::get('/payments', [UserController::class, 'payments']);
+    Route::post('/payments/{paymentId}/confirm-delivery', [UserController::class, 'confirmDelivery']);
+    Route::patch('/payments/{paymentId}/shipping-status', [UserController::class, 'updateShippingStatus']);
 
     // Feedbacks
-    Route::get('/user/feedbacks', [UserController::class, 'feedbacks']);
-    Route::post('/user/feedbacks/{sellerId}', [UserController::class, 'submitFeedback']);
+    Route::get('/feedbacks', [UserController::class, 'feedbacks']);
+    Route::post('/feedbacks/{sellerId}', [UserController::class, 'submitFeedback']);
 
     // Following
-    Route::get('/user/following/check/{userId}', [UserController::class, 'checkFollowing']);
-    Route::post('/user/following/toggle', [UserController::class, 'toggleFollow']);
+    Route::get('/following/check/{userId}', [UserController::class, 'checkFollowing']);
+    Route::post('/following/toggle', [UserController::class, 'toggleFollow']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| User Manage Adverts Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('adverts')->group(function () {
+    // Get data for creating adverts
+    Route::get('/create/data', [UserManageAdverts::class, 'getCreateData']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    // Advert management routes
-    Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'getSubcategories']);
-    Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'getBrands']);
-    Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'getModels']);
-    Route::get('/adverts/create/data', [UserManageAdverts::class, 'getCreateData']);
+    // Get advert for editing
+    Route::get('/{advertId}/edit', [UserManageAdverts::class, 'getAdvertForEdit']);
 
-    Route::post('/adverts', [UserManageAdverts::class, 'createAdvert']);
-    Route::get('/adverts/{advertId}/edit', [UserManageAdverts::class, 'getAdvertForEdit']);
-    Route::put('/adverts/{advertId}', [UserManageAdverts::class, 'updateAdvert']);
-    Route::delete('/adverts/{advertId}', [UserManageAdverts::class, 'deleteAdvert']);
-
-    Route::get('/adverts/{advertId}/boost', [UserManageAdverts::class, 'getBoostInfo']);
-    Route::get('/adverts/{advertId}/boosted', [UserManageAdverts::class, 'getBoostedAdvert']);
+    // CRUD routes
+    Route::post('/', [UserManageAdverts::class, 'createAdvert']);
+    Route::put('/{advertId}', [UserManageAdverts::class, 'updateAdvert']);
+    Route::delete('/{advertId}', [UserManageAdverts::class, 'deleteAdvert']);
 });
 
 // Public routes for category/brand/model data
-Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'getSubcategories']);
-Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'getBrands']);
-Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'getModels']);
+Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'fetchSubcategories']);
+Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'fetchBrands']);
+Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'fetchModels']);
 
+/*
+|--------------------------------------------------------------------------
+| User Profile Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+    // Profile endpoints
+    Route::get('/profile', [UserProfile::class, 'getProfile']);
+    Route::get('/about-account', [UserProfile::class, 'aboutAccount']);
+    Route::get('/profile-info', [UserProfile::class, 'getProfileInfo']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    // User profile routes
-    Route::get('/user/profile', [UserProfile::class, 'getProfile']);
-    Route::get('/user/settings', [UserProfile::class, 'getSettings']);
-    Route::put('/user/profile/address', [UserProfile::class, 'updateAddress']);
-    Route::put('/user/profile/phone', [UserProfile::class, 'updatePhone']);
+    // User ads - NOTE: Removed duplicate, using UserController@myAds instead (line 172)
+    // Route::get('/ads', [UserProfile::class, 'loadMoreUserAds']);
 
-    // Verification routes
-    Route::get('/user/verification', [UserProfile::class, 'getVerificationStatus']);
-    Route::post('/user/verification', [UserProfile::class, 'submitVerification']);
+    // Profile updates
+    Route::put('/profile/address', [UserProfile::class, 'updateAddress']);
+    Route::post('/profile/address', [UserProfile::class, 'updateAddress']); // For form-data
+    Route::put('/profile/phone', [UserProfile::class, 'updatePhone']);
 
-    // Payment info routes
-    Route::get('/user/payment-info', [UserProfile::class, 'getPaymentInfo']);
-    Route::put('/user/payment-info', [UserProfile::class, 'updatePaymentInfo']);
+    // Verification
+    Route::get('/verification', [UserProfile::class, 'getVerificationStatus']);
+    Route::post('/verification', [UserProfile::class, 'submitVerification']);
 
-    // Security routes
-    Route::put('/user/password', [UserProfile::class, 'changePassword']);
-    Route::put('/user/notifications', [UserProfile::class, 'updateNotifications']);
-    Route::delete('/user/account', [UserProfile::class, 'disableAccount']);
-    Route::post('/user/logout', [UserProfile::class, 'logout']);
+    // Payment information
+    Route::get('/payment-info', [UserProfile::class, 'getPaymentInfo']);
+    Route::put('/payment-info', [UserProfile::class, 'updatePaymentInfo']);
+
+    // Password change
+    Route::put('/password', [UserProfile::class, 'changePassword']);
+
+    // Notification preferences
+    Route::put('/notifications', [UserProfile::class, 'updateNotifications']);
+
+    // Settings
+    Route::get('/settings', [UserProfile::class, 'getSettings']);
+
+    // Account management
+    Route::delete('/account', [UserProfile::class, 'disableAccount']);
+    Route::post('/logout', [UserProfile::class, 'logout']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Block User Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+    Route::post('/block', [BlockUserController::class, 'block']);
+    Route::post('/unblock', [BlockUserController::class, 'unblock']);
+    Route::get('/blocked', [BlockUserController::class, 'getBlockedUsers']);
+    Route::get('/check-blocked/{userId}', [BlockUserController::class, 'checkBlocked']);
+    Route::post('/block-all/{userId}', [BlockUserController::class, 'blockGlobally']);
+});
 
+/*
+|--------------------------------------------------------------------------
+| Ad Boost Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->group(function () {
+    // User boost management
+    Route::get('/user/boosts', [UserManageBoostController::class, 'getUserBoosts']);
+    Route::get('/boosts/active', [UserManageBoostController::class, 'getActiveBoosts']);
+    Route::get('/boosts/pending', [UserManageBoostController::class, 'getPendingBoosts']);
 
+    // Advert boost operations
+    Route::get('/adverts/{advertId}/boost-info', [UserManageBoostController::class, 'getBoostInfo']);
+    Route::post('/adverts/{advertId}/boost', [UserManageBoostController::class, 'createBoost']);
+    Route::get('/adverts/{advertId}/boost-status', [UserManageBoostController::class, 'checkBoostStatus']);
+
+    // Boost management
+    Route::get('/boosts/{boostId}', [UserManageBoostController::class, 'getBoost']);
+    Route::post('/boosts/{boostId}/upload-proof', [UserManageBoostController::class, 'uploadProof']);
+    Route::delete('/boosts/{boostId}', [UserManageBoostController::class, 'cancelBoost']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Boost Pricing Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('boost')->group(function () {
+    // Public boost options (can be accessed without auth for price display)
+    Route::get('/options', [BoostController::class, 'getOptions']);
+    Route::post('/calculate', [BoostController::class, 'calculatePrice']);
+});
+
+// Protected routes - require authentication
+Route::middleware('auth:sanctum')->group(function () {
+
+    // User Statistics
+    Route::prefix('user')->group(function () {
+        Route::get('/stats', [UserStatsController::class, 'getUserStats']);
+        Route::get('/unread-messages', [UserStatsController::class, 'getUnreadMessagesCount']);
+        Route::get('/notifications', [UserStatsController::class, 'getNotifications']);
+        Route::delete('/delete-notification/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteNotification']);
+    });
+
+    // Public user data (still protected but can view others)
+    Route::get('/user/{userId}/followers', [UserStatsController::class, 'getUserFollowers']);
+    Route::get('/user/{userId}/feedback', [UserStatsController::class, 'getUserFeedback']);
+
+    // Advert Statistics
+    Route::prefix('adverts')->group(function () {
+        Route::get('/count', [AdvertStatsController::class, 'getAdvertCount']);
+        Route::get('/by-state', [AdvertStatsController::class, 'getAdvertsByState']);
+        Route::get('/count-filtered', [AdvertStatsController::class, 'getAdvertCountByFilter']);
+        Route::get('/brands', [AdvertStatsController::class, 'getBrandsWithAdvertCount']);
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Additional Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Broadcast::routes(['middleware' => ['usersession']]);
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
+Route::middleware('auth:sanctum')->get('/unread-messages-count', function(Request $request) {
+    $user = $request->user();
 
-Route::get('/unread-messages-count', function() {
-    if (!Session::has('user_id')) {
+    if (!$user) {
         return response()->json(['count' => 0]);
     }
 
-    $count = App\Models\Message::where('receiver_id', Session::get('user_id'))
+    $count = App\Models\Message::where('receiver_id', $user->user_id)
                 ->where('is_read', false)
                 ->count();
 
     return response()->json(['count' => $count]);
-})->middleware('web'); // Important: we need session access
+});

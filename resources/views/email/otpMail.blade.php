@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ config('global.site_name') }} - OTP Verification</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -137,6 +137,11 @@
             margin: 0 0 15px 0;
             font-size: 20px;
         }
+        h3 {
+            color: #FF0000;
+            margin: 0 0 12px 0;
+            font-size: 18px;
+        }
 
         h4 {
             color: #4CAF50;
@@ -164,7 +169,7 @@
 <body style="background-color: #f4f4f4; margin: 0; padding: 0;">
     <!-- Hidden Preheader Text -->
     <div style="display: none; max-height: 0; overflow: hidden;">
-        Dear {{ $details['name'] }}, here is your one time password for {{ config('global.site_name') }}
+        Dear {{ $details['name'] }}, here is your one time password for {{ config('global.email_title') }}
     </div>
 
     <!-- Email Container -->
@@ -185,7 +190,7 @@
                            
                             <p class="message">
                                 Hi {{ $details['name'] }},<br><br>
-                                Here is your {{ config('global.site_name') }} One Time Password (OTP):
+                                Here is your {{ config('global.email_title') }} One Time Password (OTP):
                             </p>
                             
                             <div class="otp-container">
@@ -193,18 +198,26 @@
                                 <div class="otp-code">{{ $details['otp'] }}</div>
                                 <div class="meta-info">
                                     IP Address: {{ $details['ip'] }}<br>
-                                    Sent on: {{ now()->format('F j, Y \a\t g:i A') }}
+                                    Sent on: {{ now()->format('F j, Y \a\t g:i A') }}<br>
+                                    Expires in 15 Minutes
                                 </div>
                             </div>
                             
-                            <p class="message">
-                                Please use this code to complete your verification process. 
-                                This code will expire in 15 minutes.
-                            </p>
+                            <h3 class="">Important:</h3>
+                            <div class="message">
+                                <p>
+                                    Please note that we do not offer rewards for clicking links or completing tasks. Any such request is a scam and not from us.
+                                </p><br>
+                               <p>
+                                    If you have any questions, please <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700  hover:text-black px-3 py-2 rounded-md text-sm font-medium">contact us on WhatsApp</a>. Our team is always available to assist you.
+                               </p>
+                            </div>
+
+
                             
                             <p class="signature">
                                 Cheers,<br>
-                                The {{ config('global.site_name') }} Team
+                                The {{ config('global.email_title') }} Team
                             </p>
                         </td>
                     </tr>

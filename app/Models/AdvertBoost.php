@@ -1,30 +1,62 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class AdvertBoost extends Model
+class AdvertBoost extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
+
     protected $fillable = [
-        'advert_id', 
+        'advert_id',
         'user_id',
         'payment_reference',
-        'trans_id', 
+        'trans_id',
         'amount',
         'duration',
         'payment_status',
         'boost_status',
         'boost_type',
-        'start_date'
+        'start_date',
+        'upload_proof',
+        'boost_type_id',
+        'duration_id',
     ];
 
     protected $casts = [
         'start_date' => 'datetime',
     ];
+
+    /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('payment_proof')
+            ->singleFile() // Only one proof per boost
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'application/pdf']);
+    }
+
+    /**
+     * Get the payment proof URL
+     */
+    public function getPaymentProofUrlAttribute()
+    {
+        $media = $this->getFirstMedia('payment_proof');
+        return $media ? $media->getUrl() : null;
+    }
+
+    /**
+     * Check if payment proof exists
+     */
+    public function hasPaymentProof(): bool
+    {
+        return $this->hasMedia('payment_proof');
+    }
 
     public function advert()
     {
@@ -36,12 +68,21 @@ class AdvertBoost extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function boostType()
+    {
+        return $this->belongsTo(BoostType::class, 'boost_type_id');
+    }
+
+    public function boostDuration()
+    {
+        return $this->belongsTo(BoostDuration::class, 'duration_id');
+    }
+
     public function getDaysRemainingAttribute()
     {
         $expiry = Carbon::parse($this->start_date)->addDays($this->duration);
         return Carbon::now()->diffInDays($expiry, false); // negative means expired
     }
-
 
     public function getExpiresAtAttribute()
     {
@@ -52,5 +93,4 @@ class AdvertBoost extends Model
     {
         return $this->boost_status === 'active' && $this->expires_at->isFuture();
     }
-
 }

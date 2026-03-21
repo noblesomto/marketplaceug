@@ -168,7 +168,7 @@
         
         <div class="footer">
 
-            <p>© {{ date('Y') }} {{ config('global.site_name') }}. All rights reserved.</p>
+            <p>© {{ date('Y') }} {{ config('global.email_title') }}. All rights reserved.</p>
         </div>
     </div>
 </body>

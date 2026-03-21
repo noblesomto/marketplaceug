@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\SetCacheHeaders::class,
     ];
 
     /**
@@ -36,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\AutoLoginFromCookie::class,
         ],
 
         'api' => [
@@ -43,7 +45,6 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
     ];
 
     /**
@@ -67,8 +68,24 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'adminsession' => \App\Http\Middleware\CheckAdminSession::class,
         'usersession' => \App\Http\Middleware\CheckUserSession::class,
+        'profile.complete' => \App\Http\Middleware\RequireProfileComplete::class,
         'shipsession' => \App\Http\Middleware\CheckShipSession::class,
-        'adminpermission' => \App\Http\Middleware\AdminPermission::class,
         'adminrole' => \App\Http\Middleware\AdminRole::class,
+        'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+
+        // ✅ API Documentation Authentication
+        'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
+    ];
+
+    /**
+     * @deprecated Use $middlewareAliases instead
+     */
+    protected $routeMiddleware = [
+        // This is deprecated in Laravel 11+
+        // Keeping for backwards compatibility
+        'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
     ];
 }

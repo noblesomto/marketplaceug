@@ -211,7 +211,7 @@ confirms delivery.</p>
         
         <div class="footer">
             <p>Thank you for using our platform!</p>
-            <p>© {{ date('Y') }} {{ config('global.site_name') }}. All rights reserved.</p>
+            <p>© {{ date('Y') }} {{ config('global.email_title') }}. All rights reserved.</p>
         </div>
     </div>
 </body>

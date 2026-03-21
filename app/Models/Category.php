@@ -13,7 +13,11 @@ class Category extends Model
     protected $fillable = [
         'cat_id',
         'category',
+        'seo_group',
         'icon',
+        'keywords',
+        'meta_title',
+        'meta_description',
     ];
 
     public function sluggable(): array

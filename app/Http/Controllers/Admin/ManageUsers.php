@@ -19,7 +19,7 @@ class ManageUsers extends Controller
         $page_title = "Active Users";
         $users = User::where('acc_status', 1)->where('disable_account', "no")->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend..users.active-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
     }
 
     public function unverified_users(Request $request)
@@ -28,7 +28,7 @@ class ManageUsers extends Controller
         $page_title = "Unverified Users";
         $users = User::where('acc_status', 0)->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.users.unverified-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.unverified-users', compact('title', 'users', 'page_title'));
     }
 
     public function disabled_users(Request $request)
@@ -37,7 +37,7 @@ class ManageUsers extends Controller
         $page_title = "Disabled Users";
         $users = User::where('acc_status', 1)->where('disable_account', "yes")->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('backend.users.active-users', compact('title', 'users', 'page_title'));
+        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
     }
 
     public function disable_status($id, $status)
@@ -65,7 +65,53 @@ class ManageUsers extends Controller
         return redirect()->back()->with('status', ['text'=>'User Status Changed','type'=>'success']);
     }
 
-
+    public function search(Request $request)
+    {
+        try {
+            $query = User::query();
+            
+            // Search term
+            if ($request->has('search') && !empty($request->search)) {
+                $searchTerm = $request->search;
+                $query->where(function($q) use ($searchTerm) {
+                    $q->where('name', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('user_id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('phone', 'LIKE', "%{$searchTerm}%");
+                });
+            }
+            
+            // Account type filter
+            if ($request->has('account_type') && !empty($request->account_type)) {
+                $query->where('acc_type', $request->account_type);
+            }
+            
+            // Verification filter
+            if ($request->has('verification') && !empty($request->verification)) {
+                $query->where('verified', $request->verification);
+            }
+            
+            $users = $query->orderBy('created_at', 'desc')->paginate(10);
+            
+            return response()->json([
+                'success' => true,
+                'users' => $users->items(),
+                'pagination' => [
+                    'current_page' => $users->currentPage(),
+                    'last_page' => $users->lastPage(),
+                    'per_page' => $users->perPage(),
+                    'total' => $users->total(),
+                    'from' => $users->firstItem(),
+                    'to' => $users->lastItem(),
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error searching users: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     public function view_user(Request $request, $id)
     {
@@ -81,7 +127,7 @@ class ManageUsers extends Controller
             ->where('seller_settlement', "no")
             ->where('user_id', $id)
             ->sum('amount_paid');
-        return view('backend.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
+        return view('admin.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
     }
 
     public function delete_user($user_id,$status)
@@ -113,7 +159,7 @@ class ManageUsers extends Controller
         $page_title = "User Verification";
         $users = UserVerification::with('user')->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('backend.users.user-verification', compact('title', 'users', 'page_title'));
+        return view('admin.users.user-verification', compact('title', 'users', 'page_title'));
     }
 
     public function verify_status($id, $status, $verify)
@@ -131,7 +177,7 @@ class ManageUsers extends Controller
                     'verified'=> $verify,
                     'updated_at' => Carbon::now(),
                 ]);
-
+        //dd($id);
         return redirect()->back()->with('status', ['text'=>'Verification Status Changed','type'=>'success']);
     }
 }

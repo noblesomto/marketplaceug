@@ -31,7 +31,7 @@
           "Ukwa East",
           "Ukwa West",
           "Umuahia North",
-          "muahia South",
+          "Umuahia South",
           "Umu Nneochi"
         ],
         Adamawa: [
@@ -57,7 +57,7 @@
           "Yola North",
           "Yola South"
         ],
-        AkwaIbom: [
+        "Akwa Ibom": [
           "Abak",
           "Eastern Obolo",
           "Eket",
@@ -893,9 +893,14 @@
         ]
       }[state],                                                                       // Ternary switch operator to show list of LGAs based on chosen state
       lgas = [...selectLGAOption, ...Object.values(lgaList)],                         // Join select LGA option with list of LGAs
-      form = target.parentElement.parentElement.parentElement.parentElement,          // Get parent up to the forth generation just in case LGA select element is deeply nested
-      lgaSelect = form.querySelector(".select-lga"),                                  // Get the LGA select element
-      length = lgaSelect.options.length;                                              // Get number of options already existing in LGA select element
+      lgaSelect = document.getElementById('lga') || document.querySelector(".select-lga"), // Get the LGA select element by ID (more robust)
+      length = lgaSelect ? lgaSelect.options.length : 0;                              // Get number of options already existing in LGA select element
+
+    // Safety check - if LGA select not found, exit early
+    if (!lgaSelect) {
+      console.error('LGA select element not found');
+      return;
+    }
 
     // Clear LGS select element
     for (i = length - 1; i >= 0; i--) {

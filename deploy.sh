@@ -7,15 +7,16 @@ PASS='NL%c?_F46?lH'
 
 # Local to remote folder mapping
 declare -A FOLDERS=(
-  ["./"]="public_html/marketplace/"
+  ["./"]="marketplace/"
   ["./public/frontend/"]="public_html/frontend/"
+  ["./public/dashboard/"]="public_html/dashboard/"
   ["./public/backend/"]="public_html/backend/"
   ["./public/build/"]="public_html/build/"
 )
 
 # Extra remote build paths using same local folder
 EXTRA_BUILD_PATHS=(
-  "public_html/marketplace/public/build/"
+  "marketplace/public/build/"
 )
 
 # Excludes (folders/files to ignore)
@@ -36,6 +37,7 @@ EXCLUDES=(
   "public/hot"
   "public/uploads/"
   "public/ckeditor/"
+  "*.zip"
 )
 
 # Build exclude string for lftp and rsync

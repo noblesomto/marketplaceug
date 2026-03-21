@@ -11,11 +11,17 @@ use App\Models\Payment;
 use App\Models\Wishlist;
 use App\Models\Category;
 use App\Models\Followers;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
+/**
+ * @group User
+ *
+ * APIs for user dashboard, ads, wishlist, payments, and user interactions
+ */
 class UserController extends Controller
 {
     /**
@@ -221,7 +227,7 @@ class UserController extends Controller
     public function updateAdStatus($adId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:active,inactive'
+            'status' => 'required|string|in:active,disabled,banned'
         ]);
 
         if ($validator->fails()) {
@@ -278,6 +284,7 @@ class UserController extends Controller
      *     )
      * )
      */
+    // POST /api/user/wishlist/{adId}
     public function addToWishlist($adId)
     {
         $user = auth()->user();
@@ -302,8 +309,8 @@ class UserController extends Controller
         }
 
         Wishlist::create([
-            'user_id' => $user->user_id,
-            'advert_id' => $adId
+            'user_id'   => $user->user_id,
+            'advert_id' => $adId,
         ]);
 
         return response()->json([
@@ -339,6 +346,7 @@ class UserController extends Controller
      *     )
      * )
      */
+    // DELETE /api/user/wishlist/{adId}
     public function removeFromWishlist($adId)
     {
         $user = auth()->user();
@@ -361,6 +369,79 @@ class UserController extends Controller
             'message' => 'Removed from wishlist successfully'
         ]);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/user/wishlist/{adId}",
+     *     summary="Toggle ad in wishlist (add/remove)",
+     *     tags={"Wishlist"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="adId",
+     *         in="path",
+     *         required=true,
+     *         description="Ad ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Wishlist toggled successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Added to wishlist"),
+     *             @OA\Property(property="in_wishlist", type="boolean", example=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Advert not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
+     */
+    public function toggleWishlist($adId)
+    {
+        $user = auth()->user();
+
+        // Check if advert exists
+        $advert = Advert::find($adId);
+        if (!$advert) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found'
+            ], 404);
+        }
+
+        // Check if already in wishlist
+        $wishlist = Wishlist::where('user_id', $user->user_id)
+            ->where('advert_id', $adId)
+            ->first();
+
+        if ($wishlist) {
+            // Remove from wishlist
+            $wishlist->delete();
+            $message = 'Removed from wishlist';
+            $inWishlist = false;
+        } else {
+            // Add to wishlist
+            Wishlist::create([
+                'user_id' => $user->user_id,
+                'advert_id' => $adId
+            ]);
+            $message = 'Added to wishlist';
+            $inWishlist = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'in_wishlist' => $inWishlist
+        ], 200);
+    }
+
 
     /**
      * @OA\Get(
@@ -394,16 +475,57 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $wishlist = Advert::with('firstImage')
+        $wishlist = Advert::with(['firstImage', 'car', 'phone'])
             ->whereHas('wishlists', function($query) use ($user) {
                 $query->where('user_id', $user->user_id);
             })
             ->orderBy('created_at', 'desc')
             ->paginate($request->get('per_page', 20));
 
+        $wishlist->getCollection()->transform(function ($ad) {
+            return [
+                'id'          => $ad->id,
+                'ad_id'       => $ad->ad_id,
+                'ad_title'    => $ad->ad_title,
+                'description' => $ad->description,
+                'price'       => $ad->price,
+                'price_type'  => $ad->price_type,
+                'state'       => $ad->state,
+                'lga'         => $ad->lga,
+                'condition'   => $ad->condition,
+                'buy_direct'  => $ad->buy_direct,
+                'sold'        => $ad->sold,
+                'sold_date'   => $ad->sold_date,
+                'featured'    => $ad->featured,
+                'ad_status'   => $ad->ad_status,
+                'category'    => $ad->category,
+                'sub_category'=> $ad->sub_category,
+                'created_at'  => $ad->created_at,
+                'image_thumb' => $ad->firstImage
+                    ? ($ad->firstImage->hasGeneratedConversion('thumbnail')
+                        ? $ad->firstImage->getUrl('thumbnail')
+                        : $ad->firstImage->getUrl())
+                    : null,
+                'image_large' => $ad->firstImage
+                    ? ($ad->firstImage->hasGeneratedConversion('large')
+                        ? $ad->firstImage->getUrl('large')
+                        : $ad->firstImage->getUrl())
+                    : null,
+                'car'   => $ad->car,
+                'phone' => $ad->phone,
+            ];
+        });
+
         return response()->json([
             'success' => true,
-            'data' => $wishlist
+            'data'    => $wishlist->items(),
+            'pagination' => [
+                'total'        => $wishlist->total(),
+                'per_page'     => $wishlist->perPage(),
+                'current_page' => $wishlist->currentPage(),
+                'last_page'    => $wishlist->lastPage(),
+                'has_more'     => $wishlist->hasMorePages(),
+            ],
         ]);
     }
 
@@ -801,6 +923,30 @@ class UserController extends Controller
      *     )
      * )
      */
+    // DELETE /api/user/delete-notification/{id}
+    public function deleteNotification($id)
+    {
+        $user = auth()->user();
+
+        $notification = Notification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$notification) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification not found'
+            ], 404);
+        }
+
+        $notification->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification deleted'
+        ]);
+    }
+
     public function toggleFollow(Request $request)
     {
         $validator = Validator::make($request->all(), [

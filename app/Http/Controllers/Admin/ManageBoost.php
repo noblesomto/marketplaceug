@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\AdvertBoost;
 use Carbon\Carbon;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ManageBoost extends Controller
 {
@@ -26,7 +27,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
             //dd($adverts);
-            return view('backend.adboost.index', compact('title', 'page_title', 'adverts'));
+            return view('admin.adboost.index', compact('title', 'page_title', 'adverts'));
     }
 
     public function status($id, $status)
@@ -74,7 +75,7 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.completed', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.completed', compact('title', 'page_title', 'adverts'));
     }
 
     public function unpaid(Request $request)
@@ -91,8 +92,58 @@ class ManageBoost extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('backend.adboost.completed', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
     }
 
+    public function paid(Request $request)
+    {
+        $title = "Unpaid Boost Adverts | " . config('global.site_name');
+        $page_title = "Unpaid Boost Adverts";
+
+        $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
+            ->whereHas('advert', function ($query) {
+                $query->where('ad_status', 1)
+                      ->where('sold', 'No');
+            })
+            ->where('payment_status', 'pending')
+            ->where('boost_status', 'pending')
+            ->whereHas('media', function ($query) {
+                $query->where('collection_name', 'payment_proof');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+    }
+
+
+    public function payment($id, $status)
+    {
+        $advert = AdvertBoost::where('id',$id)->first();
+        $advert_id = $advert->advert_id;
+      
+        $boost_status = "active";
+        $featured = "Yes";
+     
+        //dd($featured);
+        DB::table('advert_boosts')
+                ->where('id', $id)
+                ->update([
+                    'payment_status' => 'paid',
+                    'boost_status' => 'active',
+                    'trans_id' => $id,
+                    'start_date' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        DB::table('adverts')
+                ->where('id', $advert_id)
+                ->update([
+                    'featured'=> $featured,
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        return redirect()->back()->with('status', ['text'=>'Advert Boost Updated','type'=>'success']);
+    }
 
 }

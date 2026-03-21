@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{ config('global.site_name') }}</title>
+    <title>{{ config('global.email_title') }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -133,7 +133,7 @@
                                 <td align="" style="font-family:Arno Pro; font-size: 18px; color: #777777; line-height: 20px; padding-left: 29px; padding-right: 29px;" class="scale-center-both" data-color="Paragraphs Big" data-size="Paragraphs Big" >
                                 Dear {{ $details['name'] }}, <br><br>
 
-                            Thank you for choosing <b>{{ config('global.site_name') }}</b>. You earned a referal bonus. <br><br>
+                            Thank you for choosing <b>{{ config('global.email_title') }}</b>. You earned a referal bonus. <br><br>
                             Here's a summary below:
                                 </td>
                             </tr>
@@ -158,7 +158,7 @@
                  
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">Cheers,<br>{{ config('global.site_name') }}</p>
+                            <p style="margin: 0;">Cheers,<br>{{ config('global.email_title') }}</p>
                         </td>
                     </tr>
                 </table>

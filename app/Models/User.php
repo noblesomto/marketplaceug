@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Image\Enums\Fit;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +36,7 @@ class User extends Authenticatable
         'acc_status',
         'acc_type',
         'token',
-        'OTP',
+        'otp',
         'profile_picture',
         'notification',
         'disable_account',
@@ -39,7 +45,14 @@ class User extends Authenticatable
         'bank_code',
         'account_name',
         'account_number',
-        'remember_token'
+        'remember_token',
+        'otp_expires_at',
+        'push_notifications_enabled',
+        'google_id',
+        'facebook_id',
+        'avatar',
+        'last_login_ip',
+        'last_login_at',
     ];
 
     /**
@@ -62,6 +75,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'push_notifications_enabled' => 'boolean',
         ];
     }
 
@@ -75,6 +89,11 @@ class User extends Authenticatable
             } while (User::where('user_id', $user->user_id)->exists());
         });
     }
+
+     protected $appends = [
+        'profile_image_url',
+        'profile_thumbnail_url'
+    ];
 
     protected $primaryKey = 'user_id';
     public $incrementing = false;
@@ -135,4 +154,165 @@ class User extends Authenticatable
     {
         return $this->hasMany(Followers::class, 'user_id', 'user_id');
     }
+
+    public function blockedUsers()
+    {
+        return $this->hasMany(BlockedUser::class, 'blocker_id', 'user_id');
+    }
+
+    public function blockedBy()
+    {
+        return $this->hasMany(BlockedUser::class, 'blocked_id', 'user_id');
+    }
+
+    // Helper methods
+    public function hasBlocked($userId, $advertId = null)
+    {
+        $query = $this->blockedUsers()
+            ->where('blocked_id', $userId);
+
+        if ($advertId) {
+            $query->where(function($q) use ($advertId) {
+                $q->where('advert_id', $advertId)
+                  ->orWhereNull('advert_id'); // global blocks
+            });
+        }
+
+        return $query->exists();
+    }
+
+    public function isBlockedBy($userId, $advertId = null)
+    {
+        $query = $this->blockedBy()
+            ->where('blocker_id', $userId);
+
+        if ($advertId) {
+            $query->where(function($q) use ($advertId) {
+                $q->where('advert_id', $advertId)
+                  ->orWhereNull('advert_id');
+            });
+        }
+
+        return $query->exists();
+    }
+
+
+    public function archivedMessages()
+    {
+        return $this->hasMany(ArchivedMessage::class, 'user_id', 'user_id');
+    }
+
+    public function hasArchivedConversation($advertId, $otherUserId)
+    {
+        return $this->archivedMessages()
+            ->where('advert_id', $advertId)
+            ->where('other_user_id', $otherUserId)
+            ->exists();
+    }
+
+    public function getArchivedConversation($advertId, $otherUserId)
+    {
+        return $this->archivedMessages()
+            ->where('advert_id', $advertId)
+            ->where('other_user_id', $otherUserId)
+            ->first();
+    }
+
+
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_image')
+            ->singleFile()
+            ->onlyKeepLatest(1)
+            ->acceptsMimeTypes(['image/jpeg','image/png','image/webp','image/gif'])
+            ->useDisk('spatie')
+            ->useFallbackUrl('/images/placeholder-profile.png');
+    }
+
+
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+            ->format('webp')
+            ->quality(70)
+            ->width(1200)
+            ->fit(Fit::Max)
+            ->optimize()
+            ->performOnCollections('profile_image')
+            ->nonQueued();
+
+        $this->addMediaConversion('thumbnail')
+            ->width(200)
+            ->height(200)
+            ->format('webp')
+            ->quality(50)
+            ->fit(Fit::Crop)
+            ->optimize()
+            ->performOnCollections('profile_image')
+            ->nonQueued();
+    }
+
+    // ADD THIS METHOD TO YOUR USER MODEL:
+    public function afterMediaConversion(Media $media): void
+    {
+        // Wait 2 seconds then delete original file
+        sleep(2);
+
+        if ($media->collection_name === 'profile_image') {
+            $disk = $media->getDisk();
+            $originalPath = $media->getPath();
+
+            if ($disk->exists($originalPath)) {
+                $disk->delete($originalPath);
+            }
+        }
+    }
+
+
+    public function getProfileImageUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('profile_image', 'optimized');
+    }
+
+    public function getProfileThumbnailUrlAttribute(): string
+    {
+        if ($this->hasMedia('profile_image')) {
+            return $this->getFirstMediaUrl('profile_image', 'thumbnail');
+        }
+
+        $initials = \App\Helpers\AvatarHelper::generateInitials($this->name);
+        $bgColor = \App\Helpers\AvatarHelper::generateColor($this->name);
+
+        $svg = <<<SVG
+        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+            <rect width="128" height="128" fill="{$bgColor}" rx="64"/>
+            <text x="50%" y="50%" text-anchor="middle" dy="0.35em" font-family="Arial, sans-serif" font-size="48" font-weight="600" fill="white">{$initials}</text>
+        </svg>
+        SVG;
+
+        return 'data:image/svg+xml;base64,' . base64_encode($svg);
+    }
+
+   /**
+     * Get all active device tokens for this user
+     *
+     * IMPORTANT: device_tokens.user_id references users.id (not users.user_id)
+     */
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class, 'user_id', 'id')
+            ->where('is_active', true);
+    }
+
+    /**
+     * Check if user can receive push notifications
+     */
+    public function canReceivePushNotifications(): bool
+    {
+        return $this->push_notifications_enabled && $this->deviceTokens()->exists();
+    }
+
+
 }

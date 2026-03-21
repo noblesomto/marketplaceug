@@ -37,7 +37,7 @@ return [
     ],
 
     'agility' => [
-        'url' => env('AGILITY_URL', 'https://api.agility.com/shipping-cost'),
+        'url' => env('AGILITY_URL', 'https://thirdpartynode.theagilitysystems.com/price'),
         'email' => env('AGILITY_EMAIL'),
         'password' => env('AGILITY_PASSWORD'),
         'customer_code' => env('AGILITY_CUSTOMER_CODE', 'IND1875642'),
@@ -55,6 +55,15 @@ return [
         'client_id'     => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect'      => env('FACEBOOK_REDIRECT_URL'),
+    ],
+    'recaptcha' => [
+        'enabled' => env('RECAPTCHA_ENABLED', false), // Set to false to disable temporarily
+        'site_key' => env('GOOGLE_RECAPTCHA_KEY'),
+        'secret_key' => env('GOOGLE_RECAPTCHA_SECRET'),
+    ],
+    'fcm' => [
+        'credentials' => storage_path('app/firebase/firebase-credentials.json'),
+        'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
 
 

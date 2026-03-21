@@ -80,3 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
     trixEditor.addEventListener('trix-attachment-add', updateCharacterCount);
     trixEditor.addEventListener('trix-attachment-remove', updateCharacterCount);
 });
+
+
+const adTitleInput = document.getElementById('ad_title');
+    // Regex to remove emojis and non-standard symbols
+    const emojiRegex = /[^A-Za-z0-9\s\-\.,;:()'"!?[\]_]/g;
+
+    adTitleInput.addEventListener('input', function() {
+        // Remove emojis and non-standard symbols
+        this.value = this.value.replace(emojiRegex, '');
+       
+    });

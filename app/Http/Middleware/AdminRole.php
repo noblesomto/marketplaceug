@@ -1,11 +1,10 @@
 <?php
-
+// app/Http/Middleware/AdminRole.php
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
 
 class AdminRole
 {
@@ -13,32 +12,31 @@ class AdminRole
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  mixed ...$roles
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  \Closure  $next
+     * @param  string  ...$roles
+     * @return mixed
      */
-    public function handle($request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        $adminId = session('admin_id');
-        $admin = $adminId ? Admin::find($adminId) : null;
-
-        if (!$admin) {
-            return redirect('/admin')->with('status', [
-                'text' => 'Please log in first',
-                'type' => 'danger'
-            ]);
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('admin.login')
+                ->with('error', 'Please login to access this area.');
         }
 
-        // Super admin bypass
+        $admin = Auth::guard('admin')->user();
+
+        // Super admin has access to everything
         if ($admin->isSuperAdmin()) {
             return $next($request);
         }
 
-        // Check roles
-        if (! $admin->roles()->whereIn('name', $roles)->exists()) {
-            abort(403, 'Unauthorized');
+        // Check if admin has any of the required roles
+        foreach ($roles as $role) {
+            if ($admin->hasRole($role, 'admin')) {
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        abort(403, 'You do not have permission to access this resource.');
     }
 }

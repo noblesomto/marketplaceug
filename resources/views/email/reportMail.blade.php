@@ -54,14 +54,14 @@
 
     <div class="content">
         <p>Hello Admin,</p>
-        <p>A user reported an Item:</p>
+        <p>A user reported an Item/User:</p>
 
         <div class="details">
             <p><strong>Name:</strong> {{ $details['name'] }}</p>
             <p><strong>Phone:</strong> {{ $details['phone'] }}</p>
             <p><strong>Email:</strong> {{ $details['email'] }}</p>
             <br>
-            <p><strong>Item:</strong> {{ $details['advert'] }}</p>
+            <p><strong>Item/User:</strong> {{ $details['advert'] }}</p>
             <p><strong>Subject:</strong> {{ $details['subject'] }}</p>
             <p><strong>Message:</strong> {{ $details['message'] }}</p>
         </div>
@@ -72,7 +72,7 @@
 
     <div class="footer">
         <p>Thank you,</p>
-        <b>{{ config('global.site_name') }}</b>
+        <b>{{ config('global.email_title') }}</b>
     </div>
 </body>
 </html>

@@ -11,6 +11,27 @@ use App\Models\User;
 use App\Models\Feedback;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\AdminHelper;
+
+
+
+if (!function_exists('currentAdmin')) {
+    function currentAdmin() {
+        return AdminHelper::currentAdmin();
+    }
+}
+
+if (!function_exists('adminCan')) {
+    function adminCan($permission) {
+        return AdminHelper::can($permission);
+    }
+}
+
+if (!function_exists('adminHasRole')) {
+    function adminHasRole($role) {
+        return AdminHelper::hasRole($role);
+    }
+}
 
 
 if (!function_exists('getCategories')) {
@@ -53,7 +74,14 @@ if (!function_exists('countUserFollowers')) {
 if (!function_exists('getTotalUnreadMessages')) {
     function getTotalUnreadMessages()
     {
+        // Try session first (web)
         $userId = Session::get('user_id');
+
+        // If no session, try API auth
+        if (!$userId && Auth::check()) {
+            $user = Auth::user();
+            $userId = User::where('id', $user->id)->value('user_id');
+        }
 
         if (!$userId) {
             return 0;
@@ -293,15 +321,18 @@ if (!function_exists('get_brands_with_advert_count')) {
 if (!function_exists('getUserNotifications')) {
     function getUserNotifications($limit = 10)
     {
-        $userCode = Session::get('user_id'); // your 5-char session value
-        $user     = User::where('user_id', $userCode)->first();
+        // Try session first (web), then fall back to API token auth
+        // Auth::id() returns the model's primary key (user_id = 5-char code)
+        $userCode = Session::get('user_id') ?? (Auth::check() ? Auth::id() : null);
+
+        $user = User::where('user_id', $userCode)->first();
 
         if (!$user) {
-            return collect(); // no logged in user
+            return collect();
         }
 
         return Notification::with('seller', 'advert')
-            ->where('user_id', $user->id) // FK is users.id
+            ->where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
@@ -311,15 +342,26 @@ if (!function_exists('getUserNotifications')) {
 if (!function_exists('getUserNotificationCount')) {
     function getUserNotificationCount()
     {
-        $userCode = Session::get('user_id');
-        $user     = User::where('user_id', $userCode)->first();
+        // Try session first (web), then fall back to API token auth
+        $userCode = Session::get('user_id') ?? (Auth::check() ? Auth::id() : null);
+
+        $user = User::where('user_id', $userCode)->first();
 
         if (!$user) {
             return 0;
         }
 
-        return Notification::where('user_id', $user->id)
-            ->where('is_read', false)
-            ->count();
+        $query = Notification::where('user_id', $user->id);
+
+        // If user has visited the notifications page before, only count
+        // notifications created after their last visit. Otherwise fall back
+        // to the legacy is_read flag so existing unread items still show.
+        if ($user->notifications_seen_at) {
+            $query->where('created_at', '>', $user->notifications_seen_at);
+        } else {
+            $query->where('is_read', false);
+        }
+
+        return $query->count();
     }
 }

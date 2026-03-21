@@ -8,7 +8,7 @@ use App\Models\AdvertImage;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Brands;
-use App\Models\Models;
+use App\Models\VehicleModel;
 use App\Models\State;
 use App\Models\Shipping;
 use App\Models\CarDetail;
@@ -16,14 +16,24 @@ use App\Models\PhoneDetail;
 use App\Models\AdvertBoost;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
+use App\Services\AdvertValidationService;
+use App\Services\ImageQualityService;
+use App\Traits\ManagesImages;
+use App\Jobs\PostAdvertJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @group Advert Management
+ *
+ * APIs for creating, updating, and managing user adverts
+ */
 class UserManageAdverts extends Controller
 {
+    use ManagesImages;
     /**
      * @OA\Get(
      *     path="/api/adverts/categories/{categoryId}/subcategories",
@@ -46,7 +56,7 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getSubcategories($categoryId)
+    public function fetchSubcategories($categoryId)
     {
         $subcategories = SubCategory::where('cat_id', $categoryId)->get();
 
@@ -78,7 +88,7 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getBrands($subcategoryId)
+    public function fetchBrands($subcategoryId)
     {
         $brands = Brands::where('subcat_id', $subcategoryId)->get();
 
@@ -110,9 +120,9 @@ class UserManageAdverts extends Controller
      *     )
      * )
      */
-    public function getModels($brandId)
+    public function fetchModels($brandId)
     {
-        $models = Models::where('brand_id', $brandId)->get();
+        $models = VehicleModel::where('brand_id', $brandId)->get();
 
         return response()->json([
             'success' => true,
@@ -232,63 +242,28 @@ class UserManageAdverts extends Controller
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
 
-        $rules = [
-            'ad_title' => 'required|max:75',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'brand' => 'required',
-            'state' => 'required',
-            'lga' => 'required',
-            'description' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
+        // Use dynamic validation service based on Category UI Config
+        $validationService = new AdvertValidationService();
+        $rules = $validationService->getRules($category, $subcat, false);
+
+        $messages = [
+            'images.required'         => 'Please upload at least 3 images.',
+            'images.min'              => 'Please upload at least 3 images.',
+            'condition.required'      => 'Please select the vehicle condition.',
+            'registration.required'   => 'Please select the vehicle registration status.',
+            'fuel.required'           => 'Please select the fuel type.',
+            'transmission.required'   => 'Please select the transmission type.',
+            'vehicle_type.required'   => 'Please select the body/vehicle type.',
+            'exterior_color.required' => 'Please select the exterior color.',
+            'model.required'          => 'Please select the vehicle model.',
+            'model.exists'            => 'The selected model is invalid.',
+            'model.min'               => 'Please select a valid vehicle model.',
+            'phone_color.required'    => 'Please select the phone color.',
+            'phone_condition.required'=> 'Please select the phone condition.',
+            'device.required'         => 'Please select the device storage/variant.',
         ];
 
-        if ($category != 3) {
-            $rules['images'] = 'required|array';
-        }
-
-        // Category-specific rules
-        if ($category == 3) {
-            $rules['salary'] = 'required';
-        } elseif ($category == 18) {
-            $rules['expected_salary'] = 'required';
-        } elseif ($category == 11) {
-            $rules['price'] = 'nullable|numeric';
-        } else {
-            $rules['price'] = 'required|numeric';
-            $rules['price_type'] = 'required';
-        }
-
-        // Subcategory-specific rules
-        switch ($subcat) {
-            case 2: // Cars
-                $rules += [
-                    'model' => 'required',
-                    'registration' => 'required',
-                    'mileage' => 'required|numeric',
-                    'condition' => 'required',
-                    'fuel' => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors' => 'required',
-                ];
-                break;
-
-            case 6: // Phones
-                $rules += [
-                    'phone_color' => 'required',
-                    'phone_condition' => 'required',
-                    'device' => 'required',
-                ];
-                break;
-        }
-
-        // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
-            $rules['item_condition'] = 'required';
-        }
-
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json([
@@ -297,10 +272,31 @@ class UserManageAdverts extends Controller
             ], 422);
         }
 
-        if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
+        // Validate shipping requirements
+        $shippingError = $validationService->validateShipping($request);
+        if ($shippingError) {
             return response()->json([
                 'success' => false,
-                'errors' => ['shipping' => ['Please select at least one shipping method.']]
+                'errors' => $shippingError
+            ], 422);
+        }
+
+        // Duplicate check: same user + title + category/subcategory, active or posted in last 24h
+        $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title', ''));
+        $duplicateExists = Advert::where('user_id', $user->user_id)
+            ->where('ad_title', $adTitle)
+            ->where('category', $category)
+            ->where('sub_category', $subcat)
+            ->where(function ($q) {
+                $q->where('ad_status', 'active')
+                  ->orWhere('created_at', '>=', now()->subHours(24));
+            })
+            ->exists();
+
+        if ($duplicateExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You already have an active listing with this title in the same category.',
             ], 422);
         }
 
@@ -343,36 +339,92 @@ class UserManageAdverts extends Controller
                 'views' => "0",
                 'ad_status' => "1",
                 'user_id' => $user->user_id,
-                'ad_image' => "",
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
-            // Handle uploaded images
+            // ✅ TIER 1: Image Quality Validation
             if ($request->hasFile('images')) {
+                $imageQualityService = new ImageQualityService();
+                $imageQualityErrors = [];
+                $totalQualityScore = 0;
+                $imageCount = 0;
+
+                foreach ($request->file('images') as $image) {
+                    $result = $imageQualityService->validateImage($image);
+                    $imageCount++;
+
+                    if (!$result['valid']) {
+                        $imageQualityErrors = array_merge($imageQualityErrors, $result['errors']);
+                    }
+
+                    $totalQualityScore += $result['score'];
+                }
+
+                if (!empty($imageQualityErrors)) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => [
+                            'images' => array_slice($imageQualityErrors, 0, 3) // First 3 errors
+                        ],
+                        'recommendations' => $imageQualityService->getRecommendations([
+                            'valid' => false,
+                            'details' => []
+                        ])
+                    ], 422);
+                }
+
+                // Enforce minimum 3 images for non-jobs/CV categories
+                if (!in_array($category, [3, 18]) && $imageCount < 3) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['images' => ['Please upload at least 3 images.']]
+                    ], 422);
+                }
+
+                // Process images using Spatie Media Library
                 $images = $request->file('images');
                 $order = explode(',', $request->input('image_order', ''));
+
+                if (empty($order) || $order[0] === '') {
+                    // If no order specified, use sequential order
+                    $order = array_keys($images);
+                }
 
                 foreach ($order as $position => $index) {
                     if (!isset($images[$index]) || !$images[$index]->isValid()) continue;
 
-                    $uploadedFileName = FileUploadHelper::upload($images[$index], 'images');
+                    $media = $advert
+                        ->addMedia($images[$index])
+                        ->withCustomProperties([
+                            'position' => $position + 1,
+                            'original_name' => $images[$index]->getClientOriginalName()
+                        ])
+                        ->usingFileName(uniqid() . '.webp')
+                        ->toMediaCollection('images');
 
-                    $advert->images()->create([
-                        'image' => $uploadedFileName,
-                        'position' => $position + 1,
-                    ]);
+                    $media->order_column = $position + 1;
+                    $media->save();
                 }
-            } elseif ($category == 3) {
-                // Save default image for jobs
-                $advert->images()->create([
-                    'image' => 'jobs.png',
-                    'position' => 1,
+
+                // Log quality metrics
+                $avgScore = $imageCount > 0 ? round($totalQualityScore / $imageCount) : 0;
+                Log::info('API: Image quality validation passed', [
+                    'advert_id' => $advert->ad_id,
+                    'image_count' => $imageCount,
+                    'average_score' => $avgScore,
+                    'quality_rating' => $imageQualityService->getQualityRating($avgScore)
                 ]);
+
+            } elseif (in_array($category, [3, 18])) {
+                // Add default image for jobs/CV categories using Spatie
+                $advert->addDefaultImage('jobs.png');
             }
 
             // Store car-specific info
-            if ($subcat === 2) {
+            if (in_array($subcat, [2, 21, 23])) {
                 $car = new CarDetail([
                     'car_id' => rand(10000, 99999),
                     'cat_id' => $request->input('category'),
@@ -412,7 +464,24 @@ class UserManageAdverts extends Controller
 
             DB::commit();
 
-            $advert->load(['images', 'car', 'phone', 'shippings']);
+            // Notify followers after response is sent (no queue worker required)
+            $seller = auth()->user();
+            if ($seller) {
+                PostAdvertJob::dispatchAfterResponse(
+                    $advert,
+                    $seller,
+                    'New Ad',
+                    $seller->name . ' has placed the ad "' . $advert->ad_title . '"'
+                );
+
+                Log::info('API: Follower notification dispatched after response', [
+                    'advert_id' => $advert->ad_id,
+                    'seller_id' => $seller->id
+                ]);
+            }
+
+            // Load relationships (media instead of old images)
+            $advert->load(['media', 'car', 'phone', 'shippings']);
 
             return response()->json([
                 'success' => true,
@@ -482,7 +551,7 @@ class UserManageAdverts extends Controller
 
         $subcategories = SubCategory::where('cat_id', $advert->category)->get();
         $brands = Brands::where('subcat_id', $advert->sub_category)->get();
-        $models = Models::where('brand_id', $advert->brand)->get();
+        $models = VehicleModel::where('brand_id', $advert->brand)->get();
 
         return response()->json([
             'success' => true,
@@ -490,7 +559,8 @@ class UserManageAdverts extends Controller
                 'advert' => $advert,
                 'subcategories' => $subcategories,
                 'brands' => $brands,
-                'models' => $models
+                'models' => $models,
+                'user' => $user
             ]
         ]);
     }
@@ -590,59 +660,26 @@ class UserManageAdverts extends Controller
             ], 404);
         }
 
-        $rules = [
-            'ad_title' => 'required|max:75',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'brand' => 'required',
-            'state' => 'required',
-            'lga' => 'required',
-            'description' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
+        // Use dynamic validation service based on Category UI Config
+        $validationService = new AdvertValidationService();
+        $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
+
+        $messages = [
+            'condition.required'      => 'Please select the vehicle condition.',
+            'registration.required'   => 'Please select the vehicle registration status.',
+            'fuel.required'           => 'Please select the fuel type.',
+            'transmission.required'   => 'Please select the transmission type.',
+            'vehicle_type.required'   => 'Please select the body/vehicle type.',
+            'exterior_color.required' => 'Please select the exterior color.',
+            'model.required'          => 'Please select the vehicle model.',
+            'model.exists'            => 'The selected model is invalid.',
+            'model.min'               => 'Please select a valid vehicle model.',
+            'phone_color.required'    => 'Please select the phone color.',
+            'phone_condition.required'=> 'Please select the phone condition.',
+            'device.required'         => 'Please select the device storage/variant.',
         ];
 
-        // Category-specific rules
-        if ($category == 3) {
-            $rules['salary'] = 'required';
-        } elseif ($category == 18) {
-            $rules['expected_salary'] = 'required';
-        } elseif ($category == 11) {
-            $rules['price'] = 'nullable|numeric';
-        } else {
-            $rules['price'] = 'required|numeric';
-            $rules['price_type'] = 'required';
-        }
-
-        // Subcategory-specific rules
-        switch ($subcat) {
-            case 2: // Cars
-                $rules += [
-                    'model' => 'required',
-                    'registration' => 'required',
-                    'mileage' => 'required|numeric',
-                    'condition' => 'required',
-                    'fuel' => 'required',
-                    'transmission' => 'required',
-                    'vehicle_type' => 'required',
-                    'doors' => 'required',
-                ];
-                break;
-
-            case 6: // Phones
-                $rules += [
-                    'phone_color' => 'required',
-                    'phone_condition' => 'required',
-                    'device' => 'required',
-                ];
-                break;
-        }
-
-        // Item condition rule
-        if (!in_array($category, [3, 11, 18]) && !in_array($subcat, [2, 6])) {
-            $rules['item_condition'] = 'required';
-        }
-
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json([
@@ -653,6 +690,9 @@ class UserManageAdverts extends Controller
 
         try {
             DB::beginTransaction();
+
+            // ✅ Capture old price BEFORE update for price change notification
+            $oldPrice = $advert->getOriginal('price');
 
             $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
             $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
@@ -686,18 +726,43 @@ class UserManageAdverts extends Controller
                 'shipment' => $request->input('shipment'),
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
-                'ad_image' => "",
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
             // Handle deleted images
             if ($request->has('deleted_images')) {
-                foreach ($request->input('deleted_images') as $imageId) {
-                    $image = $advert->images()->find($imageId);
-                    if ($image) {
-                        FileUploadHelper::delete('images', $image->image);
-                        $image->delete();
+                $deletedImages = $request->input('deleted_images');
+                // Ensure it's an array
+                if (!is_array($deletedImages)) {
+                    $deletedImages = explode(',', $deletedImages);
+                }
+                $deletedImages = array_filter(array_map('intval', $deletedImages));
+
+                if (!empty($deletedImages)) {
+                    // Get current image count
+                    $currentImageCount = $advert->images()->count();
+                    $requestedDeleteCount = count($deletedImages);
+                    $hasNewImages = $request->hasFile('images');
+
+                    // Validate: must have at least 3 images remaining (unless Jobs/CV categories)
+                    if (!in_array($category, [3, 18])) {
+                        $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
+                        if ($remainingAfterDelete < 3 && !$hasNewImages) {
+                            return response()->json([
+                                'success' => false,
+                                'errors' => ['deleted_images' => ['Cannot delete those images. Adverts must have at least 3 images.']]
+                            ], 422);
+                        }
+                    }
+
+                    // Proceed with deletion
+                    foreach ($deletedImages as $imageId) {
+                        $image = $advert->images()->find($imageId);
+                        if ($image) {
+                            FileUploadHelper::delete('images', $image->image);
+                            $image->delete();
+                        }
                     }
                 }
             }
@@ -731,44 +796,94 @@ class UserManageAdverts extends Controller
                 }
             }
 
-            // Update Car details
-            if ($subcat === 2) {
-                if ($advert->car) {
-                    $advert->car->update([
-                        'cat_id' => $request->input('category'),
-                        'brand_id' => $request->input('brand'),
-                        'model' => $request->input('model'),
-                        'mileage' => $request->input('mileage'),
-                        'condition' => $request->input('condition'),
-                        'registration' => $request->input('registration'),
-                        'fuel' => $request->input('fuel'),
-                        'transmission' => $request->input('transmission'),
-                        'vehicle_type' => $request->input('vehicle_type'),
-                        'doors' => $request->input('doors'),
-                        'exterior_color' => $request->input('exterior_color'),
-                        'material_interior' => $request->input('material_interior'),
-                        'exterior_equipment' => json_encode($request->input('exterior_equipment', [])),
-                        'interior' => json_encode($request->input('interior', [])),
-                        'security' => json_encode($request->input('security', [])),
-                    ]);
+            // Validate final image count - ensure at least 3 images exist
+            $finalImageCount = $advert->images()->count();
+
+            if ($finalImageCount < 3) {
+                if (in_array($category, [3, 18])) {
+                    // Jobs/CV category: add default image if none exist
+                    if ($finalImageCount < 1) {
+                        $advert->images()->create([
+                            'image' => 'jobs.png',
+                            'position' => 1,
+                        ]);
+                    }
+                } else {
+                    // For all other categories, at least 3 images are required
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['images' => ['Advert must have at least 3 images. Please upload more images.']]
+                    ], 422);
                 }
             }
 
-            // Update Phone details
+            // Update Car details (upsert: update if exists, create if missing)
+            if (in_array($subcat, [2, 21, 23])) {
+                $carData = [
+                    'cat_id'             => $request->input('category'),
+                    'brand_id'           => $request->input('brand'),
+                    'model'              => $request->input('model'),
+                    'mileage'            => $request->input('mileage'),
+                    'condition'          => $request->input('condition'),
+                    'registration'       => $request->input('registration'),
+                    'fuel'               => $request->input('fuel'),
+                    'transmission'       => $request->input('transmission'),
+                    'vehicle_type'       => $request->input('vehicle_type'),
+                    'doors'              => $request->input('doors'),
+                    'exterior_color'     => $request->input('exterior_color'),
+                    'material_interior'  => $request->input('material_interior'),
+                    'exterior_equipment' => json_encode($request->input('exterior_equipment', [])),
+                    'interior'           => json_encode($request->input('interior', [])),
+                    'security'           => json_encode($request->input('security', [])),
+                ];
+                if ($advert->car) {
+                    $advert->car->update($carData);
+                } else {
+                    $car = new CarDetail(array_merge($carData, ['car_id' => rand(10000, 99999)]));
+                    $car->advert()->associate($advert);
+                    $car->save();
+                }
+            }
+
+            // Update Phone details (upsert: update if exists, create if missing)
             if ($subcat === 6) {
+                $phoneData = [
+                    'cat_id'    => $request->input('category'),
+                    'brand_id'  => $request->input('brand'),
+                    'model'     => $request->input('model'),
+                    'color'     => $request->input('phone_color'),
+                    'device'    => $request->input('device'),
+                    'condition' => $request->input('phone_condition'),
+                ];
                 if ($advert->phone) {
-                    $advert->phone->update([
-                        'cat_id' => $request->input('category'),
-                        'brand_id' => $request->input('brand'),
-                        'model' => $request->input('model'),
-                        'color' => $request->input('phone_color'),
-                        'device' => $request->input('device'),
-                        'condition' => $request->input('phone_condition'),
-                    ]);
+                    $advert->phone->update($phoneData);
+                } else {
+                    $phone = new PhoneDetail(array_merge($phoneData, ['phone_id' => rand(10000, 99999)]));
+                    $phone->advert()->associate($advert);
+                    $phone->save();
                 }
             }
 
             DB::commit();
+
+            // Notify followers of price change after response is sent (no queue worker required)
+            $seller = auth()->user();
+            if ($advert->price != $oldPrice && $seller) {
+                PostAdvertJob::dispatchAfterResponse(
+                    $advert,
+                    $seller,
+                    'Price Update',
+                    $seller->name . ' updated the price of ' . $advert->ad_title
+                );
+
+                Log::info('API: Price update notification dispatched after response', [
+                    'advert_id' => $advert->ad_id,
+                    'seller_id' => $seller->id,
+                    'old_price' => $oldPrice,
+                    'new_price' => $advert->price
+                ]);
+            }
 
             $advert->load(['images', 'car', 'phone', 'shippings']);
 
@@ -824,7 +939,7 @@ class UserManageAdverts extends Controller
         try {
             DB::beginTransaction();
 
-            $advert = Advert::with('images')->where('id', $advertId)
+            $advert = Advert::where('id', $advertId)
                 ->where('user_id', $user->user_id)
                 ->first();
 
@@ -835,21 +950,11 @@ class UserManageAdverts extends Controller
                 ], 404);
             }
 
-            // Delete all associated images safely (except for category Job which uses default image)
-            if ($advert->category != 3) {
-                foreach ($advert->images ?? [] as $image) {
-                    if ($image && !empty($image->image)) {
-                        try {
-                            FileUploadHelper::delete('images', $image->image);
-                            $image->delete();
-                        } catch (\Exception $imgEx) {
-                            throw new \Exception("Unable to delete image file");
-                        }
-                    }
-                }
+            // Delete media images except jobs/CV categories
+            if (!in_array($advert->category, [3, 18])) {
+                $advert->clearMediaCollection('images');
             }
 
-            // Delete the advert itself
             $advert->delete();
 
             DB::commit();
@@ -859,17 +964,21 @@ class UserManageAdverts extends Controller
                 'message' => 'Advert deleted successfully'
             ]);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Advert deletion failed: ' . $e->getMessage());
+            Log::error('Advert deletion failed', [
+                'advert_id' => $advertId,
+                'error' => $e->getMessage()
+            ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete advert',
-                'error' => $e->getMessage()
+                'message' => 'Failed to delete advert'
             ], 500);
         }
     }
+
+
 
     /**
      * @OA\Get(

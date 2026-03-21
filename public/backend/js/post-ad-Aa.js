@@ -82,7 +82,7 @@ document.getElementById('category').addEventListener('change', function () {
                 }
             }else{
                 price.classList.remove("hidden");
-                shipping.classList.remove("hidden");
+                //shipping.classList.remove("hidden");
                 if (quantity) {
                     quantity.classList.remove("hidden");
                 }

@@ -1,0 +1,201 @@
+================================================================================
+POSTMAN COLLECTION REVIEW - QUICK SUMMARY
+================================================================================
+File: Marketplace-API-Complete.postman_collection.json
+Date: 2026-01-27
+Total Endpoints: 132
+
+================================================================================
+1. BOOST ROUTES STATUS (Specifically Requested)
+================================================================================
+
+✅ GET    /boosts/{boostId}                [PRESENT] ❌ NO TEST DATA
+✅ POST   /boosts/{boostId}/upload-proof   [PRESENT] ✅ HAS TEST DATA
+✅ DELETE /boosts/{boostId}                [PRESENT] ❌ NO TEST DATA
+
+All three boost management routes ARE present in the Postman collection.
+However, 2 out of 3 lack proper test data (need example boostId values).
+
+================================================================================
+2. MISSING ENDPOINTS (2 CRITICAL)
+================================================================================
+
+❌ GET  /boost/options          (BoostController@getOptions)
+❌ POST /boost/calculate         (BoostController@calculatePrice)
+
+These are boost pricing endpoints - critical for users to:
+- See available boost packages
+- Calculate pricing before purchase
+
+IMPACT: HIGH - Core boost functionality incomplete without these
+
+================================================================================
+3. ENDPOINTS WITHOUT TEST DATA (18 endpoints)
+================================================================================
+
+HIGH PRIORITY (5 endpoints):
+  - POST   /adverts (appears 3x, all missing body data)
+  - PUT    /adverts/{advertId} (missing body data)
+  - GET    /boosts/{boostId} (placeholder ID)
+  - DELETE /boosts/{boostId} (placeholder ID)
+
+MEDIUM PRIORITY (8 endpoints):
+  - GET    /adverts/{advertId}/boost-info
+  - GET    /adverts/{advertId}/boost-status
+  - GET    /messages/advert/{advertId}
+  - GET    /messages/conversation/{advertId}/{receiverId}
+  - GET    /boosts/user/{userId}
+  - PUT    /messages/{messageId}/read
+  - PUT    /messages/conversation/{advertId}/{userId}/read
+
+LOW PRIORITY (5 endpoints):
+  - GET    /user/{userId}/followers
+  - GET    /user/{userId}/feedback
+  - Various other GET endpoints with placeholder IDs
+
+================================================================================
+4. OTHER ISSUES
+================================================================================
+
+⚠️  DUPLICATES: POST /adverts appears 3 times
+    Location: "06. User Manage Adverts (Protected)"
+    Fix: Remove 2 duplicates, keep 1 with complete test data
+
+⚠️  PLACEHOLDERS: Many endpoints use {id} without example values
+    Examples: {boostId}, {advertId}, {userId}, etc.
+    Fix: Replace with actual IDs (1, 123) or Postman variables ({{boost_id}})
+
+⚠️  MISSING BODIES: Several POST/PUT/PATCH requests have empty bodies
+    Examples: POST /adverts, PUT /adverts/{id}
+    Fix: Add complete JSON request bodies with example data
+
+================================================================================
+5. RECOMMENDED ACTIONS
+================================================================================
+
+IMMEDIATE (Do First):
+  1. Add GET /boost/options endpoint
+  2. Add POST /boost/calculate endpoint
+  3. Remove 2 duplicate POST /adverts entries
+  4. Add complete test data for remaining POST /adverts
+  5. Replace {boostId} placeholders with example IDs
+
+SHORT TERM (Do Soon):
+  6. Add request bodies for all POST/PUT/PATCH endpoints
+  7. Replace all placeholder IDs with examples or variables
+  8. Add descriptions to undocumented endpoints
+  9. Create environment variable template
+
+LONG TERM (Nice to Have):
+  10. Add response examples for all endpoints
+  11. Add test scripts for validation
+  12. Reorganize folders for better structure
+  13. Add pre-request scripts for dynamic data
+
+================================================================================
+6. FILES GENERATED
+================================================================================
+
+📄 API_POSTMAN_COMPARISON_REPORT.md
+   - Comprehensive detailed report with all findings
+   - Includes recommendations and action items
+   - Full comparison tables and statistics
+
+📄 POSTMAN_FIXES_EXAMPLES.json
+   - JSON examples for missing endpoints
+   - Complete test data for all problem endpoints
+   - Environment variable templates
+   - Ready-to-use Postman request objects
+
+📄 POSTMAN_REVIEW_SUMMARY.txt (this file)
+   - Quick reference summary
+   - Key findings at a glance
+
+================================================================================
+7. STATISTICS
+================================================================================
+
+Routes in api.php:              ~130
+Endpoints in Postman:           132
+Missing from Postman:           2 (boost pricing)
+Endpoints without test data:    18
+Duplicate endpoints:            1 (POST /adverts x3)
+
+Coverage by HTTP Method:
+  GET:    97% (73/75)
+  POST:   106% (37/35 - due to duplicates)
+  PUT:    100% (8/8)
+  PATCH:  100% (3/3)
+  DELETE: 100% (9/9)
+
+Coverage by Feature:
+  Authentication:    ✅ 100% (13/13)
+  Adverts:          ✅ 100% (25/25)
+  Categories:       ✅ 100% (4/4)
+  Search:           ✅ 100% (8/8)
+  Locations:        ✅ 100% (7/7)
+  Messages:         ✅ 100% (11/11)
+  Payments:         ✅ 100% (6/6)
+  Boosts:           ⚠️  82% (9/11) - MISSING 2 pricing endpoints
+  Notifications:    ✅ 100% (5/5)
+  User Management:  ✅ 100% (30+/30+)
+  Testing:          ✅ 100% (2/2)
+
+================================================================================
+8. BOOST ROUTES DETAILED STATUS
+================================================================================
+
+✅ GET    /user/boosts                     - Get user's boosts
+✅ GET    /boosts/active                   - Get active boosts
+✅ GET    /boosts/pending                  - Get pending boosts
+✅ GET    /boosts/user/{userId}            - Get user boosts by ID
+✅ GET    /boosts/{boostId}                - Get specific boost (NO TEST DATA)
+✅ POST   /boosts/{boostId}/upload-proof   - Upload payment proof (HAS TEST DATA)
+✅ DELETE /boosts/{boostId}                - Cancel boost (NO TEST DATA)
+✅ GET    /adverts/{advertId}/boost-info   - Get boost info for advert
+✅ POST   /adverts/{advertId}/boost        - Create boost for advert
+✅ GET    /adverts/{advertId}/boost-status - Check boost status
+❌ GET    /boost/options                   - MISSING
+❌ POST   /boost/calculate                 - MISSING
+
+Total Boost Routes: 12 in api.php, 10 in Postman (83% coverage)
+
+================================================================================
+9. QUICK FIX CHECKLIST
+================================================================================
+
+For Boost Routes:
+  [ ] Add GET /boost/options to Postman
+  [ ] Add POST /boost/calculate to Postman
+  [ ] Replace {boostId} with 1 in GET /boosts/{boostId}
+  [ ] Replace {boostId} with 1 in DELETE /boosts/{boostId}
+  [ ] Verify POST /boosts/{boostId}/upload-proof has test data ✅
+
+For Advert Management:
+  [ ] Remove 2 duplicate POST /adverts entries
+  [ ] Add complete JSON body to POST /adverts
+  [ ] Add complete JSON body to PUT /adverts/{advertId}
+  [ ] Replace {advertId} placeholders with example IDs
+
+For General Cleanup:
+  [ ] Create environment variable template with all needed variables
+  [ ] Replace all placeholder IDs with examples or {{variables}}
+  [ ] Add request bodies to all POST/PUT/PATCH endpoints
+  [ ] Add descriptions to all endpoints
+  [ ] Test all endpoints to ensure they work
+
+================================================================================
+10. CONTACT & REFERENCES
+================================================================================
+
+API Routes File:     /home/www/laravel/marketplace/routes/api.php
+Postman Collection:  /home/www/laravel/marketplace/postman/Marketplace-API-Complete.postman_collection.json
+Detailed Report:     /home/www/laravel/marketplace/API_POSTMAN_COMPARISON_REPORT.md
+Fix Examples:        /home/www/laravel/marketplace/POSTMAN_FIXES_EXAMPLES.json
+
+Current Branch:      upgrade/laravel-11
+Git Status:          4 modified files (views)
+
+================================================================================
+END OF SUMMARY
+================================================================================

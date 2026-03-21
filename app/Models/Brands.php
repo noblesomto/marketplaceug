@@ -15,6 +15,9 @@ class Brands extends Model
         'subcat_id',
         'brand_id',
         'brand',
+        'keywords',
+        'meta_title',
+        'meta_description'
     ];
 
     public function sluggable(): array
@@ -38,6 +41,6 @@ class Brands extends Model
 
     public function models()
     {
-        return $this->hasMany(Models::class, 'brand_id');
+        return $this->hasMany(VehicleModel::class, 'brand_id');
     }
 }

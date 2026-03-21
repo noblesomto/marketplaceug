@@ -3,18 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Advert;
 use App\Models\Bank;
 use App\Models\UserVerification;
-use App\Helpers\FileUploadHelper;
 use App\Mail\VerificationRequestMail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
+use App\Rules\NigerianPhoneNumber;
 use Carbon\Carbon;
 
+/**
+ * @group User Profile
+ *
+ * APIs for managing user profile, settings, verification, and account preferences
+ */
 class UserProfile extends Controller
 {
     /**
@@ -23,35 +30,146 @@ class UserProfile extends Controller
      *     summary="Get user profile",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="User profile data",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
-     *                 @OA\Property(property="ads_count", type="integer"),
-     *                 @OA\Property(property="recent_ads", ref="#/components/schemas/AdvertList")
-     *             )
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="User profile data")
      * )
      */
-    public function getProfile()
+    public function getProfile(Request $request)
     {
         $user = auth()->user();
-        $adsCount = Advert::where('user_id', $user->user_id)->count();
-        $recentAds = Advert::with('firstImage')
-            ->where('user_id', $user->user_id)
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
+
+        $ads = Advert::with('firstImage')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->where('user_id', $user->user_id)
+            ->paginate($request->get('per_page', 10));
+
+        // Get profile image URL
+        $profileImageUrl = $user->getFirstMediaUrl('profile_image', 'optimized')
+            ?: $user->getFirstMediaUrl('profile_image');
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => array_merge($user->toArray(), [
+                    'profile_image_url' => $profileImageUrl,
+                    'profile_thumbnail_url' => $user->getFirstMediaUrl('profile_image', 'thumbnail')
+                ]),
+                'ads_count' => $count_ads,
+                'ads' => $ads->items(),
+                'pagination' => [
+                    'current_page' => $ads->currentPage(),
+                    'last_page' => $ads->lastPage(),
+                    'per_page' => $ads->perPage(),
+                    'total' => $ads->total(),
+                    'has_more' => $ads->hasMorePages()
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/about-account",
+     *     summary="Get account information",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Account information")
+     * )
+     */
+    public function aboutAccount(Request $request)
+    {
+        $user = auth()->user();
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
 
         return response()->json([
             'success' => true,
             'data' => [
                 'user' => $user,
-                'ads_count' => $adsCount,
-                'recent_ads' => $recentAds
+                'ads_count' => $count_ads,
+                'account_created' => $user->created_at,
+                'last_login' => $user->updated_at,
+                'verification_status' => $user->verified,
+                'email_verified' => $user->email_verified_at !== null
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/ads",
+     *     summary="Get user ads with pagination",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(name="page", in="query", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="per_page", in="query", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="User ads")
+     * )
+     */
+    public function loadMoreUserAds(Request $request)
+    {
+        $user = auth()->user();
+
+        $ads = Advert::with('firstImage')
+            ->orderBy('created_at', 'desc')
+            ->where('user_id', $user->user_id)
+            ->paginate($request->get('per_page', 10));
+
+        return response()->json([
+            'success' => true,
+            'data' => $ads->items(),
+            'pagination' => [
+                'current_page' => $ads->currentPage(),
+                'last_page' => $ads->lastPage(),
+                'per_page' => $ads->perPage(),
+                'total' => $ads->total(),
+                'has_more' => $ads->hasMorePages()
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/settings",
+     *     summary="Get user settings",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="User settings")
+     * )
+     */
+    public function getSettings()
+    {
+        $user = auth()->user();
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'ads_count' => $count_ads,
+                'notification_preferences' => $user->notification
+            ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/profile-info",
+     *     summary="Get profile information",
+     *     tags={"User Profile"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Profile information")
+     * )
+     */
+    public function getProfileInfo()
+    {
+        $user = auth()->user();
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'ads_count' => $count_ads
             ]
         ]);
     }
@@ -59,7 +177,7 @@ class UserProfile extends Controller
     /**
      * @OA\Put(
      *     path="/api/user/profile/address",
-     *     summary="Update user address and profile image",
+     *     summary="Update profile address and image",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -67,7 +185,7 @@ class UserProfile extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name", "address", "city", "state"},
+     *                 required={"name"},
      *                 @OA\Property(property="name", type="string"),
      *                 @OA\Property(property="address", type="string"),
      *                 @OA\Property(property="city", type="string"),
@@ -76,29 +194,19 @@ class UserProfile extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Profile updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/User")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Profile updated")
      * )
      */
     public function updateAddress(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12048'
+            'address' => 'nullable|string|max:500',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',
         ]);
 
         if ($validator->fails()) {
@@ -108,36 +216,56 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
-        $updateData = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state
-        ];
+        $updateData = $request->only(['name', 'address', 'city', 'state']);
 
-        if ($request->hasFile('profile_image')) {
-            $imageName = FileUploadHelper::upload(
-                $request->file('profile_image'),
-                'profile',
-                $user->profile_picture
-            );
-            $updateData['profile_picture'] = $imageName;
+        try {
+            if ($request->hasFile('profile_image')) {
+                $fileName = now()->format('YmdHis') . '_profile.' . $request->file('profile_image')->getClientOriginalExtension();
+
+                $user->addMediaFromRequest('profile_image')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('profile_image');
+
+                $media = $user->getFirstMedia('profile_image');
+
+                // Delete original after conversions
+                if ($media && $media->hasGeneratedConversion('optimized') && $media->hasGeneratedConversion('thumbnail')) {
+                    $originalPath = $media->getPath();
+                    if (file_exists($originalPath)) {
+                        unlink($originalPath);
+                    }
+                }
+            }
+
+            $user->update($updateData);
+
+            // Get updated profile image URLs
+            $profileImageUrl = $user->getFirstMediaUrl('profile_image', 'optimized')
+                ?: $user->getFirstMediaUrl('profile_image');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile information updated successfully',
+                'data' => array_merge($user->fresh()->toArray(), [
+                    'profile_image_url' => $profileImageUrl,
+                    'profile_thumbnail_url' => $user->getFirstMediaUrl('profile_image', 'thumbnail')
+                ])
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Profile update failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Profile update failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $user->update($updateData);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Profile information updated successfully',
-            'data' => $user
-        ]);
     }
 
     /**
      * @OA\Put(
      *     path="/api/user/profile/phone",
-     *     summary="Update user phone number",
+     *     summary="Update phone number",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -147,25 +275,19 @@ class UserProfile extends Controller
      *             @OA\Property(property="phone", type="string")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Phone number updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/User")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Phone updated")
      * )
      */
     public function updatePhone(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:20'
+            'phone' => [
+                'required',
+                new NigerianPhoneNumber(),
+                Rule::unique('users', 'phone')->ignore($user->user_id, 'user_id'),
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -175,44 +297,45 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
         $user->update(['phone' => $request->phone]);
 
         return response()->json([
             'success' => true,
             'message' => 'Phone number updated successfully',
-            'data' => $user
+            'data' => $user->fresh()
         ]);
     }
 
     /**
      * @OA\Get(
      *     path="/api/user/verification",
-     *     summary="Get user verification status",
-     *     tags={"User Verification"},
+     *     summary="Get verification status",
+     *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Verification status",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
-     *                 @OA\Property(property="verification", ref="#/components/schemas/UserVerification")
-     *             )
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Verification status")
      * )
      */
     public function getVerificationStatus()
     {
         $user = auth()->user()->load('verification');
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
+
+        $verificationDocUrl = null;
+        $addressProofUrl = null;
+
+        if ($user->verification) {
+            $verificationDocUrl = $user->verification->getFirstMediaUrl('verification_documents');
+            $addressProofUrl = $user->verification->getFirstMediaUrl('verification_address');
+        }
 
         return response()->json([
             'success' => true,
             'data' => [
                 'user' => $user,
-                'verification' => $user->verification
+                'ads_count' => $count_ads,
+                'verification' => $user->verification,
+                'verification_doc_url' => $verificationDocUrl,
+                'address_proof_url' => $addressProofUrl
             ]
         ]);
     }
@@ -221,7 +344,7 @@ class UserProfile extends Controller
      * @OA\Post(
      *     path="/api/user/verification",
      *     summary="Submit verification documents",
-     *     tags={"User Verification"},
+     *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
@@ -236,27 +359,18 @@ class UserProfile extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Verification submitted successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Verification submitted")
      * )
      */
     public function submitVerification(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
             'document_number' => 'required|string|max:255',
             'document_type' => 'nullable|string|max:255',
-            'document_file' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:12048',
-            'proof_address' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:12048'
+            'document_file' => 'required|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
+            'proof_address' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf|max:12048',
         ]);
 
         if ($validator->fails()) {
@@ -266,55 +380,55 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
-        $existingVerification = UserVerification::where('user_id', $user->user_id)->first();
+        $verification = UserVerification::updateOrCreate(
+            ['user_id' => $user->user_id],
+            [
+                'document_number' => $request->document_number,
+                'document_type' => $request->document_type,
+            ]
+        );
 
         try {
-            // Upload document
-            $filename = FileUploadHelper::upload(
-                $request->file('document_file'),
-                'verification',
-                $existingVerification?->document_file
-            );
+            if ($request->hasFile('document_file')) {
+                $fileName = now()->format('YmdHis') . '_document.' . $request->file('document_file')->getClientOriginalExtension();
 
-            // Upload proof address if provided
-            $proof_address = $existingVerification?->proof_address;
-            if ($request->hasFile('proof_address')) {
-                $proof_address = FileUploadHelper::upload(
-                    $request->file('proof_address'),
-                    'verification',
-                    $existingVerification?->proof_address
-                );
+                $verification->addMediaFromRequest('document_file')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_documents');
             }
 
-            UserVerification::updateOrCreate(
-                ['user_id' => $user->user_id],
-                [
-                    'document_number' => $request->document_number,
-                    'document_type' => $request->document_type,
-                    'document_file' => $filename,
-                    'proof_address' => $proof_address,
-                    'status' => 'pending'
-                ]
-            );
+            if ($request->hasFile('proof_address')) {
+                $fileName = now()->format('YmdHis') . '_address.' . $request->file('proof_address')->getClientOriginalExtension();
+
+                $verification->addMediaFromRequest('proof_address')
+                    ->usingFileName($fileName)
+                    ->toMediaCollection('verification_address');
+            }
 
             // Send email notification
-            Mail::to(config('global.site_email'))->send(new VerificationRequestMail([
-                'user_id' => $user->user_id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'document_number' => $request->document_number,
-            ]));
+            try {
+                \Mail::to(config('global.site_email'))
+                    ->queue(new VerificationRequestMail([
+                        'user_id' => $user->user_id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'document_number' => $request->document_number,
+                    ]));
+            } catch (\Exception $e) {
+                \Log::error('Verification email failed: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Verification information submitted successfully'
+                'message' => 'Verification information submitted successfully',
+                'data' => $verification
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('Verification submission failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to submit verification documents',
+                'message' => 'Verification submission failed',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -323,32 +437,30 @@ class UserProfile extends Controller
     /**
      * @OA\Get(
      *     path="/api/user/payment-info",
-     *     summary="Get user payment information",
-     *     tags={"User Payment"},
+     *     summary="Get payment information",
+     *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Payment information",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
-     *                 @OA\Property(property="banks", type="array", @OA\Items(ref="#/components/schemas/Bank"))
-     *             )
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Payment information")
      * )
      */
     public function getPaymentInfo()
     {
         $user = auth()->user();
+        $count_ads = Advert::where('user_id', $user->user_id)->count();
         $banks = Bank::all();
 
         return response()->json([
             'success' => true,
             'data' => [
                 'user' => $user,
-                'banks' => $banks
+                'ads_count' => $count_ads,
+                'banks' => $banks,
+                'payment_info' => [
+                    'bank_name' => $user->bank_name,
+                    'bank_code' => $user->bank_code,
+                    'account_name' => $user->account_name,
+                    'account_number' => $user->account_number,
+                ]
             ]
         ]);
     }
@@ -356,8 +468,8 @@ class UserProfile extends Controller
     /**
      * @OA\Put(
      *     path="/api/user/payment-info",
-     *     summary="Update user payment information",
-     *     tags={"User Payment"},
+     *     summary="Update payment information",
+     *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
@@ -369,28 +481,18 @@ class UserProfile extends Controller
      *             @OA\Property(property="account_name", type="string")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Payment information updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/User")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Payment info updated")
      * )
      */
     public function updatePaymentInfo(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
-            'bank_name' => 'required|string|max:255',
-            'paystack_bank_code' => 'required|string|max:255',
-            'account_number' => 'required|string|max:255',
-            'account_name' => 'required|string|max:255'
+            'bank_name' => 'required|string',
+            'paystack_bank_code' => 'required|string',
+            'account_number' => 'required|string',
+            'account_name' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -400,55 +502,45 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
         $user->update([
             'bank_name' => $request->bank_name,
             'bank_code' => $request->paystack_bank_code,
             'account_name' => $request->account_name,
-            'account_number' => $request->account_number
+            'account_number' => $request->account_number,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Payment information updated successfully',
-            'data' => $user
+            'data' => $user->fresh()
         ]);
     }
 
     /**
      * @OA\Put(
      *     path="/api/user/password",
-     *     summary="Change user password",
+     *     summary="Change password",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"old_password", "password", "password_confirmation"},
-     *             @OA\Property(property="old_password", type="string"),
-     *             @OA\Property(property="password", type="string", minLength=6),
-     *             @OA\Property(property="password_confirmation", type="string")
+     *             @OA\Property(property="old_password", type="string", format="password"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Password changed successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Password changed")
      * )
      */
     public function changePassword(Request $request)
     {
+        $user = auth()->user();
+
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -458,13 +550,11 @@ class UserProfile extends Controller
             ], 422);
         }
 
-        $user = auth()->user();
-
         if (!Hash::check($request->old_password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'The current password does not match'
-            ], 422);
+            ], 400);
         }
 
         $user->update([
@@ -480,7 +570,7 @@ class UserProfile extends Controller
     /**
      * @OA\Put(
      *     path="/api/user/notifications",
-     *     summary="Update user notification preferences",
+     *     summary="Update notification preferences",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -490,19 +580,7 @@ class UserProfile extends Controller
      *             @OA\Property(property="notifications", type="string")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Notifications updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/User")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
+     *     @OA\Response(response=200, description="Notifications updated")
      * )
      */
     public function updateNotifications(Request $request)
@@ -519,11 +597,12 @@ class UserProfile extends Controller
         }
 
         $user = auth()->user();
-        $user->update(['notification' => $request->notifications]);
+        $user->notification = $request->notifications;
+        $user->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Notification preferences updated successfully',
+            'message' => 'Notification preferences updated',
             'data' => $user
         ]);
     }
@@ -531,35 +610,28 @@ class UserProfile extends Controller
     /**
      * @OA\Delete(
      *     path="/api/user/account",
-     *     summary="Disable user account",
+     *     summary="Disable account",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Account disabled successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Account disabled")
      * )
      */
-    public function disableAccount()
+    public function disableAccount(Request $request)
     {
         $user = auth()->user();
 
         $user->update([
-            'acc_status' => 0,
             'disable_account' => "yes",
-            'disable_account_date' => Carbon::now()
+            'disable_account_date' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        // Invalidate current token
-        $user->currentAccessToken()->delete();
+        // Revoke all tokens
+        $user->tokens()->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Account disabled successfully'
+            'message' => 'Account deactivated successfully'
         ]);
     }
 
@@ -569,57 +641,22 @@ class UserProfile extends Controller
      *     summary="Logout user",
      *     tags={"User Profile"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Logged out successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Logged out")
      * )
      */
-    public function logout()
+    public function logout(Request $request)
     {
         $user = auth()->user();
-        $user->currentAccessToken()->delete();
+
+        // Clear remember token
+        $user->update(['remember_token' => null]);
+
+        // Revoke current token
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Logged out successfully'
-        ]);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/user/settings",
-     *     summary="Get user settings",
-     *     tags={"User Profile"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="User settings",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
-     *                 @OA\Property(property="ads_count", type="integer")
-     *             )
-     *         )
-     *     )
-     * )
-     */
-    public function getSettings()
-    {
-        $user = auth()->user();
-        $adsCount = Advert::where('user_id', $user->user_id)->count();
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => $user,
-                'ads_count' => $adsCount
-            ]
         ]);
     }
 }
