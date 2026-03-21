@@ -107,7 +107,7 @@
                                 company: '{{ $shipping->company }}',
                                 price: {{ $shipping->price }},
                                 weight: {{ $shipping->weight }},
-                                logo: '{{ asset('uploads/shipping/'.$shipping->logo) }}',
+                                logo: '{{ Str::startsWith($shipping->logo, 'http') ? $shipping->logo : asset('uploads/shipping/'.$shipping->logo) }}',
                                 ship_id: {{ $shipping->id }},
                             };
                             open = false;
@@ -117,7 +117,7 @@
                         "
                         class="flex items-center gap-4 px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 transition-colors"
                     >
-                        <img src="{{ asset('uploads/shipping/'.$shipping->logo) }}"
+                        <img src="{{ Str::startsWith($shipping->logo, 'http') ? $shipping->logo : asset('uploads/shipping/'.$shipping->logo) }}"
                              class="w-10 h-10 object-contain rounded-md" loading="lazy">
                         <div>
                             <div class="font-medium text-sm text-gray-800">{{ $shipping->company }}</div>
