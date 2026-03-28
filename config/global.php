@@ -2,7 +2,7 @@
 
 
 return [
-    'site_name' => 'Post Free Ads in Nigeria',
+    'site_name' => 'Marketplace Naija',
     'site_title' => 'Buy & Sell on Marketplace Naija',
     'email_title' => 'Marketplace Naija',
     'admin_email' => 'adminstrator@marketplace.ng',

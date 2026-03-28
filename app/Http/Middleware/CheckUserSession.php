@@ -17,13 +17,22 @@ class CheckUserSession
                 ->where('user_id', $request->session()->get('user_id'))
                 ->first();
 
-            // Check if account is disabled or user doesn't exist
+            // Check if account is disabled, unverified, or doesn't exist
             if (!$user || $user->disable_account === 'yes') {
-                // Clear session and cookies
                 $this->clearUserSession($request);
 
                 return redirect('/login')
                     ->with('error', 'Your account has been deactivated or no longer exists.');
+            }
+
+            if ($user->acc_status == 0) {
+                $this->clearUserSession($request);
+
+                return redirect('/login')
+                    ->with('error', new \Illuminate\Support\HtmlString(
+                        'Please verify your email address before continuing. ' .
+                        '<a href="' . route('activation.resend', ['email' => $user->email]) . '" class="text-blue-600 underline">Resend verification email</a>'
+                    ));
             }
 
             return $next($request);
@@ -37,12 +46,22 @@ class CheckUserSession
                 ->first();
 
             if ($user) {
-                // Check if account is disabled
+                // Check if account is disabled or unverified
                 if ($user->disable_account === 'yes') {
                     $this->clearUserSession($request);
 
                     return redirect('/login')
                         ->with('error', 'Your account has been deactivated.');
+                }
+
+                if ($user->acc_status == 0) {
+                    $this->clearUserSession($request);
+
+                    return redirect('/login')
+                        ->with('error', new \Illuminate\Support\HtmlString(
+                            'Please verify your email address before continuing. ' .
+                            '<a href="' . route('activation.resend', ['email' => $user->email]) . '" class="text-blue-600 underline">Resend verification email</a>'
+                        ));
                 }
 
                 // Restore session

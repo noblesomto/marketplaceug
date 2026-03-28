@@ -1,138 +1,337 @@
 <?php
+
 namespace App\Console\Commands;
+
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\SitemapIndex;
 use Spatie\Sitemap\Tags\Url;
+use Spatie\Sitemap\Tags\Sitemap as SitemapTag;
 use App\Models\Advert;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Brands;
 use App\Models\Blog;
 
 class GenerateSitemap extends Command
 {
-    protected $signature = 'sitemap:generate';
-    protected $description = 'Generate dynamic sitemap';
+    protected $signature   = 'sitemap:generate';
+    protected $description = 'Generate sitemap index with child sitemaps';
 
-    public function handle()
+    private string $baseUrl;
+    private string $outputDir;  // filesystem directory to write files into
+    private string $publicUrl;  // public-facing URL prefix for sitemap index entries
+
+    public function handle(): void
     {
-        // Determine the sitemap path based on environment
+        $this->baseUrl = rtrim(config('app.url'), '/');
+
         if (app()->environment('production')) {
-            // Production: save to public_html (one level up from Laravel root)
-            $sitemapPath = dirname(base_path()) . '/public_html/core/sys-cache-4a9d82f1.xml';
+            $this->outputDir = dirname(base_path()) . '/public_html/';
+            $this->publicUrl = $this->baseUrl;
         } else {
-            // Local: save to public directory
-            $sitemapPath = public_path('sitemap.xml');
+            $this->outputDir = public_path() . '/';
+            $this->publicUrl = $this->baseUrl;
         }
 
+        $index = SitemapIndex::create();
+
+        $this->writeStatic($index);
+        $this->writeCategories($index);
+        $this->writeLocations($index);
+        $this->writeBrands($index);
+        $this->writeAdverts($index);
+        $this->writeBlog($index);
+
+        $indexPath = $this->outputDir . 'sitemap.xml';
+        $index->writeToFile($indexPath);
+
+        $this->info("✔ Sitemap index written to: {$indexPath}");
+    }
+
+    // -------------------------------------------------------------------------
+    // Child sitemap writers
+    // -------------------------------------------------------------------------
+
+    private function writeStatic(SitemapIndex $index): void
+    {
         $sitemap = Sitemap::create();
 
-        // ========== STATIC PAGES ==========
-        $staticPages = [
-            ['url' => '/', 'priority' => 1.0, 'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['url' => '/about-us', 'priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['url' => '/contact-us', 'priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['url' => '/our-terms', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/privacy', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/faq', 'priority' => 0.7, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['url' => '/how-it-works', 'priority' => 0.9, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
-            ['url' => '/career', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['url' => '/privacy-policy', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/cookie-policy', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/billing-policy', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/copyright-policy', 'priority' => 0.5, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['url' => '/safety-tips', 'priority' => 0.7, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['url' => '/payments-refunds', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+        $pages = [
+            ['/',                  1.0,  Url::CHANGE_FREQUENCY_DAILY],
+            ['/about-us',         0.8,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/contact-us',       0.8,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/faq',              0.7,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/how-it-works',     0.9,  Url::CHANGE_FREQUENCY_WEEKLY],
+            ['/safety-tips',      0.7,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/career',           0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/our-terms',        0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/privacy',          0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/privacy-policy',   0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/cookie-policy',    0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/billing-policy',   0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/copyright-policy', 0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/payments-refunds', 0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
         ];
 
-        foreach ($staticPages as $page) {
+        foreach ($pages as [$path, $priority, $freq]) {
             $sitemap->add(
-                Url::create($page['url'])
+                Url::create($path)
                     ->setLastModificationDate(now())
-                    ->setChangeFrequency($page['frequency'])
-                    ->setPriority($page['priority'])
+                    ->setChangeFrequency($freq)
+                    ->setPriority($priority)
             );
         }
 
-        // ========== CATEGORIES ==========
-        Category::orderBy('updated_at', 'DESC')->chunk(500, function ($categories) use ($sitemap) {
-            foreach ($categories as $category) {
+        $this->write($sitemap, 'sitemap-static.xml', $index);
+        $this->info('  → sitemap-static.xml (' . count($pages) . ' URLs)');
+    }
+
+    private function writeCategories(SitemapIndex $index): void
+    {
+        $sitemap = Sitemap::create();
+        $count   = 0;
+
+        // Top-level categories
+        Category::orderBy('updated_at', 'desc')->chunk(200, function ($categories) use ($sitemap, &$count) {
+            foreach ($categories as $cat) {
                 $sitemap->add(
-                    Url::create(rtrim(config('app.url'), '/') . "/category/{$category->category_slug}")
-                        ->setLastModificationDate($category->updated_at ?? now())
+                    Url::create("{$this->baseUrl}/category/{$cat->category_slug}")
+                        ->setLastModificationDate($cat->updated_at ?? now())
                         ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                         ->setPriority(0.9)
                 );
+                $count++;
             }
         });
 
-        // ========== SUBCATEGORIES ==========
-        SubCategory::with('category')
-            ->orderBy('updated_at', 'DESC')
-            ->chunk(500, function ($subCategories) use ($sitemap) {
-                foreach ($subCategories as $subCategory) {
-                    $sitemap->add(
-                        Url::create(rtrim(config('app.url'), '/') . "/category/{$subCategory->category->category_slug}/{$subCategory->sub_cat_slug}")
-                            ->setLastModificationDate($subCategory->updated_at ?? now())
-                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                            ->setPriority(0.8)
-                    );
+        // Subcategories
+        SubCategory::with('category')->orderBy('updated_at', 'desc')->chunk(500, function ($subcats) use ($sitemap, &$count) {
+            foreach ($subcats as $sub) {
+                if (!$sub->category) {
+                    continue;
                 }
-            });
+                $sitemap->add(
+                    Url::create("{$this->baseUrl}/category/{$sub->category->category_slug}/{$sub->sub_cat_slug}")
+                        ->setLastModificationDate($sub->updated_at ?? now())
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                        ->setPriority(0.8)
+                );
+                $count++;
+            }
+        });
 
-        // ========== LOCATIONS FROM ADVERTS ==========
-        $uniqueStates = Advert::select('state_slug', DB::raw('MAX(updated_at) as updated_at'))
+        $this->write($sitemap, 'sitemap-categories.xml', $index);
+        $this->info("  → sitemap-categories.xml ({$count} URLs)");
+    }
+
+    private function writeLocations(SitemapIndex $index): void
+    {
+        $sitemap = Sitemap::create();
+        $count   = 0;
+
+        // ── State-only pages ──────────────────────────────────────────────────
+        DB::table('adverts')
+            ->select('state_slug', DB::raw('MAX(updated_at) as last_updated'))
+            ->where('ad_status', 1)
             ->whereNotNull('state_slug')
             ->where('state_slug', '!=', '')
             ->groupBy('state_slug')
-            ->get();
+            ->get()
+            ->each(function ($row) use ($sitemap, &$count) {
+                $sitemap->add(
+                    Url::create("{$this->baseUrl}/{$row->state_slug}")
+                        ->setLastModificationDate($this->toDate($row->last_updated))
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+                        ->setPriority(0.8)
+                );
+                $count++;
+            });
 
-        foreach ($uniqueStates as $state) {
-            $sitemap->add(
-                Url::create("/{$state->state_slug}")
-                    ->setLastModificationDate($state->updated_at ?? now())
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                    ->setPriority(0.7)
-            );
-        }
+        // ── State + Category ──────────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('categories', 'adverts.category', '=', 'categories.id')
+            ->select(
+                'adverts.state_slug',
+                'categories.category_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state_slug')
+            ->where('adverts.state_slug', '!=', '')
+            ->groupBy('adverts.state_slug', 'categories.category_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->state_slug}/{$row->category_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
+                }
+            });
 
-        // ========== BLOG LISTING PAGE ==========
+        // ── State + SubCategory ───────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('sub_categories', 'adverts.sub_category', '=', 'sub_categories.id')
+            ->select(
+                'adverts.state_slug',
+                'sub_categories.sub_cat_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state_slug')
+            ->where('adverts.state_slug', '!=', '')
+            ->groupBy('adverts.state_slug', 'sub_categories.sub_cat_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->state_slug}/{$row->sub_cat_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
+                }
+            });
+
+        // ── State + Brand ─────────────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('brands', 'adverts.brand', '=', 'brands.id')
+            ->select(
+                'adverts.state_slug',
+                'brands.brand_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state_slug')
+            ->where('adverts.state_slug', '!=', '')
+            ->whereNotNull('adverts.brand')
+            ->groupBy('adverts.state_slug', 'brands.brand_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->state_slug}/{$row->brand_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.7)
+                    );
+                    $count++;
+                }
+            });
+
+        $this->write($sitemap, 'sitemap-locations.xml', $index);
+        $this->info("  → sitemap-locations.xml ({$count} URLs)");
+    }
+
+    private function writeBrands(SitemapIndex $index): void
+    {
+        $sitemap = Sitemap::create();
+        $count   = 0;
+
+        // Only index brands that have at least one active advert
+        DB::table('brands')
+            ->join('adverts', 'brands.id', '=', 'adverts.brand')
+            ->select('brands.brand_slug', DB::raw('MAX(adverts.updated_at) as last_updated'))
+            ->where('adverts.ad_status', 1)
+            ->groupBy('brands.id', 'brands.brand_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/brand/{$row->brand_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.7)
+                    );
+                    $count++;
+                }
+            });
+
+        $this->write($sitemap, 'sitemap-brands.xml', $index);
+        $this->info("  → sitemap-brands.xml ({$count} URLs)");
+    }
+
+    private function writeAdverts(SitemapIndex $index): void
+    {
+        $sitemap = Sitemap::create();
+        $count   = 0;
+
+        Advert::where('ad_status', 1)
+            ->whereNotNull('state_slug')
+            ->where('state_slug', '!=', '')
+            ->orderBy('updated_at', 'desc')
+            ->chunk(500, function ($adverts) use ($sitemap, &$count) {
+                foreach ($adverts as $ad) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$ad->state_slug}/{$ad->title_slug}/{$ad->ad_id}")
+                            ->setLastModificationDate($ad->updated_at)
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
+                }
+            });
+
+        $this->write($sitemap, 'sitemap-adverts.xml', $index);
+        $this->info("  → sitemap-adverts.xml ({$count} URLs)");
+    }
+
+    private function writeBlog(SitemapIndex $index): void
+    {
+        $sitemap = Sitemap::create();
+        $count   = 0;
+
         $sitemap->add(
-            Url::create('/blog')
+            Url::create("{$this->baseUrl}/blog")
                 ->setLastModificationDate(now())
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setPriority(0.8)
         );
+        $count++;
 
-        // ========== BLOG POSTS ==========
         Blog::where('status', 'published')
-            ->orderBy('updated_at', 'DESC')
-            ->chunk(500, function ($blogs) use ($sitemap) {
+            ->orderBy('updated_at', 'desc')
+            ->chunk(500, function ($blogs) use ($sitemap, &$count) {
                 foreach ($blogs as $blog) {
                     $sitemap->add(
-                        Url::create("/blog/{$blog->slug}")
+                        Url::create("{$this->baseUrl}/blog/{$blog->slug}")
                             ->setLastModificationDate($blog->updated_at)
                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
                             ->setPriority(0.7)
                     );
+                    $count++;
                 }
             });
 
-        // ========== ADVERTS ==========
-        Advert::orderBy('updated_at', 'DESC')->chunk(500, function ($adverts) use ($sitemap) {
-            foreach ($adverts as $advert) {
-                $sitemap->add(
-                    Url::create("/{$advert->state_slug}/{$advert->title_slug}/{$advert->ad_id}")
-                        ->setLastModificationDate($advert->updated_at)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                        ->setPriority(0.8)
-                );
-            }
-        });
+        $this->write($sitemap, 'sitemap-blog.xml', $index);
+        $this->info("  → sitemap-blog.xml ({$count} URLs)");
+    }
 
-        // Save sitemap using the dynamic path
-        $sitemap->writeToFile($sitemapPath);
+    // -------------------------------------------------------------------------
 
-        $this->info("✔ Sitemap generated successfully at: {$sitemapPath}");
+    private function write(Sitemap $sitemap, string $filename, SitemapIndex $index): void
+    {
+        $sitemap->writeToFile($this->outputDir . $filename);
+
+        $index->add(
+            SitemapTag::create("{$this->publicUrl}/{$filename}")
+                ->setLastModificationDate(now())
+        );
+    }
+
+    /** Safely cast a raw DB date string or Carbon to DateTimeInterface. */
+    private function toDate(mixed $value): \DateTimeInterface
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return $value;
+        }
+
+        return $value ? \Carbon\Carbon::parse($value) : now();
     }
 }
