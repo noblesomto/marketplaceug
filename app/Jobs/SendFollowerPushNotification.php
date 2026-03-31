@@ -127,7 +127,7 @@ class SendFollowerPushNotification implements ShouldQueue
             'notification_type' => $this->notificationType,
             'advert_id' => (string) $this->advert->id,
             'ad_id' => (string) $this->advert->ad_id,
-            'seller_id' => (string) $this->seller->id,
+            'seller_id' => (string) $this->seller->user_id,
             'seller_name' => $this->seller->name,
             'ad_title' => $this->advert->ad_title,
             'price' => (string) ($this->advert->price ?? ''),

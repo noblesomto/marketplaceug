@@ -39,7 +39,7 @@ class AdvertController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 20);
+        $perPage = $request->get('per_page', 30);
         $currentPage = $request->get('page', 1);
         $section = $request->get('section', 'all');
 

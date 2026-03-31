@@ -69,7 +69,7 @@ class SendPushNotification implements ShouldQueue
         $data = [
             'type' => 'new_message',
             'message_id' => (string) $this->message->id,
-            'sender_id' => (string) $this->sender->id,
+            'sender_id' => (string) $this->sender->user_id,
             'sender_name' => $this->sender->name,
             'conversation_id' => (string) ($this->message->conversation_id ?? ''),
             'timestamp' => $this->message->created_at->toIso8601String(),

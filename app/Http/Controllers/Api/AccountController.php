@@ -627,11 +627,23 @@ class AccountController extends Controller
      */
     public function logout(Request $request)
     {
+        $request->validate([
+            'device_token' => 'nullable|string|max:255',
+        ]);
+
+        // Remove the FCM device token so this device stops receiving notifications
+        if ($request->filled('device_token')) {
+            \App\Models\DeviceToken::where('user_id', $request->user()->id)
+                ->where('token', $request->device_token)
+                ->delete();
+        }
+
+        // Revoke the Sanctum API token
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'status' => true,
-            'message' => 'Logged out successfully.'
+            'status'  => true,
+            'message' => 'Logged out successfully.',
         ]);
     }
 
@@ -1077,26 +1089,62 @@ class AccountController extends Controller
     }
 
     /**
-     * Verify Google token
+     * Verify Google token.
+     *
+     * Mobile Google Sign-In SDKs (Flutter, Android, iOS) return an ID token (JWT).
+     * Web OAuth flows return an access token.
+     * We try the ID token path first, then fall back to the access token path.
      */
     protected function verifyGoogleToken($token)
     {
-        $response = Http::get('https://www.googleapis.com/oauth2/v3/userinfo', [
-            'access_token' => $token
+        // ── Path 1: ID token (mobile SDK — most common) ───────────────────────
+        // Validates the JWT and returns claims including sub, email, name, picture.
+        $idResponse = Http::get('https://oauth2.googleapis.com/tokeninfo', [
+            'id_token' => $token,
         ]);
 
-        if (!$response->successful()) {
-            return null;
+        if ($idResponse->successful()) {
+            $data = $idResponse->json();
+
+            // Reject if the token has no subject claim
+            if (empty($data['sub'])) {
+                return null;
+            }
+
+            return (object) [
+                'id'     => $data['sub'],
+                'email'  => $data['email']   ?? null,
+                'name'   => $data['name']    ?? null,
+                'avatar' => $data['picture'] ?? null,
+            ];
         }
 
-        $data = $response->json();
+        // ── Path 2: Access token (web OAuth flow) ─────────────────────────────
+        // Must be sent as a Bearer header — query-param approach is deprecated.
+        $accessResponse = Http::withToken($token)
+            ->get('https://www.googleapis.com/oauth2/v3/userinfo');
 
-        return (object) [
-            'id' => $data['sub'] ?? null,
-            'email' => $data['email'] ?? null,
-            'name' => $data['name'] ?? null,
-            'avatar' => $data['picture'] ?? null,
-        ];
+        if ($accessResponse->successful()) {
+            $data = $accessResponse->json();
+
+            if (empty($data['sub'])) {
+                return null;
+            }
+
+            return (object) [
+                'id'     => $data['sub'],
+                'email'  => $data['email']   ?? null,
+                'name'   => $data['name']    ?? null,
+                'avatar' => $data['picture'] ?? null,
+            ];
+        }
+
+        Log::warning('Google token verification failed on both paths', [
+            'id_token_status'     => $idResponse->status(),
+            'access_token_status' => $accessResponse->status(),
+        ]);
+
+        return null;
     }
 
     /**

@@ -51,7 +51,7 @@ class TestNotificationController extends Controller
             'title' => 'nullable|string|max:255',
             'message' => 'required|string|max:500',
             'data' => 'nullable|array',
-            'target_user_id' => 'nullable|integer|exists:users,user_id',
+            'target_user_id' => 'nullable|string|exists:users,user_id',
             'device_token' => 'nullable|string',
         ]);
 
@@ -149,9 +149,13 @@ class TestNotificationController extends Controller
             return [$validated['device_token']];
         }
 
-        // Specific user
+        // Specific user — device_tokens.user_id stores users.id (autoincrement), resolve first
         if (!empty($validated['target_user_id'])) {
-            return DeviceToken::where('user_id', $validated['target_user_id'])
+            $targetUser = \App\Models\User::where('user_id', $validated['target_user_id'])->first();
+            if (!$targetUser) {
+                return [];
+            }
+            return DeviceToken::where('user_id', $targetUser->id)
                 ->where('is_active', true)
                 ->pluck('token')
                 ->toArray();
