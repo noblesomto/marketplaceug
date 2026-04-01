@@ -52,9 +52,15 @@ class SendPushNotification implements ShouldQueue
         }
 
         // Prepare notification
-        $messagePreview = mb_strlen($this->message->body) > 100
-            ? mb_substr($this->message->body, 0, 100) . '...'
-            : $this->message->body;
+        $content = $this->message->message_content;
+
+        if (!empty($content)) {
+            $messagePreview = mb_strlen($content) > 100
+                ? mb_substr($content, 0, 100) . '...'
+                : $content;
+        } else {
+            $messagePreview = 'Sent a photo';
+        }
 
         $notification = [
             'title' => $this->sender->name,
@@ -71,7 +77,7 @@ class SendPushNotification implements ShouldQueue
             'message_id' => (string) $this->message->id,
             'sender_id' => (string) $this->sender->user_id,
             'sender_name' => $this->sender->name,
-            'conversation_id' => (string) ($this->message->conversation_id ?? ''),
+            'advert_id' => (string) $this->message->advert_id,
             'timestamp' => $this->message->created_at->toIso8601String(),
             'click_action' => 'OPEN_CONVERSATION',
         ];
