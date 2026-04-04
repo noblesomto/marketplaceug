@@ -5,13 +5,7 @@
     <div class="p-5 border-b border-gray-100">
         <div class="flex items-start gap-3">
             <a href="/seller/{{ \Illuminate\Support\Str::slug($ad->owner->name) }}/{{ $ad->owner->user_id }}" class="shrink-0 relative">
-                @if($ad->owner->profile_picture == "")
-                    <div class="w-12 h-12 rounded-full bg-green-100 text-dark_green flex items-center justify-center font-bold text-lg">
-                        {{ strtoupper(substr($ad->owner->name, 0, 1)) }}
-                    </div>
-                @else
-                    <img class="w-12 h-12 rounded-full object-cover border border-gray-200" src="{{ $ad->owner->profile_thumbnail_url }}">
-                @endif
+                <img class="w-12 h-12 rounded-full object-cover border border-gray-200" src="{{ $ad->owner->profile_thumbnail_url }}" alt="{{ $ad->owner->name }}">
                 @if($ad->owner->verified=='yes')
                     <span class="absolute -bottom-1 -right-1 bg-green-500 text-white p-0.5 rounded-full border-2 border-white" title="Verified Seller">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>

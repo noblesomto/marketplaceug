@@ -139,6 +139,7 @@ class UserProfile extends Controller
                 if ($request->hasFile('profile_image')) {
                     $fileName = now()->format('YmdHis') . '_profile.' . $request->file('profile_image')->getClientOriginalExtension();
 
+                    $user->clearMediaCollection('profile_image');
                     $user->addMediaFromRequest('profile_image')
                         ->usingFileName($fileName)
                         ->toMediaCollection('profile_image');

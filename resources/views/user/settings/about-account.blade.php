@@ -17,15 +17,7 @@
     	<div class="w-full bg-white shadow p-3">
 			<div class="flex flex-col">
 		        <div class="flex">
-                    @if($user->profile_picture == "")
-                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">
-                                {{ strtoupper(substr($user->name, 0, 1)) }}{{ strtoupper(substr(explode(' ', $user->name)[1] ?? '', 0, 1)) }}
-                            </span>
-                        </div>
-                    @else
-                        <img class="w-10 h-10 rounded-full" src="{{ $user->profile_thumbnail_url }}" alt="Profile">
-                    @endif
+                    <img class="w-10 h-10 rounded-full object-cover" src="{{ $user->profile_thumbnail_url }}" alt="{{ $user->name }}">
                 </div>
 		        <div class="mt-2 ">
 		  <div class="block lg:hidden">
