@@ -67,9 +67,10 @@ class SendPushNotification implements ShouldQueue
             'body' => $messagePreview,
         ];
 
-        // Add image if available
-        if (!empty($this->sender->profile_image_url)) {
-            $notification['image'] = $this->sender->profile_image_url;
+        // Add sender avatar if it's a publicly accessible HTTPS URL
+        $imageUrl = $this->sender->profile_image_url ?? '';
+        if (!empty($imageUrl) && str_starts_with($imageUrl, 'https://')) {
+            $notification['image'] = $imageUrl;
         }
 
         $data = [
