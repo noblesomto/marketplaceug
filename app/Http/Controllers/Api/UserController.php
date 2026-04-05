@@ -136,6 +136,7 @@ class UserController extends Controller
 
                 return [
                     'advert' => $advert,
+                    'advert_thumbnail_url' => $advert ? $advert->getFirstImageUrl('thumbnail') : null,
                     'other_user' => $otherUser,
                     'unread_count' => $unreadCount
                 ];

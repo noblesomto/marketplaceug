@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         amountInput.removeAttribute('required');
                         toggle.checked = false;
                     }
-                    loadMessages();
+                    loadMessages(true);
 
                     // No success alert - silent success
                 },
@@ -525,19 +525,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Load chat messages
-    function loadMessages() {
+    function loadMessages(forceScroll) {
         const chatBox = $('#chat-box');
         if (chatBox.length) {
             $.ajax({
                 url: '{{ route("chat.show", ["advertId" => $advert->id, "receiverId" => $receiver->user_id]) }}',
                 method: 'GET',
                 success: function (data) {
-                    const wasAtBottom = chatBox.scrollTop() + chatBox.outerHeight() >= chatBox.prop('scrollHeight') - 10;
+                    const wasAtBottom = forceScroll || chatBox.scrollTop() + chatBox.outerHeight() >= chatBox[0].scrollHeight - 10;
                     chatBox.html($(data).find('#chat-box').html());
 
-                    // Only auto-scroll if user was already at bottom
                     if (wasAtBottom) {
-                        chatBox.scrollTop(chatBox.prop('scrollHeight'));
+                        chatBox.scrollTop(chatBox[0].scrollHeight);
                     }
                 },
                 error: function() {
@@ -549,10 +548,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Poll for messages
     if ($('#chat-box').length) {
+        // Scroll to bottom on page load (server-rendered messages)
+        const chatBox = document.getElementById('chat-box');
+        requestAnimationFrame(function () {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
         setInterval(loadMessages, 5000);
 
-        // Load messages on page load
-        setTimeout(loadMessages, 1000);
+        // Refresh messages on page load and force scroll to bottom
+        setTimeout(function () {
+            loadMessages(true);
+        }, 500);
     }
 
     // Handle drag and drop for files

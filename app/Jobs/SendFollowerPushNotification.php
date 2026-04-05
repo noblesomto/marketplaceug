@@ -109,9 +109,10 @@ class SendFollowerPushNotification implements ShouldQueue
             'body' => $body,
         ];
 
-        // Add seller image if available
-        if (!empty($this->seller->profile_image_url)) {
-            $notification['image'] = $this->seller->profile_image_url;
+        // Add advert thumbnail if available and publicly accessible
+        $imageUrl = $this->advert->getFirstImageUrl('thumbnail') ?? '';
+        if (!empty($imageUrl) && str_starts_with($imageUrl, 'https://')) {
+            $notification['image'] = $imageUrl;
         }
 
         return $notification;

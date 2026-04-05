@@ -284,9 +284,12 @@ class MessageController extends Controller
                 ->where('other_user_id', $otherUserId)
                 ->exists();
 
+            $advert = Advert::with('firstImage')->find($conversation->advert_id);
+
             return [
                 'advert_id' => $conversation->advert_id,
-                'advert' => Advert::with('firstImage')->find($conversation->advert_id),
+                'advert' => $advert,
+                'advert_thumbnail_url' => $advert ? $advert->getFirstImageUrl('thumbnail') : null,
                 'other_user' => User::where('user_id', $otherUserId)->first(),
                 'last_message' => $lastMessage,
                 'last_message_date' => $conversation->last_message_date,

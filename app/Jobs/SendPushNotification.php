@@ -67,8 +67,9 @@ class SendPushNotification implements ShouldQueue
             'body' => $messagePreview,
         ];
 
-        // Add sender avatar if it's a publicly accessible HTTPS URL
-        $imageUrl = $this->sender->profile_image_url ?? '';
+        // Add advert thumbnail if available and publicly accessible
+        $advert = $this->message->advert;
+        $imageUrl = $advert ? ($advert->getFirstImageUrl('thumbnail') ?? '') : '';
         if (!empty($imageUrl) && str_starts_with($imageUrl, 'https://')) {
             $notification['image'] = $imageUrl;
         }

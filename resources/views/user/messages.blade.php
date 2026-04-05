@@ -46,7 +46,11 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
                                         <div class="flex-shrink-0">
-                                                <img class="w-10 h-10 rounded-full object-cover" src="{{ $conversation['other_user']->profile_thumbnail_url }}" alt="{{ $conversation['other_user']->name }}">
+                                                @php $advertImg = $conversation['advert'] ? $conversation['advert']->getFirstImageUrl('thumbnail') : null; @endphp
+                                                <img class="w-10 h-10 rounded object-cover bg-gray-100"
+                                                     src="{{ $advertImg ?: asset('frontend/images/default.png') }}"
+                                                     alt="{{ $conversation['advert']->ad_title ?? 'Advert' }}"
+                                                     onerror="this.src='{{ asset('frontend/images/default.png') }}'">
                                         </div>
                                         <div>
                                             <h3 class="text-base font-medium text-gray-900">{{ $conversation['other_user']->name }}</h3>
