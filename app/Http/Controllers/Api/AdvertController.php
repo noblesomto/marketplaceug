@@ -959,7 +959,7 @@ class AdvertController extends Controller
         Reports::updateOrCreate(
             [
                 'advert_id' => $id,
-                'user_id' => $user->id,
+                'user_id' => $user->user_id,
             ],
             [
                 'subject' => $request->subject,

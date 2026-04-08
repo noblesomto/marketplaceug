@@ -54,8 +54,16 @@
                                     @forelse($adverts ?? [] as $row)
                                         <tr>
                                             <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->adverts->ad_title ?? 'N/A' }}</h6>
-                                                <small class="text-muted">ID: {{ $row->adverts->id ?? 'N/A' }}</small>
+                                                @if($row->adverts && $row->adverts->state_slug && $row->adverts->title_slug && $row->adverts->ad_id)
+                                                    <a href="{{ url($row->adverts->state_slug . '/' . $row->adverts->title_slug . '/' . $row->adverts->ad_id) }}"
+                                                       target="_blank" rel="noopener"
+                                                       class="fw-semibold text-decoration-none">
+                                                        {{ $row->adverts->ad_title }}
+                                                    </a>
+                                                @else
+                                                    <h6 class="mb-0 fw-semibold">{{ $row->adverts->ad_title ?? 'N/A' }}</h6>
+                                                @endif
+                                                <small class="text-muted">ID: {{ $row->adverts->ad_id ?? ($row->adverts->id ?? 'N/A') }}</small>
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column">

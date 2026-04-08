@@ -91,7 +91,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
             </svg>
           </span>
-          <span class="text-xs">{{ $row->state }}</span>
+          <span class="text-xs">{{ $row->state }}, {{ $row->lga }}</span>
         </div>
         @if($row->sold=="Yes")
           <span class="flex items-center gap-2 bg-red-100 text-red-800 p-1 rounded cursor-not-allowed" title="This advert is already sold">
