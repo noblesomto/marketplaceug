@@ -99,7 +99,7 @@ class SearchController extends Controller
         }
 
         $ads = $query->orderWithFeatured()
-                    ->paginate($request->input('per_page', 10));
+                    ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,
@@ -196,7 +196,7 @@ class SearchController extends Controller
         }
 
         $adverts = $query->orderWithFeatured()
-                        ->paginate($request->input('per_page', 10));
+                        ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,
@@ -256,7 +256,7 @@ class SearchController extends Controller
         }
 
         $adverts = $query->orderWithFeatured()
-                        ->paginate($request->input('per_page', 10));
+                        ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,
@@ -313,7 +313,7 @@ class SearchController extends Controller
         }
 
         $adverts = $query->orderWithFeatured()
-                        ->paginate($request->input('per_page', 10));
+                        ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,
@@ -523,7 +523,7 @@ class SearchController extends Controller
         }
 
         $ads = $query->orderWithFeatured()
-                    ->paginate($request->input('per_page', 10));
+                    ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,

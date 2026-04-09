@@ -179,10 +179,9 @@ class Advert extends Model implements HasMedia
 
     public function scopeOrderWithFeatured($query)
     {
-        return $query->selectRaw('adverts.*, (featured = "yes") as is_featured')
-                     ->orderByDesc('is_featured') // Featured first
-                     ->orderByRaw('CASE WHEN featured = "yes" THEN RAND() END') // Random featured
-                     ->orderByDesc('created_at'); // Others newest
+        return $query->selectRaw('adverts.*, (featured = "Yes") as is_featured')
+                     ->orderByDesc('is_featured')  // Featured first
+                     ->orderByDesc('created_at');  // Then newest
     }
 
     public function scopeActiveNotSold($query)
