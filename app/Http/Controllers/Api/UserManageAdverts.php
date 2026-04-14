@@ -247,20 +247,21 @@ class UserManageAdverts extends Controller
         $rules = $validationService->getRules($category, $subcat, false);
 
         $messages = [
-            'images.required'         => 'Please upload at least 3 images.',
-            'images.min'              => 'Please upload at least 3 images.',
-            'condition.required'      => 'Please select the vehicle condition.',
-            'registration.required'   => 'Please select the vehicle registration status.',
-            'fuel.required'           => 'Please select the fuel type.',
-            'transmission.required'   => 'Please select the transmission type.',
-            'vehicle_type.required'   => 'Please select the body/vehicle type.',
-            'exterior_color.required' => 'Please select the exterior color.',
-            'model.required'          => 'Please select the vehicle model.',
-            'model.exists'            => 'The selected model is invalid.',
-            'model.min'               => 'Please select a valid vehicle model.',
-            'phone_color.required'    => 'Please select the phone color.',
-            'phone_condition.required'=> 'Please select the phone condition.',
-            'device.required'         => 'Please select the device storage/variant.',
+            'images.required'             => 'Please upload at least 3 images.',
+            'images.min'                  => 'Please upload at least 3 images.',
+            'description.not_regex'       => 'Phone numbers are not allowed in the description.',
+            'condition.required'          => 'Please select the vehicle condition.',
+            'registration.required'       => 'Please select the vehicle registration status.',
+            'fuel.required'               => 'Please select the fuel type.',
+            'transmission.required'       => 'Please select the transmission type.',
+            'vehicle_type.required'       => 'Please select the body/vehicle type.',
+            'exterior_color.required'     => 'Please select the exterior color.',
+            'model.required'              => 'Please select the vehicle model.',
+            'model.exists'                => 'The selected model is invalid.',
+            'model.min'                   => 'Please select a valid vehicle model.',
+            'phone_color.required'        => 'Please select the phone color.',
+            'phone_condition.required'    => 'Please select the phone condition.',
+            'device.required'             => 'Please select the device type.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -665,18 +666,19 @@ class UserManageAdverts extends Controller
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $messages = [
-            'condition.required'      => 'Please select the vehicle condition.',
-            'registration.required'   => 'Please select the vehicle registration status.',
-            'fuel.required'           => 'Please select the fuel type.',
-            'transmission.required'   => 'Please select the transmission type.',
-            'vehicle_type.required'   => 'Please select the body/vehicle type.',
-            'exterior_color.required' => 'Please select the exterior color.',
-            'model.required'          => 'Please select the vehicle model.',
-            'model.exists'            => 'The selected model is invalid.',
-            'model.min'               => 'Please select a valid vehicle model.',
-            'phone_color.required'    => 'Please select the phone color.',
-            'phone_condition.required'=> 'Please select the phone condition.',
-            'device.required'         => 'Please select the device storage/variant.',
+            'description.not_regex'       => 'Phone numbers are not allowed in the description.',
+            'condition.required'          => 'Please select the vehicle condition.',
+            'registration.required'       => 'Please select the vehicle registration status.',
+            'fuel.required'               => 'Please select the fuel type.',
+            'transmission.required'       => 'Please select the transmission type.',
+            'vehicle_type.required'       => 'Please select the body/vehicle type.',
+            'exterior_color.required'     => 'Please select the exterior color.',
+            'model.required'              => 'Please select the vehicle model.',
+            'model.exists'                => 'The selected model is invalid.',
+            'model.min'                   => 'Please select a valid vehicle model.',
+            'phone_color.required'        => 'Please select the phone color.',
+            'phone_condition.required'    => 'Please select the phone condition.',
+            'device.required'             => 'Please select the device type.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

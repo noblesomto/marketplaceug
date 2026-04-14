@@ -460,6 +460,7 @@
                             <option value="Used - In Order" {{ old('phone_condition') == 'Used - In Order' ? 'selected' : '' }}>Used - In Order</option>
                             <option value="Used - Defect" {{ old('phone_condition') == 'Used - Defect' ? 'selected' : '' }}>Used - Defect</option>
                         </select>
+                        @if ($errors->has('phone_condition')) <p class="text-xs text-red-500 mt-1">{{ $errors->first('phone_condition') }}</p> @endif
                     </div>
 
                 </div>

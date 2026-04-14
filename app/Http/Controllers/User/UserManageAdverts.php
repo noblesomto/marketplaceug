@@ -163,11 +163,12 @@ class UserManageAdverts extends Controller
             // This prevents 500 errors and avoids validating hidden fields
             try {
                 $request->validate([
-                    'ad_title' => 'required|max:75',
-                    'description' => 'required|max:3500',
+                    'ad_title'    => 'required|max:75',
+                    'description' => ['required', 'max:3500', 'not_regex:/\b\d{11,}\b/'],
                 ], [
-                    'ad_title.required' => 'Ad title is required.',
-                    'description.required' => 'Description is required.',
+                    'ad_title.required'       => 'Ad title is required.',
+                    'description.required'    => 'Description is required.',
+                    'description.not_regex'   => 'Phone numbers are not allowed in the description.',
                 ]);
             } catch (\Illuminate\Validation\ValidationException $e) {
                 // Validation failed - flash temp images to session
@@ -192,26 +193,27 @@ class UserManageAdverts extends Controller
 
             // Custom validation messages
             $messages = [
-                'images.required'         => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
-                'images.min'              => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
-                'images.max'              => 'You may upload a maximum of ' . AdSetting::getValue('max_images', 8) . ' images.',
-                'images.*.image'          => 'All files must be images.',
-                'images.*.mimes'          => 'Images must be jpeg, png, jpg, or gif format.',
-                'images.*.max'            => 'Each image must not exceed 20MB.',
+                'images.required'             => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
+                'images.min'                  => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
+                'images.max'                  => 'You may upload a maximum of ' . AdSetting::getValue('max_images', 8) . ' images.',
+                'images.*.image'              => 'All files must be images.',
+                'images.*.mimes'              => 'Images must be jpeg, png, jpg, or gif format.',
+                'images.*.max'                => 'Each image must not exceed 20MB.',
+                'description.not_regex'       => 'Phone numbers are not allowed in the description.',
                 // Car-specific messages
-                'condition.required'      => 'Please select the vehicle condition.',
-                'registration.required'   => 'Please select the vehicle registration status.',
-                'fuel.required'           => 'Please select the fuel type.',
-                'transmission.required'   => 'Please select the transmission type.',
-                'vehicle_type.required'   => 'Please select the body/vehicle type.',
-                'exterior_color.required' => 'Please select the exterior color.',
-                'model.required'          => 'Please select the vehicle model.',
-                'model.exists'            => 'The selected model is invalid. Please select a valid model.',
-                'model.min'               => 'Please select a valid vehicle model.',
+                'condition.required'          => 'Please select the vehicle condition.',
+                'registration.required'       => 'Please select the vehicle registration status.',
+                'fuel.required'               => 'Please select the fuel type.',
+                'transmission.required'       => 'Please select the transmission type.',
+                'vehicle_type.required'       => 'Please select the body/vehicle type.',
+                'exterior_color.required'     => 'Please select the exterior color.',
+                'model.required'              => 'Please select the vehicle model.',
+                'model.exists'                => 'The selected model is invalid. Please select a valid model.',
+                'model.min'                   => 'Please select a valid vehicle model.',
                 // Phone-specific messages
-                'phone_color.required'    => 'Please select the phone color.',
-                'phone_condition.required'=> 'Please select the phone condition.',
-                'device.required'         => 'Please select the device storage/variant.',
+                'phone_color.required'        => 'Please select the phone color.',
+                'phone_condition.required'    => 'Please select the phone condition.',
+                'device.required'             => 'Please select the device type.',
             ];
 
             try {
@@ -494,7 +496,12 @@ class UserManageAdverts extends Controller
         $validationService = new AdvertValidationService();
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
-        $validatedData = $request->validate($rules);
+        $validatedData = $request->validate($rules, [
+            'description.not_regex'    => 'Phone numbers are not allowed in the description.',
+            'phone_color.required'     => 'Please select the phone color.',
+            'phone_condition.required' => 'Please select the phone condition.',
+            'device.required'          => 'Please select the device type.',
+        ]);
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title'));
         $adDescrition = ContentHelper::sanitizeDescription($request->input('description'));
         $metaDescription = Str::limit($adDescrition, 150, '');
