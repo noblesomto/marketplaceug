@@ -10,7 +10,7 @@
         <span>Discover what's trending</span>
     </div>
 
-    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-proximity scrollbar-hide overscroll-x-contain">
         @foreach ($gallery as $row)
         <div class="relative flex-none w-[45%] md:w-1/4 snap-start">
             <div class="relative overflow-hidden">
@@ -152,7 +152,7 @@
         </a>
     </div>
 
-    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-proximity scrollbar-hide overscroll-x-contain">
         @foreach ($cars as $row)
         <div class="relative flex-none w-[45%] md:w-1/4 snap-start">
             <div class="relative overflow-hidden">
@@ -273,7 +273,7 @@
         </a>
     </div>
 
-    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-proximity scrollbar-hide overscroll-x-contain">
         @foreach ($phones as $row)
         <div class="relative flex-none w-[45%] md:w-1/4 snap-start">
             <div class="relative overflow-hidden">
@@ -394,7 +394,7 @@
         </a>
     </div>
 
-    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-mandatory scrollbar-hide">
+    <div class="flex overflow-x-auto space-x-2 px-1 pb-5 snap-x snap-proximity scrollbar-hide overscroll-x-contain">
         @foreach ($fashion as $row)
         <div class="relative flex-none w-[45%] md:w-1/4 snap-start">
             <div class="relative overflow-hidden">

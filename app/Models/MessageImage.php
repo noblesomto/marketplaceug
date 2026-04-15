@@ -15,6 +15,11 @@ class MessageImage extends Model implements HasMedia
 
     protected $fillable = ['message_id', 'image_path'];
 
+    /**
+     * Automatically include image URLs in JSON/API responses
+     */
+    protected $appends = ['optimized_image_url', 'large_image_url'];
+
     public function message()
     {
         return $this->belongsTo(Message::class);
@@ -27,7 +32,7 @@ class MessageImage extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp']);
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('large')
             ->format('webp')
