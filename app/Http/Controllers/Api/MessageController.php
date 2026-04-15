@@ -91,8 +91,13 @@ class MessageController extends Controller
         ]);
 
         // Handle image uploads
+        // Normalise to an array: mobile apps may send a single file as 'images'
+        // (not 'images[]'), in which case Laravel returns an UploadedFile, not an array.
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $imageFile) {
+            $files = $request->file('images');
+            $imageFiles = is_array($files) ? $files : [$files];
+
+            foreach ($imageFiles as $imageFile) {
                 $messageImage = MessageImage::create([
                     'message_id' => $message->id,
                 ]);
@@ -102,8 +107,9 @@ class MessageController extends Controller
             }
         }
 
-        // Load relationships for response
-        $message->load('images');
+        // Eager-load images with their media so appended URL attributes
+        // (optimized_image_url / large_image_url) resolve correctly.
+        $message->load('images.media');
 
         // Broadcast events
         event(new NewMessageNotification($message));
@@ -155,7 +161,7 @@ class MessageController extends Controller
             ], 404);
         }
 
-        $messages = Message::with(['images', 'sender', 'receiver'])
+        $messages = Message::with(['images.media', 'sender', 'receiver'])
             ->where(function ($query) use ($user, $receiver, $advertId) {
                 $query->where('sender_id', $user->user_id)
                       ->where('receiver_id', $receiver->user_id)
@@ -210,7 +216,7 @@ class MessageController extends Controller
     {
         $user = auth()->user();
 
-        $messages = Message::with(['sender', 'receiver', 'images'])
+        $messages = Message::with(['sender', 'receiver', 'images.media'])
             ->where('advert_id', $advertId)
             ->where(function ($query) use ($user) {
                 $query->where('sender_id', $user->user_id)
