@@ -59,18 +59,25 @@ class AdvertisingController extends Controller
         $ads = $query->get()->map(function ($ad) {
             $expiresAt = Carbon::parse($ad->start_date)->addDays((int) $ad->duration);
 
+            $desktopImageUrl = $ad->image
+                ? url('uploads/advertising/' . $ad->image)
+                : null;
+
+            $mobileImageUrl = $ad->mobile_image
+                ? url('uploads/advertising/' . $ad->mobile_image)
+                : $desktopImageUrl;
+
             return [
-                'id'            => $ad->id,
-                'advert_id'     => $ad->advert_id,
-                'company'       => $ad->company,
-                'image_url'     => $ad->image
-                    ? url('uploads/advertising/' . $ad->image)
-                    : null,
-                'url'           => $ad->url,
-                'type'          => $ad->type,
-                'start_date'    => $ad->start_date,
-                'expires_at'    => $expiresAt->toDateTimeString(),
-                'days_remaining'=> max(0, (int) now()->diffInDays($expiresAt, false)),
+                'id'                 => $ad->id,
+                'advert_id'          => $ad->advert_id,
+                'company'            => $ad->company,
+                'image_url'          => $mobileImageUrl,
+                'desktop_image_url'  => $desktopImageUrl,
+                'url'                => $ad->url,
+                'type'               => $ad->type,
+                'start_date'         => $ad->start_date,
+                'expires_at'         => $expiresAt->toDateTimeString(),
+                'days_remaining'     => max(0, (int) now()->diffInDays($expiresAt, false)),
             ];
         });
 

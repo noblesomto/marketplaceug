@@ -200,17 +200,39 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Current Image</label>
-                                                                    <div class="mb-2">
-                                                                        <img src="{{ asset('uploads/advertising/'.$row->image) }}"
-                                                                             class="img-fluid advert-image"
-                                                                             style="max-height: 150px;"
-                                                                             alt="{{ $row->company }}">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Desktop Image</label>
+                                                                            <div class="mb-2">
+                                                                                <img src="{{ asset('uploads/advertising/'.$row->image) }}"
+                                                                                     class="img-fluid advert-image"
+                                                                                     style="max-height: 120px;"
+                                                                                     alt="{{ $row->company }}">
+                                                                            </div>
+                                                                            <label class="form-label">Replace Desktop Image (Optional)</label>
+                                                                            <input type="file" name="advert_image" class="form-control" accept="image/*">
+                                                                            <small class="form-text text-muted">Wide landscape format (e.g. 1200×200px)</small>
+                                                                        </div>
                                                                     </div>
-                                                                    <label class="form-label">Replace Image (Optional)</label>
-                                                                    <input type="file" name="advert_image" class="form-control" accept="image/*">
-                                                                    <small class="form-text text-muted">Leave empty to keep current image</small>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Mobile Image</label>
+                                                                            <div class="mb-2">
+                                                                                @if($row->mobile_image)
+                                                                                    <img src="{{ asset('uploads/advertising/'.$row->mobile_image) }}"
+                                                                                         class="img-fluid advert-image"
+                                                                                         style="max-height: 120px;"
+                                                                                         alt="{{ $row->company }} Mobile">
+                                                                                @else
+                                                                                    <span class="text-muted small">No mobile image set — desktop image will be used</span>
+                                                                                @endif
+                                                                            </div>
+                                                                            <label class="form-label">{{ $row->mobile_image ? 'Replace Mobile Image (Optional)' : 'Upload Mobile Image (Optional)' }}</label>
+                                                                            <input type="file" name="advert_mobile_image" class="form-control" accept="image/*">
+                                                                            <small class="form-text text-muted">Square or portrait format (e.g. 600×300px)</small>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -336,16 +358,29 @@
                                 </div>
                             </div>
 
-                            <div class="mb-4">
-                                <label class="form-label">
-                                    <i class="fas fa-image me-1"></i>Advertisement Image <span class="text-danger">*</span>
-                                </label>
-                                @if ($errors->has('advert_image'))
-                                    <div class="text-danger small mb-2">{{ $errors->first('advert_image') }}</div>
-                                @endif
-                                <input type="file" name="advert_image" class="form-control @error('advert_image') is-invalid @enderror"
-                                       accept="image/*" required>
-                                <small class="form-text text-muted">Accepted formats: JPG, PNG, GIF. Maximum size: 2MB</small>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-desktop me-1"></i>Desktop Image <span class="text-danger">*</span>
+                                    </label>
+                                    @if ($errors->has('advert_image'))
+                                        <div class="text-danger small mb-2">{{ $errors->first('advert_image') }}</div>
+                                    @endif
+                                    <input type="file" name="advert_image" class="form-control @error('advert_image') is-invalid @enderror"
+                                           accept="image/*" required>
+                                    <small class="form-text text-muted">Wide landscape format (e.g. 1200×200px). Max 2MB</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-mobile-alt me-1"></i>Mobile Image <span class="text-muted">(Optional)</span>
+                                    </label>
+                                    @if ($errors->has('advert_mobile_image'))
+                                        <div class="text-danger small mb-2">{{ $errors->first('advert_mobile_image') }}</div>
+                                    @endif
+                                    <input type="file" name="advert_mobile_image" class="form-control @error('advert_mobile_image') is-invalid @enderror"
+                                           accept="image/*">
+                                    <small class="form-text text-muted">Square or portrait format (e.g. 600×300px). If omitted, desktop image is used. Max 2MB</small>
+                                </div>
                             </div>
 
                             <div class="d-flex gap-2">

@@ -22,6 +22,7 @@ class ManageAdvertising extends Controller
             $request->validate([
                 'company' => 'required',
                 'advert_image' => 'required|image|mimes:jpg,png,jpeg,gif|max:3048',
+                'advert_mobile_image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:3048',
                 'url' => 'required|url',
                 'duration' => 'required',
                ]);
@@ -31,6 +32,14 @@ class ManageAdvertising extends Controller
             $imageName = str_replace(' ', '-', $imageName);
             $request->file('advert_image')->move('uploads/advertising', $imageName);
 
+            $mobileImageName = null;
+            if ($request->hasFile('advert_mobile_image')) {
+                $mobileImage = $request->file('advert_mobile_image');
+                $mobileImageName = time().'_mobile.'.$mobileImage->extension();
+                $mobileImageName = str_replace(' ', '-', $mobileImageName);
+                $mobileImage->move('uploads/advertising', $mobileImageName);
+            }
+
             $post = Advertising::create([
                 'advert_id'=> rand(11111,99999),
                 'company'=> $request->input('company'),
@@ -39,6 +48,7 @@ class ManageAdvertising extends Controller
                 'start_date'=> Carbon::now(),
                 'type'=> $request->input('type'),
                 'image'=> $imageName,
+                'mobile_image'=> $mobileImageName,
                 'status'=> "active",
             ]);
 
@@ -60,7 +70,8 @@ class ManageAdvertising extends Controller
             'duration' => 'required|integer',
             'type' => 'required|string|in:banner,sidebar',
             'status' => 'required|string|in:active,inactive,pending',
-            'advert_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'advert_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'advert_mobile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
@@ -79,18 +90,28 @@ class ManageAdvertising extends Controller
                 $advert->start_date = Carbon::now();
             }
 
-            // Handle image upload if provided
+            // Handle desktop image upload if provided
             if ($request->hasFile('advert_image')) {
-                // Delete old image if it exists
                 if ($advert->image && file_exists(public_path('uploads/advertising/' . $advert->image))) {
                     unlink(public_path('uploads/advertising/' . $advert->image));
                 }
 
-                // Upload new image
                 $image = $request->file('advert_image');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('uploads/advertising'), $imageName);
                 $advert->image = $imageName;
+            }
+
+            // Handle mobile image upload if provided
+            if ($request->hasFile('advert_mobile_image')) {
+                if ($advert->mobile_image && file_exists(public_path('uploads/advertising/' . $advert->mobile_image))) {
+                    unlink(public_path('uploads/advertising/' . $advert->mobile_image));
+                }
+
+                $mobileImage = $request->file('advert_mobile_image');
+                $mobileImageName = time() . '_mobile_' . uniqid() . '.' . $mobileImage->getClientOriginalExtension();
+                $mobileImage->move(public_path('uploads/advertising'), $mobileImageName);
+                $advert->mobile_image = $mobileImageName;
             }
 
             // Save the updated advertisement

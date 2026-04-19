@@ -12,6 +12,7 @@ class Advertising extends Model
         'advert_id',
         'company',
         'image',
+        'mobile_image',
         'url',
         'duration',
         'start_date',
