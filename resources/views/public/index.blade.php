@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="my-5">
+    <div class="my-3 w-full overflow-hidden">
       @include('public.components.advert.banner-advert')
     </div>
 

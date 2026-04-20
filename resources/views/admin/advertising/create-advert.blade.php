@@ -82,12 +82,29 @@
                                         @foreach ($adverts as $index => $row)
                                             <tr>
                                                 <td class="text-center">
-                                                    <img width="80" height="80"
-                                                         class="img-fluid advert-image object-fit-cover"
-                                                         src="{{ asset('uploads/advertising/'.$row->image) }}"
-                                                         alt="{{ $row->company }}"
-                                                         data-bs-toggle="tooltip"
-                                                         title="Click to view full size">
+                                                    <div class="d-flex gap-1 justify-content-center align-items-end">
+                                                        @if($row->image)
+                                                            <div>
+                                                                <div class="text-muted" style="font-size:10px;">Desktop</div>
+                                                                <img width="70" height="50"
+                                                                     class="img-fluid advert-image object-fit-cover"
+                                                                     src="{{ asset('uploads/advertising/'.$row->image) }}"
+                                                                     alt="{{ $row->company }} desktop">
+                                                            </div>
+                                                        @endif
+                                                        @if($row->mobile_image)
+                                                            <div>
+                                                                <div class="text-muted" style="font-size:10px;">Mobile</div>
+                                                                <img width="50" height="50"
+                                                                     class="img-fluid advert-image object-fit-cover"
+                                                                     src="{{ asset('uploads/advertising/'.$row->mobile_image) }}"
+                                                                     alt="{{ $row->company }} mobile">
+                                                            </div>
+                                                        @endif
+                                                        @if(!$row->image && !$row->mobile_image)
+                                                            <span class="text-muted small">No image</span>
+                                                        @endif
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <strong>{{ $row->company }}</strong>
