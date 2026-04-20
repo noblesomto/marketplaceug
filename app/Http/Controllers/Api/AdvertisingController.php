@@ -65,7 +65,7 @@ class AdvertisingController extends Controller
 
             $mobileImageUrl = $ad->mobile_image
                 ? url('uploads/advertising/' . $ad->mobile_image)
-                : $desktopImageUrl;
+                : $desktopImageUrl; // falls back to desktop, or null if neither set
 
             return [
                 'id'                 => $ad->id,

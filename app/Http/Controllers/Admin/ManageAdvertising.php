@@ -21,16 +21,25 @@ class ManageAdvertising extends Controller
                 //dd($request);
             $request->validate([
                 'company' => 'required',
-                'advert_image' => 'required|image|mimes:jpg,png,jpeg,gif|max:3048',
+                'advert_image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:3048',
                 'advert_mobile_image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:3048',
                 'url' => 'required|url',
                 'duration' => 'required',
-               ]);
+            ], [
+                'advert_image.required_without' => 'Please upload at least a desktop or mobile image.',
+            ]);
 
-            $image = $request->file('advert_image');
-            $imageName = time().'.'.$image->extension();
-            $imageName = str_replace(' ', '-', $imageName);
-            $request->file('advert_image')->move('uploads/advertising', $imageName);
+            if (!$request->hasFile('advert_image') && !$request->hasFile('advert_mobile_image')) {
+                return redirect()->back()->withErrors(['advert_image' => 'Please upload at least a desktop or mobile image.'])->withInput();
+            }
+
+            $imageName = null;
+            if ($request->hasFile('advert_image')) {
+                $image = $request->file('advert_image');
+                $imageName = time().'.'.$image->extension();
+                $imageName = str_replace(' ', '-', $imageName);
+                $image->move('uploads/advertising', $imageName);
+            }
 
             $mobileImageName = null;
             if ($request->hasFile('advert_mobile_image')) {

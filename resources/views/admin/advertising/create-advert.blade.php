@@ -361,13 +361,13 @@
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        <i class="fas fa-desktop me-1"></i>Desktop Image <span class="text-danger">*</span>
+                                        <i class="fas fa-desktop me-1"></i>Desktop Image <span class="text-muted">(Optional)</span>
                                     </label>
                                     @if ($errors->has('advert_image'))
                                         <div class="text-danger small mb-2">{{ $errors->first('advert_image') }}</div>
                                     @endif
                                     <input type="file" name="advert_image" class="form-control @error('advert_image') is-invalid @enderror"
-                                           accept="image/*" required>
+                                           accept="image/*">
                                     <small class="form-text text-muted">Wide landscape format (e.g. 1200×200px). Max 2MB</small>
                                 </div>
                                 <div class="col-md-6">
