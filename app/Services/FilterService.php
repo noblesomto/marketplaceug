@@ -146,6 +146,33 @@ class FilterService
     }
 
     /**
+     * Apply condition filter, routing to the correct table based on category.
+     *
+     * - Category 1 (Vehicles)              → car_details.condition
+     * - Category 4 (Mobile Phone & Tablets) → phone_details.condition
+     * - All others                          → adverts.item_condition
+     */
+    public function applyConditionFilter(Builder $query, Request $request): Builder
+    {
+        if (!$request->filled('item_condition')) {
+            return $query;
+        }
+
+        $condition = $request->input('item_condition');
+        $category  = (int) $request->input('category');
+
+        if ($category === 1) {
+            $query->whereHas('car', fn($q) => $q->where('condition', $condition));
+        } elseif ($category === 4) {
+            $query->whereHas('phone', fn($q) => $q->where('condition', $condition));
+        } else {
+            $query->where('item_condition', $condition);
+        }
+
+        return $query;
+    }
+
+    /**
      * Apply car detail filters (condition, fuel type, transmission, registration)
      *
      * @param Builder $query
@@ -154,7 +181,7 @@ class FilterService
      */
     public function applyCarFilters(Builder $query, Request $request): Builder
     {
-        $query->whereHas('carDetail', function ($q) use ($request) {
+        $query->whereHas('car', function ($q) use ($request) {
             if ($request->filled('condition')) {
                 $q->where('condition', $request->condition);
             }
@@ -184,7 +211,7 @@ class FilterService
      */
     public function applyPhoneFilters(Builder $query, Request $request): Builder
     {
-        $query->whereHas('phoneDetail', function ($q) use ($request) {
+        $query->whereHas('phone', function ($q) use ($request) {
             if ($request->filled('condition')) {
                 $q->where('condition', $request->condition);
             }
@@ -210,6 +237,7 @@ class FilterService
         $this->applyPriceFilters($query, $request);
         $this->applySellerFilter($query, $request);
         $this->applyBuyDirectFilter($query, $request);
+        $this->applyConditionFilter($query, $request);
 
         return $query;
     }

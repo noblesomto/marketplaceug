@@ -268,6 +268,9 @@ class UserManageAdverts extends Controller
                 return redirect('/user/my-ads')->with('error', "You already have an active listing with this title in the same category. Please edit the existing ad or wait before re-listing.");
             }
 
+            DB::beginTransaction();
+            try {
+
             $advert = Advert::create([
                 'ad_title'         => $adTitle,
                 'ad_type'          => $request->input('ad_type', 'Private'), // ✅ Default to 'Private' if not provided
@@ -293,7 +296,7 @@ class UserManageAdverts extends Controller
                 'show_contact'     => $request->input('show_contact', 'No'), // ✅ Default to 'No' if not provided
                 'quantity'         => $request->input('quantity') ?? 1,
                 'views'            => "0",
-                'ad_status'        => "active",
+                'ad_status'        => 'draft',
                 'user_id'          => $user_id,
             ]);
 
@@ -387,6 +390,14 @@ class UserManageAdverts extends Controller
                 $phone->save();
             }
 
+            $advert->update(['ad_status' => 'active']);
+            DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Advert creation failed: ' . $e->getMessage());
+                return back()->withErrors(['error' => 'Something went wrong while posting your advert. Please try again.'])->withInput();
+            }
 
             $user_id = $request->session()->get('user_id');
             $seller  = User::where('user_id', $user_id)->first();

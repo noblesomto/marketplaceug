@@ -241,6 +241,9 @@ Route::middleware('auth:sanctum')->prefix('adverts')->group(function () {
     // Get data for creating adverts
     Route::get('/create/data', [UserManageAdverts::class, 'getCreateData']);
 
+    // Pre-upload images (two-step flow) — returns tokens to pass in temp_image_paths[]
+    Route::post('/upload-images', [UserManageAdverts::class, 'uploadImages']);
+
     // Get advert for editing
     Route::get('/{advertId}/edit', [UserManageAdverts::class, 'getAdvertForEdit']);
 

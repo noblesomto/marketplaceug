@@ -46,6 +46,12 @@
     let userId = {{ $user->user_id }}; // The current user sending the message
     let adOwner = {{ $ad->user_id }};
 
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
      // Function to load messages
     function loadMessages() {
         fetch(`/messages/${adId}/${adOwner}`)
@@ -60,12 +66,12 @@
                     messageBox.innerHTML += `
                         <div class="mb-2 p-1 ${messageClass} rounded">
                             <div class="flex flex-col">
-                                <div class="text-base">
-                                    ${message.message_content}
+                                <div class="text-base whitespace-pre-wrap break-words">
+                                    ${escapeHtml(message.message_content)}
                                 </div>
-                                <div class= text-xs">
+                                <div class="text-xs">
                                     <div class="w-full flex justify-end">
-                                        <small>${formattedDate}</small> 
+                                        <small>${formattedDate}</small>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +108,10 @@
         const messagesDiv = document.getElementById('messages');
         const newMessage = document.createElement('div');
         newMessage.classList.add('mb-2');
-        newMessage.innerHTML = ` ${message.message}`;
+        const span = document.createElement('span');
+        span.className = 'whitespace-pre-wrap break-words';
+        span.textContent = message.message || '';
+        newMessage.appendChild(span);
         messagesDiv.appendChild(newMessage);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }

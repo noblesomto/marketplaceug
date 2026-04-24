@@ -46,6 +46,12 @@
     let userId = {{ $user->user_id }}; // The current user sending the message
     let adOwner = {{ $ad->user_id }};
 
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
      // Function to load messages
     function loadMessages() {
         fetch(`/messages/${adId}/${adOwner}`)
@@ -57,7 +63,7 @@
                     let messageClass = (message.user_id == userId) ? 'bg-blue-500 text-white' : 'bg-gray-300';
                     messageBox.innerHTML += `
                         <div class="mb-2 p-2 ${messageClass} rounded">
-                            <strong></strong> ${message.message}
+                            <strong></strong> <span class="whitespace-pre-wrap break-words">${escapeHtml(message.message)}</span>
                         </div>
                     `;
                 });
@@ -91,7 +97,10 @@
         const messagesDiv = document.getElementById('messages');
         const newMessage = document.createElement('div');
         newMessage.classList.add('mb-2');
-        newMessage.innerHTML = ` ${message.message}`;
+        const span = document.createElement('span');
+        span.className = 'whitespace-pre-wrap break-words';
+        span.textContent = message.message || '';
+        newMessage.appendChild(span);
         messagesDiv.appendChild(newMessage);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }

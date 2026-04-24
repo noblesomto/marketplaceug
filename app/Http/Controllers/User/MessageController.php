@@ -106,7 +106,7 @@ class MessageController extends Controller
     $message->advert_id = $advertId;
     $message->sender_id = $senderId;
     $message->receiver_id = $receiverId;
-    $message->message_content = $request->message;
+    $message->message_content = strip_tags($request->message);
     $message->is_read = false;
     $message->save();
 

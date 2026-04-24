@@ -47,6 +47,12 @@
     let userId = {{ $user->user_id }}; // The current user sending the message
     let adOwner = {{ $ad->user_id }};
 
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
      // Function to load messages
     function loadMessages() {
         fetch(`/my-messages/${adId}`)
@@ -62,7 +68,7 @@
                         <div class="mb-2 p-1 ${messageClass} text-sm rounded">
                             <div class="flex flex-col">
                                 <div class="">
-                                    <strong>${message.message_content}</strong> 
+                                    <strong class="whitespace-pre-wrap break-words">${escapeHtml(message.message_content)}</strong>
                                 </div>
                                 <div class="font-semibold text-xs ">
                                     <div class="w-full flex justify-end">

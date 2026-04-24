@@ -6,6 +6,7 @@ use App\Models\AdSetting;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 /**
  * Dynamic Validation Service for Adverts
@@ -31,10 +32,10 @@ class AdvertValidationService
 
         // Base rules (always required)
         $rules = [
-            'ad_title' => 'required|max:75',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'brand' => 'required',
+            'ad_title'    => 'required|max:75',
+            'category'    => 'required|integer|min:1|exists:categories,id',
+            'subcategory' => 'required|integer|min:1|exists:sub_categories,id',
+            'brand'       => 'required',
             'state' => 'required',
             'lga' => 'required',
             'description' => ['required', 'max:3500', 'not_regex:/\b\d{11,}\b/'],
@@ -139,15 +140,14 @@ class AdvertValidationService
         }
 
         // Car-specific fields — always required for car subcategories regardless of UI config.
-        // Do NOT gate this on $isVisible('divCar'): UI config is a frontend concern only,
-        // and a stale cache / missing config would silently skip all car validation.
+        // Subcats: 2=Cars, 21=Buses & Minibuses, 23=Trucks & Trailers
         if (in_array($subcategoryId, [2, 21, 23])) {
-            $rules['condition']      = 'required';
-            $rules['registration']   = 'required';
-            $rules['fuel']           = 'required';
-            $rules['transmission']   = 'required';
-            $rules['vehicle_type']   = 'required';
-            $rules['exterior_color'] = 'required';
+            $rules['condition']      = ['required', Rule::in(['Local used', 'Foreign used', 'Brand new'])];
+            $rules['registration']   = ['required', Rule::in(['Registered', 'Unregistered'])];
+            $rules['fuel']           = ['required', Rule::in(['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Natural gas CNG', 'LPG'])];
+            $rules['transmission']   = ['required', Rule::in(['Automatic', 'Manual', 'AMT', 'CVT'])];
+            $rules['vehicle_type']   = ['required', Rule::in(['Small Car', 'SUV/Off Road Vehicle', 'Station Wagon', 'Truck', 'Coupe', 'Limousine', 'Pickup', 'Van/Bus', 'Others'])];
+            $rules['exterior_color'] = 'required|string|max:50';
             // model is an integer FK into the models table — must exist and be non-zero
             $rules['model']          = 'required|numeric|min:1|exists:models,id';
         }

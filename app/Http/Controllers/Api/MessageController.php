@@ -86,7 +86,7 @@ class MessageController extends Controller
             'advert_id' => $request->advert_id,
             'sender_id' => $user->user_id,
             'receiver_id' => $request->receiver_id,
-            'message_content' => $request->message_content,
+            'message_content' => strip_tags($request->message_content),
             'is_read' => false
         ]);
 

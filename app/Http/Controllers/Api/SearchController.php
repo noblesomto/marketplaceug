@@ -54,12 +54,13 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product' => 'nullable|string|min:3',
-            'location' => 'nullable',
-            'category' => 'nullable',
-            'sub_category' => 'nullable',
-            'brand' => 'nullable',
-            'buydirect' => 'nullable',
+            'product'        => 'nullable|string|min:3',
+            'location'       => 'nullable',
+            'category'       => 'nullable',
+            'sub_category'   => 'nullable',
+            'brand'          => 'nullable',
+            'buydirect'      => 'nullable',
+            'item_condition' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +70,7 @@ class SearchController extends Controller
             ], 422);
         }
 
+        $filterService = new FilterService();
         $query = Advert::with('firstImage')->activeNotRecentlySold();
 
         if ($request->filled('product')) {
@@ -98,6 +100,8 @@ class SearchController extends Controller
             $query->where('buy_direct', $request->buydirect);
         }
 
+        $filterService->applyConditionFilter($query, $request);
+
         $ads = $query->orderWithFeatured()
                     ->paginate($request->input('per_page', 20));
 
@@ -112,12 +116,13 @@ class SearchController extends Controller
                 'has_more' => $ads->hasMorePages()
             ],
             'search_params' => [
-                'product' => $request->input('product'),
-                'location' => $request->input('location'),
-                'category' => $request->input('category'),
-                'sub_category' => $request->input('sub_category'),
-                'brand' => $request->input('brand'),
-                'buydirect' => $request->input('buydirect'),
+                'product'        => $request->input('product'),
+                'location'       => $request->input('location'),
+                'category'       => $request->input('category'),
+                'sub_category'   => $request->input('sub_category'),
+                'brand'          => $request->input('brand'),
+                'buydirect'      => $request->input('buydirect'),
+                'item_condition' => $request->input('item_condition'),
             ]
         ]);
     }
@@ -144,6 +149,8 @@ class SearchController extends Controller
      */
     public function filter(Request $request)
     {
+        $filterService = new FilterService();
+
         $query = Advert::with('firstImage')
                     ->where('ad_status', 'active')
                     ->where('sold', 'No');
@@ -194,6 +201,8 @@ class SearchController extends Controller
                     break;
             }
         }
+
+        $filterService->applyConditionFilter($query, $request);
 
         $adverts = $query->orderWithFeatured()
                         ->paginate($request->input('per_page', 20));
@@ -493,6 +502,7 @@ class SearchController extends Controller
      */
     public function loadMore(Request $request)
     {
+        $filterService = new FilterService();
         $query = Advert::with('firstImage')->activeNotRecentlySold();
 
         if ($request->filled('product')) {
@@ -521,6 +531,8 @@ class SearchController extends Controller
         if ($request->filled('buydirect')) {
             $query->where('buy_direct', $request->buydirect);
         }
+
+        $filterService->applyConditionFilter($query, $request);
 
         $ads = $query->orderWithFeatured()
                     ->paginate($request->input('per_page', 20));
@@ -564,7 +576,19 @@ class SearchController extends Controller
                     ['value' => 'all', 'label' => 'All Sellers'],
                     ['value' => 'yes', 'label' => 'Verified Sellers'],
                     ['value' => 'no', 'label' => 'Unverified Sellers'],
-                ]
+                ],
+                'conditions' => [
+                    'general' => ['New', 'Foreign Used', 'Locally Used'],
+                    'vehicles' => ['Local used', 'Foreign used'],
+                    'phones'   => [
+                        'New - Unboxed',
+                        'New - No Packaging',
+                        'Used - Very Good',
+                        'Used - Good',
+                        'Used - Defect',
+                        'Foreign Used - No Packaging',
+                    ],
+                ],
             ]
         ]);
     }
@@ -645,7 +669,7 @@ class SearchController extends Controller
     {
         $filterService = new FilterService();
 
-        $query = Advert::with(['firstImage', 'user', 'carDetail'])
+        $query = Advert::with(['firstImage', 'user', 'car'])
             ->where('ad_status', 'active')
             ->where('sold', 'No');
 
@@ -725,7 +749,7 @@ class SearchController extends Controller
     {
         $filterService = new FilterService();
 
-        $query = Advert::with(['firstImage', 'user', 'phoneDetail'])
+        $query = Advert::with(['firstImage', 'user', 'phone'])
             ->where('ad_status', 'active')
             ->where('sold', 'No');
 

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @group Advert Management
@@ -160,9 +161,112 @@ class UserManageAdverts extends Controller
             'success' => true,
             'data' => [
                 'categories' => $categories,
-                'states' => $states,
-                'shippings' => $shippings
+                'states'     => $states,
+                'shippings'  => $shippings,
+                'car_options' => [
+                    'conditions'    => ['Local used', 'Foreign used', 'Brand new'],
+                    'fuels'         => ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Natural gas CNG', 'LPG'],
+                    'transmissions' => ['Automatic', 'Manual', 'AMT', 'CVT'],
+                    'registrations' => ['Registered', 'Unregistered'],
+                    'vehicle_types' => ['Small Car', 'SUV/Off Road Vehicle', 'Station Wagon', 'Truck', 'Coupe', 'Limousine', 'Pickup', 'Van/Bus', 'Others'],
+                ],
+                'phone_options' => [
+                    'conditions'   => ['New - Unboxed', 'New - No Packaging', 'Used - Very Good', 'Used - Good', 'Used - Defect', 'Foreign Used - No Packaging'],
+                    'device_types' => ['Smartphone', 'Feature Phone', 'Tablet'],
+                ],
             ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/adverts/upload-images",
+     *     summary="Pre-upload images before submitting an advert",
+     *     description="Upload images independently and receive tokens. Pass the tokens in temp_image_paths[] when calling POST /api/adverts. Tokens expire after 1 hour. The old images[] approach on the create endpoint still works — this is an optional optimisation.",
+     *     tags={"Advert Management"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"images"},
+     *                 @OA\Property(property="images[]", type="array", @OA\Items(type="string", format="binary"), description="1–8 images, max 20MB each")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Images uploaded — tokens returned"),
+     *     @OA\Response(response=422, description="Validation or quality error")
+     * )
+     */
+    public function uploadImages(Request $request)
+    {
+        $user = auth()->user();
+
+        $validator = Validator::make($request->all(), [
+            'images'   => 'required|array|min:1|max:8',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:21000',
+        ], [
+            'images.required' => 'Please provide at least one image.',
+            'images.min'      => 'Please provide at least one image.',
+            'images.max'      => 'You may upload a maximum of 8 images at a time.',
+            'images.*.image'  => 'All files must be images.',
+            'images.*.mimes'  => 'Images must be jpeg, png, jpg, or gif format.',
+            'images.*.max'    => 'Each image must not exceed 20MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        // Run quality validation early so errors surface before the main submit
+        $imageQualityService = new ImageQualityService();
+        $qualityErrors = [];
+
+        foreach ($request->file('images') as $image) {
+            $result = $imageQualityService->validateImage($image);
+            if (!$result['valid']) {
+                $qualityErrors = array_merge($qualityErrors, $result['errors']);
+            }
+        }
+
+        if (!empty($qualityErrors)) {
+            return response()->json([
+                'success'         => false,
+                'errors'          => ['images' => array_slice($qualityErrors, 0, 3)],
+                'recommendations' => $imageQualityService->getRecommendations(['valid' => false, 'details' => []]),
+            ], 422);
+        }
+
+        // Store in a user-scoped temp directory — prevents token theft across accounts
+        $tempDir  = 'temp/post-ad-images/' . $user->user_id;
+        $uploaded = [];
+
+        foreach ($request->file('images') as $index => $image) {
+            if (!$image->isValid()) continue;
+
+            $filename = uniqid('tmp_') . '_' . time() . '_' . $index . '.' . $image->getClientOriginalExtension();
+            $path     = $image->storeAs($tempDir, $filename, 'public');
+
+            if ($path) {
+                $uploaded[] = [
+                    'token' => $path,
+                    'url'   => Storage::disk('public')->url($path),
+                    'index' => $index,
+                ];
+            }
+        }
+
+        Log::info('API: Pre-upload images stored', [
+            'user_id'     => $user->user_id,
+            'image_count' => count($uploaded),
+        ]);
+
+        return response()->json([
+            'success'    => true,
+            'message'    => count($uploaded) . ' image(s) uploaded. Pass the tokens in temp_image_paths[] when submitting your advert.',
+            'images'     => $uploaded,
+            'expires_in' => 3600,
         ]);
     }
 
@@ -244,7 +348,8 @@ class UserManageAdverts extends Controller
 
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
-        $rules = $validationService->getRules($category, $subcat, false);
+        $hasTempImages = !empty($request->input('temp_image_paths', []));
+        $rules = $validationService->getRules($category, $subcat, false, $hasTempImages);
 
         $messages = [
             'images.required'             => 'Please upload at least 3 images.',
@@ -338,14 +443,66 @@ class UserManageAdverts extends Controller
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
                 'views' => "0",
-                'ad_status' => "1",
+                'ad_status' => 'draft',
                 'user_id' => $user->user_id,
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
-            // ✅ TIER 1: Image Quality Validation
-            if ($request->hasFile('images')) {
+            // ── Image handling ───────────────────────────────────────────────────
+            // Path A: pre-uploaded tokens (new two-step flow)
+            // Path B: direct file upload in this request (original flow — unchanged)
+            // Path C: jobs/CV default image
+            $tempImagePaths = $request->input('temp_image_paths', []);
+
+            if (!empty($tempImagePaths)) {
+                // Path A — quality already validated at upload time, just attach
+                if (!in_array($category, [3, 18]) && count($tempImagePaths) < 3) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'errors'  => ['images' => ['Please upload at least 3 images.']],
+                    ], 422);
+                }
+
+                $expectedPrefix = 'temp/post-ad-images/' . $user->user_id . '/';
+
+                foreach ($tempImagePaths as $position => $tempPath) {
+                    // Security: token must be owned by this user
+                    if (!str_starts_with($tempPath, $expectedPrefix)) {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'errors'  => ['images' => ['Invalid image token. Please re-upload your images.']],
+                        ], 403);
+                    }
+
+                    $fullPath = Storage::disk('public')->path($tempPath);
+                    if (!file_exists($fullPath)) {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'errors'  => ['images' => ['One or more images have expired. Please upload them again.']],
+                        ], 422);
+                    }
+
+                    $media = $advert
+                        ->addMedia($fullPath)
+                        ->withCustomProperties(['position' => $position + 1, 'source' => 'temp'])
+                        ->usingFileName(uniqid() . '.webp')
+                        ->toMediaCollection('images');
+
+                    $media->order_column = $position + 1;
+                    $media->save();
+                }
+
+                Log::info('API: Pre-uploaded images attached', [
+                    'advert_id'   => $advert->ad_id,
+                    'image_count' => count($tempImagePaths),
+                ]);
+
+            } elseif ($request->hasFile('images')) {
+                // Path B — ✅ TIER 1: Image Quality Validation (original direct-upload, unchanged)
                 $imageQualityService = new ImageQualityService();
                 $imageQualityErrors = [];
                 $totalQualityScore = 0;
@@ -366,31 +523,25 @@ class UserManageAdverts extends Controller
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'errors' => [
-                            'images' => array_slice($imageQualityErrors, 0, 3) // First 3 errors
-                        ],
+                        'errors'  => ['images' => array_slice($imageQualityErrors, 0, 3)],
                         'recommendations' => $imageQualityService->getRecommendations([
-                            'valid' => false,
-                            'details' => []
-                        ])
+                            'valid' => false, 'details' => []
+                        ]),
                     ], 422);
                 }
 
-                // Enforce minimum 3 images for non-jobs/CV categories
                 if (!in_array($category, [3, 18]) && $imageCount < 3) {
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'errors' => ['images' => ['Please upload at least 3 images.']]
+                        'errors'  => ['images' => ['Please upload at least 3 images.']],
                     ], 422);
                 }
 
-                // Process images using Spatie Media Library
                 $images = $request->file('images');
-                $order = explode(',', $request->input('image_order', ''));
+                $order  = explode(',', $request->input('image_order', ''));
 
                 if (empty($order) || $order[0] === '') {
-                    // If no order specified, use sequential order
                     $order = array_keys($images);
                 }
 
@@ -400,8 +551,8 @@ class UserManageAdverts extends Controller
                     $media = $advert
                         ->addMedia($images[$index])
                         ->withCustomProperties([
-                            'position' => $position + 1,
-                            'original_name' => $images[$index]->getClientOriginalName()
+                            'position'      => $position + 1,
+                            'original_name' => $images[$index]->getClientOriginalName(),
                         ])
                         ->usingFileName(uniqid() . '.webp')
                         ->toMediaCollection('images');
@@ -410,21 +561,20 @@ class UserManageAdverts extends Controller
                     $media->save();
                 }
 
-                // Log quality metrics
                 $avgScore = $imageCount > 0 ? round($totalQualityScore / $imageCount) : 0;
                 Log::info('API: Image quality validation passed', [
-                    'advert_id' => $advert->ad_id,
-                    'image_count' => $imageCount,
-                    'average_score' => $avgScore,
-                    'quality_rating' => $imageQualityService->getQualityRating($avgScore)
+                    'advert_id'      => $advert->ad_id,
+                    'image_count'    => $imageCount,
+                    'average_score'  => $avgScore,
+                    'quality_rating' => $imageQualityService->getQualityRating($avgScore),
                 ]);
 
             } elseif (in_array($category, [3, 18])) {
-                // Add default image for jobs/CV categories using Spatie
+                // Path C — default image for jobs/CV categories
                 $advert->addDefaultImage('jobs.png');
             }
 
-            // Store car-specific info
+            // Store car-specific info — subcats: 2=Cars, 21=Buses & Minibuses, 23=Trucks & Trailers
             if (in_array($subcat, [2, 21, 23])) {
                 $car = new CarDetail([
                     'car_id' => rand(10000, 99999),
@@ -462,6 +612,8 @@ class UserManageAdverts extends Controller
                 $phone->advert()->associate($advert);
                 $phone->save();
             }
+
+            $advert->update(['ad_status' => 'active']);
 
             DB::commit();
 
@@ -820,7 +972,7 @@ class UserManageAdverts extends Controller
                 }
             }
 
-            // Update Car details (upsert: update if exists, create if missing)
+            // Update Car details — subcats: 2=Cars, 21=Buses & Minibuses, 23=Trucks & Trailers
             if (in_array($subcat, [2, 21, 23])) {
                 $carData = [
                     'cat_id'             => $request->input('category'),
