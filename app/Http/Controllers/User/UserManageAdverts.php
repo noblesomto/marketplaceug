@@ -296,7 +296,7 @@ class UserManageAdverts extends Controller
                 'show_contact'     => $request->input('show_contact', 'No'), // ✅ Default to 'No' if not provided
                 'quantity'         => $request->input('quantity') ?? 1,
                 'views'            => "0",
-                'ad_status'        => 'draft',
+                'ad_status'        => 'active',
                 'user_id'          => $user_id,
             ]);
 
@@ -390,7 +390,6 @@ class UserManageAdverts extends Controller
                 $phone->save();
             }
 
-            $advert->update(['ad_status' => 'active']);
             DB::commit();
 
             } catch (\Exception $e) {

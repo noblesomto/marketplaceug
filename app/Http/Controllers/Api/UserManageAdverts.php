@@ -443,7 +443,7 @@ class UserManageAdverts extends Controller
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
                 'views' => "0",
-                'ad_status' => 'draft',
+                'ad_status' => 'active',
                 'user_id' => $user->user_id,
             ]);
 
@@ -612,8 +612,6 @@ class UserManageAdverts extends Controller
                 $phone->advert()->associate($advert);
                 $phone->save();
             }
-
-            $advert->update(['ad_status' => 'active']);
 
             DB::commit();
 
