@@ -1178,7 +1178,8 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
         $data['states'] = State::all();
-        //dd($data['ad']);
+        $agent = new Agent();
+        $data['isMobile'] = $agent->isMobile() || $agent->isTablet();
         if(empty($user)) {
             $request->session()->forget('user_id');
             $request->session()->put('url.intended', url()->current());
@@ -1273,13 +1274,12 @@ public function buy_direct_payment(Request $request, $id)
         $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
-
-        //dd($data['ad']);
+        $agent = new Agent();
+        $data['isMobile'] = $agent->isMobile() || $agent->isTablet();
 
         $ship_data = $request->session()->get('shipping_data');
         $ship_id = $ship_data['shipping_method'];
         $data['shipping_method'] = Shipping::where('id',$ship_id)->first();
-       // dd($data['shipping_method']);
         return view('public.buy-direct-payment', $data);
     }
 
