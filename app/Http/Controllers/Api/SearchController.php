@@ -131,93 +131,128 @@ class SearchController extends Controller
     /**
      * @OA\Post(
      *     path="/api/search/filter",
-     *     summary="Advanced filtering with price ranges",
+     *     summary="Unified advert filter — replaces all previous filter-by-* endpoints",
+     *     description="All parameters are optional. Pass only the ones you need. Car-specific params (car_condition, fuel_type, transmission, registration) are applied via a JOIN on car_details. Phone-specific params (phone_condition, device_type) are applied via a JOIN on phone_details.",
      *     tags={"Search"},
      *     @OA\RequestBody(
      *         required=false,
      *         @OA\JsonContent(
-     *             @OA\Property(property="category", type="integer"),
-     *             @OA\Property(property="sub_category", type="integer"),
-     *             @OA\Property(property="brand", type="integer"),
-     *             @OA\Property(property="location", type="string"),
-     *             @OA\Property(property="min", type="number"),
-     *             @OA\Property(property="max", type="number"),
-     *             @OA\Property(property="range", type="string", enum={"under_20k", "20k_120k", "120k_1m", "1m_10m", "above_10m"})
+     *             @OA\Property(property="keyword",        type="string",  description="Search term — matches ad title or ad_id", example="iPhone 13"),
+     *             @OA\Property(property="category",       type="integer", description="Category ID", example=1),
+     *             @OA\Property(property="sub_category",   type="integer", description="Sub-category ID", example=6),
+     *             @OA\Property(property="brand",          type="integer", description="Brand ID", example=5),
+     *             @OA\Property(property="location",       type="string",  description="State name", example="Lagos"),
+     *             @OA\Property(property="min",            type="integer", description="Minimum price", example=10000),
+     *             @OA\Property(property="max",            type="integer", description="Maximum price", example=500000),
+     *             @OA\Property(property="range",          type="string",  description="Price range shortcut", enum={"under_20k","20k_120k","120k_1m","1m_10m","above_10m"}),
+     *             @OA\Property(property="buydirect",      type="string",  description="Buy Direct filter", enum={"Yes","No"}),
+     *             @OA\Property(property="seller",         type="string",  description="Seller verification", enum={"all","verified","unverified"}),
+     *             @OA\Property(property="item_condition", type="string",  description="General item condition (non-car, non-phone)", example="New"),
+     *             @OA\Property(property="car_condition",  type="string",  description="Vehicle condition — single value or array", example="Foreign used"),
+     *             @OA\Property(property="fuel_type",      type="string",  description="Vehicle fuel type — single value or array", example="Petrol"),
+     *             @OA\Property(property="transmission",   type="string",  description="Vehicle transmission — single value or array", example="Automatic"),
+     *             @OA\Property(property="registration",   type="string",  description="Vehicle registration status — single value or array", example="Registered"),
+     *             @OA\Property(property="phone_condition",type="string",  description="Phone condition — single value or array", example="New - Unboxed"),
+     *             @OA\Property(property="device_type",    type="string",  description="Phone device type — single value or array", example="Smartphone"),
+     *             @OA\Property(property="per_page",       type="integer", description="Results per page (default 20)", example=20),
+     *             @OA\Property(property="page",           type="integer", description="Page number", example=1)
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Filtered results")
+     *     @OA\Response(response=200, description="Filtered results with active filters echoed back")
      * )
      */
     public function filter(Request $request)
     {
         $filterService = new FilterService();
 
-        $query = Advert::with('firstImage')
-                    ->where('ad_status', 'active')
-                    ->where('sold', 'No');
+        $hasCarFilters   = $request->hasAny(['car_condition', 'fuel_type', 'transmission', 'registration']);
+        $hasPhoneFilters = $request->hasAny(['phone_condition', 'device_type']);
 
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
+        $with = ['firstImage'];
+        if ($hasCarFilters)   $with[] = 'car';
+        if ($hasPhoneFilters) $with[] = 'phone';
+
+        $query = Advert::with($with)->activeNotRecentlySold();
+
+        // Keyword / ad_id search
+        $keyword = $request->input('keyword') ?? $request->input('product');
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('ad_title', 'LIKE', '%' . $keyword . '%')
+                  ->orWhere('title_slug', 'LIKE', '%' . $keyword . '%')
+                  ->orWhere('ad_id', $keyword);
+            });
         }
 
-        if ($request->filled('sub_category')) {
-            $query->where('sub_category', $request->sub_category);
-        }
-
-        if ($request->filled('brand')) {
-            $query->where('brand', $request->brand);
-        }
-
-        if ($request->filled('location')) {
-            $query->where('state', $request->location);
-        }
-
-        // Price filters
-        if ($request->filled('min')) {
-            $query->where('price', '>=', (int) $request->input('min'));
-        }
-
-        if ($request->filled('max')) {
-            $query->where('price', '<=', (int) $request->input('max'));
-        }
-
-        $range = $request->input('range');
-
-        if ($range) {
-            switch ($range) {
-                case 'under_20k':
-                    $query->where('price', '<', 20000);
-                    break;
-                case '20k_120k':
-                    $query->whereBetween('price', [20000, 120000]);
-                    break;
-                case '120k_1m':
-                    $query->whereBetween('price', [120000, 1000000]);
-                    break;
-                case '1m_10m':
-                    $query->whereBetween('price', [1000000, 10000000]);
-                    break;
-                case 'above_10m':
-                    $query->where('price', '>', 10000000);
-                    break;
-            }
-        }
-
+        // Standard filters (category, sub_category, brand, location, price, seller, buydirect, item_condition)
+        $filterService->applyContextFilters($query, $request);
+        $filterService->applyPriceFilters($query, $request);
+        $filterService->applySellerFilter($query, $request);
+        $filterService->applyBuyDirectFilter($query, $request);
         $filterService->applyConditionFilter($query, $request);
 
+        // Car-specific filters — only run when at least one car param is present
+        if ($hasCarFilters) {
+            $query->whereHas('car', function ($q) use ($request) {
+                if ($request->filled('car_condition')) {
+                    $q->whereIn('condition', (array) $request->car_condition);
+                }
+                if ($request->filled('fuel_type')) {
+                    $q->whereIn('fuel', (array) $request->fuel_type);
+                }
+                if ($request->filled('transmission')) {
+                    $q->whereIn('transmission', (array) $request->transmission);
+                }
+                if ($request->filled('registration')) {
+                    $q->whereIn('registration', (array) $request->registration);
+                }
+            });
+        }
+
+        // Phone-specific filters — only run when at least one phone param is present
+        if ($hasPhoneFilters) {
+            $query->whereHas('phone', function ($q) use ($request) {
+                if ($request->filled('phone_condition')) {
+                    $q->whereIn('condition', (array) $request->phone_condition);
+                }
+                if ($request->filled('device_type')) {
+                    $q->whereIn('device', (array) $request->device_type);
+                }
+            });
+        }
+
         $adverts = $query->orderWithFeatured()
-                        ->paginate($request->input('per_page', 20));
+            ->paginate($request->input('per_page', 20));
 
         return response()->json([
             'success' => true,
-            'data' => $adverts->items(),
+            'data'    => $adverts->items(),
             'pagination' => [
                 'current_page' => $adverts->currentPage(),
-                'last_page' => $adverts->lastPage(),
-                'per_page' => $adverts->perPage(),
-                'total' => $adverts->total(),
-                'has_more' => $adverts->hasMorePages()
-            ]
+                'last_page'    => $adverts->lastPage(),
+                'per_page'     => $adverts->perPage(),
+                'total'        => $adverts->total(),
+                'has_more'     => $adverts->hasMorePages(),
+            ],
+            'filters_applied' => array_filter([
+                'keyword'        => $keyword,
+                'category'       => $request->input('category'),
+                'sub_category'   => $request->input('sub_category'),
+                'brand'          => $request->input('brand'),
+                'location'       => $request->input('location'),
+                'min'            => $request->input('min'),
+                'max'            => $request->input('max'),
+                'range'          => $request->input('range'),
+                'buydirect'      => $request->input('buydirect'),
+                'seller'         => $request->input('seller'),
+                'item_condition' => $request->input('item_condition'),
+                'car_condition'  => $request->input('car_condition'),
+                'fuel_type'      => $request->input('fuel_type'),
+                'transmission'   => $request->input('transmission'),
+                'registration'   => $request->input('registration'),
+                'phone_condition'=> $request->input('phone_condition'),
+                'device_type'    => $request->input('device_type'),
+            ], fn($v) => $v !== null && $v !== ''),
         ]);
     }
 
