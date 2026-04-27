@@ -46,7 +46,14 @@
     RewriteCond %{REQUEST_URI} ^/sound/
     RewriteRule ^ - [L,E=CACHE_CONTROL:max-age=31536000]
 
-    # Force HTTPS + www
+    # Force HTTPS + www — use 308 for API routes to preserve POST/PUT/DELETE methods
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+    RewriteCond %{REQUEST_URI} ^/api/ [NC]
+    RewriteRule ^(.*)$ https://www.%1/$1 [L,R=308]
+
+    # Force HTTPS + www for all other routes (301 is fine for browser navigation)
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
