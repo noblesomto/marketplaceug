@@ -1685,7 +1685,7 @@
           "response": []
         },
         {
-          "name": "Search Filter",
+          "name": "Search Filter (Unified)",
           "request": {
             "method": "POST",
             "header": [
@@ -1711,13 +1711,13 @@
                 "filter"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter`\nController: `App\\Http\\Controllers\\Api\\SearchController@filter`**Request Body:**\\n- `product` (string, optional): Search keyword\\n- `category` (integer, optional): Category ID\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `location` (string, optional): State name\\n- `min` (integer, optional): Minimum price\\n- `max` (integer, optional): Maximum price\\n- `range` (string, optional): Price range preset\\n- `item_condition` (string, optional): See condition values below\\n- `per_page` (integer, optional, default 20)\\n- `page` (integer, optional, default 1)\\n\\n**`range` values:** `under_20k`, `20k_120k`, `120k_1m`, `1m_10m`, `above_10m`\\nUse `min`/`max` for exact price bounds or `range` for a preset bucket (not both).\\n\\n**`item_condition` values:**\\n- General categories: `New`, `Foreign Used`, `Locally Used`\\n- Vehicles (category 1): `Local used`, `Foreign used`\\n- Phones & Tablets (category 4): `New - Unboxed`, `New - No Packaging`, `Used - Very Good`, `Used - Good`, `Used - Defect`, `Foreign Used - No Packaging`\\n\\n> The correct table is chosen automatically based on `category`.",
+            "description": "\ud83c\udf10 **Public Endpoint \u2014 Unified Filter (replaces all filter-by-* endpoints)**\n\nEndpoint: `POST /api/search/filter`\nController: `App\\Http\\Controllers\\Api\\SearchController@filter`\n\nAll parameters are optional. Pass only the ones you need. Car/phone detail joins only activate when their specific params are present.\n\n**General Parameters:**\n- `keyword` (string, optional) \u2014 search term, matches ad title or ad_id\n- `category` (integer, optional) \u2014 Category ID\n- `sub_category` (integer, optional) \u2014 Sub-category ID\n- `brand` (integer, optional) \u2014 Brand ID\n- `location` (string, optional) \u2014 State name e.g. `Lagos`\n- `per_page` (integer, optional, default 20)\n- `page` (integer, optional, default 1)\n\n**Price Parameters** (use `min`/`max` OR `range`, not both):\n- `min` (integer, optional) \u2014 minimum price\n- `max` (integer, optional) \u2014 maximum price\n- `range` (string, optional) \u2014 `under_20k` \\| `20k_120k` \\| `120k_1m` \\| `1m_10m` \\| `above_10m`\n\n**Listing Type Parameters:**\n- `buydirect` (string, optional) \u2014 `Yes` or `No`\n- `seller` (string, optional) \u2014 `all` \\| `verified` \\| `unverified`\n- `item_condition` (string, optional) \u2014 general condition for non-car, non-phone categories: `New` \\| `Foreign Used` \\| `Locally Used`\n\n**Vehicle-Specific Parameters** (category 1 \u2014 Vehicles):\n- `car_condition` (string or array, optional) \u2014 `Local used` \\| `Foreign used`\n- `fuel_type` (string or array, optional) \u2014 `Petrol` \\| `Diesel` \\| `Electric` \\| `Hybrid` \\| `Natural gas CNG` \\| `LPG`\n- `transmission` (string or array, optional) \u2014 `Automatic` \\| `Manual` \\| `AMT` \\| `CVT`\n- `registration` (string or array, optional) \u2014 `Registered` \\| `Unregistered`\n\n**Phone-Specific Parameters** (category 4 \u2014 Mobile Phones & Tablets):\n- `phone_condition` (string or array, optional) \u2014 `New - Unboxed` \\| `New - No Packaging` \\| `Used - Very Good` \\| `Used - Good` \\| `Used - Defect` \\| `Foreign Used - No Packaging`\n- `device_type` (string or array, optional) \u2014 `Smartphone` \\| `Feature Phone` \\| `Tablet`\n\n**Response includes `filters_applied`** \u2014 echoes back only the filters that were active in the query.\n\n> The old endpoints (`filter-by-seller`, `filter-by-buydirect`, `filter-by-car`, `filter-by-phone`) still work for backward compatibility but this single endpoint should be used for all new development.",
             "auth": {
               "type": "noauth"
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"product\": \"samsung\",\n    \"category\": 4,\n    \"sub_category\": 6,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 10000,\n    \"max\": 1000000,\n    \"range\": \"20k_120k\",\n    \"item_condition\": \"New - Unboxed\",\n    \"per_page\": 20,\n    \"page\": 1\n}",
+              "raw": "{\n    \"keyword\": \"samsung\",\n    \"category\": 4,\n    \"sub_category\": 6,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 10000,\n    \"max\": 1000000,\n    \"buydirect\": \"Yes\",\n    \"seller\": \"verified\",\n    \"item_condition\": \"New\",\n    \"per_page\": 20,\n    \"page\": 1\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1725,10 +1725,89 @@
               }
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Example \u2014 Vehicle filter",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"category\": 1,\n    \"location\": \"Lagos\",\n    \"min\": 500000,\n    \"max\": 5000000,\n    \"car_condition\": \"Foreign used\",\n    \"fuel_type\": \"Petrol\",\n    \"transmission\": \"Automatic\",\n    \"registration\": \"Registered\",\n    \"per_page\": 20\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/search/filter",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "search", "filter"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"per_page\": 20,\n        \"total\": 0,\n        \"has_more\": false\n    },\n    \"filters_applied\": {\n        \"category\": \"1\",\n        \"location\": \"Lagos\",\n        \"min\": \"500000\",\n        \"max\": \"5000000\",\n        \"car_condition\": \"Foreign used\",\n        \"fuel_type\": \"Petrol\",\n        \"transmission\": \"Automatic\",\n        \"registration\": \"Registered\"\n    }\n}"
+            },
+            {
+              "name": "Example \u2014 Phone filter",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"category\": 4,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"phone_condition\": \"New - Unboxed\",\n    \"device_type\": \"Smartphone\",\n    \"per_page\": 20\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/search/filter",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "search", "filter"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"per_page\": 20,\n        \"total\": 0,\n        \"has_more\": false\n    },\n    \"filters_applied\": {\n        \"category\": \"4\",\n        \"brand\": \"5\",\n        \"location\": \"Lagos\",\n        \"min\": \"50000\",\n        \"max\": \"500000\",\n        \"phone_condition\": \"New - Unboxed\",\n        \"device_type\": \"Smartphone\"\n    }\n}"
+            },
+            {
+              "name": "Example \u2014 Verified sellers + Buy Direct",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"buydirect\": \"Yes\",\n    \"seller\": \"verified\",\n    \"category\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"per_page\": 20\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/search/filter",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "search", "filter"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"per_page\": 20,\n        \"total\": 0,\n        \"has_more\": false\n    },\n    \"filters_applied\": {\n        \"category\": \"5\",\n        \"location\": \"Lagos\",\n        \"min\": \"50000\",\n        \"max\": \"500000\",\n        \"buydirect\": \"Yes\",\n        \"seller\": \"verified\"\n    }\n}"
+            }
+          ]
         },
         {
-          "name": "Search Filter By Seller",
+          "name": "[DEPRECATED] Filter By Seller",
           "request": {
             "method": "POST",
             "header": [
@@ -1754,13 +1833,13 @@
                 "filter-by-seller"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-seller`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterBySeller`\\n\\n**Request Body:**\\n- `sellers` (string): `all`, `yes` (verified), `no` (unverified)\\n- `category` (integer, optional): Category ID\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `location` (string, optional): State name\\n- `item_condition` (string, optional): See condition values below\\n- `per_page` (integer, optional, default 20)\\n\\n**`item_condition` values:**\\n- General categories: `New`, `Foreign Used`, `Locally Used`\\n- Vehicles (category 1): `Local used`, `Foreign used`\\n- Phones & Tablets (category 4): `New - Unboxed`, `New - No Packaging`, `Used - Very Good`, `Used - Good`, `Used - Defect`, `Foreign Used - No Packaging`\\n\\n> The correct table is chosen automatically based on `category`.",
+            "description": "\u26a0\ufe0f **DEPRECATED** \u2014 Use `POST /api/search/filter` with `seller` param instead.\n\nStill functional for backward compatibility. Pass `seller: verified` or `seller: unverified` to the unified filter endpoint.",
             "auth": {
               "type": "noauth"
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"sellers\": \"yes\",\n    \"category\": 1,\n    \"sub_category\": 6,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"item_condition\": \"Foreign used\",\n    \"per_page\": 20\n}",
+              "raw": "{\n    \"sellers\": \"yes\",\n    \"category\": 1,\n    \"location\": \"Lagos\",\n    \"per_page\": 20\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1771,7 +1850,7 @@
           "response": []
         },
         {
-          "name": "Search Filter By Buydirect",
+          "name": "[DEPRECATED] Filter By Buydirect",
           "request": {
             "method": "POST",
             "header": [
@@ -1797,13 +1876,13 @@
                 "filter-by-buydirect"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-buydirect`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByBuydirect`\\n\\n**Request Body:**\\n- `buydirect` (string): `yes` or `no`\\n- `category` (integer, optional): Category ID\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `location` (string, optional): State name\\n- `min` (integer, optional): Minimum price\\n- `max` (integer, optional): Maximum price\\n- `item_condition` (string, optional): See condition values below\\n- `per_page` (integer, optional, default 20)\\n\\n**`item_condition` values:**\\n- General categories: `New`, `Foreign Used`, `Locally Used`\\n- Vehicles (category 1): `Local used`, `Foreign used`\\n- Phones & Tablets (category 4): `New - Unboxed`, `New - No Packaging`, `Used - Very Good`, `Used - Good`, `Used - Defect`, `Foreign Used - No Packaging`\\n\\n> The correct table is chosen automatically based on `category`.",
+            "description": "\u26a0\ufe0f **DEPRECATED** \u2014 Use `POST /api/search/filter` with `buydirect: \"Yes\"` instead.\n\nStill functional for backward compatibility.",
             "auth": {
               "type": "noauth"
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"buydirect\": \"yes\",\n    \"category\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"item_condition\": \"New\",\n    \"per_page\": 20\n}",
+              "raw": "{\n    \"buydirect\": \"yes\",\n    \"category\": 5,\n    \"location\": \"Lagos\",\n    \"per_page\": 20\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1814,7 +1893,7 @@
           "response": []
         },
         {
-          "name": "Search Filter By Car Details",
+          "name": "[DEPRECATED] Filter By Car Details",
           "request": {
             "method": "POST",
             "header": [
@@ -1840,7 +1919,7 @@
                 "filter-by-car"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-car`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByCarDetails`\\n\\n**Request Body:**\\n- `condition` (string, optional): Car condition\\n- `fuel_type` (string, optional): Fuel type\\n- `transmission` (string, optional): Transmission type\\n- `registration` (string, optional): Registration status\\n- `category` (integer, optional): Category ID \u2014 use **1** for Vehicles\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `location` (string, optional): State name\\n- `min` (integer, optional): Minimum price\\n- `max` (integer, optional): Maximum price\\n- `per_page` (integer, optional, default 20)\\n\\n**`condition` values (car_details):** `Local used`, `Foreign used`\\n**`fuel_type` values:** `Petrol`, `Diesel`, `Electric`, `Hybrid`\\n**`transmission` values:** `Automatic`, `Manual`\\n**`registration` values:** `Registered`, `Unregistered`",
+            "description": "\u26a0\ufe0f **DEPRECATED** \u2014 Use `POST /api/search/filter` with `car_condition`, `fuel_type`, `transmission`, `registration` params instead.\n\nStill functional for backward compatibility.",
             "auth": {
               "type": "noauth"
             },
@@ -1857,7 +1936,7 @@
           "response": []
         },
         {
-          "name": "Search Filter By Phone Details",
+          "name": "[DEPRECATED] Filter By Phone Details",
           "request": {
             "method": "POST",
             "header": [
@@ -1883,13 +1962,13 @@
                 "filter-by-phone"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `POST /api/search/filter-by-phone`\nController: `App\\Http\\Controllers\\Api\\SearchController@filterByPhoneDetails`\\n\\n**Request Body:**\\n- `condition` (string, optional): Phone condition\\n- `device_type` (string, optional): Device type\\n- `category` (integer, optional): Category ID \u2014 use **4** for Mobile Phone & Tablets\\n- `sub_category` (integer, optional): Sub-category ID\\n- `brand` (integer, optional): Brand ID\\n- `location` (string, optional): State name\\n- `min` (integer, optional): Minimum price\\n- `max` (integer, optional): Maximum price\\n- `per_page` (integer, optional, default 20)\\n\\n**`condition` values (phone_details):** `New - Unboxed`, `New - No Packaging`, `Used - Very Good`, `Used - Good`, `Used - Defect`, `Foreign Used - No Packaging`\\n**`device_type` values:** `Smartphone`, `Feature Phone`, `Tablet`\\n\\n> `category` should be **4** (Mobile Phone & Tablets)",
+            "description": "\u26a0\ufe0f **DEPRECATED** \u2014 Use `POST /api/search/filter` with `phone_condition` and `device_type` params instead.\n\nStill functional for backward compatibility.",
             "auth": {
               "type": "noauth"
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"condition\": \"New - Unboxed\",\n    \"device_type\": \"Smartphone\",\n    \"category\": 4,\n    \"sub_category\": 6,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"per_page\": 20\n}",
+              "raw": "{\n    \"condition\": \"New - Unboxed\",\n    \"device_type\": \"Smartphone\",\n    \"category\": 4,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"per_page\": 20\n}",
               "options": {
                 "raw": {
                   "language": "json"
