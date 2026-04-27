@@ -76,7 +76,8 @@ class SearchController extends Controller
         if ($request->filled('product')) {
             $query->where(function ($q) use ($request) {
                 $q->where('ad_title', 'LIKE', '%' . $request->product . '%')
-                  ->orWhere('title_slug', 'LIKE', '%' . $request->product . '%');
+                  ->orWhere('title_slug', 'LIKE', '%' . $request->product . '%')
+                  ->orWhere('ad_id', $request->product);
             });
         }
 
