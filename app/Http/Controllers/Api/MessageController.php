@@ -245,21 +245,22 @@ class MessageController extends Controller
     public function getUserConversations(Request $request)
     {
         $user = auth()->user();
+        $userId = $user->user_id;
         $includeArchived = $request->boolean('include_archived', false);
 
         $query = Message::select('advert_id', 'sender_id', 'receiver_id')
             ->selectRaw('MAX(created_at) as last_message_date')
             ->selectRaw('MAX(id) as last_message_id')
-            ->where(function ($q) use ($user) {
-                $q->where('sender_id', $user->user_id)
-                  ->orWhere('receiver_id', $user->user_id);
+            ->where(function ($q) use ($userId) {
+                $q->where('sender_id', $userId)
+                  ->orWhere('receiver_id', $userId);
             })
             ->groupBy('advert_id', 'sender_id', 'receiver_id')
             ->orderBy('last_message_date', 'desc');
 
         // Exclude archived conversations if not requested
         if (!$includeArchived) {
-            $archivedIds = ArchivedMessage::where('user_id', $user->user_id)
+            $archivedIds = ArchivedMessage::where('user_id', $userId)
                 ->pluck('advert_id')
                 ->toArray();
 
@@ -268,11 +269,22 @@ class MessageController extends Controller
             }
         }
 
-        $rawConversations = $query->get();
+        // groupBy(advert_id, sender_id, receiver_id) produces two rows per conversation
+        // (one per direction). De-duplicate: keep the first row per (advert_id, other_user)
+        // pair — the query is ordered by last_message_date DESC so the first occurrence
+        // already holds the most recent message for that conversation.
+        $seen = [];
+        $rawConversations = $query->get()->filter(function ($conv) use ($userId, &$seen) {
+            $otherUserId = $conv->sender_id === $userId ? $conv->receiver_id : $conv->sender_id;
+            $key = $conv->advert_id . '_' . $otherUserId;
+            if (isset($seen[$key])) return false;
+            $seen[$key] = true;
+            return true;
+        });
 
         // Load relationships
         $conversations = $rawConversations->map(function ($conversation) use ($user) {
-            $otherUserId = $conversation->sender_id == $user->user_id
+            $otherUserId = $conversation->sender_id === $user->user_id
                 ? $conversation->receiver_id
                 : $conversation->sender_id;
 
