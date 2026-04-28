@@ -7,6 +7,7 @@ use App\Models\Advertising;
 use App\Models\Advert;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
+use App\Models\ArchivedMessage;
 use App\Models\User;
 use App\Models\Feedback;
 use App\Models\Notification;
@@ -87,8 +88,13 @@ if (!function_exists('getTotalUnreadMessages')) {
             return 0;
         }
 
+        $archivedIds = ArchivedMessage::where('user_id', $userId)
+            ->pluck('advert_id')
+            ->toArray();
+
         return Message::where('receiver_id', $userId)
             ->where('is_read', false)
+            ->when(!empty($archivedIds), fn($q) => $q->whereNotIn('advert_id', $archivedIds))
             ->count();
     }
 }

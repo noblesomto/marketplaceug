@@ -336,8 +336,13 @@ class MessageController extends Controller
     {
         $user = auth()->user();
 
+        $archivedIds = ArchivedMessage::where('user_id', $user->user_id)
+            ->pluck('advert_id')
+            ->toArray();
+
         $unreadCount = Message::where('receiver_id', $user->user_id)
             ->where('is_read', false)
+            ->when(!empty($archivedIds), fn($q) => $q->whereNotIn('advert_id', $archivedIds))
             ->count();
 
         return response()->json([
