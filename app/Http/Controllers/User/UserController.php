@@ -585,10 +585,13 @@ class UserController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('users.user_id', $user_id)->first();
 
-        // Stamp the time the user opened this page — resets the badge counter
-        // without touching individual is_read states on each notification.
+        // Stamp seen time (resets badge counter) and mark all unread as read.
         $user->notifications_seen_at = now();
         $user->save();
+
+        Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
 
         $notifications = Notification::with([
                 'advert.owner',
@@ -618,7 +621,12 @@ class UserController extends Controller
 
     public function deleteNotification($id)
     {
-        $notification = Notification::where('id', $id)->first();
+        $user_id = request()->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+
+        $notification = Notification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
 
         if (! $notification) {
             return response()->json(['status' => 'error', 'message' => 'Not found'], 404);

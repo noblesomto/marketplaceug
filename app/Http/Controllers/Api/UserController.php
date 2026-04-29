@@ -924,6 +924,30 @@ class UserController extends Controller
      *     )
      * )
      */
+    // PUT /api/user/notifications/{id}/read
+    public function markNotificationAsRead($id)
+    {
+        $user = auth()->user();
+
+        $notification = Notification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$notification) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification not found'
+            ], 404);
+        }
+
+        $notification->update(['is_read' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification marked as read'
+        ]);
+    }
+
     // DELETE /api/user/delete-notification/{id}
     public function deleteNotification($id)
     {

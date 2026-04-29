@@ -353,6 +353,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/stats', [UserStatsController::class, 'getUserStats']);
         Route::get('/unread-messages', [UserStatsController::class, 'getUnreadMessagesCount']);
         Route::get('/notifications', [UserStatsController::class, 'getNotifications']);
+        Route::put('/notifications/{id}/read', [\App\Http\Controllers\Api\UserController::class, 'markNotificationAsRead']);
         Route::delete('/delete-notification/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteNotification']);
     });
 
