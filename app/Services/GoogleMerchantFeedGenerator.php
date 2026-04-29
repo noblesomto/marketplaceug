@@ -75,6 +75,11 @@ class GoogleMerchantFeedGenerator
             // Google product category (you may want to map your categories to Google's taxonomy)
             $item->addChild('google_product_category', 'Electronics', 'http://base.google.com/ns/1.0');
             
+            // Custom label for buy-direct products — used in Google Ads to bid separately
+            if (strtolower(trim($ad->buy_direct ?? '')) === 'yes') {
+                $item->addChild('custom_label_0', 'buy direct', 'http://base.google.com/ns/1.0');
+            }
+
             // Shipping
             $shipping = $item->addChild('shipping', null, 'http://base.google.com/ns/1.0');
             $shipping->addChild('country', 'NG', 'http://base.google.com/ns/1.0');
@@ -90,9 +95,9 @@ class GoogleMerchantFeedGenerator
             $shipping->addChild('price', '0.00 NGN', 'http://base.google.com/ns/1.0');
         }
         
-        $filePath = 'feeds/google_merchant.xml';
+        $filePath = 'uploads/feeds/google_merchant.xml';
         Storage::disk('public')->put($filePath, $xml->asXML());
-        
-        return public_path('storage/' . $filePath);
+
+        return storage_path('app/public/' . $filePath);
     }
 }
