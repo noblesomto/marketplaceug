@@ -83,6 +83,7 @@ Route::post('/shipping-cost', [LocationController::class, 'getAgilityShippingCos
 Route::post('/pay', [PaystackController::class, 'initialize'])->name('paystack.pay')->middleware('usersession');
 Route::get('/payment/callback', [PaystackController::class, 'callback'])->name('paystack.callback')->middleware('usersession');
 Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');
+Route::get('/buy-direct/success', [PaystackController::class, 'buyDirectSuccess'])->name('buy.direct.success');
 Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('payment.failed');
 
 // Public chat / reviews / follow

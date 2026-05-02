@@ -152,22 +152,32 @@ class PaystackController extends Controller
 
             Mail::to($user->email)->send(new BuyDirectMail($details));
             Mail::to($owner->email)->send(new SellerMail($details));
-            return redirect()->route('payment.success');
+            return redirect()->route('buy.direct.success')->with([
+                'ad_title'  => $advert->ad_title,
+                'ship_code' => $ship_code,
+                'amount'    => number_format($booking->amount_paid),
+            ]);
         }
 
         return redirect()->route('payment.failed')->with('error', 'Payment not successful.');
     }
 
     public function failed()
-    {   
+    {
         $title = "Payment Failed  | " . config('global.site_name');
         return view('public.payment-failed', compact('title'));
     }
 
     public function success()
-    {   
+    {
         $title = "Payment Successful  | " . config('global.site_name');
         return view('public.payment-success', compact('title'));
+    }
+
+    public function buyDirectSuccess()
+    {
+        $title = "Order Confirmed  | " . config('global.site_name');
+        return view('public.buy-direct-success', compact('title'));
     }
 
 
