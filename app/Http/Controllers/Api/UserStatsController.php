@@ -322,11 +322,21 @@ class UserStatsController extends Controller
             $limit = $request->input('limit', 10);
             $notifications = getUserNotifications($limit);
 
+            // Opening the notifications screen counts as reading all — stamp
+            // seen time and mark individual flags so badge resets immediately
+            // and new notifications start a fresh unread count.
+            $user->notifications_seen_at = now();
+            $user->save();
+
+            \App\Models\Notification::where('user_id', $user->id)
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+
             return response()->json([
                 'success' => true,
                 'data' => [
                     'notifications' => $notifications,
-                    'unread_count' => getUserNotificationCount()
+                    'unread_count' => 0
                 ]
             ], 200);
 

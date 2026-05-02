@@ -18,6 +18,7 @@ class GoogleMerchantFeedGenerator
         
         $adverts = Advert::where('ad_status', 'active')
             ->where('sold', 'No')
+            ->whereRaw("LOWER(TRIM(buy_direct)) = 'yes'")
             ->orderByDesc('created_at')
             ->limit(5000)
             ->get();
@@ -87,7 +88,7 @@ class GoogleMerchantFeedGenerator
             $shipment = strtolower(trim($ad->shipment ?? 'standard'));
             if ($shipment === 'pickup') {
                 $shipping->addChild('service', 'Pickup', 'http://base.google.com/ns/1.0');
-            } elseif ($shipment === 'Ship') {
+            } elseif ($shipment === 'ship') {
                 $shipping->addChild('service', 'Standard Shipping', 'http://base.google.com/ns/1.0');
             } else {
                 $shipping->addChild('service', 'Standard', 'http://base.google.com/ns/1.0');
