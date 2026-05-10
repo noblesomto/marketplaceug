@@ -164,11 +164,10 @@ class UserManageAdverts extends Controller
             try {
                 $request->validate([
                     'ad_title'    => 'required|max:75',
-                    'description' => ['required', 'max:3500', 'not_regex:/\b\d{11,}\b/'],
+                    'description' => ['required', 'max:3500'],
                 ], [
                     'ad_title.required'       => 'Ad title is required.',
                     'description.required'    => 'Description is required.',
-                    'description.not_regex'   => 'Phone numbers are not allowed in the description.',
                 ]);
             } catch (\Illuminate\Validation\ValidationException $e) {
                 // Validation failed - flash temp images to session
@@ -199,7 +198,6 @@ class UserManageAdverts extends Controller
                 'images.*.image'              => 'All files must be images.',
                 'images.*.mimes'              => 'Images must be jpeg, png, jpg, or gif format.',
                 'images.*.max'                => 'Each image must not exceed 20MB.',
-                'description.not_regex'       => 'Phone numbers are not allowed in the description.',
                 // Car-specific messages
                 'condition.required'          => 'Please select the vehicle condition.',
                 'registration.required'       => 'Please select the vehicle registration status.',
@@ -507,7 +505,6 @@ class UserManageAdverts extends Controller
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $validatedData = $request->validate($rules, [
-            'description.not_regex'    => 'Phone numbers are not allowed in the description.',
             'phone_color.required'     => 'Please select the phone color.',
             'phone_condition.required' => 'Please select the phone condition.',
             'device.required'          => 'Please select the device type.',

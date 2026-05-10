@@ -38,7 +38,7 @@ class AdvertValidationService
             'brand'       => 'required',
             'state' => 'required',
             'lga' => 'required',
-            'description' => ['required', 'max:3500', 'not_regex:/\b\d{11,}\b/'],
+            'description' => ['required', 'max:3500'],
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
         ];
 

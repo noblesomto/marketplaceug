@@ -354,7 +354,6 @@ class UserManageAdverts extends Controller
         $messages = [
             'images.required'             => 'Please upload at least 3 images.',
             'images.min'                  => 'Please upload at least 3 images.',
-            'description.not_regex'       => 'Phone numbers are not allowed in the description.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
@@ -816,7 +815,6 @@ class UserManageAdverts extends Controller
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $messages = [
-            'description.not_regex'       => 'Phone numbers are not allowed in the description.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',

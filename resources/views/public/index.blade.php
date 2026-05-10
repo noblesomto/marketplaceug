@@ -17,6 +17,13 @@
       @include('public.components.advert.banner-advert')
     </div>
 
+    <!-- Important Notice Banner -->
+    <div id="mobile-notice-banner" class="mx-3 my-3 bg-gray-100 border border-gray-300 rounded-2xl px-4 py-3 relative">
+      <button onclick="document.getElementById('mobile-notice-banner').style.display='none'" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-lg leading-none">&times;</button>
+      <p class="font-bold text-gray-900 text-sm mb-1 pr-5">Important Notice</p>
+      <p class="text-gray-700 text-sm leading-snug pr-4">Do not make any advance payments, including for delivery or reservations. Use &ldquo;Buy Direct&rdquo; (where available) for full Buyer Protection and a 100% refund if issues arise.</p>
+    </div>
+
     <!-- Mobile Category Icons -->
     <div class="bg-white shadow-sm border-t border-gray-100">
       <div class="flex justify-between items-center py-2 px-1">

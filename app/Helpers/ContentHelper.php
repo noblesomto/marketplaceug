@@ -22,10 +22,13 @@ class ContentHelper
             '/\btext\s+me\b/i',
             '/\bdm\s+me\b/i',
             '/\binbox\s+me\b/i',
-            '/\b\d{10,15}\b/',  // Phone numbers
             '/\b\w+@\w+\.\w+\b/',  // Email addresses
-            '/\b0\d{10}\b/',  // Nigerian phone numbers
-            '/\b\+234\d{10}\b/',  // Nigerian international format
+            // Nigerian international format: +234 or 234 followed by 10 digits (with optional spaces/hyphens/dots)
+            '/\b\+?234[\s\-.]?\d{3}[\s\-.]?\d{3}[\s\-.]?\d{4}\b/',
+            // Nigerian local format: 07x/08x/09x followed by 7 more digits (with optional separators)
+            '/\b0[789]\d{2}[\s\-.]?\d{3}[\s\-.]?\d{4}\b/',
+            // Fallback: any remaining 10–15 consecutive digits
+            '/\b\d{10,15}\b/',
         ];
 
         foreach ($bannedPatterns as $pattern) {
@@ -214,8 +217,4 @@ class ContentHelper
         $name = trim($name);
 
         // Step 6: Limit name length
-        $name = mb_substr($name, 0, 100);
-
-        return $name;
-    }
-}
+        $name = mb_substr($name, 0, 10
