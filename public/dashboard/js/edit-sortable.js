@@ -35,17 +35,35 @@ if (existingPreview) {
     });
 }
 
-fileInput?.addEventListener("change", function () {
+// Read file into memory immediately so Android path changes (Google Photos,
+// camera apps) don't cause ERR_UPLOAD_FILE_CHANGED on form submit.
+function readFileIntoMemory(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const blob = new Blob([e.target.result], { type: file.type });
+            resolve(new File([blob], file.name, { type: file.type, lastModified: file.lastModified }));
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+// Accumulates in-memory copies across multiple selections
+let editAccumulatedDT = new DataTransfer();
+
+fileInput?.addEventListener("change", async function () {
     const maxImages = window.MAX_IMAGES || 8;
     const existingCount = existingPreview
         ? existingPreview.querySelectorAll(".image-container").length
         : 0;
     const incomingCount = fileInput.files.length;
 
-    if (existingCount + incomingCount > maxImages) {
+    if (existingCount + editAccumulatedDT.files.length + incomingCount > maxImages) {
         const errorDiv = document.getElementById('image-error');
         if (errorDiv) {
-            errorDiv.textContent = "Too many images. Maximum " + maxImages + " allowed. You currently have " + existingCount + " and are adding " + incomingCount + " more.";
+            const currentNew = editAccumulatedDT.files.length;
+            errorDiv.textContent = "Too many images. Maximum " + maxImages + " allowed. You currently have " + existingCount + " existing and " + currentNew + " new, and are adding " + incomingCount + " more.";
             errorDiv.classList.remove("hidden");
             errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
         }
@@ -53,9 +71,13 @@ fileInput?.addEventListener("change", function () {
         return;
     }
 
-    Array.from(fileInput.files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
+    for (const file of fileInput.files) {
+        const memFile = await readFileIntoMemory(file);
+        editAccumulatedDT.items.add(memFile);
+
+        // Generate preview using the in-memory file
+        const previewReader = new FileReader();
+        previewReader.onload = function (e) {
             const newImage = document.createElement("div");
             newImage.classList.add("relative", "group", "cursor-move", "image-container");
             newImage.innerHTML = `
@@ -64,8 +86,11 @@ fileInput?.addEventListener("change", function () {
             `;
             existingPreview.appendChild(newImage);
         };
-        reader.readAsDataURL(file);
-    });
+        previewReader.readAsDataURL(memFile);
+    }
+
+    // Keep fileInput.files in sync with accumulated in-memory files
+    fileInput.files = editAccumulatedDT.files;
 });
 
 function updateOrderInput() {
@@ -84,14 +109,13 @@ updateOrderInput();
         const stateSelect = document.getElementById('state');
         if (stateSelect) {
             stateSelect.value = window.advertData.state;
-            toggleLGA(stateSelect);
-
-            setTimeout(() => {
+            // toggleLGA is async (fetch-based) — await it before restoring the LGA value
+            toggleLGA(stateSelect).then(() => {
                 const lgaSelect = document.getElementById('lga');
                 if (lgaSelect && window.advertData.lga) {
                     lgaSelect.value = window.advertData.lga;
                 }
-            }, 100);
+            });
         }
     }
 

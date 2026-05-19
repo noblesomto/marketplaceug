@@ -892,9 +892,26 @@ function removeValidationResult(index) {
     renderValidationResults();
 }
 
+// Read a file into memory immediately so Android file-path changes don't
+// break the upload (ERR_UPLOAD_FILE_CHANGED on Google Photos / camera apps).
+function readFileIntoMemory(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const blob = new Blob([e.target.result], { type: file.type });
+            resolve(new File([blob], file.name, { type: file.type, lastModified: file.lastModified }));
+        };
+        reader.onerror = () => resolve(file); // fallback: use original if read fails
+        reader.readAsArrayBuffer(file);
+    });
+}
+
 // Each new picker selection ADDS to the accumulated list (not replaces)
-document.getElementById('imageUpload').addEventListener('change', function(e) {
-    Array.from(e.target.files).forEach(file => accumulatedDT.items.add(file));
+document.getElementById('imageUpload').addEventListener('change', async function(e) {
+    for (const file of e.target.files) {
+        const memFile = await readFileIntoMemory(file);
+        accumulatedDT.items.add(memFile);
+    }
     renderValidationResults();
 });
 
