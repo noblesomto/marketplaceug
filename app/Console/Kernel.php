@@ -22,10 +22,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('sitemap:generate')->everySixHours();
         $schedule->command('cleanup:trusted-devices')->monthly();
         $schedule->command('temp:cleanup-images --hours=24')->daily()->at('02:00');
-        $schedule->command('queue:work --stop-when-empty --max-time=50')
-             ->everyMinute()
-             ->withoutOverlapping();
-
     }
 
     protected function commands(): void
