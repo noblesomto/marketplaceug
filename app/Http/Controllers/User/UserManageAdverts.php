@@ -317,7 +317,7 @@ class UserManageAdverts extends Controller
             $hasNewImages = $request->hasFile('images');
             $hasTempImages = !empty($tempImagePaths);
 
-            \Log::info("Image Processing Debug", [
+            \Log::debug("Image Processing Debug", [
                 'temp_paths' => $tempImagePaths,
                 'has_new_images' => $hasNewImages,
                 'has_temp_images' => $hasTempImages,
@@ -329,7 +329,7 @@ class UserManageAdverts extends Controller
                 // First, collect temp images
                 if ($hasTempImages) {
                     foreach ($tempImagePaths as $tempPath) {
-                        \Log::info("Checking temp image", ['path' => $tempPath, 'exists' => \Storage::disk('public')->exists($tempPath)]);
+                        \Log::debug("Checking temp image", ['path' => $tempPath, 'exists' => \Storage::disk('public')->exists($tempPath)]);
                         if (\Storage::disk('public')->exists($tempPath)) {
                             $imagesToProcess[] = [
                                 'type' => 'temp',
@@ -351,7 +351,7 @@ class UserManageAdverts extends Controller
                     }
                 }
 
-                \Log::info("Images to process", ['count' => count($imagesToProcess), 'data' => $imagesToProcess]);
+                \Log::debug("Images to process", ['count' => count($imagesToProcess)]);
 
                 // Process all images
                 $this->processAdvertImages($imagesToProcess, $advert);
@@ -884,7 +884,7 @@ class UserManageAdverts extends Controller
      */
     private function processAdvertImages($images, $advert)
     {
-        \Log::info("processAdvertImages called", [
+        \Log::debug("processAdvertImages called", [
             'advert_id' => $advert->ad_id,
             'images_count' => count($images)
         ]);
@@ -892,24 +892,14 @@ class UserManageAdverts extends Controller
         foreach ($images as $index => $imageData) {
             try {
                 $position = $index + 1;
-                \Log::info("Processing image {$index}", ['type' => $imageData['type']]);
 
                 if ($imageData['type'] === 'temp') {
-                    // Handle temp image - get full path from public disk root
                     $tempPath = $imageData['path'];
-                    // ✅ Use Storage disk root, not hardcoded path
                     $fullPath = \Storage::disk('public')->path($tempPath);
 
-                    \Log::info("Temp image processing", [
-                        'temp_path' => $tempPath,
-                        'full_path' => $fullPath,
-                        'file_exists' => file_exists($fullPath)
-                    ]);
+                    \Log::debug("Processing temp image", ['index' => $index, 'exists' => file_exists($fullPath)]);
 
                     if (file_exists($fullPath)) {
-                        \Log::info("Adding temp media to Spatie", ['path' => $fullPath]);
-
-                        // Add media from temp file path using Spatie
                         $media = $advert
                             ->addMedia($fullPath)
                             ->withCustomProperties([
@@ -922,24 +912,17 @@ class UserManageAdverts extends Controller
                         $media->order_column = $position;
                         $media->save();
 
-                        \Log::info("Temp media added successfully", [
-                            'media_id' => $media->id,
-                            'file_name' => $media->file_name
-                        ]);
-
-                        // Delete temp file after adding to media library
                         @unlink($fullPath);
-                        \Log::info("Temp file deleted", ['path' => $fullPath]);
                     } else {
-                        \Log::warning("Temp file not found", ['path' => $fullPath]);
+                        \Log::warning("Temp image not found, skipping", [
+                            'advert_id' => $advert->ad_id,
+                            'index' => $index,
+                        ]);
                     }
                 } elseif ($imageData['type'] === 'new') {
-                    // Handle new upload using Spatie
                     $file = $imageData['file'];
 
-                    \Log::info("Adding new upload to Spatie", [
-                        'original_name' => $file->getClientOriginalName()
-                    ]);
+                    \Log::debug("Processing new upload", ['index' => $index]);
 
                     $media = $advert
                         ->addMedia($file)
@@ -952,28 +935,18 @@ class UserManageAdverts extends Controller
 
                     $media->order_column = $position;
                     $media->save();
-
-                    \Log::info("New media added successfully", [
-                        'media_id' => $media->id,
-                        'file_name' => $media->file_name
-                    ]);
                 }
 
             } catch (\Exception $e) {
-                \Log::error("Failed to process image {$index} for advert {$advert->ad_id}: " . $e->getMessage(), [
-                    'exception' => get_class($e),
-                    'trace' => $e->getTraceAsString()
-                ]);
+                \Log::error("Failed to process image {$index} for advert {$advert->ad_id}: " . $e->getMessage());
                 continue;
             }
         }
 
-        // ✅ Spatie handles all images - no need to set ad_image column
-        // The firstImage() relationship will automatically get the first media
         $mediaCount = $advert->getMedia('images')->count();
-        \Log::info("Images processed successfully", [
+        \Log::info("Advert images processed", [
             'advert_id' => $advert->ad_id,
-            'media_count' => $mediaCount
+            'count' => $mediaCount,
         ]);
     }
 
