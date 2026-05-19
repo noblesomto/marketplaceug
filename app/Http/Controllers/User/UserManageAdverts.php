@@ -235,6 +235,16 @@ class UserManageAdverts extends Controller
             }
 
             $adTitle = ContentHelper::sanitizeTitle($request->ad_title);
+
+            if (empty($adTitle)) {
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
+                return back()->withErrors([
+                    'ad_title' => 'Your ad title contains only invalid characters (e.g. phone numbers or special symbols). Please use plain descriptive text.',
+                ])->withInput();
+            }
+
             $adDescription = ContentHelper::sanitizeDescription($request->input('description'));
             $metaDescription = Str::limit($adDescription, 150, '');
             $rawWords = explode(' ', Str::slug($adTitle . ' ' . $metaDescription, ' '));
@@ -271,6 +281,7 @@ class UserManageAdverts extends Controller
 
             $advert = Advert::create([
                 'ad_title'         => $adTitle,
+                'title_slug'       => Str::slug($adTitle),
                 'ad_type'          => $request->input('ad_type', 'Private'), // ✅ Default to 'Private' if not provided
                 'category'         => $request->input('category'),
                 'sub_category'     => $request->input('subcategory'),
@@ -296,6 +307,7 @@ class UserManageAdverts extends Controller
                 'views'            => "0",
                 'ad_status'        => 'active',
                 'user_id'          => $user_id,
+                'source'           => 'web',
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
@@ -525,6 +537,7 @@ class UserManageAdverts extends Controller
         // Update main advert
         $advert->update([
             'ad_title'        => $adTitle,
+            'title_slug'      => Str::slug($adTitle),
             'ad_type'         => $request->input('ad_type'),
             'category'        => $request->input('category'),
             'sub_category'    => $request->input('subcategory'),

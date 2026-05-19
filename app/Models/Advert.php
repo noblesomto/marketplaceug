@@ -21,6 +21,7 @@ class Advert extends Model implements HasMedia
         'ad_id',
         'ad_type',
         'ad_title',
+        'title_slug',
         'category',
         'sub_category',
         'brand',
@@ -46,6 +47,7 @@ class Advert extends Model implements HasMedia
         'sold',
         'sold_date',
         'show_contact',
+        'source',
     ];
 
 

@@ -346,6 +346,8 @@ class UserManageAdverts extends Controller
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
 
+        $this->normalizeStateInput($request);
+
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
         $hasTempImages = !empty($request->input('temp_image_paths', []));
@@ -354,6 +356,8 @@ class UserManageAdverts extends Controller
         $messages = [
             'images.required'             => 'Please upload at least 3 images.',
             'images.min'                  => 'Please upload at least 3 images.',
+            'state.exists'                => 'Please select a valid state.',
+            'lga.exists'                  => 'Please select a valid LGA.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
@@ -388,6 +392,14 @@ class UserManageAdverts extends Controller
 
         // Duplicate check: same user + title + category/subcategory, active or posted in last 24h
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title', ''));
+
+        if (empty($adTitle)) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['ad_title' => ['Your ad title contains only invalid characters (e.g. phone numbers or special symbols). Please use plain descriptive text.']],
+            ], 422);
+        }
+
         $duplicateExists = Advert::where('user_id', $user->user_id)
             ->where('ad_title', $adTitle)
             ->where('category', $category)
@@ -418,7 +430,8 @@ class UserManageAdverts extends Controller
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
 
             $advert = Advert::create([
-                'ad_title' => $request->input('ad_title'),
+                'ad_title'   => $adTitle,
+                'title_slug' => Str::slug($adTitle),
                 'ad_type' => $request->input('ad_type'),
                 'category' => $request->input('category'),
                 'sub_category' => $request->input('subcategory'),
@@ -444,6 +457,7 @@ class UserManageAdverts extends Controller
                 'views' => "0",
                 'ad_status' => 'active',
                 'user_id' => $user->user_id,
+                'source' => 'api',
             ]);
 
             $advert->shippings()->sync($request->input('shipping', []));
@@ -810,11 +824,15 @@ class UserManageAdverts extends Controller
             ], 404);
         }
 
+        $this->normalizeStateInput($request);
+
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
         $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
 
         $messages = [
+            'state.exists'                => 'Please select a valid state.',
+            'lga.exists'                  => 'Please select a valid LGA.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
@@ -852,9 +870,12 @@ class UserManageAdverts extends Controller
             $uniqueWords = array_unique($filteredWords);
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
 
+            $adTitleUpdate = ContentHelper::sanitizeTitle($request->input('ad_title', ''));
+
             // Update main advert
             $advert->update([
-                'ad_title' => $request->input('ad_title'),
+                'ad_title'   => $adTitleUpdate ?: $advert->ad_title,
+                'title_slug' => Str::slug($adTitleUpdate ?: $advert->ad_title),
                 'ad_type' => $request->input('ad_type'),
                 'category' => $request->input('category'),
                 'sub_category' => $request->input('subcategory'),
@@ -1238,5 +1259,18 @@ class UserManageAdverts extends Controller
                 'price' => 500
             ]
         ]);
+    }
+
+    // If the app sends a numeric state ID instead of the state name, resolve it
+    // to the canonical name so it passes validation and stores consistently.
+    private function normalizeStateInput(Request $request): void
+    {
+        $value = $request->input('state');
+        if ($value !== null && is_numeric($value)) {
+            $name = State::where('id', $value)->value('name');
+            if ($name) {
+                $request->merge(['state' => $name]);
+            }
+        }
     }
 }
