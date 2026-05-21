@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\BoostController;
 use App\Http\Controllers\Api\CategoryUIController;
 use App\Http\Controllers\Api\AdvertisingController;
+use App\Http\Controllers\Api\PaystackWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,7 @@ Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'res
 
 // Social Authentication
 Route::post('/auth/social', [AccountController::class, 'socialLogin']);
+Route::post('/auth/apple', [AccountController::class, 'appleLogin']);
 Route::get('/auth/{provider}/redirect', [AccountController::class, 'socialRedirect']);
 Route::get('/auth/{provider}/callback', [AccountController::class, 'socialCallback']);
 
@@ -137,6 +139,7 @@ Route::prefix('advertising')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/locations/states', [LocationController::class, 'getStates']);
+Route::get('/locations/states/{state}/lgas', [LocationController::class, 'getLGAsByState']);
 Route::get('/locations/states/{state_id}/cities', [LocationController::class, 'getCitiesByState']);
 Route::get('/locations/states/{state_id}/details', [LocationController::class, 'getStateWithCities']);
 Route::get('/locations/cities', [LocationController::class, 'searchCities']);
@@ -193,6 +196,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Public callback route (no auth required)
 Route::post('/payments/callback', [PaystackController::class, 'handleCallback']);
+
+// Paystack webhook — server-to-server, no auth, signature verified inside the controller
+Route::post('/paystack/webhook', [PaystackWebhookController::class, 'handle']);
 
 /*
 |--------------------------------------------------------------------------

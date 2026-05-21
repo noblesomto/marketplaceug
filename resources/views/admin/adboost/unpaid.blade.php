@@ -135,13 +135,20 @@
                                             </td>
                                             <td class="text-center">
                                                 @if($row->payment_status == "pending")
-                                                   
-                                                    <button class="btn btn-sm btn-outline-success d-flex align-items-center"
-                                                            onclick="return confirmAction('activate', '{{ $row->advert->ad_title }}', '{{ $row->id }}')">
-                                                        <i class="bi bi-play-fill me-1"></i>
-                                                        <span>Activate</span>
-                                                    </button>
-
+                                                    <div class="d-flex flex-column gap-1 align-items-center">
+                                                        <button class="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                                                onclick="return confirmVerify('{{ addslashes($row->advert->ad_title) }}', '{{ $row->id }}', '{{ $row->payment_reference }}')"
+                                                                title="Check Paystack and activate if paid">
+                                                            <i class="bi bi-patch-check me-1"></i>
+                                                            <span>Verify &amp; Activate</span>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-success d-flex align-items-center"
+                                                                onclick="return confirmAction('activate', '{{ addslashes($row->advert->ad_title) }}', '{{ $row->id }}')"
+                                                                title="Manually activate without Paystack check">
+                                                            <i class="bi bi-play-fill me-1"></i>
+                                                            <span>Manual Activate</span>
+                                                        </button>
+                                                    </div>
                                                 @endif
                                             </td>
                                         </tr>
@@ -173,20 +180,39 @@
 </main><!-- End #main -->
 <script>
 function confirmAction(action, adTitle, id) {
-    const message = action === 'activate'
-        ? `Are you sure you want to Confirm Ad boost for  "${adTitle}"?`
-        : `Are you sure you want to resume boosting "${adTitle}"?`;
+    const message = `Are you sure you want to manually activate boost for "${adTitle}"? This skips Paystack verification.`;
 
-    if(confirm(message)) {
+    if (confirm(message)) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/boost/payment-status/${id}/activate`;
 
-        const csrfToken = document.createElement('input');
-        csrfToken.type = 'hidden';
-        csrfToken.name = '_token';
-        csrfToken.value = '{{ csrf_token() }}';
-        form.appendChild(csrfToken);
+        const csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = '_token';
+        csrf.value = '{{ csrf_token() }}';
+        form.appendChild(csrf);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    return false;
+}
+
+function confirmVerify(adTitle, id, reference) {
+    const refDisplay = reference ? `Reference: ${reference}` : 'No reference on record';
+    const message = `Verify payment with Paystack for "${adTitle}"?\n${refDisplay}\n\nThis will activate the boost only if Paystack confirms the payment was successful.`;
+
+    if (confirm(message)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/boost/verify-and-activate/${id}`;
+
+        const csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = '_token';
+        csrf.value = '{{ csrf_token() }}';
+        form.appendChild(csrf);
 
         document.body.appendChild(form);
         form.submit();

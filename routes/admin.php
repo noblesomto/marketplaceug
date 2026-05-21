@@ -64,6 +64,7 @@ Route::middleware('adminsession')->group(function () {
         Route::get('/boost/paid', [ManageBoost::class, 'paid'])->name('admin.boost.paid');
         Route::post('/boost/status/{id}/{status}', [ManageBoost::class, 'status'])->name('admin.boost.status');
         Route::post('/boost/payment-status/{id}/{status}', [ManageBoost::class, 'payment'])->name('admin.boost.payment.status');
+        Route::post('/boost/verify-and-activate/{id}', [ManageBoost::class, 'verifyAndActivate'])->name('admin.boost.verify-activate');
     });
 
     // Boost settings
