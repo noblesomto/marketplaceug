@@ -6,7 +6,12 @@ class AvatarHelper
 {
     public static function generateInitials(string $name): string
     {
-        $words = explode(' ', trim($name));
+        $name = trim($name);
+        if ($name === '') {
+            return '?';
+        }
+
+        $words = explode(' ', $name);
 
         if (count($words) >= 2) {
             return strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
@@ -26,6 +31,11 @@ class AvatarHelper
             '#ec4899', // pink
             '#14b8a6', // teal
         ];
+
+        $name = trim($name);
+        if ($name === '') {
+            return $colors[0];
+        }
 
         $index = ord(strtolower($name[0])) % count($colors);
         return $colors[$index];

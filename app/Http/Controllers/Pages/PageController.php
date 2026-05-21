@@ -19,6 +19,7 @@ use Mail;
 use Hash;
 use App\Mail\RegisterMail;
 use App\Mail\NotifyMail;
+use App\Mail\ContactMail;
 
 class PageController extends Controller
 {

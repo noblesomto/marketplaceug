@@ -724,6 +724,99 @@ class AccountController extends Controller
     // ==================== SOCIAL LOGIN METHODS ====================
 
     /**
+     * Apple Sign In
+     *
+     * Authenticates users via Apple Sign In. The client app (iOS/Android/web) obtains an
+     * `identity_token` (JWT) from Apple's SDK and sends it here. On the very first sign-in
+     * Apple also provides the user's name and email — pass these along so they can be stored,
+     * because Apple will NOT send them again on subsequent logins.
+     *
+     * @group Authentication
+     *
+     * @bodyParam identity_token string required The JWT identity token from Apple's SDK. Example: eyJraWQiOiJBUEdKNzgiLCJhbGciOiJSUzI1NiJ9...
+     * @bodyParam full_name string The user's full name (only available on first sign-in). Example: John Doe
+     * @bodyParam email string The user's email (only available on first sign-in; may be a relay address). Example: john@privaterelay.appleid.com
+     * @bodyParam device_name string The name of the device for token identification (optional). Example: iPhone 15
+     *
+     * @response 200 scenario="Apple login successful" {
+     *   "status": true,
+     *   "message": "Apple login successful.",
+     *   "data": {
+     *     "user": {
+     *       "user_id": "12345",
+     *       "name": "John Doe",
+     *       "email": "john@privaterelay.appleid.com",
+     *       "acc_type": "Private",
+     *       "acc_status": 1,
+     *       "apple_id": "000123.abc..."
+     *     },
+     *     "token": "1|abcdefghijklmnopqrstuvwxyz1234567890"
+     *   }
+     * }
+     *
+     * @response 401 scenario="Invalid token" {
+     *   "status": false,
+     *   "message": "Invalid Apple identity token."
+     * }
+     *
+     * @response 500 scenario="Login failed" {
+     *   "status": false,
+     *   "message": "Apple login failed. Please try again."
+     * }
+     */
+    public function appleLogin(Request $request)
+    {
+        $request->validate([
+            'identity_token' => 'required|string',
+            'full_name'      => 'nullable|string|max:100',
+            'email'          => 'nullable|email',
+            'device_name'    => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $appleUser = $this->verifyAppleToken($request->identity_token);
+
+            if (!$appleUser) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Invalid Apple identity token.',
+                ], 401);
+            }
+
+            // Apple only sends email on first sign-in; prefer the token claim, fall back to body param
+            $email    = $appleUser->email ?? $request->email;
+            $fullName = $request->full_name;
+
+            $user = $this->findOrCreateAppleUser($appleUser->sub, $email, $fullName);
+
+            $user->update([
+                'last_login_ip' => $request->ip(),
+                'last_login_at' => now(),
+            ]);
+
+            $deviceName = $request->device_name ?? 'apple-device';
+            $token = $user->createToken($deviceName, ['*'], now()->addDays(90))->plainTextToken;
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Apple login successful.',
+                'data'    => [
+                    'user'  => $user,
+                    'token' => $token,
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Apple login failed', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'status'  => false,
+                'message' => 'Apple login failed. Please try again.',
+            ], 500);
+        }
+    }
+
+    /**
      * Social Login
      *
      * Authenticates users via social providers (Google or Facebook). The mobile app obtains
@@ -1176,29 +1269,205 @@ class AccountController extends Controller
      */
     protected function findOrCreateSocialUser($socialUser, $provider)
     {
-        // Try to find user by email
+        // Try to find by provider ID first (fastest path for returning users)
+        $user = User::where($provider . '_id', $socialUser->id)->first();
+
+        if ($user) {
+            return $user;
+        }
+
+        // Try to find by email (user may have registered via another provider)
         $user = User::where('email', $socialUser->email)->first();
 
-        if (!$user) {
-            // Create new user
-            $user = User::create([
-                'name' => $socialUser->name ?? 'User',
-                'email' => $socialUser->email,
-                $provider . '_id' => $socialUser->id,
-                'acc_status' => 1, // Auto-verified for social login
-                'acc_type' => 'Private',
-                'password' => Hash::make(Str::random(16)), // Random password
-                'avatar' => $socialUser->avatar ?? null,
-            ]);
-        } else {
-            // Update provider ID if missing
+        if ($user) {
+            // Link this provider to the existing account
             if (!$user->{$provider . '_id'}) {
-                $user->update([
-                    $provider . '_id' => $socialUser->id,
-                ]);
+                $user->update([$provider . '_id' => $socialUser->id]);
+            }
+            return $user;
+        }
+
+        // New user — guard against race condition (two simultaneous logins for same email)
+        try {
+            return User::create([
+                'name'              => $socialUser->name ?? 'User',
+                'email'             => $socialUser->email,
+                $provider . '_id'   => $socialUser->id,
+                'acc_status'        => 1,
+                'acc_type'          => 'Private',
+                'password'          => Hash::make(Str::random(16)),
+                'avatar'            => $socialUser->avatar ?? null,
+            ]);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            // Another request created the user between our check and insert — just fetch it
+            return User::where('email', $socialUser->email)->firstOrFail();
+        }
+    }
+
+    /**
+     * Find or create a user from Apple Sign In.
+     *
+     * Apple's `sub` is the stable unique identifier per user per app — always present.
+     * `email` is only included in the identity token on the very first sign-in.
+     */
+    protected function findOrCreateAppleUser(string $appleSub, ?string $email, ?string $fullName): User
+    {
+        // 1. Look up by Apple sub (returning users — no email in token)
+        $user = User::where('apple_id', $appleSub)->first();
+
+        if ($user) {
+            return $user;
+        }
+
+        // 2. Look up by email (user may already have an account from another provider)
+        if ($email) {
+            $user = User::where('email', $email)->first();
+
+            if ($user) {
+                $user->update(['apple_id' => $appleSub]);
+                return $user;
             }
         }
 
-        return $user;
+        // 3. Create new account
+        return User::create([
+            'name'       => ContentHelper::sanitizeName($fullName ?? 'Apple User'),
+            'email'      => $email,
+            'apple_id'   => $appleSub,
+            'acc_status' => 1,
+            'acc_type'   => 'Private',
+            'password'   => Hash::make(Str::random(24)),
+        ]);
+    }
+
+    /**
+     * Verify an Apple identity token (RS256 JWT) against Apple's public JWKS.
+     *
+     * Returns an object with at least `sub` and optionally `email`.
+     * Returns null if the token is invalid, expired, or cannot be verified.
+     */
+    protected function verifyAppleToken(string $identityToken): ?object
+    {
+        // Decode header without verification to get the key ID
+        $parts = explode('.', $identityToken);
+        if (count($parts) !== 3) {
+            return null;
+        }
+
+        $header = json_decode(base64_decode(strtr($parts[0], '-_', '+/')), true);
+        if (empty($header['kid'])) {
+            return null;
+        }
+
+        // Fetch Apple's public keys (cached for 1 hour)
+        $jwks = Cache::remember('apple_jwks', 3600, function () {
+            $response = Http::timeout(10)->get('https://appleid.apple.com/auth/keys');
+            if (!$response->successful()) {
+                throw new \RuntimeException('Failed to fetch Apple public keys.');
+            }
+            return $response->json();
+        });
+
+        // Find the matching key by kid
+        $matchingKey = collect($jwks['keys'] ?? [])->firstWhere('kid', $header['kid']);
+        if (!$matchingKey) {
+            // Key not in cache — bust cache and retry once
+            Cache::forget('apple_jwks');
+            $response = Http::timeout(10)->get('https://appleid.apple.com/auth/keys');
+            if (!$response->successful()) {
+                return null;
+            }
+            $jwks = $response->json();
+            Cache::put('apple_jwks', $jwks, 3600);
+            $matchingKey = collect($jwks['keys'] ?? [])->firstWhere('kid', $header['kid']);
+
+            if (!$matchingKey) {
+                return null;
+            }
+        }
+
+        // Convert JWK to PEM
+        $pem = $this->jwkToPem($matchingKey);
+        if (!$pem) {
+            return null;
+        }
+
+        try {
+            $decoded = \Firebase\JWT\JWT::decode(
+                $identityToken,
+                new \Firebase\JWT\Key($pem, 'RS256')
+            );
+
+            // Validate issuer and audience
+            $clientId = config('services.apple.client_id');
+
+            if ($decoded->iss !== 'https://appleid.apple.com') {
+                return null;
+            }
+
+            if ($clientId && $decoded->aud !== $clientId) {
+                Log::warning('Apple token audience mismatch', [
+                    'expected' => $clientId,
+                    'received' => $decoded->aud,
+                ]);
+                return null;
+            }
+
+            return $decoded;
+
+        } catch (\Exception $e) {
+            Log::warning('Apple JWT decode failed', ['error' => $e->getMessage()]);
+            return null;
+        }
+    }
+
+    /**
+     * Convert an Apple JWK (RSA public key) to a PEM string.
+     */
+    protected function jwkToPem(array $jwk): ?string
+    {
+        if (empty($jwk['n']) || empty($jwk['e'])) {
+            return null;
+        }
+
+        $n = \Firebase\JWT\JWT::urlsafeB64Decode($jwk['n']);
+        $e = \Firebase\JWT\JWT::urlsafeB64Decode($jwk['e']);
+
+        // Encode n and e as ASN.1 integers with length prefixes
+        $encodeLength = function (int $len): string {
+            if ($len <= 127) {
+                return chr($len);
+            }
+            $tmp = '';
+            while ($len > 0) {
+                $tmp = chr($len & 0xFF) . $tmp;
+                $len >>= 8;
+            }
+            return chr(0x80 | strlen($tmp)) . $tmp;
+        };
+
+        $encodeUint = function (string $bytes) use ($encodeLength): string {
+            // Prepend 0x00 if high bit set (to keep it positive)
+            if (ord($bytes[0]) & 0x80) {
+                $bytes = "\x00" . $bytes;
+            }
+            return "\x02" . $encodeLength(strlen($bytes)) . $bytes;
+        };
+
+        $nEncoded = $encodeUint($n);
+        $eEncoded = $encodeUint($e);
+
+        $modExp   = $nEncoded . $eEncoded;
+        $sequence = "\x30" . $encodeLength(strlen($modExp)) . $modExp;
+
+        // Wrap in SEQUENCE with RSA OID header
+        $rsaOid  = "\x30\x0d\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01\x05\x00";
+        $bitStr  = "\x03" . $encodeLength(strlen($sequence) + 1) . "\x00" . $sequence;
+        $full    = $rsaOid . $bitStr;
+        $outer   = "\x30" . $encodeLength(strlen($full)) . $full;
+
+        return "-----BEGIN PUBLIC KEY-----\n"
+            . chunk_split(base64_encode($outer), 64, "\n")
+            . "-----END PUBLIC KEY-----\n";
     }
 }

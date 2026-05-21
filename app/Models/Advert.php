@@ -199,6 +199,28 @@ class Advert extends Model implements HasMedia
             });
     }
 
+    // Active, non-sold ads that are NOT currently featured/boosted.
+    // Used for main listing pagination — featured ads are pulled separately
+    // so they don't double-count in the total or appear twice on page 1.
+    public function scopeRegularAds($query)
+    {
+        return $query->where('ad_status', 'active')
+            ->where(function ($q) {
+                $q->where('sold', '!=', 'Yes')
+                  ->orWhere(function ($subQ) {
+                      $subQ->where('sold', 'Yes')
+                           ->whereNotNull('sold_date')
+                           ->where('sold_date', '>=', now()->subDays(30));
+                  });
+            })
+            ->where(function ($q) {
+                $q->where('featured', '!=', 'Yes')
+                  ->orWhereDoesntHave('boost', function ($bq) {
+                      $bq->where('boost_status', 'active');
+                  });
+            });
+    }
+
     public function registerMediaConversions(?Media $media = null): void
     {
         // Optimized version - full-size for detail/gallery pages

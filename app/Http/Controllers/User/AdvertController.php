@@ -1174,6 +1174,11 @@ class AdvertController extends Controller
     {
         $title = "Buy Directly" .' | '.config('global.site_title');
         $data['ad'] = Advert::with('images','shippings')->where('ad_id', $id)->first();
+
+        if (!$data['ad']) {
+            abort(404, 'Advert not found.');
+        }
+
         $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
