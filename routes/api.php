@@ -358,7 +358,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/stats', [UserStatsController::class, 'getUserStats']);
         Route::get('/unread-messages', [UserStatsController::class, 'getUnreadMessagesCount']);
+        Route::get('/unread-notifications', [UserStatsController::class, 'getUnreadNotificationsCount']);
         Route::get('/notifications', [UserStatsController::class, 'getNotifications']);
+        Route::put('/notifications/read-all', [\App\Http\Controllers\Api\UserController::class, 'markAllNotificationsAsRead']);
         Route::put('/notifications/{id}/read', [\App\Http\Controllers\Api\UserController::class, 'markNotificationAsRead']);
         Route::delete('/delete-notification/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteNotification']);
     });

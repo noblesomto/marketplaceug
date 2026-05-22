@@ -431,6 +431,197 @@
           "response": []
         },
         {
+          "name": "Auth Apple (Sign in with Apple)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/apple",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "apple"
+              ]
+            },
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `POST /api/auth/apple`\nController: `App\\Http\\Controllers\\Api\\AccountController@appleLogin`\n\n**Sign in with Apple \u2014 mobile SDK flow.**\n\nThe client app obtains an `identity_token` (JWT) from Apple's SDK and sends it here. Apple only provides `email` and `full_name` on the **very first sign-in** \u2014 pass them through on that call or they are lost permanently.\n\n**Fields:**\n- `identity_token` *(required)* \u2014 JWT from Apple's `ASAuthorizationAppleIDCredential.identityToken`\n- `full_name` *(first sign-in only)* \u2014 from `ASAuthorizationAppleIDCredential.fullName`\n- `email` *(first sign-in only)* \u2014 may be a relay address (`@privaterelay.appleid.com`)\n- `device_name` *(optional)* \u2014 used to label the Sanctum token",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"identity_token\": \"eyJraWQiOiJBUEdKNzgiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLm1hcmtldHBsYWNlLm5nIiwiZXhwIjoxNzQ3NDE1OTk5LCJpYXQiOjE3NDc0MTIzOTksInN1YiI6IjAwMDEyMy5hYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MC4wMTIzIiwiZW1haWwiOiJ1c2VyQHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImF1dGhfdGltZSI6MTc0NzQxMjM5OX0.signature\",\n    \"full_name\": \"John Doe\",\n    \"email\": \"user@privaterelay.appleid.com\",\n    \"device_name\": \"iPhone 15 Pro\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "200 \u2013 Apple login successful",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"identity_token\": \"eyJraWQiOiJBUEdKNzgiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLm1hcmtldHBsYWNlLm5nIiwiZXhwIjoxNzQ3NDE1OTk5LCJpYXQiOjE3NDc0MTIzOTksInN1YiI6IjAwMDEyMy5hYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MC4wMTIzIiwiZW1haWwiOiJ1c2VyQHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImF1dGhfdGltZSI6MTc0NzQxMjM5OX0.signature\",\n    \"full_name\": \"John Doe\",\n    \"email\": \"user@privaterelay.appleid.com\",\n    \"device_name\": \"iPhone 15 Pro\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/apple",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "apple"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": true,\n    \"message\": \"Apple login successful.\",\n    \"data\": {\n        \"user\": {\n            \"name\": \"John Doe\",\n            \"user_id\": \"12345\",\n            \"email\": \"user@privaterelay.appleid.com\",\n            \"phone\": null,\n            \"address\": null,\n            \"city\": null,\n            \"state\": null,\n            \"verified\": 0,\n            \"acc_status\": \"active\",\n            \"acc_type\": \"user\",\n            \"token\": null,\n            \"otp\": null,\n            \"profile_picture\": null,\n            \"notification\": 1,\n            \"disable_account\": 0,\n            \"disable_account_date\": null,\n            \"bank_name\": null,\n            \"bank_code\": null,\n            \"account_name\": null,\n            \"account_number\": null,\n            \"otp_expires_at\": null,\n            \"push_notifications_enabled\": true,\n            \"google_id\": null,\n            \"facebook_id\": null,\n            \"apple_id\": \"000123.abcdef1234567890abcdef1234567890.0123\",\n            \"avatar\": null,\n            \"last_login_ip\": \"102.89.45.123\",\n            \"last_login_at\": \"2026-05-18T12:00:00.000000Z\",\n            \"profile_image_url\": null,\n            \"profile_thumbnail_url\": null\n        },\n        \"token\": \"1|abcdefghijklmnopqrstuvwxyz1234567890\"\n    }\n}"
+            },
+            {
+              "name": "401 \u2013 Invalid Apple identity token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"identity_token\": \"invalid.token.here\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/apple",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "apple"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": false,\n    \"message\": \"Invalid Apple identity token.\"\n}"
+            },
+            {
+              "name": "500 \u2013 Apple login failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"identity_token\": \"eyJraWQiOiJBUEdKNzgiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIn0.signature\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/apple",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "apple"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": false,\n    \"message\": \"Apple login failed. Please try again.\"\n}"
+            }
+          ]
+        },
+        {
           "name": "Auth  Provider  Redirect",
           "request": {
             "method": "GET",
@@ -1731,18 +1922,36 @@
               "originalRequest": {
                 "method": "POST",
                 "header": [
-                  { "key": "Accept", "value": "application/json", "type": "text" },
-                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
                 ],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n    \"category\": 1,\n    \"location\": \"Lagos\",\n    \"min\": 500000,\n    \"max\": 5000000,\n    \"car_condition\": \"Foreign used\",\n    \"fuel_type\": \"Petrol\",\n    \"transmission\": \"Automatic\",\n    \"registration\": \"Registered\",\n    \"per_page\": 20\n}",
-                  "options": { "raw": { "language": "json" } }
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 },
                 "url": {
                   "raw": "{{base_url}}/api/search/filter",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "search", "filter"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "search",
+                    "filter"
+                  ]
                 }
               },
               "status": "OK",
@@ -1757,18 +1966,36 @@
               "originalRequest": {
                 "method": "POST",
                 "header": [
-                  { "key": "Accept", "value": "application/json", "type": "text" },
-                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
                 ],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n    \"category\": 4,\n    \"brand\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"phone_condition\": \"New - Unboxed\",\n    \"device_type\": \"Smartphone\",\n    \"per_page\": 20\n}",
-                  "options": { "raw": { "language": "json" } }
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 },
                 "url": {
                   "raw": "{{base_url}}/api/search/filter",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "search", "filter"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "search",
+                    "filter"
+                  ]
                 }
               },
               "status": "OK",
@@ -1783,18 +2010,36 @@
               "originalRequest": {
                 "method": "POST",
                 "header": [
-                  { "key": "Accept", "value": "application/json", "type": "text" },
-                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
                 ],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n    \"buydirect\": \"Yes\",\n    \"seller\": \"verified\",\n    \"category\": 5,\n    \"location\": \"Lagos\",\n    \"min\": 50000,\n    \"max\": 500000,\n    \"per_page\": 20\n}",
-                  "options": { "raw": { "language": "json" } }
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 },
                 "url": {
                   "raw": "{{base_url}}/api/search/filter",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "search", "filter"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "search",
+                    "filter"
+                  ]
                 }
               },
               "status": "OK",
@@ -2264,6 +2509,140 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Locations States {State} LGAs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations/states/Lagos/lgas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "states",
+                "Lagos",
+                "lgas"
+              ],
+              "variable": [
+                {
+                  "key": "state",
+                  "value": "Lagos",
+                  "description": "State name (e.g. Lagos, FCT - Abuja) or numeric state ID (e.g. 25). Both are accepted."
+                }
+              ]
+            },
+            "description": "Public Endpoint\n\nEndpoint: GET /api/locations/states/{state}/lgas\nController: App\\Http\\Controllers\\Api\\LocationController@getLGAsByState\n\nReturns all Local Government Areas (LGAs) for a given state. The {state} parameter accepts either the state name (e.g. Lagos, FCT - Abuja) or the numeric state ID (e.g. 25 for Lagos, 15 for FCT).\n\nLGAs are sorted alphabetically. Data sourced from the lgas DB table (774 LGAs across 37 states).\n\nError (state not found): 404 with { \"success\": false, \"message\": \"State not found\" }",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "name": "Lagos LGAs (by name)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/locations/states/Lagos/lgas",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "locations",
+                    "states",
+                    "Lagos",
+                    "lgas"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"state\": \"Lagos\",\n    \"lgas\": [\n      \"Agege\",\n      \"Ajeromi-Ifelodun\",\n      \"Alimosho\",\n      \"Amuwo-Odofin\",\n      \"Apapa\",\n      \"Badagry\",\n      \"Epe\",\n      \"Eti Osa\",\n      \"Ibeju-Lekki\",\n      \"Ifako-Ijaiye\",\n      \"Ikeja\",\n      \"Ikorodu\",\n      \"Kosofe\",\n      \"Lagos Island\",\n      \"Lagos Mainland\",\n      \"Mushin\",\n      \"Ojo\",\n      \"Oshodi-Isolo\",\n      \"Shomolu\",\n      \"Surulere\"\n    ]\n  }\n}"
+            },
+            {
+              "name": "FCT - Abuja LGAs (by numeric ID)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/locations/states/15/lgas",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "locations",
+                    "states",
+                    "15",
+                    "lgas"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"state\": \"FCT - Abuja\",\n    \"lgas\": [\n      \"Abaji\",\n      \"Bwari\",\n      \"Gwagwalada\",\n      \"Kuje\",\n      \"Kwali\",\n      \"Municipal Area Council\"\n    ]\n  }\n}"
+            },
+            {
+              "name": "404 State Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/locations/states/InvalidState/lgas",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "locations",
+                    "states",
+                    "InvalidState",
+                    "lgas"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"message\": \"State not found\"\n}"
+            }
+          ]
         },
         {
           "name": "Locations States  State Id  Cities",
@@ -3806,6 +4185,56 @@
             "body": {
               "mode": "raw",
               "raw": "{\n    \"push_notifications\": true,\n    \"email_notifications\": true,\n    \"message_notifications\": true,\n    \"advert_updates\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Notification Preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "notifications"
+              ]
+            },
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `PUT /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateNotifications`\n\nUpdates the authenticated user's notification preferences.\n\n**Request body:**\n```json\n{\n  \"push_notifications\": true,\n  \"email_notifications\": true,\n  \"sms_notifications\": false\n}\n```",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"push_notifications\": true,\n    \"email_notifications\": true,\n    \"sms_notifications\": false\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5465,7 +5894,48 @@
       "name": "User   Notifications",
       "item": [
         {
-          "name": "User Notifications",
+          "name": "Unread Notifications Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/unread-notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "unread-notifications"
+              ]
+            },
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `GET /api/user/unread-notifications`\nController: `App\\Http\\Controllers\\Api\\UserStatsController@getUnreadNotificationsCount`\n\nReturns the number of unread in-app notifications for the authenticated user.\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"unread_count\": 5\n  }\n}\n```",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All Notifications as Read",
           "request": {
             "method": "PUT",
             "header": [
@@ -5481,17 +5951,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/user/notifications",
+              "raw": "{{base_url}}/api/user/notifications/read-all",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "user",
-                "notifications"
+                "notifications",
+                "read-all"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PUT /api/user/notifications`\nController: `App\\Http\\Controllers\\Api\\UserProfile@updateNotifications`",
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `PUT /api/user/notifications/read-all`\nController: `App\\Http\\Controllers\\Api\\UserController@markAllNotificationsAsRead`\n\nMarks every unread notification as read and resets the badge counter.\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"message\": \"All notifications marked as read\"\n}\n```",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -5501,15 +5972,49 @@
                   "type": "string"
                 }
               ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"push_notifications\": true,\n    \"email_notifications\": true,\n    \"sms_notifications\": false\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
               }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/notifications/{{notification_id}}/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "notifications",
+                "{{notification_id}}",
+                "read"
+              ]
+            },
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `PUT /api/user/notifications/{id}/read`\nController: `App\\Http\\Controllers\\Api\\UserController@markNotificationAsRead`\n\nMarks a single notification as read.\n\n**Path variable:**\n- `notification_id` \u2014 the integer ID of the notification\n\n**Response:**\n```json\n{\n  \"success\": true,\n  \"message\": \"Notification marked as read\"\n}\n```",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": []

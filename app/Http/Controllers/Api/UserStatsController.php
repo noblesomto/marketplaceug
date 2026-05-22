@@ -267,6 +267,37 @@ class UserStatsController extends Controller
         }
     }
 
+    // GET /api/user/unread-notifications
+    public function getUnreadNotificationsCount()
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
+
+            $count = getUserNotificationCount();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'unread_count' => $count
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch unread notifications count',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Get user notifications
      *

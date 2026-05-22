@@ -924,6 +924,24 @@ class UserController extends Controller
      *     )
      * )
      */
+    // PUT /api/user/notifications/read-all
+    public function markAllNotificationsAsRead()
+    {
+        $user = auth()->user();
+
+        $user->notifications_seen_at = now();
+        $user->save();
+
+        Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All notifications marked as read'
+        ]);
+    }
+
     // PUT /api/user/notifications/{id}/read
     public function markNotificationAsRead($id)
     {
