@@ -559,17 +559,14 @@ class AdvertController extends Controller
      */
     public function categories()
     {
-        $categoryCounts = Category::leftJoin('adverts', function($join) {
-                $join->on('categories.id', '=', 'adverts.category')
-                     ->where('adverts.ad_status', 1)
+        $categoryCounts = Category::leftJoin('sub_categories as sc', 'categories.id', '=', 'sc.cat_id')
+            ->leftJoin('adverts', function($join) {
+                $join->on('sc.id', '=', 'adverts.sub_category')
+                     ->where('adverts.ad_status', 'active')
                      ->where(function($q) {
                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
                            ->orWhereNull('adverts.sold_date');
                      });
-            })
-            ->leftJoin('sub_categories as sc', function($join) {
-                $join->on('adverts.sub_category', '=', 'sc.id')
-                    ->orOn('categories.id', '=', 'sc.cat_id');
             })
             ->selectRaw('categories.id, categories.category AS category_name, categories.category_slug,
                         sc.id as sub_category_id, sc.sub_category AS sub_category_name, sc.sub_cat_slug,
@@ -603,7 +600,7 @@ class AdvertController extends Controller
         $subcategories = DB::table('sub_categories')
             ->leftJoin('adverts', function ($join) {
                 $join->on('sub_categories.id', '=', 'adverts.sub_category')
-                    ->where('adverts.ad_status', 1)
+                    ->where('adverts.ad_status', 'active')
                     ->where(function ($q) {
                         $q->where('adverts.sold_date', '>=', now()->subDays(30))
                           ->orWhereNull('adverts.sold_date');
@@ -697,7 +694,7 @@ class AdvertController extends Controller
         $subcategories = DB::table('sub_categories')
             ->leftJoin('adverts', function ($join) {
                 $join->on('sub_categories.id', '=', 'adverts.sub_category')
-                    ->where('adverts.ad_status', 1)
+                    ->where('adverts.ad_status', 'active')
                     ->where(function ($q) {
                         $q->where('adverts.sold_date', '>=', now()->subDays(30))
                           ->orWhereNull('adverts.sold_date');
@@ -778,12 +775,10 @@ class AdvertController extends Controller
         $brands = DB::table('brands')
             ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
             ->where('brands.subcat_id', $subcat->id)
+            ->where('adverts.ad_status', 'active')
             ->where(function($query) {
-                $query->where('adverts.ad_status', 1)
-                      ->where(function($q) {
-                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
-                            ->orWhereNull('adverts.sold_date');
-                      });
+                $query->where('adverts.sold_date', '>=', now()->subDays(30))
+                      ->orWhereNull('adverts.sold_date');
             })
             ->select('brands.id', 'brands.brand', 'brands.brand_slug', DB::raw('COUNT(adverts.id) as advert_count'))
             ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
