@@ -318,14 +318,21 @@ class AccountController extends Controller
             return redirect('/login')->with('error', 'Login failed, please try again.');
         }
 
+        $socialEmail = $socialUser->getEmail();
+
+        // Some Facebook accounts have no email (privacy settings) — cannot create account without one
+        if (!$socialEmail) {
+            return redirect('/login')->with('error', 'Your Facebook account has no email address. Please grant email permission or register with your email directly.');
+        }
+
         // Try to find user by email
-        $user = User::where('email', $socialUser->getEmail())->first();
+        $user = User::where('email', $socialEmail)->first();
 
         if (!$user) {
             // If no user exists, create new one (status active by default)
             $user = User::create([
                 'name'       => $socialUser->getName() ?? $socialUser->getNickname(),
-                'email'      => $socialUser->getEmail(),
+                'email'      => $socialEmail,
                 $provider . '_id' => $socialUser->getId(),
                 'acc_status' => 1, // mark verified
                 'acc_type'=> "Private",

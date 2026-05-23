@@ -908,6 +908,15 @@ class AccountController extends Controller
                 ]
             ]);
 
+        } catch (\RuntimeException $e) {
+            if ($e->getMessage() === 'social_no_email') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Your Facebook account has no email address. Please grant email permission or use a different login method.',
+                ], 422);
+            }
+            Log::error('Social login failed', ['provider' => $request->provider, 'error' => $e->getMessage()]);
+            return response()->json(['status' => false, 'message' => 'Social login failed. Please try again.'], 500);
         } catch (\Exception $e) {
             Log::error('Social login failed', [
                 'provider' => $request->provider,
@@ -1269,6 +1278,10 @@ class AccountController extends Controller
      */
     protected function findOrCreateSocialUser($socialUser, $provider)
     {
+        if (empty($socialUser->email)) {
+            throw new \RuntimeException('social_no_email');
+        }
+
         // Try to find by provider ID first (fastest path for returning users)
         $user = User::where($provider . '_id', $socialUser->id)->first();
 
