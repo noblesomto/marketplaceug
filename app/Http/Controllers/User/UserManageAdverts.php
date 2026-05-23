@@ -292,7 +292,7 @@ class UserManageAdverts extends Controller
                 'expected_salary'  => $request->input('expected_salary'),
                 'item_condition'   => $request->input('item_condition'),
                 'price_type'       => $request->input('price_type'),
-                'buy_direct'       => $request->input('buy_direct', 'No'), // ✅ Default to 'No' if not provided
+                'buy_direct'       => strtolower($request->input('buy_direct', 'No')) === 'yes' ? 'Yes' : 'No',
                 'state'            => $request->input('state'),
                 'lga'              => $request->input('lga'),
                 'state_slug'       => Str::slug($request->input('lga')),
@@ -548,7 +548,7 @@ class UserManageAdverts extends Controller
             'salary'           => $request->input('salary'),
             'expected_salary'  => $request->input('expected_salary'),
             'item_condition'  => $request->input('item_condition'),
-            'buy_direct'      => $request->input('buy_direct'),
+            'buy_direct'      => $request->has('buy_direct') ? (strtolower($request->input('buy_direct')) === 'yes' ? 'Yes' : 'No') : $advert->buy_direct,
             'state'           => $request->input('state'),
             'lga'             => $request->input('lga'),
             'state_slug'      => Str::slug($request->input('lga')),
