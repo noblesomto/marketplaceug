@@ -50,9 +50,15 @@
                 };
             </script>
         @endauth
+
+    <!-- Apple Smart App Banner — shown automatically by Safari on iOS -->
+    <meta name="apple-itunes-app" content="app-id=6753354778">
 </head>
 <body class="bg-body text-gray-700 text-sm">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVDT4VHH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    @include('public.components.app-install-banner')
+
     <main id="main-content">

@@ -118,5 +118,9 @@
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4998736645213032"
      crossorigin="anonymous"></script>
+
+    <!-- Apple Smart App Banner — shown automatically by Safari on iOS -->
+    <meta name="apple-itunes-app" content="app-id=6753354778">
 </head>
 <body class="bg-body text-gray-700 text-sm">
+    @include('public.components.app-install-banner')
