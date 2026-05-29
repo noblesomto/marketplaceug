@@ -477,10 +477,12 @@ class UserController extends Controller
         $user = auth()->user();
 
         $wishlist = Advert::with(['firstImage', 'car', 'phone'])
-            ->whereHas('wishlists', function($query) use ($user) {
-                $query->where('user_id', $user->user_id);
+            ->join('wishlists', function ($join) use ($user) {
+                $join->on('wishlists.advert_id', '=', 'adverts.id')
+                     ->where('wishlists.user_id', $user->user_id);
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('wishlists.created_at', 'desc')
+            ->select('adverts.*')
             ->paginate($request->get('per_page', 20));
 
         $wishlist->getCollection()->transform(function ($ad) {
