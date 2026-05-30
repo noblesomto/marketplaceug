@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Enums\Fit;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Notification as AppNotification;
 
 
 class User extends Authenticatable implements HasMedia
@@ -50,6 +51,7 @@ class User extends Authenticatable implements HasMedia
         'push_notifications_enabled',
         'google_id',
         'facebook_id',
+        'apple_id',
         'avatar',
         'last_login_ip',
         'last_login_at',
@@ -312,6 +314,23 @@ class User extends Authenticatable implements HasMedia
     public function canReceivePushNotifications(): bool
     {
         return $this->push_notifications_enabled && $this->deviceTokens()->exists();
+    }
+
+    /**
+     * Count unread notifications — used for iOS badge count.
+     * Mirrors the logic in getUserNotificationCount() helper.
+     */
+    public function unreadNotificationCount(): int
+    {
+        $query = AppNotification::where('user_id', $this->id);
+
+        if ($this->notifications_seen_at) {
+            $query->where('created_at', '>', $this->notifications_seen_at);
+        } else {
+            $query->where('is_read', false);
+        }
+
+        return $query->count();
     }
 
 

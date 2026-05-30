@@ -106,7 +106,8 @@ class SendFollowerPushNotification implements ShouldQueue
 
         $notification = [
             'title' => $title,
-            'body' => $body,
+            'body'  => $body,
+            'badge' => $this->follower->unreadNotificationCount(),
         ];
 
         // Add advert thumbnail if available and publicly accessible

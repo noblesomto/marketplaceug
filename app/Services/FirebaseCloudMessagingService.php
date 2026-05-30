@@ -135,8 +135,12 @@ class FirebaseCloudMessagingService
                 ],
                 'payload' => [
                     'aps' => [
+                        'alert' => [
+                            'title' => $notification['title'] ?? '',
+                            'body'  => $notification['body'] ?? '',
+                        ],
                         'sound' => 'default',
-                        'badge' => 1,
+                        'badge' => $notification['badge'] ?? 0,
                     ],
                 ],
             ],

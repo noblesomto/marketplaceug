@@ -64,7 +64,8 @@ class SendPushNotification implements ShouldQueue
 
         $notification = [
             'title' => $this->sender->name,
-            'body' => $messagePreview,
+            'body'  => $messagePreview,
+            'badge' => $this->user->unreadNotificationCount(),
         ];
 
         // Add advert thumbnail if available and publicly accessible
