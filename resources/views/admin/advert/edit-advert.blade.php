@@ -258,7 +258,10 @@
                                 <select id="pr" name="transmission" class="form-select w-50">
                                     <option value="">Please Choose</option>
                                     <option value="Automatic" {{ optional($advert->car)->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
-                                    <option value="Manually" {{ optional($advert->car)->transmission == 'Manually' ? 'selected' : '' }}>Manually</option>
+                                    <option value="Manual"    {{ optional($advert->car)->transmission == 'Manual'    ? 'selected' : '' }}>Manual</option>
+                                    <option value="CVT"       {{ optional($advert->car)->transmission == 'CVT'       ? 'selected' : '' }}>CVT</option>
+                                    <option value="AMT"       {{ optional($advert->car)->transmission == 'AMT'       ? 'selected' : '' }}>AMT</option>
+                                    <option value="Other"     {{ optional($advert->car)->transmission == 'Other'     ? 'selected' : '' }}>Other</option>
                                 </select>
                             </div>
                         </div>
@@ -536,12 +539,6 @@
                                         $securityFeatures = [
                                             'Anti-lock braking system (ABS)',
                                             'Service history maintained',
-                                            'Electronic Stability Control',
-                                            'Airbags',
-                                            'Alarm system',
-                                            'Immobilizer',
-                                            'Traction control',
-                                            'ISOFIX child seat mounts'
                                         ];
                                         $selectedSecurity = json_decode(optional($advert->car)->security) ?? [];
                                     @endphp
@@ -804,7 +801,7 @@
                   @endif
                   <select id="salary" name="salary" class="form-select w-50">
                     <option value="">--Select Salary--</option>
-                    @foreach(['Commission','Below ₦20,000','₦20,000 - ₦40,000','₦40,000 - ₦60,000','₦60,000 - ₦80,000','₦80,000 - ₦100,000','₦100,000 - ₦150,000','₦150,000 - ₦200,000','₦200,000 - ₦300,000','₦300,000 - ₦500,000','Above ₦500,000'] as $sal)
+                    @foreach(['Commission','Below ₦20,000','₦20,000 - ₦40,000','₦40,000 - ₦60,000','₦60,000 - ₦80,000','₦80,000 - ₦100,000','₦100,000 - ₦120,000','₦120,000 - ₦140,000','₦140,000 - ₦160,000','₦160,000 - ₦180,000','₦180,000 - ₦200,000','₦200,000 - ₦220,000','₦220,000 - ₦250,000','₦250,000 - ₦300,000','₦300,000 - ₦350,000','₦350,000 - ₦400,000','₦400,000 - ₦450,000','₦450,000 - ₦500,000','Above ₦500,000'] as $sal)
                       <option value="{{ $sal }}" {{ $advert->salary == $sal ? 'selected' : '' }}>{{ $sal }}</option>
                     @endforeach
                   </select>
@@ -822,7 +819,7 @@
                   @endif
                   <select id="expected_salary" name="expected_salary" class="form-select w-50">
                     <option value="">--Select Expected Salary--</option>
-                    @foreach(['Below ₦50,000','₦50,000 - ₦75,000','₦75,000 - ₦100,000','₦100,000 - ₦150,000','₦150,000 - ₦200,000','₦200,000 - ₦300,000','₦300,000 - ₦500,000','Above ₦500,000'] as $expSal)
+                    @foreach(['Below ₦50,000','₦50,000 - ₦75,000','₦75,000 - ₦100,000','₦100,000 - ₦120,000','₦120,000 - ₦140,000','₦140,000 - ₦160,000','₦160,000 - ₦180,000','₦180,000 - ₦200,000','₦200,000 - ₦220,000','₦220,000 - ₦250,000','₦250,000 - ₦300,000','₦300,000 - ₦350,000','₦350,000 - ₦400,000','₦400,000 - ₦450,000','₦450,000 - ₦500,000','Above ₦500,000'] as $expSal)
                       <option value="{{ $expSal }}" {{ $advert->expected_salary == $expSal ? 'selected' : '' }}>{{ $expSal }}</option>
                     @endforeach
                   </select>
