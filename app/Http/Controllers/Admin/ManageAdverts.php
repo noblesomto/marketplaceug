@@ -218,7 +218,6 @@ class ManageAdverts extends Controller
                     'fuel'           => 'required',
                     'transmission'   => 'required',
                     'vehicle_type'   => 'required',
-                    'doors'          => 'required',
                     'exterior_color' => 'required',
                 ];
                 break;

@@ -366,7 +366,7 @@
                         <!-- Number of Doors -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Number of Doors *</div>
+                                <div class="fw-semibold">Number of Doors</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 @if ($errors->has('doors'))
@@ -385,7 +385,7 @@
                         <!-- Material Interior -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Material Interior *</div>
+                                <div class="fw-semibold">Material Interior</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 @if ($errors->has('material_interior'))
@@ -416,7 +416,7 @@
                         <!-- Exterior Equipment -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Exterior Equipment *</div>
+                                <div class="fw-semibold">Exterior Equipment</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="row">
@@ -471,7 +471,7 @@
                         <!-- Interior Equipment -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Interior Equipment *</div>
+                                <div class="fw-semibold">Interior Equipment</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="row">
@@ -531,7 +531,7 @@
                         <!-- Security -->
                         <div class="row py-3 border-bottom border-gray-200">
                             <div class="col-12 col-md-2">
-                                <div class="fw-semibold">Security *</div>
+                                <div class="fw-semibold">Security</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="row">
