@@ -2,248 +2,339 @@
 @include('user.layouts.back-nav')
 @include('user.layouts.search')
 
-<section class="w-full md:w-5/6 mx-auto mt-3">
-  <div class="grid grid-cols-10 gap-3">
-      <div class="col-span-2  hidden lg:block">
-          @include('public.components.advert.side-advert')
-      </div>
-      <div class="col-span-10 lg:col-span-6">
-            <div class="chat-layout max-w-2xl mx-auto">
-            <!-- Chat Header -->
-            <div class="chat-header bg-white border-b  border-gray-200">
-                <div class="chat-container">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-4 py-2">
-                            <a href="/user/messages" class="flex-shrink-0">
-                                <i class="bi bi-chevron-left text-dark_green text-xl lg:text-2xl"></i>
-                            </a>
-                            <a href="{{ url($advert->state_slug . '/' . $advert->title_slug .'/'. $advert->ad_id) }}" class="flex items-center min-w-0 flex-1">
-                                <div class="flex-shrink-0 mr-3 lg:mr-4">
-                                    <img class="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gray-300 object-cover"
-                                         src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') }}"
-                                         alt="{{ $advert->ad_title }}">
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <h4 class="font-semibold text-lg lg:text-xl text-gray-900 truncate">{{ $advert->owner->name }}</h4>
-                                    <h6 class="text-sm lg:text-base text-gray-600 truncate -mt-1">{{ Str::limit($advert->ad_title, 30) }}</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div>
-                            @include('user.components.chat-dropdown')
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="chat-page-wrapper">
 
-            <!-- Chat Main Area -->
-            <div class="chat-main {{ $advert->sold == 'Yes' ? 'pb-20' : '' }}">
-                <div class="chat-container h-full flex flex-col pb-16 border-x-2 border-gray-200">
-                    <!-- Chat Messages -->
-                    <div id="chat-box" class="chat-box  rounded-t-lg lg:rounded-t-xl">
-                        @foreach($messages as $msg)
-                            @php
-                                // Get the sender information
-                                $sender = $msg->sender_id == $user->user_id ? $user : $receiver;
-                                $isCurrentUser = $msg->sender_id == $user->user_id;
+    {{-- ─── LEFT SIDEBAR (desktop only) ─────────────────────────────── --}}
+    <aside class="chat-left-panel">
 
-                                // Generate initials
-                                $nameParts = explode(' ', trim($sender->name));
-                                $initials = strtoupper(substr($nameParts[0], 0, 1));
-                                if (count($nameParts) > 1) {
-                                    $initials .= strtoupper(substr($nameParts[count($nameParts) - 1], 0, 1));
-                                }
-
-                                // Avatar colors based on user
-                                $avatarColor = $isCurrentUser ? 'bg-gray-500' : 'bg-gray-200';
-                            @endphp
-
-                            <div class="chat-message flex mt-1 mb-4 lg:mb-6 {{ $isCurrentUser ? 'justify-end' : 'justify-start' }}">
-                                {{-- Avatar (left side for others) --}}
-                                @if(!$isCurrentUser)
-                                    <div class="flex-shrink-0 mr-2 lg:mr-2">
-                                        <div class="message-avatar w-10 h-10 lg:w-11 lg:h-11 rounded-full {{ $avatarColor }} flex items-center justify-center shadow-sm">
-                                            <span class="text-gray-800 text-sm lg:text-base font-semibold">{{ $initials }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                {{-- Message Content --}}
-                                <div class="chat-message-content">
-                                    {{-- Message Bubble --}}
-                                    <div class="message-bubble rounded-2xl px-4 py-3 lg:px-5 lg:py-4 {{ $isCurrentUser
-                                        ? 'bg-secondary-200 text-gray-800 rounded-br-md'
-                                        : 'bg-gray-50 text-gray-800 rounded-bl-md' }}">
-
-                                        {{-- Text Content --}}
-                                        @if($msg->message_content)
-                                            <div class="text-sm lg:text-base leading-relaxed">{{ $msg->message_content }}</div>
-                                        @endif
-
-                                        {{-- Images --}}
-                                        @if($msg->images->count())
-                                            <div class="message-images grid gap-2 lg:gap-3 {{ $msg->message_content ? 'mt-3' : '' }}
-                                                {{ $msg->images->count() == 1 ? 'grid-cols-1' :
-                                                   ($msg->images->count() == 2 ? 'grid-cols-2' :
-                                                   'grid-cols-2 sm:grid-cols-3') }}">
-                                                @foreach($msg->images as $messageImage)
-                                                    <div class="relative group">
-                                                        <img
-                                                            src="{{ $messageImage->getFirstMediaUrl('message_images', 'thumbnail') }}"
-                                                            alt="Shared image"
-                                                            class="w-full h-24 sm:h-28 object-cover rounded-lg cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-md"
-                                                            onclick="enlargeImage('{{ $messageImage->getFirstMediaUrl('message_images', 'large') }}')"
-                                                        />
-                                                        <div class="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-200 rounded-lg"></div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    {{-- Timestamp --}}
-                                    <div class="message-timestamp text-xs lg:text-sm text-gray-500 mt-1 {{ $isCurrentUser ? 'text-right mr-1' : 'text-left ml-1' }}">
-                                        {{ \Carbon\Carbon::parse($msg->created_at)->format('M j, g:i A') }}
-                                    </div>
-                                </div>
-
-                                {{-- Avatar (right side for current user) --}}
-                                @if($isCurrentUser)
-                                    <div class="flex-shrink-0 ml-2 lg:ml-2">
-                                        <div class="message-avatar w-10 h-10 lg:w-11 lg:h-11 rounded-full {{ $avatarColor }} flex items-center justify-center shadow-sm">
-                                            <span class="text-white text-sm lg:text-base font-semibold">{{ $initials }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sticky Chat Form -->
-            <div class="fixed bottom-0 inset-x-0 z-50 mx-auto max-w-2xl bg-white border-t border-gray-200 shadow-md">
-                <form id="chat-form" class="max-w-2xl mx-auto p-4">
-                    @csrf
-                    <input type="hidden" name="advert_id" value="{{ $advert->id }}">
-                    <input type="hidden" name="receiver_id" value="{{ $receiver->user_id }}">
-
-                    @if($advert->user_id == $user->user_id)
-
-                    @elseif(count($messages) == 0)
-                        <div class="space-y-4 mb-4">
-                            <!-- Toggle Switch -->
-                            <label class="flex items-center cursor-pointer">
-                                <!-- Switch -->
-                                <div class="relative">
-                                    <input type="checkbox" id="toggleSwitch" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-300 rounded-full shadow-inner transition-colors duration-200 peer-checked:bg-green-500"></div>
-                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"></div>
-                                </div>
-                                <!-- Label -->
-                                <span class="ml-3 text-gray-700">Send the seller an offer?</span>
-                            </label>
-
-
-                            <!-- Conditionally Visible Input -->
-                            <div id="extraInputWrapper" class="hidden">
-                                <label for="extraInput" class="block text-base font-medium text-gray-700 mb-2">Enter Amount</label>
-                                <input
-                                    type="text"
-                                    id="extraInput"
-                                    name="amount"
-                                    placeholder="Enter Amount"
-                                    maxlength="11"
-                                    pattern="[0-9]*"
-                                    disabled
-                                    class="mt-1 block h-10 w-full rounded-lg border border-gray-300 focus:outline-none focus:border-blue-400 px-3"
-                                >
-                            </div>
+        {{-- Advert card --}}
+        <div class="p-5 border-b border-gray-100">
+            <a href="{{ url($advert->state_slug . '/' . $advert->title_slug . '/' . $advert->ad_id) }}"
+               class="block group">
+                <div class="relative rounded-xl overflow-hidden mb-4 bg-gray-100">
+                    <img src="{{ $advert->getFirstMediaUrl('images', 'optimized') ?: asset('frontend/images/default.png') }}"
+                         alt="{{ $advert->ad_title }}"
+                         class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+                    @if($advert->sold === 'Yes')
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span class="bg-red-500 text-white font-bold text-sm px-4 py-1.5 rounded-full tracking-wide uppercase">Sold</span>
                         </div>
                     @endif
+                </div>
 
-                    @if($advert->sold=="Yes" && $advert->user_id != $user->user_id)
-                        <div class="flex justify-between mb-4">
-                            <span class="bg-green-100 rounded-lg p-2">
-                                @if(!isset($payment) || empty($payment))
-                                    Sold
-                                @else
-                                    @if($payment->buyer_status == "pending")
-                                        <a href="/payment/mark-received/{{ $payment->id }}" onclick="return confirm('Are you sure you want to confirm Received?');">
-                                            <i class="bi bi-check-all"></i> Mark Received
-                                        </a>
-                                    @else
-                                        <span class="capitalize">{{ $payment->buyer_status }}</span>
-                                    @endif
-                                @endif
-                            </span>
-                            <span class="bg-yellow-100 rounded-lg p-2"><a href="/report-ad/{{ $advert->id }}"><i class="bi bi-exclamation-triangle"></i> Report an Issue</a> </span>
-                        </div>
-                    @endif
+                <h3 class="font-semibold text-gray-900 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-dark_green transition-colors">
+                    {{ $advert->ad_title }}
+                </h3>
 
-                    <!-- Message Input -->
-                    <div id="send-message" class="flex items-center bg-gray-50 p-2 rounded-lg border">
-                        <div class="flex-shrink-0 mr-2">
-                            <div class="relative inline-block">
-                                <!-- Hidden file input -->
-                                <input
-                                    type="file"
-                                    id="fileUpload"
-                                    class="hidden"
-                                    multiple
-                                    accept="image/*"
-                                    onchange="updateFileCount(this)"
-                                >
+                @if($advert->contact_price === 'yes')
+                    <p class="text-sm text-gray-500 italic">Contact for price</p>
+                @elseif($advert->price)
+                    <p class="text-dark_green font-bold text-xl">
+                        ₦{{ number_format((float) preg_replace('/[^\d.]/', '', $advert->price), 0) }}
+                        @if($advert->price_type && $advert->price_type !== 'Fixed')
+                            <span class="text-xs font-normal text-gray-500 ml-1">· {{ $advert->price_type }}</span>
+                        @endif
+                    </p>
+                @endif
 
-                                <!-- Icon trigger -->
-                                <label for="fileUpload" class="cursor-pointer">
-                                    <i class="bi bi-camera text-2xl"></i>
-                                </label>
+                @if($advert->state)
+                    <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                        <i class="bi bi-geo-alt"></i> {{ $advert->lga ? $advert->lga . ', ' : '' }}{{ $advert->state }}
+                    </p>
+                @endif
+            </a>
 
-                                <!-- Badge -->
-                                <span id="fileBadge"
-                                    class="hidden absolute -top-2 -right-2 bg-yellow-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                    0
-                                </span>
-                            </div>
-                        </div>
+            <a href="{{ url($advert->state_slug . '/' . $advert->title_slug . '/' . $advert->ad_id) }}"
+               class="mt-4 flex items-center justify-center gap-2 w-full px-4 py-2 border border-dark_green text-dark_green text-sm font-semibold rounded-lg hover:bg-green-50 transition-colors">
+                View Full Listing <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
 
-                        <div class="flex-1 mr-2">
-                            <textarea
-                                id="chat-input"
-                                name="message"
-                                rows="1"
-                                class="auto-resize w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-400 text-gray-700 resize-none"
-                                placeholder="Type your message..."
-                                autocomplete="off"
-                            ></textarea>
-                        </div>
-
-                        <div class="flex-shrink-0">
-                            <button type="submit" id="sendBtn" class="p-2">
-                                <i class="bi bi-send-fill text-2xl text-dark_green"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </form>
+        {{-- Contact info --}}
+        <div class="p-5 border-b border-gray-100 flex-1">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                {{ $advert->user_id == $user->user_id ? 'Buyer' : 'Seller' }}
+            </p>
+            @php
+                $otherName   = $receiver->name ?? 'User';
+                $nameParts   = explode(' ', trim($otherName));
+                $sideInitial = strtoupper(substr($nameParts[0], 0, 1));
+                if (count($nameParts) > 1) {
+                    $sideInitial .= strtoupper(substr($nameParts[count($nameParts) - 1], 0, 1));
+                }
+            @endphp
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                    <span class="text-gray-700 font-semibold text-sm">{{ $sideInitial }}</span>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900 text-sm">{{ $otherName }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">Marketplace member</p>
+                </div>
             </div>
         </div>
 
-      </div>
-      <div class="col-span-2 hidden lg:block">
-        @include('public.components.advert.side-advert')
-      </div>
-  </div>
-</section>
+        {{-- Actions --}}
+        <div class="p-5 space-y-1">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Options</p>
+            @php
+                $sideUser     = $user;
+                $sideBlocked  = $isBlocked;
+                $sideArchived = $sideUser->hasArchivedConversation($advert->id ?? null, $receiver->user_id);
+            @endphp
+
+            {{-- Block / Unblock --}}
+            <form action="{{ $sideBlocked ? '/user/unblock' : '/user/block' }}" method="POST">
+                @csrf
+                @if($sideBlocked) @method('DELETE') @endif
+                <input type="hidden" name="blocked_id" value="{{ $receiver->user_id }}">
+                <input type="hidden" name="advert_id"  value="{{ $advert->id ?? '' }}">
+                <button type="button"
+                        onclick="confirmAction(this, '{{ $sideBlocked ? 'Unblock this user?' : 'Block this user from messaging you?' }}')"
+                        class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-sm {{ $sideBlocked ? 'text-green-700 hover:bg-green-50' : 'text-gray-600 hover:bg-gray-50' }} transition-colors">
+                    <i class="bi {{ $sideBlocked ? 'bi-person-check' : 'bi-slash-circle' }}"></i>
+                    {{ $sideBlocked ? 'Unblock User' : 'Block User' }}
+                </button>
+            </form>
+
+            {{-- Report --}}
+            <a href="/report-user/{{ $receiver->user_id }}"
+               class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                <i class="bi bi-flag"></i> Report User
+            </a>
+
+            {{-- Archive / Unarchive --}}
+            <form action="{{ $sideArchived ? route('messages.unarchive') : route('messages.archive') }}" method="POST">
+                @csrf
+                @if($sideArchived) @method('DELETE') @endif
+                <input type="hidden" name="advert_id"     value="{{ $advert->id ?? '' }}">
+                <input type="hidden" name="other_user_id" value="{{ $receiver->user_id }}">
+                <button type="button"
+                        onclick="confirmAction(this, '{{ $sideArchived ? 'Unarchive this conversation? It will reappear in your message list.' : 'Archive this conversation? It will be hidden from your message list.' }}')"
+                        class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-sm {{ $sideArchived ? 'text-blue-700 hover:bg-blue-50' : 'text-gray-600 hover:bg-gray-50' }} transition-colors">
+                    <i class="bi {{ $sideArchived ? 'bi-archive' : 'bi-archive' }}"></i>
+                    {{ $sideArchived ? 'Unarchive Chat' : 'Archive Chat' }}
+                </button>
+            </form>
+        </div>
+
+    </aside>
+
+    {{-- ─── RIGHT CHAT PANEL ───────────────────────────────────────── --}}
+    <div class="chat-right-panel">
+
+        {{-- HEADER --}}
+        <div class="chat-header-bar">
+            <div class="flex items-center gap-3 px-4 py-3">
+
+                {{-- Back (mobile only) --}}
+                <a href="/user/messages" class="flex-shrink-0 lg:hidden">
+                    <i class="bi bi-chevron-left text-dark_green text-xl"></i>
+                </a>
+
+                {{-- Advert thumbnail + other person name --}}
+                <a href="{{ url($advert->state_slug . '/' . $advert->title_slug . '/' . $advert->ad_id) }}"
+                   class="flex items-center gap-3 min-w-0 flex-1">
+                    <img src="{{ $advert->getFirstMediaUrl('images', 'thumbnail') ?: asset('frontend/images/default.png') }}"
+                         alt="{{ $advert->ad_title }}"
+                         class="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-gray-200">
+                    <div class="min-w-0">
+                        <h2 class="font-semibold text-gray-900 text-sm truncate leading-tight">
+                            {{ $advert->owner->name }}
+                        </h2>
+                        <p class="text-xs text-gray-500 truncate leading-tight">
+                            {{ Str::limit($advert->ad_title, 45) }}
+                        </p>
+                    </div>
+                </a>
+
+                {{-- Dropdown (block / archive / report — mobile & desktop) --}}
+                <div class="flex-shrink-0">
+                    @include('user.components.chat-dropdown')
+                </div>
+            </div>
+        </div>
+
+        {{-- MESSAGES --}}
+        <div id="chat-box" class="chat-box">
+            @foreach($messages as $msg)
+                @php
+                    $msgSender      = $msg->sender_id == $user->user_id ? $user : $receiver;
+                    $isCurrentUser  = $msg->sender_id == $user->user_id;
+                    $nameParts      = explode(' ', trim($msgSender->name));
+                    $initials       = strtoupper(substr($nameParts[0], 0, 1));
+                    if (count($nameParts) > 1) {
+                        $initials .= strtoupper(substr($nameParts[count($nameParts) - 1], 0, 1));
+                    }
+                @endphp
+
+                <div class="chat-message flex mb-3 {{ $isCurrentUser ? 'justify-end' : 'justify-start' }}">
+
+                    {{-- Avatar (receiver side) --}}
+                    @if(!$isCurrentUser)
+                        <div class="flex-shrink-0 mr-2 self-end">
+                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-700 text-xs font-semibold">{{ $initials }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Bubble + timestamp --}}
+                    <div class="max-w-[72%] lg:max-w-[65%]">
+                        <div class="message-bubble px-4 py-2.5 rounded-2xl text-sm leading-relaxed
+                            {{ $isCurrentUser
+                                ? 'bg-secondary-200 text-gray-800 rounded-br-md'
+                                : 'bg-white text-gray-800 rounded-bl-md shadow-sm border border-gray-100' }}">
+
+                            @if($msg->message_content)
+                                <p>{{ $msg->message_content }}</p>
+                            @endif
+
+                            @if($msg->images->count())
+                                <div class="mt-2 grid gap-1.5
+                                    {{ $msg->images->count() === 1 ? 'grid-cols-1' :
+                                       ($msg->images->count() === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3') }}">
+                                    @foreach($msg->images as $messageImage)
+                                        <div class="relative group">
+                                            <img src="{{ $messageImage->getFirstMediaUrl('message_images', 'thumbnail') }}"
+                                                 alt="Shared image"
+                                                 class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                                                 onclick="enlargeImage('{{ $messageImage->getFirstMediaUrl('message_images', 'large') }}')">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+
+                        <p class="text-xs text-gray-400 mt-1 {{ $isCurrentUser ? 'text-right pr-1' : 'text-left pl-1' }}">
+                            {{ \Carbon\Carbon::parse($msg->created_at)->format('M j, g:i A') }}
+                        </p>
+                    </div>
+
+                    {{-- Avatar (current user side) --}}
+                    @if($isCurrentUser)
+                        <div class="flex-shrink-0 ml-2 self-end">
+                            <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center">
+                                <span class="text-white text-xs font-semibold">{{ $initials }}</span>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+
+        {{-- FOOTER --}}
+        <div class="chat-footer-bar">
+
+            {{-- Sold status bar --}}
+            @if($advert->sold === 'Yes' && $advert->user_id != $user->user_id)
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <span class="bg-green-50 border border-green-200 text-green-800 text-xs font-medium rounded-lg px-3 py-1.5">
+                        @if(!isset($payment) || empty($payment))
+                            <i class="bi bi-bag-check mr-1"></i> Item Sold
+                        @elseif($payment->buyer_status === 'pending')
+                            <a href="/payment/mark-received/{{ $payment->id }}"
+                               onclick="return confirm('Are you sure you want to confirm Received?');"
+                               class="flex items-center gap-1">
+                                <i class="bi bi-check-all"></i> Mark as Received
+                            </a>
+                        @else
+                            <span class="capitalize"><i class="bi bi-check-circle mr-1"></i>{{ $payment->buyer_status }}</span>
+                        @endif
+                    </span>
+                    <a href="/report-ad/{{ $advert->id }}"
+                       class="bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs font-medium rounded-lg px-3 py-1.5 flex items-center gap-1">
+                        <i class="bi bi-exclamation-triangle"></i> Report Issue
+                    </a>
+                </div>
+            @endif
+
+            {{-- Offer toggle (buyers only, first message) --}}
+            @if($advert->user_id != $user->user_id && count($messages) == 0)
+                <div class="space-y-3 mb-3">
+                    <label class="flex items-center gap-3 cursor-pointer select-none">
+                        <div class="relative">
+                            <input type="checkbox" id="toggleSwitch" class="sr-only peer">
+                            <div class="w-10 h-5 bg-gray-300 rounded-full transition-colors duration-200 peer-checked:bg-dark_green"></div>
+                            <div class="dot absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">Send the seller an offer?</span>
+                    </label>
+                    <div id="extraInputWrapper" class="hidden">
+                        <label for="extraInput" class="block text-sm font-medium text-gray-700 mb-1">Offer Amount</label>
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:border-dark_green focus-within:ring-1 focus-within:ring-dark_green">
+                            <span class="px-3 py-2 bg-gray-50 text-gray-500 border-r border-gray-300 text-sm">₦</span>
+                            <input type="text"
+                                   id="extraInput"
+                                   name="amount"
+                                   placeholder="0"
+                                   maxlength="11"
+                                   pattern="[0-9]*"
+                                   disabled
+                                   class="flex-1 px-3 py-2 text-sm outline-none bg-white">
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- Message form --}}
+            <form id="chat-form">
+                @csrf
+                <input type="hidden" name="advert_id"   value="{{ $advert->id }}">
+                <input type="hidden" name="receiver_id"  value="{{ $receiver->user_id }}">
+
+                {{-- Message input row --}}
+                <div id="send-message" class="flex items-end gap-2 bg-gray-50 rounded-xl border border-gray-200 px-3 py-2 focus-within:border-dark_green focus-within:ring-1 focus-within:ring-dark_green transition-all">
+
+                    {{-- Camera / file attach --}}
+                    <div class="flex-shrink-0 pb-1 relative">
+                        <input type="file"
+                               id="fileUpload"
+                               class="hidden"
+                               multiple
+                               accept="image/*"
+                               onchange="updateFileCount(this)">
+                        <label for="fileUpload" class="cursor-pointer text-gray-400 hover:text-dark_green transition-colors block">
+                            <i class="bi bi-image text-xl"></i>
+                        </label>
+                        <span id="fileBadge"
+                              class="hidden absolute -top-2 -right-2 bg-dark_green text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                            0
+                        </span>
+                    </div>
+
+                    {{-- Textarea --}}
+                    <div class="flex-1">
+                        <textarea id="chat-input"
+                                  name="message"
+                                  rows="1"
+                                  class="auto-resize w-full bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400 resize-none pt-1"
+                                  placeholder="Type your message…"
+                                  autocomplete="off"></textarea>
+                    </div>
+
+                    {{-- Send button --}}
+                    <div class="flex-shrink-0 pb-1">
+                        <button type="submit" id="sendBtn"
+                                class="w-9 h-9 rounded-full bg-dark_green hover:bg-secondary_dark flex items-center justify-center transition-colors">
+                            <i class="bi bi-send-fill text-white text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>{{-- end chat-right-panel --}}
+</div>{{-- end chat-page-wrapper --}}
 
 
-
-<!-- Image Enlarger Overlay -->
-<div id="image-overlay" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-    <img id="overlay-image" src="" alt="Enlarged" class="max-w-full max-h-full rounded-lg shadow-lg">
+{{-- Image lightbox --}}
+<div id="image-overlay"
+     class="fixed inset-0 bg-black/85 hidden items-center justify-center z-50 p-4"
+     onclick="this.classList.add('hidden'); this.classList.remove('flex');">
+    <img id="overlay-image" src="" alt="Enlarged image"
+         class="max-w-full max-h-full rounded-xl shadow-2xl object-contain">
 </div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -411,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Disable button + show loading
             sendBtn.disabled = true;
             const originalIcon = sendBtn.innerHTML;
-            sendBtn.innerHTML = '<i class="bi bi-hourglass-split text-2xl text-gray-400"></i>';
+            sendBtn.innerHTML = '<i class="bi bi-hourglass-split text-white text-sm"></i>';
             // Create FormData for file upload
             const formData = new FormData();
             // Add form fields
@@ -609,59 +700,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-// CSS for drag and drop visual feedback
-const style = document.createElement('style');
-style.textContent = `
-    .drag-over {
-        border: 2px dashed #3b82f6;
-        background-color: rgba(59, 130, 246, 0.05);
-    }
-
-    .image-preview-container {
-        max-height: 120px;
-        overflow-y: auto;
-    }
-
-    .image-preview-container::-webkit-scrollbar {
-        height: 4px;
-    }
-
-    .image-preview-container::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 2px;
-    }
-
-    .image-preview-container::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 2px;
-    }
-
-    .image-preview-container::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-`;
-document.head.appendChild(style);
-</script>
-
-
-
-<script>
-  const chatBox = document.getElementById('chat-box');
-  
-  // Function to check and update padding
-  function updateChatBoxPadding() {
-    if (chatBox.innerHTML.trim() === '') {
-      chatBox.classList.remove('p-2');
-    } else {
-      chatBox.classList.add('p-2');
-    }
-  }
-  
-  // Initial check
-  updateChatBoxPadding();
-  
-
 </script>
 
 <script>
@@ -673,12 +711,8 @@ function enlargeImage(src) {
     overlay.classList.add('flex');
 }
 
-// Close overlay when clicked anywhere
 document.getElementById('image-overlay').addEventListener('click', function () {
     this.classList.add('hidden');
     this.classList.remove('flex');
 });
 </script>
-
-
-
