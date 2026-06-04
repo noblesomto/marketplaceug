@@ -18,6 +18,7 @@ use App\Models\State;
 use App\Models\GigLogistic;
 use App\Models\Shipping;
 use App\Traits\HasUserSession;
+use Illuminate\Support\Facades\Log;
 
 class PaystackController extends Controller
 {
@@ -71,6 +72,7 @@ class PaystackController extends Controller
                 'city'             => $shipping['reciever_city']->id ?? null,
                 'state'            => $shipping['reciever_state']->id ?? null,
                 'payment_status'   => 'pending',
+                'source'           => 'web',
             ]);
         } else {
             // Reuse the existing pending payment (update reference if needed)
@@ -196,8 +198,9 @@ class PaystackController extends Controller
                 'amount' => $amount * 100, // kobo
                 'callback_url' => route('boost.callback'),
                 'metadata' => [
-                    'advert_id' => $advertId,
-                    'user_id' => $user_id,
+                    'advert_id'    => $advertId,
+                    'user_id'      => $user_id,
+                    'payment_type' => 'boost',
                 ],
             ]);
 
@@ -207,14 +210,14 @@ class PaystackController extends Controller
 
             $reference = $data['data']['reference'];
             $post = AdvertBoost::create([
-                'advert_id'=> $advertId,
-                'user_id'=> $user_id,
-                'payment_reference'=> $reference,
-                'amount'=> $amount,
-                'boost_type'=> $request->input('boost_name'),
-                'duration'=> $request->input('duration'),
-                'boost_status'=> "pending",
-                'payment_status'=> "pending",
+                'advert_id'         => $advertId,
+                'user_id'           => $user_id,
+                'payment_reference' => $reference,
+                'amount'            => $amount,
+                'boost_type'        => $request->input('boost_name'),
+                'duration'          => $request->input('duration'),
+                'boost_status'      => 'pending',
+                'payment_status'    => 'pending',
             ]);
 
             return redirect($data['data']['authorization_url']);
@@ -227,14 +230,18 @@ class PaystackController extends Controller
     {
         $reference = $request->reference;
 
-        // 🔍 Lookup the booking with the stored reference
         $boost = AdvertBoost::where('payment_reference', $reference)->first();
 
         if (!$boost) {
+            Log::warning('Boost callback: reference not found', ['ref' => $reference]);
             return redirect()->route('payment.failed')->with('error', 'Advert to boost not found.');
         }
 
-        // ✅ Verify with Paystack
+        // Idempotency: webhook may have already activated this boost
+        if ($boost->payment_status === 'paid' && $boost->boost_status === 'active') {
+            return redirect()->route('payment.success');
+        }
+
         $response = Http::withToken(config('services.paystack.secretKey'))
             ->get(config('services.paystack.paymentUrl') . "/transaction/verify/{$reference}");
 
@@ -242,26 +249,31 @@ class PaystackController extends Controller
 
         if ($data['status'] && $data['data']['status'] === 'success') {
             $transactionId = $data['data']['id'];
-            $amount = $data['data']['amount'];
-            $paidAt = $data['data']['paid_at'];
 
-            // 📝 Update booking as paid
-            $boost->update([
-                'payment_status' => 'paid',
-                'boost_status' => 'active',
-                'trans_id' => $transactionId,
-                'start_date' => Carbon::now(),
-            ]);
-            DB::table('adverts')
-                ->where('id', $boost->advert_id)
-                ->update([
-                    'featured'=> "Yes",
+            DB::transaction(function () use ($boost, $transactionId) {
+                $boost->update([
+                    'payment_status' => 'paid',
+                    'boost_status'   => 'active',
+                    'trans_id'       => $transactionId,
+                    'start_date'     => Carbon::now(),
                 ]);
+
+                DB::table('adverts')
+                    ->where('id', $boost->advert_id)
+                    ->update(['featured' => 'Yes']);
+            });
+
+            Log::info('Boost callback: activated', [
+                'boost_id'  => $boost->id,
+                'advert_id' => $boost->advert_id,
+                'trans_id'  => $transactionId,
+            ]);
 
             return redirect()->route('payment.success');
         }
 
-       return redirect()->route('payment.failed')->with('error', 'Payment was no Successful.');
+        Log::warning('Boost callback: verification failed', ['ref' => $reference]);
+        return redirect()->route('payment.failed')->with('error', 'Payment was not successful.');
     }
 
     public function initialize_post_boost(Request $request)
@@ -279,8 +291,9 @@ class PaystackController extends Controller
                 'amount' => round($request->amount) * 100, // kobo
                 'callback_url' => route('boost.callback'),
                 'metadata' => [
-                    'advert_id' => $advertId,
-                    'user_id' => $user_id,
+                    'advert_id'    => $advertId,
+                    'user_id'      => $user_id,
+                    'payment_type' => 'boost',
                 ],
             ]);
 

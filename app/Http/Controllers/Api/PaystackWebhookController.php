@@ -51,7 +51,20 @@ class PaystackWebhookController extends Controller
 
         $data        = $verified['data'];
         $metadata    = $data['metadata'] ?? [];
-        $paymentType = $metadata['payment_type'] ?? 'buy_direct';
+        $paymentType = $metadata['payment_type'] ?? null;
+
+        // If payment_type is missing from metadata, infer from the reference —
+        // web boost flows historically omitted this field.
+        if (!$paymentType) {
+            $paymentType = AdvertBoost::where('payment_reference', $reference)->exists()
+                ? 'boost'
+                : 'buy_direct';
+
+            Log::info('Paystack webhook: inferred payment_type from reference lookup', [
+                'ref'  => $reference,
+                'type' => $paymentType,
+            ]);
+        }
 
         if ($paymentType === 'boost') {
             $this->activateBoost($reference, (int) $data['id']);

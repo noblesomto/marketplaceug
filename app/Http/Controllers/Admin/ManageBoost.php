@@ -100,23 +100,19 @@ class ManageBoost extends Controller
 
     public function paid(Request $request)
     {
-        $title = "Unpaid Boost Adverts | " . config('global.site_name');
-        $page_title = "Unpaid Boost Adverts";
+        $title = "Paid Boost Adverts | " . config('global.site_name');
+        $page_title = "Paid Boost Adverts";
 
         $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
             ->whereHas('advert', function ($query) {
                 $query->where('ad_status', 1)
                       ->where('sold', 'No');
             })
-            ->where('payment_status', 'pending')
-            ->where('boost_status', 'pending')
-            ->whereHas('media', function ($query) {
-                $query->where('collection_name', 'payment_proof');
-            })
+            ->where('payment_status', 'paid')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+        return view('admin.adboost.paid', compact('title', 'page_title', 'adverts'));
     }
 
 
