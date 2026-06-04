@@ -27,19 +27,31 @@ class ExpireAdvertBoosts extends Command
             return Command::SUCCESS;
         }
 
-        // Update boosts
+        // Update boosts to completed
         DB::table('advert_boosts')
             ->whereIn('advert_id', $expiredBoosts)
             ->where('boost_status', 'active')
             ->where('payment_status', 'paid')
+            ->whereRaw("DATE_ADD(start_date, INTERVAL duration DAY) <= ?", [$now])
             ->update(['boost_status' => 'completed']);
 
-        // 2️⃣ Unfeature adverts tied to expired boosts
-        DB::table('adverts')
-            ->whereIn('id', $expiredBoosts)
-            ->update(['featured' => 'No']);
+        // 2️⃣ Unfeature adverts ONLY if they have no other still-active boost
+        $stillBoosted = DB::table('advert_boosts')
+            ->where('boost_status', 'active')
+            ->where('payment_status', 'paid')
+            ->whereRaw("DATE_ADD(start_date, INTERVAL duration DAY) > ?", [$now])
+            ->whereIn('advert_id', $expiredBoosts)
+            ->pluck('advert_id');
 
-        $this->info(count($expiredBoosts) . ' boosts expired and adverts unfeatured.');
+        $toUnfeature = $expiredBoosts->diff($stillBoosted);
+
+        if ($toUnfeature->isNotEmpty()) {
+            DB::table('adverts')
+                ->whereIn('id', $toUnfeature)
+                ->update(['featured' => 'No']);
+        }
+
+        $this->info(count($expiredBoosts) . ' boost(s) expired, ' . $toUnfeature->count() . ' advert(s) unfeatured.');
 
         return Command::SUCCESS;
     }

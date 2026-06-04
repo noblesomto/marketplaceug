@@ -118,25 +118,29 @@ class ManageBoost extends Controller
 
     public function payment($id, $status)
     {
-        $advert = AdvertBoost::where('id', $id)->first();
-        $advert_id = $advert->advert_id;
+        $boost = AdvertBoost::where('id', $id)->first();
+        $advert_id = $boost->advert_id;
+
+        // Always set start_date = now so the user gets their full boost duration from today
+        $startDate  = Carbon::now();
+        $expiresAt  = $startDate->copy()->addDays((int) $boost->duration);
+        $alreadyExpired = $expiresAt->isPast();
 
         DB::table('advert_boosts')
             ->where('id', $id)
             ->update([
                 'payment_status' => 'paid',
-                'boost_status'   => 'active',
+                'boost_status'   => $alreadyExpired ? 'completed' : 'active',
                 'trans_id'       => 'manual-' . $id,
-                'start_date'     => Carbon::now(),
+                'start_date'     => $startDate,
                 'updated_at'     => Carbon::now(),
             ]);
 
-        DB::table('adverts')
-            ->where('id', $advert_id)
-            ->update([
-                'featured'   => 'Yes',
-                'updated_at' => Carbon::now(),
-            ]);
+        if (!$alreadyExpired) {
+            DB::table('adverts')
+                ->where('id', $advert_id)
+                ->update(['featured' => 'Yes', 'updated_at' => Carbon::now()]);
+        }
 
         return redirect()->back()->with('status', ['text' => 'Advert Boost Updated', 'type' => 'success']);
     }
