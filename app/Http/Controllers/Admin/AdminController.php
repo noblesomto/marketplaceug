@@ -58,6 +58,8 @@ class AdminController extends Controller
                 'new_last_week' => Advert::whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count(),
                 'new_this_month' => Advert::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count(),
                 'new_last_month' => Advert::whereMonth('created_at', Carbon::now()->subMonth()->month)->whereYear('created_at', Carbon::now()->subMonth()->year)->count(),
+                'source_web' => Advert::where('source', 'web')->count(),
+                'source_api' => Advert::where('source', 'api')->count(),
             ];
         }
 
@@ -67,7 +69,7 @@ class AdminController extends Controller
                 'total' => AdvertBoost::count(),
                 'active' => AdvertBoost::where('payment_status', 'paid')->where('boost_status', 'active')->count(),
                 'completed' => AdvertBoost::where('boost_status', 'completed')->count(),
-                'unpaid' => AdvertBoost::where('payment_status', 'unpaid')->count(),
+                'unpaid' => AdvertBoost::where('payment_status', 'pending')->count(),
                 'revenue_today' => AdvertBoost::where('payment_status', 'paid')->whereDate('created_at', Carbon::today())->sum('amount'),
                 'revenue_this_week' => AdvertBoost::where('payment_status', 'paid')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('amount'),
                 'revenue_last_week' => AdvertBoost::where('payment_status', 'paid')->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('amount'),
@@ -85,6 +87,8 @@ class AdminController extends Controller
                 'total_revenue' => Payment::where('payment_status', 'paid')->sum('amount'),
                 'revenue_today' => Payment::where('payment_status', 'paid')->whereDate('created_at', Carbon::today())->sum('amount'),
                 'revenue_this_month' => Payment::where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->month)->sum('amount'),
+                'source_web' => Payment::where('payment_status', 'paid')->where('source', 'web')->count(),
+                'source_api' => Payment::where('payment_status', 'paid')->where('source', 'api')->count(),
             ];
 
             $stats['settlements'] = [
