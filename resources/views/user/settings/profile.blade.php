@@ -4,13 +4,23 @@
 @include('user.layouts.search')
 
 <style>
+/* ── Page wrapper — max-width + centering ───────────────────── */
+.dashboard-page-section {
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
 /* ── Dashboard action cards ────────────────────────────────── */
 .dash-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 20px 12px 16px;
+    padding: 22px 12px 18px;
     background: #fff;
     border-radius: 12px;
     border: 1.5px solid #e5e7eb;
@@ -21,7 +31,7 @@
 }
 .dash-card:hover {
     border-color: #326916;
-    box-shadow: 0 6px 18px rgba(50, 105, 22, 0.12);
+    box-shadow: 0 6px 18px rgba(50, 105, 22, 0.13);
     transform: translateY(-3px);
     color: inherit;
     text-decoration: none;
@@ -57,6 +67,45 @@
     line-height: 1.4;
 }
 
+/* ── Hide logout in header when profile strip shows ────────── */
+@media (min-width: 1024px) {
+    .user-profile-strip-hide { display: none !important; }
+}
+
+/* ── Dashboard grid container ───────────────────────────────── */
+.dash-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+}
+@media (min-width: 640px) {
+    .dash-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 20px; }
+}
+
+/* ── Dashboard header bar ───────────────────────────────────── */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid #e5e7eb;
+    padding: 14px 18px;
+}
+.dash-header-title {
+    font-weight: 700;
+    color: #326916;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 /* ── User profile strip (desktop only) ─────────────────────── */
 .user-profile-strip {
     display: none;
@@ -65,24 +114,25 @@
     background: #fff;
     border-radius: 12px;
     border: 1px solid #e5e7eb;
-    padding: 16px 20px;
-    margin-bottom: 16px;
+    padding: 14px 20px;
+    margin-bottom: 14px;
 }
 @media (min-width: 1024px) {
     .user-profile-strip { display: flex; }
 }
 .user-avatar {
-    width: 52px; height: 52px;
+    width: 50px; height: 50px;
     border-radius: 50%;
     background: #e8f5e2;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; font-weight: 700;
+    font-size: 1.35rem; font-weight: 700;
     color: #326916;
     flex-shrink: 0;
+    border: 2px solid #c6e6b0;
 }
 </style>
 
-<section class="w-full md:max-w-2xl lg:max-w-4xl mx-auto px-3 mb-4 text-sm">
+<section class="dashboard-page-section mb-4 text-sm">
 
     {{-- User profile strip: visible on desktop only --}}
     <div class="user-profile-strip">
@@ -104,17 +154,16 @@
     </div>
 
     {{-- Dashboard header --}}
-    <div class="bg-white rounded-t-xl border-b-2 border-gray-200 px-4 py-3 flex justify-between items-center">
-        <span class="font-bold text-dark_green flex items-center gap-2 text-base">
+    <div class="dash-header">
+        <div class="dash-header-title">
             <i class="bi bi-grid-3x3-gap-fill"></i> My Dashboard
-        </span>
-        <div class="flex items-center gap-2 lg:hidden">
-            <a href="/user/boosted"
-               class="text-xs bg-dark_green text-white px-3 py-1.5 rounded-lg font-medium">
-                Boosted Ads
+        </div>
+        <div class="flex items-center gap-2" style="display:flex;" id="dash-mobile-actions">
+            <a href="/user/boosted" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;background:#326916;color:#fff;padding:6px 12px;border-radius:8px;font-weight:600;text-decoration:none;">
+                <i class="bi bi-rocket-takeoff"></i> Boosted Ads
             </a>
-            <a title="Logout" href="/user/logout">
-                <i class="bi bi-box-arrow-right text-xl text-gray-500"></i>
+            <a href="/user/logout" title="Logout" style="color:#6b7280;font-size:1.2rem;display:inline-flex;" class="user-profile-strip-hide">
+                <i class="bi bi-box-arrow-right"></i>
             </a>
         </div>
     </div>
@@ -122,8 +171,7 @@
     @include('public.components.flash-message')
 
     {{-- Dashboard action cards grid --}}
-    <div class="bg-gray-50 rounded-b-xl border border-gray-200 border-t-0 p-4">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-4">
+    <div class="dash-grid">
 
             <a href="/user/my-ads" class="dash-card">
                 <div class="dash-card-icon"><i class="bi bi-badge-ad"></i></div>
@@ -166,8 +214,8 @@
 
 </section>
 
-<section class="w-full md:max-w-2xl lg:max-w-4xl mx-auto px-3 py-3 text-sm">
-    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2 rounded-lg">
+<section class="dashboard-page-section py-3 text-sm">
+    <div style="background:#fff;border-bottom:2px solid #e5e7eb;padding:14px 18px;font-weight:700;color:#326916;border-radius:8px;margin-bottom:8px;">
         My Recent Listings
     </div>
     <div id="ads-container">
