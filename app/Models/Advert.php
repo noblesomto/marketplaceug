@@ -409,7 +409,7 @@ public function getCleanDescriptionAttribute()
     return trim($description);
 }
 
-    protected $appends = ['image_url', 'thumbnail_url'];
+    protected $appends = ['image_url', 'thumbnail_url', 'display_image_url'];
 
     public function getImageUrlAttribute()
     {
@@ -419,6 +419,13 @@ public function getCleanDescriptionAttribute()
     public function getThumbnailUrlAttribute()
     {
         return $this->getFirstMediaUrl('images', 'thumbnail');
+    }
+
+    // 800×600 landscape WebP — use this for detail/boost/payment screens in the mobile app
+    public function getDisplayImageUrlAttribute()
+    {
+        $url = $this->getFirstMediaUrl('images', 'thumb-md');
+        return $url ?: $this->getFirstMediaUrl('images');
     }
 
 
