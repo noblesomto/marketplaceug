@@ -263,18 +263,6 @@
     color: #9ca3af;
 }
 
-/* ── Dropdown ── */
-.msg-dots-btn {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s;
-    color: #6b7280;
-}
-.msg-dots-btn:hover { background: #f3f4f6; }
 </style>
 
 <div class="msg-wrap">
@@ -300,19 +288,12 @@
                         @endif
                     </div>
 
-                    {{-- Three-dots dropdown --}}
-                    <div class="relative dropdown inline-block">
-                        <button type="button" class="msg-dots-btn dropdown-button" aria-haspopup="true" aria-expanded="false">
-                            <i class="bi bi-three-dots"></i>
-                        </button>
-                        <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-lg bg-white shadow-lg" style="border:1px solid #e5e7eb;">
-                            <a href="/user/archived-messages"
-                               style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:0.8rem;color:#374151;text-decoration:none;"
-                               onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
-                                <i class="bi bi-archive" style="color:#9ca3af;"></i> Archived Messages
-                            </a>
-                        </div>
-                    </div>
+                    <a href="/user/archived-messages"
+                       style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#6b7280;border:1px solid #e5e7eb;padding:6px 12px;border-radius:8px;text-decoration:none;transition:all 0.15s;"
+                       onmouseover="this.style.color='#326916';this.style.borderColor='#c6e6b0';this.style.background='#f0faf0';"
+                       onmouseout="this.style.color='#6b7280';this.style.borderColor='#e5e7eb';this.style.background='';">
+                        <i class="bi bi-archive"></i> Archived
+                    </a>
                 </div>
 
                 {{-- List --}}
@@ -457,32 +438,3 @@
 </div>
 
 @include('user.layouts.footer')
-<script>
-(function () {
-    document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.dropdown-button');
-        const anyDropdown = e.target.closest('.dropdown');
-        if (btn && anyDropdown) {
-            const thisMenu = anyDropdown.querySelector('.dropdown-menu');
-            const willOpen = thisMenu.classList.contains('hidden');
-            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-            if (willOpen) {
-                thisMenu.classList.remove('hidden');
-                btn.setAttribute('aria-expanded', 'true');
-            } else {
-                btn.setAttribute('aria-expanded', 'false');
-            }
-            return;
-        }
-        if (!anyDropdown) {
-            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-            document.querySelectorAll('.dropdown-button[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
-        }
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-        }
-    });
-})();
-</script>
