@@ -3,161 +3,448 @@
 @include('user.layouts.back-nav')
 @include('user.layouts.search')
 
-<section class="w-full md:w-3/6  mx-auto p-3 text-sm">
-    <div class="border-b-2 bg-white border-b-gray-200 p-4 font-bold text-dark_green mb-2">
-        Your Orders
-        @include('public.components.flash-message')
+<style>
+/* ── Page wrapper ───────────────────────────────────── */
+.orders-wrap {
+    width: 100%;
+    max-width: 900px;
+    margin: 24px auto 100px;
+    padding: 0 12px;
+}
+
+/* ── Page header ───────────────────────────────────── */
+.orders-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+.orders-page-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.orders-page-title i { color: #326916; }
+.orders-count-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #326916;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* ── Order card ─────────────────────────────────────── */
+.order-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* Card top bar */
+.order-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #f0f0f0;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.order-id {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.order-date {
+    font-size: 0.72rem;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.order-payment-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+}
+.badge-paid    { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.badge-pending { background: #fef9c3; color: #a16207; border: 1px solid #fde68a; }
+
+/* Card body */
+.order-body {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    align-items: flex-start;
+}
+.order-img-wrap {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+.order-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.order-details { flex: 1; min-width: 0; overflow: hidden; }
+.order-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+.order-location i { font-size: 0.75rem; color: #326916; }
+.order-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.order-desc {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-bottom: 8px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+}
+.order-price {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #326916;
+}
+
+/* Mobile: stack image above details */
+@media (max-width: 540px) {
+    .order-body { flex-direction: column; }
+    .order-img-wrap { width: 100%; height: 180px; }
+    .order-details { width: 100%; }
+    .order-topbar { gap: 4px; }
+    .order-id { font-size: 0.68rem; }
+    .shipping-info-row { gap: 12px; }
+    .order-actions { flex-direction: column; }
+    .btn-report, .btn-confirm { min-width: unset; width: 100%; }
+}
+
+/* ── Shipping section ───────────────────────────────── */
+.order-shipping {
+    border-top: 1px solid #f0f0f0;
+    padding: 12px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.shipping-info-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.shipping-block { display: flex; flex-direction: column; gap: 4px; }
+.shipping-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9ca3af;
+}
+.shipping-company {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #374151;
+}
+.shipping-company img { height: 22px; max-width: 52px; object-fit: contain; }
+
+.shipping-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
+.status-delivered { background: #dcfce7; color: #15803d; }
+.status-shipped   { background: #dbeafe; color: #1d4ed8; }
+.status-pending   { background: #fee2e2; color: #dc2626; }
+
+.shipping-eta {
+    font-size: 0.72rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.shipping-eta i { color: #326916; }
+
+/* ── Action buttons ─────────────────────────────────── */
+.order-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.btn-report {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid #e5e7eb;
+    color: #6b7280;
+    background: #fff;
+    transition: all 0.15s;
+    cursor: pointer;
+    min-width: 130px;
+}
+.btn-report:hover { border-color: #fca5a5; color: #dc2626; background: #fff5f5; text-decoration: none; }
+.btn-confirm {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: none;
+    background: #326916;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-width: 130px;
+}
+.btn-confirm:hover:not(:disabled) { background: #2a5812; }
+.btn-confirm:disabled, .btn-confirm-done {
+    background: #d1fae5;
+    color: #065f46;
+    cursor: not-allowed;
+}
+@media (max-width: 480px) {
+    .btn-report, .btn-confirm { min-width: unset; }
+}
+
+/* ── Empty state ─────────────────────────────────────── */
+.orders-empty {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 60px 20px;
+    text-align: center;
+    color: #9ca3af;
+}
+.orders-empty i { font-size: 3rem; color: #d1d5db; display: block; margin-bottom: 12px; }
+</style>
+
+<div class="orders-wrap">
+
+    {{-- Page header --}}
+    <div class="orders-page-header">
+        <div class="orders-page-title">
+            <i class="bi bi-bag-check-fill"></i>
+            My Orders
+            @if(!$buyAds->isEmpty())
+                <span class="orders-count-badge">{{ $buyAds->count() }}</span>
+            @endif
+        </div>
     </div>
-    <div class="pb-10 mb-10">
-        @if (!$buyAds->isEmpty())
-          @foreach ($buyAds as $row)
-          <div class="bg-white mb-2 p-2 border-b border-b-gray-300 shadow">
-             <div class="flex w-full">
-                  <div class="w-2/6 mr-1 relative bg-gray-50">
-                   <a href="{{ isset($row->advert->state_slug, $row->advert->title_slug, $row->advert->ad_id) ? url($row->advert->state_slug . '/' . $row->advert->title_slug .'/'. $row->advert->ad_id) : '#' }}">
-                        @if($row->advert && $row->advert->hasMedia('images'))
-                            <img src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') }}" alt="{{ $row->advert->clean_title }}">
-                        @else
-                            <img src="{{ asset('frontend/images/default.png') }}" alt="Default ad image">
-                        @endif
-                    </a>
-                  </div>
-                  <div class="w-4/6 relative">
-                    <div class="flex justify-between text-xs">
-                      <div class="flex justify-start items-center text-sm md:mr-5">
-                        <span class="mr-3 hidden lg:block">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                          </svg>
-                        </span>
-                        <div>
-                          <span class="text-xs">{{ $row->advert->state ?? 'Location not specified' }}</span>
-                        </div>
-                      </div>
 
-                      <div>
-                        <div class="flex justify-start mr-5 text-xs md:mt-2">
-                          <span class="mr-3 hidden lg:block">Payment Date:</span>
-                          <span class="text-xs">{{ isset($row->created_at) ? date('d.m.Y', strtotime($row->created_at)) : 'N/A' }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="font-medium leading-5 md:font-bold text-base md:text-xl md:mt-2">
-                      {{ Str::limit($row->advert->ad_title ?? 'No title available', 50) }}
-                    </div>
-                    <div class="text-sm mt-2 hidden lg:block">
-                      {!! Str::limit(strip_tags($row->advert->description ?? 'No description available', 80)) !!}
-                    </div>
-                    <div class="flex justify-between gap-2 items-center text-dark_green font-bold text-sm my-1 lg:my-3">
-                        <div class="text-wrap">₦ {{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}</div>
-                        <div class="capitalize w-28 px-3 py-0 lg:py-1 text-center rounded {{ ($row->payment_status ?? '') === 'paid' ? 'bg-green-200' : 'bg-yellow-200' }}">
-                            {{ $row->payment_status ?? 'pending' }}
-                        </div>
-                    </div>
+    @include('public.components.flash-message')
 
-                    @if(($row->shipping_status ?? '') == "shipped")
-                    <div class="flex flex-col lg:flex-row lg:justify-between gap-1 lg:gap-10 mt-1">
-                        <span class="block">Item Will be delivered within 3-7 working days</span>
-                        <span class="block">Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
-                    </div>
-                    @endif
+    @if (!$buyAds->isEmpty())
+        @foreach ($buyAds as $row)
+        @php
+            $isPaid      = ($row->payment_status ?? '') === 'paid';
+            $shipStatus  = $row->shipping_status ?? 'pending';
+            $isDelivered = ($row->buyer_status ?? '') === 'delivered';
+            $adLink      = isset($row->advert->state_slug, $row->advert->title_slug, $row->advert->ad_id)
+                            ? url($row->advert->state_slug . '/' . $row->advert->title_slug . '/' . $row->advert->ad_id)
+                            : '#';
+        @endphp
 
-                    @if(($row->shipping_status ?? '') == "delivered")
-                    <div class="flex flex-col lg:flex-row lg:justify-between gap-1 lg:gap-10 mt-1">
-                        <span class="block">Package Delivered</span>
-                        <span class="block">Updated: {{ isset($row->shipping_status_date) ? date('d.m.Y', strtotime($row->shipping_status_date)) : 'N/A' }}</span>
-                    </div>
-                    @endif
+        <div class="order-card">
 
-                  </div>
-              </div>
-
-              <div class="w-full pb-2">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
-        @if(isset($row->shipping))
-
-            <div class="w-full">
-                <h5 class="font-semibold text-sm">Shipping Method:</h5>
-                <div class="flex items-center w-full">
-                    @if(isset($row->shipping->logo))
-                        <span><img class="w-16" src="{{ $row->shipping->logo }}" alt="{{ $row->shipping->company ?? 'Shipping company' }} logo"></span>
-                    @endif
-                    <span class="ml-2 text-sm font-bold">{{ $row->shipping->company ?? 'Shipping not specified' }}</span>
-                </div>
+            {{-- Top bar: order ref, date, payment status --}}
+            <div class="order-topbar">
+                <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $row->id }}</span>
+                <span class="order-date">
+                    <i class="bi bi-calendar3"></i>
+                    {{ isset($row->created_at) ? date('d M Y', strtotime($row->created_at)) : 'N/A' }}
+                </span>
+                <span class="order-payment-badge {{ $isPaid ? 'badge-paid' : 'badge-pending' }}">
+                    {{ $isPaid ? '✓ Paid' : '⏳ Pending' }}
+                </span>
             </div>
 
-            <div class="w-full items-center text-sm">
-                <h5 class="font-semibold">Shipping Status:</h5>
-                <div class="mt-2 w-full">
-                    @if(($row->shipping_status ?? '') == "delivered")
-                        <span class="capitalize text-center rounded-lg bg-green-100 p-2 w-full block">✓ {{ $row->shipping_status }}</span>
-                    @elseif(($row->shipping_status ?? '') == "shipped")
-                        <span class="capitalize text-center rounded-lg bg-yellow-100 p-2 w-full block">{{ $row->shipping_status }}</span>
+            {{-- Body: image + details --}}
+            <div class="order-body">
+                <a href="{{ $adLink }}" class="order-img-wrap">
+                    @if($row->advert && $row->advert->hasMedia('images'))
+                        <img src="{{ $row->advert->getFirstMediaUrl('images', 'thumbnail') }}"
+                             alt="{{ $row->advert->ad_title ?? 'Order' }}"
+                             onerror="this.src='{{ asset('frontend/images/default.png') }}'">
                     @else
-                        <span class="capitalize text-center rounded-lg bg-red-100 p-2 w-full block">{{ $row->shipping_status ?? 'pending' }}</span>
+                        <img src="{{ asset('frontend/images/default.png') }}" alt="Order image">
                     @endif
+                </a>
+
+                <div class="order-details">
+                    <div class="order-location">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        {{ $row->advert->state ?? 'Location not specified' }}
+                    </div>
+                    <a href="{{ $adLink }}" style="text-decoration:none;">
+                        <div class="order-title">{{ Str::limit($row->advert->ad_title ?? 'No title available', 60) }}</div>
+                    </a>
+                    <div class="order-desc">
+                        {{ strip_tags($row->advert->description ?? 'No description available') }}
+                    </div>
+                    <div class="order-price">
+                        ₦{{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}
+                    </div>
                 </div>
             </div>
 
-            <div class="w-full lg:pt-7">
-                <a href="{{ optional($row->advert)->id ? '/report-ad/' . $row->advert->id : '#' }}"
-                   class="bg-secondary-200 px-4 py-2 rounded-lg inline-block w-full text-center">
-                    Report an Issue
-                </a>
+            {{-- Shipping section (only if shipping exists) --}}
+            @if(isset($row->shipping))
+            <div class="order-shipping">
+
+                <div class="shipping-info-row">
+                    {{-- Shipping company --}}
+                    <div class="shipping-block">
+                        <div class="shipping-label">Shipping via</div>
+                        <div class="shipping-company">
+                            @if(isset($row->shipping->logo))
+                                <img src="{{ $row->shipping->logo }}" alt="{{ $row->shipping->company ?? '' }}">
+                            @endif
+                            <span>{{ $row->shipping->company ?? 'Not specified' }}</span>
+                        </div>
+                    </div>
+
+                    {{-- Shipping status --}}
+                    <div class="shipping-block">
+                        <div class="shipping-label">Shipping Status</div>
+                        @if($shipStatus === 'delivered')
+                            <span class="shipping-status-pill status-delivered"><i class="bi bi-check-circle-fill"></i> Delivered</span>
+                        @elseif($shipStatus === 'shipped')
+                            <span class="shipping-status-pill status-shipped"><i class="bi bi-truck"></i> Shipped</span>
+                        @else
+                            <span class="shipping-status-pill status-pending"><i class="bi bi-clock"></i> Pending</span>
+                        @endif
+                    </div>
+
+                    {{-- ETA / update info --}}
+                    @if($shipStatus === 'shipped')
+                    <div class="shipping-block">
+                        <div class="shipping-label">Estimated delivery</div>
+                        <div class="shipping-eta">
+                            <i class="bi bi-truck"></i> 3–7 working days
+                            @if(isset($row->shipping_status_date))
+                                · Updated {{ date('d M Y', strtotime($row->shipping_status_date)) }}
+                            @endif
+                        </div>
+                    </div>
+                    @elseif($shipStatus === 'delivered')
+                    <div class="shipping-block">
+                        <div class="shipping-label">Delivered on</div>
+                        <div class="shipping-eta">
+                            <i class="bi bi-calendar-check"></i>
+                            {{ isset($row->shipping_status_date) ? date('d M Y', strtotime($row->shipping_status_date)) : 'N/A' }}
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- Action buttons --}}
+                <div class="order-actions">
+                    <a href="{{ optional($row->advert)->id ? '/report-ad/' . $row->advert->id : '#' }}"
+                       class="btn-report">
+                        <i class="bi bi-flag"></i> Report an Issue
+                    </a>
+
+                    @if($isDelivered)
+                        <button class="btn-confirm btn-confirm-done" disabled>
+                            <i class="bi bi-check-circle-fill"></i> Delivered
+                        </button>
+                    @else
+                        <button class="btn-confirm confirm-delivery-btn"
+                                data-order-id="{{ $row->id }}"
+                                onclick="confirmDelivery(this)">
+                            <i class="bi bi-check-circle"></i> Confirm Delivery
+                        </button>
+                    @endif
+                </div>
+
             </div>
+            @endif
 
+        </div>
+        @endforeach
 
-            <div class="w-full lg:pt-7">
-                @if(($row->buyer_status ?? '') == 'delivered')
-                    <button class="bg-green-200 px-4 py-2 rounded-lg cursor-not-allowed w-full"
-                            disabled>
-                        Delivered
-                    </button>
-                @else
-                    <button class="bg-gray-300 px-4 py-2 rounded-lg confirm-delivery-btn w-full"
-                            data-order-id="{{ $row->id }}"
-                            onclick="confirmDelivery(this)">
-                        Confirm Delivery
-                    </button>
-                @endif
-            </div>
+    @else
+        <div class="orders-empty">
+            <i class="bi bi-bag-x"></i>
+            <div style="font-size:1rem;font-weight:600;color:#374151;margin-bottom:6px;">No orders yet</div>
+            <p style="font-size:0.85rem;">Items you purchase will appear here.</p>
+            <a href="/" style="display:inline-block;margin-top:16px;padding:9px 20px;background:#326916;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;">
+                Browse Listings
+            </a>
+        </div>
+    @endif
 
-        @endif
-    </div>
 </div>
 
-          </div>
-          @endforeach
-        @else
-            <div class="flex flex-col items-center bg-white">
-                <span>
-                    <img width="100" height="100" src="https://img.icons8.com/external-outline-andi-nur-abdillah/100/external-Empty-empty-state-(outline)-outline-andi-nur-abdillah.png" alt="No ads found"/>
-                </span>
-                <span>No Posts here...</span>
-            </div>
-        @endif
-    </div>
-</section>
-
-
-<!-- Custom Modal for Success Message -->
+{{-- Delivery confirmation modal --}}
 <div id="successModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white" style="max-width:90vw;">
         <div class="mt-3 text-center">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
+            <div style="width:56px;height:56px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <i class="bi bi-check-circle-fill" style="font-size:1.6rem;color:#15803d;"></i>
             </div>
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">Delivery Confirmed!</h3>
-            <p class="text-sm text-gray-500 mb-4">Thanks for confirming the delivery.</p>
-            <p class="text-sm text-gray-500 mb-4">We are glad your item arrived safely, your transaction is now complete. </p>
-            <div class="flex justify-center">
-                <button id="closeModal" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg">
-                    OK
-                </button>
-            </div>
+            <h3 style="font-size:1rem;font-weight:700;color:#111827;margin-bottom:6px;">Delivery Confirmed!</h3>
+            <p style="font-size:0.82rem;color:#6b7280;margin-bottom:4px;">Thanks for confirming the delivery.</p>
+            <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;">We're glad your item arrived safely. Your transaction is now complete.</p>
+            <button id="closeModal"
+                    style="background:#326916;color:#fff;padding:9px 28px;border-radius:8px;border:none;font-weight:600;font-size:0.85rem;cursor:pointer;">
+                Done
+            </button>
         </div>
     </div>
 </div>
@@ -167,41 +454,30 @@
 function confirmDelivery(button) {
     const orderId = button.getAttribute('data-order-id');
 
-    // Show confirmation dialog
     if (confirm('Are you sure you want to confirm this delivery?')) {
-        // Disable button and show loading state
         button.disabled = true;
-        button.innerHTML = '<span class="inline-flex items-center"><svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Processing...</span>';
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Processing…';
 
-        // Make AJAX request
         fetch(`/user/confirm-delivery/${orderId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: JSON.stringify({
-                status: 'delivered'
-            })
+            body: JSON.stringify({ status: 'delivered' })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Show custom success modal
                 showSuccessModal();
-
-                // Update button appearance only if status is actually "delivered"
                 if (data.order && data.order.shipping_status === 'delivered') {
-                    button.innerHTML = '✓ Delivered';
-                    button.classList.remove('bg-green-200', 'hover:bg-green-300');
-                    button.classList.add('bg-gray-300', 'cursor-not-allowed');
+                    button.innerHTML = '<i class="bi bi-check-circle-fill"></i> Delivered';
+                    button.classList.add('btn-confirm-done');
                     button.disabled = true;
                 } else {
-                    // Reset button if status is not delivered
                     button.disabled = false;
-                    button.innerHTML = 'Confirm Delivery';
+                    button.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Delivery';
                 }
-
             } else {
                 throw new Error(data.message || 'Failed to update delivery status');
             }
@@ -209,9 +485,8 @@ function confirmDelivery(button) {
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred: ' + error.message);
-            // Reset button state
             button.disabled = false;
-            button.innerHTML = 'Confirm Delivery';
+            button.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Delivery';
         });
     }
 }
@@ -219,25 +494,8 @@ function confirmDelivery(button) {
 function showSuccessModal() {
     const modal = document.getElementById('successModal');
     modal.classList.remove('hidden');
-
-    // Close modal when clicking OK or outside
-    document.getElementById('closeModal').onclick = () => {
-        modal.classList.add('hidden');
-    };
-
-    // Close when clicking outside
-    modal.onclick = (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-        }
-    };
-
-    // Auto close after 3 seconds (optional)
-    setTimeout(() => {
-        if (!modal.classList.contains('hidden')) {
-            modal.classList.add('hidden');
-        }
-    }, 10000);
+    document.getElementById('closeModal').onclick = () => modal.classList.add('hidden');
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.add('hidden'); };
+    setTimeout(() => modal.classList.add('hidden'), 10000);
 }
 </script>
-
