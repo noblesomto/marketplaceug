@@ -205,7 +205,7 @@ class AdvertController extends Controller
             return redirect('/');
         }
         $ad = Advert::with(['images', 'owner'])
-            ->where('id', $id)
+            ->where('ad_id', $id)
             ->first();
 
         // 1. If ad does not exist → 404
