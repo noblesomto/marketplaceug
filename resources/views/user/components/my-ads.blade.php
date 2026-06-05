@@ -164,7 +164,7 @@
         <i class="bi bi-badge-ad"></i>
         <div style="font-size:1rem;font-weight:600;color:#374151;margin-bottom:6px;">No adverts yet</div>
         <p style="font-size:0.85rem;margin-bottom:16px;">Your listings will appear here once you post an ad.</p>
-        <a href="/sell" style="display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:#326916;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;">
+        <a href="/user/post-ad" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#326916;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;">
             <i class="bi bi-plus-lg"></i> Post Your First Ad
         </a>
     </div>
