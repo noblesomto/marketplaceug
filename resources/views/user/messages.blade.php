@@ -3,130 +3,486 @@
 @include('user.layouts.back-nav')
 @include('user.layouts.search')
 
-<section class="w-full md:w-4/5 lg:w-3/5 mx-auto mt-4 px-2 sm:px-0">
-    <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<style>
+.msg-wrap {
+    width: 100%;
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 0 12px;
+}
 
-        <div class="flex justify-between">
-            <h1 class="text-xl font-semibold text-dark_green">Messages</h1>
-            <div class="relative dropdown inline-block">
-              <button
-                type="button"
-                class="dropdown-button inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i class="bi bi-three-dots text-xl text-gray-600"></i>
-              </button>
+/* ── Two-column layout on desktop ── */
+.msg-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding-bottom: 80px;
+}
+.msg-main {
+    flex: 1 1 0;
+    min-width: 0;
+}
+.msg-sidebar-col {
+    width: 290px;
+    flex-shrink: 0;
+    display: none;
+}
+@media (min-width: 1024px) {
+    .msg-sidebar-col { display: block; }
+}
 
-              <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                <div class="py-1">
-                  <a
-                    href="/user/archived-messages"
-                    class="flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150"
-                  >
-                    Archived Messages
-                  </a>
+/* ── Panel shell ── */
+.msg-panel {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
 
+/* ── Header ── */
+.msg-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.msg-header-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.msg-header-title i { color: #326916; font-size: 1.1rem; }
+
+/* ── Conversation item ── */
+.conv-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f5f5f5;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+    position: relative;
+}
+.conv-item:hover { background: #f9fafb; text-decoration: none; color: inherit; }
+.conv-item.unread { background: #f0faf0; }
+.conv-item.unread:hover { background: #e8f5e2; }
+
+/* Avatar */
+.conv-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #e8f5e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #326916;
+    border: 2px solid #e5f0dc;
+}
+.conv-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Ad thumbnail */
+.conv-ad-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+    background: #f3f4f6;
+}
+
+/* Text block */
+.conv-body { flex: 1; min-width: 0; }
+.conv-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conv-ad-title {
+    font-size: 0.75rem;
+    color: #326916;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 1px;
+}
+.conv-preview {
+    font-size: 0.72rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+}
+.conv-item.unread .conv-name { color: #111827; }
+.conv-item.unread .conv-preview { color: #6b7280; font-weight: 500; }
+
+/* Right: time + badge */
+.conv-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+}
+.conv-time {
+    font-size: 0.68rem;
+    color: #9ca3af;
+    white-space: nowrap;
+}
+.conv-badge {
+    background: #326916;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+/* ── Empty state ── */
+.msg-empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: #9ca3af;
+}
+.msg-empty i { font-size: 3rem; color: #d1d5db; margin-bottom: 12px; }
+.msg-empty p { font-size: 0.875rem; margin-top: 6px; }
+
+/* ── Sidebar card ── */
+.sidebar-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+.sidebar-header {
+    background: linear-gradient(135deg, #326916 0%, #4a9c24 100%);
+    padding: 20px;
+    text-align: center;
+}
+.sidebar-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    border: 3px solid rgba(255,255,255,0.6);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    overflow: hidden;
+}
+.sidebar-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.sidebar-name { color: #fff; font-weight: 700; font-size: 0.95rem; }
+.sidebar-since { color: rgba(255,255,255,0.8); font-size: 0.72rem; margin-top: 2px; }
+
+.sidebar-body { padding: 16px; }
+
+.sidebar-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: #4b5563;
+    margin-bottom: 4px;
+    background: #f9fafb;
+}
+.sidebar-stat i { color: #326916; font-size: 0.9rem; width: 16px; text-align: center; }
+
+.sidebar-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #f0faf0;
+    border: 1px solid #c6e6b0;
+    font-size: 0.72rem;
+    color: #326916;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.sidebar-badge i { font-size: 0.8rem; }
+
+.sidebar-divider { border: none; border-top: 1px solid #f0f0f0; margin: 12px 0; }
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+.sidebar-link:hover { background: #f9fafb; color: #326916; border-color: #c6e6b0; text-decoration: none; }
+.sidebar-link i { font-size: 0.9rem; }
+
+.sidebar-ads-count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #326916;
+}
+.sidebar-ads-label {
+    font-size: 0.72rem;
+    color: #9ca3af;
+}
+
+/* ── Dropdown ── */
+.msg-dots-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: #6b7280;
+}
+.msg-dots-btn:hover { background: #f3f4f6; }
+</style>
+
+<div class="msg-wrap">
+
+    @include('public.components.flash-message')
+
+    <div class="msg-layout">
+
+        {{-- ── LEFT: Conversations ── --}}
+        <div class="msg-main">
+            <div class="msg-panel">
+
+                {{-- Header --}}
+                <div class="msg-header">
+                    <div class="msg-header-title">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        Messages
+                        @php $totalUnread = $conversations->sum('unread_count'); @endphp
+                        @if($totalUnread > 0)
+                            <span style="background:#326916;color:#fff;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:10px;">
+                                {{ $totalUnread }}
+                            </span>
+                        @endif
+                    </div>
+
+                    {{-- Three-dots dropdown --}}
+                    <div class="relative dropdown inline-block">
+                        <button type="button" class="msg-dots-btn dropdown-button" aria-haspopup="true" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-lg bg-white shadow-lg" style="border:1px solid #e5e7eb;">
+                            <a href="/user/archived-messages"
+                               style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:0.8rem;color:#374151;text-decoration:none;"
+                               onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
+                                <i class="bi bi-archive" style="color:#9ca3af;"></i> Archived Messages
+                            </a>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-        </div>
-        @include('public.components.flash-message')
-    </div>
-    
-    <div class="flex flex-col lg:flex-row gap-4 pb-20">
-        <!-- Messages List -->
-        <div class="w-full lg:w-2/3 bg-white rounded-lg shadow-sm overflow-hidden">
-            @if (!$conversations->isEmpty())
-                <div class="divide-y divide-gray-100">
+
+                {{-- List --}}
+                @if (!$conversations->isEmpty())
                     @foreach($conversations as $conversation)
-                        <a href="{{ route('chat.show', ['advertId' => $conversation['advert']->id, 'receiverId' => $conversation['other_user']->user_id]) }}" 
-                           class="block hover:bg-gray-50 transition-colors duration-150">
-                            <div class="p-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0">
-                                                @php $advertImg = $conversation['advert'] ? $conversation['advert']->getFirstImageUrl('thumbnail') : null; @endphp
-                                                <img class="w-10 h-10 rounded object-cover bg-gray-100"
-                                                     src="{{ $advertImg ?: asset('frontend/images/default.png') }}"
-                                                     alt="{{ $conversation['advert']->ad_title ?? 'Advert' }}"
-                                                     onerror="this.src='{{ asset('frontend/images/default.png') }}'">
-                                        </div>
-                                        <div>
-                                            <h3 class="text-base font-medium text-gray-900">{{ $conversation['other_user']->name }}</h3>
-                                            <p class="text-sm text-gray-500 truncate max-w-[240px] sm:max-w-md">{{ $conversation['advert']->ad_title }}</p>
-                                        </div>
+                        @php
+                            $isUnread = $conversation['unread_count'] > 0;
+                            $otherUser = $conversation['other_user'];
+                            $advert    = $conversation['advert'];
+                            $lastMsg   = $conversation['last_message'];
+                            $lastAt    = $conversation['last_message_at']
+                                ? \Carbon\Carbon::parse($conversation['last_message_at'])->diffForHumans()
+                                : '';
+                            $advertImg = $advert ? $advert->getFirstImageUrl('thumbnail') : null;
+                            $userName  = $otherUser ? $otherUser->name : 'Unknown';
+                            $initial   = strtoupper(substr($userName, 0, 1));
+                        @endphp
+                        <a href="{{ route('chat.show', ['advertId' => $advert->id, 'receiverId' => $otherUser->user_id]) }}"
+                           class="conv-item {{ $isUnread ? 'unread' : '' }}">
+
+                            {{-- User avatar (initial) --}}
+                            <div class="conv-avatar">
+                                @if($otherUser && $otherUser->profile_thumbnail_url)
+                                    <img src="{{ $otherUser->profile_thumbnail_url }}" alt="{{ $userName }}"
+                                         onerror="this.parentElement.innerHTML='{{ $initial }}'">
+                                @else
+                                    {{ $initial }}
+                                @endif
+                            </div>
+
+                            {{-- Ad thumbnail --}}
+                            <img class="conv-ad-thumb"
+                                 src="{{ $advertImg ?: asset('frontend/images/default.png') }}"
+                                 alt="{{ $advert->ad_title ?? '' }}"
+                                 onerror="this.src='{{ asset('frontend/images/default.png') }}'">
+
+                            {{-- Text --}}
+                            <div class="conv-body">
+                                <div class="conv-name">{{ $userName }}</div>
+                                <div class="conv-ad-title">{{ $advert->ad_title ?? '' }}</div>
+                                @if($lastMsg)
+                                    <div class="conv-preview">
+                                        @if($lastMsg->sender_id === session('user_id'))
+                                            <span style="color:#326916;font-weight:600;">You:</span>
+                                        @endif
+                                        {{ Str::limit(strip_tags($lastMsg->message ?? ''), 55) }}
                                     </div>
-                                    @if($conversation['unread_count'] > 0)
-                                        <span class="bg-dark_green text-white text-xs font-medium px-2.5 py-1 rounded-full">
-                                            {{ $conversation['unread_count'] }}
-                                        </span>
-                                    @endif
-                                </div>
+                                @endif
+                            </div>
+
+                            {{-- Time + badge --}}
+                            <div class="conv-meta">
+                                <span class="conv-time">{{ $lastAt }}</span>
+                                @if($isUnread)
+                                    <span class="conv-badge">{{ $conversation['unread_count'] }}</span>
+                                @endif
                             </div>
                         </a>
                     @endforeach
-                </div>
-            @else
-                <div class="p-8 text-center">
-                    <div class="mx-auto w-24 h-24 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                        </svg>
+                @else
+                    <div class="msg-empty">
+                        <div><i class="bi bi-chat-square-text"></i></div>
+                        <div style="font-size:1rem;font-weight:600;color:#374151;">No messages yet</div>
+                        <p>Your conversations will appear here when you start messaging sellers.</p>
                     </div>
-                    <h3 class="mt-2 text-lg font-medium text-gray-900">No messages yet</h3>
-                    <p class="mt-1 text-gray-500">Your conversations will appear here when you start messaging.</p>
+                @endif
+
+            </div>
+        </div>
+
+        {{-- ── RIGHT: Sidebar ── --}}
+        <div class="msg-sidebar-col">
+            <div class="sidebar-card">
+
+                {{-- Green header with avatar --}}
+                <div class="sidebar-header">
+                    <div class="sidebar-avatar">
+                        @if($user->profile_thumbnail_url)
+                            <img src="{{ $user->profile_thumbnail_url }}" alt="{{ $user->name }}"
+                                 onerror="this.parentElement.innerHTML='{{ strtoupper(substr($user->name,0,1)) }}'">
+                        @else
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                        @endif
+                    </div>
+                    <div class="sidebar-name">{{ $user->name }}</div>
+                    <div class="sidebar-since">Member since {{ $user->created_at->format('M Y') }}</div>
                 </div>
-            @endif
+
+                <div class="sidebar-body">
+
+                    {{-- Ads stat --}}
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0 12px;">
+                        <div>
+                            <div class="sidebar-ads-count">{{ $count_ads }}</div>
+                            <div class="sidebar-ads-label">Ads Online</div>
+                        </div>
+                        <a href="/user/my-ads"
+                           style="font-size:0.75rem;color:#326916;font-weight:600;text-decoration:none;border:1px solid #c6e6b0;padding:5px 12px;border-radius:20px;background:#f0faf0;">
+                            View all
+                        </a>
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    {{-- Reputation badges --}}
+                    <div style="font-size:0.72rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Reputation</div>
+
+                    <div class="sidebar-badge">
+                        <i class="bi bi-emoji-smile"></i> Top Satisfaction
+                    </div>
+                    <div class="sidebar-badge">
+                        <i class="bi bi-people"></i> Particularly Friendly
+                    </div>
+                    <div class="sidebar-badge">
+                        <i class="bi bi-hand-thumbs-up"></i> Particularly Reliable
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    {{-- Info rows --}}
+                    <div class="sidebar-stat">
+                        <i class="bi bi-person"></i>
+                        <span>{{ $user->acc_type ?? 'Private' }} User</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Active since {{ $user->created_at->format('j M Y') }}</span>
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    {{-- Quick links --}}
+                    <a href="/user/archived-messages" class="sidebar-link">
+                        <i class="bi bi-archive"></i> Archived Messages
+                    </a>
+
+                </div>
+            </div>
         </div>
-        
-        <!-- Sidebar -->
-        <div class="w-full lg:w-1/3 hidden xl:block">
-            @include('user.components.user-sidebar')
-        </div>
+
     </div>
-</section>
+</div>
 
 @include('user.layouts.footer')
 <script>
 (function () {
-  // Toggle the clicked dropdown; close others
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.dropdown-button');
-    const anyDropdown = e.target.closest('.dropdown');
-
-    // If a button was clicked
-    if (btn && anyDropdown) {
-      const thisMenu = anyDropdown.querySelector('.dropdown-menu');
-      const willOpen = thisMenu.classList.contains('hidden');
-
-      // Close all first
-      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-
-      // Then toggle this one
-      if (willOpen) {
-        thisMenu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      } else {
-        thisMenu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-      return;
-    }
-
-    // Clicked outside any dropdown -> close all
-    if (!anyDropdown) {
-      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-      document.querySelectorAll('.dropdown-button[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded','false'));
-    }
-  });
-
-  // Escape key closes all
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
-      document.querySelectorAll('.dropdown-button').forEach(b => b.setAttribute('aria-expanded','false'));
-    }
-  });
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.dropdown-button');
+        const anyDropdown = e.target.closest('.dropdown');
+        if (btn && anyDropdown) {
+            const thisMenu = anyDropdown.querySelector('.dropdown-menu');
+            const willOpen = thisMenu.classList.contains('hidden');
+            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+            if (willOpen) {
+                thisMenu.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                btn.setAttribute('aria-expanded', 'false');
+            }
+            return;
+        }
+        if (!anyDropdown) {
+            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+            document.querySelectorAll('.dropdown-button[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+        }
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.dropdown .dropdown-menu').forEach(m => m.classList.add('hidden'));
+        }
+    });
 })();
 </script>
