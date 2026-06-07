@@ -32,6 +32,9 @@
 
 <style>
 #app-install-banner {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
     width: 100%;
     background: #fff;
     border-bottom: 1px solid #e5e7eb;
