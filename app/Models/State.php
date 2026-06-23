@@ -14,6 +14,11 @@ class State extends Model
         'slug',
     ];
 
+    public function lgas()
+    {
+        return $this->hasMany(Lga::class);
+    }
+
     public function gigLogistics()
     {
         return $this->hasMany(GigLogistic::class, 'state_id');

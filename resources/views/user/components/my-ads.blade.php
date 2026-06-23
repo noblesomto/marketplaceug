@@ -6,7 +6,7 @@
         $adStatus   = $row->ad_status;          // active | disabled | banned
         $imgCount   = $row->getMedia('images')->count();
         $adLink     = url($row->state_slug . '/' . $row->title_slug . '/' . $row->ad_id);
-        $hasShipping = !in_array($row->category, [1, 3, 11, 18]);
+        $hasShipping = !in_array($row->category, [1, 3, 11, 18]) && $row->buy_direct == 'Yes';
     @endphp
 
     <div class="myad-card {{ $isSold ? 'is-sold' : '' }} {{ $adStatus === 'disabled' ? 'is-disabled' : '' }}">

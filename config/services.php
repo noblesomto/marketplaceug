@@ -56,6 +56,11 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect'      => env('FACEBOOK_REDIRECT_URL'),
     ],
+
+    'apple' => [
+        // Bundle ID for iOS, or Service ID for web — must match the `aud` claim in Apple's identity token
+        'client_id' => env('APPLE_CLIENT_ID'),
+    ],
     'recaptcha' => [
         'enabled' => env('RECAPTCHA_ENABLED', false), // Set to false to disable temporarily
         'site_key' => env('GOOGLE_RECAPTCHA_KEY'),

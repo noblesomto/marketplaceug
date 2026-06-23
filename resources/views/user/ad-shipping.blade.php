@@ -18,9 +18,9 @@
 				        </div>
 
 				        <div class="mb-4 ">
-				            
-				            <img class="h-24 lg:h-40 object-cover" src="{{  asset('uploads/images/'.$ad->advert->firstImage->image) }}">
-				            
+				            @if($ad->advert && $ad->advert->hasMedia('images'))
+				                <img class="h-24 lg:h-40 object-cover" src="{{ $ad->advert->getFirstMediaUrl('images', 'thumbnail') }}">
+				            @endif
 				        </div>
 						<!-- Display Boost Records -->
 						<h3>Update Shipping Status</h3>

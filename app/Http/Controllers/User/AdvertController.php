@@ -218,9 +218,12 @@ class AdvertController extends Controller
             return redirect('/');
         }
 
+        // 3. Canonical slug/location guard — redirect to correct URL if slug or location drifted
+        if ($slug !== $ad->title_slug || $location !== $ad->state_slug) {
+            return redirect(url($ad->state_slug . '/' . $ad->title_slug . '/' . $id), 301);
+        }
 
-
-         $sessionKey = 'back_url_for_ad_' . $id;
+        $sessionKey = 'back_url_for_ad_' . $id;
 
         if (!session()->has($sessionKey)) {
             $referer = request()->headers->get('referer');

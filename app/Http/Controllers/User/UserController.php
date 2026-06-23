@@ -375,11 +375,14 @@ class UserController extends Controller
         $userId = $request->session()->get('user_id');
         $user = User::findOrFail($userId);
 
-        // Eager load advert and its firstImage
-        $ad = Payment::with(['advert.firstImage','shipping'])
+        $ad = Payment::with(['advert', 'shipping'])
             ->where('advert_id', $id)
             ->first();
-        //dd($ad);
+
+        if (!$ad) {
+            return redirect()->back()->with('error', 'No shipping record found for this ad.');
+        }
+
         return view('user.ad-shipping', [
             'title' => "Ad Shipping | " . config('global.site_name'),
             'user' => $user,

@@ -73,33 +73,10 @@
 .conv-item.unread { background: #f0faf0; }
 .conv-item.unread:hover { background: #e8f5e2; }
 
-/* Avatar */
-.conv-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    background: #e8f5e2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #326916;
-    border: 2px solid #e5f0dc;
-}
-.conv-avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 /* Ad thumbnail */
 .conv-ad-thumb {
-    width: 44px;
-    height: 44px;
+    width: 54px;
+    height: 54px;
     border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
@@ -313,16 +290,6 @@
                         @endphp
                         <a href="{{ route('chat.show', ['advertId' => $advert->id, 'receiverId' => $otherUser->user_id]) }}"
                            class="conv-item {{ $isUnread ? 'unread' : '' }}">
-
-                            {{-- User avatar (initial) --}}
-                            <div class="conv-avatar">
-                                @if($otherUser && $otherUser->profile_thumbnail_url)
-                                    <img src="{{ $otherUser->profile_thumbnail_url }}" alt="{{ $userName }}"
-                                         onerror="this.parentElement.innerHTML='{{ $initial }}'">
-                                @else
-                                    {{ $initial }}
-                                @endif
-                            </div>
 
                             {{-- Ad thumbnail --}}
                             <img class="conv-ad-thumb"

@@ -83,14 +83,13 @@ updateOrderInput();
         const stateSelect = document.getElementById('state');
         if (stateSelect) {
             stateSelect.value = window.advertData.state;
-            toggleLGA(stateSelect);
-
-            setTimeout(() => {
+            // toggleLGA is async (fetch-based) — await it before restoring the LGA value
+            toggleLGA(stateSelect).then(() => {
                 const lgaSelect = document.getElementById('lga');
                 if (lgaSelect && window.advertData.lga) {
                     lgaSelect.value = window.advertData.lga;
                 }
-            }, 100);
+            });
         }
     }
 

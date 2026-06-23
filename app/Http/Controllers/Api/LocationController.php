@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\State;
+use App\Models\Lga;
 use App\Models\GigLogistic;
 use App\Models\User;
 use App\Models\Advert;
@@ -72,6 +73,27 @@ class LocationController extends Controller
      *     )
      * )
      */
+    public function getLGAsByState($state)
+    {
+        $stateModel = State::where('id', $state)->orWhere('name', $state)->first();
+
+        if (!$stateModel) {
+            return response()->json(['success' => false, 'message' => 'State not found'], 404);
+        }
+
+        $lgas = Lga::where('state_id', $stateModel->id)
+            ->orderBy('name')
+            ->pluck('name');
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'state' => $stateModel->name,
+                'lgas'  => $lgas,
+            ],
+        ]);
+    }
+
     public function getCitiesByState($state_id)
     {
         $state = State::find($state_id);

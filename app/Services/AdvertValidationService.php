@@ -36,8 +36,8 @@ class AdvertValidationService
             'category'    => 'required|integer|min:1|exists:categories,id',
             'subcategory' => 'required|integer|min:1|exists:sub_categories,id',
             'brand'       => 'required',
-            'state' => 'required',
-            'lga' => 'required',
+            'state' => 'required|exists:states,name',
+            'lga'   => 'required|exists:lgas,name',
             'description' => ['required', 'max:3500'],
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
         ];

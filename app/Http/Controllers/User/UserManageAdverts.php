@@ -177,7 +177,6 @@ class UserManageAdverts extends Controller
                 throw $e; // Re-throw to show validation errors
             }
 
-            $ad_id = rand(10000, 99999);
             $subcat = (int) $request->input('subcategory');
             $category = (int) $request->input('category');
             $description = $this->removeEmojis($request->input('description'));
@@ -300,7 +299,6 @@ class UserManageAdverts extends Controller
                 'keyword'          => $keywords,
                 'meta_description' => $metaDescription,
                 'featured'         => "No",
-                'ad_id'            => $ad_id,
                 'shipment'         => $request->input('shipment', 'Pickup'), // ✅ Default to 'Pickup' if not provided
                 'show_contact'     => $request->input('show_contact', 'No'), // ✅ Default to 'No' if not provided
                 'quantity'         => $request->input('quantity') ?? 1,
@@ -309,6 +307,8 @@ class UserManageAdverts extends Controller
                 'user_id'          => $user_id,
                 'source'           => 'web',
             ]);
+
+            $advert->update(['ad_id' => (string) $advert->id]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 

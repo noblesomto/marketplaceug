@@ -362,7 +362,7 @@ class UserManageAdverts extends Controller
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
             'transmission.required'       => 'Please select the transmission type.',
-            'vehicle_type.required'       => 'Please select the body/vehicle type.',
+            'vehicle_type.required'       => 'Please select the body type.',
             'exterior_color.required'     => 'Please select the exterior color.',
             'model.required'              => 'Please select the vehicle model.',
             'model.exists'                => 'The selected model is invalid.',
@@ -425,7 +425,6 @@ class UserManageAdverts extends Controller
         try {
             DB::beginTransaction();
 
-            $adId = rand(10000, 99999);
             $metaDescription = Str::limit(strip_tags($request->input('description')), 150, '');
             $rawWords = explode(' ', Str::slug($request->input('ad_title') . ' ' . $request->input('description'), ' '));
             $filteredWords = array_filter($rawWords, function ($word) {
@@ -455,7 +454,6 @@ class UserManageAdverts extends Controller
                 'keyword' => $keywords,
                 'meta_description' => $metaDescription,
                 'featured' => "No",
-                'ad_id' => $adId,
                 'shipment' => $request->input('shipment'),
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
@@ -464,6 +462,8 @@ class UserManageAdverts extends Controller
                 'user_id' => $user->user_id,
                 'source' => 'api',
             ]);
+
+            $advert->update(['ad_id' => (string) $advert->id]);
 
             $advert->shippings()->sync($request->input('shipping', []));
 

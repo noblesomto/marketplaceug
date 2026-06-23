@@ -140,6 +140,7 @@ class PaystackController extends Controller
                     'city' => $shippingData['reciever_city']['id'] ?? null,
                     'state' => $shippingData['reciever_state']['id'] ?? null,
                     'payment_status' => 'pending',
+                    'source' => 'api',
                 ]);
             } else {
                 $existingPayment->update(['payment_reference' => $reference]);

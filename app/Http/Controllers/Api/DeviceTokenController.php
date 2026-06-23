@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\DeviceToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class DeviceTokenController extends Controller
 {
@@ -33,10 +35,28 @@ class DeviceTokenController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'token' => 'required|string|max:255',
-            'platform' => ['required', Rule::in(['android', 'ios'])],
+        // Debug log — fires before validation so we catch every attempt including malformed payloads
+        Log::info('DeviceToken: registration attempt', [
+            'user_id'    => $request->user()?->id,
+            'platform'   => $request->input('platform'),
+            'token_prefix' => substr($request->input('token', ''), 0, 20) ?: '(empty)',
+            'user_agent' => $request->userAgent(),
+            'ip'         => $request->ip(),
         ]);
+
+        try {
+            $validated = $request->validate([
+                'token'    => 'required|string|max:255',
+                'platform' => ['required', Rule::in(['android', 'ios'])],
+            ]);
+        } catch (ValidationException $e) {
+            Log::warning('DeviceToken: validation failed', [
+                'user_id' => $request->user()?->id,
+                'payload' => $request->only('platform', 'token'),
+                'errors'  => $e->errors(),
+            ]);
+            throw $e;
+        }
 
         $deviceToken = DeviceToken::updateOrCreate(
             [
@@ -49,6 +69,12 @@ class DeviceTokenController extends Controller
                 'last_used_at' => now(),
             ]
         );
+
+        Log::info('DeviceToken: registered successfully', [
+            'user_id'  => $request->user()->id,
+            'platform' => $validated['platform'],
+            'token_id' => $deviceToken->id,
+        ]);
 
         return response()->json([
             'success' => true,

@@ -1,4 +1,5 @@
 @include('user.layouts.header')
+@include('user.layouts.nav')
 @include('user.layouts.back-nav')
 @include('user.layouts.search')
 

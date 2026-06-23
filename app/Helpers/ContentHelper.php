@@ -217,4 +217,8 @@ class ContentHelper
         $name = trim($name);
 
         // Step 6: Limit name length
-        $name = mb_substr($name, 0, 10
+        $name = mb_substr($name, 0, 100);
+
+        return $name;
+    }
+}
