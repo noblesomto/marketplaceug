@@ -164,7 +164,8 @@
     .shipping-status-pill { font-size: 0.65rem; padding: 3px 7px; }
     .shipping-info-row { gap: 12px; }
     .order-actions { gap: 4px; }
-    .btn-report, .btn-details, .btn-confirm { padding: 6px 4px; font-size: 0.65rem; }
+    .btn-report, .btn-details, .btn-confirm { padding: 6px 3px; font-size: 0.62rem; }
+    .btn-report i, .btn-details i, .btn-confirm i { display: none; }
     .btn-text-full { display: none; }
     .btn-text-short { display: inline; }
 }
@@ -421,17 +422,13 @@
 
                     @if($isDelivered)
                         <button class="btn-confirm btn-confirm-done" disabled>
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span class="btn-text-short">Done</span>
-                            <span class="btn-text-full">Delivered</span>
+                            <i class="bi bi-check-circle-fill"></i> Delivered
                         </button>
                     @else
                         <button class="btn-confirm confirm-delivery-btn"
                                 data-order-id="{{ $row->id }}"
                                 onclick="confirmDelivery(this)">
-                            <i class="bi bi-check-circle"></i>
-                            <span class="btn-text-short">Confirm</span>
-                            <span class="btn-text-full">Confirm Delivery</span>
+                            <i class="bi bi-check-circle"></i> Confirm Delivery
                         </button>
                     @endif
                 </div>
