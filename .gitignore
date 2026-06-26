@@ -19,3 +19,5 @@ yarn-error.log
 /.idea
 /.vscode
 *.zip
+.env
+sync-db.sh
