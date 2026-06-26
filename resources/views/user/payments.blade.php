@@ -163,8 +163,10 @@
     .shipping-company img { height: 16px; max-width: 40px; }
     .shipping-status-pill { font-size: 0.65rem; padding: 3px 7px; }
     .shipping-info-row { gap: 12px; }
-    .order-actions { gap: 6px; }
-    .btn-report, .btn-confirm { min-width: unset; flex: 1; padding: 7px 10px; font-size: 0.72rem; }
+    .order-actions { gap: 4px; }
+    .btn-report, .btn-details, .btn-confirm { padding: 6px 4px; font-size: 0.65rem; }
+    .btn-text-full { display: none; }
+    .btn-text-short { display: inline; }
 }
 
 /* ── Shipping section ───────────────────────────────── */
@@ -224,54 +226,53 @@
 
 /* ── Action buttons ─────────────────────────────────── */
 .order-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
 }
-.btn-report {
-    flex: 1;
+.btn-report, .btn-details, .btn-confirm {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 9px 14px;
+    gap: 4px;
+    padding: 7px 6px;
     border-radius: 8px;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+    white-space: nowrap;
+    width: 100%;
+}
+.btn-report {
     border: 1.5px solid #e5e7eb;
     color: #6b7280;
     background: #fff;
-    transition: all 0.15s;
-    cursor: pointer;
-    min-width: 130px;
 }
 .btn-report:hover { border-color: #fca5a5; color: #dc2626; background: #fff5f5; text-decoration: none; }
+.btn-details {
+    border: 1.5px solid #326916;
+    color: #326916;
+    background: #fff;
+}
+.btn-details:hover { background: #f0fdf4; text-decoration: none; color: #326916; }
 .btn-confirm {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 9px 14px;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    font-weight: 600;
     border: none;
     background: #326916;
     color: #fff;
-    cursor: pointer;
-    transition: all 0.15s;
-    min-width: 130px;
 }
 .btn-confirm:hover:not(:disabled) { background: #2a5812; }
 .btn-confirm:disabled, .btn-confirm-done {
     background: #d1fae5;
     color: #065f46;
     cursor: not-allowed;
+    border: none;
 }
-@media (max-width: 480px) {
-    .btn-report, .btn-confirm { min-width: unset; }
+
+@media (min-width: 480px) {
+    .btn-text-full { display: inline; }
+    .btn-text-short { display: none; }
 }
 
 /* ── Empty state ─────────────────────────────────────── */
@@ -409,18 +410,28 @@
                 <div class="order-actions">
                     <a href="{{ optional($row->advert)->id ? '/report-ad/' . $row->advert->id : '#' }}"
                        class="btn-report">
-                        <i class="bi bi-flag"></i> Report an Issue
+                        <i class="bi bi-flag"></i>
+                        <span class="btn-text-short">Report</span>
+                        <span class="btn-text-full">Report Issue</span>
+                    </a>
+
+                    <a href="/user/order-details/{{ $row->id }}" class="btn-details">
+                        <i class="bi bi-receipt"></i> Order Details
                     </a>
 
                     @if($isDelivered)
                         <button class="btn-confirm btn-confirm-done" disabled>
-                            <i class="bi bi-check-circle-fill"></i> Delivered
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span class="btn-text-short">Done</span>
+                            <span class="btn-text-full">Delivered</span>
                         </button>
                     @else
                         <button class="btn-confirm confirm-delivery-btn"
                                 data-order-id="{{ $row->id }}"
                                 onclick="confirmDelivery(this)">
-                            <i class="bi bi-check-circle"></i> Confirm Delivery
+                            <i class="bi bi-check-circle"></i>
+                            <span class="btn-text-short">Confirm</span>
+                            <span class="btn-text-full">Confirm Delivery</span>
                         </button>
                     @endif
                 </div>

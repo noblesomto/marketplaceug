@@ -327,13 +327,28 @@ class UserController extends Controller
 
         $buyAds = Payment::with(['advert.media', 'shipping'])
             ->where('user_id', $userId)
+            ->where('payment_status', 'paid')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('user.payments', [
-            'title' => "Buy Direct Adverts | " . config('global.site_name'),
+            'title' => "My Orders | " . config('global.site_name'),
             'user' => $user,
             'buyAds' => $buyAds,
+        ]);
+    }
+
+    public function order_details(Request $request, $id)
+    {
+        $userId = $request->session()->get('user_id');
+        $payment = Payment::with(['advert.media', 'shipping', 'cityLocation.state'])
+            ->where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        return view('user.order-details', [
+            'title'   => "Order Details | " . config('global.site_name'),
+            'payment' => $payment,
         ]);
     }
 

@@ -20,7 +20,7 @@ use App\Http\Controllers\User\PaystackController;
 Route::middleware('usersession')->group(function () {
 
     // Dashboard overview
-    Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/index', [UserProfile::class, 'profile'])->name('user.index');
     Route::get('/user/my-ads', [UserController::class, 'my_ads'])->name('user.my.ads');
     Route::get('/user/boosted', [UserController::class, 'boosted_ads'])->name('user.boosted');
     Route::get('/user/payment', [UserController::class, 'payments'])->name('user.payments');
@@ -30,6 +30,7 @@ Route::middleware('usersession')->group(function () {
     Route::get('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->name('user.ad.status');
     Route::get('/user/category', [UserController::class, 'category'])->name('user.category');
     Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders');
+    Route::get('/user/order-details/{id}', [UserController::class, 'order_details'])->name('user.order.details');
     Route::get('/user/messages', [UserController::class, 'messages'])->name('user.messages');
     Route::get('/user/archived-messages', [UserController::class, 'archivedMessages'])->name('user.archived.messages');
     Route::get('/user/feedbacks', [UserController::class, 'feedbacks'])->name('user.feedbacks');

@@ -6566,6 +6566,78 @@
               "body": "{\n  \"success\": false,\n  \"message\": \"No shipping record found for this ad.\"\n}"
             }
           ]
+        },
+        {
+          "name": "Get Order Details (Buyer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/payments/{{payment_id}}/details",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user", "payments", "{{payment_id}}", "details"]
+            },
+            "description": "🔒 **Requires Authentication (Buyer only)**\n\nEndpoint: `GET /api/user/payments/{paymentId}/details`\nController: `App\\Http\\Controllers\\Api\\UserController@orderDetails`\n\nReturns full buyer-facing order details for a completed (paid) purchase. Equivalent to the web page `/user/order-details/{id}`.\n\n**URL Parameter:**\n- `paymentId` — The payment record `id` (integer)\n\n**Authorization:**\n- Returns `404` if the payment does not belong to the authenticated user, is not paid, or does not exist\n\n**Response includes:**\n- `order` — id, reference, amount_paid, payment_status, shipping_status, buyer_status, tracking_id, shipping_status_date, created_at\n- `product` — name, price, state, thumbnail_url, ad_url\n- `shipping_company` — name, logo URL\n- `delivery_location` — address, city, state (GIG pickup location chosen at checkout)",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/99/details",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "99", "details"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"order\": {\n      \"id\": 99,\n      \"reference\": \"PAY-ABC123XYZ\",\n      \"amount_paid\": 1149588,\n      \"payment_status\": \"paid\",\n      \"shipping_status\": \"shipped\",\n      \"buyer_status\": null,\n      \"tracking_id\": null,\n      \"shipping_status_date\": \"2026-06-25T10:00:00.000000Z\",\n      \"created_at\": \"2026-06-24T08:30:00.000000Z\"\n    },\n    \"product\": {\n      \"name\": \"iPhone 15 Pro Max 256GB, Titanium Black\",\n      \"price\": 1149588,\n      \"state\": \"Lagos\",\n      \"thumbnail_url\": \"https://www.marketplace.ng/storage/101/conversions/thumbnail.webp\",\n      \"ad_url\": \"https://www.marketplace.ng/lagos/iphone-15-pro-max-256gb-titanium-black/82261\"\n    },\n    \"shipping_company\": {\n      \"name\": \"GIG Logistics\",\n      \"logo\": \"https://www.marketplace.ng/images/gig-logo.png\"\n    },\n    \"delivery_location\": {\n      \"address\": \"2 Awka Road, By DMGS Junction, Beside All Saints' Anglican Cathedral, Onitsha\",\n      \"city\": \"Onitsha\",\n      \"state\": \"Anambra\"\n    }\n  }\n}"
+            },
+            {
+              "name": "404 — Not found / not owner / not paid",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/999/details",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "999", "details"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Order not found.\"\n}"
+            }
+          ]
         }
       ]
     },

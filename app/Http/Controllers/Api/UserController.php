@@ -692,6 +692,70 @@ class UserController extends Controller
     }
 
     /**
+     * GET /api/user/payments/{paymentId}/details
+     * Buyer-facing order details (equivalent to web /user/order-details/{id}).
+     * Returns full order info: product, shipping company, delivery location, order summary.
+     */
+    public function orderDetails($paymentId)
+    {
+        $user = auth()->user();
+
+        $payment = Payment::with(['advert.media', 'shipping', 'cityLocation.state'])
+            ->where('id', $paymentId)
+            ->where('user_id', $user->user_id)
+            ->where('payment_status', 'paid')
+            ->first();
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found.'
+            ], 404);
+        }
+
+        $advert = $payment->advert;
+        $ship   = $payment->shipping;
+        $city   = $payment->cityLocation;
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                'order' => [
+                    'id'                 => $payment->id,
+                    'reference'          => $payment->payment_reference,
+                    'amount_paid'        => $payment->amount_paid,
+                    'payment_status'     => $payment->payment_status,
+                    'shipping_status'    => $payment->shipping_status ?? 'pending',
+                    'buyer_status'       => $payment->buyer_status,
+                    'tracking_id'        => $payment->tracking_id,
+                    'shipping_status_date' => $payment->shipping_status_date,
+                    'created_at'         => $payment->created_at,
+                ],
+                'product' => [
+                    'name'          => $advert->ad_title ?? null,
+                    'price'         => $advert->price ?? null,
+                    'state'         => $advert->state ?? null,
+                    'thumbnail_url' => $advert && $advert->hasMedia('images')
+                                        ? $advert->getFirstMediaUrl('images', 'thumbnail')
+                                        : null,
+                    'ad_url'        => $advert
+                                        ? url(($advert->state_slug ?? '') . '/' . ($advert->title_slug ?? '') . '/' . $advert->ad_id)
+                                        : null,
+                ],
+                'shipping_company' => [
+                    'name' => $ship->company ?? null,
+                    'logo' => $ship->logo ?? null,
+                ],
+                'delivery_location' => [
+                    'address' => $city->address ?? null,
+                    'city'    => $city->city ?? null,
+                    'state'   => $city->state->name ?? null,
+                ],
+            ]
+        ]);
+    }
+
+    /**
      * GET /api/user/adverts/{advertId}/shipping-details
      * Returns all seller-facing shipping details for a sold ad (equivalent to web /user/ad-shipping/{id}).
      */
