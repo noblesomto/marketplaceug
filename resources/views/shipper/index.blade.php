@@ -1,42 +1,79 @@
 @include('public.layouts.header')
-@include('public.layouts.nav')
 
+<div class="min-h-screen bg-gray-50 flex flex-col">
 
-
-<section class="h-screen flex items-center">
-    
-    <div class="max-w-2xl mx-auto bg-white p-3 md:p-10  pb-20 mb-5 rounded-lg">
-        <div class="flex justify-center">
-            <h3 class="text-2xl font-bold">Shipping Code</h3>
+    {{-- Header --}}
+    <header class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Naija"></a>
+            <a href="/shipper/logout"
+               class="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1">
+                <i class="bi bi-box-arrow-right"></i> Log Out
+            </a>
         </div>
-        @include('public.components.flash-message')
-        <form method="POST" action="/shipper/get-shipping">
-            @csrf
+    </header>
 
-            <div class="mb-4 mt-10">
-                @if ($errors->has('ship_code'))
-                    <span class="text-red-700 py-1">{{ $errors->first('ship_code') }}</span>
-                @endif
-                <label class="text-sm font-semibold">Enter 10 Digits Code*</label>
-                <input type="text" id="name" name="ship_code" placeholder="WREH5768FET" max="10" min="5" class="w-full px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+    {{-- Body --}}
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+
+            {{-- Icon + title --}}
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+                    <i class="bi bi-box-seam text-3xl text-green-700"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Verify Shipment</h1>
+                <p class="text-gray-500 text-sm mt-1">Enter the 10-digit shipping code to view order details</p>
             </div>
 
+            {{-- Alerts --}}
+            @if (session('error'))
+                <div class="mb-4 flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                    <i class="bi bi-exclamation-circle-fill mt-0.5"></i>
+                    <span>{{ session('error') }}</span>
+                </div>
+            @endif
+            @if ($errors->any())
+                <div class="mb-4 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                    @foreach ($errors->all() as $error)
+                        <p class="flex items-center gap-1"><i class="bi bi-exclamation-circle-fill"></i> {{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
 
-            <div class="mt-8">
-                <button type="submit" class="flex justify-center items-center bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-3 px-6 border-2 border-dark_green hover:border-dark_green rounded-full ">
-                    <span>Submit</span>
-                    <span class="ml-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                          <path fill-rule="evenodd" d="M16.72 7.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06l-3.75 3.75a.75.75 0 1 1-1.06-1.06l2.47-2.47H3a.75.75 0 0 1 0-1.5h16.19l-2.47-2.47a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </button>
-              </div>
+            {{-- Form card --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <form method="POST" action="/shipper/get-shipping">
+                    @csrf
 
-        </form>
-    </div>
-</section>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Shipping Code <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="ship_code"
+                            value="{{ strtoupper(old('ship_code')) }}"
+                            placeholder="e.g. EMXTUQARWM"
+                            maxlength="10"
+                            autocomplete="off"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm font-mono uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('ship_code') border-red-400 @enderror"
+                            required
+                        >
+                        <p class="text-xs text-gray-400 mt-1">10 characters — letters and numbers only</p>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-6 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="bi bi-search"></i>
+                        Look Up Order
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+</div>
 
 @include('public.layouts.footer')
-
-

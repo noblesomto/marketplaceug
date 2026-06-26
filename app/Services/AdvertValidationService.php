@@ -297,7 +297,9 @@ class AdvertValidationService
      */
     public function validateShipping($request): ?array
     {
-        if ($request->shipment === 'Ship' && empty($request->input('shipping'))) {
+        $needsShipping = $request->shipment === 'Ship' || $request->buy_direct === 'Yes';
+
+        if ($needsShipping && empty($request->input('shipping'))) {
             return ['shipping' => ['Please select at least one shipping method.']];
         }
 

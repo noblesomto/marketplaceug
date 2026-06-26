@@ -247,18 +247,8 @@ class AdvertController extends Controller
         $subcat_id = $ad->sub_category;
         $user_id = $request->session()->get('user_id');
 
-        // Check if images exist before processing
-        if ($ad->images) {
-            foreach ($ad->images as $img) {
-                $path = public_path('uploads/images/' . $img->image);
-                if (File::exists($path)) {
-                    [$width, $height] = getimagesize($path);
-                    $img->is_portrait = $height > $width;
-                } else {
-                    $img->is_portrait = false; // default to landscape
-                }
-            }
-        }
+        // is_portrait detection removed — images are now in Spatie MediaLibrary,
+        // not at uploads/images/, so File::exists() triggered open_basedir errors.
 
         $data['user'] = User::where('user_id', $user_id)->first();
         $data['ad_owner'] = User::where('user_id', $ad_owner)->first();
@@ -756,7 +746,8 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
         $count_ads = Advert::where('user_id', $id)->activeNotRecentlySold()->count();
 
-        return view('public.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories', 'count_ads', 'hasMore')); // Add hasMore to compact
+        $following_count = \App\Models\Followers::where('user_id', $id)->count();
+        return view('public.seller-adverts', compact('title', 'ads', 'user', 'owner', 'categories', 'count_ads', 'hasMore', 'following_count'));
     }
 
     public function loadMoreSellerAds(Request $request, $name, $id)
@@ -1182,6 +1173,11 @@ class AdvertController extends Controller
             abort(404, 'Advert not found.');
         }
 
+        // If the seller hasn't linked specific shipping options, show active ones
+        if ($data['ad']->shippings->isEmpty()) {
+            $data['ad']->setRelation('shippings', Shipping::where('status', 'Active')->get());
+        }
+
         $data['title'] = $data['ad']->ad_title.' - '.config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
@@ -1376,6 +1372,110 @@ public function buy_direct_payment(Request $request, $id)
             return redirect()->back()->with('success', 'You Have successfuly Apllied for Job, The provider will Get back to Shortly');
 
         }
+    }
+
+    public function sellerFollowers($slug, $id)
+    {
+        $owner = \App\Models\User::where('user_id', $id)->firstOrFail();
+        $loggedInUserId = session()->get('user_id');
+        $user    = $loggedInUserId ? \App\Models\User::where('user_id', $loggedInUserId)->first() : null;
+        $isOwner  = $user && $owner->user_id == $user->user_id;
+        $loggedIn = (bool) $loggedInUserId;
+
+        $rows = \App\Models\Followers::where('follow', $id)
+            ->with(['user:user_id,name,state,city'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        $myFollowingIds = $loggedInUserId
+            ? \App\Models\Followers::where('user_id', $loggedInUserId)->pluck('follow')->toArray()
+            : [];
+
+        $people = $rows->getCollection()->map(function ($f) use ($myFollowingIds, $loggedInUserId) {
+            $u = $f->user;
+            if (!$u) return null;
+            $name  = $u->name ?? 'User';
+            $words = preg_split('/\s+/', trim($name));
+            $initials = count($words) >= 2
+                ? strtoupper(mb_substr($words[0], 0, 1) . mb_substr(end($words), 0, 1))
+                : strtoupper(mb_substr($name, 0, 2));
+            return (object)[
+                'user_id'      => $u->user_id,
+                'name'         => $name,
+                'initials'     => $initials,
+                'state'        => trim(implode(', ', array_filter([$u->city, $u->state]))),
+                'active_ads'   => Advert::where('user_id', $u->user_id)->activeNotRecentlySold()->count(),
+                'is_following' => in_array($u->user_id, $myFollowingIds),
+                'is_self'      => $loggedInUserId == $u->user_id,
+                'profile_url'  => '/seller/' . \Illuminate\Support\Str::slug($name) . '/' . $u->user_id,
+            ];
+        })->filter()->values();
+
+        return view('public.seller-social', [
+            'title'           => $owner->name . "'s Followers — " . config('global.site_name'),
+            'owner'           => $owner,
+            'user'            => $user,
+            'isOwner'         => $isOwner,
+            'loggedIn'        => $loggedIn,
+            'people'          => $people,
+            'paginator'       => $rows,
+            'tab'             => 'followers',
+            'followers_count' => \App\Models\Followers::where('follow', $id)->count(),
+            'following_count' => \App\Models\Followers::where('user_id', $id)->count(),
+            'sellerSlug'      => $slug,
+        ]);
+    }
+
+    public function sellerFollowing($slug, $id)
+    {
+        $owner = \App\Models\User::where('user_id', $id)->firstOrFail();
+        $loggedInUserId = session()->get('user_id');
+        $user    = $loggedInUserId ? \App\Models\User::where('user_id', $loggedInUserId)->first() : null;
+        $isOwner  = $user && $owner->user_id == $user->user_id;
+        $loggedIn = (bool) $loggedInUserId;
+
+        $rows = \App\Models\Followers::where('user_id', $id)
+            ->with(['seller:user_id,name,state,city'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        $myFollowingIds = $loggedInUserId
+            ? \App\Models\Followers::where('user_id', $loggedInUserId)->pluck('follow')->toArray()
+            : [];
+
+        $people = $rows->getCollection()->map(function ($f) use ($myFollowingIds, $loggedInUserId) {
+            $u = $f->seller;
+            if (!$u) return null;
+            $name  = $u->name ?? 'User';
+            $words = preg_split('/\s+/', trim($name));
+            $initials = count($words) >= 2
+                ? strtoupper(mb_substr($words[0], 0, 1) . mb_substr(end($words), 0, 1))
+                : strtoupper(mb_substr($name, 0, 2));
+            return (object)[
+                'user_id'      => $u->user_id,
+                'name'         => $name,
+                'initials'     => $initials,
+                'state'        => trim(implode(', ', array_filter([$u->city, $u->state]))),
+                'active_ads'   => Advert::where('user_id', $u->user_id)->activeNotRecentlySold()->count(),
+                'is_following' => in_array($u->user_id, $myFollowingIds),
+                'is_self'      => $loggedInUserId == $u->user_id,
+                'profile_url'  => '/seller/' . \Illuminate\Support\Str::slug($name) . '/' . $u->user_id,
+            ];
+        })->filter()->values();
+
+        return view('public.seller-social', [
+            'title'           => $owner->name . "'s Following — " . config('global.site_name'),
+            'owner'           => $owner,
+            'user'            => $user,
+            'isOwner'         => $isOwner,
+            'loggedIn'        => $loggedIn,
+            'people'          => $people,
+            'paginator'       => $rows,
+            'tab'             => 'following',
+            'followers_count' => \App\Models\Followers::where('follow', $id)->count(),
+            'following_count' => \App\Models\Followers::where('user_id', $id)->count(),
+            'sellerSlug'      => $slug,
+        ]);
     }
 
 }

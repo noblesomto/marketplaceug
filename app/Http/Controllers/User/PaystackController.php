@@ -17,6 +17,8 @@ use App\Mail\SellerMail;
 use App\Models\State;
 use App\Models\GigLogistic;
 use App\Models\Shipping;
+use App\Models\Notification;
+use App\Jobs\SendAdSoldPushNotification;
 use App\Traits\HasUserSession;
 use Illuminate\Support\Facades\Log;
 
@@ -154,6 +156,25 @@ class PaystackController extends Controller
 
             Mail::to($user->email)->send(new BuyDirectMail($details));
             Mail::to($owner->email)->send(new SellerMail($details));
+
+            // In-app notification for the seller
+            $buyerName = $booking->first_name . ' ' . $booking->last_name;
+            Notification::create([
+                'user_id'   => $owner->id,
+                'seller_id' => $user->id,
+                'advert_id' => $advert->id,
+                'type'      => 'Item Sold',
+                'message'   => "Your advert \"{$advert->ad_title}\" has been purchased by {$buyerName}.",
+                'is_read'   => 0,
+            ]);
+
+            // Push notification to seller (queued)
+            try {
+                SendAdSoldPushNotification::dispatch($owner, $advert, $buyerName);
+            } catch (\Exception $e) {
+                Log::error('Failed to dispatch ad sold push notification: ' . $e->getMessage());
+            }
+
             return redirect()->route('buy.direct.success')->with([
                 'ad_title'  => $advert->ad_title,
                 'ship_code' => $ship_code,

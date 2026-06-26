@@ -65,12 +65,22 @@
                         </svg>
                         <strong class="text-white">{{ $count_ads }}</strong> ads
                     </span>
-                    <span class="flex items-center gap-1">
+                    <a href="/seller/{{ $sellerSlug }}/{{ $owner->user_id }}/followers"
+                        class="flex items-center gap-1 hover:text-white/60 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
                         </svg>
-                        <strong class="text-white">{{ $followers }}</strong> followers
-                    </span>
+                        <strong class="text-white">{{ $followers }}</strong>
+                        <span>followers</span>
+                    </a>
+                    <a href="/seller/{{ $sellerSlug }}/{{ $owner->user_id }}/following"
+                        class="flex items-center gap-1 hover:text-white/60 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                        </svg>
+                        <strong class="text-white">{{ $following_count }}</strong>
+                        <span>following</span>
+                    </a>
                     @if($owner->city || $owner->state)
                         <span class="flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -217,41 +227,29 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-    // ── Share / Copy link ─────────────────────────────────────────
     const shareBtn = document.getElementById('share-store-btn');
     if (shareBtn) {
         shareBtn.addEventListener('click', async function () {
             const url  = this.dataset.url;
             const name = this.dataset.name;
             const label = document.getElementById('share-btn-label');
-
             if (navigator.share) {
-                try {
-                    await navigator.share({ title: name + ' — Store', url });
-                } catch (_) {}
+                try { await navigator.share({ title: name + ' — Store', url }); } catch (_) {}
                 return;
             }
-
-            // Clipboard fallback
             try {
                 await navigator.clipboard.writeText(url);
                 label.textContent = 'Link Copied!';
                 shareBtn.classList.add('bg-white/30');
-                setTimeout(() => {
-                    label.textContent = 'Share Store';
-                    shareBtn.classList.remove('bg-white/30');
-                }, 2500);
+                setTimeout(() => { label.textContent = 'Share Store'; shareBtn.classList.remove('bg-white/30'); }, 2500);
             } catch (_) {
                 Swal.fire({ icon: 'info', title: 'Store link', text: url, confirmButtonColor: '#166534' });
             }
         });
     }
 
-    // ── Follow / Unfollow ─────────────────────────────────────────
     const followButtons = document.querySelectorAll('.follow-button');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-
     followButtons.forEach(button => {
         const userId = button.dataset.userId;
         checkFollowingStatus(button, userId);
@@ -261,13 +259,8 @@ document.addEventListener('DOMContentLoaded', function () {
     async function checkFollowingStatus(button, userId) {
         try {
             const res = await fetch(`/api/check-following/${userId}`, { headers: { 'Accept': 'application/json' } });
-            if (res.ok) {
-                const data = await res.json();
-                updateButtonUI(userId, data.isFollowing);
-            }
-        } catch (e) {
-            console.error('Follow status check failed:', e);
-        }
+            if (res.ok) { const data = await res.json(); updateButtonUI(userId, data.isFollowing); }
+        } catch (e) {}
     }
 
     async function toggleFollow(button, userId) {
@@ -280,21 +273,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await res.json();
             if (res.ok) {
                 updateButtonUI(userId, data.isFollowing);
-                Swal.fire({
-                    icon: 'success',
-                    title: data.isFollowing ? 'Followed!' : 'Unfollowed!',
-                    text: data.message,
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+                Swal.fire({ icon: 'success', title: data.isFollowing ? 'Followed!' : 'Unfollowed!', text: data.message, timer: 2000, showConfirmButton: false, toast: true, position: 'top-end' });
             } else {
                 Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'Could not update follow status', confirmButtonColor: '#d33' });
             }
-        } catch (e) {
-            console.error('Follow toggle failed:', e);
-        }
+        } catch (e) {}
     }
 
     function updateButtonUI(userId, isFollowing) {
@@ -306,21 +289,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ── Load more ─────────────────────────────────────────────────
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) {
-        const adsContainer  = document.getElementById('ads-container');
-        const loadMoreText  = document.getElementById('load-more-text');
+        const adsContainer    = document.getElementById('ads-container');
+        const loadMoreText    = document.getElementById('load-more-text');
         const loadMoreSpinner = document.getElementById('load-more-spinner');
-        const sellerSlug    = @json($sellerSlug);
-        const sellerId      = @json($owner->user_id);
-        let currentPage     = 2;
-
+        const sellerSlug      = @json($sellerSlug);
+        const sellerId        = @json($owner->user_id);
+        let currentPage       = 2;
         loadMoreBtn.addEventListener('click', function () {
             loadMoreBtn.disabled = true;
             loadMoreText.classList.add('hidden');
             loadMoreSpinner.classList.remove('hidden');
-
             fetch(`/seller/${sellerSlug}/${sellerId}/load-more?page=${currentPage}`)
                 .then(r => r.json())
                 .then(data => {
@@ -340,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     }
-
 });
 </script>
 

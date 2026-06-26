@@ -224,10 +224,11 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     Route::delete('/wishlist/{adId}', [UserController::class, 'removeFromWishlist']);
     Route::post('/wishlist/{adId}/toggle', [UserController::class, 'toggleWishlist']);
 
-    // Payments
+    // Payments & Shipping
     Route::get('/payments', [UserController::class, 'payments']);
     Route::post('/payments/{paymentId}/confirm-delivery', [UserController::class, 'confirmDelivery']);
     Route::patch('/payments/{paymentId}/shipping-status', [UserController::class, 'updateShippingStatus']);
+    Route::get('/adverts/{advertId}/shipping-details', [UserController::class, 'adShippingDetails']);
 
     // Feedbacks
     Route::get('/feedbacks', [UserController::class, 'feedbacks']);

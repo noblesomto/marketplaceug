@@ -706,7 +706,7 @@ class UserManageAdverts extends Controller
     {
         $user = auth()->user();
 
-        $advert = Advert::with(['images', 'car', 'phone', 'shippings'])
+        $advert = Advert::with(['media', 'car', 'phone', 'shippings'])
             ->where('id', $advertId)
             ->where('user_id', $user->user_id)
             ->first();
@@ -722,14 +722,25 @@ class UserManageAdverts extends Controller
         $brands = Brands::where('subcat_id', $advert->sub_category)->get();
         $models = VehicleModel::where('brand_id', $advert->brand)->get();
 
+        // Return Spatie media items as 'images' for the edit screen.
+        // Each item includes 'id' (use for deleted_images[] / existing_image_order),
+        // 'url', 'thumbnail_url', and 'order_column' for the Android client.
+        $images = $advert->getMedia('images')->map(fn ($m) => [
+            'id'            => $m->id,
+            'url'           => $m->getUrl(),
+            'thumbnail_url' => $m->getUrl('thumbnail'),
+            'order_column'  => $m->order_column,
+        ])->values();
+
         return response()->json([
             'success' => true,
             'data' => [
-                'advert' => $advert,
+                'advert'        => $advert,
+                'images'        => $images,
                 'subcategories' => $subcategories,
-                'brands' => $brands,
-                'models' => $models,
-                'user' => $user
+                'brands'        => $brands,
+                'models'        => $models,
+                'user'          => $user,
             ]
         ]);
     }
@@ -916,8 +927,8 @@ class UserManageAdverts extends Controller
                 $deletedImages = array_filter(array_map('intval', $deletedImages));
 
                 if (!empty($deletedImages)) {
-                    // Get current image count
-                    $currentImageCount = $advert->images()->count();
+                    // Get current image count (Spatie MediaLibrary)
+                    $currentImageCount = $advert->getMedia('images')->count();
                     $requestedDeleteCount = count($deletedImages);
                     $hasNewImages = $request->hasFile('images');
 
@@ -932,58 +943,55 @@ class UserManageAdverts extends Controller
                         }
                     }
 
-                    // Proceed with deletion
-                    foreach ($deletedImages as $imageId) {
-                        $image = $advert->images()->find($imageId);
-                        if ($image) {
-                            FileUploadHelper::delete('images', $image->image);
-                            $image->delete();
+                    // Proceed with deletion from Spatie MediaLibrary
+                    foreach ($deletedImages as $mediaId) {
+                        $mediaItem = $advert->getMedia('images')->firstWhere('id', (int) $mediaId);
+                        if ($mediaItem) {
+                            $mediaItem->delete();
                         }
                     }
                 }
             }
 
-            // Handle image reordering
+            // Handle image reordering (Spatie media order_column)
             $orderedIds = [];
             if ($request->filled('existing_image_order')) {
                 $orderedIds = explode(',', $request->input('existing_image_order'));
-                foreach ($orderedIds as $index => $imageId) {
-                    DB::table('advert_images')
-                        ->where('id', $imageId)
-                        ->where('advert_id', $advert->id)
-                        ->update(['position' => $index + 1]);
+                foreach ($orderedIds as $index => $mediaId) {
+                    \Spatie\MediaLibrary\MediaCollections\Models\Media::where('id', (int) $mediaId)
+                        ->where('model_id', $advert->id)
+                        ->where('model_type', get_class($advert))
+                        ->where('collection_name', 'images')
+                        ->update(['order_column' => $index + 1]);
                 }
             }
 
             $newPositionStart = count($orderedIds) > 0
                 ? count($orderedIds) + 1
-                : ($advert->images()->count() + 1);
+                : ($advert->getMedia('images')->count() + 1);
 
-            // Upload new images
+            // Upload new images via Spatie MediaLibrary
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $image) {
                     if ($image->isValid()) {
-                        $uploadedFileName = FileUploadHelper::upload($image, 'images');
-                        $advert->images()->create([
-                            'image' => $uploadedFileName,
-                            'position' => $newPositionStart + $index,
-                        ]);
+                        $position = $newPositionStart + $index;
+                        $media = $advert
+                            ->addMedia($image)
+                            ->withCustomProperties(['position' => $position])
+                            ->usingFileName(uniqid() . '.webp')
+                            ->toMediaCollection('images');
+                        $media->order_column = $position;
+                        $media->save();
                     }
                 }
             }
 
             // Validate final image count - ensure at least 3 images exist
-            $finalImageCount = $advert->images()->count();
+            $finalImageCount = $advert->getMedia('images')->count();
 
             if ($finalImageCount < 3) {
                 if (in_array($category, [3, 18])) {
-                    // Jobs/CV category: add default image if none exist
-                    if ($finalImageCount < 1) {
-                        $advert->images()->create([
-                            'image' => 'jobs.png',
-                            'position' => 1,
-                        ]);
-                    }
+                    // Jobs/CV: no minimum; skip count enforcement
                 } else {
                     // For all other categories, at least 3 images are required
                     DB::rollBack();

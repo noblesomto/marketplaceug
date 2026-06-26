@@ -219,7 +219,7 @@
         My Recent Listings
     </div>
     <div id="ads-container">
-        @include('public.components.advert.advert-list', ['ads' => $ads])
+        @include('user.components.my-ads', ['ads' => $ads])
     </div>
     @if(isset($hasMore) && $hasMore)
         <div class="mt-3 mb-4 px-2 flex justify-center">

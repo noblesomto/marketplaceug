@@ -692,6 +692,74 @@ class UserController extends Controller
     }
 
     /**
+     * GET /api/user/adverts/{advertId}/shipping-details
+     * Returns all seller-facing shipping details for a sold ad (equivalent to web /user/ad-shipping/{id}).
+     */
+    public function adShippingDetails($advertId)
+    {
+        $user = auth()->user();
+
+        $payment = Payment::with(['advert.media', 'shipping', 'cityLocation.state'])
+            ->where('advert_id', $advertId)
+            ->first();
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No shipping record found for this ad.'
+            ], 404);
+        }
+
+        // Only the ad owner can view shipping details
+        if (!$payment->advert || $payment->advert->user_id !== $user->user_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorised.'
+            ], 403);
+        }
+
+        $advert  = $payment->advert;
+        $city    = $payment->cityLocation;
+        $ship    = $payment->shipping;
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                'payment_id'      => $payment->id,
+                'advert_id'       => $advert->id,
+                'ad_id'           => $advert->ad_id,
+                'shipping_status' => $payment->shipping_status ?? 'pending',
+                'ship_code'       => $payment->ship_code,
+                'buyer' => [
+                    'name'  => trim(($payment->first_name ?? '') . ' ' . ($payment->last_name ?? '')),
+                    'phone' => $payment->phone,
+                ],
+                'product' => [
+                    'name'          => $advert->ad_title,
+                    'thumbnail_url' => $advert->getFirstMediaUrl('images', 'thumbnail'),
+                    'ad_url'        => url(($advert->state_slug ?? '') . '/' . ($advert->title_slug ?? '') . '/' . $advert->ad_id),
+                ],
+                'shipping_company' => [
+                    'name' => $ship->company ?? null,
+                    'logo' => $ship->logo ?? null,
+                ],
+                'delivery_location' => [
+                    'address' => $city->address ?? null,
+                    'city'    => $city->city ?? null,
+                    'state'   => $city->state->name ?? null,
+                ],
+                'instructions' => [
+                    'step_1' => "Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address.",
+                    'step_2' => "Take it to your nearest " . ($ship->company ?? 'shipping company') . " office.",
+                    'step_3' => "Present the 10-digit shipping code at the counter: {$payment->ship_code}",
+                    'step_4' => "No payment is required at the shipping office. All logistics fees have been covered.",
+                ],
+                'note' => "This transaction is secured by our Buy Direct service. Your payment will be released as soon as the buyer confirms delivery.",
+            ]
+        ]);
+    }
+
+    /**
      * @OA\Patch(
      *     path="/api/user/ads/{adId}/mark-sold",
      *     summary="Mark ad as sold",

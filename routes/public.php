@@ -56,9 +56,10 @@ Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertControll
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand'])->name('brand');
 Route::get('/related/{ad_id}', [AdvertController::class, 'related'])->name('related.ads');
 Route::get('/related/{ad_id}/load-more', [AdvertController::class, 'relatedLoadMore'])->name('related.ads.loadMore');
-Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct'])->name('buy.direct');
-Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping'])->name('calculate.shipping');
-Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->name('buy.direct.payment');
+Route::get('/buy-direct/success', [PaystackController::class, 'buyDirectSuccess'])->name('buy.direct.success');
+Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct'])->where('id', '[0-9]+')->name('buy.direct');
+Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping'])->where('id', '[0-9]+')->name('calculate.shipping');
+Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->where('id', '[0-9]+')->name('buy.direct.payment');
 Route::get('/seller/{id}', function () { return redirect('/'); })->name('seller.redirect');
 Route::get('/seller/{name}/{id}', [AdvertController::class, 'seller'])->name('seller');
 Route::get('/seller/{name}/{id}/load-more', [AdvertController::class, 'loadMoreSellerAds'])->name('seller.ads.loadMore');
@@ -83,7 +84,6 @@ Route::post('/shipping-cost', [LocationController::class, 'getAgilityShippingCos
 Route::post('/pay', [PaystackController::class, 'initialize'])->name('paystack.pay')->middleware('usersession');
 Route::get('/payment/callback', [PaystackController::class, 'callback'])->name('paystack.callback')->middleware('usersession');
 Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');
-Route::get('/buy-direct/success', [PaystackController::class, 'buyDirectSuccess'])->name('buy.direct.success');
 Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('payment.failed');
 
 // Public chat / reviews / follow
@@ -93,6 +93,11 @@ Route::get('/reviews/seller/{id}', [UserController::class, 'reviews_seller'])->n
 Route::get('/unread-messages-count', [MessageController::class, 'countUnreadMessages'])->name('unread.messages.count');
 Route::get('/api/check-following/{userId}', [UserController::class, 'checkFollowing']);
 Route::post('/api/toggle-follow', [UserController::class, 'toggleFollow'])->middleware('usersession');
+Route::get('/api/social/followers', [UserController::class, 'followersListJson']);
+Route::get('/api/social/following', [UserController::class, 'followingListJson']);
+Route::post('/api/social/remove-follower/{userId}', [UserController::class, 'removeFollower'])->middleware('usersession');
+Route::get('/seller/{slug}/{id}/followers', [AdvertController::class, 'sellerFollowers']);
+Route::get('/seller/{slug}/{id}/following', [AdvertController::class, 'sellerFollowing']);
 
 // Load more (public)
 Route::get('/load-more-ads', [AdvertController::class, 'loadMoreAdverts'])->name('adverts.loadMore');

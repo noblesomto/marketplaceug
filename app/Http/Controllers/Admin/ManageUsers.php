@@ -26,7 +26,7 @@ class ManageUsers extends Controller
     {
         $title = "Unverified Users | " . config('global.site_name');
         $page_title = "Unverified Users";
-        $users = User::where('acc_status', 0)->orderBy('created_at', 'desc')->paginate(20);
+        $users = User::where('acc_status', 0)->where('disable_account', 'no')->orderBy('created_at', 'desc')->paginate(20);
 
         return view('admin.users.unverified-users', compact('title', 'users', 'page_title'));
     }

@@ -360,11 +360,16 @@ function toggleBuyDirect() {
     const isBuyDirect = buyDirectYes?.checked;
 
     if (isBuyDirect) {
-        // Auto-select Ship
         const shipRadio = document.querySelector('input[name="shipment"][value="Ship"]');
         if (shipRadio && !shipRadio.checked) {
             shipRadio.checked = true;
-            toggleShipping(); // Show shipping options
+        }
+        toggleShipping();
+        // Auto-check first carrier if none selected
+        const checked = document.querySelectorAll('input[name="shipping[]"]:checked');
+        if (checked.length === 0) {
+            const first = document.querySelector('input[name="shipping[]"]');
+            if (first) first.checked = true;
         }
     }
 }

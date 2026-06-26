@@ -1,145 +1,248 @@
 @include('public.layouts.header')
-@include('public.layouts.nav')
 
+@php
+    $seller    = $ship->advert->user ?? null;
+    $imgUrl    = $ship->advert->getFirstMediaUrl('images', 'thumbnail');
+    $city      = $ship->cityLocation;
+    $stateName = $city->state->name ?? ($ship->state ?? '—');
+    $statusMap = [
+        'pending'   => ['label' => 'Pending',          'color' => 'bg-yellow-100 text-yellow-700'],
+        'shipped'   => ['label' => 'Shipped',           'color' => 'bg-blue-100 text-blue-700'],
+        'pickup'    => ['label' => 'Ready for Pickup',  'color' => 'bg-purple-100 text-purple-700'],
+        'delivered' => ['label' => 'Delivered',         'color' => 'bg-green-100 text-green-700'],
+        'canceled'  => ['label' => 'Canceled',          'color' => 'bg-red-100 text-red-700'],
+    ];
+    $currentStatus = $ship->shipping_status ?? 'pending';
+    $badge = $statusMap[$currentStatus] ?? $statusMap['pending'];
+@endphp
 
+<div class="min-h-screen bg-gray-50 flex flex-col">
 
-<section class="my-10">
-
-    <div class="max-w-5xl mx-auto bg-white p-3 md:p-10  pb-20 mb-5 rounded-lg">
-        <div class="flex justify-center">
-            <h3 class="text-2xl font-bold underline">Shipping Order Details</h3>
-        </div>
-        <div class="grid grid-cols-10 gap-10 mt-10">
-
-
-        <div class="col-span-10 lg:col-span-5">
-            <!-- Product Image Gallery -->
-              <div class="w-full">
-                <div class="relative overflow-hidden rounded-lg bg-gray-100 aspect-square mb-4">
-                  <img src="{{ asset('uploads/images/' . $ship->advert?->firstImage?->image) }}"
-                       alt="{{ $ship->advert->ad_title }}"
-                       class="w-full  object-cover transition-transform duration-300 hover:scale-105">
-                </div>
-              </div>
-
-              <!-- Product Details -->
-              <div class="text-base space-y-4">
-                <h4 class="text-xl font-semibold underline">Product Details</h4>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Name:</span>
-                    <span><h5>{{ $ship->advert->ad_title }}</h5></span>
-                </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Location:</span>
-                    <span><h5>{{ $ship->advert->owner->state }}</h5></span>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-span-10 lg:col-span-5 space-y-10">
-            <!-- Sender Details -->
-            <div class="text-base space-y-4">
-                <h4 class="text-xl font-semibold underline">Sender Details</h4>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Name:</span>
-                    <span><h5>{{ $ship->advert->owner->name }}</h5></span>
-                </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Phone:</span>
-                    <span><h5>{{ $ship->advert->owner->phone }}</h5></span>
-                </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Location:</span>
-                    <span><h5>{{ $ship->advert->owner->state }}</h5></span>
-                </div>
-            </div>
-
-            <!-- Receiver Details -->
-            <div class="text-base space-y-4">
-                <h4 class="text-xl font-semibold underline">Receiver Details</h4>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Name:</span>
-                    <span><h5>{{ $ship->first_name }} {{ $ship->last_name }}</h5></span>
-                </div>
-
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Phone:</span>
-                    <span><h5>{{ $ship->phone }}</h5></span>
-                </div>
-
-            </div>
-
-            <!-- Pickup Location Details -->
-            <div class="text-base space-y-4">
-                <h4 class="text-xl font-semibold underline">Receiver Pickup Location</h4>
-                <div class="flex items-center space-x-4">
-                        <span><img class="w-8 h-6" src="{{ asset('uploads/shipping/'.$ship->shipping->logo) }}"> </span>
-                        <span>{{ $ship->shipping->company }}</span>
-                  </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">Address:</span>
-                    <span><h5>{{ $city->address }}</h5></span>
-                </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">City:</span>
-                    <span><h5>{{ $city->city }}</h5></span>
-                </div>
-                <div class="flex justify-start space-x-4">
-                    <span class="font-semibold">State:</span>
-                    <span><h5>{{ $ship->stateRel->name }}</h5></span>
-                </div>
+    {{-- Header --}}
+    <header class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Naija"></a>
+            <div class="flex items-center gap-4">
+                <a href="/shipper/index"
+                   class="text-sm text-green-700 hover:text-green-800 font-medium flex items-center gap-1">
+                    <i class="bi bi-search"></i> Check Another Code
+                </a>
+                <a href="/shipper/logout"
+                   class="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1">
+                    <i class="bi bi-box-arrow-right"></i> Log Out
+                </a>
             </div>
         </div>
-    </div>
+    </header>
+
+    <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+
+        {{-- Page title + status --}}
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">Order Details</h1>
+                <p class="text-sm text-gray-500">Shipping code: <span class="font-mono font-semibold text-gray-700">{{ $ship->ship_code }}</span></p>
+            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $badge['color'] }}">
+                {{ $badge['label'] }}
+            </span>
+        </div>
+
+        {{-- Alerts --}}
+        @if (session('success'))
+            <div class="mb-5 flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm">
+                <i class="bi bi-check-circle-fill"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="mb-5 flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            {{-- LEFT COLUMN --}}
+            <div class="space-y-5">
+
+                {{-- Product --}}
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                        <i class="bi bi-bag text-green-700"></i>
+                        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Item</h2>
+                    </div>
+                    <div class="p-5 flex items-center gap-4">
+                        @if ($imgUrl)
+                            <img src="{{ $imgUrl }}" alt="{{ $ship->advert->ad_title }}"
+                                 class="w-20 h-20 rounded-lg object-cover flex-shrink-0 border border-gray-100">
+                        @else
+                            <div class="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-image text-gray-400 text-2xl"></i>
+                            </div>
+                        @endif
+                        <div>
+                            <p class="font-semibold text-gray-800 text-sm">{{ $ship->advert->ad_title }}</p>
+                            <p class="text-xs text-gray-500 mt-0.5">Sold item</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Sender (Seller) --}}
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                        <i class="bi bi-person-check text-green-700"></i>
+                        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Sender (Seller)</h2>
+                    </div>
+                    <div class="p-5 space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Name</span>
+                            <span class="font-medium text-gray-800">{{ $seller->name ?? '—' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Phone</span>
+                            <a href="tel:{{ $seller->phone ?? '' }}" class="font-medium text-green-700">{{ $seller->phone ?? '—' }}</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">State</span>
+                            <span class="font-medium text-gray-800">{{ $seller->state ?? '—' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Receiver (Buyer) --}}
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                        <i class="bi bi-person text-green-700"></i>
+                        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Receiver (Buyer)</h2>
+                    </div>
+                    <div class="p-5 space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Name</span>
+                            <span class="font-medium text-gray-800">{{ $ship->first_name }} {{ $ship->last_name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Phone</span>
+                            <a href="tel:{{ $ship->phone }}" class="font-medium text-green-700">{{ $ship->phone }}</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- RIGHT COLUMN --}}
+            <div class="space-y-5">
+
+                {{-- Delivery Location --}}
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                        <i class="bi bi-geo-alt text-green-700"></i>
+                        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Delivery / Pickup Location</h2>
+                    </div>
+                    <div class="p-5 space-y-3 text-sm">
+                        @if ($ship->shipping)
+                            <div class="flex items-center gap-3 pb-2 border-b border-gray-100">
+                                @if ($ship->shipping->logo)
+                                    <img src="{{ $ship->shipping->logo }}"
+                                         class="h-7 object-contain" alt="{{ $ship->shipping->company }}">
+                                @endif
+                                <span class="font-semibold text-gray-800">{{ $ship->shipping->company }}</span>
+                            </div>
+                        @endif
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Address</span>
+                            <span class="font-medium text-gray-800 text-right max-w-[60%]">{{ $city->address ?? '—' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">City</span>
+                            <span class="font-medium text-gray-800">{{ $city->city ?? '—' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">State</span>
+                            <span class="font-medium text-gray-800">{{ $stateName }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Current tracking --}}
+                @if ($ship->tracking_id)
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                            <i class="bi bi-truck text-green-700"></i>
+                            <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Current Tracking</h2>
+                        </div>
+                        <div class="p-5 space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Tracking ID</span>
+                                <span class="font-mono font-semibold text-gray-800">{{ $ship->tracking_id }}</span>
+                            </div>
+                            @if ($ship->shipping_status_date)
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Last Updated</span>
+                                    <span class="font-medium text-gray-800">{{ \Carbon\Carbon::parse($ship->shipping_status_date)->format('d M Y, H:i') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Update form --}}
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center gap-2">
+                        <i class="bi bi-pencil-square text-green-700"></i>
+                        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Update Shipping Status</h2>
+                    </div>
+                    <div class="p-5">
+                        <form method="POST" action="/shipper/update-shipping/{{ $ship->ship_code }}">
+                            @csrf
+
+                            @if ($errors->any())
+                                <div class="mb-4 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                                    @foreach ($errors->all() as $error)
+                                        <p>{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    Tracking ID <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="tracking_id"
+                                    value="{{ old('tracking_id', $ship->tracking_id) }}"
+                                    placeholder="Enter carrier tracking number"
+                                    class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    required>
+                            </div>
+
+                            <div class="mb-5">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    Shipping Status <span class="text-red-500">*</span>
+                                </label>
+                                <select name="shipping_status"
+                                    class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <option value="pending"   {{ $currentStatus === 'pending'   ? 'selected' : '' }}>⏳ Pending</option>
+                                    <option value="shipped"   {{ $currentStatus === 'shipped'   ? 'selected' : '' }}>📦 Shipped</option>
+                                    <option value="pickup"    {{ $currentStatus === 'pickup'    ? 'selected' : '' }}>🏪 Ready for Pickup</option>
+                                    <option value="delivered" {{ $currentStatus === 'delivered' ? 'selected' : '' }}>✅ Delivered</option>
+                                    <option value="canceled"  {{ $currentStatus === 'canceled'  ? 'selected' : '' }}>❌ Canceled</option>
+                                </select>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 px-6 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="bi bi-check-lg"></i>
+                                Update Status
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
 </div>
-
-@include('public.components.flash-message')
-
-<div class="max-w-5xl mx-auto bg-white p-3 md:p-10  pb-20 mb-5 rounded-lg">
-    <div class="flex justify-center mb-4">
-            <h3 class="text-2xl font-bold underline">Shipping Company Section</h3>
-        </div>
-    <form action="/shipper/update-shipping/{{ $ship->ship_code }}">
-        @csrf
-
-        <div class="mb-4 space-y-2">
-            @if ($errors->has('tracking_id'))
-                <span class="text-red-700 py-1">{{ $errors->first('tracking_id') }}</span>
-            @endif
-            <label class="text-sm font-semibold mb-2">Enter The Tracking ID*</label>
-            <input type="text" id="name" name="tracking_id" placeholder="WREH5768FET" max="10" min="5" class="w-full px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ $ship->tracking_id }}" required>
-        </div>
-
-        <div class="mb-4  space-y-2">
-            @if ($errors->has('ship_status'))
-                <span class="text-red-700 py-1">{{ $errors->first('ship_status') }}</span>
-            @endif
-            <label class="text-sm font-semibold mb-2">Shipping Status*</label>
-            <select name="shipping_status" class="w-full px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <option value="pending" {{ ($ship->shipping_status =='pending') ? "selected" : ""; }}>Pending</option>
-                <option value="shipped" {{ ($ship->shipping_status =='shipped') ? "selected" : ""; }}>Shipped</option>
-                <!--
-                <option value="pickup" {{ ($ship->shipping_status =='pickup') ? "selected" : ""; }}>Ready for Pickup</option>
-                <option value="delivered" {{ ($ship->shipping_status =='delivered') ? "selected" : ""; }}>Delivered</option>
-                <option value="canceled" {{ ($ship->shipping_status =='canceled') ? "selected" : ""; }}>Canceled</option>
-                -->
-            </select>
-        </div>
-
-        <div class="mt-8">
-                <button type="submit" class="flex justify-center items-center bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  py-3 px-6 border-2 border-dark_green hover:border-dark_green rounded-full ">
-                    <span>Update</span>
-                    <span class="ml-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                          <path fill-rule="evenodd" d="M16.72 7.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06l-3.75 3.75a.75.75 0 1 1-1.06-1.06l2.47-2.47H3a.75.75 0 0 1 0-1.5h16.19l-2.47-2.47a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </button>
-              </div>
-    </form>
-</div>
-</section>
 
 @include('public.layouts.footer')
-
-

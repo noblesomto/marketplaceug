@@ -35,7 +35,7 @@ class UserProfile extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
+        $ads = Advert::with('media')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
         $hasMore = $ads->hasMorePages();
 
         return view('user.settings.profile', compact('title','user','count_ads','ads','hasMore'));
@@ -76,7 +76,7 @@ class UserProfile extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
         $count_ads = Advert::where('user_id', $user_id)->count();
-        $ads = Advert::with('firstImage')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
+        $ads = Advert::with('media')->orderBy('created_at', 'desc')->where('user_id', $user_id)->paginate(10);
         $hasMore = $ads->hasMorePages();
 
         return view('user.settings.about-account', compact('title','user','count_ads','ads','hasMore'));
@@ -93,13 +93,13 @@ class UserProfile extends Controller
             ], 401);
         }
 
-        $ads = Advert::with('firstImage')
+        $ads = Advert::with('media')
                     ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
                     ->paginate(10);
 
         return response()->json([
-            'html' => view('public.components.advert.advert-list', ['ads' => $ads])->render(),
+            'html' => view('user.components.my-ads', ['ads' => $ads])->render(),
             'hasMore' => $ads->hasMorePages()
         ]);
     }

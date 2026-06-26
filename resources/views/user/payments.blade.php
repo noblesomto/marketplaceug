@@ -142,16 +142,29 @@
     color: #326916;
 }
 
-/* Mobile: stack image above details */
+/* Mobile: compact horizontal layout */
 @media (max-width: 540px) {
-    .order-body { flex-direction: column; }
-    .order-img-wrap { width: 100%; height: 180px; }
-    .order-details { width: 100%; }
-    .order-topbar { gap: 4px; }
-    .order-id { font-size: 0.68rem; }
+    .orders-wrap { margin-top: 12px; padding: 0 8px; }
+    .order-card { margin-bottom: 10px; border-radius: 10px; }
+    .order-topbar { padding: 7px 10px; gap: 4px; }
+    .order-id { font-size: 0.65rem; }
+    .order-date { font-size: 0.65rem; }
+    .order-payment-badge { font-size: 0.65rem; padding: 2px 7px; }
+    .order-body { gap: 10px; padding: 10px; }
+    .order-img-wrap { width: 72px; height: 72px; border-radius: 8px; flex-shrink: 0; }
+    .order-details { flex: 1; min-width: 0; }
+    .order-location { font-size: 0.65rem; margin-bottom: 2px; }
+    .order-title { font-size: 0.8rem; margin-bottom: 2px; -webkit-line-clamp: 2; }
+    .order-desc { display: none; }
+    .order-price { font-size: 0.88rem; }
+    .order-shipping { padding: 8px 10px 10px; gap: 8px; }
+    .shipping-label { font-size: 0.62rem; }
+    .shipping-company { font-size: 0.72rem; }
+    .shipping-company img { height: 16px; max-width: 40px; }
+    .shipping-status-pill { font-size: 0.65rem; padding: 3px 7px; }
     .shipping-info-row { gap: 12px; }
-    .order-actions { flex-direction: column; }
-    .btn-report, .btn-confirm { min-width: unset; width: 100%; }
+    .order-actions { gap: 6px; }
+    .btn-report, .btn-confirm { min-width: unset; flex: 1; padding: 7px 10px; font-size: 0.72rem; }
 }
 
 /* ── Shipping section ───────────────────────────────── */

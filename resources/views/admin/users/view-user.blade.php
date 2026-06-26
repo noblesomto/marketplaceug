@@ -120,8 +120,12 @@
                                                     <span class="badge bg-warning bg-opacity-15 text-warning">
                                                         <i class="bi bi-hourglass-split me-1"></i>Pending
                                                     </span>
+                                                @elseif($user->disable_account === 'yes')
+                                                    <span class="badge bg-danger bg-opacity-15 text-danger">
+                                                        <i class="bi bi-slash-circle me-1"></i>Disabled
+                                                    </span>
                                                 @else
-                                                    <span class="badge bg-success bg-opacity-15 text-white">
+                                                    <span class="badge bg-success bg-opacity-15 text-success">
                                                         <i class="bi bi-check-circle me-1"></i>Active
                                                     </span>
                                                 @endif
@@ -188,23 +192,25 @@
                                         <div class="d-flex flex-wrap gap-3 justify-content-center">
                                             <!-- Status Toggle -->
                                             <div class="text-center">
-                                                <h6 class="text-muted mb-2">
-                                                    @if($user->acc_status == "0")
-                                                        Activate Account
-                                                    @else
-                                                        Disable Account
-                                                    @endif
-                                                </h6>
                                                 @if($user->acc_status == "0")
+                                                    <h6 class="text-muted mb-2">Activate Account</h6>
                                                     <a href="/admin/user-status/{{ $user->user_id }}/1"
                                                        class="btn btn-success px-4"
-                                                       onclick="return confirm('Are you sure you want to activate this account?');">
+                                                       onclick="return confirm('Activate this account?');">
                                                         <i class="bi bi-check-circle me-1"></i> Activate
                                                     </a>
+                                                @elseif($user->disable_account === 'yes')
+                                                    <h6 class="text-muted mb-2">Enable Account</h6>
+                                                    <a href="/admin/disable-status/{{ $user->user_id }}/No"
+                                                       class="btn btn-success px-4"
+                                                       onclick="return confirm('Re-enable this account?');">
+                                                        <i class="bi bi-check-circle me-1"></i> Enable
+                                                    </a>
                                                 @else
-                                                    <a href="/admin/user-status/{{ $user->user_id }}/0"
+                                                    <h6 class="text-muted mb-2">Disable Account</h6>
+                                                    <a href="/admin/disable-status/{{ $user->user_id }}/Yes"
                                                        class="btn btn-warning px-4"
-                                                       onclick="return confirm('Are you sure you want to disable this account?');">
+                                                       onclick="return confirm('Disable this account? The user will be blocked from logging in.');">
                                                         <i class="bi bi-slash-circle me-1"></i> Disable
                                                     </a>
                                                 @endif
@@ -227,7 +233,13 @@
                                             <!-- Back Button -->
                                             <div class="text-center">
                                                 <h6 class="text-muted mb-2">Return to List</h6>
-                                                <a href="/admin/active-users" class="btn btn-outline-secondary px-4">
+                                                @if($user->acc_status == "0")
+                                                    <a href="/admin/unverified-users" class="btn btn-outline-secondary px-4">
+                                                @elseif($user->disable_account === 'yes')
+                                                    <a href="/admin/disabled-users" class="btn btn-outline-secondary px-4">
+                                                @else
+                                                    <a href="/admin/active-users" class="btn btn-outline-secondary px-4">
+                                                @endif
                                                     <i class="bi bi-arrow-left me-1"></i> Back
                                                 </a>
                                             </div>

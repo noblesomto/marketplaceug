@@ -5785,6 +5785,65 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Social — Followers List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/social/followers?of={{user_id}}&page=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "social", "followers"],
+              "query": [
+                {"key": "of", "value": "{{user_id}}", "description": "user_id of the seller whose followers to fetch"},
+                {"key": "page", "value": "1"}
+              ]
+            },
+            "description": "🌐 **Public Endpoint**\n\nEndpoint: `GET /api/social/followers?of={user_id}&page={n}`\nController: `App\\Http\\Controllers\\User\\UserController@followersListJson`\n\nReturns paginated list of users who follow the given seller. Includes `is_following` status if the requester has an active web session.\n\n**Query params:**\n- `of` (required): user_id of the seller\n- `page` (optional, default 1)\n\n**Response:**\n```json\n{\n  \"data\": [\n    {\n      \"user_id\": \"36846\",\n      \"name\": \"John Doe\",\n      \"initials\": \"JD\",\n      \"state\": \"Ikeja, Lagos\",\n      \"active_ads\": 5,\n      \"is_following\": false,\n      \"is_self\": false,\n      \"profile_url\": \"/seller/john-doe/36846\"\n    }\n  ],\n  \"has_more\": false,\n  \"total\": 1\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Social — Following List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/social/following?of={{user_id}}&page=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "social", "following"],
+              "query": [
+                {"key": "of", "value": "{{user_id}}", "description": "user_id of the seller whose following list to fetch"},
+                {"key": "page", "value": "1"}
+              ]
+            },
+            "description": "🌐 **Public Endpoint**\n\nEndpoint: `GET /api/social/following?of={user_id}&page={n}`\nController: `App\\Http\\Controllers\\User\\UserController@followingListJson`\n\nReturns paginated list of users that the given seller follows.\n\n**Query params:**\n- `of` (required): user_id of the seller\n- `page` (optional, default 1)"
+          },
+          "response": []
+        },
+        {
+          "name": "Social — Remove Follower",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json", "type": "text"},
+              {"key": "X-CSRF-TOKEN", "value": "{{csrf_token}}", "type": "text"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/social/remove-follower/{{target_user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "social", "remove-follower", "{{target_user_id}}"]
+            },
+            "description": "🔐 **Requires Web Session (usersession middleware)**\n\nEndpoint: `POST /api/social/remove-follower/{userId}`\nController: `App\\Http\\Controllers\\User\\UserController@removeFollower`\n\nRemoves the specified user from the logged-in user's followers. `{userId}` is the follower being removed.\n\nUses cookie-based web session auth (not bearer token). Send `X-CSRF-TOKEN` header."
+          },
+          "response": []
         }
       ]
     },
@@ -6409,6 +6468,104 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Ad Shipping Details (Seller)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/adverts/{{advert_id}}/shipping-details",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "adverts",
+                "{{advert_id}}",
+                "shipping-details"
+              ]
+            },
+            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `GET /api/user/adverts/{advertId}/shipping-details`\nController: `App\\Http\\Controllers\\Api\\UserController@adShippingDetails`\n\nReturns all seller-facing shipping details for a sold Buy Direct ad. Equivalent to the web page `/user/ad-shipping/{id}`.\n\n**URL Parameter:**\n- `advertId` \u2014 The advert's database `id` (integer)\n\n**Authorization:**\n- Returns `403` if the authenticated user is not the ad owner\n- Returns `404` if no payment record exists for the ad\n\n**Push Notification:**\nThis endpoint is referenced in the `ad_sold` push notification payload:\n- `click_action: \"OPEN_AD_SHIPPING\"`\n- `shipping_api_url: \"/api/user/adverts/{advert_id}/shipping-details\"`\n- `shipping_web_url: \"/user/ad-shipping/{advert_id}\"`\n\n**Response includes:**\n- `payment_id` \u2014 Payment record ID\n- `advert_id` \u2014 Advert database ID\n- `ad_id` \u2014 Public-facing ad ID (e.g. 82174)\n- `shipping_status` \u2014 `pending` | `shipped` | `delivered`\n- `ship_code` \u2014 10-digit code to present at shipping office\n- `buyer` \u2014 name, phone\n- `product` \u2014 name, thumbnail_url, ad_url\n- `shipping_company` \u2014 name, logo URL\n- `delivery_location` \u2014 address, city, state\n- `instructions` \u2014 step_1 through step_4 (ready to display)\n- `note` \u2014 Payment release notice",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 \u2014 Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/adverts/60/shipping-details",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "adverts", "60", "shipping-details"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"payment_id\": 98,\n    \"advert_id\": 60,\n    \"ad_id\": 82174,\n    \"shipping_status\": \"pending\",\n    \"ship_code\": \"SNQHDAOWDZ\",\n    \"buyer\": {\n      \"name\": \"John Doe\",\n      \"phone\": \"08012345678\"\n    },\n    \"product\": {\n      \"name\": \"Samsung Galaxy A51 5G 128GB Pink Used\",\n      \"thumbnail_url\": \"https://www.marketplace.ng/storage/60/conversions/thumbnail.webp\",\n      \"ad_url\": \"https://www.marketplace.ng/epe/samsung-galaxy-a51-5g-128gb-pink-used-a8251/82174\"\n    },\n    \"shipping_company\": {\n      \"name\": \"GIG Logistics\",\n      \"logo\": \"https://www.marketplace.ng/images/gig-logo.png\"\n    },\n    \"delivery_location\": {\n      \"address\": \"2 Awka Road, By DMGS Junction, Beside All Saints' Anglican Cathedral, Onitsha\",\n      \"city\": \"Onitsha\",\n      \"state\": \"Anambra\"\n    },\n    \"instructions\": {\n      \"step_1\": \"Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address.\",\n      \"step_2\": \"Take it to your nearest GIG Logistics office.\",\n      \"step_3\": \"Present the 10-digit shipping code at the counter: SNQHDAOWDZ\",\n      \"step_4\": \"No payment is required at the shipping office. All logistics fees have been covered.\"\n    },\n    \"note\": \"This transaction is secured by our Buy Direct service. Your payment will be released as soon as the buyer confirms delivery.\"\n  }\n}"
+            },
+            {
+              "name": "403 \u2014 Not the ad owner",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/adverts/60/shipping-details",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "adverts", "60", "shipping-details"]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorised.\"\n}"
+            },
+            {
+              "name": "404 \u2014 No payment record",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/adverts/999/shipping-details",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "adverts", "999", "shipping-details"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"No shipping record found for this ad.\"\n}"
+            }
+          ]
         }
       ]
     },

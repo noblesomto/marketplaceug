@@ -375,8 +375,10 @@ class UserController extends Controller
         $userId = $request->session()->get('user_id');
         $user = User::findOrFail($userId);
 
-        $ad = Payment::with(['advert', 'shipping'])
+        $ad = Payment::with(['advert', 'shipping', 'cityLocation.state'])
             ->where('advert_id', $id)
+            ->where('payment_status', 'paid')
+            ->latest()
             ->first();
 
         if (!$ad) {
@@ -696,6 +698,93 @@ class UserController extends Controller
     }
 }
 
+    public function followersListJson(Request $request)
+    {
+        $targetUserId = $request->query('of');
+        if (!$targetUserId) return response()->json(['error' => 'Missing user ID'], 400);
 
+        $loggedInUserId = $request->session()->get('user_id');
+        $page    = max(1, (int) $request->query('page', 1));
+        $perPage = 20;
 
+        $rows = Followers::where('follow', $targetUserId)
+            ->with(['user:user_id,name,state,city'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        $myFollowingIds = $loggedInUserId
+            ? Followers::where('user_id', $loggedInUserId)->pluck('follow')->toArray()
+            : [];
+
+        $data = $rows->map(function ($f) use ($myFollowingIds, $loggedInUserId) {
+            $u = $f->user;
+            if (!$u) return null;
+            $name    = $u->name ?? 'User';
+            $words   = preg_split('/\s+/', trim($name));
+            $initials = count($words) >= 2
+                ? strtoupper(mb_substr($words[0], 0, 1) . mb_substr(end($words), 0, 1))
+                : strtoupper(mb_substr($name, 0, 2));
+            return [
+                'user_id'      => $u->user_id,
+                'name'         => $name,
+                'initials'     => $initials,
+                'state'        => trim(implode(', ', array_filter([$u->city, $u->state]))),
+                'active_ads'   => Advert::where('user_id', $u->user_id)->activeNotRecentlySold()->count(),
+                'is_following' => in_array($u->user_id, $myFollowingIds),
+                'is_self'      => $loggedInUserId == $u->user_id,
+                'profile_url'  => '/seller/' . Str::slug($name) . '/' . $u->user_id,
+            ];
+        })->filter()->values();
+
+        return response()->json(['data' => $data, 'has_more' => $rows->hasMorePages(), 'total' => $rows->total()]);
+    }
+
+    public function followingListJson(Request $request)
+    {
+        $targetUserId = $request->query('of');
+        if (!$targetUserId) return response()->json(['error' => 'Missing user ID'], 400);
+
+        $loggedInUserId = $request->session()->get('user_id');
+        $page    = max(1, (int) $request->query('page', 1));
+        $perPage = 20;
+
+        $rows = Followers::where('user_id', $targetUserId)
+            ->with(['seller:user_id,name,state,city'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        $myFollowingIds = $loggedInUserId
+            ? Followers::where('user_id', $loggedInUserId)->pluck('follow')->toArray()
+            : [];
+
+        $data = $rows->map(function ($f) use ($myFollowingIds, $loggedInUserId) {
+            $u = $f->seller;
+            if (!$u) return null;
+            $name    = $u->name ?? 'User';
+            $words   = preg_split('/\s+/', trim($name));
+            $initials = count($words) >= 2
+                ? strtoupper(mb_substr($words[0], 0, 1) . mb_substr(end($words), 0, 1))
+                : strtoupper(mb_substr($name, 0, 2));
+            return [
+                'user_id'      => $u->user_id,
+                'name'         => $name,
+                'initials'     => $initials,
+                'state'        => trim(implode(', ', array_filter([$u->city, $u->state]))),
+                'active_ads'   => Advert::where('user_id', $u->user_id)->activeNotRecentlySold()->count(),
+                'is_following' => in_array($u->user_id, $myFollowingIds),
+                'is_self'      => $loggedInUserId == $u->user_id,
+                'profile_url'  => '/seller/' . Str::slug($name) . '/' . $u->user_id,
+            ];
+        })->filter()->values();
+
+        return response()->json(['data' => $data, 'has_more' => $rows->hasMorePages(), 'total' => $rows->total()]);
+    }
+
+    public function removeFollower(Request $request, $userId)
+    {
+        $loggedInUserId = $request->session()->get('user_id');
+        $deleted = Followers::where('user_id', $userId)->where('follow', $loggedInUserId)->delete();
+        if ($deleted) return response()->json(['success' => true, 'message' => 'Follower removed']);
+        return response()->json(['success' => false, 'message' => 'Not found'], 404);
+    }
 }
