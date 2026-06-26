@@ -21,6 +21,30 @@ require __DIR__.'/shipper.php';
 
 /*
 |--------------------------------------------------------------------------
+| Local Development: Image Proxy
+|--------------------------------------------------------------------------
+| In local env, /uploads/* files don't exist locally. php artisan serve
+| falls through to Laravel when a static file is missing, so we catch
+| those requests here and proxy them transparently from the live server.
+| This route is never registered in production.
+|--------------------------------------------------------------------------
+*/
+
+if (app()->environment('local')) {
+    Route::get('/uploads/{path}', function (string $path) {
+        $response = \Illuminate\Support\Facades\Http::timeout(15)
+            ->get('https://marketplace.ng/uploads/' . $path);
+        if ($response->successful()) {
+            return response($response->body())
+                ->header('Content-Type', $response->header('Content-Type') ?? 'image/webp')
+                ->header('Cache-Control', 'public, max-age=86400');
+        }
+        abort(404);
+    })->where('path', '.*');
+}
+
+/*
+|--------------------------------------------------------------------------
 | Wildcard Catch-All Routes (must remain last)
 |--------------------------------------------------------------------------
 */
