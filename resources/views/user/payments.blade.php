@@ -164,8 +164,7 @@
     .shipping-status-pill { font-size: 0.65rem; padding: 3px 7px; }
     .shipping-info-row { gap: 12px; }
     .order-actions { gap: 4px; }
-    .btn-report, .btn-details, .btn-confirm { padding: 6px 3px; font-size: 0.62rem; }
-    .btn-report i, .btn-details i, .btn-confirm i { display: none; }
+    .btn-report, .btn-details, .btn-confirm { padding: 6px 2px; font-size: 0.6rem; gap: 3px; }
     .btn-text-full { display: none; }
     .btn-text-short { display: inline; }
 }
