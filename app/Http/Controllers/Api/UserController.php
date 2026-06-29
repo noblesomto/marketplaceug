@@ -604,13 +604,25 @@ class UserController extends Controller
      */
     public function confirmDelivery($paymentId)
     {
-        $payment = Payment::find($paymentId);
+        $user = auth()->user();
+
+        $payment = Payment::where('id', $paymentId)
+            ->where('user_id', $user->user_id)
+            ->where('payment_status', 'paid')
+            ->first();
 
         if (!$payment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Payment not found'
+                'message' => 'Order not found'
             ], 404);
+        }
+
+        if ($payment->buyer_status === 'delivered') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Delivery already confirmed'
+            ], 409);
         }
 
         $payment->update([
@@ -661,7 +673,7 @@ class UserController extends Controller
     public function updateShippingStatus($paymentId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'shipping_status' => 'required|string'
+            'shipping_status' => 'required|in:pending,shipped,delivered'
         ]);
 
         if ($validator->fails()) {
@@ -671,12 +683,24 @@ class UserController extends Controller
             ], 422);
         }
 
-        $payment = Payment::find($paymentId);
+        $user = auth()->user();
+
+        $payment = Payment::with('advert')
+            ->where('id', $paymentId)
+            ->where('payment_status', 'paid')
+            ->first();
 
         if (!$payment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Payment not found'
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        if ($payment->advert->user_id !== $user->user_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found'
             ], 404);
         }
 
@@ -1127,7 +1151,7 @@ class UserController extends Controller
     public function toggleFollow(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'followee_id' => 'required|integer|exists:users,user_id'
+            'followee_id' => 'required|exists:users,user_id'
         ]);
 
         if ($validator->fails()) {

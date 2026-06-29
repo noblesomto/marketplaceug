@@ -6366,7 +6366,7 @@
           "response": []
         },
         {
-          "name": "User Payments  PaymentId  Confirm Delivery",
+          "name": "Confirm Delivery (Buyer)",
           "request": {
             "method": "POST",
             "header": [
@@ -6394,7 +6394,7 @@
                 "confirm-delivery"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/payments/{paymentId}/confirm-delivery`\nController: `App\\Http\\Controllers\\Api\\UserController@confirmDelivery`",
+            "description": "\ud83d\udd12 **Requires Authentication (Buyer only)**\n\nEndpoint: `POST /api/user/payments/{paymentId}/confirm-delivery`\nController: `App\\Http\\Controllers\\Api\\UserController@confirmDelivery`\n\nAllows the **buyer** to confirm that they have received their order. Sets `buyer_status` to `delivered`.\n\n**URL Parameter:**\n- `paymentId` \u2014 The payment record `id` (integer)\n\n**Authorization:**\n- Returns `404` if the payment does not belong to the authenticated user, is not paid, or does not exist\n- Returns `409` if delivery has already been confirmed\n\n**No request body required.**",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6407,7 +6407,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\\n\\t\\n}",
+              "raw": "{}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -6415,10 +6415,65 @@
               }
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 \u2014 Delivery confirmed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/confirm-delivery",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "confirm-delivery"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Delivery confirmed successfully\"\n}"
+            },
+            {
+              "name": "404 \u2014 Order not found or not buyer's order",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/999/confirm-delivery",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "999", "confirm-delivery"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Order not found\"\n}"
+            },
+            {
+              "name": "409 \u2014 Already confirmed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/confirm-delivery",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "confirm-delivery"]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Delivery already confirmed\"\n}"
+            }
+          ]
         },
         {
-          "name": "User Payments  PaymentId  Shipping Status",
+          "name": "Update Shipping Status (Seller)",
           "request": {
             "method": "PATCH",
             "header": [
@@ -6446,7 +6501,7 @@
                 "shipping-status"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`",
+            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`\n\nAllows the **seller** to update the shipping status of a sold item. Only the seller who owns the ad can call this endpoint.\n\n**URL Parameter:**\n- `paymentId` \u2014 The payment record `id` (integer)\n\n**Request Body:**\n- `shipping_status` (required, string): one of `pending` | `shipped` | `delivered`\n\n**Authorization:**\n- Returns `404` if the payment does not exist, is not paid, or the authenticated user is not the ad owner\n- Returns `422` if `shipping_status` is missing or not one of the allowed values",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6459,7 +6514,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\\n\\t\\n}",
+              "raw": "{\n  \"shipping_status\": \"shipped\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -6467,7 +6522,77 @@
               }
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 \u2014 Status updated",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipping_status\": \"shipped\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/shipping-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "shipping-status"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Shipping status updated successfully\"\n}"
+            },
+            {
+              "name": "404 \u2014 Order not found or not seller's order",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipping_status\": \"shipped\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/999/shipping-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "999", "shipping-status"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Order not found\"\n}"
+            },
+            {
+              "name": "422 \u2014 Invalid shipping_status value",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipping_status\": \"in-transit\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/shipping-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "shipping-status"]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"errors\": {\n    \"shipping_status\": [\n      \"The selected shipping status is invalid.\"\n    ]\n  }\n}"
+            }
+          ]
         },
         {
           "name": "Get Ad Shipping Details (Seller)",
