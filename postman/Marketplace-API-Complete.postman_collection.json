@@ -5693,7 +5693,7 @@
       "name": "User   Following",
       "item": [
         {
-          "name": "User Following Check  UserId ",
+          "name": "Check Following Status",
           "request": {
             "method": "GET",
             "header": [
@@ -5721,7 +5721,7 @@
                 "{{user_id}}"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `GET /api/user/following/check/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@checkFollowing`",
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `GET /api/user/following/check/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@checkFollowing`\n\nCheck whether the authenticated user is currently following a given seller.\n\n**URL Parameter:**\n- `userId` \u2014 The seller's `user_id` (string, e.g. `82261`)\n\n**Response:**\n- `isFollowing: true` \u2014 the authenticated user follows this seller\n- `isFollowing: false` \u2014 not following",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -5733,10 +5733,47 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 \u2014 Is following",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/check/82261",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "check", "82261"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"isFollowing\": true\n}"
+            },
+            {
+              "name": "200 \u2014 Not following",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/check/82261",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "check", "82261"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"isFollowing\": false\n}"
+            }
+          ]
         },
         {
-          "name": "User Following Toggle",
+          "name": "Toggle Follow / Unfollow",
           "request": {
             "method": "POST",
             "header": [
@@ -5763,7 +5800,7 @@
                 "toggle"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication**\\n\\nEndpoint: `POST /api/user/following/toggle`\nController: `App\\Http\\Controllers\\Api\\UserController@toggleFollow`",
+            "description": "\ud83d\udd12 **Requires Authentication**\n\nEndpoint: `POST /api/user/following/toggle`\nController: `App\\Http\\Controllers\\Api\\UserController@toggleFollow`\n\nFollow or unfollow a seller. If already following, calling this endpoint unfollows them; if not following, it follows them.\n\n**Request Body:**\n- `followee_id` (required, string): The `user_id` of the seller to follow/unfollow (e.g. `\"82261\"`)\n\n**Response:**\n- `isFollowing: true` \u2014 you are now following\n- `isFollowing: false` \u2014 you have unfollowed",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -5776,7 +5813,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"following_id\": \"12345\"\n}",
+              "raw": "{\n    \"followee_id\": \"{{user_id}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5784,7 +5821,77 @@
               }
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 \u2014 Followed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"followee_id\": \"82261\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/toggle",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "toggle"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"isFollowing\": true,\n  \"message\": \"Followed successfully\"\n}"
+            },
+            {
+              "name": "200 \u2014 Unfollowed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"followee_id\": \"82261\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/toggle",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "toggle"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"isFollowing\": false,\n  \"message\": \"Unfollowed successfully\"\n}"
+            },
+            {
+              "name": "422 \u2014 Missing or invalid followee_id",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"following_id\": \"82261\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/toggle",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "toggle"]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"errors\": {\n    \"followee_id\": [\n      \"The followee id field is required.\"\n    ]\n  }\n}"
+            }
+          ]
         },
         {
           "name": "Social — Followers List",
