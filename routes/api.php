@@ -238,6 +238,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     // Following
     Route::get('/following/check/{userId}', [UserController::class, 'checkFollowing']);
     Route::post('/following/toggle', [UserController::class, 'toggleFollow']);
+    Route::delete('/following/remove/{userId}', [UserController::class, 'removeFollower']);
 });
 
 /*

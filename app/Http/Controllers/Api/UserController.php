@@ -1188,4 +1188,27 @@ class UserController extends Controller
             ]);
         }
     }
+
+    // DELETE /api/user/following/remove/{userId}
+    // Remove a specific person from your own followers list
+    public function removeFollower($userId)
+    {
+        $user = auth()->user();
+
+        $deleted = Followers::where('user_id', $userId)
+            ->where('follow', $user->user_id)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Follower removed'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Follower not found'
+        ], 404);
+    }
 }

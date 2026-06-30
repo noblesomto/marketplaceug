@@ -5936,21 +5936,68 @@
           "response": []
         },
         {
-          "name": "Social — Remove Follower",
+          "name": "Remove Follower",
           "request": {
-            "method": "POST",
+            "method": "DELETE",
             "header": [
               {"key": "Accept", "value": "application/json", "type": "text"},
-              {"key": "X-CSRF-TOKEN", "value": "{{csrf_token}}", "type": "text"}
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
             ],
             "url": {
-              "raw": "{{base_url}}/api/social/remove-follower/{{target_user_id}}",
+              "raw": "{{base_url}}/api/user/following/remove/{{target_user_id}}",
               "host": ["{{base_url}}"],
-              "path": ["api", "social", "remove-follower", "{{target_user_id}}"]
+              "path": ["api", "user", "following", "remove", "{{target_user_id}}"]
             },
-            "description": "🔐 **Requires Web Session (usersession middleware)**\n\nEndpoint: `POST /api/social/remove-follower/{userId}`\nController: `App\\Http\\Controllers\\User\\UserController@removeFollower`\n\nRemoves the specified user from the logged-in user's followers. `{userId}` is the follower being removed.\n\nUses cookie-based web session auth (not bearer token). Send `X-CSRF-TOKEN` header."
+            "description": "🔒 **Requires Authentication**\n\nEndpoint: `DELETE /api/user/following/remove/{userId}`\nController: `App\\Http\\Controllers\\Api\\UserController@removeFollower`\n\nRemoves a user from **your own followers list**. Use this when you want to stop someone from following you.\n\n**URL Parameter:**\n- `userId` — The `user_id` of the follower to remove (e.g. `82261`)\n\n**Note:** This is different from unfollow (which is done via Toggle Follow). This removes someone who is following YOU.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 — Follower removed",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/remove/82261",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "remove", "82261"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Follower removed\"\n}"
+            },
+            {
+              "name": "404 — Not a follower",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/following/remove/99999",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "following", "remove", "99999"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Follower not found\"\n}"
+            }
+          ]
         }
       ]
     },
