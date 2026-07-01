@@ -275,6 +275,50 @@
     .btn-text-short { display: none; }
 }
 
+/* ── Pending payment card ───────────────────────────── */
+.order-card-pending {
+    border-color: #fde68a;
+    background: #fffbeb;
+}
+.order-card-pending .order-topbar {
+    background: #fef9c3;
+    border-bottom-color: #fde68a;
+}
+.pending-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fffbeb;
+    border-top: 1px solid #fde68a;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+    color: #92400e;
+}
+.pending-notice i { font-size: 1rem; color: #d97706; flex-shrink: 0; }
+.btn-complete-payment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    background: #d97706;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s;
+    margin: 12px 16px;
+    width: calc(100% - 32px);
+}
+.btn-complete-payment:hover { background: #b45309; color: #fff; text-decoration: none; }
+@media (max-width: 540px) {
+    .pending-notice { font-size: 0.72rem; padding: 9px 10px; }
+    .btn-complete-payment { font-size: 0.75rem; padding: 9px; margin: 10px 10px; width: calc(100% - 20px); }
+}
+
 /* ── Empty state ─────────────────────────────────────── */
 .orders-empty {
     background: #fff;
@@ -294,13 +338,69 @@
         <div class="orders-page-title">
             <i class="bi bi-bag-check-fill"></i>
             My Orders
-            @if(!$buyAds->isEmpty())
-                <span class="orders-count-badge">{{ $buyAds->count() }}</span>
+            @php $totalCount = $buyAds->count() + $pendingOrders->count(); @endphp
+            @if($totalCount > 0)
+                <span class="orders-count-badge">{{ $totalCount }}</span>
             @endif
         </div>
     </div>
 
     @include('public.components.flash-message')
+
+    {{-- Pending / abandoned payments --}}
+    @foreach($pendingOrders as $pending)
+    @php
+        $adLink = isset($pending->advert->state_slug, $pending->advert->title_slug, $pending->advert->ad_id)
+                    ? url($pending->advert->state_slug . '/' . $pending->advert->title_slug . '/' . $pending->advert->ad_id)
+                    : '#';
+    @endphp
+    <div class="order-card order-card-pending">
+
+        <div class="order-topbar">
+            <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $pending->id }}</span>
+            <span class="order-date">
+                <i class="bi bi-calendar3"></i>
+                {{ isset($pending->created_at) ? date('d M Y', strtotime($pending->created_at)) : 'N/A' }}
+            </span>
+            <span class="order-payment-badge badge-pending">⏳ Pending Payment</span>
+        </div>
+
+        <div class="order-body">
+            <a href="{{ $adLink }}" class="order-img-wrap">
+                @if($pending->advert && $pending->advert->hasMedia('images'))
+                    <img src="{{ $pending->advert->getFirstMediaUrl('images', 'thumbnail') }}"
+                         alt="{{ $pending->advert->ad_title ?? 'Order' }}"
+                         onerror="this.src='{{ asset('frontend/images/default.png') }}'">
+                @else
+                    <img src="{{ asset('frontend/images/default.png') }}" alt="Order image">
+                @endif
+            </a>
+            <div class="order-details">
+                <div class="order-location">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {{ $pending->advert->state ?? 'Location not specified' }}
+                </div>
+                <a href="{{ $adLink }}" style="text-decoration:none;">
+                    <div class="order-title">{{ Str::limit($pending->advert->ad_title ?? 'No title available', 60) }}</div>
+                </a>
+                <div class="order-desc">{{ strip_tags($pending->advert->description ?? '') }}</div>
+                <div class="order-price">
+                    ₦{{ number_format($pending->amount_paid ?? 0, 0, '.', ',') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="pending-notice">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            Your payment was not completed. Complete it now to secure this item before it sells out.
+        </div>
+
+        <a href="{{ route('user.resume.payment', $pending->id) }}" class="btn-complete-payment">
+            <i class="bi bi-credit-card"></i> Complete Payment
+        </a>
+
+    </div>
+    @endforeach
 
     @if (!$buyAds->isEmpty())
         @foreach ($buyAds as $row)
@@ -439,6 +539,7 @@
         @endforeach
 
     @else
+        @if($pendingOrders->isEmpty())
         <div class="orders-empty">
             <i class="bi bi-bag-x"></i>
             <div style="font-size:1rem;font-weight:600;color:#374151;margin-bottom:6px;">No orders yet</div>
@@ -447,6 +548,7 @@
                 Browse Listings
             </a>
         </div>
+        @endif
     @endif
 
 </div>

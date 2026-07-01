@@ -331,10 +331,19 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        // Pending (abandoned checkout) — only show if the ad hasn't been sold yet
+        $pendingOrders = Payment::with(['advert.media'])
+            ->where('user_id', $userId)
+            ->where('payment_status', 'pending')
+            ->whereHas('advert', fn($q) => $q->where('sold', '!=', 'Yes'))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('user.payments', [
-            'title' => "My Orders | " . config('global.site_name'),
-            'user' => $user,
-            'buyAds' => $buyAds,
+            'title'         => "My Orders | " . config('global.site_name'),
+            'user'          => $user,
+            'buyAds'        => $buyAds,
+            'pendingOrders' => $pendingOrders,
         ]);
     }
 

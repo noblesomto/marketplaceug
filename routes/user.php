@@ -24,6 +24,7 @@ Route::middleware('usersession')->group(function () {
     Route::get('/user/my-ads', [UserController::class, 'my_ads'])->name('user.my.ads');
     Route::get('/user/boosted', [UserController::class, 'boosted_ads'])->name('user.boosted');
     Route::get('/user/payment', [UserController::class, 'payments'])->name('user.payments');
+    Route::get('/user/resume-payment/{id}', [PaystackController::class, 'resumePayment'])->name('user.resume.payment');
     Route::post('/user/confirm-delivery/{id}', [UserController::class, 'confirmDelivery'])->name('user.confirm.delivery');
     Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->name('user.ad.shipping');
     Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->name('user.update.shipping');

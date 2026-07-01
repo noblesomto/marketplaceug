@@ -203,6 +203,47 @@ class PaystackController extends Controller
         return view('public.buy-direct-success', compact('title'));
     }
 
+    public function resumePayment(Request $request, $paymentId)
+    {
+        $userId = $request->session()->get('user_id');
+
+        $payment = Payment::with('advert')
+            ->where('id', $paymentId)
+            ->where('user_id', $userId)
+            ->where('payment_status', 'pending')
+            ->first();
+
+        if (!$payment) {
+            return redirect()->route('user.payments')->with('error', 'Payment not found.');
+        }
+
+        if ($payment->advert && $payment->advert->sold === 'Yes') {
+            return redirect()->route('user.payments')->with('error', 'Sorry, this item has been sold to another buyer.');
+        }
+
+        $user = User::where('user_id', $userId)->first();
+
+        $response = Http::withToken(config('services.paystack.secretKey'))
+            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
+                'email'        => $user->email,
+                'amount'       => round($payment->amount_paid) * 100, // kobo
+                'callback_url' => route('paystack.callback'),
+                'metadata'     => [
+                    'advert_id' => $payment->advert_id,
+                    'user_id'   => $userId,
+                ],
+            ]);
+
+        $data = $response->json();
+
+        if ($data['status'] ?? false) {
+            $payment->update(['payment_reference' => $data['data']['reference']]);
+            return redirect($data['data']['authorization_url']);
+        }
+
+        return redirect()->route('user.payments')->with('error', 'Could not resume payment. Please try again.');
+    }
+
 
     public function initialize_boost(Request $request)
     {
