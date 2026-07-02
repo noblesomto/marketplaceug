@@ -79,7 +79,7 @@
                                         <button onclick="toggleFollow('{{ $p->user_id }}', this)"
                                             data-following="{{ $p->is_following ? 'true' : 'false' }}"
                                             class="follow-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
-                                            {{ $p->is_following ? '- Unfollow' : '+ Follow' }}
+                                            {{ $p->is_following ? 'Unfollow' : '+ Follow' }}
                                         </button>
                                     @else
                                         <button onclick="toggleFollow('{{ $p->user_id }}', this)"

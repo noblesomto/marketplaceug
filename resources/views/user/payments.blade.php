@@ -81,7 +81,7 @@
     letter-spacing: 0.02em;
 }
 .badge-paid    { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-.badge-pending { background: #fef9c3; color: #a16207; border: 1px solid #fde68a; }
+.badge-pending { background: #fffbeb; color: #a16207; border: 1px solid #fde68a; }
 
 /* Card body */
 .order-body {
@@ -281,7 +281,7 @@
     background: #fffbeb;
 }
 .order-card-pending .order-topbar {
-    background: #fef9c3;
+    background: #fffbeb;
     border-bottom-color: #fde68a;
 }
 .pending-notice {
