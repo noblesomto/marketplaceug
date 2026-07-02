@@ -43,27 +43,28 @@ class SendShippingUpdatePushNotification implements ShouldQueue
         }
 
         $productName = $this->payment->advert->ad_title ?? 'Your order';
+        $company     = $this->payment->shipping?->company ?? 'the shipping company';
 
         [$title, $body] = match ($this->status) {
             'shipped'   => [
                 'Your order has been shipped!',
-                "\"{$productName}\" is on its way. Tap to track your order.",
+                "\"{$productName}\" has been shipped by {$company} and is on its way. Tap to track.",
             ],
             'pickup'    => [
                 'Your order is ready for pickup!',
-                "\"{$productName}\" is ready to collect at the logistics centre.",
+                "\"{$productName}\" is ready to collect at your nearest {$company} centre.",
             ],
             'delivered' => [
                 'Your order has been delivered!',
-                "\"{$productName}\" has been delivered. Please confirm receipt.",
+                "{$company} has delivered \"{$productName}\". Please confirm receipt.",
             ],
             'canceled'  => [
                 'Shipping update for your order',
-                "There is an update on the shipment of \"{$productName}\". Tap to view details.",
+                "{$company} has an update on \"{$productName}\". Tap to view details.",
             ],
             default     => [
                 'Shipping update for your order',
-                "The shipping status of \"{$productName}\" has been updated.",
+                "The shipping status of \"{$productName}\" has been updated by {$company}.",
             ],
         };
 

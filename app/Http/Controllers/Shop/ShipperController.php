@@ -133,11 +133,12 @@ class ShipperController extends Controller
         $ship->refresh();
 
         // In-app notification for the buyer
+        $company = $ship->shipping?->company ?? 'the shipping company';
         $notificationMessages = [
-            'shipped'   => "Your order \"{$ship->advert->ad_title}\" has been shipped and is on its way.",
-            'pickup'    => "Your order \"{$ship->advert->ad_title}\" is ready for pickup at the logistics centre.",
-            'delivered' => "Your order \"{$ship->advert->ad_title}\" has been delivered. Please confirm receipt.",
-            'canceled'  => "There is an update on the shipment of \"{$ship->advert->ad_title}\". Please check your order details.",
+            'shipped'   => "Your order \"{$ship->advert->ad_title}\" has been shipped by {$company} and is on its way.",
+            'pickup'    => "Your order \"{$ship->advert->ad_title}\" is ready for pickup at your nearest {$company} centre.",
+            'delivered' => "Your order \"{$ship->advert->ad_title}\" has been delivered by {$company}. Please confirm receipt.",
+            'canceled'  => "{$company} has an update on the shipment of \"{$ship->advert->ad_title}\". Please check your order details.",
         ];
 
         try {
