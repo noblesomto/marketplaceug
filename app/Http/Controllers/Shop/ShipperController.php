@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Shipping;
+use App\Models\Notification;
+use App\Jobs\SendShippingUpdatePushNotification;
 use Mail;
 use App\Mail\ShipAdMail;
 use App\Mail\PickupAdMail;
@@ -125,6 +127,37 @@ class ShipperController extends Controller
             }
         } catch (\Exception $e) {
             \Log::error('Shipper email failed: ' . $e->getMessage());
+        }
+
+        // Reload the payment so the push job has fresh data
+        $ship->refresh();
+
+        // In-app notification for the buyer
+        $notificationMessages = [
+            'shipped'   => "Your order \"{$ship->advert->ad_title}\" has been shipped and is on its way.",
+            'pickup'    => "Your order \"{$ship->advert->ad_title}\" is ready for pickup at the logistics centre.",
+            'delivered' => "Your order \"{$ship->advert->ad_title}\" has been delivered. Please confirm receipt.",
+            'canceled'  => "There is an update on the shipment of \"{$ship->advert->ad_title}\". Please check your order details.",
+        ];
+
+        try {
+            Notification::create([
+                'user_id'   => $buyer->id,
+                'seller_id' => null,
+                'advert_id' => $ship->advert_id,
+                'type'      => 'Shipping Update',
+                'message'   => $notificationMessages[$status] ?? "The shipping status of your order has been updated to: {$status}.",
+                'is_read'   => 0,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Shipper in-app notification failed: ' . $e->getMessage());
+        }
+
+        // Push notification to buyer's mobile device
+        try {
+            SendShippingUpdatePushNotification::dispatch($buyer, $ship, $status);
+        } catch (\Exception $e) {
+            \Log::error('Shipper push notification dispatch failed: ' . $e->getMessage());
         }
 
         return redirect()->back()->with('success', 'Shipping status updated successfully.');
