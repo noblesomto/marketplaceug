@@ -6917,6 +6917,89 @@
               "body": "{\n  \"success\": false,\n  \"message\": \"Order not found.\"\n}"
             }
           ]
+        },
+        {
+          "name": "Resume Pending Payment (Buyer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/payments/{{payment_id}}/resume",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user", "payments", "{{payment_id}}", "resume"]
+            },
+            "description": "🔒 **Requires Authentication (Buyer only)**\n\nEndpoint: `POST /api/user/payments/{paymentId}/resume`\nController: `App\\Http\\Controllers\\Api\\UserController@resumePayment`\n\nMobile equivalent of the web **Complete Payment** button on My Orders. Re-initializes a Paystack transaction for an abandoned (pending) payment and returns a fresh `authorization_url`.\n\n**URL Parameter:**\n- `paymentId` — The payment record `id` (integer). Get this from the pending orders list.\n\n**No request body required.**\n\n**Mobile flow:**\n1. Show pending orders (payments with `payment_status = pending`)\n2. User taps **Complete Payment** → call this endpoint\n3. On success, open `authorization_url` in an in-app browser / WebView\n4. Paystack calls the callback URL after payment — order is marked paid automatically\n5. Redirect user back to My Orders screen\n\n**Authorization:**\n- Returns `404` if the payment does not belong to the authenticated user or is not pending\n- Returns `409` if the ad has already been sold to another buyer\n- Returns `502` if Paystack fails to initialize",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {"key": "token", "value": "{{auth_token}}", "type": "string"}
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {"raw": {"language": "json"}}
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Payment URL returned",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/resume",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "resume"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"authorization_url\": \"https://checkout.paystack.com/abc123xyz\",\n  \"reference\": \"ref_abc123xyz\",\n  \"amount\": 167438,\n  \"payment_id\": 3\n}"
+            },
+            {
+              "name": "404 — Payment not found or not pending",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/999/resume",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "999", "resume"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Pending payment not found.\"\n}"
+            },
+            {
+              "name": "409 — Item sold to another buyer",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/resume",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "resume"]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Sorry, this item has been sold to another buyer.\"\n}"
+            }
+          ]
         }
       ]
     },

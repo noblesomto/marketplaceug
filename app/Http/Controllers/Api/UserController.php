@@ -14,6 +14,7 @@ use App\Models\Followers;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -1187,6 +1188,63 @@ class UserController extends Controller
                 'message' => 'Followed successfully'
             ]);
         }
+    }
+
+    // POST /api/user/payments/{paymentId}/resume
+    // Resume an abandoned pending payment — returns a fresh Paystack authorization_url
+    public function resumePayment($paymentId)
+    {
+        $user = auth()->user();
+
+        $payment = Payment::with('advert')
+            ->where('id', $paymentId)
+            ->where('user_id', $user->user_id)
+            ->where('payment_status', 'pending')
+            ->first();
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pending payment not found.'
+            ], 404);
+        }
+
+        if ($payment->advert && $payment->advert->sold === 'Yes') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, this item has been sold to another buyer.'
+            ], 409);
+        }
+
+        $response = Http::withToken(config('services.paystack.secretKey'))
+            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
+                'email'        => $user->email,
+                'amount'       => round($payment->amount_paid) * 100, // kobo
+                'callback_url' => route('paystack.callback'),
+                'metadata'     => [
+                    'advert_id' => $payment->advert_id,
+                    'user_id'   => $user->user_id,
+                ],
+            ]);
+
+        $data = $response->json();
+
+        if (!($data['status'] ?? false)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Could not initialize payment. Please try again.'
+            ], 502);
+        }
+
+        $payment->update(['payment_reference' => $data['data']['reference']]);
+
+        return response()->json([
+            'success'           => true,
+            'authorization_url' => $data['data']['authorization_url'],
+            'reference'         => $data['data']['reference'],
+            'amount'            => $payment->amount_paid,
+            'payment_id'        => $payment->id,
+        ]);
     }
 
     // DELETE /api/user/following/remove/{userId}

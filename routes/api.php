@@ -227,6 +227,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     // Payments & Shipping
     Route::get('/payments', [UserController::class, 'payments']);
     Route::get('/payments/{paymentId}/details', [UserController::class, 'orderDetails']);
+    Route::post('/payments/{paymentId}/resume', [UserController::class, 'resumePayment']);
     Route::post('/payments/{paymentId}/confirm-delivery', [UserController::class, 'confirmDelivery']);
     Route::patch('/payments/{paymentId}/shipping-status', [UserController::class, 'updateShippingStatus']);
     Route::get('/adverts/{advertId}/shipping-details', [UserController::class, 'adShippingDetails']);
