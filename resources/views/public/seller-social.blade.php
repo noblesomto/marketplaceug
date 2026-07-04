@@ -39,64 +39,68 @@
         </div>
 
         {{-- List --}}
-        <div class="bg-white divide-y divide-gray-50" id="people-list">
+        <div class="bg-white divide-y divide-gray-100" id="people-list">
 
             @forelse ($people as $p)
-                <div class="flex items-start gap-3 px-4 py-4" data-user-row="{{ $p->user_id }}">
+                <div class="flex items-center gap-3 px-4 py-3" data-user-row="{{ $p->user_id }}">
 
                     @php
                         $avatarColors = ['bg-green-100 text-green-700','bg-blue-100 text-blue-700','bg-purple-100 text-purple-700','bg-orange-100 text-orange-700','bg-pink-100 text-pink-700'];
                         $avatarColor  = $avatarColors[ord($p->name[0]) % count($avatarColors)];
                     @endphp
+
+                    {{-- Avatar --}}
                     <a href="{{ $p->profile_url }}" class="flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold {{ $avatarColor }}">
+                        <div class="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold {{ $avatarColor }}">
                             {{ $p->initials }}
                         </div>
                     </a>
 
+                    {{-- Name + meta --}}
                     <div class="flex-1 min-w-0">
                         <a href="{{ $p->profile_url }}"
-                           class="font-semibold text-sm text-gray-800 hover:text-green-700 truncate block">{{ $p->name }}</a>
-                        @if ($p->state)
-                            <p class="text-xs text-gray-400">{{ $p->state }}</p>
-                        @endif
-                        <p class="text-xs text-gray-400">{{ $p->active_ads }} active {{ $p->active_ads === 1 ? 'listing' : 'listings' }}</p>
-
-                        @unless ($p->is_self)
-                            <div class="flex gap-2 mt-2 flex-wrap">
-                                @if ($loggedIn)
-                                    @if ($isOwner && $tab === 'followers')
-                                        <button onclick="toggleFollow('{{ $p->user_id }}', this)"
-                                            data-following="{{ $p->is_following ? 'true' : 'false' }}"
-                                            class="follow-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
-                                            {{ $p->is_following ? 'Following ✓' : '+ Follow Back' }}
-                                        </button>
-                                        <button onclick="removeFollower('{{ $p->user_id }}', this)"
-                                            class="text-xs font-medium px-3 py-1.5 rounded-full border border-red-200 text-red-500 hover:bg-red-50 transition-colors">
-                                            Remove
-                                        </button>
-                                    @elseif ($isOwner && $tab === 'following')
-                                        <button onclick="toggleFollow('{{ $p->user_id }}', this)"
-                                            data-following="{{ $p->is_following ? 'true' : 'false' }}"
-                                            class="follow-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
-                                            {{ $p->is_following ? 'Unfollow' : '+ Follow' }}
-                                        </button>
-                                    @else
-                                        <button onclick="toggleFollow('{{ $p->user_id }}', this)"
-                                            data-following="{{ $p->is_following ? 'true' : 'false' }}"
-                                            class="follow-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
-                                            {{ $p->is_following ? 'Following ✓' : '+ Follow' }}
-                                        </button>
-                                    @endif
-                                @else
-                                    <a href="/login"
-                                       class="text-xs font-semibold px-3 py-1.5 rounded-full border border-green-700 text-green-700 hover:bg-green-50 transition-colors">
-                                        + Follow
-                                    </a>
-                                @endif
-                            </div>
-                        @endunless
+                           class="font-semibold text-sm text-gray-800 hover:text-green-700 leading-tight block truncate">{{ $p->name }}</a>
+                        <p class="text-xs text-gray-400 leading-tight truncate">
+                            @if ($p->state){{ $p->state }} · @endif{{ $p->active_ads }} {{ $p->active_ads === 1 ? 'listing' : 'listings' }}
+                        </p>
                     </div>
+
+                    {{-- Action buttons — right side, same row --}}
+                    @unless ($p->is_self)
+                    <div class="flex-shrink-0 flex items-center gap-1.5">
+                        @if ($loggedIn)
+                            @if ($isOwner && $tab === 'followers')
+                                <button onclick="toggleFollow('{{ $p->user_id }}', this)"
+                                    data-following="{{ $p->is_following ? 'true' : 'false' }}"
+                                    class="follow-btn text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
+                                    {{ $p->is_following ? 'Following ✓' : '+ Follow Back' }}
+                                </button>
+                                <button onclick="removeFollower('{{ $p->user_id }}', this)"
+                                    class="text-xs font-medium px-2.5 py-1 rounded-full border border-red-200 text-red-500 hover:bg-red-50 transition-colors">
+                                    Remove
+                                </button>
+                            @elseif ($isOwner && $tab === 'following')
+                                <button onclick="toggleFollow('{{ $p->user_id }}', this)"
+                                    data-following="{{ $p->is_following ? 'true' : 'false' }}"
+                                    class="follow-btn text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
+                                    {{ $p->is_following ? 'Unfollow' : '+ Follow' }}
+                                </button>
+                            @else
+                                <button onclick="toggleFollow('{{ $p->user_id }}', this)"
+                                    data-following="{{ $p->is_following ? 'true' : 'false' }}"
+                                    class="follow-btn text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors {{ $p->is_following ? 'bg-green-700 text-white border-green-700' : 'border-green-700 text-green-700 hover:bg-green-50' }}">
+                                    {{ $p->is_following ? 'Following ✓' : '+ Follow' }}
+                                </button>
+                            @endif
+                        @else
+                            <a href="/login"
+                               class="text-xs font-semibold px-2.5 py-1 rounded-full border border-green-700 text-green-700 hover:bg-green-50 transition-colors">
+                                + Follow
+                            </a>
+                        @endif
+                    </div>
+                    @endunless
+
                 </div>
             @empty
                 <div class="py-16 text-center text-gray-400">
