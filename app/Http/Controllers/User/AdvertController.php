@@ -718,7 +718,7 @@ class AdvertController extends Controller
         $isMobile = $agent->isMobile();
 
         //dd($categories);
-        return view('public.adverts', compact('title', 'ads', 'user', 'categories','mobile'));
+        return view('public.adverts', compact('title', 'ads', 'user', 'categories', 'isMobile'));
     }
 
    public function seller(Request $request, $name, $id)
