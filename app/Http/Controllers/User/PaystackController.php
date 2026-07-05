@@ -58,9 +58,14 @@ class PaystackController extends Controller
             ->first();
 
         if (!$existingPayment) {
-            // Only create if no pending exists
+            // Generate a unique 8-char alphanumeric order code
+            do {
+                $orderCode = strtoupper(Str::random(8));
+            } while (Payment::where('order_code', $orderCode)->exists());
+
             $post = Payment::create([
                 'advert_id'        => $shipping['ad']->id,
+                'order_code'       => $orderCode,
                 'user_id'          => $user_id,
                 'payment_reference'=> $reference,
                 'first_name'       => $shipping['first_name'],

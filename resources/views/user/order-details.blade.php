@@ -32,7 +32,7 @@
 
     {{-- Page title + shipping status --}}
     <div class="flex items-center justify-between mb-4">
-        <h1 class="text-base font-bold text-gray-800">Order #{{ $payment->id }}</h1>
+        <h1 class="text-base font-bold text-gray-800">Order #{{ $payment->order_code ?? $payment->id }}</h1>
         @if($isDelivered)
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
                 <i class="bi bi-check-circle-fill"></i> Delivered

@@ -357,7 +357,7 @@
     <div class="order-card order-card-pending">
 
         <div class="order-topbar">
-            <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $pending->id }}</span>
+            <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $pending->order_code ?? $pending->id }}</span>
             <span class="order-date">
                 <i class="bi bi-calendar3"></i>
                 {{ isset($pending->created_at) ? date('d M Y', strtotime($pending->created_at)) : 'N/A' }}
@@ -417,7 +417,7 @@
 
             {{-- Top bar: order ref, date, payment status --}}
             <div class="order-topbar">
-                <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $row->id }}</span>
+                <span class="order-id"><i class="bi bi-receipt"></i> Order #{{ $row->order_code ?? $row->id }}</span>
                 <span class="order-date">
                     <i class="bi bi-calendar3"></i>
                     {{ isset($row->created_at) ? date('d M Y', strtotime($row->created_at)) : 'N/A' }}

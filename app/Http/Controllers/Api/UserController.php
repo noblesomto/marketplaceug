@@ -747,6 +747,7 @@ class UserController extends Controller
             'data'    => [
                 'order' => [
                     'id'                 => $payment->id,
+                    'order_code'         => $payment->order_code,
                     'reference'          => $payment->payment_reference,
                     'amount_paid'        => $payment->amount_paid,
                     'payment_status'     => $payment->payment_status,
