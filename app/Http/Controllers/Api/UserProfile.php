@@ -587,7 +587,7 @@ class UserProfile extends Controller
     public function updateNotifications(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'notifications' => 'required|string'
+            'notifications' => 'required|string|in:yes,no,enabled,disabled'
         ]);
 
         if ($validator->fails()) {
@@ -597,8 +597,11 @@ class UserProfile extends Controller
             ], 422);
         }
 
+        $map = ['enabled' => 'yes', 'disabled' => 'no', 'yes' => 'yes', 'no' => 'no'];
+        $value = $map[$request->notifications] ?? 'no';
+
         $user = auth()->user();
-        $user->notification = $request->notifications;
+        $user->notification = $value;
         $user->save();
 
         return response()->json([
