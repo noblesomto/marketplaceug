@@ -1282,6 +1282,9 @@ public function buy_direct_payment(Request $request, $id)
         $data['isMobile'] = $agent->isMobile() || $agent->isTablet();
 
         $ship_data = $request->session()->get('shipping_data');
+        if (!$ship_data || empty($ship_data['shipping_method'])) {
+            return redirect()->back()->with('error', 'Please select a shipping method before proceeding to payment.');
+        }
         $ship_id = $ship_data['shipping_method'];
         $data['shipping_method'] = Shipping::where('id',$ship_id)->first();
         return view('public.buy-direct-payment', $data);
