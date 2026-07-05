@@ -57,18 +57,20 @@ Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
 | Authentication Routes (Public)
 |--------------------------------------------------------------------------
 */
-Route::post('/register', [AccountController::class, 'register']);
-Route::post('/login', [AccountController::class, 'login']);
-Route::post('/verify-otp', [AccountController::class, 'verifyOTP']);
-Route::post('/resend-otp', [AccountController::class, 'resendOTP']);
-Route::get('/verify/{email}/{token}', [AccountController::class, 'verifyAccount']);
-Route::post('/resend-verification', [AccountController::class, 'resendVerification']);
-Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
-Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'resetPassword']);
+// Strict throttle on credential and OTP endpoints (10 attempts per minute per IP)
+Route::middleware('throttle:10,1')->group(function () {
+    Route::post('/register', [AccountController::class, 'register']);
+    Route::post('/login', [AccountController::class, 'login']);
+    Route::post('/verify-otp', [AccountController::class, 'verifyOTP']);
+    Route::post('/resend-otp', [AccountController::class, 'resendOTP']);
+    Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
+    Route::post('/reset-password/{user_id}/{token}', [AccountController::class, 'resetPassword']);
+    Route::post('/resend-verification', [AccountController::class, 'resendVerification']);
+    Route::post('/auth/social', [AccountController::class, 'socialLogin']);
+    Route::post('/auth/apple', [AccountController::class, 'appleLogin']);
+});
 
-// Social Authentication
-Route::post('/auth/social', [AccountController::class, 'socialLogin']);
-Route::post('/auth/apple', [AccountController::class, 'appleLogin']);
+Route::get('/verify/{email}/{token}', [AccountController::class, 'verifyAccount']);
 Route::get('/auth/{provider}/redirect', [AccountController::class, 'socialRedirect']);
 Route::get('/auth/{provider}/callback', [AccountController::class, 'socialCallback']);
 
@@ -112,16 +114,18 @@ Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
 | Search Routes (Public & Enhanced)
 |--------------------------------------------------------------------------
 */
-Route::post('/search', [SearchController::class, 'search']);
-Route::post('/search/filter', [SearchController::class, 'filter']);
-Route::post('/search/filter-by-seller', [SearchController::class, 'filterBySeller']);
-Route::post('/search/filter-by-buydirect', [SearchController::class, 'filterByBuydirect']);
-Route::post('/search/filter-by-car', [SearchController::class, 'filterByCarDetails']);
-Route::post('/search/filter-by-phone', [SearchController::class, 'filterByPhoneDetails']);
-Route::get('/search/location/{location}/{slug}', [SearchController::class, 'locationSearch']);
-Route::get('/search/filters', [SearchController::class, 'getFilters']);
-Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
-Route::get('/search/load-more', [SearchController::class, 'loadMore']);
+Route::middleware('throttle:30,1')->group(function () {
+    Route::post('/search', [SearchController::class, 'search']);
+    Route::post('/search/filter', [SearchController::class, 'filter']);
+    Route::post('/search/filter-by-seller', [SearchController::class, 'filterBySeller']);
+    Route::post('/search/filter-by-buydirect', [SearchController::class, 'filterByBuydirect']);
+    Route::post('/search/filter-by-car', [SearchController::class, 'filterByCarDetails']);
+    Route::post('/search/filter-by-phone', [SearchController::class, 'filterByPhoneDetails']);
+    Route::get('/search/location/{location}/{slug}', [SearchController::class, 'locationSearch']);
+    Route::get('/search/filters', [SearchController::class, 'getFilters']);
+    Route::get('/search/suggestions', [SearchController::class, 'getSuggestions']);
+    Route::get('/search/load-more', [SearchController::class, 'loadMore']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -163,7 +167,7 @@ Route::post('/ui-config/clear-cache', [CategoryUIController::class, 'clearCache'
 | Message Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled', 'throttle:60,1'])->group(function () {
     Route::post('/messages', [MessageController::class, 'sendMessage']);
     Route::get('/messages/conversation/{advertId}/{receiverId}', [MessageController::class, 'getConversation']);
     Route::get('/messages/advert/{advertId}', [MessageController::class, 'getAdvertMessages']);
@@ -247,7 +251,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 | User Manage Adverts Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->prefix('adverts')->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:20,1'])->prefix('adverts')->group(function () {
     // Get data for creating adverts
     Route::get('/create/data', [UserManageAdverts::class, 'getCreateData']);
 

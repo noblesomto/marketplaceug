@@ -207,7 +207,7 @@ class AccountController extends Controller
         }
 
         // Compare OTP
-        if ($user->otp != $request->otp) {
+        if ((string) $user->otp !== (string) $request->otp) {
             Cache::put($cacheKey, $attempts + 1, now()->addHour());
             $remaining = 5 - $attempts - 1;
 
@@ -1075,7 +1075,7 @@ class AccountController extends Controller
 
     protected function sendOTP($user, Request $request)
     {
-        $otp = rand(111111, 999999);
+        $otp = random_int(111111, 999999);
 
         // Use direct DB update to ensure it saves
         DB::table('users')

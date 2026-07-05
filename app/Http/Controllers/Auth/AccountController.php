@@ -170,7 +170,7 @@ class AccountController extends Controller
 
     protected function triggerOtpLogin(Request $request, $user)
     {
-        $otp = rand(111111, 999999);
+        $otp = random_int(111111, 999999);
         $request->session()->put('acc_id', $user->id);
 
         // ✅ ADDED: Flag to prevent auto-login during OTP verification
@@ -505,7 +505,7 @@ class AccountController extends Controller
             return redirect("/login")->with('error', 'User not found. Please login again.');
         }
 
-        $otp = rand(111111, 999999);
+        $otp = random_int(111111, 999999);
         $email = $login->email;
         $name = $login->name;
         DB::table('users')
