@@ -78,6 +78,7 @@ class Kernel extends HttpKernel
 
         // ✅ API Documentation Authentication
         'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
+        'user.not_disabled' => \App\Http\Middleware\EnsureUserNotDisabled::class,
     ];
 
     /**

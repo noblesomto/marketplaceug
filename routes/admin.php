@@ -119,14 +119,14 @@ Route::middleware('adminsession')->group(function () {
     Route::middleware(['admin.permission:view_users,manage_user_status,verify_users'])->group(function () {
         Route::get('/admin/active-users', [ManageUsers::class, 'active_users'])->name('admin.active.users');
         Route::any('/admin/user-status/{id}/{status}', [ManageUsers::class, 'user_status'])->name('admin.user.status');
-        Route::any('/admin/disable-status/{id}/{status}', [ManageUsers::class, 'disable_status'])->name('admin.disable.status');
+        Route::post('/admin/disable-status/{id}', [ManageUsers::class, 'disable_status'])->name('admin.disable.status');
         Route::get('/admin/unverified-users', [ManageUsers::class, 'unverified_users'])->name('admin.unverified.users');
         Route::get('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->name('admin.disabled.users');
         Route::get('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->name('admin.view.user');
         Route::get('/admin/user-verification', [ManageUsers::class, 'user_verification'])->name('admin.user.verification');
         Route::get('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->name('admin.verify.status');
         Route::get('/admin/users/search', [ManageUsers::class, 'search'])->name('admin.users.search');
-        Route::delete('/admin/delete-user/{id}', [ManageUsers::class, 'deleteUser'])->name('admin.delete.user');
+        Route::delete('/admin/delete-user/{id}', [ManageUsers::class, 'delete_user'])->name('admin.delete.user');
     });
 
     // Shipping management

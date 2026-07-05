@@ -42,6 +42,8 @@ class User extends Authenticatable implements HasMedia
         'notification',
         'disable_account',
         'disable_account_date',
+        'disabled_by',
+        'disable_reason',
         'bank_name',
         'bank_code',
         'account_name',

@@ -201,18 +201,20 @@
                                                     </a>
                                                 @elseif($user->disable_account === 'yes')
                                                     <h6 class="text-muted mb-2">Enable Account</h6>
-                                                    <a href="/admin/disable-status/{{ $user->user_id }}/No"
-                                                       class="btn btn-success px-4"
-                                                       onclick="return confirm('Re-enable this account?');">
-                                                        <i class="bi bi-check-circle me-1"></i> Enable
-                                                    </a>
+                                                    <form method="POST" action="/admin/disable-status/{{ $user->user_id }}" style="display:inline;">
+                                                        @csrf
+                                                        <input type="hidden" name="action" value="enable">
+                                                        <button type="submit" class="btn btn-success px-4"
+                                                                onclick="return confirm('Re-enable this account?');">
+                                                            <i class="bi bi-check-circle me-1"></i> Enable
+                                                        </button>
+                                                    </form>
                                                 @else
                                                     <h6 class="text-muted mb-2">Disable Account</h6>
-                                                    <a href="/admin/disable-status/{{ $user->user_id }}/Yes"
-                                                       class="btn btn-warning px-4"
-                                                       onclick="return confirm('Disable this account? The user will be blocked from logging in.');">
+                                                    <button type="button" class="btn btn-warning px-4"
+                                                            onclick="showDisableModal('{{ $user->user_id }}', '{{ addslashes($user->name) }}')">
                                                         <i class="bi bi-slash-circle me-1"></i> Disable
-                                                    </a>
+                                                    </button>
                                                 @endif
                                             </div>
 
@@ -278,5 +280,42 @@
         transform: translateY(-5px);
     }
 </style>
+
+{{-- Disable account modal with reason --}}
+<div class="modal fade" id="disableModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" id="disableForm" action="">
+                @csrf
+                <input type="hidden" name="action" value="disable">
+                <div class="modal-header border-0">
+                    <h6 class="modal-title text-danger"><i class="bi bi-slash-circle me-2"></i>Disable Account</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <p class="text-muted mb-3" id="disableModalMessage"></p>
+                    <label class="form-label fw-semibold">Reason <span class="text-muted fw-normal">(optional)</span></label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="e.g. Suspicious activity, violated terms…" maxlength="500"></textarea>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-slash-circle me-1"></i>Disable Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDisableModal(userId, userName) {
+    document.getElementById('disableModalMessage').textContent =
+        `This will block "${userName}" from logging in. You can re-enable at any time.`;
+    document.getElementById('disableForm').action = `/admin/disable-status/${userId}`;
+    new bootstrap.Modal(document.getElementById('disableModal')).show();
+}
+</script>
 
 @include('admin.layouts.footer')

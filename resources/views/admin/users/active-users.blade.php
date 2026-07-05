@@ -78,7 +78,7 @@
                             <div class="col-md-3">
                                 <div class="card bg-primary text-white">
                                     <div class="card-body text-center">
-                                        <h4 class="mb-0">{{ $users->total() }}</h4>
+                                        <h4 class="mb-0">{{ number_format($stats['total'] ?? 0) }}</h4>
                                         <small>Total Users</small>
                                     </div>
                                 </div>
@@ -86,23 +86,27 @@
                             <div class="col-md-3">
                                 <div class="card bg-success text-white">
                                     <div class="card-body text-center">
-                                        <h4 class="mb-0">{{ $users->where('verified', 'yes')->count() }}</h4>
-                                        <small>Verified Users</small>
+                                        <h4 class="mb-0">{{ number_format($stats['active'] ?? 0) }}</h4>
+                                        <small>Active Users</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card bg-warning text-white">
                                     <div class="card-body text-center">
-                                        <h4 class="mb-0">{{ $users->where('verified', 'no')->count() }}</h4>
-                                        <small>Unverified Users</small>
+                                        <h4 class="mb-0">{{ number_format($users->total()) }}</h4>
+                                        <small>This List</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card bg-danger text-white">
                                     <div class="card-body text-center">
-                                        <h4 class="mb-0">{{ $users->where('disable_account', 'yes')->count() }}</h4>
+                                        <h4 class="mb-0">
+                                            <a href="/admin/disabled-users" class="text-white text-decoration-none">
+                                                {{ number_format($stats['disabled'] ?? 0) }}
+                                            </a>
+                                        </h4>
                                         <small>Disabled Users</small>
                                     </div>
                                 </div>
@@ -354,6 +358,7 @@ function performSearch(page = 1) {
         page: page
     });
     
+    params.append('context', 'active');
     fetch(`/admin/users/search?${params}`)
         .then(response => {
             if (!response.ok) {
@@ -687,21 +692,26 @@ function initializeTooltips() {
     });
 }
 
-// Existing functions (keep these as they are)
+// Disable/enable via POST form
 function confirmAction(action, userId, userName) {
     const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
     const confirmButton = document.getElementById('confirmButton');
     const message = document.getElementById('confirmationMessage');
 
-    let actionText = action === 'disable' ? 'disable' : 'enable';
-    let actionUrl = `/admin/disable-status/${userId}/${action === 'disable' ? 'Yes' : 'No'}`;
-
-    message.textContent = `Are you sure you want to ${actionText} the account for "${userName}"?`;
+    message.textContent = `Are you sure you want to ${action} the account for "${userName}"?`;
     confirmButton.className = `btn btn-${action === 'disable' ? 'warning' : 'success'}`;
     confirmButton.textContent = action === 'disable' ? 'Disable Account' : 'Enable Account';
 
-    confirmButton.onclick = function() {
-        window.location.href = actionUrl;
+    confirmButton.onclick = function () {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/disable-status/${userId}`;
+        form.innerHTML = `
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="${action}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
     };
 
     modal.show();

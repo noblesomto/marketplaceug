@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Advert;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Auth;
 
 class ManageUsers extends Controller
 {
@@ -17,9 +18,11 @@ class ManageUsers extends Controller
     {
         $title = "Active Users | " . config('global.site_name');
         $page_title = "Active Users";
-        $users = User::where('acc_status', 1)->where('disable_account', "no")->orderBy('created_at', 'desc')->paginate(20);
+        $users = User::where('acc_status', 1)->where('disable_account', 'no')->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
+        $stats = $this->globalUserStats();
+
+        return view('admin.users.active-users', compact('title', 'users', 'page_title', 'stats'));
     }
 
     public function unverified_users(Request $request)
@@ -28,29 +31,48 @@ class ManageUsers extends Controller
         $page_title = "Unverified Users";
         $users = User::where('acc_status', 0)->where('disable_account', 'no')->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('admin.users.unverified-users', compact('title', 'users', 'page_title'));
+        $stats = $this->globalUserStats();
+
+        return view('admin.users.unverified-users', compact('title', 'users', 'page_title', 'stats'));
     }
 
     public function disabled_users(Request $request)
     {
         $title = "Disabled Users | " . config('global.site_name');
         $page_title = "Disabled Users";
-        $users = User::where('acc_status', 1)->where('disable_account', "yes")->orderBy('created_at', 'desc')->paginate(20);
+        // No acc_status filter — show ALL disabled users regardless of verification state
+        $users = User::where('disable_account', 'yes')->orderBy('disable_account_date', 'desc')->paginate(20);
 
-        return view('admin.users.active-users', compact('title', 'users', 'page_title'));
+        $stats = $this->globalUserStats();
+
+        return view('admin.users.disabled-users', compact('title', 'users', 'page_title', 'stats'));
     }
 
-    public function disable_status($id, $status)
+    public function disable_status(Request $request, $id)
     {
-        DB::table('users')
-                ->where('user_id', $id)
-                ->update([
-                    'disable_account'=> $status,
-                    'disable_account_date'=> Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ]);
+        $request->validate([
+            'action'  => 'required|in:disable,enable',
+            'reason'  => 'nullable|string|max:500',
+        ]);
 
-        return redirect()->back()->with('status', ['text'=>'User Status Changed','type'=>'success']);
+        $action = $request->input('action');
+        $isDisabling = $action === 'disable';
+
+        $admin = Auth::guard('admin')->user();
+
+        DB::table('users')
+            ->where('user_id', $id)
+            ->update([
+                'disable_account'      => $isDisabling ? 'yes' : 'no',
+                'disable_account_date' => $isDisabling ? Carbon::now() : null,
+                'disabled_by'          => $isDisabling ? ($admin->name ?? 'Admin') : null,
+                'disable_reason'       => $isDisabling ? $request->input('reason') : null,
+                'updated_at'           => Carbon::now(),
+            ]);
+
+        $text = $isDisabling ? 'User account has been disabled.' : 'User account has been re-enabled.';
+
+        return redirect()->back()->with('status', ['text' => $text, 'type' => 'success']);
     }
 
     public function user_status($id, $status)
@@ -69,9 +91,8 @@ class ManageUsers extends Controller
     {
         try {
             $query = User::query();
-            
-            // Search term
-            if ($request->has('search') && !empty($request->search)) {
+
+            if ($request->filled('search')) {
                 $searchTerm = $request->search;
                 $query->where(function($q) use ($searchTerm) {
                     $q->where('name', 'LIKE', "%{$searchTerm}%")
@@ -80,29 +101,38 @@ class ManageUsers extends Controller
                       ->orWhere('phone', 'LIKE', "%{$searchTerm}%");
                 });
             }
-            
-            // Account type filter
-            if ($request->has('account_type') && !empty($request->account_type)) {
+
+            if ($request->filled('account_type')) {
                 $query->where('acc_type', $request->account_type);
             }
-            
-            // Verification filter
-            if ($request->has('verification') && !empty($request->verification)) {
+
+            if ($request->filled('verification')) {
                 $query->where('verified', $request->verification);
             }
-            
+
+            // Scope to the current admin page context
+            $context = $request->input('context', 'active');
+            if ($context === 'disabled') {
+                $query->where('disable_account', 'yes');
+            } elseif ($context === 'unverified') {
+                $query->where('acc_status', 0)->where('disable_account', 'no');
+            } else {
+                // active
+                $query->where('acc_status', 1)->where('disable_account', 'no');
+            }
+
             $users = $query->orderBy('created_at', 'desc')->paginate(10);
-            
+
             return response()->json([
                 'success' => true,
                 'users' => $users->items(),
                 'pagination' => [
                     'current_page' => $users->currentPage(),
-                    'last_page' => $users->lastPage(),
-                    'per_page' => $users->perPage(),
-                    'total' => $users->total(),
-                    'from' => $users->firstItem(),
-                    'to' => $users->lastItem(),
+                    'last_page'    => $users->lastPage(),
+                    'per_page'     => $users->perPage(),
+                    'total'        => $users->total(),
+                    'from'         => $users->firstItem(),
+                    'to'           => $users->lastItem(),
                 ]
             ]);
         } catch (\Exception $e) {
@@ -130,27 +160,15 @@ class ManageUsers extends Controller
         return view('admin.users.view-user', compact('title', 'user', 'active_adverts', 'sold_adverts', 'totalRevenue','pendingRevenue'));
     }
 
-    public function delete_user($user_id,$status)
+    public function delete_user($user_id)
     {
-
         $user = User::where('user_id', $user_id)->first();
-        if ($user){
+        if ($user) {
+            Advert::where('user_id', $user_id)->delete();
             $user->delete();
         }
 
-        $adverts = Advert::where('user_id', $user_id)->get();
-        if ($adverts){
-            $adverts->delete();
-        }
-
-        DB::table('users')
-                ->where('user_id', $user_id)
-                ->update([
-                    'acc_status'=> $status,
-                    'updated_at' => Carbon::now(),
-                ]);
-
-        return redirect()->back()->with('status', ['text'=>'User Deleted','type'=>'success']);
+        return redirect()->route('admin.active.users')->with('status', ['text' => 'User deleted successfully.', 'type' => 'success']);
     }
 
     public function user_verification(Request $request)
@@ -177,7 +195,16 @@ class ManageUsers extends Controller
                     'verified'=> $verify,
                     'updated_at' => Carbon::now(),
                 ]);
-        //dd($id);
+
         return redirect()->back()->with('status', ['text'=>'Verification Status Changed','type'=>'success']);
+    }
+
+    private function globalUserStats(): array
+    {
+        return [
+            'total'    => User::count(),
+            'active'   => User::where('acc_status', 1)->where('disable_account', 'no')->count(),
+            'disabled' => User::where('disable_account', 'yes')->count(),
+        ];
     }
 }

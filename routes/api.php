@@ -30,7 +30,7 @@ use App\Http\Controllers\Api\PaystackWebhookController;
 */
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
 
     // Device Token Management
     Route::prefix('device-tokens')->group(function () {
@@ -73,7 +73,7 @@ Route::get('/auth/{provider}/redirect', [AccountController::class, 'socialRedire
 Route::get('/auth/{provider}/callback', [AccountController::class, 'socialCallback']);
 
 // Protected Authentication Routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     Route::get('/user', [AccountController::class, 'user']);
     Route::post('/logout', [AccountController::class, 'logout']);
     Route::delete('/trusted-device/{device_id}', [AccountController::class, 'removeTrustedDevice']);
@@ -99,7 +99,7 @@ Route::get('/brands/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertControll
 Route::get('/location/{state_slug}', [AdvertController::class, 'locationAdverts']);
 
 // Protected Advert Routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     Route::post('/adverts/{id}/report', [AdvertController::class, 'reportAdvert']);
     Route::post('/adverts/{id}/apply', [AdvertController::class, 'applyJob']);
     Route::get('/adverts/{id}/buy-direct', [AdvertController::class, 'buy_direct']);
@@ -163,7 +163,7 @@ Route::post('/ui-config/clear-cache', [CategoryUIController::class, 'clearCache'
 | Message Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     Route::post('/messages', [MessageController::class, 'sendMessage']);
     Route::get('/messages/conversation/{advertId}/{receiverId}', [MessageController::class, 'getConversation']);
     Route::get('/messages/advert/{advertId}', [MessageController::class, 'getAdvertMessages']);
@@ -186,7 +186,7 @@ Route::middleware('auth:sanctum')->group(function () {
 | Payment Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     Route::post('/payments/initialize', [PaystackController::class, 'initializePayment']);
     Route::post('/payments/initialize-boost', [PaystackController::class, 'initializeBoost']);
     Route::get('/payments/{paymentId}', [PaystackController::class, 'getPayment']);
@@ -327,7 +327,7 @@ Route::middleware('auth:sanctum')->prefix('users')->group(function () {
 | Ad Boost Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     // User boost management
     Route::get('/user/boosts', [UserManageBoostController::class, 'getUserBoosts']);
     Route::get('/boosts/active', [UserManageBoostController::class, 'getActiveBoosts']);
@@ -356,7 +356,7 @@ Route::prefix('boost')->group(function () {
 });
 
 // Protected routes - require authentication
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
 
     // User Statistics
     Route::prefix('user')->group(function () {
