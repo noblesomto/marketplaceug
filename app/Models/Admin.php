@@ -12,9 +12,9 @@ class Admin extends Authenticatable // Change from Model
 
     protected $guard_name = 'admin'; // Specify admin guard
 
-    protected $fillable = ['admin_id', 'username','remember_token', 'email', 'password'];
+    protected $fillable = ['admin_id', 'username', 'remember_token', 'email', 'password', 'google2fa_secret', 'two_factor_confirmed_at'];
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'google2fa_secret'];
 
     // Keep your old methods for backward compatibility during transition
     public function oldRoles()

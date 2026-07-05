@@ -15,15 +15,26 @@ use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\AdminBoostTypeController;
 use App\Http\Controllers\Admin\AdminBoostDurationController;
 use App\Http\Controllers\Admin\CategoryUIAdminController;
+use App\Http\Controllers\Admin\Admin2FAController;
 
 /*
 |--------------------------------------------------------------------------
 | Admin Panel Routes
 |--------------------------------------------------------------------------
 | All routes require an active admin session (adminsession middleware).
+| Dashboard and all management routes also require 2FA verification.
 */
 
+// 2FA routes — require login but not yet 2FA verified
 Route::middleware('adminsession')->group(function () {
+    Route::get('/admin/2fa/setup', [Admin2FAController::class, 'setup'])->name('admin.2fa.setup');
+    Route::post('/admin/2fa/setup', [Admin2FAController::class, 'confirmSetup'])->name('admin.2fa.confirm');
+    Route::get('/admin/2fa/verify', [Admin2FAController::class, 'verify'])->name('admin.2fa.verify');
+    Route::post('/admin/2fa/verify', [Admin2FAController::class, 'verifyCode'])->name('admin.2fa.verify.code');
+});
+
+// All admin panel routes — require login AND 2FA
+Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
 
     // Dashboard
     Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -154,6 +165,7 @@ Route::middleware('adminsession')->group(function () {
             Route::post('/', [ManageAdminUsers::class, 'store']);
             Route::put('/{id}', [ManageAdminUsers::class, 'update']);
             Route::delete('/{id}', [ManageAdminUsers::class, 'destroy']);
+            Route::post('/{id}/reset-2fa', [ManageAdminUsers::class, 'reset2fa'])->name('admin.reset.2fa');
         });
 
         Route::match(['GET', 'POST'], '/settings/ad-images', [SettingController::class, 'imageSettings'])->name('admin.ad.image.settings');

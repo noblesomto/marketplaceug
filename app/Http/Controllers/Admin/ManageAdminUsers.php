@@ -74,6 +74,27 @@ class ManageAdminUsers extends Controller
         ]);
     }
 
+    public function reset2fa($id)
+    {
+        $admin = Admin::find($id);
+
+        if (!$admin) {
+            return response()->json(['success' => false, 'message' => 'Admin not found.'], 404);
+        }
+
+        // Prevent resetting your own 2FA via this panel
+        if ($admin->id === auth()->guard('admin')->id()) {
+            return response()->json(['success' => false, 'message' => 'You cannot reset your own 2FA from here.'], 403);
+        }
+
+        $admin->update([
+            'google2fa_secret'        => null,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        return response()->json(['success' => true, 'message' => '2FA has been reset. The admin will be prompted to set it up on next login.']);
+    }
+
     /**
      * Delete an admin.
      */

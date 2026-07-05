@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AutoLoginFromCookie::class,
+            \App\Http\Middleware\ContentSecurityPolicy::class,
         ],
 
         'api' => [
@@ -79,6 +80,7 @@ class Kernel extends HttpKernel
         // ✅ API Documentation Authentication
         'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
         'user.not_disabled' => \App\Http\Middleware\EnsureUserNotDisabled::class,
+        'admin.2fa' => \App\Http\Middleware\Admin2FAVerified::class,
     ];
 
     /**

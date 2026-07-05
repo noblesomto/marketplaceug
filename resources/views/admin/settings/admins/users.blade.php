@@ -55,6 +55,7 @@
                                             <th>Username</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>2FA</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -65,11 +66,16 @@
                                             <td class="username">{{ $row->username }}</td>
                                             <td class="email">{{ $row->email }}</td>
                                             <td>
-                                                <span class="badge
-                                                    {{ $row->status === 'active' ? 'bg-success' : 'bg-warning' }}
-                                                    status-badge">
+                                                <span class="badge {{ $row->status === 'active' ? 'bg-success' : 'bg-warning' }} status-badge">
                                                     {{ ucfirst($row->status) }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                @if($row->two_factor_confirmed_at)
+                                                    <span class="badge bg-success"><i class="bi bi-shield-check"></i> Enrolled</span>
+                                                @else
+                                                    <span class="badge bg-secondary"><i class="bi bi-shield-x"></i> Not set</span>
+                                                @endif
                                             </td>
                                             <td class="action-buttons">
                                                 <button class="btn btn-sm btn-outline-primary edit-user me-1"
@@ -79,6 +85,13 @@
                                                         data-email="{{ $row->email }}">
                                                     <i class="bi bi-pencil-square"></i> Edit
                                                 </button>
+                                                @if($row->two_factor_confirmed_at && $row->id !== auth()->guard('admin')->id())
+                                                <button class="btn btn-sm btn-outline-warning reset-2fa me-1"
+                                                        data-id="{{ $row->id }}"
+                                                        data-username="{{ $row->username }}">
+                                                    <i class="bi bi-shield-slash"></i> Reset 2FA
+                                                </button>
+                                                @endif
                                                 <button class="btn btn-sm btn-outline-danger delete-user"
                                                         data-id="{{ $row->id }}"
                                                         data-username="{{ $row->username }}">
@@ -193,6 +206,29 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset 2FA Confirmation Modal -->
+        <div class="modal fade" id="reset2faModal" tabindex="-1" aria-labelledby="reset2faModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning bg-opacity-10">
+                        <h5 class="modal-title" id="reset2faModalLabel"><i class="bi bi-shield-slash me-2"></i>Reset Two-Factor Authentication</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This will remove the 2FA setup for <strong id="reset2faUserName"></strong>.</p>
+                        <p class="text-muted small mb-0">They will be prompted to set up 2FA again on their next login.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning" id="confirmReset2fa">
+                            <span class="spinner-border spinner-border-sm me-1 d-none" role="status"></span>
+                            Reset 2FA
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -407,6 +443,56 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .finally(() => {
             // Reset button state
+            button.disabled = false;
+            spinner.classList.add('d-none');
+            currentUserId = null;
+        });
+    });
+
+    // Reset 2FA functionality
+    document.querySelectorAll('.reset-2fa').forEach(button => {
+        button.addEventListener('click', function() {
+            currentUserId = this.getAttribute('data-id');
+            document.getElementById('reset2faUserName').textContent = this.getAttribute('data-username');
+            new bootstrap.Modal(document.getElementById('reset2faModal')).show();
+        });
+    });
+
+    document.getElementById('confirmReset2fa').addEventListener('click', function() {
+        if (!currentUserId) return;
+
+        const button = this;
+        const spinner = button.querySelector('.spinner-border');
+        button.disabled = true;
+        spinner.classList.remove('d-none');
+
+        fetch(`/settings/manage-admins/${currentUserId}/reset-2fa`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the 2FA badge in the row
+                const row = document.querySelector(`tr[data-user-id="${currentUserId}"]`);
+                if (row) {
+                    const badge = row.querySelectorAll('td')[4];
+                    badge.innerHTML = '<span class="badge bg-secondary"><i class="bi bi-shield-x"></i> Not set</span>';
+                    // Remove the reset button from this row
+                    const resetBtn = row.querySelector('.reset-2fa');
+                    if (resetBtn) resetBtn.remove();
+                }
+                showAlert(data.message, 'success');
+                bootstrap.Modal.getInstance(document.getElementById('reset2faModal')).hide();
+            } else {
+                showAlert(data.message || 'Error resetting 2FA.', 'danger');
+            }
+        })
+        .catch(() => showAlert('Error resetting 2FA. Please try again.', 'danger'))
+        .finally(() => {
             button.disabled = false;
             spinner.classList.add('d-none');
             currentUserId = null;
