@@ -361,6 +361,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let selectedFiles = [];
 
+    function fmtNaira(val) {
+        const n = parseFloat(String(val).replace(/,/g, ''));
+        if (isNaN(n)) return val;
+        return n.toLocaleString('en-NG');
+    }
+
     if (toggle && wrapper && amountInput) {
         // Toggle switch functionality
         toggle.addEventListener('change', function () {
@@ -369,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 amountInput.removeAttribute('disabled');
                 amountInput.setAttribute('required', 'required');
                 if (amountInput.value) {
-                    chatInput.value = `Would you accept ₦${amountInput.value}`;
+                    chatInput.value = `Would you accept ₦${fmtNaira(amountInput.value)}`;
                 }
             } else {
                 wrapper.classList.add('hidden');
@@ -385,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update chat input on amount change
         amountInput.addEventListener('input', function() {
             if (toggle.checked && amountInput.value) {
-                chatInput.value = `Would you accept ₦${amountInput.value}`;
+                chatInput.value = `Would you accept ₦${fmtNaira(amountInput.value)}`;
             }
         });
 
@@ -395,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
             amountInput.removeAttribute('disabled');
             amountInput.setAttribute('required', 'required');
             if (amountInput.value) {
-                chatInput.value = `Would you accept ₦${amountInput.value}`;
+                chatInput.value = `Would you accept ₦${fmtNaira(amountInput.value)}`;
             }
         } else {
             wrapper.classList.add('hidden');
@@ -496,8 +502,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return; // Don't send empty messages
             }
             // Update message for offer
-            if (toggle && toggle.checked && amountInput.value && !message.includes(amountInput.value)) {
-                message = `Would you accept ₦${amountInput.value}`;
+            if (toggle && toggle.checked && amountInput.value && !message.includes(fmtNaira(amountInput.value))) {
+                message = `Would you accept ₦${fmtNaira(amountInput.value)}`;
                 chatInput.value = message;
             }
             // Disable button + show loading
