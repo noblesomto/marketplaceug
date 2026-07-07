@@ -141,20 +141,14 @@ class AccountController extends Controller
 
     protected function loginUser(Request $request, $user)
     {
-        // ✅ FIXED: Set session with longer lifetime
         $request->session()->put('user_id', $user->user_id);
         $request->session()->put('name', $user->name);
 
-        // ✅ FIXED: Extend session lifetime to 7 days if user wants to stay logged in
-        if ($request->has('remember_device')) {
-            config(['session.lifetime' => 10080]); // 7 days in minutes
-        }
-
-        // Handle "remember device" (does both: OTP skip + stay logged in)
-        if ($request->has('remember_device')) {
-            $this->storeTrustedDevice($request, $user);
-            $this->cookieService->issueRememberCookies($request, $user);
-        }
+        // Always issue persistent cookies — "Keep me signed in" is checked by default.
+        // Users who unchecked it on a shared device won't have the checkbox in the request.
+        $wantsRemember = $request->has('remember_device');
+        $this->storeTrustedDevice($request, $user);
+        $this->cookieService->issueRememberCookies($request, $user, $wantsRemember);
 
         // Update login activity
         DB::table('users')
@@ -433,16 +427,10 @@ class AccountController extends Controller
                 // ✅ Clear failed attempt counter on success
                 Cache::forget($cacheKey);
 
-                // ✅ Set longer session lifetime
-                if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
-                    config(['session.lifetime' => 10080]); // 7 days
-                }
-
-                // ✅ Store trusted device and set cookies after OTP verification
-                if ($request->session()->has('remember_device') && $request->session()->get('remember_device')) {
-                    $this->storeTrustedDevice($request, $login);
-                    $this->cookieService->issueRememberCookies($request, $login);
-                }
+                // Always issue persistent cookies after OTP verification too
+                $wantsRemember = $request->session()->get('remember_device', true);
+                $this->storeTrustedDevice($request, $login);
+                $this->cookieService->issueRememberCookies($request, $login, $wantsRemember);
 
                 return redirect()->intended(action([UserProfile::class, 'profile']));
             } else {

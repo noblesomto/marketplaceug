@@ -26,25 +26,29 @@ class CookieSessionService
      * @param Request $request
      * @param mixed   $user  — Eloquent User instance (needs user_id)
      */
-    public function issueRememberCookies(Request $request, $user): void
+    /**
+     * @param bool $persistent  true = 90-day cookie; false = session cookie (expires on browser close)
+     */
+    public function issueRememberCookies(Request $request, $user, bool $persistent = true): void
     {
         $isSecure   = $request->secure();
         $deviceHash = $this->generateDeviceHash($request);
+        $minutes    = $persistent ? 60 * 24 * 90 : 0; // 0 = session cookie
 
-        // Trusted device cookie — allows OTP skip for 90 days
+        // Trusted device cookie — allows OTP skip
         cookie()->queue(cookie(
             'trusted_device',
             $deviceHash,
-            60 * 24 * 90,
+            $minutes,
             '/',
             null,
             $isSecure,
-            true,   // httpOnly
-            false,  // raw
+            true,
+            false,
             'Lax'
         ));
 
-        // Persistent login cookie — keeps the user logged in for 90 days
+        // Persistent login cookie — keeps the user logged in
         $token = Str::random(60);
         DB::table('users')
             ->where('user_id', $user->user_id)
@@ -53,12 +57,12 @@ class CookieSessionService
         cookie()->queue(cookie(
             'remember_login',
             $token,
-            60 * 24 * 90,
+            $minutes,
             '/',
             null,
             $isSecure,
-            true,   // httpOnly
-            false,  // raw
+            true,
+            false,
             'Lax'
         ));
     }

@@ -88,10 +88,10 @@
                 <!-- Remember Me & Forgot Password -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember-me" name="remember_device" type="checkbox"
+                        <input id="remember-me" name="remember_device" type="checkbox" checked
                             class="h-4 w-4 text-dark_green focus:ring-dark_green border-gray-300 rounded cursor-pointer">
                         <label for="remember-me" class="ml-2 block text-sm text-gray-900 cursor-pointer">
-                            Remember device
+                            Keep me signed in
                         </label>
                     </div>
 

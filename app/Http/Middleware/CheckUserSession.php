@@ -68,11 +68,11 @@ class CheckUserSession
                 $request->session()->put('user_id', $user->user_id);
                 $request->session()->put('name', $user->name);
 
-                // Refresh cookie expiry (rolling 30 days)
+                // Refresh cookie expiry (rolling 90 days)
                 Cookie::queue(Cookie::make(
                     'remember_login',
                     $token,
-                    60 * 24 * 30, // 30 days
+                    60 * 24 * 90, // 90 days
                     '/',
                     null,
                     $request->secure(),  // ✅ FIXED: Dynamic based on HTTPS
