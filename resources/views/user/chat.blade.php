@@ -296,7 +296,7 @@
                                accept="image/*"
                                onchange="updateFileCount(this)">
                         <label for="fileUpload" class="cursor-pointer text-gray-400 hover:text-dark_green transition-colors block">
-                            <i class="bi bi-image text-xl"></i>
+                            <i class="bi bi-paperclip text-xl"></i>
                         </label>
                         <span id="fileBadge"
                               class="hidden absolute -top-2 -right-2 bg-dark_green text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
