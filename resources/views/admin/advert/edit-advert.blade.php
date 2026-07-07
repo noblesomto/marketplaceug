@@ -4,7 +4,7 @@
   /* Make .hidden work with CategoryUIManager (which uses Tailwind-style hidden class) */
   .hidden { display: none !important; }
 </style>
-<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trix@2.0.8/dist/trix.css">
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -1060,7 +1060,7 @@
     </div>
   </section>
 </main>
-<script src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/trix@2.0.8/dist/trix.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>

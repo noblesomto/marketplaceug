@@ -24,6 +24,8 @@ class ContentSecurityPolicy
 
         $googleFonts   = 'fonts.googleapis.com fonts.gstatic.com';
         $cdn           = 'cdn.jsdelivr.net cdnjs.cloudflare.com';
+        $tailwind      = 'cdn.tailwindcss.com';
+        $tinymce       = 'cdn.tiny.cloud sp.tinymce.com';
         $gtm           = 'www.googletagmanager.com googletagmanager.com';
         $googleAds     = 'pagead2.googlesyndication.com tpc.googlesyndication.com googleads.g.doubleclick.net';
         $gstatic       = 'www.gstatic.com';
@@ -37,10 +39,10 @@ class ContentSecurityPolicy
             "default-src {$self}",
 
             // Scripts: self + all third-party JS we load + unsafe-inline for Blade scripts
-            "script-src {$self} {$inline} {$eval} {$gtm} {$gstatic} {$recaptcha} {$cdn} {$clarity} {$pusher} {$firebase} {$analytics} {$googleAds} blob:",
+            "script-src {$self} {$inline} {$eval} {$gtm} {$gstatic} {$recaptcha} {$cdn} {$clarity} {$pusher} {$firebase} {$analytics} {$googleAds} {$tailwind} {$tinymce} blob:",
 
             // Styles: self + Google Fonts + CDN + inline (Bootstrap, etc.)
-            "style-src {$self} {$inline} {$googleFonts} {$cdn} cdnjs.cloudflare.com",
+            "style-src {$self} {$inline} {$googleFonts} {$cdn} {$tailwind} cdnjs.cloudflare.com",
 
             // Images: self + data URIs + Google QR codes + analytics pixels + CDN images
             "img-src {$self} data: blob: https://chart.googleapis.com https://lh3.googleusercontent.com https://graph.facebook.com *.googleusercontent.com {$analytics} {$googleAds} www.googletagmanager.com",

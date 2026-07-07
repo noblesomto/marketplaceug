@@ -640,7 +640,7 @@
 
     </form>
 </section>
-<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trix@2.0.8/dist/trix.css">
 <!-- Scripts maintained -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
