@@ -1063,7 +1063,7 @@
 <script src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 <script>
   window.MIN_IMAGES = {{ $minImages }};
   window.MAX_IMAGES = {{ $maxImages }};
