@@ -141,13 +141,9 @@
                         <div class="font-semibold text-gray-800">{{ $shipCompany }}</div>
                     </div>
                 </div>
-                @if($isDelivered)
+                @if($shipStatus === 'delivered' || $isDelivered)
                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                         <i class="bi bi-check-circle-fill"></i> Delivered
-                    </span>
-                @elseif($shipStatus === 'delivered')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">
-                        <i class="bi bi-hourglass-split"></i> Pending Confirmation
                     </span>
                 @elseif($shipStatus === 'shipped')
                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
