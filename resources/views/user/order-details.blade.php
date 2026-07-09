@@ -41,6 +41,14 @@
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200">
                 <i class="bi bi-truck"></i> Shipped
             </span>
+        @elseif($shipStatus === 'pickup')
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200">
+                <i class="bi bi-shop"></i> Ready for Pickup
+            </span>
+        @elseif($shipStatus === 'canceled')
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 border border-red-200">
+                <i class="bi bi-x-circle-fill"></i> Canceled
+            </span>
         @else
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-200">
                 <i class="bi bi-clock"></i> Pending
@@ -49,15 +57,29 @@
     </div>
 
     {{-- Status update banner --}}
-    @if($shipStatus === 'shipped' || $isDelivered)
+    @if($shipStatus !== 'pending')
     <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium
-        {{ $isDelivered ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-blue-50 border border-blue-200 text-blue-800' }}">
-        <i class="bi bi-{{ $isDelivered ? 'check-circle-fill' : 'truck' }} text-base flex-shrink-0"></i>
+        @if($isDelivered) bg-green-50 border border-green-200 text-green-800
+        @elseif($shipStatus === 'canceled') bg-red-50 border border-red-200 text-red-800
+        @elseif($shipStatus === 'pickup') bg-purple-50 border border-purple-200 text-purple-800
+        @else bg-blue-50 border border-blue-200 text-blue-800
+        @endif">
+        <i class="bi bi-
+            @if($isDelivered)check-circle-fill
+            @elseif($shipStatus === 'canceled')x-circle-fill
+            @elseif($shipStatus === 'pickup')shop
+            @else truck
+            @endif
+            text-base flex-shrink-0"></i>
         <span>
             @if($isDelivered)
                 Order delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Thank you for shopping with us!
-            @else
+            @elseif($shipStatus === 'shipped')
                 Your order has been shipped{{ $statusDate ? ' on ' . $statusDate : '' }}. Estimated delivery: 3–7 working days.
+            @elseif($shipStatus === 'pickup')
+                Your order is ready for pickup at a nearby centre{{ $statusDate ? ' (updated ' . $statusDate . ')' : '' }}.
+            @elseif($shipStatus === 'canceled')
+                There is an update on your shipment{{ $statusDate ? ' (' . $statusDate . ')' : '' }}. Please contact support if you need help.
             @endif
         </span>
     </div>
@@ -120,6 +142,14 @@
                 @elseif($shipStatus === 'shipped')
                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                         <i class="bi bi-truck"></i> Shipped
+                    </span>
+                @elseif($shipStatus === 'pickup')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                        <i class="bi bi-shop"></i> Ready for Pickup
+                    </span>
+                @elseif($shipStatus === 'canceled')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                        <i class="bi bi-x-circle-fill"></i> Canceled
                     </span>
                 @else
                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">

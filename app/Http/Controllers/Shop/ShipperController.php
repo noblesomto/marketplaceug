@@ -80,7 +80,7 @@ class ShipperController extends Controller
         ]);
 
         $ship = Payment::with([
-            'advert',
+            'advert.user',
             'user',
             'shipping',
             'cityLocation.state',
@@ -132,13 +132,16 @@ class ShipperController extends Controller
         // Reload the payment so the push job has fresh data
         $ship->refresh();
 
-        // In-app notification for the buyer
         $company = $ship->shipping?->company ?? 'the shipping company';
-        $notificationMessages = [
-            'shipped'   => "Your order \"{$ship->advert->ad_title}\" has been shipped by {$company} and is on its way.",
-            'pickup'    => "Your order \"{$ship->advert->ad_title}\" is ready for pickup at your nearest {$company} centre.",
-            'delivered' => "Your order \"{$ship->advert->ad_title}\" has been delivered by {$company}. Please confirm receipt.",
-            'canceled'  => "{$company} has an update on the shipment of \"{$ship->advert->ad_title}\". Please check your order details.",
+        $adTitle = $ship->advert->ad_title;
+        $seller  = $ship->advert->user;
+
+        // In-app notification for the buyer
+        $buyerMessages = [
+            'shipped'   => "Your order \"{$adTitle}\" has been shipped by {$company} and is on its way.",
+            'pickup'    => "Your order \"{$adTitle}\" is ready for pickup at your nearest {$company} centre.",
+            'delivered' => "Your order \"{$adTitle}\" has been delivered by {$company}. Please confirm receipt.",
+            'canceled'  => "{$company} has an update on the shipment of \"{$adTitle}\". Please check your order details.",
         ];
 
         try {
@@ -147,18 +150,50 @@ class ShipperController extends Controller
                 'seller_id' => null,
                 'advert_id' => $ship->advert_id,
                 'type'      => 'Shipping Update',
-                'message'   => $notificationMessages[$status] ?? "The shipping status of your order has been updated to: {$status}.",
+                'message'   => $buyerMessages[$status] ?? "The shipping status of your order has been updated to: {$status}.",
                 'is_read'   => 0,
             ]);
         } catch (\Exception $e) {
-            \Log::error('Shipper in-app notification failed: ' . $e->getMessage());
+            \Log::error('Shipper in-app notification (buyer) failed: ' . $e->getMessage());
         }
 
         // Push notification to buyer's mobile device
         try {
             SendShippingUpdatePushNotification::dispatch($buyer, $ship, $status);
         } catch (\Exception $e) {
-            \Log::error('Shipper push notification dispatch failed: ' . $e->getMessage());
+            \Log::error('Shipper push notification (buyer) dispatch failed: ' . $e->getMessage());
+        }
+
+        // In-app notification for the seller
+        $sellerMessages = [
+            'shipped'   => "Your item \"{$adTitle}\" has been shipped by {$company} and is on its way to the buyer.",
+            'pickup'    => "The buyer's pickup point for \"{$adTitle}\" is ready at {$company}.",
+            'delivered' => "The buyer has received \"{$adTitle}\" via {$company}. Awaiting buyer confirmation.",
+            'canceled'  => "{$company} has an update on the shipment of \"{$adTitle}\". Please check the order details.",
+        ];
+
+        try {
+            if ($seller) {
+                Notification::create([
+                    'user_id'   => $seller->id,
+                    'seller_id' => null,
+                    'advert_id' => $ship->advert_id,
+                    'type'      => 'Shipping Update',
+                    'message'   => $sellerMessages[$status] ?? "The shipping status of \"{$adTitle}\" has been updated to: {$status}.",
+                    'is_read'   => 0,
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Shipper in-app notification (seller) failed: ' . $e->getMessage());
+        }
+
+        // Push notification to seller's mobile device
+        try {
+            if ($seller) {
+                SendShippingUpdatePushNotification::dispatch($seller, $ship, $status);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Shipper push notification (seller) dispatch failed: ' . $e->getMessage());
         }
 
         return redirect()->back()->with('success', 'Shipping status updated successfully.');
