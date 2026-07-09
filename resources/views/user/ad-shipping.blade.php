@@ -15,7 +15,7 @@
     $city         = $ad->cityLocation->city ?? null;
     $address      = $ad->cityLocation->address ?? null;
     $stateName    = $ad->cityLocation->state->name ?? null;
-    $isDelivered  = $shipStatus === 'delivered';
+    $isDelivered  = ($ad->buyer_status ?? '') === 'delivered';
 @endphp
 
 <section class="w-full md:w-3/6 mx-auto px-3 py-4 text-sm" style="max-width:640px;padding-bottom:7rem;">
@@ -25,9 +25,13 @@
     {{-- Page title + status badge --}}
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-base font-bold text-gray-800">Shipping Details</h1>
-        @if($shipStatus === 'delivered')
+        @if($isDelivered)
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
                 <i class="bi bi-check-circle-fill"></i> Delivered
+            </span>
+        @elseif($shipStatus === 'delivered')
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
+                <i class="bi bi-hourglass-split"></i> Pending Confirmation
             </span>
         @elseif($shipStatus === 'shipped')
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200">
@@ -98,14 +102,37 @@
             <span class="font-semibold text-gray-700 text-xs uppercase tracking-wide">Selected Shipping</span>
         </div>
         <div class="px-4 py-3 space-y-2">
-            <div class="flex items-center gap-3">
-                @if($shipLogo)
-                    <img src="{{ $shipLogo }}" alt="{{ $shipCompany }}" class="h-7 max-w-[70px] object-contain flex-shrink-0">
-                @endif
-                <div>
-                    <div class="text-xs text-gray-400 mb-0.5">Company</div>
-                    <div class="font-semibold text-gray-800">{{ $shipCompany }}</div>
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    @if($shipLogo)
+                        <img src="{{ $shipLogo }}" alt="{{ $shipCompany }}" class="h-7 max-w-[70px] object-contain flex-shrink-0">
+                    @endif
+                    <div>
+                        <div class="text-xs text-gray-400 mb-0.5">Company</div>
+                        <div class="font-semibold text-gray-800">{{ $shipCompany }}</div>
+                    </div>
                 </div>
+                @if($shipStatus === 'delivered' || $isDelivered)
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                        <i class="bi bi-check-circle-fill"></i> Delivered
+                    </span>
+                @elseif($shipStatus === 'shipped')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                        <i class="bi bi-truck"></i> Shipped
+                    </span>
+                @elseif($shipStatus === 'pickup')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                        <i class="bi bi-shop"></i> Ready for Pickup
+                    </span>
+                @elseif($shipStatus === 'canceled')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                        <i class="bi bi-x-circle-fill"></i> Canceled
+                    </span>
+                @else
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                        <i class="bi bi-clock"></i> Pending
+                    </span>
+                @endif
             </div>
             @if($trackingId)
             <div class="border-t border-gray-100 pt-2">
@@ -228,11 +255,8 @@
                 <label class="block text-xs font-medium text-gray-600 mb-1.5">Current Status</label>
                 <select name="shipping_status"
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-dark_green focus:border-transparent mb-3">
-                    <option value="pending"   {{ $shipStatus === 'pending'   ? 'selected' : '' }}>⏳ Pending</option>
-                    <option value="shipped"   {{ $shipStatus === 'shipped'   ? 'selected' : '' }}>🚚 Shipped</option>
-                    <option value="pickup"    {{ $shipStatus === 'pickup'    ? 'selected' : '' }}>🏪 Ready for Pickup</option>
-                    <option value="delivered" {{ $shipStatus === 'delivered' ? 'selected' : '' }}>✅ Delivered</option>
-                    <option value="canceled"  {{ $shipStatus === 'canceled'  ? 'selected' : '' }}>❌ Canceled</option>
+                    <option value="pending" {{ $shipStatus === 'pending' ? 'selected' : '' }}>⏳ Pending</option>
+                    <option value="shipped" {{ $shipStatus === 'shipped' ? 'selected' : '' }}>🚚 Shipped</option>
                 </select>
                 <button type="submit"
                         class="w-full py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors">
