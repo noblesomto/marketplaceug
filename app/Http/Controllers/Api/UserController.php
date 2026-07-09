@@ -654,7 +654,7 @@ class UserController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"shipping_status"},
-     *             @OA\Property(property="shipping_status", type="string")
+     *             @OA\Property(property="shipping_status", type="string", enum={"pending","shipped","pickup","delivered","canceled"})
      *         )
      *     ),
      *     @OA\Response(
@@ -674,7 +674,7 @@ class UserController extends Controller
     public function updateShippingStatus($paymentId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'shipping_status' => 'required|in:pending,shipped,delivered'
+            'shipping_status' => 'required|in:pending,shipped,pickup,delivered,canceled'
         ]);
 
         if ($validator->fails()) {
@@ -819,6 +819,8 @@ class UserController extends Controller
                 'advert_id'       => $advert->id,
                 'ad_id'           => $advert->ad_id,
                 'shipping_status' => $payment->shipping_status ?? 'pending',
+                'buyer_status'    => $payment->buyer_status,
+                'tracking_id'     => $payment->tracking_id,
                 'ship_code'       => $payment->ship_code,
                 'buyer' => [
                     'name'  => trim(($payment->first_name ?? '') . ' ' . ($payment->last_name ?? '')),
