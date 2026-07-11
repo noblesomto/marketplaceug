@@ -674,7 +674,7 @@ class UserController extends Controller
     public function updateShippingStatus($paymentId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'shipping_status' => 'required|in:pending,shipped,pickup,delivered,canceled'
+            'seller_status' => 'required|in:pending,delivered,canceled'
         ]);
 
         if ($validator->fails()) {
@@ -706,8 +706,8 @@ class UserController extends Controller
         }
 
         $payment->update([
-            'shipping_status' => $request->shipping_status,
-            'shipping_status_date' => Carbon::now()
+            'seller_status' => $request->seller_status,
+            'seller_status_date' => Carbon::now()
         ]);
 
         return response()->json([
@@ -820,6 +820,7 @@ class UserController extends Controller
                 'ad_id'           => $advert->ad_id,
                 'shipping_status' => $payment->shipping_status ?? 'pending',
                 'buyer_status'    => $payment->buyer_status,
+                'seller_status'   => $payment->seller_status ?? 'pending',
                 'tracking_id'     => $payment->tracking_id,
                 'ship_code'       => $payment->ship_code,
                 'buyer' => [

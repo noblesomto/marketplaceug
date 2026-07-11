@@ -12,6 +12,7 @@
     $shipCode     = $ad->ship_code ?? '—';
     $trackingId   = $ad->tracking_id ?? null;
     $shipStatus   = $ad->shipping_status ?? 'pending';
+    $sellerStatus = $ad->seller_status ?? 'pending';
     $city         = $ad->cityLocation->city ?? null;
     $address      = $ad->cityLocation->address ?? null;
     $stateName    = $ad->cityLocation->state->name ?? null;
@@ -253,10 +254,11 @@
             <form method="POST" action="/user/update-shipping/{{ $ad->id }}">
                 @csrf
                 <label class="block text-xs font-medium text-gray-600 mb-1.5">Current Status</label>
-                <select name="shipping_status"
+                <select name="seller_status"
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-dark_green focus:border-transparent mb-3">
-                    <option value="pending" {{ $shipStatus === 'pending' ? 'selected' : '' }}>⏳ Pending</option>
-                    <option value="shipped" {{ $shipStatus === 'shipped' ? 'selected' : '' }}>🚚 Shipped</option>
+                    <option value="pending" {{ $sellerStatus === 'pending' ? 'selected' : '' }}>⏳ Pending</option>
+                    <option value="delivered" {{ $sellerStatus === 'delivered' ? 'selected' : '' }}>✅ Delivered</option>
+                    <option value="canceled" {{ $sellerStatus === 'canceled' ? 'selected' : '' }}>❌ Canceled</option>
                 </select>
                 <button type="submit"
                         class="w-full py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors">

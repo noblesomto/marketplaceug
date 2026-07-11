@@ -29,6 +29,8 @@ class Payment extends Model
         'shipping_status',
         'shipping_status_date',
         'buyer_status',
+        'seller_status',
+        'seller_status_date',
         'ship_code',
         'tracking_id',
         'seller_settlement',

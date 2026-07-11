@@ -405,7 +405,7 @@ class UserController extends Controller
             ->latest()
             ->first();
 
-        if (!$ad) {
+        if (!$ad || !$ad->advert || $ad->advert->user_id !== $userId) {
             return redirect()->back()->with('error', 'No shipping record found for this ad.');
         }
 
@@ -417,20 +417,28 @@ class UserController extends Controller
     }
 
     public function update_shipping(Request $request, $id)
-    {   
+    {
+        $userId = $request->session()->get('user_id');
+
         $request->validate([
-            'shipping_status' => 'required'
+            'seller_status' => 'required|in:pending,delivered,canceled'
         ]);
 
-        DB::table('payments')
+        $payment = Payment::with('advert')
             ->where('id', $id)
-            ->update([
-                'shipping_status'=> $request->input('shipping_status'),
-                'shipping_status_date'=> now(),
-            ]);
- 
+            ->where('payment_status', 'paid')
+            ->first();
+
+        if (!$payment || !$payment->advert || $payment->advert->user_id !== $userId) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        $payment->update([
+            'seller_status' => $request->input('seller_status'),
+            'seller_status_date' => now(),
+        ]);
+
         return redirect()->back()->with('success', 'Shipping Status Updated');
-    
     }
 
     public function advert_sold($id)
