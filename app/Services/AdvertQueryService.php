@@ -96,4 +96,92 @@ class AdvertQueryService
             ->orderBy('advert_count', 'desc')
             ->get();
     }
+
+    /**
+     * Get brands with active advert counts for a given category (across all
+     * of its subcategories), optionally scoped to a single location.
+     *
+     * Used in: category.blade.php / main-category.blade.php "Shop by Brand"
+     * sidebar, to link into the location+category+brand pages.
+     */
+    public function getBrandsForCategory(int $categoryId, ?string $stateSlug = null): Collection
+    {
+        return DB::table('brands')
+            ->join('sub_categories', 'brands.subcat_id', '=', 'sub_categories.id')
+            ->leftJoin('adverts', 'brands.id', '=', 'adverts.brand')
+            ->where('sub_categories.cat_id', $categoryId)
+            ->where(function ($query) use ($stateSlug) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function ($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+
+                if ($stateSlug) {
+                    // A {location} URL segment can be a state-level slug
+                    // (adverts.state, e.g. "lagos") or an LGA-level slug
+                    // (adverts.state_slug, e.g. "ikeja") — check both.
+                    $query->where(function ($q) use ($stateSlug) {
+                        $q->where('adverts.state', $stateSlug)->orWhere('adverts.state_slug', $stateSlug);
+                    });
+                }
+            })
+            ->select(
+                'brands.id',
+                'brands.brand',
+                'brands.brand_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('brands.id', 'brands.brand', 'brands.brand_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get models with active advert counts for a given brand, scoped to a
+     * category and optionally a single location. Only categories with a
+     * model-bearing detail table (vehicles → car_details, mobile phones →
+     * phone_details) are supported; any other category returns empty.
+     *
+     * Used in: brand.blade.php "Shop by Model" sidebar.
+     */
+    public function getModelsForBrand(int $brandId, int $categoryId, ?string $stateSlug = null): Collection
+    {
+        $detailTable = match ($categoryId) {
+            1 => 'car_details',
+            4 => 'phone_details',
+            default => null,
+        };
+
+        if (!$detailTable) {
+            return collect();
+        }
+
+        return DB::table('models')
+            ->leftJoin($detailTable, 'models.id', '=', "{$detailTable}.model")
+            ->leftJoin('adverts', "{$detailTable}.advert_id", '=', 'adverts.id')
+            ->where('models.brand_id', $brandId)
+            ->where(function ($query) use ($stateSlug) {
+                $query->where('adverts.ad_status', 1)
+                      ->where(function ($q) {
+                          $q->where('adverts.sold_date', '>=', now()->subDays(30))
+                            ->orWhereNull('adverts.sold_date');
+                      });
+
+                if ($stateSlug) {
+                    $query->where(function ($q) use ($stateSlug) {
+                        $q->where('adverts.state', $stateSlug)->orWhere('adverts.state_slug', $stateSlug);
+                    });
+                }
+            })
+            ->select(
+                'models.id',
+                'models.model',
+                'models.model_slug',
+                DB::raw('COUNT(adverts.id) as advert_count')
+            )
+            ->groupBy('models.id', 'models.model', 'models.model_slug')
+            ->orderBy('advert_count', 'desc')
+            ->get();
+    }
 }

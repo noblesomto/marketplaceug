@@ -164,7 +164,20 @@ class FeaturedAdPaginator
     protected function applyFilters($query)
     {
         foreach ($this->filters as $key => $value) {
-            if (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'state_slug', 'city']) && $value) {
+            if (!$value) {
+                continue;
+            }
+
+            // A {location} URL segment can be a state-level slug (matched
+            // against adverts.state, e.g. "lagos") or an LGA-level slug
+            // (matched against adverts.state_slug, e.g. "ikeja") — the two
+            // columns hold different granularities, so a "state_slug" filter
+            // must check both to work for either tier.
+            if ($key === 'state_slug') {
+                $query->where(function ($q) use ($value) {
+                    $q->where('state_slug', $value)->orWhere('state', $value);
+                });
+            } elseif (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'city'])) {
                 $query->where($key, $value);
             }
         }

@@ -81,6 +81,7 @@ class Kernel extends HttpKernel
         'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
         'user.not_disabled' => \App\Http\Middleware\EnsureUserNotDisabled::class,
         'admin.2fa' => \App\Http\Middleware\Admin2FAVerified::class,
+        'lowercase.url' => \App\Http\Middleware\LowercaseLocationUrl::class,
     ];
 
     /**

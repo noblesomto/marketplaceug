@@ -13,6 +13,7 @@
 ])
 @include('public.layouts.search')
 
+@include('public.components.seo.intro-block')
 
 <section class="w-full max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-2">
@@ -81,6 +82,24 @@
                 </a>
             </div>
             @endif
+            @elseif(isset($brandsForCategory) && $brandsForCategory->isNotEmpty())
+            <!-- Shop by Brand in this location -->
+            @php $brandLimit = 15; @endphp
+            <ul class="space-y-0.5">
+                @foreach($brandsForCategory->take($brandLimit) as $catBrand)
+                <li>
+                    <a href="{{ url('/' . $location . '/' . $cat->category_slug . '/' . $catBrand->brand_slug) }}"
+                       class="group flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-all duration-200">
+                        <span class="text-gray-600 group-hover:text-secondary_dark text-[14px] leading-tight transition-colors font-bold">
+                            {{ $catBrand->brand }}
+                        </span>
+                        <span class="text-[11px] text-gray-500 font-medium group-hover:text-secondary_dark transition-colors">
+                             ({{ $catBrand->advert_count }})
+                        </span>
+                    </a>
+                </li>
+                @endforeach
+            </ul>
             @endif
         </div>
     </div>
@@ -103,6 +122,40 @@
                 @include('public.components.advert.price-filter')
             </div>
         </div>
+
+        @if(!empty($qualifyingPriceRanges))
+        <!-- Shop by Price (location-based category pages, only qualifying buckets) -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Shop by Price</h4>
+            <ul class="space-y-0.5">
+                @foreach($qualifyingPriceRanges as $rangeSlug => $rangeLabel)
+                <li>
+                    <a href="{{ url('/' . $location . '/' . $cat->category_slug . '/' . $rangeSlug) }}"
+                       class="block p-2 rounded-md hover:bg-gray-50 text-gray-600 hover:text-secondary_dark text-[14px] leading-tight transition-colors font-bold">
+                        {{ $rangeLabel }}
+                    </a>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        @if(!empty($qualifyingConditions))
+        <!-- Shop by Condition (location-based category pages, only qualifying conditions) -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Shop by Condition</h4>
+            <ul class="space-y-0.5">
+                @foreach($qualifyingConditions as $conditionSlug => $conditionValue)
+                <li>
+                    <a href="{{ url('/' . $location . '/' . $cat->category_slug . '/' . $conditionSlug) }}"
+                       class="block p-2 rounded-md hover:bg-gray-50 text-gray-600 hover:text-secondary_dark text-[14px] leading-tight transition-colors font-bold">
+                        {{ ucwords($conditionValue) }}
+                    </a>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
         @if(!isset($location))
         <!-- Purchase Type Section (Only show when NOT location-based) -->
@@ -208,6 +261,9 @@
       </div>
   </div>
 </section>
+
+@include('public.components.seo.faq-tips-block')
+
 <div class="pb-10"></div>
 @include('public.components.advert.modal-locations')
 @include('public.components.advert.modal-filter-brands')

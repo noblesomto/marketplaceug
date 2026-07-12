@@ -49,20 +49,35 @@ if (app()->environment('local')) {
 |--------------------------------------------------------------------------
 */
 
+// 3-segment: /{location}/{category_slug}/{slug} → location + category + (brand | model | price-range) filter
+// slug must contain at least one letter (price-range slugs like "1m-10m"
+// start with a digit) so it can never collide with the purely-numeric
+// advert id below, regardless of registration order. The controller tries
+// brand, then model, then a fixed set of price-range slugs.
+Route::get('/{location}/{category_slug}/{slug}', [SearchFilter::class, 'location_category_brand'])
+    ->where('location', '[A-Za-z0-9\-\s]+')
+    ->where('category_slug', '[A-Za-z0-9\-]+')
+    ->where('slug', '[A-Za-z0-9\-]*[A-Za-z][A-Za-z0-9\-]*')
+    ->middleware('lowercase.url')
+    ->name('location.category.brand');
+
 // 3-segment: /{location}/{slug}/{id} → advert detail page
 Route::get('/{location}/{slug}/{id}', [AdvertController::class, 'advert'])
     ->where('location', '[A-Za-z0-9\-\s]+')
     ->where('slug', '[A-Za-z0-9\-]+')
     ->where('id', '[0-9]+')
+    ->middleware('lowercase.url')
     ->name('advert');
 
 // 2-segment: /{location}/{slug} → location + category filter
 Route::get('/{location}/{slug}', [SearchFilter::class, 'location_router'])
     ->where('location', '[A-Za-z0-9\-\s]+')
     ->where('slug', '[A-Za-z0-9\-]+')
+    ->middleware('lowercase.url')
     ->name('location.router');
 
 // 1-segment: /{location} → location page
 Route::get('/{location}', [AdvertController::class, 'location'])
     ->where('location', '[A-Za-z0-9\-\s]+')
+    ->middleware('lowercase.url')
     ->name('location');

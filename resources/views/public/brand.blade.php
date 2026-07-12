@@ -9,6 +9,7 @@
 @include('public.components.mobile.mobile-nav')
 @include('public.layouts.search')
 
+@include('public.components.seo.intro-block')
 
 <section class="w-full lg:max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-3">
@@ -50,6 +51,29 @@
                     @include('public.components.advert.price-filter-brand')
                 </div>
             </div>
+
+            @if(isset($models) && $models->isNotEmpty())
+            <!-- Shop by Model (location-based brand pages, vehicles/mobile-phones only) -->
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider text-[11px]">Shop by Model</h4>
+                @php $modelLimit = 15; @endphp
+                <ul class="space-y-0.5">
+                    @foreach($models->take($modelLimit) as $catModel)
+                    <li>
+                        <a href="{{ url('/' . $location . '/' . $cat->category_slug . '/' . $catModel->model_slug) }}"
+                           class="group flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-all duration-200">
+                            <span class="text-gray-600 group-hover:text-secondary_dark text-[14px] leading-tight transition-colors font-bold">
+                                {{ $catModel->model }}
+                            </span>
+                            <span class="text-[11px] text-gray-500 font-medium group-hover:text-secondary_dark transition-colors">
+                                 ({{ $catModel->advert_count }})
+                            </span>
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             @if(!isset($location))
             <!-- Buy Directly Card (Only show when NOT location-based) -->
@@ -162,6 +186,9 @@
       </div>
   </div>
 </section>
+
+@include('public.components.seo.faq-tips-block')
+
 <div class="pb-20"></div>
 
 

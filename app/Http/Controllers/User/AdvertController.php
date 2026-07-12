@@ -632,10 +632,11 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user    = User::where('user_id', $user_id)->first();
         $title   = config('global.site_name') . ' | Related: ' . $ad->ad_title;
+        $metaRobots = 'noindex, follow';
 
         return view('public.related', compact(
             'title', 'ads', 'user', 'categories', 'cat', 'count_cat',
-            'hasMore', 'isMobile', 'ad', 'subcat'
+            'hasMore', 'isMobile', 'ad', 'subcat', 'metaRobots'
         ));
     }
 
@@ -827,7 +828,12 @@ class AdvertController extends Controller
     public function mainCategory(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+
+        $count_cat = Advert::activeNotRecentlySold()
+            ->where('category', $cat->id)
+            ->count();
+
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'), $count_cat);
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
@@ -839,10 +845,6 @@ class AdvertController extends Controller
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-
-        $count_cat = Advert::activeNotRecentlySold()
-            ->where('category', $cat->id)
-            ->count();
 
         $categories = DB::table('sub_categories')
             ->leftJoin('adverts', function ($join) {
@@ -890,9 +892,10 @@ class AdvertController extends Controller
 
         $agent = new Agent();
         $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($count_cat);
 
         return view('public.main-category', array_merge(compact(
-            'title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'subcatImages', 'isMobile'
+            'title', 'ads', 'user', 'categories', 'cat', 'count_cat', 'hasMore', 'subcatImages', 'isMobile', 'metaRobots'
         ), $seo));
     }
 
@@ -952,7 +955,11 @@ class AdvertController extends Controller
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
 
-        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}"), $request->get('location', 'Nigeria'));
+        $count_subcat = Advert::activeNotRecentlySold()
+            ->where('sub_category', $subcat->id)
+            ->count();
+
+        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}"), $request->get('location', 'Nigeria'), $count_subcat);
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
@@ -965,10 +972,6 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
 
-        $count_subcat = Advert::activeNotRecentlySold()
-            ->where('sub_category', $subcat->id)
-            ->count();
-
         $brands = $this->advertQueryService->getBrandsForSubcat($subcat->id);
 
         // IMPORTANT: Set these variables for the JavaScript
@@ -978,7 +981,8 @@ class AdvertController extends Controller
 
         $agent = new Agent();
         $isMobile = $agent->isMobile();
-        return view('public.sub-category', array_merge(compact('title', 'ads', 'user', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile'), $seo));
+        $metaRobots = $this->seoRobotsForCount($count_subcat);
+        return view('public.sub-category', array_merge(compact('title', 'ads', 'user', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile', 'metaRobots'), $seo));
     }
 
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
@@ -987,15 +991,15 @@ class AdvertController extends Controller
         $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
         $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
 
-        $seo   = $this->buildSeoMeta($brand->brand . ' ' . $subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}/{$brand->brand_slug}"), $request->get('location', 'Nigeria'));
-        $title = $seo['seoTitle'];
-
         $result = (new FeaturedAdPaginator(1))
             ->filters(['brand' => $brand->id])
             ->get();
 
         $ads = $result['ads'];
         $hasMore = $result['hasMore'];
+
+        $seo   = $this->buildSeoMeta($brand->brand . ' ' . $subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}/{$brand->brand_slug}"), $request->get('location', 'Nigeria'), $result['total']);
+        $title = $seo['seoTitle'];
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -1011,14 +1015,13 @@ class AdvertController extends Controller
             $filterIsString = false;
             $agent = new Agent();
             $isMobile = $agent->isMobile();
+            $metaRobots = $this->seoRobotsForCount($result['total']);
 
-        return view('public.brand', array_merge(compact('title', 'ads', 'user', 'brand', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile'), $seo));
+        return view('public.brand', array_merge(compact('title', 'ads', 'user', 'brand', 'brands', 'cat', 'subcat', 'count_subcat', 'hasMore', 'filterType', 'filterId', 'isMobile', 'metaRobots'), $seo));
     }
 
         public function location($location)
     {
-        $title = "Adverts located at ". $location .' | '.config('global.site_title');
-
         $result = (new FeaturedAdPaginator(1))
             ->filters(['state_slug' => $location])
             ->get();
@@ -1026,6 +1029,8 @@ class AdvertController extends Controller
         $ads = $result['ads'];
         $hasMore = $result['hasMore'];
 
+        $seo   = $this->buildLocationOnlySeoMeta($location, url("/{$location}"), $result['total']);
+        $title = $seo['seoTitle'];
 
         $filterType = 'state_slug';
         $filterId = $location; // Just the raw value
@@ -1034,8 +1039,9 @@ class AdvertController extends Controller
         $categories = Category::with('subCategories')->get();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($result['total']);
 
-        return view('public.location', compact('title','location', 'ads','categories', 'hasMore', 'filterType', 'filterId', 'filterIsString','isMobile'));
+        return view('public.location', array_merge(compact('title','location', 'ads','categories', 'hasMore', 'filterType', 'filterId', 'filterIsString','isMobile', 'metaRobots'), $seo));
     }
 
     public function loadMoreLocation(Request $request)

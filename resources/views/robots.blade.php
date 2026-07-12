@@ -6,3 +6,5 @@ Disallow: /buy-direct/
 Disallow: /chat/
 Disallow: /admin/*
 Disallow: /webmail/*
+
+Sitemap: {{ url('/sitemap.xml') }}

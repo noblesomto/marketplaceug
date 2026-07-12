@@ -225,6 +225,38 @@ class GenerateSitemap extends Command
                 }
             });
 
+        // ── State + Category + Brand ──────────────────────────────────────────
+        // Only include combos with enough inventory to be worth indexing —
+        // mirrors the noindex threshold used on the pages themselves.
+        DB::table('adverts')
+            ->join('categories', 'adverts.category', '=', 'categories.id')
+            ->join('brands', 'adverts.brand', '=', 'brands.id')
+            ->select(
+                'adverts.state_slug',
+                'categories.category_slug',
+                'brands.brand_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state_slug')
+            ->where('adverts.state_slug', '!=', '')
+            ->whereNotNull('adverts.brand')
+            ->groupBy('adverts.state_slug', 'categories.category_slug', 'brands.brand_slug')
+            ->having('ad_count', '>=', 5)
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->state_slug}/{$row->category_slug}/{$row->brand_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.6)
+                    );
+                    $count++;
+                }
+            });
+
         $this->write($sitemap, 'sitemap-locations.xml', $index);
         $this->info("  → sitemap-locations.xml ({$count} URLs)");
     }

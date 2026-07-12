@@ -13,6 +13,7 @@
     <meta name="keywords" content="{{ $brand->keywords ?? 'Marketplace Naija, Buy & Sell Nigeria, ' . $brand->brand . ', Nigeria classifieds, Online marketplace Nigeria' }}">
 
     <meta name="author" content="Marketplace Naija">
+    <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />

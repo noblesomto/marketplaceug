@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Brands;
 use App\Models\User;
 use App\Models\State;
+use App\Models\VehicleModel;
 use Jenssegers\Agent\Agent;
 use App\Traits\HasUserSession;
 use App\Traits\GeneratesSeoMeta;
@@ -77,7 +78,8 @@ class SearchFilter extends Controller
         ];
         $agent = new Agent();
         $isMobile = $agent->isMobile();
-        return view('public.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams','isMobile'));
+        $metaRobots = 'noindex, follow';
+        return view('public.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams','isMobile', 'metaRobots'));
     }
 
     public function location_router($location, $slug)
@@ -97,15 +99,19 @@ class SearchFilter extends Controller
     public function location_category(Request $request, $location, $slug)
     {
         $cat = Category::where('category_slug', $slug)->firstOrFail();
-        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $location);
-        $title = $seo['seoTitle'];
 
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
-                    ->where('state', $location)
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
                     ->where('category', $cat->id)
                     ->orderWithFeatured()
                     ->paginate(20);
+
+        $locationCount = $ads->total();
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $this->resolveLocationDisplayName($location), $locationCount);
+        $title = $seo['seoTitle'];
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -117,8 +123,90 @@ class SearchFilter extends Controller
         $hasMore = $ads->hasMorePages();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
+        $brandsForCategory = $this->advertQueryService->getBrandsForCategory($cat->id, $location);
+        $qualifyingPriceRanges = $this->getQualifyingPriceRanges($cat, $location);
+        $qualifyingConditions = $this->getQualifyingConditions($cat, $location);
 
-        return view('public.category', array_merge(compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore', 'isMobile', 'location'), $seo));
+        return view('public.category', array_merge(compact('title', 'ads', 'user', 'cat', 'categories', 'count_cat', 'hasMore', 'isMobile', 'location', 'metaRobots', 'brandsForCategory', 'qualifyingPriceRanges', 'qualifyingConditions'), $seo));
+    }
+
+    /**
+     * Which of the 5 fixed price-range slugs have enough inventory (same
+     * threshold as seoRobotsForCount) to be worth linking to from the
+     * category page's "Shop by Price" sidebar. Bounded to 5 checks — no
+     * combinatorial blow-up since the bucket count is fixed.
+     */
+    private function getQualifyingPriceRanges(Category $cat, string $location): array
+    {
+        // One query with a conditional SUM per bucket instead of 5 separate
+        // COUNT queries — bucket boundaries mirror FilterService::applyPriceRange().
+        $counts = Advert::activeNotRecentlySold()
+            ->where(function ($q) use ($location) {
+                $q->where('state', $location)->orWhere('state_slug', $location);
+            })
+            ->where('category', $cat->id)
+            ->selectRaw("
+                SUM(CASE WHEN price < 20000 THEN 1 ELSE 0 END) as under_20k,
+                SUM(CASE WHEN price BETWEEN 20000 AND 120000 THEN 1 ELSE 0 END) as `20k_120k`,
+                SUM(CASE WHEN price BETWEEN 120000 AND 1000000 THEN 1 ELSE 0 END) as `120k_1m`,
+                SUM(CASE WHEN price BETWEEN 1000000 AND 10000000 THEN 1 ELSE 0 END) as `1m_10m`,
+                SUM(CASE WHEN price > 10000000 THEN 1 ELSE 0 END) as above_10m
+            ")
+            ->first();
+
+        $qualifying = [];
+
+        foreach (self::PRICE_RANGE_SLUGS as $slug => $range) {
+            if (($counts->{$range['key']} ?? 0) >= 5) {
+                $qualifying[$slug] = $range['label'];
+            }
+        }
+
+        return $qualifying;
+    }
+
+    /**
+     * Which condition slugs (if any apply to this category) have enough
+     * inventory to be worth linking to from the "Shop by Condition" sidebar.
+     */
+    private function getQualifyingConditions(Category $cat, string $location): array
+    {
+        $conditionMap = $this->conditionSlugsForCategory($cat->id);
+
+        if (!$conditionMap) {
+            return [];
+        }
+
+        // One grouped query instead of up to 3 separate COUNT queries.
+        $baseQuery = Advert::activeNotRecentlySold()
+            ->where(function ($q) use ($location) {
+                $q->where('state', $location)->orWhere('state_slug', $location);
+            })
+            ->where('category', $cat->id);
+
+        if ($cat->id === 1) {
+            $counts = (clone $baseQuery)
+                ->join('car_details', 'car_details.advert_id', '=', 'adverts.id')
+                ->selectRaw('car_details.condition as value, COUNT(*) as total')
+                ->groupBy('car_details.condition')
+                ->pluck('total', 'value');
+        } else {
+            $counts = (clone $baseQuery)
+                ->selectRaw('item_condition as value, COUNT(*) as total')
+                ->groupBy('item_condition')
+                ->pluck('total', 'value');
+        }
+
+        $qualifying = [];
+
+        foreach ($conditionMap as $slug => $value) {
+            if (($counts[$value] ?? 0) >= 5) {
+                $qualifying[$slug] = $value;
+            }
+        }
+
+        return $qualifying;
     }
 
     public function location_subcat(Request $request, $location, $slug)
@@ -128,10 +216,14 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where('sold', 'No')
-                    ->where('state', $location)
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
                     ->where('sub_category', $subcat->id)
                     ->orderWithFeatured()
                     ->paginate(20);
+
+        $locationCount = $ads->total();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -143,14 +235,15 @@ class SearchFilter extends Controller
         $brands = $this->advertQueryService->getBrandsForSubcat($subcat->id);
 
         $cat   = $subcat->category;
-        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $location);
+        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/{$location}/{$slug}"), $this->resolveLocationDisplayName($location), $locationCount);
         $title = $seo['seoTitle'];
 
         $hasMore = $ads->hasMorePages();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
 
-        return view('public.sub-category', array_merge(compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore', 'isMobile', 'location', 'brands', 'cat'), $seo));
+        return view('public.sub-category', array_merge(compact('title', 'ads', 'user', 'categories', 'subcat', 'count_subcat', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'metaRobots'), $seo));
     }
 
     public function location_brand(Request $request, $location, $slug)
@@ -159,10 +252,14 @@ class SearchFilter extends Controller
 
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
-                    ->where('state', $location)
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
                     ->where('brand', $brand->id)
                     ->orderWithFeatured()
                     ->paginate(20);
+
+        $locationCount = $ads->total();
 
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
@@ -182,14 +279,264 @@ class SearchFilter extends Controller
 
         $seoName = $brand->brand . ($subcat ? ' ' . $subcat->sub_category : '');
         $seoGrp  = $cat->seo_group ?? 'product';
-        $seo     = $this->buildSeoMeta($seoName, $seoGrp, url("/{$location}/{$slug}"), $location);
+        $seo     = $this->buildSeoMeta($seoName, $seoGrp, url("/{$location}/{$slug}"), $this->resolveLocationDisplayName($location), $locationCount);
         $title   = $seo['seoTitle'];
 
         $hasMore = $ads->hasMorePages();
         $agent = new Agent();
         $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
 
-        return view('public.brand', array_merge(compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat'), $seo));
+        return view('public.brand', array_merge(compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat', 'metaRobots'), $seo));
+    }
+
+    /**
+     * Only these categories have a model-bearing detail table (car_details /
+     * phone_details) — model landing pages only exist for them.
+     */
+    private const MODEL_CATEGORY_DETAIL_RELATIONS = [1 => 'car', 4 => 'phone'];
+
+    /**
+     * Fixed set of price-range slugs, reusing FilterService's existing
+     * buckets — see FilterService::applyPriceRange().
+     */
+    private const PRICE_RANGE_SLUGS = [
+        'under-20k' => ['key' => 'under_20k', 'label' => 'Under ₦20,000'],
+        '20k-120k'  => ['key' => '20k_120k',  'label' => '₦20,000 - ₦120,000'],
+        '120k-1m'   => ['key' => '120k_1m',   'label' => '₦120,000 - ₦1 Million'],
+        '1m-10m'    => ['key' => '1m_10m',    'label' => '₦1 Million - ₦10 Million'],
+        'above-10m' => ['key' => 'above_10m', 'label' => 'Above ₦10 Million'],
+    ];
+
+    /**
+     * Condition slugs for Vehicles (category 1) — car_details.condition has
+     * clean, reliable values.
+     */
+    private const VEHICLE_CONDITION_SLUGS = [
+        'brand-new'    => 'Brand new',
+        'foreign-used' => 'Foreign used',
+        'locally-used' => 'Local used',
+    ];
+
+    /**
+     * Condition slugs for every category except Vehicles (1) and Mobile
+     * Phones & Tablets (4) — adverts.item_condition has clean, reliable
+     * values. Phones are deliberately excluded: phone_details.condition is
+     * a messy free-text field ("Used - Good", "Used - Defect", etc.) that
+     * doesn't reliably indicate foreign vs. locally-used, so condition
+     * pages for phones need a data cleanup decision before they can exist.
+     */
+    private const GENERAL_CONDITION_SLUGS = [
+        'new'          => 'New',
+        'foreign-used' => 'Foreign Used',
+        'locally-used' => 'Locally Used',
+    ];
+
+    /**
+     * Dispatcher for /{location}/{category_slug}/{slug} — the 3rd segment
+     * can be a brand, a model (vehicles/mobile-phones only), a fixed
+     * price-range slug, or a fixed condition slug (all categories except
+     * mobile phones). All share the same URL shape, so they're tried in
+     * order rather than routed separately.
+     */
+    public function location_category_brand(Request $request, $location, $category_slug, $slug)
+    {
+        $cat = Category::where('category_slug', $category_slug)->firstOrFail();
+
+        $brand = Brands::where('brand_slug', $slug)
+            ->whereHas('subCategory', fn ($q) => $q->where('cat_id', $cat->id))
+            ->first();
+
+        if ($brand) {
+            return $this->renderLocationCategoryBrand($request, $location, $category_slug, $cat, $slug, $brand);
+        }
+
+        if (isset(self::MODEL_CATEGORY_DETAIL_RELATIONS[$cat->id])) {
+            $model = VehicleModel::where('model_slug', $slug)
+                ->whereHas('brand.subCategory', fn ($q) => $q->where('cat_id', $cat->id))
+                ->first();
+
+            if ($model) {
+                return $this->renderLocationCategoryModel($request, $location, $category_slug, $cat, $slug, $model);
+            }
+        }
+
+        if (isset(self::PRICE_RANGE_SLUGS[$slug])) {
+            return $this->renderLocationCategoryPriceRange($request, $location, $category_slug, $cat, $slug);
+        }
+
+        $conditionMap = $this->conditionSlugsForCategory($cat->id);
+        if ($conditionMap && isset($conditionMap[$slug])) {
+            return $this->renderLocationCategoryCondition($request, $location, $category_slug, $cat, $slug, $conditionMap[$slug]);
+        }
+
+        abort(404);
+    }
+
+    /**
+     * Which condition slug map (if any) applies to a category. Returns null
+     * for Mobile Phones & Tablets (4) — see GENERAL_CONDITION_SLUGS docblock.
+     */
+    private function conditionSlugsForCategory(int $categoryId): ?array
+    {
+        if ($categoryId === 4) {
+            return null;
+        }
+
+        return $categoryId === 1 ? self::VEHICLE_CONDITION_SLUGS : self::GENERAL_CONDITION_SLUGS;
+    }
+
+    private function renderLocationCategoryBrand(Request $request, $location, $category_slug, Category $cat, string $brand_slug, Brands $brand)
+    {
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
+                    ->where('category', $cat->id)
+                    ->where('brand', $brand->id)
+                    ->orderWithFeatured()
+                    ->paginate(20);
+
+        $locationCount = $ads->total();
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $categories = Category::with('subCategories')->get();
+        $count_brand = Advert::activeNotRecentlySold()
+                        ->where('brand', $brand->id)
+                        ->count();
+
+        $subcat = $brand->subcategory;
+
+        $brands = $this->advertQueryService->getBrandsForSubcat($brand->subcat_id);
+
+        $count_subcat = Advert::activeNotRecentlySold()
+                        ->where('sub_category', $brand->subcat_id)
+                        ->count();
+
+        $models = isset(self::MODEL_CATEGORY_DETAIL_RELATIONS[$cat->id])
+            ? $this->advertQueryService->getModelsForBrand($brand->id, $cat->id, $location)
+            : collect();
+
+        $seoName = $brand->brand . ' ' . $cat->category;
+        $seo     = $this->buildSeoMeta($seoName, $cat->seo_group ?? 'product', url("/{$location}/{$category_slug}/{$brand_slug}"), $this->resolveLocationDisplayName($location), $locationCount);
+        $title   = $seo['seoTitle'];
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
+
+        return view('public.brand', array_merge(compact('title', 'ads', 'user', 'categories', 'brand', 'count_brand', 'hasMore', 'isMobile', 'location', 'brands', 'cat', 'subcat', 'count_subcat', 'metaRobots', 'models'), $seo));
+    }
+
+    private function renderLocationCategoryModel(Request $request, $location, $category_slug, Category $cat, string $model_slug, VehicleModel $model)
+    {
+        $detailRelation = self::MODEL_CATEGORY_DETAIL_RELATIONS[$cat->id];
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
+                    ->where('category', $cat->id)
+                    ->whereHas($detailRelation, fn ($q) => $q->where('model', $model->id))
+                    ->orderWithFeatured()
+                    ->paginate(20);
+
+        $locationCount = $ads->total();
+
+        $brand = $model->brand;
+
+        $seoName = $brand->brand . ' ' . $model->model;
+        $seo     = $this->buildSeoMeta($seoName, $cat->seo_group ?? 'product', url("/{$location}/{$category_slug}/{$model_slug}"), $this->resolveLocationDisplayName($location), $locationCount);
+        $title   = $seo['seoTitle'];
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $categories = Category::with('subCategories')->get();
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
+
+        // Deeper browsing beyond page 1 goes to the parent brand page, which
+        // already has full "load more" pagination wired up.
+        $moreUrl = url("/{$location}/{$category_slug}/{$brand->brand_slug}");
+
+        return view('public.location-attribute', array_merge(compact('title', 'ads', 'user', 'categories', 'location', 'metaRobots', 'hasMore', 'isMobile', 'moreUrl'), $seo));
+    }
+
+    private function renderLocationCategoryPriceRange(Request $request, $location, $category_slug, Category $cat, string $rangeSlug)
+    {
+        $range = self::PRICE_RANGE_SLUGS[$rangeSlug];
+
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
+                    ->where('category', $cat->id)
+                    ->tap(fn ($q) => $this->filterService->applyPriceRange($q, $range['key']))
+                    ->orderWithFeatured()
+                    ->paginate(20);
+
+        $locationCount = $ads->total();
+
+        $seoName = $cat->category . ' ' . $range['label'];
+        $seo     = $this->buildSeoMeta($seoName, $cat->seo_group ?? 'product', url("/{$location}/{$category_slug}/{$rangeSlug}"), $this->resolveLocationDisplayName($location), $locationCount);
+        $title   = $seo['seoTitle'];
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $categories = Category::with('subCategories')->get();
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
+
+        $moreUrl = url("/{$location}/{$category_slug}");
+
+        return view('public.location-attribute', array_merge(compact('title', 'ads', 'user', 'categories', 'location', 'metaRobots', 'hasMore', 'isMobile', 'moreUrl'), $seo));
+    }
+
+    private function renderLocationCategoryCondition(Request $request, $location, $category_slug, Category $cat, string $conditionSlug, string $conditionValue)
+    {
+        $ads = Advert::with('firstImage')
+                    ->activeNotRecentlySold()
+                    ->where(function ($q) use ($location) {
+                        $q->where('state', $location)->orWhere('state_slug', $location);
+                    })
+                    ->where('category', $cat->id)
+                    ->when(
+                        $cat->id === 1,
+                        fn ($q) => $q->whereHas('car', fn ($cq) => $cq->where('condition', $conditionValue)),
+                        fn ($q) => $q->where('item_condition', $conditionValue)
+                    )
+                    ->orderWithFeatured()
+                    ->paginate(20);
+
+        $locationCount = $ads->total();
+
+        $seoName = ucwords($conditionValue) . ' ' . $cat->category;
+        $seo     = $this->buildSeoMeta($seoName, $cat->seo_group ?? 'product', url("/{$location}/{$category_slug}/{$conditionSlug}"), $this->resolveLocationDisplayName($location), $locationCount);
+        $title   = $seo['seoTitle'];
+
+        $user_id = $request->session()->get('user_id');
+        $user = User::where('user_id', $user_id)->first();
+        $categories = Category::with('subCategories')->get();
+
+        $hasMore = $ads->hasMorePages();
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        $metaRobots = $this->seoRobotsForCount($locationCount);
+
+        $moreUrl = url("/{$location}/{$category_slug}");
+
+        return view('public.location-attribute', array_merge(compact('title', 'ads', 'user', 'categories', 'location', 'metaRobots', 'hasMore', 'isMobile', 'moreUrl'), $seo));
     }
 
     public function filter(Request $request)

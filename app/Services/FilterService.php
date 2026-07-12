@@ -74,7 +74,7 @@ class FilterService
      * @param string $range
      * @return Builder
      */
-    protected function applyPriceRange(Builder $query, string $range): Builder
+    public function applyPriceRange(Builder $query, string $range): Builder
     {
         switch ($range) {
             case 'under_20k':

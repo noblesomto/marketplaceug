@@ -3,6 +3,7 @@
 @include('public.components.mobile.mobile-nav')
 @include('public.layouts.search')
 
+@include('public.components.seo.intro-block')
 
 <section class="w-full max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-2">
@@ -67,6 +68,7 @@
   </div>
 </section>
 
+@include('public.components.seo.faq-tips-block')
 
 <div class="pb-20"></div>
 <script>

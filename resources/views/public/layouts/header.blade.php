@@ -21,6 +21,7 @@
     <meta name="description" content="{{ $metaDesc }}">
     <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
     <meta name="author" content="Marketplace Naija">
+    <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
 
     <!-- Canonical URL — always points to the clean URL (no query params/page numbers) -->
     <link rel="canonical" href="{{ $metaCanonical }}" />

@@ -12,6 +12,7 @@
 ])
 @include('public.layouts.search')
 
+@include('public.components.seo.intro-block')
 
 <section class="w-full lg:max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-3">
@@ -212,6 +213,9 @@
       </div>
   </div>
 </section>
+
+@include('public.components.seo.faq-tips-block')
+
 <div class="pb-20"></div>
 
 

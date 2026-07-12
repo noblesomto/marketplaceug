@@ -12,6 +12,7 @@
 ])
 @include('public.layouts.search')
 
+@include('public.components.seo.intro-block')
 
 <section class="w-full max-w-[95rem] mx-auto mt-3">
   <div class="grid grid-cols-12 gap-2">
@@ -244,6 +245,9 @@
       </div>
   </div>
 </section>
+
+@include('public.components.seo.faq-tips-block')
+
 <div class="pb-10"></div>
 @include('public.components.advert.modal-locations')
 @include('public.components.advert.modal-filter-brands')
