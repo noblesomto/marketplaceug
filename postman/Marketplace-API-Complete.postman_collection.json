@@ -6627,6 +6627,113 @@
           ]
         },
         {
+          "name": "Cancel Order (Buyer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user/payments/{{payment_id}}/cancel-order",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "payments",
+                "{{payment_id}}",
+                "cancel-order"
+              ]
+            },
+            "description": "🔒 **Requires Authentication (Buyer only)**\n\nEndpoint: `POST /api/user/payments/{paymentId}/cancel-order`\nController: `App\\Http\\Controllers\\Api\\UserController@cancelOrder`\n\nAllows the **buyer** to cancel their order before it has been handed to the shipping company. Sets both `buyer_status` and `seller_status` to `canceled`, notifies the seller (in-app + push), and queues an admin refund email.\n\nMirrors the web route `POST /user/cancel-order/{id}` (`user.cancel.order`) — same validation and notifier (`BuyerCancelNotifier`).\n\n**URL Parameter:**\n- `paymentId` — The payment record `id` (integer)\n\n**Authorization / validation:**\n- Returns `404` if the payment does not belong to the authenticated user, is not paid, or does not exist\n- Returns `422` if the order was already canceled\n- Returns `422` if the order was already delivered\n- Returns `422` if the order is no longer with the seller (`shipping_status` is not `pending`) — buyer must contact support instead\n\n**No request body required.**",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Order canceled",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/cancel-order",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "cancel-order"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Order canceled. Your refund is being processed.\"\n}"
+            },
+            {
+              "name": "404 — Order not found or not buyer's order",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/999/cancel-order",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "999", "cancel-order"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Order not found.\"\n}"
+            },
+            {
+              "name": "422 — Already with shipping company",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/user/payments/{{payment_id}}/cancel-order",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "user", "payments", "{{payment_id}}", "cancel-order"]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"This order is already with the shipping company and can no longer be canceled here. Please contact support.\"\n}"
+            }
+          ]
+        },
+        {
           "name": "Update Shipping Status (Seller)",
           "request": {
             "method": "PATCH",
@@ -6655,7 +6762,7 @@
                 "shipping-status"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`\n\nAllows the **seller** to record their own status for a sold item (e.g. 'I dropped this off / it's done / I'm cancelling'). Only the seller who owns the ad can call this endpoint.\n\n\u26a0\ufe0f **This writes to `seller_status`, NOT `shipping_status`.** There are three independent status columns on a payment \u2014 do not confuse them:\n- `shipping_status` \u2014 set by the **shipper** (GIG Logistics agent) via the shipper portal. Values: `pending` | `shipped` | `pickup` | `delivered` | `canceled`. This is the real physical shipment progress.\n- `seller_status` \u2014 set by the **seller** via this endpoint. Values: `pending` | `delivered` | `canceled` only (sellers cannot set `shipped`/`pickup` \u2014 that's the shipper's job).\n- `buyer_status` \u2014 set by the **buyer** via `POST /api/user/payments/{paymentId}/confirm-delivery`. Values: `pending` | `delivered` | `canceled`. This is the only field that actually confirms receipt and is what the 'Delivered' badge (vs 'Pending Confirmation') is keyed off.\n\n**URL Parameter:**\n- `paymentId` \u2014 The payment record `id` (integer)\n\n**Request Body:**\n- `seller_status` (required, string): one of `pending` | `delivered` | `canceled`\n\n**Authorization:**\n- Returns `404` if the payment does not exist, is not paid, or the authenticated user is not the ad owner\n- Returns `422` if `seller_status` is missing or not one of the allowed values (e.g. `shipped`/`pickup` are rejected here \u2014 those are shipper-only values on `shipping_status`)",
+            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `PATCH /api/user/payments/{paymentId}/shipping-status`\nController: `App\\Http\\Controllers\\Api\\UserController@updateShippingStatus`\n\nAllows the **seller** to record their own status for a sold item (e.g. 'I dropped this off with the courier / I'm cancelling'). Only the seller who owns the ad can call this endpoint. Locked once the shipper has taken over (`shipping_status` is no longer `pending`).\n\n\u26a0\ufe0f **This writes to `seller_status`, NOT `shipping_status`.** There are three independent status columns on a payment \u2014 do not confuse them:\n- `shipping_status` \u2014 set by the **shipper** (GIG Logistics agent) via the shipper portal. Values: `pending` | `shipped` | `pickup` | `delivered` | `canceled`. This is the real physical shipment progress.\n- `seller_status` \u2014 set by the **seller** via this endpoint. Values: `pending` | `shipped` | `canceled` only (sellers mark their own item shipped to the courier; only the shipper can set `pickup`/`delivered` on `shipping_status`).\n- `buyer_status` \u2014 set by the **buyer** via `POST /api/user/payments/{paymentId}/confirm-delivery` or `POST /api/user/payments/{paymentId}/cancel-order`. Values: `pending` | `delivered` | `canceled`. This is the only field that actually confirms receipt and is what the 'Delivered' badge (vs 'Pending Confirmation') is keyed off.\n\n**URL Parameter:**\n- `paymentId` \u2014 The payment record `id` (integer)\n\n**Request Body:**\n- `seller_status` (required, string): one of `pending` | `shipped` | `canceled`\n\n**Authorization:**\n- Returns `404` if the payment does not exist, is not paid, or the authenticated user is not the ad owner\n- Returns `422` if the order is already with the shipping company (`shipping_status` is no longer `pending`)\n- Returns `422` if `seller_status` is missing or not one of the allowed values (e.g. `delivered`/`pickup` are rejected here \u2014 those are shipper-only values on `shipping_status`)",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6668,7 +6775,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"seller_status\": \"delivered\"\n}",
+              "raw": "{\n  \"seller_status\": \"shipped\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -6684,7 +6791,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"seller_status\": \"delivered\"\n}",
+                  "raw": "{\n  \"seller_status\": \"shipped\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": {
@@ -6707,7 +6814,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"seller_status\": \"delivered\"\n}",
+                  "raw": "{\n  \"seller_status\": \"shipped\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": {
@@ -6730,7 +6837,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"seller_status\": \"shipped\"\n}",
+                  "raw": "{\n  \"seller_status\": \"delivered\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": {
@@ -6777,7 +6884,7 @@
                 "shipping-details"
               ]
             },
-            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `GET /api/user/adverts/{advertId}/shipping-details`\nController: `App\\Http\\Controllers\\Api\\UserController@adShippingDetails`\n\nReturns all seller-facing shipping details for a sold Buy Direct ad. Equivalent to the web page `/user/ad-shipping/{id}`.\n\n**URL Parameter:**\n- `advertId` \u2014 The advert's database `id` (integer)\n\n**Authorization:**\n- Returns `403` if the authenticated user is not the ad owner\n- Returns `404` if no payment record exists for the ad\n\n**Push Notification:**\nThis endpoint is referenced in the `ad_sold` push notification payload:\n- `click_action: \"OPEN_AD_SHIPPING\"`\n- `shipping_api_url: \"/api/user/adverts/{advert_id}/shipping-details\"`\n- `shipping_web_url: \"/user/ad-shipping/{advert_id}\"`\n\n**Response includes three independent status fields \u2014 don't conflate them:**\n- `shipping_status` \u2014 set by the **shipper**. `pending` | `shipped` | `pickup` | `delivered` | `canceled`. The real physical shipment progress.\n- `seller_status` \u2014 set by the **seller** via `PATCH /api/user/payments/{paymentId}/shipping-status`. `pending` | `delivered` | `canceled` only.\n- `buyer_status` \u2014 set by the **buyer** via `POST /api/user/payments/{paymentId}/confirm-delivery`. `pending` | `delivered` | `canceled`. This is the only one that represents actual confirmed receipt.\n\nIn the sample response below the three deliberately disagree, to show they're tracked separately: the shipper has marked it `shipped`, the seller has already marked their side `delivered`, but the buyer hasn't confirmed receipt yet (`buyer_status: pending`) \u2014 the UI should show 'Pending Confirmation', not 'Delivered', in that state.\n\n- `payment_id` \u2014 Payment record ID\n- `advert_id` \u2014 Advert database ID\n- `ad_id` \u2014 Public-facing ad ID (e.g. 82174)\n- `ship_code` \u2014 10-digit code to present at shipping office\n- `buyer` \u2014 name, phone\n- `product` \u2014 name, thumbnail_url, ad_url\n- `shipping_company` \u2014 name, logo URL\n- `delivery_location` \u2014 address, city, state\n- `instructions` \u2014 step_1 through step_4 (ready to display)\n- `note` \u2014 Payment release notice",
+            "description": "\ud83d\udd12 **Requires Authentication (Seller only)**\n\nEndpoint: `GET /api/user/adverts/{advertId}/shipping-details`\nController: `App\\Http\\Controllers\\Api\\UserController@adShippingDetails`\n\nReturns all seller-facing shipping details for a sold Buy Direct ad. Equivalent to the web page `/user/ad-shipping/{id}`.\n\n**URL Parameter:**\n- `advertId` \u2014 The advert's database `id` (integer)\n\n**Authorization:**\n- Returns `403` if the authenticated user is not the ad owner\n- Returns `404` if no payment record exists for the ad\n\n**Push Notification:**\nThis endpoint is referenced in the `ad_sold` push notification payload:\n- `click_action: \"OPEN_AD_SHIPPING\"`\n- `shipping_api_url: \"/api/user/adverts/{advert_id}/shipping-details\"`\n- `shipping_web_url: \"/user/ad-shipping/{advert_id}\"`\n\n**Response includes three independent status fields \u2014 don't conflate them:**\n- `shipping_status` \u2014 set by the **shipper**. `pending` | `shipped` | `pickup` | `delivered` | `canceled`. The real physical shipment progress.\n- `seller_status` \u2014 set by the **seller** via `PATCH /api/user/payments/{paymentId}/shipping-status`. `pending` | `shipped` | `canceled` only; locked once `shipping_status` leaves `pending`.\n- `buyer_status` \u2014 set by the **buyer** via `POST /api/user/payments/{paymentId}/confirm-delivery` or `POST /api/user/payments/{paymentId}/cancel-order`. `pending` | `delivered` | `canceled`. This is the only one that represents actual confirmed receipt.\n\nIn the sample response below the three deliberately disagree, to show they're tracked separately: the seller marked their side `shipped` before handing off, the shipper has since progressed it to `shipped` too (their own independent value), but the buyer hasn't confirmed receipt yet (`buyer_status: pending`) \u2014 the UI should show 'Pending Confirmation', not 'Delivered', in that state.\n\n- `payment_id` \u2014 Payment record ID\n- `advert_id` \u2014 Advert database ID\n- `ad_id` \u2014 Public-facing ad ID (e.g. 82174)\n- `ship_code` \u2014 10-digit code to present at shipping office\n- `buyer` \u2014 name, phone\n- `product` \u2014 name, thumbnail_url, ad_url\n- `shipping_company` \u2014 name, logo URL\n- `delivery_location` \u2014 address, city, state\n- `instructions` \u2014 step_1 through step_4 (ready to display)\n- `note` \u2014 Payment release notice",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -6806,7 +6913,7 @@
               "_postman_previewlanguage": "json",
               "header": [],
               "cookie": [],
-              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"payment_id\": 98,\n    \"advert_id\": 60,\n    \"ad_id\": 82174,\n    \"shipping_status\": \"shipped\",\n    \"buyer_status\": \"pending\",\n    \"seller_status\": \"delivered\",\n    \"tracking_id\": \"GIG-NG-88213045\",\n    \"ship_code\": \"SNQHDAOWDZ\",\n    \"buyer\": {\n      \"name\": \"John Doe\",\n      \"phone\": \"08012345678\"\n    },\n    \"product\": {\n      \"name\": \"Samsung Galaxy A51 5G 128GB Pink Used\",\n      \"thumbnail_url\": \"https://www.marketplace.ng/storage/60/conversions/thumbnail.webp\",\n      \"ad_url\": \"https://www.marketplace.ng/epe/samsung-galaxy-a51-5g-128gb-pink-used-a8251/82174\"\n    },\n    \"shipping_company\": {\n      \"name\": \"GIG Logistics\",\n      \"logo\": \"https://www.marketplace.ng/images/gig-logo.png\"\n    },\n    \"delivery_location\": {\n      \"address\": \"2 Awka Road, By DMGS Junction, Beside All Saints' Anglican Cathedral, Onitsha\",\n      \"city\": \"Onitsha\",\n      \"state\": \"Anambra\"\n    },\n    \"instructions\": {\n      \"step_1\": \"Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address.\",\n      \"step_2\": \"Take it to your nearest GIG Logistics office.\",\n      \"step_3\": \"Present the 10-digit shipping code at the counter: SNQHDAOWDZ\",\n      \"step_4\": \"No payment is required at the shipping office. All logistics fees have been covered.\"\n    },\n    \"note\": \"This transaction is secured by our Buy Direct service. Your payment will be released as soon as the buyer confirms delivery.\"\n  }\n}"
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"payment_id\": 98,\n    \"advert_id\": 60,\n    \"ad_id\": 82174,\n    \"shipping_status\": \"shipped\",\n    \"buyer_status\": \"pending\",\n    \"seller_status\": \"shipped\",\n    \"tracking_id\": \"GIG-NG-88213045\",\n    \"ship_code\": \"SNQHDAOWDZ\",\n    \"buyer\": {\n      \"name\": \"John Doe\",\n      \"phone\": \"08012345678\"\n    },\n    \"product\": {\n      \"name\": \"Samsung Galaxy A51 5G 128GB Pink Used\",\n      \"thumbnail_url\": \"https://www.marketplace.ng/storage/60/conversions/thumbnail.webp\",\n      \"ad_url\": \"https://www.marketplace.ng/epe/samsung-galaxy-a51-5g-128gb-pink-used-a8251/82174\"\n    },\n    \"shipping_company\": {\n      \"name\": \"GIG Logistics\",\n      \"logo\": \"https://www.marketplace.ng/images/gig-logo.png\"\n    },\n    \"delivery_location\": {\n      \"address\": \"2 Awka Road, By DMGS Junction, Beside All Saints' Anglican Cathedral, Onitsha\",\n      \"city\": \"Onitsha\",\n      \"state\": \"Anambra\"\n    },\n    \"instructions\": {\n      \"step_1\": \"Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address.\",\n      \"step_2\": \"Take it to your nearest GIG Logistics office.\",\n      \"step_3\": \"Present the 10-digit shipping code at the counter: SNQHDAOWDZ\",\n      \"step_4\": \"No payment is required at the shipping office. All logistics fees have been covered.\"\n    },\n    \"note\": \"This transaction is secured by our Buy Direct service. Your payment will be released as soon as the buyer confirms delivery.\"\n  }\n}"
             },
             {
               "name": "403 \u2014 Not the ad owner",

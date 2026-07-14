@@ -638,6 +638,77 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/user/payments/{paymentId}/cancel-order",
+     *     summary="Cancel order (buyer)",
+     *     tags={"Payments"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="paymentId",
+     *         in="path",
+     *         required=true,
+     *         description="Payment ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order canceled",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Payment not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Order can no longer be canceled"
+     *     )
+     * )
+     */
+    public function cancelOrder($paymentId)
+    {
+        $user = auth()->user();
+
+        $payment = Payment::with(['advert.user', 'user'])
+            ->where('id', $paymentId)
+            ->where('user_id', $user->user_id)
+            ->where('payment_status', 'paid')
+            ->first();
+
+        if (!$payment) {
+            return response()->json(['success' => false, 'message' => 'Order not found.'], 404);
+        }
+
+        if (($payment->buyer_status ?? 'pending') === 'canceled') {
+            return response()->json(['success' => false, 'message' => 'This order has already been canceled.'], 422);
+        }
+
+        if (($payment->buyer_status ?? 'pending') === 'delivered') {
+            return response()->json(['success' => false, 'message' => 'This order has already been delivered and can no longer be canceled.'], 422);
+        }
+
+        if (($payment->shipping_status ?? 'pending') !== 'pending') {
+            return response()->json(['success' => false, 'message' => 'This order is already with the shipping company and can no longer be canceled here. Please contact support.'], 422);
+        }
+
+        $payment->update([
+            'buyer_status' => 'canceled',
+            'seller_status' => 'canceled',
+            'seller_status_date' => now(),
+        ]);
+
+        \App\Services\BuyerCancelNotifier::notify($payment);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order canceled. Your refund is being processed.',
+        ]);
+    }
+
+    /**
      * @OA\Patch(
      *     path="/api/user/payments/{paymentId}/shipping-status",
      *     summary="Update shipping status",
