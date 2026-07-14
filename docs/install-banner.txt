@@ -1,4 +1,4 @@
-z1. Add Apple Smart App Banner
+1. Add Apple Smart App Banner
 
 In:
 

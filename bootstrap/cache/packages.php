@@ -88,11 +88,15 @@
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
     ),
   ),
-  'phiki/phiki' => 
+  'pragmarx/google2fa-laravel' => 
   array (
+    'aliases' => 
+    array (
+      'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
+    ),
     'providers' => 
     array (
-      0 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
+      0 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     ),
   ),
   'spatie/laravel-backup' => 
