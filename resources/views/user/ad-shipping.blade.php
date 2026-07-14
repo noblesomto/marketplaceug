@@ -17,6 +17,9 @@
     $address      = $ad->cityLocation->address ?? null;
     $stateName    = $ad->cityLocation->state->name ?? null;
     $isDelivered  = ($ad->buyer_status ?? '') === 'delivered';
+
+    $badge = \App\Support\ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $ad->buyer_status ?? 'pending', $shipCompany);
+    $shipOnlyBadge = \App\Support\ShippingStatusBadge::resolveShippingOnly($shipStatus);
 @endphp
 
 <section class="w-full md:w-3/6 mx-auto px-3 py-4 text-sm" style="max-width:640px;padding-bottom:7rem;">
@@ -26,31 +29,9 @@
     {{-- Page title + status badge --}}
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-base font-bold text-gray-800">Shipping Details</h1>
-        @if($isDelivered)
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
-                <i class="bi bi-check-circle-fill"></i> Delivered
-            </span>
-        @elseif($shipStatus === 'delivered')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
-                <i class="bi bi-hourglass-split"></i> Pending Confirmation
-            </span>
-        @elseif($shipStatus === 'shipped')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200">
-                <i class="bi bi-truck"></i> Shipped
-            </span>
-        @elseif($shipStatus === 'pickup')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200">
-                <i class="bi bi-shop"></i> Ready for Pickup
-            </span>
-        @elseif($shipStatus === 'canceled')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 border border-red-200">
-                <i class="bi bi-x-circle-fill"></i> Canceled
-            </span>
-        @else
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-200">
-                <i class="bi bi-clock"></i> Pending
-            </span>
-        @endif
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border {{ $badge['class'] }}">
+            <i class="bi {{ $badge['icon'] }}"></i> {{ $badge['label'] }}
+        </span>
     </div>
 
     {{-- ── 1. Buyer Information ── --}}
@@ -113,27 +94,9 @@
                         <div class="font-semibold text-gray-800">{{ $shipCompany }}</div>
                     </div>
                 </div>
-                @if($shipStatus === 'delivered' || $isDelivered)
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                        <i class="bi bi-check-circle-fill"></i> Delivered
-                    </span>
-                @elseif($shipStatus === 'shipped')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                        <i class="bi bi-truck"></i> Shipped
-                    </span>
-                @elseif($shipStatus === 'pickup')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                        <i class="bi bi-shop"></i> Ready for Pickup
-                    </span>
-                @elseif($shipStatus === 'canceled')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                        <i class="bi bi-x-circle-fill"></i> Canceled
-                    </span>
-                @else
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
-                        <i class="bi bi-clock"></i> Pending
-                    </span>
-                @endif
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold {{ $shipOnlyBadge['class'] }}">
+                    <i class="bi {{ $shipOnlyBadge['icon'] }}"></i> {{ $shipOnlyBadge['label'] }}
+                </span>
             </div>
             @if($trackingId)
             <div class="border-t border-gray-100 pt-2">
@@ -177,7 +140,7 @@
     @endif
 
     {{-- ── 5. It's Time to Ship ── --}}
-    @if(!$isDelivered)
+    @if($badge['stage'] === 'pending')
     <div class="bg-white rounded-xl border border-green-200 shadow-sm mb-3 overflow-hidden">
         <div class="flex items-center gap-2 px-4 py-3 bg-green-50 border-b border-green-100">
             <i class="bi bi-box-seam-fill text-dark_green"></i>
@@ -251,13 +214,19 @@
             <span class="font-semibold text-gray-700 text-xs uppercase tracking-wide">Update Shipping Status</span>
         </div>
         <div class="px-4 py-4">
+            @if($shipStatus !== 'pending')
+                <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-xs text-gray-600 leading-relaxed">
+                    <i class="bi bi-lock-fill text-gray-400"></i>
+                    This order is already with {{ $shipCompany }}, so it can no longer be updated from here. Contact support if you need to make a change.
+                </div>
+            @else
             <form method="POST" action="/user/update-shipping/{{ $ad->id }}">
                 @csrf
                 <label class="block text-xs font-medium text-gray-600 mb-1.5">Current Status</label>
                 <select name="seller_status"
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-dark_green focus:border-transparent mb-3">
                     <option value="pending" {{ $sellerStatus === 'pending' ? 'selected' : '' }}>⏳ Pending</option>
-                    <option value="delivered" {{ $sellerStatus === 'delivered' ? 'selected' : '' }}>✅ Delivered</option>
+                    <option value="shipped" {{ $sellerStatus === 'shipped' ? 'selected' : '' }}>📦 Shipped (Dropped off at {{ $shipCompany }})</option>
                     <option value="canceled" {{ $sellerStatus === 'canceled' ? 'selected' : '' }}>❌ Canceled</option>
                 </select>
                 <button type="submit"
@@ -265,6 +234,7 @@
                     Save Status
                 </button>
             </form>
+            @endif
         </div>
     </div>
 

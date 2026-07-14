@@ -35,6 +35,7 @@
                     <th scope="col">Ship ID</th>
                     <th scope="col">Buyer Status</th>
                     <th scope="col">Shipper Status</th>
+                    <th scope="col">Seller Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -77,10 +78,16 @@
                           </span>
                         </td>
                       <td>
+                          <span class="badge bg-{{ $row->seller_status == 'shipped' ? 'success' : ($row->seller_status == 'canceled' ? 'danger' : 'warning') }}">
+                            {{ ucfirst($row->seller_status ?? 'pending') }}
+                          </span>
+                        </td>
+                      <td>
                         <button class="btn btn-sm btn-primary edit-btn"
                                 data-id="{{ $row->id }}"
                                 data-buyer-status="{{ $row->buyer_status ?? 'pending' }}"
                                 data-shipping-status="{{ $row->shipping_status ?? 'pending' }}"
+                                data-seller-status="{{ $row->seller_status ?? 'pending' }}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editModal">
                           <i class="bi bi-pencil"></i> Edit
@@ -89,7 +96,7 @@
                     </tr>
                   @empty
                     <tr>
-                      <td colspan="11" class="text-center">No completed payments found</td>
+                      <td colspan="12" class="text-center">No completed payments found</td>
                     </tr>
                   @endforelse
                 </tbody>
@@ -124,17 +131,16 @@
     <div class="modal-content">
       <form id="editForm" method="POST">
         @csrf
-        @method('PUT')
         <div class="modal-header">
           <h5 class="modal-title" id="editModalLabel">Edit Payment Details</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label for="buyer_status" class="form-label">Buyer Status</label>
-            <select class="form-select" id="buyer_status" name="buyer_status">
+            <label for="seller_status" class="form-label">Seller Status</label>
+            <select class="form-select" id="seller_status" name="seller_status">
               <option value="pending">Pending</option>
-              <option value="delivered">Delivered</option>
+              <option value="shipped">Shipped (dropped off with courier)</option>
               <option value="canceled">Canceled</option>
             </select>
           </div>
@@ -147,6 +153,19 @@
               <option value="delivered">Delivered</option>
               <option value="canceled">Canceled</option>
             </select>
+          </div>
+          <div class="mb-3">
+            <label for="buyer_status" class="form-label">Buyer Status</label>
+            <select class="form-select" id="buyer_status" name="buyer_status">
+              <option value="pending">Pending</option>
+              <option value="delivered">Delivered</option>
+              <option value="canceled">Canceled</option>
+            </select>
+          </div>
+          <div class="form-text">
+            Changing Shipping Status or Seller Status to a new value re-sends the matching buyer/seller
+            email, in-app, and push notifications — the same ones the shipper portal and seller pages send.
+            Setting a status to <strong>Canceled</strong> also queues a refund-processing email to admin.
           </div>
         </div>
         <div class="modal-footer">
@@ -168,6 +187,7 @@
         const id = this.getAttribute('data-id');
         const buyerStatus = this.getAttribute('data-buyer-status');
         const shippingStatus = this.getAttribute('data-shipping-status');
+        const sellerStatus = this.getAttribute('data-seller-status');
 
         // Set form action
         document.getElementById('editForm').action = `/admin/update-payment/${id}`;
@@ -175,7 +195,19 @@
         // Populate form fields
         document.getElementById('buyer_status').value = buyerStatus || 'pending';
         document.getElementById('shipping_status').value = shippingStatus || 'pending';
+        document.getElementById('seller_status').value = sellerStatus || 'pending';
       });
+    });
+
+    // Confirm before saving a cancellation — it queues a refund email and
+    // notifies the buyer, so guard against an accidental click.
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      const willCancel = ['buyer_status', 'shipping_status', 'seller_status']
+        .some(field => document.getElementById(field).value === 'canceled');
+
+      if (willCancel && !confirm('This will mark the order as Canceled, notify the buyer, and queue a refund-processing email to admin. Continue?')) {
+        e.preventDefault();
+      }
     });
   });
 </script>

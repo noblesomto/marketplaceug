@@ -62,6 +62,14 @@ class SendShippingUpdatePushNotification implements ShouldQueue
                 'Shipping update for your order',
                 "{$company} has an update on \"{$productName}\". Tap to view details.",
             ],
+            'seller_canceled' => [
+                'Your order has been canceled',
+                "The seller canceled your order for \"{$productName}\". Your refund is being processed.",
+            ],
+            'buyer_canceled' => [
+                'Order canceled by buyer',
+                "The buyer canceled their order for \"{$productName}\". No shipping is required.",
+            ],
             default     => [
                 'Shipping update for your order',
                 "The shipping status of \"{$productName}\" has been updated by {$company}.",

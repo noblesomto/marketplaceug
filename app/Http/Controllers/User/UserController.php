@@ -363,20 +363,39 @@ class UserController extends Controller
 
     public function confirmDelivery(Request $request, $orderId)
     {
+        $userId = $request->session()->get('user_id');
+
         try {
-            // Find the order
-            $order = Payment::findOrFail($orderId);
+            $order = Payment::where('id', $orderId)
+                ->where('user_id', $userId)
+                ->where('payment_status', 'paid')
+                ->first();
 
-            // Optional: Add authorization check
-            // $this->authorize('update', $order);
+            if (!$order) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order not found.'
+                ], 404);
+            }
 
-            // Update the order status
+            if ($order->buyer_status === 'delivered') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This order has already been confirmed as delivered.'
+                ], 422);
+            }
+
+            if ($order->buyer_status === 'canceled') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This order was canceled and cannot be confirmed as delivered.'
+                ], 422);
+            }
+
             $order->buyer_status = 'delivered';
-            $order->shipping_status_date = now(); // Optional: Add timestamp
             $order->save();
 
-            // Log the action (optional)
-            \Log::info("Order {$orderId} marked as delivered by user " . auth()->id());
+            Log::info("Order {$orderId} marked as delivered by user {$userId}");
 
             return response()->json([
                 'success' => true,
@@ -385,13 +404,53 @@ class UserController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error("Error confirming delivery for order {$orderId}: " . $e->getMessage());
+            Log::error("Error confirming delivery for order {$orderId}: " . $e->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to confirm delivery. Please try again.'
             ], 500);
         }
+    }
+
+    public function cancelOrder(Request $request, $orderId)
+    {
+        $userId = $request->session()->get('user_id');
+
+        $payment = Payment::with(['advert.user', 'user'])
+            ->where('id', $orderId)
+            ->where('user_id', $userId)
+            ->where('payment_status', 'paid')
+            ->first();
+
+        if (!$payment) {
+            return response()->json(['success' => false, 'message' => 'Order not found.'], 404);
+        }
+
+        if (($payment->buyer_status ?? 'pending') === 'canceled') {
+            return response()->json(['success' => false, 'message' => 'This order has already been canceled.'], 422);
+        }
+
+        if (($payment->buyer_status ?? 'pending') === 'delivered') {
+            return response()->json(['success' => false, 'message' => 'This order has already been delivered and can no longer be canceled.'], 422);
+        }
+
+        if (($payment->shipping_status ?? 'pending') !== 'pending') {
+            return response()->json(['success' => false, 'message' => 'This order is already with the shipping company and can no longer be canceled here. Please contact support.'], 422);
+        }
+
+        $payment->update([
+            'buyer_status' => 'canceled',
+            'seller_status' => 'canceled',
+            'seller_status_date' => now(),
+        ]);
+
+        \App\Services\BuyerCancelNotifier::notify($payment);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order canceled. Your refund is being processed.',
+        ]);
     }
 
     public function ad_shipping(Request $request, $id)
@@ -421,10 +480,10 @@ class UserController extends Controller
         $userId = $request->session()->get('user_id');
 
         $request->validate([
-            'seller_status' => 'required|in:pending,delivered,canceled'
+            'seller_status' => 'required|in:pending,shipped,canceled'
         ]);
 
-        $payment = Payment::with('advert')
+        $payment = Payment::with(['advert.user', 'user', 'shipping'])
             ->where('id', $id)
             ->where('payment_status', 'paid')
             ->first();
@@ -433,10 +492,26 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Order not found.');
         }
 
-        $payment->update([
-            'seller_status' => $request->input('seller_status'),
+        if (($payment->shipping_status ?? 'pending') !== 'pending') {
+            return redirect()->back()->with('error', 'This order is already with the shipping company and can no longer be updated from here.');
+        }
+
+        $status = $request->input('seller_status');
+
+        $update = [
+            'seller_status' => $status,
             'seller_status_date' => now(),
-        ]);
+        ];
+
+        if ($status === 'canceled') {
+            $update['buyer_status'] = 'canceled';
+        }
+
+        $payment->update($update);
+
+        if ($status === 'canceled') {
+            \App\Services\SellerCancelNotifier::notify($payment);
+        }
 
         return redirect()->back()->with('success', 'Shipping Status Updated');
     }

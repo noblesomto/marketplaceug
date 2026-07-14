@@ -13,14 +13,11 @@ use App\Models\Advert;
 use Carbon\Carbon;
 use Mail;
 use App\Mail\PayoutMail;
-use App\Mail\ShipAdMail;
-use App\Mail\PickupAdMail;
-use App\Mail\DeliverAdMail;
-use App\Mail\CancelAdMail;
 use App\Mail\BuyDirectMail;
 use App\Mail\SellerMail;
 use App\Models\GigLogistic;
-use App\Mail\SellerDeliverAdMail;
+use App\Services\ShippingStatusNotifier;
+use App\Services\SellerCancelNotifier;
 
 class ManagePayments extends Controller
 {
@@ -54,49 +51,51 @@ class ManagePayments extends Controller
         return view('admin.payments.pending-payments', compact('title', 'page_title', 'payments'));
     }
 
-    public function update_payment(Request $request,$id)
+    public function update_payment(Request $request, $id)
     {
-        //dd($request);
-        DB::table('payments')
-                ->where('id', $id)
-                ->update([
-                    'shipping_status'=> $request->input('shipping_status'),
-                    'buyer_status'=> $request->input('buyer_status'),
-                    'shipping_status_date' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ]);
-        $ship = Payment::with([
-            'advert.firstImage',
-            'advert.owner',
-            'user',
-            'shipping',
-        ])->where('id', $id)->first();
+        $request->validate([
+            'buyer_status'    => 'required|in:pending,delivered,canceled',
+            'shipping_status' => 'required|in:pending,shipped,pickup,delivered,canceled',
+            'seller_status'   => 'required|in:pending,shipped,canceled',
+        ]);
 
-        //dd($ship);
-        $user = User::where('user_id', $ship->user_id)->first();
-        $city = GigLogistic::where('id', $ship->city)->first();
-        $details = [
-            'advert' => $ship->advert->ad_title,
-            'seller' => $ship->advert->owner->name,
-            'buyer' => $user->name,
-            'phone' => $user->phone,
-            'shipping' => $ship->shipping->company,
-            'shipped_date' => Carbon::now(),
-            'address' => $city->address,
-            'city' => $city->city,
-            'state' => $ship->stateRel->name,
+        $payment = Payment::with(['advert.user', 'user', 'shipping', 'cityLocation.state'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $newBuyerStatus    = $request->input('buyer_status');
+        $newShippingStatus = $request->input('shipping_status');
+        $newSellerStatus   = $request->input('seller_status');
+
+        $shippingChanged = $newShippingStatus !== ($payment->shipping_status ?? 'pending');
+        $sellerChanged   = $newSellerStatus !== ($payment->seller_status ?? 'pending');
+
+        $update = [
+            'buyer_status'    => $newBuyerStatus,
+            'shipping_status' => $newShippingStatus,
+            'seller_status'   => $newSellerStatus,
         ];
 
-        if($request->input('shipping_status')=="pickup"){
-            Mail::to($user->email)->send(new PickupAdMail($details));
-        }elseif($request->input('shipping_status')=="delivered"){
-            Mail::to($user->email)->send(new DeliverAdMail($details));
-            Mail::to($ship->advert->owner->email)->send(new SellerDeliverAdMail($details));
-        }else{
-            Mail::to($user->email)->send(new CancelAdMail($details));
+        if ($shippingChanged) {
+            $update['shipping_status_date'] = Carbon::now();
+        }
+        if ($sellerChanged) {
+            $update['seller_status_date'] = Carbon::now();
         }
 
-        return redirect()->back()->with('status', ['text'=>'Shipping/Buyer Status Updated','type'=>'success']);
+        $payment->update($update);
+
+        // Admin overrides trigger the same buyer/seller notifications as the
+        // normal shipper and seller-cancel flows, so nobody is left uninformed.
+        if ($shippingChanged) {
+            ShippingStatusNotifier::notify($payment, $newShippingStatus);
+        }
+
+        if ($sellerChanged && $newSellerStatus === 'canceled') {
+            SellerCancelNotifier::notify($payment);
+        }
+
+        return redirect()->back()->with('status', ['text'=>'Payment Status Updated','type'=>'success']);
     }
 
     public function confirm_payment(Request $request,$id)

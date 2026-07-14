@@ -674,7 +674,7 @@ class UserController extends Controller
     public function updateShippingStatus($paymentId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'seller_status' => 'required|in:pending,delivered,canceled'
+            'seller_status' => 'required|in:pending,shipped,canceled'
         ]);
 
         if ($validator->fails()) {
@@ -686,7 +686,7 @@ class UserController extends Controller
 
         $user = auth()->user();
 
-        $payment = Payment::with('advert')
+        $payment = Payment::with(['advert.user', 'user', 'shipping'])
             ->where('id', $paymentId)
             ->where('payment_status', 'paid')
             ->first();
@@ -705,10 +705,29 @@ class UserController extends Controller
             ], 404);
         }
 
-        $payment->update([
-            'seller_status' => $request->seller_status,
-            'seller_status_date' => Carbon::now()
-        ]);
+        if (($payment->shipping_status ?? 'pending') !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This order is already with the shipping company and can no longer be updated from here.'
+            ], 422);
+        }
+
+        $status = $request->seller_status;
+
+        $update = [
+            'seller_status' => $status,
+            'seller_status_date' => Carbon::now(),
+        ];
+
+        if ($status === 'canceled') {
+            $update['buyer_status'] = 'canceled';
+        }
+
+        $payment->update($update);
+
+        if ($status === 'canceled') {
+            \App\Services\SellerCancelNotifier::notify($payment);
+        }
 
         return response()->json([
             'success' => true,

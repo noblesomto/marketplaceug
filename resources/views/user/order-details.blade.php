@@ -14,6 +14,8 @@
     $shipCompany  = $payment->shipping->company ?? null;
     $shipLogo     = $payment->shipping->logo ?? null;
     $shipStatus   = $payment->shipping_status ?? 'pending';
+    $sellerStatus = $payment->seller_status ?? 'pending';
+    $buyerStatus  = $payment->buyer_status ?? 'pending';
     $trackingId   = $payment->tracking_id ?? null;
 
     $pickupAddress = $payment->cityLocation->address ?? null;
@@ -21,9 +23,13 @@
     $pickupState   = $payment->cityLocation->state->name ?? null;
 
     $isPaid       = ($payment->payment_status ?? '') === 'paid';
-    $isDelivered  = ($payment->buyer_status ?? '') === 'delivered';
+    $isDelivered  = $buyerStatus === 'delivered';
     $orderDate    = $payment->created_at ? date('d M Y', strtotime($payment->created_at)) : '—';
     $statusDate   = $payment->shipping_status_date ? date('d M Y', strtotime($payment->shipping_status_date)) : null;
+    $sellerStatusDate = $payment->seller_status_date ? date('d M Y', strtotime($payment->seller_status_date)) : null;
+
+    $badge = \App\Support\ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany ?? 'the shipping company');
+    $shipOnlyBadge = \App\Support\ShippingStatusBadge::resolveShippingOnly($shipStatus);
 @endphp
 
 <section class="w-full md:w-3/6 mx-auto px-3 py-4 text-sm" style="max-width:640px;padding-bottom:7rem;">
@@ -33,60 +39,42 @@
     {{-- Page title + shipping status --}}
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-base font-bold text-gray-800">Order #{{ $payment->order_code ?? $payment->id }}</h1>
-        @if($isDelivered)
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">
-                <i class="bi bi-check-circle-fill"></i> Delivered
-            </span>
-        @elseif($shipStatus === 'delivered')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
-                <i class="bi bi-hourglass-split"></i> Pending Confirmation
-            </span>
-        @elseif($shipStatus === 'shipped')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200">
-                <i class="bi bi-truck"></i> Shipped
-            </span>
-        @elseif($shipStatus === 'pickup')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200">
-                <i class="bi bi-shop"></i> Ready for Pickup
-            </span>
-        @elseif($shipStatus === 'canceled')
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 border border-red-200">
-                <i class="bi bi-x-circle-fill"></i> Canceled
-            </span>
-        @else
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-200">
-                <i class="bi bi-clock"></i> Pending
-            </span>
-        @endif
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border {{ $badge['class'] }}">
+            <i class="bi {{ $badge['icon'] }}"></i> {{ $badge['label'] }}
+        </span>
     </div>
 
     {{-- Status update banner --}}
-    @if($shipStatus !== 'pending')
-        @if($isDelivered || $shipStatus === 'delivered')
+    @if($badge['stage'] !== 'pending')
+        @if($badge['stage'] === 'delivered')
         <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-green-50 border border-green-200 text-green-800">
             <i class="bi bi-check-circle-fill text-base flex-shrink-0"></i>
-            <span>
-                @if($isDelivered)
-                    Order delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Thank you for shopping with us!
-                @else
-                    Your order has been marked as delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Please confirm receipt below.
-                @endif
-            </span>
+            <span>Order delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Thank you for shopping with us!</span>
         </div>
-        @elseif($shipStatus === 'shipped')
+        @elseif($badge['stage'] === 'ship_delivered')
+        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-orange-50 border border-orange-200 text-orange-800">
+            <i class="bi bi-hourglass-split text-base flex-shrink-0"></i>
+            <span>Your order has been marked as delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Please confirm receipt below.</span>
+        </div>
+        @elseif($badge['stage'] === 'ship_shipped')
         <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-blue-50 border border-blue-200 text-blue-800">
             <i class="bi bi-truck text-base flex-shrink-0"></i>
             <span>Your order has been shipped{{ $statusDate ? ' on ' . $statusDate : '' }}. Estimated delivery: 3–7 working days.</span>
         </div>
-        @elseif($shipStatus === 'pickup')
+        @elseif($badge['stage'] === 'ship_pickup')
         <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-purple-50 border border-purple-200 text-purple-800">
             <i class="bi bi-shop text-base flex-shrink-0"></i>
             <span>Your order is ready for pickup at a nearby centre{{ $statusDate ? ' (updated ' . $statusDate . ')' : '' }}.</span>
         </div>
-        @elseif($shipStatus === 'canceled')
+        @elseif($badge['stage'] === 'seller_shipped')
+        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-blue-50 border border-blue-200 text-blue-800">
+            <i class="bi bi-box-seam-fill text-base flex-shrink-0"></i>
+            <span>The seller has dropped off your order at {{ $shipCompany }}{{ $sellerStatusDate ? ' on ' . $sellerStatusDate : '' }}. It will be on its way to you shortly.</span>
+        </div>
+        @elseif($badge['stage'] === 'canceled')
         <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-red-50 border border-red-200 text-red-800">
             <i class="bi bi-x-circle-fill text-base flex-shrink-0"></i>
-            <span>There is an update on your shipment{{ $statusDate ? ' (' . $statusDate . ')' : '' }}. Please contact support if you need help.</span>
+            <span>This order has been canceled. A refund is being processed and will be credited back to you shortly. Please contact support if you need help.</span>
         </div>
         @endif
     @endif
@@ -141,27 +129,9 @@
                         <div class="font-semibold text-gray-800">{{ $shipCompany }}</div>
                     </div>
                 </div>
-                @if($shipStatus === 'delivered' || $isDelivered)
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                        <i class="bi bi-check-circle-fill"></i> Delivered
-                    </span>
-                @elseif($shipStatus === 'shipped')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                        <i class="bi bi-truck"></i> Shipped
-                    </span>
-                @elseif($shipStatus === 'pickup')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                        <i class="bi bi-shop"></i> Ready for Pickup
-                    </span>
-                @elseif($shipStatus === 'canceled')
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                        <i class="bi bi-x-circle-fill"></i> Canceled
-                    </span>
-                @else
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
-                        <i class="bi bi-clock"></i> Pending
-                    </span>
-                @endif
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold {{ $shipOnlyBadge['class'] }}">
+                    <i class="bi {{ $shipOnlyBadge['icon'] }}"></i> {{ $shipOnlyBadge['label'] }}
+                </span>
             </div>
             @if($trackingId)
             <div class="border-t border-gray-100 pt-2">
@@ -238,8 +208,8 @@
         </div>
     </div>
 
-    {{-- ── 5. Confirm delivery (if not yet confirmed) ── --}}
-    @if(!$isDelivered && $isPaid)
+    {{-- ── 5. Confirm delivery / Cancel order (if not yet confirmed) ── --}}
+    @if(!$isDelivered && $isPaid && $badge['stage'] !== 'canceled')
     <div class="bg-white rounded-xl border border-green-200 shadow-sm mb-3 overflow-hidden">
         <div class="flex items-center gap-2 px-4 py-3 bg-green-50 border-b border-green-100">
             <i class="bi bi-box-seam-fill text-dark_green"></i>
@@ -247,11 +217,33 @@
         </div>
         <div class="px-4 py-4 text-xs text-gray-600 leading-relaxed space-y-3">
             <p>Once your item arrives, tap the button below to confirm delivery. This releases payment to the seller and completes your transaction.</p>
-            <button id="confirmBtn"
-                    onclick="confirmDelivery({{ $payment->id }})"
-                    class="w-full py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-2">
-                <i class="bi bi-check-circle"></i> Confirm Delivery
-            </button>
+            <div class="flex gap-2">
+                <button id="confirmBtn"
+                        onclick="confirmDelivery({{ $payment->id }})"
+                        class="flex-1 min-w-0 py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-1.5 text-center">
+                    <i class="bi bi-check-circle"></i> Confirm Delivery
+                </button>
+
+                @if($shipStatus === 'pending')
+                    <button id="cancelBtn"
+                            onclick="cancelOrder({{ $payment->id }})"
+                            class="flex-1 min-w-0 py-2.5 bg-white text-red-600 font-semibold rounded-lg text-sm border border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center gap-1.5 text-center">
+                        <i class="bi bi-x-circle"></i> Cancel Order
+                    </button>
+                @endif
+            </div>
+
+            @if($shipStatus === 'pending')
+                <p class="text-gray-400 leading-relaxed">
+                    <i class="bi bi-info-circle mr-1"></i>
+                    You can cancel for a full refund any time before the seller ships your order. Once it's on its way, cancellations go through our support team instead.
+                </p>
+            @else
+                <div class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-500 flex items-center gap-2">
+                    <i class="bi bi-lock-fill"></i>
+                    This order is already with {{ $shipCompany ?? 'the shipping company' }}, so it can no longer be canceled here. Please <a href="/contact-us" class="font-semibold underline text-dark_green">contact support</a> if you need help.
+                </div>
+            @endif
         </div>
     </div>
     @elseif($isDelivered)
@@ -286,39 +278,109 @@
     </div>
 </div>
 
+<div id="cancelModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white" style="max-width:90vw;">
+        <div class="mt-3 text-center">
+            <div style="width:56px;height:56px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <i class="bi bi-x-circle-fill" style="font-size:1.6rem;color:#dc2626;"></i>
+            </div>
+            <h3 style="font-size:1rem;font-weight:700;color:#111827;margin-bottom:6px;">Order Canceled</h3>
+            <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;">Your refund is being processed and will be credited back to you shortly.</p>
+            <button id="closeCancelModal"
+                    style="background:#dc2626;color:#fff;padding:9px 28px;border-radius:8px;border:none;font-weight:600;font-size:0.85rem;cursor:pointer;">
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+
 @include('user.layouts.footer')
 
 <script>
 function confirmDelivery(orderId) {
-    if (!confirm('Are you sure you want to confirm this delivery?')) return;
+    Swal.fire({
+        title: 'Confirm Delivery?',
+        text: 'This releases payment to the seller and completes your transaction.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#326916',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, confirm delivery',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (!result.isConfirmed) return;
 
-    const btn = document.getElementById('confirmBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processing…';
+        const btn = document.getElementById('confirmBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processing…';
 
-    fetch(`/user/confirm-delivery/${orderId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ status: 'delivered' })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            const modal = document.getElementById('successModal');
-            modal.classList.remove('hidden');
-            document.getElementById('closeModal').onclick = () => location.reload();
-            setTimeout(() => location.reload(), 4000);
-        } else {
-            throw new Error(data.message || 'Failed');
-        }
-    })
-    .catch(err => {
-        alert('Error: ' + err.message);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Delivery';
+        fetch(`/user/confirm-delivery/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ status: 'delivered' })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('hidden');
+                document.getElementById('closeModal').onclick = () => location.reload();
+                setTimeout(() => location.reload(), 4000);
+            } else {
+                throw new Error(data.message || 'Failed');
+            }
+        })
+        .catch(err => {
+            Swal.fire({ icon: 'error', title: 'Error', text: err.message, confirmButtonColor: '#326916' });
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Delivery';
+        });
+    });
+}
+
+function cancelOrder(orderId) {
+    Swal.fire({
+        title: 'Cancel this order?',
+        text: 'This cannot be undone and will trigger a refund.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, cancel order',
+        cancelButtonText: 'Keep order'
+    }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        const btn = document.getElementById('cancelBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Canceling…';
+
+        fetch(`/user/cancel-order/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const modal = document.getElementById('cancelModal');
+                modal.classList.remove('hidden');
+                document.getElementById('closeCancelModal').onclick = () => location.reload();
+                setTimeout(() => location.reload(), 4000);
+            } else {
+                throw new Error(data.message || 'Failed');
+            }
+        })
+        .catch(err => {
+            Swal.fire({ icon: 'error', title: 'Error', text: err.message, confirmButtonColor: '#326916' });
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-x-circle"></i> Cancel Order';
+        });
     });
 }
 </script>
