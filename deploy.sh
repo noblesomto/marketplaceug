@@ -22,6 +22,7 @@ EXTRA_BUILD_PATHS=(
 # Excludes (folders/files to ignore)
 EXCLUDES=(
   ".git/"
+  ".claude/"
   ".vite/"
   ".gitignore"
   ".editorconfig"
