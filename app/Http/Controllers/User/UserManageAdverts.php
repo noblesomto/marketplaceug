@@ -233,6 +233,15 @@ class UserManageAdverts extends Controller
                 return back()->withErrors($shippingError)->withInput();
             }
 
+            if ($reason = ContentHelper::detectBannedContact($request->input('ad_title'))) {
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
+                return back()->withErrors([
+                    'ad_title' => "Your ad title appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live.",
+                ])->withInput();
+            }
+
             $adTitle = ContentHelper::sanitizeTitle($request->ad_title);
 
             if (empty($adTitle)) {
@@ -530,6 +539,12 @@ class UserManageAdverts extends Controller
             'phone_condition.required' => 'Please select the phone condition.',
             'device.required'          => 'Please select the device type.',
         ]);
+        if ($reason = ContentHelper::detectBannedContact($request->input('ad_title'))) {
+            return back()->withErrors([
+                'ad_title' => "Your ad title appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live.",
+            ])->withInput();
+        }
+
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title'));
 
         if ($reason = ContentHelper::detectBannedContact($request->input('description'))) {

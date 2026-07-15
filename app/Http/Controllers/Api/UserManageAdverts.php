@@ -395,6 +395,13 @@ class UserManageAdverts extends Controller
             ], 422);
         }
 
+        if ($reason = ContentHelper::detectBannedContact($request->input('ad_title'))) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['ad_title' => ["Your ad title appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live."]],
+            ], 422);
+        }
+
         // Duplicate check: same user + title + category/subcategory, active or posted in last 24h
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title', ''));
 
@@ -876,6 +883,13 @@ class UserManageAdverts extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
+            ], 422);
+        }
+
+        if ($reason = ContentHelper::detectBannedContact($request->input('ad_title'))) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['ad_title' => ["Your ad title appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live."]],
             ], 422);
         }
 
