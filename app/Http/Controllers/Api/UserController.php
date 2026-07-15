@@ -842,9 +842,11 @@ class UserController extends Controller
                     'amount_paid'        => $payment->amount_paid,
                     'payment_status'     => $payment->payment_status,
                     'shipping_status'    => $payment->shipping_status ?? 'pending',
+                    'seller_status'      => $payment->seller_status ?? 'pending',
                     'buyer_status'       => $payment->buyer_status,
                     'tracking_id'        => $payment->tracking_id,
                     'shipping_status_date' => $payment->shipping_status_date,
+                    'seller_status_date' => $payment->seller_status_date,
                     'created_at'         => $payment->created_at,
                 ],
                 'product' => [
