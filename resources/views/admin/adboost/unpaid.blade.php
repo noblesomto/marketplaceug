@@ -68,17 +68,21 @@
                                         @endphp
                                         <tr>
                                             <td>
-                                                <img src="{{ $row->advert && $row->advert->hasMedia('images')
-                                                    ? $row->advert->getFirstMediaUrl('images', 'thumbnail')
-                                                    : asset('frontend/images/default.png') }}"
-                                                     class="rounded"
-                                                     width="60"
-                                                     height="60"
-                                                     alt="{{ $row->advert->ad_title }}"
-                                                     style="object-fit: cover;">
+                                                <a href="{{ url($row->advert->state_slug . '/' . $row->advert->title_slug . '/' . $row->advert->ad_id) }}" target="_blank">
+                                                    <img src="{{ $row->advert && $row->advert->hasMedia('images')
+                                                        ? $row->advert->getFirstMediaUrl('images', 'thumbnail')
+                                                        : asset('frontend/images/default.png') }}"
+                                                         class="rounded"
+                                                         width="60"
+                                                         height="60"
+                                                         alt="{{ $row->advert->ad_title }}"
+                                                         style="object-fit: cover;">
+                                                </a>
                                             </td>
                                             <td>
-                                                <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title }}</h6>
+                                                <a href="{{ url($row->advert->state_slug . '/' . $row->advert->title_slug . '/' . $row->advert->ad_id) }}" target="_blank" class="text-decoration-none">
+                                                    <h6 class="mb-0 fw-semibold">{{ $row->advert->ad_title }}</h6>
+                                                </a>
                                                 <small class="text-muted">ID: {{ $row->advert->id }}</small>
                                             </td>
                                             <td>

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportMail;
 use App\Services\FeaturedAdPaginator;
+use App\Support\AdvertVisibility;
 
 
 /**
@@ -227,11 +228,22 @@ class AdvertController extends Controller
     {
         $ad = Advert::with(['owner'])->find($id);
 
-        if (!$ad) {
+        $reason = AdvertVisibility::reasonUnavailable($ad);
+
+        if ($reason === 'not_found') {
             return response()->json([
                 'success' => false,
-                'message' => 'Advert not found'
+                'message' => 'Advert not found',
+                'reason'  => $reason,
             ], 404);
+        }
+
+        if ($reason) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This advert is no longer available.',
+                'reason'  => $reason,
+            ], 410);
         }
 
         // Get images with all required conversions

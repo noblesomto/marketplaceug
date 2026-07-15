@@ -805,12 +805,49 @@
                 "{id}"
               ]
             },
-            "description": "\ud83c\udf10 **Public Endpoint**\\n\\nEndpoint: `GET /api/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@show`",
+            "description": "\ud83c\udf10 **Public Endpoint**\n\nEndpoint: `GET /api/adverts/{id}`\nController: `App\\Http\\Controllers\\Api\\AdvertController@show`\n\nReturns full advert details (images, category/sub-category/brand, car/phone-specific details, owner info, related adverts).\n\n**URL Parameter:**\n- `id` \u2014 The advert's database `id` (integer, primary key \u2014 NOT the public-facing `ad_id` shown in share links)\n\n**Errors \u2014 the endpoint never redirects; it always returns JSON:**\n- `404` `{\"reason\": \"not_found\"}` \u2014 no advert exists with that `id`\n- `410` `{\"reason\": \"blocked\"}` \u2014 advert was flagged and permanently blocked\n- `410` `{\"reason\": \"removed_by_admin\"}` \u2014 advert was hidden by an admin (not deleted)\n\nSame visibility rules as the web ad page (`App\\Support\\AdvertVisibility`), but the web page redirects to the homepage on any of these \u2014 this endpoint returns a structured error instead so the app can show an in-place \"ad no longer available\" state.",
             "auth": {
               "type": "noauth"
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "404 \u2014 Advert not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/adverts/99999999",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "adverts", "99999999"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Advert not found\",\n  \"reason\": \"not_found\"\n}"
+            },
+            {
+              "name": "410 \u2014 Advert no longer available",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/adverts/{id}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "adverts", "{id}"]
+                }
+              },
+              "status": "Gone",
+              "code": 410,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"This advert is no longer available.\",\n  \"reason\": \"removed_by_admin\"\n}"
+            }
+          ]
         },
         {
           "name": "Related Ads",

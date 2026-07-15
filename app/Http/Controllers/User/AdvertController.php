@@ -27,6 +27,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\FeaturedAdPaginator;
 use App\Services\AdvertQueryService;
 use App\Services\FilterService;
+use App\Support\AdvertVisibility;
 use App\Mail\ReportMail;
 use Mail;
 use Jenssegers\Agent\Agent;
@@ -200,25 +201,17 @@ class AdvertController extends Controller
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
 
-        if ($id== 47428 || $id == 86031 || $id == 34955 || $id == 86795 || $id == 44956) {
-
-            return redirect('/');
-        }
         $ad = Advert::with(['images', 'owner'])
             ->where('ad_id', $id)
             ->first();
 
-        // 1. If ad does not exist → 404
-        if (!$ad) {
+        // Not found, blocked, or hidden by admin — see App\Support\AdvertVisibility
+        // (also used by the API so both surfaces agree on what "gone" means).
+        if (AdvertVisibility::reasonUnavailable($ad)) {
             return redirect('/');
         }
 
-        // 2. If ad exists and redirect is Yes → redirect
-        if ($ad->redirect === 'Yes') {
-            return redirect('/');
-        }
-
-        // 3. Canonical slug/location guard — redirect to correct URL if slug or location drifted
+        // Canonical slug/location guard — redirect to correct URL if slug or location drifted
         if ($slug !== $ad->title_slug || $location !== $ad->state_slug) {
             return redirect(url($ad->state_slug . '/' . $ad->title_slug . '/' . $id), 301);
         }
