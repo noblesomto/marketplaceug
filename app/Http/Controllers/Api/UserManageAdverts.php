@@ -405,6 +405,13 @@ class UserManageAdverts extends Controller
             ], 422);
         }
 
+        if ($reason = ContentHelper::detectBannedContact($request->input('description'))) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['description' => ["Your description appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live."]],
+            ], 422);
+        }
+
         $duplicateExists = Advert::where('user_id', $user->user_id)
             ->where('ad_title', $adTitle)
             ->where('category', $category)
@@ -869,6 +876,13 @@ class UserManageAdverts extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
+            ], 422);
+        }
+
+        if ($reason = ContentHelper::detectBannedContact($request->input('description'))) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['description' => ["Your description appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live."]],
             ], 422);
         }
 

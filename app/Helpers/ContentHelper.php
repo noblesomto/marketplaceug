@@ -3,35 +3,71 @@ namespace App\Helpers;
 
 class ContentHelper
 {
+    /**
+     * Patterns that indicate a user is trying to share contact info (phone
+     * number, email, "message me on WhatsApp", etc.) outside the platform.
+     * Single source of truth for both sanitizeContent() (silent strip, kept
+     * as a defensive backstop) and detectBannedContact() (used to reject
+     * the submission with an explicit reason instead of silently saving
+     * stripped text — see App\Http\Controllers\User\UserManageAdverts).
+     *
+     * The phone patterns allow an optional separator (space/dash/dot)
+     * between *every* digit, not just at fixed grouping points — a
+     * hard-coded grouping like "0801 234 5678" only catches that one
+     * grouping; a user typing "080 6814 9324" (a different but equally
+     * valid way to space out the same 11 digits) sailed straight through
+     * the old fixed-grouping patterns.
+     */
+    protected static array $bannedPatterns = [
+        '/\b(whatsapp|telegram|viber|imo)\b/i'              => 'contact_phrase',
+        '/\b(call|contact|message|text|dm|inbox)\s+me\b/i'  => 'contact_phrase',
+        '/\bphone\b/i'                                       => 'contact_phrase',
+        '/\b\w+@\w+\.\w+\b/'                                 => 'email',
+        // Nigerian local format: 0 + 7/8/9 + 9 more digits (11 total), any spacing
+        '/\b0[\s\-.]?[789](?:[\s\-.]?\d){9}\b/'              => 'phone',
+        // Nigerian international format: (+)234 + 10 digits, any spacing
+        '/(?<!\w)\+?234(?:[\s\-.]?\d){10}\b/'                => 'phone',
+        // Fallback: any remaining 11–15 consecutive digits (unformatted foreign numbers, etc.)
+        '/\b\d{11,15}\b/'                                     => 'phone',
+    ];
+
+    /**
+     * Whether $content contains contact info that shouldn't be in a public
+     * listing. Returns a human-readable reason for the rejection message,
+     * or null if the content is clean. Callers should reject the
+     * submission with this reason rather than silently stripping and
+     * saving — see the class docblock on $bannedPatterns for why.
+     */
+    public static function detectBannedContact(?string $content): ?string
+    {
+        if (empty($content)) {
+            return null;
+        }
+
+        foreach (self::$bannedPatterns as $pattern => $type) {
+            if (preg_match($pattern, $content)) {
+                return match ($type) {
+                    'phone'          => 'a phone number',
+                    'email'          => 'an email address',
+                    'contact_phrase' => 'a request to contact you outside the app (e.g. "call me", "WhatsApp me")',
+                    default          => 'contact information',
+                };
+            }
+        }
+
+        return null;
+    }
+
     public static function sanitizeContent($content)
     {
         if (empty($content)) {
             return '';
         }
 
-        // Step 1: Remove banned patterns (contact info, etc.)
-        $bannedPatterns = [
-            '/\bphone\b/i',
-            '/\bwhatsapp\b/i',
-            '/\btelegram\b/i',
-            '/\bviber\b/i',
-            '/\bimo\b/i',
-            '/\bcall\s+me\b/i',
-            '/\bcontact\s+me\b/i',
-            '/\bmessage\s+me\b/i',
-            '/\btext\s+me\b/i',
-            '/\bdm\s+me\b/i',
-            '/\binbox\s+me\b/i',
-            '/\b\w+@\w+\.\w+\b/',  // Email addresses
-            // Nigerian international format: +234 or 234 followed by 10 digits (with optional spaces/hyphens/dots)
-            '/\b\+?234[\s\-.]?\d{3}[\s\-.]?\d{3}[\s\-.]?\d{4}\b/',
-            // Nigerian local format: 07x/08x/09x followed by 7 more digits (with optional separators)
-            '/\b0[789]\d{2}[\s\-.]?\d{3}[\s\-.]?\d{4}\b/',
-            // Fallback: any remaining 10–15 consecutive digits
-            '/\b\d{10,15}\b/',
-        ];
-
-        foreach ($bannedPatterns as $pattern) {
+        // Step 1: Remove banned patterns (contact info, etc.) — defensive
+        // backstop; callers should already have rejected this via
+        // detectBannedContact() before reaching here.
+        foreach (array_keys(self::$bannedPatterns) as $pattern) {
             $content = preg_replace($pattern, '', $content);
         }
 

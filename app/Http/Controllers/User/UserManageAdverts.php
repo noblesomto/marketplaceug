@@ -244,6 +244,15 @@ class UserManageAdverts extends Controller
                 ])->withInput();
             }
 
+            if ($reason = ContentHelper::detectBannedContact($request->input('description'))) {
+                if (!empty($tempImages)) {
+                    $request->session()->flash('temp_images', $tempImages);
+                }
+                return back()->withErrors([
+                    'description' => "Your description appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live.",
+                ])->withInput();
+            }
+
             $adDescription = ContentHelper::sanitizeDescription($request->input('description'));
             $metaDescription = Str::limit($adDescription, 150, '');
             $rawWords = explode(' ', Str::slug($adTitle . ' ' . $metaDescription, ' '));
@@ -522,6 +531,13 @@ class UserManageAdverts extends Controller
             'device.required'          => 'Please select the device type.',
         ]);
         $adTitle = ContentHelper::sanitizeTitle($request->input('ad_title'));
+
+        if ($reason = ContentHelper::detectBannedContact($request->input('description'))) {
+            return back()->withErrors([
+                'description' => "Your description appears to contain {$reason}. For your safety, please don't share phone numbers or contact details in the ad text — buyers can reach you directly through in-app messaging once your ad is live.",
+            ])->withInput();
+        }
+
         $adDescrition = ContentHelper::sanitizeDescription($request->input('description'));
         $metaDescription = Str::limit($adDescrition, 150, '');
         $rawWords = explode(' ', Str::slug($adTitle . ' ' . $adDescrition, ' '));
