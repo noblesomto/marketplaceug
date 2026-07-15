@@ -17,6 +17,7 @@ use App\Helpers\FileUploadHelper;
 use App\Models\ArchivedMessage;
 use App\Jobs\SendPushNotification;
 use App\Traits\HasUserSession;
+use App\Helpers\ContentHelper;
 
 
 class MessageController extends Controller
@@ -82,6 +83,13 @@ class MessageController extends Controller
         'message'   => 'nullable|string|max:1000',
         'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12048',
     ]);
+
+    if ($reason = ContentHelper::detectBannedContact($request->input('message'))) {
+        return response()->json([
+            'success' => false,
+            'errors'  => ['message' => ["Your message appears to contain {$reason}. For your safety, keep contact details out of chat — buyers and sellers should coordinate delivery and payment through the app."]],
+        ], 422);
+    }
 
     $senderId = $request->session()->get('user_id');
 

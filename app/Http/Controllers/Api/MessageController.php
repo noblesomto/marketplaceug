@@ -16,6 +16,7 @@ use App\Events\MessageSent;
 use App\Events\NewMessageNotification;
 use Carbon\Carbon;
 use App\Jobs\SendPushNotification;
+use App\Helpers\ContentHelper;
 
 /**
  * @group Messages
@@ -60,6 +61,13 @@ class MessageController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
+            ], 422);
+        }
+
+        if ($reason = ContentHelper::detectBannedContact($request->input('message_content'))) {
+            return response()->json([
+                'success' => false,
+                'errors'  => ['message_content' => ["Your message appears to contain {$reason}. For your safety, keep contact details out of chat — buyers and sellers should coordinate delivery and payment through the app."]],
             ], 422);
         }
 
