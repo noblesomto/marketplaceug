@@ -25,11 +25,10 @@
     $isPaid       = ($payment->payment_status ?? '') === 'paid';
     $isDelivered  = $buyerStatus === 'delivered';
     $orderDate    = $payment->created_at ? date('d M Y', strtotime($payment->created_at)) : '—';
-    $statusDate   = $payment->shipping_status_date ? date('d M Y', strtotime($payment->shipping_status_date)) : null;
-    $sellerStatusDate = $payment->seller_status_date ? date('d M Y', strtotime($payment->seller_status_date)) : null;
 
     $badge = \App\Support\ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany ?? 'the shipping company');
     $shipOnlyBadge = \App\Support\ShippingStatusBadge::resolveShippingOnly($shipStatus);
+    $banner = \App\Support\ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date);
 @endphp
 
 <section class="w-full md:w-3/6 mx-auto px-3 py-4 text-sm" style="max-width:640px;padding-bottom:7rem;">
@@ -45,38 +44,11 @@
     </div>
 
     {{-- Status update banner --}}
-    @if($badge['stage'] !== 'pending')
-        @if($badge['stage'] === 'delivered')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-green-50 border border-green-200 text-green-800">
-            <i class="bi bi-check-circle-fill text-base flex-shrink-0"></i>
-            <span>Order delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Thank you for shopping with us!</span>
-        </div>
-        @elseif($badge['stage'] === 'ship_delivered')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-orange-50 border border-orange-200 text-orange-800">
-            <i class="bi bi-hourglass-split text-base flex-shrink-0"></i>
-            <span>Your order has been marked as delivered{{ $statusDate ? ' on ' . $statusDate : '' }}. Please confirm receipt below.</span>
-        </div>
-        @elseif($badge['stage'] === 'ship_shipped')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-blue-50 border border-blue-200 text-blue-800">
-            <i class="bi bi-truck text-base flex-shrink-0"></i>
-            <span>Your order has been shipped{{ $statusDate ? ' on ' . $statusDate : '' }}. Estimated delivery: 3–7 working days.</span>
-        </div>
-        @elseif($badge['stage'] === 'ship_pickup')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-purple-50 border border-purple-200 text-purple-800">
-            <i class="bi bi-shop text-base flex-shrink-0"></i>
-            <span>Your order is ready for pickup at a nearby centre{{ $statusDate ? ' (updated ' . $statusDate . ')' : '' }}.</span>
-        </div>
-        @elseif($badge['stage'] === 'seller_shipped')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-blue-50 border border-blue-200 text-blue-800">
-            <i class="bi bi-box-seam-fill text-base flex-shrink-0"></i>
-            <span>The seller has dropped off your order at {{ $shipCompany }}{{ $sellerStatusDate ? ' on ' . $sellerStatusDate : '' }}. It will be on its way to you shortly.</span>
-        </div>
-        @elseif($badge['stage'] === 'canceled')
-        <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium bg-red-50 border border-red-200 text-red-800">
-            <i class="bi bi-x-circle-fill text-base flex-shrink-0"></i>
-            <span>This order has been canceled. A refund is being processed and will be credited back to you shortly. Please contact support if you need help.</span>
-        </div>
-        @endif
+    @if($banner)
+    <div class="flex items-center gap-2 px-4 py-3 rounded-xl mb-3 text-xs font-medium {{ $banner['class'] }}">
+        <i class="bi {{ $banner['icon'] }} text-base flex-shrink-0"></i>
+        <span>{{ $banner['text'] }}</span>
+    </div>
     @endif
 
     {{-- ── 1. Item Purchased ── --}}

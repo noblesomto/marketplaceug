@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use App\Support\ShippingStatusBadge;
 
 /**
  * @group User
@@ -832,6 +833,18 @@ class UserController extends Controller
         $ship   = $payment->shipping;
         $city   = $payment->cityLocation;
 
+        $shipStatus   = $payment->shipping_status ?? 'pending';
+        $sellerStatus = $payment->seller_status ?? 'pending';
+        $buyerStatus  = $payment->buyer_status ?? 'pending';
+        $shipCompany  = $ship->company ?? 'the shipping company';
+
+        $badge  = ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany);
+        $banner = ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date);
+
+        $isDelivered = $buyerStatus === 'delivered';
+        $canConfirmDelivery = !$isDelivered && $badge['stage'] !== 'canceled';
+        $canCancel = $canConfirmDelivery && $shipStatus === 'pending';
+
         return response()->json([
             'success' => true,
             'data'    => [
@@ -841,13 +854,24 @@ class UserController extends Controller
                     'reference'          => $payment->payment_reference,
                     'amount_paid'        => $payment->amount_paid,
                     'payment_status'     => $payment->payment_status,
-                    'shipping_status'    => $payment->shipping_status ?? 'pending',
-                    'seller_status'      => $payment->seller_status ?? 'pending',
-                    'buyer_status'       => $payment->buyer_status,
+                    'shipping_status'    => $shipStatus,
+                    'seller_status'      => $sellerStatus,
+                    'buyer_status'       => $buyerStatus,
                     'tracking_id'        => $payment->tracking_id,
                     'shipping_status_date' => $payment->shipping_status_date,
                     'seller_status_date' => $payment->seller_status_date,
                     'created_at'         => $payment->created_at,
+                ],
+                // Computed display fields — render these directly, don't
+                // re-implement the status priority-chain client-side. See
+                // App\Support\ShippingStatusBadge (single source of truth,
+                // shared with the web order-details page).
+                'status_badge'   => $badge,          // {stage,label,icon,color,class}
+                'shipping_badge' => ShippingStatusBadge::resolveShippingOnly($shipStatus), // {label,icon,color,class}
+                'status_banner'  => $banner,          // {icon,color,class,text} or null when stage is 'pending'
+                'actions' => [
+                    'can_confirm_delivery' => $canConfirmDelivery,
+                    'can_cancel'           => $canCancel,
                 ],
                 'product' => [
                     'name'          => $advert->ad_title ?? null,
@@ -904,17 +928,44 @@ class UserController extends Controller
         $city    = $payment->cityLocation;
         $ship    = $payment->shipping;
 
+        $shipStatus   = $payment->shipping_status ?? 'pending';
+        $sellerStatus = $payment->seller_status ?? 'pending';
+        $buyerStatus  = $payment->buyer_status ?? 'pending';
+        $shipCompany  = $ship->company ?? 'the shipping company';
+
+        $badge = ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany);
+
         return response()->json([
             'success' => true,
             'data'    => [
                 'payment_id'      => $payment->id,
                 'advert_id'       => $advert->id,
                 'ad_id'           => $advert->ad_id,
-                'shipping_status' => $payment->shipping_status ?? 'pending',
-                'buyer_status'    => $payment->buyer_status,
-                'seller_status'   => $payment->seller_status ?? 'pending',
+                'shipping_status' => $shipStatus,
+                'buyer_status'    => $buyerStatus,
+                'seller_status'   => $sellerStatus,
                 'tracking_id'     => $payment->tracking_id,
                 'ship_code'       => $payment->ship_code,
+                // Computed display fields — same source of truth as the
+                // buyer-facing endpoint, see App\Support\ShippingStatusBadge.
+                'status_badge'   => $badge,          // {stage,label,icon,color,class}
+                'shipping_badge' => ShippingStatusBadge::resolveShippingOnly($shipStatus), // {label,icon,color,class}
+                'actions' => [
+                    // Whether the "Update Shipping Status" form should be
+                    // editable. False once the shipper has taken over
+                    // (shipping_status left 'pending') — mirrors the locked
+                    // message on the web page.
+                    'can_update_status' => $shipStatus === 'pending',
+                ],
+                // Options for the seller_status select shown on "Update
+                // Shipping Status" — value to PATCH, and the exact label
+                // text (including the dynamic company name) the web page
+                // uses, so mobile doesn't have to hardcode/duplicate it.
+                'seller_status_options' => [
+                    ['value' => 'pending',  'label' => '⏳ Pending'],
+                    ['value' => 'shipped',  'label' => "📦 Shipped (Dropped off at {$shipCompany})"],
+                    ['value' => 'canceled', 'label' => '❌ Canceled'],
+                ],
                 'buyer' => [
                     'name'  => trim(($payment->first_name ?? '') . ' ' . ($payment->last_name ?? '')),
                     'phone' => $payment->phone,
