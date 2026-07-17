@@ -190,12 +190,6 @@
         <div class="px-4 py-4 text-xs text-gray-600 leading-relaxed space-y-3">
             <p>Once your item arrives, tap the button below to confirm delivery. This releases payment to the seller and completes your transaction.</p>
             <div class="flex gap-2">
-                <button id="confirmBtn"
-                        onclick="confirmDelivery({{ $payment->id }})"
-                        class="flex-1 min-w-0 py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-1.5 text-center">
-                    <i class="bi bi-check-circle"></i> Confirm Delivery
-                </button>
-
                 @if($shipStatus === 'pending')
                     <button id="cancelBtn"
                             onclick="cancelOrder({{ $payment->id }})"
@@ -203,6 +197,12 @@
                         <i class="bi bi-x-circle"></i> Cancel Order
                     </button>
                 @endif
+
+                <button id="confirmBtn"
+                        onclick="confirmDelivery({{ $payment->id }})"
+                        class="flex-1 min-w-0 py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-1.5 text-center">
+                    <i class="bi bi-check-circle"></i> Confirm Delivery
+                </button>
             </div>
 
             @if($shipStatus === 'pending')
@@ -211,9 +211,8 @@
                     You can cancel for a full refund any time before the seller ships your order. Once it's on its way, cancellations go through our support team instead.
                 </p>
             @else
-                <div class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-500 flex items-center gap-2">
-                    <i class="bi bi-lock-fill"></i>
-                    This order is already with {{ $shipCompany ?? 'the shipping company' }}, so it can no longer be canceled here. Please <a href="/contact-us" class="font-semibold underline text-dark_green">contact support</a> if you need help.
+                <div class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-500">
+                    <p class="leading-relaxed"><i class="bi bi-lock-fill mr-1"></i>This order is already with {{ $shipCompany ?? 'the shipping company' }}, so it can no longer be canceled here. Please <a href="/contact-us" class="font-semibold underline text-dark_green">contact support</a> if you need help.</p>
                 </div>
             @endif
         </div>
