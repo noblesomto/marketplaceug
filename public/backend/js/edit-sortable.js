@@ -17,6 +17,26 @@ if (existingPreview) {
             const imageId = e.target.dataset.id;
             const container = e.target.closest(".image-container");
 
+            // Only saved images carry a data-id; only those count against the
+            // minimum. This is advisory UX only — the server re-validates and
+            // is the actual source of truth, so it's fine if this is imprecise.
+            if (imageId) {
+                const minImages = window.MIN_IMAGES || 0;
+                const savedCount = existingPreview.querySelectorAll(".image-container[data-id]").length;
+                if (savedCount - 1 < minImages) {
+                    const errorDiv = document.getElementById('image-error');
+                    const message = "Cannot delete this image. Adverts must have at least " + minImages + (minImages === 1 ? " image." : " images.");
+                    if (errorDiv) {
+                        errorDiv.textContent = message;
+                        errorDiv.classList.remove("hidden", "d-none");
+                        errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+                    } else {
+                        alert(message);
+                    }
+                    return;
+                }
+            }
+
             if (imageId && form) {
                 const deletedInput = document.createElement('input');
                 deletedInput.type = 'hidden';

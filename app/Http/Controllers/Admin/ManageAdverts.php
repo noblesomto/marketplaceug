@@ -284,52 +284,37 @@ class ManageAdverts extends Controller
 
 
         // Handle deleted images first
-if ($request->has('deleted_images') && !empty($request->input('deleted_images'))) {
-    $deletedImages = $request->input('deleted_images');
+        if ($request->has('deleted_images') && !empty($request->input('deleted_images'))) {
+            $deletedImages = $request->input('deleted_images');
 
-    // Ensure it's an array
-    if (!is_array($deletedImages)) {
-        $deletedImages = explode(',', $deletedImages);
-    }
+            // Ensure it's an array
+            if (!is_array($deletedImages)) {
+                $deletedImages = explode(',', $deletedImages);
+            }
 
-    $deletedImages = array_filter(array_map('intval', $deletedImages));
+            $deletedImages = array_filter(array_map('intval', $deletedImages));
 
-    if (!empty($deletedImages)) {
-        \Log::info('Attempting to delete images:', $deletedImages);
+            if (!empty($deletedImages)) {
+                $effectiveMinImages = in_array($category, [3, 18]) ? 0 : (int) AdSetting::getValue('min_images', 3);
 
-        // Step 1: Try normal deletion
-        $deleteResults = $this->getImageService()->deleteMultipleImages(
-            $advert,
-            $deletedImages,
-            'images',
-            true // Reorder after deletion
-        );
+                $result = $this->getImageService()->validateAndDeleteImages(
+                    $advert,
+                    $deletedImages,
+                    $effectiveMinImages,
+                    'images'
+                );
 
-        $deletedCount = $deleteResults['deleted'] ?? 0;
-        if ($deletedCount > 0) {
-            $messages[] = "{$deletedCount} image(s) deleted";
-        }
+                if (!$result['success']) {
+                    return redirect()->back()->withErrors([
+                        'deleted_images' => $result['error']
+                    ]);
+                }
 
-        // Step 2: Force delete ALL requested IDs to guarantee DB + files are gone
-        $forceDeletedCount = 0;
-        foreach ($deletedImages as $mediaId) {
-            if ($this->getImageService()->forceDeleteMedia($mediaId)) {
-                $forceDeletedCount++;
+                if ($result['deleted'] > 0) {
+                    $messages[] = "{$result['deleted']} image(s) deleted";
+                }
             }
         }
-
-        if ($forceDeletedCount > 0) {
-            $messages[] = "{$forceDeletedCount} image(s) force deleted (cleanup)";
-        }
-
-        // Log any errors from step 1
-        if (!empty($deleteResults['errors'])) {
-            foreach ($deleteResults['errors'] as $error) {
-                \Log::warning("Image deletion error: " . $error);
-            }
-        }
-    }
-}
 
 
         // Upload new images BEFORE reordering existing ones
@@ -385,6 +370,17 @@ if ($request->has('deleted_images') && !empty($request->input('deleted_images'))
             // If no specific order given but new images uploaded, reorder all to ensure consistent numbering
             $allMediaIds = $advert->getMedia('images')->sortBy('order_column')->pluck('id')->toArray();
             $this->getImageService()->reorderImages($advert, $allMediaIds, 'images');
+        }
+
+        // Defense-in-depth: the deletion guard above already prevents this request
+        // from dropping below the minimum, so this should only trip for adverts
+        // that were already under the minimum before this edit.
+        $finalMinImages = in_array($category, [3, 18]) ? 0 : (int) AdSetting::getValue('min_images', 3);
+        $finalImageCount = $advert->getMedia('images')->count();
+        if ($finalImageCount < $finalMinImages) {
+            return redirect()->back()->withErrors([
+                'images' => "Advert must have at least {$finalMinImages} image" . ($finalMinImages === 1 ? '' : 's') . ". Please upload more images."
+            ]);
         }
 
         // Update Car details (upsert: update if exists, create if missing)

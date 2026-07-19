@@ -605,49 +605,23 @@ class UserManageAdverts extends Controller
             $deletedImages = array_filter(array_map('intval', $deletedImages));
 
             if (!empty($deletedImages)) {
-                // Get current image count
-                $currentImageCount = $advert->getMedia('images')->count();
-                $requestedDeleteCount = count($deletedImages);
+                $effectiveMinImages = in_array($category, [3, 18]) ? 0 : $minImages;
 
-                // Validate: must have at least $minImages remaining
-                $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
-                if ($remainingAfterDelete < $minImages) {
+                $result = $this->getImageService()->validateAndDeleteImages(
+                    $advert,
+                    $deletedImages,
+                    $effectiveMinImages,
+                    'images'
+                );
+
+                if (!$result['success']) {
                     return redirect()->back()->withErrors([
-                        'deleted_images' => "Cannot delete those images. Adverts must have at least {$minImages} image" . ($minImages === 1 ? '' : 's') . "."
+                        'deleted_images' => $result['error']
                     ]);
-                } else {
-                    // Proceed with deletion
-                    \Log::info('Attempting to delete images:', $deletedImages);
+                }
 
-                    // Step 1: Try normal deletion
-                    $deleteResults = $this->getImageService()->deleteMultipleImages(
-                        $advert,
-                        $deletedImages,
-                        'images',
-                        true // Reorder after deletion
-                    );
-                    $deletedCount = $deleteResults['deleted'] ?? 0;
-                    if ($deletedCount > 0) {
-                        $messages[] = "{$deletedCount} image(s) deleted";
-                    }
-
-                    // Step 2: Force delete ALL requested IDs to guarantee DB + files are gone
-                    $forceDeletedCount = 0;
-                    foreach ($deletedImages as $mediaId) {
-                        if ($this->getImageService()->forceDeleteMedia($mediaId)) {
-                            $forceDeletedCount++;
-                        }
-                    }
-                    if ($forceDeletedCount > 0) {
-                        $messages[] = "{$forceDeletedCount} image(s) force deleted (cleanup)";
-                    }
-
-                    // Log any errors from step 1
-                    if (!empty($deleteResults['errors'])) {
-                        foreach ($deleteResults['errors'] as $error) {
-                            \Log::warning("Image deletion error: " . $error);
-                        }
-                    }
+                if ($result['deleted'] > 0) {
+                    $messages[] = "{$result['deleted']} image(s) deleted";
                 }
             }
         }

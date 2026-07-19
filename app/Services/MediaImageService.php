@@ -226,6 +226,76 @@ class MediaImageService
     }
 
     /**
+     * Validate that deleting the given media IDs would not drop the model's image
+     * count below $minImages, then perform the deletion. This is the single
+     * authoritative guard for "advert must keep at least N images" — it must be
+     * used by every caller that lets a user delete advert images (web, API, admin).
+     *
+     * Counts are read via the model's `media()` relation query (a fresh DB query)
+     * rather than the `getMedia()`/`$model->media` cached relation, because that
+     * cache is not invalidated when a related Media row is deleted through a
+     * different reference — a stale cache would make a "final count" check performed
+     * after deletion silently see the pre-deletion count forever. The cached
+     * relation is explicitly unset afterward so any later getMedia() call in the
+     * same request (reordering, response building, etc.) reflects the true state.
+     *
+     * Deletion only ever happens when the resulting count is provably >= $minImages,
+     * so this never needs to be "undone" - there is no reliance on DB transaction
+     * rollback, which cannot undo the media files Spatie deletes from disk
+     * synchronously as part of Media::delete().
+     *
+     * @param HasMedia $model
+     * @param array $mediaIdsToDelete
+     * @param int $minImages
+     * @param string $collection
+     * @return array{success: bool, deleted: int, error?: string}
+     */
+    public function validateAndDeleteImages(
+        HasMedia $model,
+        array $mediaIdsToDelete,
+        int $minImages,
+        string $collection = 'images'
+    ): array {
+        $mediaIdsToDelete = array_values(array_unique(array_filter(array_map('intval', $mediaIdsToDelete))));
+
+        if (empty($mediaIdsToDelete)) {
+            return ['success' => true, 'deleted' => 0];
+        }
+
+        $collectionQuery = fn () => $model->media()->where('collection_name', $collection);
+
+        $currentCount = $collectionQuery()->count();
+        $ownedIdsToDelete = $collectionQuery()->whereIn('id', $mediaIdsToDelete)->pluck('id')->all();
+
+        $remaining = $currentCount - count($ownedIdsToDelete);
+
+        if ($remaining < $minImages) {
+            \Log::info("Blocked image deletion for {$model->getMorphClass()} ID {$model->id}: would leave {$remaining} image(s), minimum is {$minImages}");
+
+            return [
+                'success' => false,
+                'deleted' => 0,
+                'error'   => "Cannot delete those images. Adverts must have at least {$minImages} image" . ($minImages === 1 ? '' : 's') . ".",
+            ];
+        }
+
+        $deleted = 0;
+        foreach ($ownedIdsToDelete as $mediaId) {
+            $media = Media::find($mediaId);
+            if ($media) {
+                $media->delete();
+                $deleted++;
+            }
+        }
+
+        $model->unsetRelation('media');
+
+        \Log::info("Deleted {$deleted} image(s) for {$model->getMorphClass()} ID {$model->id}, collection '{$collection}'");
+
+        return ['success' => true, 'deleted' => $deleted];
+    }
+
+    /**
      * Delete all images from collection
      *
      * @param HasMedia $model

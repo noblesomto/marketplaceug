@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advert;
+use App\Models\AdSetting;
 use App\Models\AdvertImage;
 use App\Models\Category;
 use App\Models\SubCategory;
@@ -955,28 +956,21 @@ class UserManageAdverts extends Controller
                 $deletedImages = array_filter(array_map('intval', $deletedImages));
 
                 if (!empty($deletedImages)) {
-                    // Get current image count (Spatie MediaLibrary)
-                    $currentImageCount = $advert->getMedia('images')->count();
-                    $requestedDeleteCount = count($deletedImages);
-                    $hasNewImages = $request->hasFile('images');
+                    $effectiveMinImages = in_array($category, [3, 18]) ? 0 : (int) AdSetting::getValue('min_images', 3);
 
-                    // Validate: must have at least 3 images remaining (unless Jobs/CV categories)
-                    if (!in_array($category, [3, 18])) {
-                        $remainingAfterDelete = $currentImageCount - $requestedDeleteCount;
-                        if ($remainingAfterDelete < 3 && !$hasNewImages) {
-                            return response()->json([
-                                'success' => false,
-                                'errors' => ['deleted_images' => ['Cannot delete those images. Adverts must have at least 3 images.']]
-                            ], 422);
-                        }
-                    }
+                    $result = $this->getImageService()->validateAndDeleteImages(
+                        $advert,
+                        $deletedImages,
+                        $effectiveMinImages,
+                        'images'
+                    );
 
-                    // Proceed with deletion from Spatie MediaLibrary
-                    foreach ($deletedImages as $mediaId) {
-                        $mediaItem = $advert->getMedia('images')->firstWhere('id', (int) $mediaId);
-                        if ($mediaItem) {
-                            $mediaItem->delete();
-                        }
+                    if (!$result['success']) {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['deleted_images' => [$result['error']]]
+                        ], 422);
                     }
                 }
             }
@@ -1014,20 +1008,18 @@ class UserManageAdverts extends Controller
                 }
             }
 
-            // Validate final image count - ensure at least 3 images exist
+            // Defense-in-depth: the deletion guard above already prevents a request
+            // from dropping below the minimum, so this should only trip for adverts
+            // that were already under the minimum before this request.
+            $finalMinImages = in_array($category, [3, 18]) ? 0 : (int) AdSetting::getValue('min_images', 3);
             $finalImageCount = $advert->getMedia('images')->count();
 
-            if ($finalImageCount < 3) {
-                if (in_array($category, [3, 18])) {
-                    // Jobs/CV: no minimum; skip count enforcement
-                } else {
-                    // For all other categories, at least 3 images are required
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['images' => ['Advert must have at least 3 images. Please upload more images.']]
-                    ], 422);
-                }
+            if ($finalImageCount < $finalMinImages) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['images' => ["Advert must have at least {$finalMinImages} image" . ($finalMinImages === 1 ? '' : 's') . ". Please upload more images."]]
+                ], 422);
             }
 
             // Update Car details — subcats: 2=Cars, 21=Buses & Minibuses, 23=Trucks & Trailers
