@@ -557,7 +557,8 @@ class UserController extends Controller
      *         description="Payment history",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", ref="#/components/schemas/PaymentList")
+     *             @OA\Property(property="data", ref="#/components/schemas/PaymentList"),
+     *             @OA\Property(property="completed_orders_count", type="integer", description="Count of orders with payment_status=paid, i.e. the buyer's order total")
      *         )
      *     )
      * )
@@ -571,9 +572,14 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($request->get('per_page', 10));
 
+        $completedOrdersCount = Payment::where('user_id', $user->user_id)
+            ->where('payment_status', 'paid')
+            ->count();
+
         return response()->json([
             'success' => true,
-            'data' => $payments
+            'data' => $payments,
+            'completed_orders_count' => $completedOrdersCount
         ]);
     }
 

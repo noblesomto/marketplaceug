@@ -338,9 +338,8 @@
         <div class="orders-page-title">
             <i class="bi bi-bag-check-fill"></i>
             My Orders
-            @php $totalCount = $buyAds->count() + $pendingOrders->count(); @endphp
-            @if($totalCount > 0)
-                <span class="orders-count-badge">{{ $totalCount }}</span>
+            @if($buyAds->total() > 0)
+                <span class="orders-count-badge">{{ $buyAds->total() }}</span>
             @endif
         </div>
     </div>
