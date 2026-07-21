@@ -272,6 +272,7 @@ Route::middleware(['auth:sanctum', 'throttle:20,1'])->prefix('adverts')->group(f
 Route::get('/adverts/categories/{categoryId}/subcategories', [UserManageAdverts::class, 'fetchSubcategories']);
 Route::get('/adverts/subcategories/{subcategoryId}/brands', [UserManageAdverts::class, 'fetchBrands']);
 Route::get('/adverts/brands/{brandId}/models', [UserManageAdverts::class, 'fetchModels']);
+Route::get('/shipping-companies', [UserManageAdverts::class, 'getShippingCompanies']);
 
 /*
 |--------------------------------------------------------------------------

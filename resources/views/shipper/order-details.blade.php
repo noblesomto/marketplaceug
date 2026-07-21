@@ -144,7 +144,7 @@
                         @if ($ship->shipping)
                             <div class="flex items-center gap-3 pb-2 border-b border-gray-100">
                                 @if ($ship->shipping->logo)
-                                    <img src="{{ $ship->shipping->logo }}"
+                                    <img src="{{ Str::startsWith($ship->shipping->logo, 'http') ? $ship->shipping->logo : asset('uploads/shipping/'.$ship->shipping->logo) }}"
                                          class="h-7 object-contain" alt="{{ $ship->shipping->company }}">
                                 @endif
                                 <span class="font-semibold text-gray-800">{{ $ship->shipping->company }}</span>

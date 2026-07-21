@@ -12,7 +12,9 @@
                       : '#';
 
     $shipCompany  = $payment->shipping->company ?? null;
-    $shipLogo     = $payment->shipping->logo ?? null;
+    $shipLogo     = $payment->shipping && $payment->shipping->logo
+                        ? (Str::startsWith($payment->shipping->logo, 'http') ? $payment->shipping->logo : asset('uploads/shipping/'.$payment->shipping->logo))
+                        : null;
     $shipStatus   = $payment->shipping_status ?? 'pending';
     $sellerStatus = $payment->seller_status ?? 'pending';
     $buyerStatus  = $payment->buyer_status ?? 'pending';

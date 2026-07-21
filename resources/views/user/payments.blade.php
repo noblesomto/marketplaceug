@@ -465,7 +465,7 @@
                         <div class="shipping-label">Shipping via</div>
                         <div class="shipping-company">
                             @if(isset($row->shipping->logo))
-                                <img src="{{ $row->shipping->logo }}" alt="{{ $row->shipping->company ?? '' }}">
+                                <img src="{{ Str::startsWith($row->shipping->logo, 'http') ? $row->shipping->logo : asset('uploads/shipping/'.$row->shipping->logo) }}" alt="{{ $row->shipping->company ?? '' }}">
                             @endif
                             <span>{{ $row->shipping->company ?? 'Not specified' }}</span>
                         </div>

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Support\ShippingStatusBadge;
 
@@ -892,7 +893,9 @@ class UserController extends Controller
                 ],
                 'shipping_company' => [
                     'name' => $ship->company ?? null,
-                    'logo' => $ship->logo ?? null,
+                    'logo' => $ship && $ship->logo
+                        ? (Str::startsWith($ship->logo, 'http') ? $ship->logo : asset('uploads/shipping/'.$ship->logo))
+                        : null,
                 ],
                 'delivery_location' => [
                     'address' => $city->address ?? null,
@@ -983,7 +986,9 @@ class UserController extends Controller
                 ],
                 'shipping_company' => [
                     'name' => $ship->company ?? null,
-                    'logo' => $ship->logo ?? null,
+                    'logo' => $ship && $ship->logo
+                        ? (Str::startsWith($ship->logo, 'http') ? $ship->logo : asset('uploads/shipping/'.$ship->logo))
+                        : null,
                 ],
                 'delivery_location' => [
                     'address' => $city->address ?? null,

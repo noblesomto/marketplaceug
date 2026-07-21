@@ -134,6 +134,36 @@ class UserManageAdverts extends Controller
 
     /**
      * @OA\Get(
+     *     path="/api/shipping-companies",
+     *     summary="Get active shipping companies",
+     *     tags={"Advert Management"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Shipping companies list",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Shipping"))
+     *         )
+     *     )
+     * )
+     */
+    public function getShippingCompanies()
+    {
+        $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
+        $shippings->each(function ($shipping) {
+            $shipping->logo = $shipping->logo
+                ? (Str::startsWith($shipping->logo, 'http') ? $shipping->logo : asset('uploads/shipping/'.$shipping->logo))
+                : null;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $shippings
+        ]);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/adverts/create/data",
      *     summary="Get data needed for creating adverts",
      *     tags={"Advert Management"},
@@ -157,6 +187,11 @@ class UserManageAdverts extends Controller
         $categories = Category::orderBy('category', 'asc')->get();
         $states = State::all();
         $shippings = Shipping::where('status', 'Active')->orderBy('company', 'asc')->get();
+        $shippings->each(function ($shipping) {
+            $shipping->logo = $shipping->logo
+                ? (Str::startsWith($shipping->logo, 'http') ? $shipping->logo : asset('uploads/shipping/'.$shipping->logo))
+                : null;
+        });
 
         return response()->json([
             'success' => true,

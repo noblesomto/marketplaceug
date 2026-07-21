@@ -5119,6 +5119,39 @@
           "response": []
         },
         {
+          "name": "Get Shipping Companies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/shipping-companies",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "shipping-companies"
+              ]
+            },
+            "description": "🌐 **Public Endpoint**\\n\\nEndpoint: `GET /api/shipping-companies`\\nController: `App\\Http\\Controllers\\Api\\UserManageAdverts@getShippingCompanies`\\n\\nReturns the active shipping companies (id, company, weight, description, price, logo) available for the post-ad / edit-ad shipping-method selector. `logo` is always a full absolute URL. Equivalent to `Shipping::where('status','Active')->orderBy('company')->get()` \\u2014 same data source as `Get Create Advert Data`, but standalone and unauthenticated so it can be called before login.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get Advert for Edit",
           "request": {
             "method": "GET",

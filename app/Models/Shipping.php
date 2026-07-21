@@ -19,6 +19,12 @@ class Shipping extends Model
         'logo',
     ];
 
+    protected $hidden = [
+        'username',
+        'password',
+        'show_password',
+    ];
+
     public function adverts()
     {
         return $this->belongsToMany(Advert::class, 'advert_shipping');

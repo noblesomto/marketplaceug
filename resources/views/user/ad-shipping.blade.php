@@ -8,7 +8,9 @@
     $buyerPhone   = $ad->phone ?? '—';
     $productName  = $ad->advert->ad_title ?? '—';
     $shipCompany  = $ad->shipping->company ?? '—';
-    $shipLogo     = $ad->shipping->logo ?? null;
+    $shipLogo     = $ad->shipping && $ad->shipping->logo
+                        ? (Str::startsWith($ad->shipping->logo, 'http') ? $ad->shipping->logo : asset('uploads/shipping/'.$ad->shipping->logo))
+                        : null;
     $shipCode     = $ad->ship_code ?? '—';
     $trackingId   = $ad->tracking_id ?? null;
     $shipStatus   = $ad->shipping_status ?? 'pending';
@@ -231,7 +233,7 @@
                 </select>
                 <button type="submit"
                         class="w-full py-2.5 bg-dark_green text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors">
-                    Save Status
+                    Update Status
                 </button>
             </form>
             @endif

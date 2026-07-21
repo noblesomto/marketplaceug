@@ -583,7 +583,7 @@
                             <input id="shipping-{{ $row->id }}" name="shipping[]" type="checkbox" value="{{ $row->id }}" class="mt-1 h-5 w-5 text-dark_green border-gray-300 rounded focus:ring-dark_green" {{ in_array($row->id, old('shipping', [])) ? 'checked' : '' }}>
                             <div class="ml-3">
                                 <div class="flex items-center">
-                                    <img class="w-8 h-auto mr-2" src="{{ $row->logo }}" alt="Logo">
+                                    <img class="w-8 h-auto mr-2" src="{{ Str::startsWith($row->logo, 'http') ? $row->logo : asset('uploads/shipping/'.$row->logo) }}" alt="Logo">
                                     <span class="font-bold text-gray-900">{{ $row->company }}</span>
                                 </div>
                                 <p class="text-xs text-gray-500 mt-1">Max. {{ $row->weight }} kg, {{ $row->description }}</p>
