@@ -7944,9 +7944,45 @@
                 "all"
               ]
             },
-            "description": "Get all UI configurations for categories and subcategories.\n\n**Authentication:** Not required (public)\n**Cache:** 24 hours server-side\n\n**Use Case:** Mobile app should fetch this on app start and cache locally\n\n**Response Structure:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"categories\": {\n      \"1\": {\"show\": [...], \"hide\": [...], \"labels\": {...}},\n      \"2\": {...}\n    },\n    \"subcategories\": {\n      \"1\": {\"show\": [...], \"hide\": [...], \"required\": [...]},\n      \"2\": {...}\n    }\n  },\n  \"cache_expires_at\": \"2026-02-01 12:00:00\"\n}\n```\n\n**Mobile Implementation:**\n1. Fetch on app start\n2. Cache locally for 24 hours\n3. Apply show/hide rules when user selects category/subcategory\n4. Dynamically show/hide form fields based on config\n5. Apply custom labels to dropdowns"
+            "description": "Get all UI configurations for categories and subcategories.\n\n**Authentication:** Not required (public)\n**Cache:** 24 hours server-side\n\n**Use Case:** Mobile app should fetch this on app start and cache locally\n\n**Response Structure:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"categories\": {\n      \"1\": {\"show\": [...], \"hide\": [...], \"labels\": {...}},\n      \"2\": {...}\n    },\n    \"subcategories\": {\n      \"1\": {\"show\": [...], \"hide\": [...], \"required\": [...]},\n      \"2\": {...}\n    },\n    \"defaults\": {\n      \"category\": {\"show\": [...], \"hide\": [...], \"labels\": {...}},\n      \"subcategory\": {\"show\": [...], \"hide\": [...], \"labels\": {...}, \"required\": [...]}\n    },\n    \"quantity_eligible_category_ids\": [2, 4, 5, 8, 9, 10, 12, 13, 14, 16, 17]\n  },\n  \"cached\": true,\n  \"version\": \"1.0\"\n}\n```\n\n**`quantity_eligible_category_ids`:** Flat list of every category ID that shows the quantity field, already resolved across ALL categories (including ones with no custom config row, via the default-config fallback) — no need to parse `hide`/`show` arrays or know about the default fallback yourself. Combine with the logged-in user's `acc_type` (from `GET /api/user`): the quantity input should only be shown/submitted when `acc_type === \"Commercial\"` **AND** the selected category ID is in this list. Both conditions are also enforced server-side on advert create/update (submitting quantity outside these conditions returns a 422).\n\n**Mobile Implementation:**\n1. Fetch on app start\n2. Cache locally for 24 hours\n3. Apply show/hide rules when user selects category/subcategory\n4. Dynamically show/hide form fields based on config\n5. Apply custom labels to dropdowns\n6. Show quantity field only if user.acc_type === 'Commercial' AND category ID is in quantity_eligible_category_ids"
           },
-          "response": []
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/ui-config/all",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "ui-config",
+                    "all"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"categories\": {\n            \"1\": {\n                \"show\": [\"price\"],\n                \"hide\": [\"salary\", \"expectedSalary\", \"services\", \"quantity\", \"shipment\", \"itemCondition\", \"buyDirect\"],\n                \"labels\": {\"brand\": \"Select Option:\"}\n            },\n            \"2\": {\n                \"show\": [\"price\", \"quantity\", \"shipment\", \"shipping\", \"itemCondition\", \"buyDirect\"],\n                \"hide\": [\"salary\", \"expectedSalary\", \"services\"],\n                \"labels\": {\"brand\": \"Select Option:\"}\n            },\n            \"3\": {\n                \"show\": [\"salary\"],\n                \"hide\": [\"price\", \"shipment\", \"itemCondition\", \"shipping\", \"buyDirect\", \"expectedSalary\", \"quantity\"],\n                \"labels\": {\"brand\": \"Select Job Type:\"}\n            },\n            \"7\": {\n                \"show\": [\"price\"],\n                \"hide\": [\"salary\", \"expectedSalary\", \"services\", \"quantity\", \"shipment\", \"itemCondition\", \"buyDirect\"],\n                \"labels\": {\"brand\": \"Select Option:\"}\n            },\n            \"11\": {\n                \"show\": [\"price\", \"services\"],\n                \"hide\": [\"quantity\", \"shipment\", \"shipping\", \"itemCondition\", \"buyDirect\"],\n                \"labels\": {\"brand\": \"Select Type:\"}\n            },\n            \"18\": {\n                \"show\": [\"expectedSalary\"],\n                \"hide\": [\"price\", \"salary\", \"shipment\", \"shipping\", \"itemCondition\", \"buyDirect\", \"quantity\"],\n                \"labels\": {\"brand\": \"Select Option:\"}\n            }\n        },\n        \"subcategories\": {\n            \"2\": {\n                \"show\": [\"divCar\", \"divModel\"],\n                \"hide\": [\"shipment\", \"itemCondition\", \"buyDirect\"],\n                \"labels\": {\"brand\": \"Brand:\"},\n                \"required\": [\"model\"]\n            }\n        },\n        \"defaults\": {\n            \"category\": {\n                \"show\": [\"price\", \"quantity\", \"shipment\", \"itemCondition\", \"buyDirect\"],\n                \"hide\": [\"services\", \"salary\", \"expectedSalary\"],\n                \"labels\": {\"brand\": \"Select Option:\"}\n            },\n            \"subcategory\": {\n                \"show\": [],\n                \"hide\": [\"divCar\", \"divPhone\", \"divModel\"],\n                \"labels\": {\"brand\": \"Select Option:\"},\n                \"required\": []\n            }\n        },\n        \"quantity_eligible_category_ids\": [2, 4, 5, 8, 9, 10, 12, 13, 14, 16, 17]\n    },\n    \"cached\": true,\n    \"version\": \"1.0\"\n}"
+            }
+          ]
         },
         {
           "name": "UI Config Category {CategoryId}",
