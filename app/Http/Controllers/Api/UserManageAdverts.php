@@ -387,7 +387,7 @@ class UserManageAdverts extends Controller
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
         $hasTempImages = !empty($request->input('temp_image_paths', []));
-        $rules = $validationService->getRules($category, $subcat, false, $hasTempImages);
+        $rules = $validationService->getRules($category, $subcat, false, $hasTempImages, $user->acc_type);
 
         $messages = [
             'images.required'             => 'Please upload at least 3 images.',
@@ -894,7 +894,7 @@ class UserManageAdverts extends Controller
 
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
-        $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
+        $rules = $validationService->getRules($category, $subcat, true, false, $user->acc_type); // true = isUpdate
 
         $messages = [
             'state.exists'                => 'Please select a valid state.',

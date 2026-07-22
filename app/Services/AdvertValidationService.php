@@ -23,9 +23,10 @@ class AdvertValidationService
      * @param int|null $subcategoryId
      * @param bool $isUpdate - If true, images are optional
      * @param bool $hasTempImages - If true, images are optional (already uploaded)
+     * @param string|null $accType - The submitting user's account type (e.g. "Commercial"), used to gate account-restricted fields like quantity
      * @return array
      */
-    public function getRules(int $categoryId, ?int $subcategoryId = null, bool $isUpdate = false, bool $hasTempImages = false): array
+    public function getRules(int $categoryId, ?int $subcategoryId = null, bool $isUpdate = false, bool $hasTempImages = false, ?string $accType = null): array
     {
         // Get UI config
         $uiConfig = $this->getUIConfig($categoryId, $subcategoryId);
@@ -51,7 +52,7 @@ class AdvertValidationService
         }
 
         // Add conditional rules based on UI config
-        $rules = array_merge($rules, $this->buildConditionalRules($uiConfig, $categoryId, $subcategoryId));
+        $rules = array_merge($rules, $this->buildConditionalRules($uiConfig, $categoryId, $subcategoryId, $accType));
 
         return $rules;
     }
@@ -62,9 +63,10 @@ class AdvertValidationService
      * @param array $uiConfig
      * @param int $categoryId
      * @param int|null $subcategoryId
+     * @param string|null $accType
      * @return array
      */
-    protected function buildConditionalRules(array $uiConfig, int $categoryId, ?int $subcategoryId): array
+    protected function buildConditionalRules(array $uiConfig, int $categoryId, ?int $subcategoryId, ?string $accType = null): array
     {
         $rules = [];
 
@@ -119,9 +121,14 @@ class AdvertValidationService
             }
         }
 
-        // Quantity field
-        if ($isVisible('quantity')) {
+        // Quantity field — category must show it AND the account must be Commercial
+        // (matches the @if($user->acc_type=="Commercial") gate in post-ad/edit-ad Blade views).
+        // Reject outright rather than silently ignore, since callers save quantity
+        // straight from raw request input, bypassing these rules otherwise.
+        if ($isVisible('quantity') && $accType === 'Commercial') {
             $rules['quantity'] = 'nullable|numeric|min:1';
+        } else {
+            $rules['quantity'] = 'prohibited';
         }
 
         // Item condition (only if visible and not excluded by category/subcat)

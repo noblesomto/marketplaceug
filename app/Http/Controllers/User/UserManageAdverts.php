@@ -187,7 +187,7 @@ class UserManageAdverts extends Controller
 
             // Use dynamic validation service based on Category UI Config
             $validationService = new AdvertValidationService();
-            $rules = $validationService->getRules($category, $subcat, false, $hasTempImages);
+            $rules = $validationService->getRules($category, $subcat, false, $hasTempImages, $user->acc_type);
 
             // Custom validation messages
             $messages = [
@@ -495,7 +495,7 @@ class UserManageAdverts extends Controller
         }
 
         if ($request->isMethod('POST')) {
-            return $this->update_ad($request, $advert);
+            return $this->update_ad($request, $advert, $user);
         }
 
         $minImages = (int) AdSetting::getValue('min_images', 3);
@@ -517,7 +517,7 @@ class UserManageAdverts extends Controller
         ));
     }
 
-    protected function update_ad(Request $request, $advert)
+    protected function update_ad(Request $request, $advert, $user)
     {
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
@@ -532,7 +532,7 @@ class UserManageAdverts extends Controller
 
         // Use dynamic validation service based on Category UI Config
         $validationService = new AdvertValidationService();
-        $rules = $validationService->getRules($category, $subcat, true); // true = isUpdate
+        $rules = $validationService->getRules($category, $subcat, true, false, $user->acc_type); // true = isUpdate
 
         $validatedData = $request->validate($rules, [
             'phone_color.required'     => 'Please select the phone color.',
