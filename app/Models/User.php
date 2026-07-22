@@ -57,6 +57,7 @@ class User extends Authenticatable implements HasMedia
         'avatar',
         'last_login_ip',
         'last_login_at',
+        'last_seen_at',
     ];
 
     /**

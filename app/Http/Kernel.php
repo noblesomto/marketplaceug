@@ -39,12 +39,14 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AutoLoginFromCookie::class,
             \App\Http\Middleware\ContentSecurityPolicy::class,
+            \App\Http\Middleware\UpdateLastSeen::class,
         ],
 
         'api' => [
            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\UpdateLastSeen::class,
         ],
     ];
 

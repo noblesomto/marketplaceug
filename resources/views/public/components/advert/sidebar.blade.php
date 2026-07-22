@@ -20,7 +20,10 @@
                 <div class="text-xs text-gray-500 mt-0.5" data-nosnippet>
                     Last Seen:
                     @php
-                        $lastSeen = \Carbon\Carbon::parse($ad->owner->last_login_at);
+                        // last_seen_at reflects real activity (App\Http\Middleware\UpdateLastSeen),
+                        // last_login_at only moves on a fresh login/token event — fall back to it
+                        // for users seen before last_seen_at existed.
+                        $lastSeen = \Carbon\Carbon::parse($ad->owner->last_seen_at ?? $ad->owner->last_login_at);
                         if ($lastSeen->isToday()) {
                             echo 'Today at ' . $lastSeen->format('g:i A');
                         } elseif ($lastSeen->isYesterday()) {
