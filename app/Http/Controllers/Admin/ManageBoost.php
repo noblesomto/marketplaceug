@@ -86,16 +86,37 @@ class ManageBoost extends Controller
         $title = "Unpaid Boost Adverts | " . config('global.site_name');
         $page_title = "Unpaid Boost Adverts";
 
+        // No proof uploaded yet — nothing for an admin to confirm here, see confirmPayment().
         $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
             ->whereHas('advert', function ($query) {
                 $query->where('ad_status', 1)->where('sold', 'No');
             })
             ->where('payment_status','pending')
             ->where('boost_status','pending')
+            ->where('upload_proof', 'no')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
         return view('admin.adboost.unpaid', compact('title', 'page_title', 'adverts'));
+    }
+
+    public function confirmPayment(Request $request)
+    {
+        $title = "Confirm Payment | " . config('global.site_name');
+        $page_title = "Confirm Payment";
+
+        // Manual bank-transfer proof was uploaded and is still awaiting admin review.
+        $adverts = AdvertBoost::with(['user', 'advert.firstImage'])
+            ->whereHas('advert', function ($query) {
+                $query->where('ad_status', 1)->where('sold', 'No');
+            })
+            ->where('payment_status', 'pending')
+            ->where('boost_status', 'pending')
+            ->where('upload_proof', 'yes')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('admin.adboost.confirm-payment', compact('title', 'page_title', 'adverts'));
     }
 
     public function paid(Request $request)

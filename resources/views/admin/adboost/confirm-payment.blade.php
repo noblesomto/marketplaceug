@@ -20,7 +20,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title text-white mb-0">
-                            <i class="bi bi-megaphone me-2"></i>Boosts Awaiting Payment
+                            <i class="bi bi-megaphone me-2"></i>Manual Payments Awaiting Confirmation
                         </h5>
                     </div>
 

@@ -72,6 +72,7 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
         Route::get('/boost/active', [ManageBoost::class, 'active'])->name('admin.boost.active');
         Route::get('/boost/completed', [ManageBoost::class, 'completed'])->name('admin.boost.completed');
         Route::get('/boost/unpaid', [ManageBoost::class, 'unpaid'])->name('admin.boost.unpaid');
+        Route::get('/boost/confirm-payment', [ManageBoost::class, 'confirmPayment'])->name('admin.boost.confirm-payment');
         Route::get('/boost/paid', [ManageBoost::class, 'paid'])->name('admin.boost.paid');
         Route::post('/boost/status/{id}/{status}', [ManageBoost::class, 'status'])->name('admin.boost.status');
         Route::post('/boost/payment-status/{id}/{status}', [ManageBoost::class, 'payment'])->name('admin.boost.payment.status');
