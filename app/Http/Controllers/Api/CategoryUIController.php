@@ -47,7 +47,11 @@ class CategoryUIController extends Controller
             return [
                 'categories' => $this->getCategoriesConfig(),
                 'subcategories' => $this->getSubcategoriesConfig(),
-                'defaults' => $this->getDefaultConfigs()
+                'defaults' => $this->getDefaultConfigs(),
+                // Explicit, ready-to-use list so clients don't have to resolve
+                // each category's hide/show arrays (with default-config fallback)
+                // themselves just to answer "does this category take a quantity?".
+                'quantity_eligible_category_ids' => $this->getQuantityEligibleCategoryIds(),
             ];
         });
 
@@ -163,6 +167,31 @@ class CategoryUIController extends Controller
                     $subcategory->id => json_decode($subcategory->ui_config, true)
                 ];
             })
+            ->toArray();
+    }
+
+    /**
+     * IDs of every category that shows the quantity field — resolved across
+     * ALL categories (not just ones with a custom ui_config row), falling
+     * back to the default category config the same way the web UI does.
+     *
+     * @return array
+     */
+    private function getQuantityEligibleCategoryIds(): array
+    {
+        $default = $this->getDefaultCategoryConfig();
+
+        return Category::select('id', 'ui_config')
+            ->get()
+            ->filter(function ($category) use ($default) {
+                $config = $category->ui_config
+                    ? json_decode($category->ui_config, true)
+                    : $default;
+
+                return !in_array('quantity', $config['hide'] ?? []);
+            })
+            ->pluck('id')
+            ->values()
             ->toArray();
     }
 
