@@ -219,7 +219,7 @@
             @if($shipStatus !== 'pending')
                 <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-xs text-gray-600 leading-relaxed">
                     <i class="bi bi-lock-fill text-gray-400"></i>
-                    This order is already with {{ $shipCompany }}, so it can no longer be updated from here. Contact support if you need to make a change.
+                    {{ \App\Support\ShippingStatusBadge::sellerLockedMessage($shipStatus, $shipCompany) }}
                 </div>
             @else
             <form method="POST" action="/user/update-shipping/{{ $ad->id }}">

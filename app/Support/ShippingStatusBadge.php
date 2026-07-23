@@ -57,6 +57,29 @@ class ShippingStatusBadge
     }
 
     /**
+     * The seller-facing message shown in place of the "Update Shipping
+     * Status" form once the shipper has taken over (shipping_status is no
+     * longer 'pending'). Distinguishes delivered/canceled from still-in-
+     * transit, so a completed order doesn't read like it's stuck awaiting
+     * support. Returns null for 'pending' — the form is shown instead.
+     *
+     * Used by: web (resources/views/user/ad-shipping.blade.php) and API
+     * (Api\UserController@adShippingDetails, 'locked_message' field).
+     */
+    public static function sellerLockedMessage(string $shipStatus, ?string $shipCompany): ?string
+    {
+        $shipCompany = $shipCompany ?: 'the shipping company';
+
+        return match ($shipStatus) {
+            'shipped'   => "This order is already with {$shipCompany} and on its way to the buyer, so it can no longer be updated from here. Contact support if you need to make a change.",
+            'pickup'    => "This order is ready for pickup at {$shipCompany}, so it can no longer be updated from here. Contact support if you need to make a change.",
+            'delivered' => "This order has been delivered to the buyer. No further action is needed here.",
+            'canceled'  => "This order has been canceled. Contact support if you need assistance.",
+            default     => null,
+        };
+    }
+
+    /**
      * The buyer-facing status banner shown just under the page title on the
      * order-details page (web: resources/views/user/order-details.blade.php,
      * API: Api\UserController@orderDetails). Returns null for the 'pending'
@@ -66,7 +89,7 @@ class ShippingStatusBadge
      * call this instead of each keeping their own copy of the text, so they
      * can't drift apart.
      */
-    public static function bannerFor(string $stage, ?string $shipCompany, $shippingStatusDate, $sellerStatusDate): ?array
+    public static function bannerFor(string $stage, ?string $shipCompany, $shippingStatusDate, $sellerStatusDate, ?string $pickupAddress = null): ?array
     {
         $shipCompany = $shipCompany ?: 'the shipping company';
         $shipDate    = $shippingStatusDate ? date('d M Y', strtotime($shippingStatusDate)) : null;
@@ -95,7 +118,10 @@ class ShippingStatusBadge
                 'icon'  => 'bi-shop',
                 'color' => 'purple',
                 'class' => 'bg-purple-50 border border-purple-200 text-purple-800',
-                'text'  => 'Your order is ready for pickup at a nearby centre' . ($shipDate ? " (updated {$shipDate})" : '') . '.',
+                'text'  => "Your order is ready for pickup at {$shipCompany}"
+                            . ($pickupAddress ? ", {$pickupAddress}" : '')
+                            . ($shipDate ? " (updated {$shipDate})" : '')
+                            . '.',
             ],
             'seller_shipped' => [
                 'icon'  => 'bi-box-seam-fill',

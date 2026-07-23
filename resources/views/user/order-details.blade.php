@@ -23,6 +23,7 @@
     $pickupAddress = $payment->cityLocation->address ?? null;
     $pickupCity    = $payment->cityLocation->city ?? null;
     $pickupState   = $payment->cityLocation->state->name ?? null;
+    $bannerAddress = $pickupAddress ?: trim(implode(', ', array_filter([$pickupCity, $pickupState])));
 
     $isPaid       = ($payment->payment_status ?? '') === 'paid';
     $isDelivered  = $buyerStatus === 'delivered';
@@ -30,7 +31,7 @@
 
     $badge = \App\Support\ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany ?? 'the shipping company');
     $shipOnlyBadge = \App\Support\ShippingStatusBadge::resolveShippingOnly($shipStatus);
-    $banner = \App\Support\ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date);
+    $banner = \App\Support\ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date, $bannerAddress ?: null);
 @endphp
 
 <section class="w-full md:w-3/6 mx-auto px-3 py-4 text-sm" style="max-width:640px;padding-bottom:7rem;">

@@ -844,9 +844,12 @@ class UserController extends Controller
         $sellerStatus = $payment->seller_status ?? 'pending';
         $buyerStatus  = $payment->buyer_status ?? 'pending';
         $shipCompany  = $ship->company ?? 'the shipping company';
+        $pickupAddress = $city->address
+            ?? trim(implode(', ', array_filter([$city->city ?? null, $city->state->name ?? null])))
+            ?: null;
 
         $badge  = ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany);
-        $banner = ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date);
+        $banner = ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date, $pickupAddress);
 
         $isDelivered = $buyerStatus === 'delivered';
         $canConfirmDelivery = !$isDelivered && $badge['stage'] !== 'canceled';
@@ -966,6 +969,11 @@ class UserController extends Controller
                     // message on the web page.
                     'can_update_status' => $shipStatus === 'pending',
                 ],
+                // Message to show in place of the update form when
+                // can_update_status is false. Differentiates delivered/
+                // canceled from still-in-transit — null when pending
+                // (can_update_status is true, show the form instead).
+                'locked_message' => ShippingStatusBadge::sellerLockedMessage($shipStatus, $shipCompany),
                 // Options for the seller_status select shown on "Update
                 // Shipping Status" — value to PATCH, and the exact label
                 // text (including the dynamic company name) the web page
