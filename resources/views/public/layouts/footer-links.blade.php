@@ -12,6 +12,7 @@
                     <li><a href="/billing-policy" class="hover:text-secondary-200">Billing Policy</a></li>
                     <li><a href="/copyright-policy" class="hover:text-secondary-200">Copyright Policy</a></li>
                     <li><a href="/sell-online" class="hover:text-secondary-200">Sell Online</a></li>
+                    <li><a href="/advertise-with-us" class="hover:text-secondary-200">Advertise With Us</a></li>
                 </ul>
             </div>
 

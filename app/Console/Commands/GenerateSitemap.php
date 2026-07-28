@@ -67,12 +67,15 @@ class GenerateSitemap extends Command
             ['/safety-tips',      0.7,  Url::CHANGE_FREQUENCY_MONTHLY],
             ['/career',           0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
             ['/our-terms',        0.5,  Url::CHANGE_FREQUENCY_YEARLY],
-            ['/privacy',          0.5,  Url::CHANGE_FREQUENCY_YEARLY],
             ['/privacy-policy',   0.5,  Url::CHANGE_FREQUENCY_YEARLY],
             ['/cookie-policy',    0.5,  Url::CHANGE_FREQUENCY_YEARLY],
             ['/billing-policy',   0.5,  Url::CHANGE_FREQUENCY_YEARLY],
             ['/copyright-policy', 0.5,  Url::CHANGE_FREQUENCY_YEARLY],
+            ['/dmca-policy',      0.5,  Url::CHANGE_FREQUENCY_YEARLY],
             ['/payments-refunds', 0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/sell-online',      0.7,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/shipping',         0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
+            ['/advertise-with-us',0.6,  Url::CHANGE_FREQUENCY_MONTHLY],
         ];
 
         foreach ($pages as [$path, $priority, $freq]) {
@@ -257,6 +260,41 @@ class GenerateSitemap extends Command
                 }
             });
 
+        // ── State + Category + Model (Vehicles & Phones only) ─────────────────
+        // Mirrors SearchFilter::MODEL_CATEGORY_DETAIL_RELATIONS — these are the
+        // only two categories with model-level pages, backed by their own
+        // detail table (car_details.model / phone_details.model → models.id).
+        foreach (['car_details', 'phone_details'] as $detailTable) {
+            DB::table('adverts')
+                ->join($detailTable, "{$detailTable}.advert_id", '=', 'adverts.id')
+                ->join('models', 'models.id', '=', "{$detailTable}.model")
+                ->join('categories', 'adverts.category', '=', 'categories.id')
+                ->select(
+                    'adverts.state_slug',
+                    'categories.category_slug',
+                    'models.model_slug',
+                    DB::raw('MAX(adverts.updated_at) as last_updated'),
+                    DB::raw('COUNT(*) as ad_count')
+                )
+                ->where('adverts.ad_status', 1)
+                ->whereNotNull('adverts.state_slug')
+                ->where('adverts.state_slug', '!=', '')
+                ->groupBy('adverts.state_slug', 'categories.category_slug', 'models.model_slug')
+                ->having('ad_count', '>=', 5)
+                ->orderBy('last_updated', 'desc')
+                ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                    foreach ($rows as $row) {
+                        $sitemap->add(
+                            Url::create("{$this->baseUrl}/{$row->state_slug}/{$row->category_slug}/{$row->model_slug}")
+                                ->setLastModificationDate($this->toDate($row->last_updated))
+                                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                                ->setPriority(0.6)
+                        );
+                        $count++;
+                    }
+                });
+        }
+
         $this->write($sitemap, 'sitemap-locations.xml', $index);
         $this->info("  → sitemap-locations.xml ({$count} URLs)");
     }
@@ -266,17 +304,31 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $count   = 0;
 
-        // Only index brands that have at least one active advert
+        // Brand pages live at /category/{category_slug}/{subcat_slug}/{brand_slug}
+        // (see AdvertController::brand). Resolve category via sub_categories.cat_id,
+        // not brands.cat_id directly — that column is unreliably populated, unlike
+        // brands.subcat_id which the controller actually keys off of. Only index
+        // brands with enough active inventory — mirrors the noindex threshold used
+        // on the page itself.
         DB::table('brands')
             ->join('adverts', 'brands.id', '=', 'adverts.brand')
-            ->select('brands.brand_slug', DB::raw('MAX(adverts.updated_at) as last_updated'))
+            ->join('sub_categories', 'brands.subcat_id', '=', 'sub_categories.id')
+            ->join('categories', 'sub_categories.cat_id', '=', 'categories.id')
+            ->select(
+                'categories.category_slug',
+                'sub_categories.sub_cat_slug',
+                'brands.brand_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
+            )
             ->where('adverts.ad_status', 1)
-            ->groupBy('brands.id', 'brands.brand_slug')
+            ->groupBy('brands.id', 'categories.category_slug', 'sub_categories.sub_cat_slug', 'brands.brand_slug')
+            ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
             ->chunk(500, function ($rows) use ($sitemap, &$count) {
                 foreach ($rows as $row) {
                     $sitemap->add(
-                        Url::create("{$this->baseUrl}/brand/{$row->brand_slug}")
+                        Url::create("{$this->baseUrl}/category/{$row->category_slug}/{$row->sub_cat_slug}/{$row->brand_slug}")
                             ->setLastModificationDate($this->toDate($row->last_updated))
                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                             ->setPriority(0.7)
