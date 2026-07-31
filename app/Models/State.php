@@ -28,4 +28,15 @@ class State extends Model
     {
         return $this->hasMany(GigLogistic::class, 'state_id');
     }
+
+    /**
+     * Resolve a state-level URL slug (e.g. "akwa-ibom") back to the full name
+     * stored on adverts.state (e.g. "Akwa Ibom"). Needed because that column
+     * holds the raw display name — multi-word states can never match their
+     * own hyphenated slug via a plain string comparison.
+     */
+    public static function nameForSlug(string $slug): ?string
+    {
+        return static::where('slug', $slug)->value('name');
+    }
 }

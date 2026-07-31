@@ -82,6 +82,23 @@ class SearchFilter extends Controller
         return view('public.adverts', compact('title', 'ads', 'user', 'categories', 'hasMore', 'searchParams','isMobile', 'metaRobots'));
     }
 
+    /**
+     * Match adverts against a location URL segment. adverts.state_slug is
+     * LGA-granular (e.g. "ikeja"), while adverts.state holds the full state
+     * name (e.g. "Lagos", "Akwa Ibom"). A state-level URL segment is always a
+     * hyphenated slug ("akwa-ibom"), which can never equal a multi-word state
+     * name via plain string comparison — so it must be resolved through the
+     * states table first.
+     */
+    private function applyLocationFilter($q, string $location): void
+    {
+        $q->where('state', $location)->orWhere('state_slug', $location);
+
+        if ($stateName = State::nameForSlug($location)) {
+            $q->orWhere('state', $stateName);
+        }
+    }
+
     public function location_router($location, $slug)
     {
         if (Category::where('category_slug', $slug)->exists()) {
@@ -103,7 +120,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('category', $cat->id)
                     ->orderWithFeatured()
@@ -143,7 +160,7 @@ class SearchFilter extends Controller
         // COUNT queries — bucket boundaries mirror FilterService::applyPriceRange().
         $counts = Advert::activeNotRecentlySold()
             ->where(function ($q) use ($location) {
-                $q->where('state', $location)->orWhere('state_slug', $location);
+                $this->applyLocationFilter($q, $location);
             })
             ->where('category', $cat->id)
             ->selectRaw("
@@ -181,7 +198,7 @@ class SearchFilter extends Controller
         // One grouped query instead of up to 3 separate COUNT queries.
         $baseQuery = Advert::activeNotRecentlySold()
             ->where(function ($q) use ($location) {
-                $q->where('state', $location)->orWhere('state_slug', $location);
+                $this->applyLocationFilter($q, $location);
             })
             ->where('category', $cat->id);
 
@@ -217,7 +234,7 @@ class SearchFilter extends Controller
                     ->activeNotRecentlySold()
                     ->where('sold', 'No')
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('sub_category', $subcat->id)
                     ->orderWithFeatured()
@@ -253,7 +270,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('brand', $brand->id)
                     ->orderWithFeatured()
@@ -391,7 +408,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('category', $cat->id)
                     ->where('brand', $brand->id)
@@ -438,7 +455,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('category', $cat->id)
                     ->whereHas($detailRelation, fn ($q) => $q->where('model', $model->id))
@@ -476,7 +493,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('category', $cat->id)
                     ->tap(fn ($q) => $this->filterService->applyPriceRange($q, $range['key']))
@@ -508,7 +525,7 @@ class SearchFilter extends Controller
         $ads = Advert::with('firstImage')
                     ->activeNotRecentlySold()
                     ->where(function ($q) use ($location) {
-                        $q->where('state', $location)->orWhere('state_slug', $location);
+                        $this->applyLocationFilter($q, $location);
                     })
                     ->where('category', $cat->id)
                     ->when(

@@ -295,8 +295,186 @@ class GenerateSitemap extends Command
                 });
         }
 
+        $this->writeStateLocations($sitemap, $count);
+
         $this->write($sitemap, 'sitemap-locations.xml', $index);
         $this->info("  → sitemap-locations.xml ({$count} URLs)");
+    }
+
+    /**
+     * State-level browsing pages (e.g. /lagos, /lagos/samsung) — a separate
+     * tier from the LGA-level pages above. adverts.state_slug is LGA-granular,
+     * but adverts.state holds the full state name and is matched by
+     * SearchFilter::applyLocationFilter() / FeaturedAdPaginator::applyFilters()
+     * via the states table. These pages are real and fully indexable (verified
+     * live: /lagos/samsung renders "index, follow" with real listings) but were
+     * previously absent from every sitemap since the LGA-only groupBy above
+     * never produces them — Google had no path to discover them.
+     */
+    private function writeStateLocations(Sitemap $sitemap, int &$count): void
+    {
+        // ── State-only pages ────────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+            ->select('states.slug', DB::raw('MAX(adverts.updated_at) as last_updated'))
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state')
+            ->where('adverts.state', '!=', '')
+            ->groupBy('states.slug')
+            ->get()
+            ->each(function ($row) use ($sitemap, &$count) {
+                $sitemap->add(
+                    Url::create("{$this->baseUrl}/{$row->slug}")
+                        ->setLastModificationDate($this->toDate($row->last_updated))
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+                        ->setPriority(0.8)
+                );
+                $count++;
+            });
+
+        // ── State + Category ─────────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+            ->join('categories', 'adverts.category', '=', 'categories.id')
+            ->select(
+                'states.slug',
+                'categories.category_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state')
+            ->where('adverts.state', '!=', '')
+            ->groupBy('states.slug', 'categories.category_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->slug}/{$row->category_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
+                }
+            });
+
+        // ── State + SubCategory ──────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+            ->join('sub_categories', 'adverts.sub_category', '=', 'sub_categories.id')
+            ->select(
+                'states.slug',
+                'sub_categories.sub_cat_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state')
+            ->where('adverts.state', '!=', '')
+            ->groupBy('states.slug', 'sub_categories.sub_cat_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->slug}/{$row->sub_cat_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
+                }
+            });
+
+        // ── State + Brand ────────────────────────────────────────────────────
+        DB::table('adverts')
+            ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+            ->join('brands', 'adverts.brand', '=', 'brands.id')
+            ->select(
+                'states.slug',
+                'brands.brand_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state')
+            ->where('adverts.state', '!=', '')
+            ->whereNotNull('adverts.brand')
+            ->groupBy('states.slug', 'brands.brand_slug')
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->slug}/{$row->brand_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.7)
+                    );
+                    $count++;
+                }
+            });
+
+        // ── State + Category + Brand ─────────────────────────────────────────
+        // Same >=5 noindex threshold as the LGA-level combo pages above.
+        DB::table('adverts')
+            ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+            ->join('categories', 'adverts.category', '=', 'categories.id')
+            ->join('brands', 'adverts.brand', '=', 'brands.id')
+            ->select(
+                'states.slug',
+                'categories.category_slug',
+                'brands.brand_slug',
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
+            )
+            ->where('adverts.ad_status', 1)
+            ->whereNotNull('adverts.state')
+            ->where('adverts.state', '!=', '')
+            ->whereNotNull('adverts.brand')
+            ->groupBy('states.slug', 'categories.category_slug', 'brands.brand_slug')
+            ->having('ad_count', '>=', 5)
+            ->orderBy('last_updated', 'desc')
+            ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                foreach ($rows as $row) {
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/{$row->slug}/{$row->category_slug}/{$row->brand_slug}")
+                            ->setLastModificationDate($this->toDate($row->last_updated))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.6)
+                    );
+                    $count++;
+                }
+            });
+
+        // ── State + Category + Model (Vehicles & Phones only) ────────────────
+        foreach (['car_details', 'phone_details'] as $detailTable) {
+            DB::table('adverts')
+                ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
+                ->join($detailTable, "{$detailTable}.advert_id", '=', 'adverts.id')
+                ->join('models', 'models.id', '=', "{$detailTable}.model")
+                ->join('categories', 'adverts.category', '=', 'categories.id')
+                ->select(
+                    'states.slug',
+                    'categories.category_slug',
+                    'models.model_slug',
+                    DB::raw('MAX(adverts.updated_at) as last_updated'),
+                    DB::raw('COUNT(*) as ad_count')
+                )
+                ->where('adverts.ad_status', 1)
+                ->whereNotNull('adverts.state')
+                ->where('adverts.state', '!=', '')
+                ->groupBy('states.slug', 'categories.category_slug', 'models.model_slug')
+                ->having('ad_count', '>=', 5)
+                ->orderBy('last_updated', 'desc')
+                ->chunk(500, function ($rows) use ($sitemap, &$count) {
+                    foreach ($rows as $row) {
+                        $sitemap->add(
+                            Url::create("{$this->baseUrl}/{$row->slug}/{$row->category_slug}/{$row->model_slug}")
+                                ->setLastModificationDate($this->toDate($row->last_updated))
+                                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                                ->setPriority(0.6)
+                        );
+                        $count++;
+                    }
+                });
+        }
     }
 
     private function writeBrands(SitemapIndex $index): void

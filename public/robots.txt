@@ -6,5 +6,6 @@ Disallow: /buy-direct/
 Disallow: /chat/
 Disallow: /admin/*
 Disallow: /webmail/*
+Disallow: /related/
 
 Sitemap: https://www.marketplace.ng/sitemap.xml

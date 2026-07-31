@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Advert;
+use App\Models\State;
 use Illuminate\Support\Collection;
 use Jenssegers\Agent\Agent;
 
@@ -172,10 +173,18 @@ class FeaturedAdPaginator
             // against adverts.state, e.g. "lagos") or an LGA-level slug
             // (matched against adverts.state_slug, e.g. "ikeja") — the two
             // columns hold different granularities, so a "state_slug" filter
-            // must check both to work for either tier.
+            // must check both to work for either tier. Multi-word states
+            // ("Akwa Ibom") can never equal their own hyphenated slug via
+            // plain string comparison, so the slug is also resolved against
+            // the states table to get the real name to match.
             if ($key === 'state_slug') {
-                $query->where(function ($q) use ($value) {
+                $stateName = State::nameForSlug($value);
+                $query->where(function ($q) use ($value, $stateName) {
                     $q->where('state_slug', $value)->orWhere('state', $value);
+
+                    if ($stateName) {
+                        $q->orWhere('state', $stateName);
+                    }
                 });
             } elseif (in_array($key, ['category', 'sub_category', 'brand', 'model', 'state', 'city'])) {
                 $query->where($key, $value);

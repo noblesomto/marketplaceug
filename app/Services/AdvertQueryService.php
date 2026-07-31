@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Advert;
+use App\Models\State;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -120,9 +121,16 @@ class AdvertQueryService
                 if ($stateSlug) {
                     // A {location} URL segment can be a state-level slug
                     // (adverts.state, e.g. "lagos") or an LGA-level slug
-                    // (adverts.state_slug, e.g. "ikeja") — check both.
-                    $query->where(function ($q) use ($stateSlug) {
+                    // (adverts.state_slug, e.g. "ikeja") — check both. Multi-word
+                    // states ("Akwa Ibom") can't match their own hyphenated slug
+                    // as a plain string, so also resolve it via the states table.
+                    $stateName = State::nameForSlug($stateSlug);
+                    $query->where(function ($q) use ($stateSlug, $stateName) {
                         $q->where('adverts.state', $stateSlug)->orWhere('adverts.state_slug', $stateSlug);
+
+                        if ($stateName) {
+                            $q->orWhere('adverts.state', $stateName);
+                        }
                     });
                 }
             })
@@ -169,8 +177,13 @@ class AdvertQueryService
                       });
 
                 if ($stateSlug) {
-                    $query->where(function ($q) use ($stateSlug) {
+                    $stateName = State::nameForSlug($stateSlug);
+                    $query->where(function ($q) use ($stateSlug, $stateName) {
                         $q->where('adverts.state', $stateSlug)->orWhere('adverts.state_slug', $stateSlug);
+
+                        if ($stateName) {
+                            $q->orWhere('adverts.state', $stateName);
+                        }
                     });
                 }
             })
