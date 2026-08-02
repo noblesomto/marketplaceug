@@ -40,12 +40,12 @@
 
 
 				        <div class="mb-4 mt-4">
-				            <label class="text-sm font-semibold">State</label>
+				            <label class="text-sm font-semibold">Region</label>
 				            @if ($errors->has('state'))
 				                <span class="text-red-700 py-1">{{ $errors->first('state') }}</span>
 				            @endif
 <select name="state" id="state" class="w-full bg-body-100 px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-    <option value="" {{ old('state', $user->state ?? '') == '' ? 'selected' : '' }}>- Select State -</option>
+    <option value="" {{ old('state', $user->state ?? '') == '' ? 'selected' : '' }}>- Select Region -</option>
     <option value="Abia" {{ old('state', $user->state ?? '') == 'Abia' ? 'selected' : '' }}>Abia</option>
     <option value="Adamawa" {{ old('state', $user->state ?? '') == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>
     <option value="Akwa Ibom" {{ old('state', $user->state ?? '') == 'Akwa Ibom' ? 'selected' : '' }}>Akwa Ibom</option>

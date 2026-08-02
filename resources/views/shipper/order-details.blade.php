@@ -105,7 +105,7 @@
                             <a href="tel:{{ $seller->phone ?? '' }}" class="font-medium text-green-700">{{ $seller->phone ?? '—' }}</a>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">State</span>
+                            <span class="text-gray-500">Region</span>
                             <span class="font-medium text-gray-800">{{ $seller->state ?? '—' }}</span>
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                             <span class="font-medium text-gray-800">{{ $city->city ?? '—' }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">State</span>
+                            <span class="text-gray-500">Region</span>
                             <span class="font-medium text-gray-800">{{ $stateName }}</span>
                         </div>
                     </div>

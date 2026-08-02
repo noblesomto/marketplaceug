@@ -142,7 +142,7 @@
             @if($pickupState)
             <div class="border-t border-gray-50"></div>
             <div class="flex justify-between">
-                <span class="text-gray-400">State</span>
+                <span class="text-gray-400">Region</span>
                 <span class="font-medium text-gray-800">{{ $pickupState }}</span>
             </div>
             @endif

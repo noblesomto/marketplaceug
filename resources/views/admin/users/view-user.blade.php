@@ -167,7 +167,7 @@
                                             <p class="fw-medium">{{ $user->city ?? 'Not provided' }}</p>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label text-muted small mb-1">State</label>
+                                            <label class="form-label text-muted small mb-1">Region</label>
                                             <p class="fw-medium">{{ $user->state ?? 'Not provided' }}</p>
                                         </div>
                                         <div class="mb-3">

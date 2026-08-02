@@ -587,20 +587,20 @@
             </div>
              <div class="p-3 md:p-4">
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <!-- State -->
+                     <!-- Region -->
                      <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Region</label>
                         <select onchange="toggleLGA(this);" name="state" id="state" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base">
-                            <option value="" selected="selected">- Select State -</option>
+                            <option value="" selected="selected">- Select Region -</option>
                             @foreach($states as $state)
                             <option value="{{ $state->name }}" {{ ($advert->state == $state->name) ? "selected" : "" }}>{{ $state->name }}</option>
                             @endforeach
                         </select>
                      </div>
 
-                     <!-- LGA -->
+                     <!-- District -->
                      <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">LGA</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">District</label>
                         <select name="lga" id="lga" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green bg-white text-base select-lga" required>
                             @if($advert->state && $advert->lga)
                                 <option value="{{ $advert->lga }}" selected>{{ $advert->lga }}</option>

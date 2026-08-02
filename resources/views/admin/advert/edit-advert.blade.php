@@ -984,7 +984,7 @@
                     <span class="text-danger">{{ $errors->first('state') }}</span>
                   @endif
                   <select onchange="toggleLGA(this);" name="state" id="state" class="form-select">
-                    <option value="" selected="selected">- Select State -</option>
+                    <option value="" selected="selected">- Select Region -</option>
                     @foreach($states as $state)
                       <option value="{{ $state->name }}" {{ ($advert->state == $state->name) ? "selected" : "" }}>{{ $state->name }}</option>
                     @endforeach

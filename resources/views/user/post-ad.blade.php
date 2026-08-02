@@ -747,20 +747,20 @@
             </div>
             <div class="p-3 md:p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- State -->
+                    <!-- Region -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Region</label>
                         <select onchange="toggleLGA(this);" name="state" id="state" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white text-base" data-old-value="{{ old('state') }}">
-                            <option value="">-- Select State --</option>
+                            <option value="">-- Select Region --</option>
                             @foreach ($states as $state)
                                 <option value="{{ $state->name }}" {{ old('state') == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <!-- LGA -->
+                    <!-- District -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">LGA</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">District</label>
                         <select name="lga" id="lga" class="custom-select block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent bg-white select-lga text-base" data-old-value="{{ old('lga') }}" required>
                              <!-- Populated by JS -->
                         </select>
@@ -1087,14 +1087,14 @@ window.addEventListener('load', function() {
                 }
             }
 
-            // Restore state → LGA chain (independent of category)
+            // Restore state → District chain (independent of category)
             if (oldState) {
                 const stateSelect = document.getElementById('state');
                 if (stateSelect) {
                     // State is already populated, just set value
                     stateSelect.value = oldState;
 
-                    // Trigger LGA population
+                    // Trigger District population
                     if (typeof toggleLGA === 'function') {
                         toggleLGA(stateSelect);
                     } else {

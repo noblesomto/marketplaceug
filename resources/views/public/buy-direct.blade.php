@@ -164,7 +164,7 @@
                         <span class="text-red-700 py-1">{{ $errors->first('state') }}</span>
                     @endif
                       <select name="state" id="state" class="w-full bg-white  px-3 py-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400" required>
-                    <option value="" selected="selected">-- Select State --</option>
+                    <option value="" selected="selected">-- Select Region --</option>
                         @foreach ($states as $state)
                             <option value="{{ $state->id }}">{{ $state->name }}</option>
                         @endforeach
