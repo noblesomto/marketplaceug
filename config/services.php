@@ -30,10 +30,12 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-    'paystack' => [
-        'publicKey' => env('PAYSTACK_PUBLIC_KEY'),
-        'secretKey' => env('PAYSTACK_SECRET_KEY'),
-        'paymentUrl' => env('PAYSTACK_PAYMENT_URL'),
+    'flutterwave' => [
+        'publicKey' => env('FLW_PUBLIC_KEY'),
+        'secretKey' => env('FLW_SECRET_KEY'),
+        'encryptionKey' => env('FLW_ENCRYPTION_KEY'),
+        'paymentUrl' => env('FLW_PAYMENT_URL', 'https://api.flutterwave.com/v3'),
+        'webhookHash' => env('FLW_WEBHOOK_HASH'),
     ],
 
     'google' => [
