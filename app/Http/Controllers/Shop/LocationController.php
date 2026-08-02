@@ -5,7 +5,6 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\State;
-use App\Models\GigLogistic;
 use App\Models\User;
 use App\Models\Advert;
 use Carbon\Carbon;
@@ -22,10 +21,11 @@ class LocationController extends Controller
 
     public function getGIG($state_id)
     {
-        $cities = GigLogistic::where('state_id', $state_id)
-        ->select('id', 'city', 'address')
+        $districts = \App\Models\Lga::where('state_id', $state_id)
+        ->select('id', 'name')
+        ->orderBy('name')
         ->get();
-        return response()->json($cities);
+        return response()->json($districts);
     }
 
 

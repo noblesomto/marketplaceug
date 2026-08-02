@@ -16,7 +16,6 @@ use App\Models\Reports;
 use App\Models\State;
 use App\Models\Message;
 use App\Models\Shipping;
-use App\Models\GigLogistic;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1212,27 +1211,16 @@ class AdvertController extends Controller
                 'shipping_selected.required' => 'Please Select a shipping option',
             ]);
 
-            $sender_station = State::where('name', $ad->state)->firstOrFail();
-            $data['reciever_state'] = $reciever_station = State::findOrFail($request->state);
-            $data['reciever_city'] = GigLogistic::findOrFail($request->city);
+            $district = \App\Models\Lga::findOrFail($request->city);
+            $data['reciever_city'] = $district;
+            $data['reciever_state'] = $district->state;
             $data['shipping_method'] = $request->ship_id;
-            $reciever_address = $data['reciever_city']['city'].",".$data['reciever_state']['name'];
-            //dd($reciever_address);
             $details = [
-                'advert_id' => $id,
-                'first_name' => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'phone' => $validated['phone'],
-                'reciever_station' => $reciever_station->station_id,
-                'reciever_address' => $reciever_address,
-                'sender_station' => $sender_station->station_id,
-                'sender_address' => $ad->lga.','. $ad->state,
-                'ad_title' => $ad->ad_title,
+                'district_id' => $district->id,
                 'ad_price' => $ad->price,
-                'ad_des' => $ad->description,
             ];
 
-            $shippingResponse = app()->make(LocationController::class)->getAgilityShippingCost(new Request($details));
+            $shippingResponse = app()->make(LocationController::class)->getShippingCost(new Request($details));
             $responseData = $shippingResponse->getData();
             //dd($shippingResponse);
             if (!$responseData->status) {
@@ -1257,7 +1245,7 @@ class AdvertController extends Controller
                 'shipping_cost' => $shipping_cost,
                 'grand_total' => $grand_total,
                 'commission' => $commission,
-                'reciever_state' => $reciever_station,
+                'reciever_state' => $data['reciever_state'],
                 'reciever_city' => $data['reciever_city'],
                 'shipping_method' => $data['shipping_method']
             ]);

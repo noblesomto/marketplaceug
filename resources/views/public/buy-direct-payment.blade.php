@@ -65,15 +65,11 @@
                     <span>{{ $shipping_method->company }}</span>
               </div>
               <div class="flex space-x-4">
-                    <span>Address:</span>
-                    <span>{{ $shipping['reciever_city']->address }}</span>
+                    <span>District:</span>
+                    <span>{{ $shipping['reciever_city']->name }}</span>
               </div>
               <div class="flex space-x-4">
-                    <span>City:</span>
-                    <span>{{ $shipping['reciever_city']->city }}</span>
-              </div>
-              <div class="flex space-x-4">
-                    <span>State:</span>
+                    <span>Region:</span>
                     <span>{{ $shipping['reciever_state']->name }}</span>
               </div>
 

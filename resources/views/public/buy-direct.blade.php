@@ -356,7 +356,7 @@
                         $('#city').empty().append('<option value="">-- Select City --</option>');
                         $.each(data, function (key, city) {
                             $('#city').append(
-                                `<option value="${city.id}">${city.city} - ${city.address}</option>`
+                                `<option value="${city.id}">${city.name}</option>`
                             );
                         });
                     }

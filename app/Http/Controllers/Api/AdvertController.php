@@ -15,7 +15,6 @@ use App\Models\User;
 use App\Models\Reports;
 use App\Models\State;
 use App\Models\Message;
-use App\Models\GigLogistic;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1135,27 +1134,15 @@ class AdvertController extends Controller
             $ad = Advert::with('images', 'shippings')->findOrFail($id);
 
 
-            // Get state and city details
-            $sender_station = State::where('name', $ad->state)->firstOrFail();
-            $reciever_station = State::findOrFail($request->state);
-            $reciever_city = GigLogistic::findOrFail($request->city);
-
-            $reciever_address = $reciever_city->city . ", " . $reciever_station->name;
-
+            // Get district (city) details
+            $reciever_city = \App\Models\Lga::findOrFail($request->city);
+            $reciever_station = $reciever_city->state;
+            $reciever_address = $reciever_city->name . ', ' . $reciever_station->name;
 
             // Prepare shipping calculation details
             $details = [
-                'advert_id' => $id,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'phone' => $request->phone,
-                'reciever_station' => $reciever_station->station_id,
-                'reciever_address' => $reciever_address,
-                'sender_station' => $sender_station->station_id,
-                'sender_address' => $ad->lga . ', ' . $ad->state,
-                'ad_title' => $ad->ad_title,
+                'district_id' => $reciever_city->id,
                 'ad_price' => $ad->price,
-                'ad_des' => $ad->description,
             ];
 
             // Call shipping cost calculation using API LocationController
@@ -1207,7 +1194,7 @@ class AdvertController extends Controller
                         ],
                         'receiver_city' => [
                             'id' => $reciever_city->id,
-                            'city' => $reciever_city->city,
+                            'name' => $reciever_city->name,
                         ],
                         'receiver_address' => $reciever_address,
                         'sender_address' => $ad->lga . ', ' . $ad->state,
