@@ -1386,7 +1386,7 @@ class UserController extends Controller
             ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
                 'email'        => $user->email,
                 'amount'       => round($payment->amount_paid) * 100, // kobo
-                'callback_url' => route('paystack.callback'),
+                'callback_url' => route('flutterwave.callback'),
                 'metadata'     => [
                     'advert_id' => $payment->advert_id,
                     'user_id'   => $user->user_id,

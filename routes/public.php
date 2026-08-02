@@ -7,7 +7,7 @@ use App\Http\Controllers\User\AdvertController;
 use App\Http\Controllers\Shop\SearchFilter;
 use App\Http\Controllers\Shop\LocationController;
 use App\Http\Controllers\User\MessageController;
-use App\Http\Controllers\User\PaystackController;
+use App\Http\Controllers\User\FlutterwaveController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\ManageCategories;
 
@@ -56,7 +56,7 @@ Route::get('/category/{category_slug}/{subcat_slug}/all-{slug}', [AdvertControll
 Route::get('/category/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brand'])->name('brand');
 Route::get('/related/{ad_id}', [AdvertController::class, 'related'])->name('related.ads');
 Route::get('/related/{ad_id}/load-more', [AdvertController::class, 'relatedLoadMore'])->name('related.ads.loadMore');
-Route::get('/buy-direct/success', [PaystackController::class, 'buyDirectSuccess'])->name('buy.direct.success');
+Route::get('/buy-direct/success', [FlutterwaveController::class, 'buyDirectSuccess'])->name('buy.direct.success');
 Route::get('/buy-direct/{id}', [AdvertController::class, 'buy_direct'])->where('id', '[0-9]+')->name('buy.direct');
 Route::post('/calculate-shipping/{id}', [AdvertController::class, 'calculate_shipping'])->where('id', '[0-9]+')->name('calculate.shipping');
 Route::get('/buy-direct-payment/{id}', [AdvertController::class, 'buy_direct_payment'])->where('id', '[0-9]+')->name('buy.direct.payment');
@@ -80,11 +80,11 @@ Route::get('/states', [LocationController::class, 'index']);
 Route::get('/get-gig/{state_id}', [LocationController::class, 'getGIG']);
 Route::post('/shipping-cost', [LocationController::class, 'getShippingCost']);
 
-// Paystack – Buy Direct
-Route::post('/pay', [PaystackController::class, 'initialize'])->name('paystack.pay')->middleware('usersession');
-Route::get('/payment/callback', [PaystackController::class, 'callback'])->name('paystack.callback')->middleware('usersession');
-Route::get('/payment-success', [PaystackController::class, 'success'])->name('payment.success');
-Route::get('/payment-failed', [PaystackController::class, 'failed'])->name('payment.failed');
+// Flutterwave – Buy Direct
+Route::post('/pay', [FlutterwaveController::class, 'initialize'])->name('flutterwave.pay')->middleware('usersession');
+Route::get('/payment/callback', [FlutterwaveController::class, 'callback'])->name('flutterwave.callback')->middleware('usersession');
+Route::get('/payment-success', [FlutterwaveController::class, 'success'])->name('payment.success');
+Route::get('/payment-failed', [FlutterwaveController::class, 'failed'])->name('payment.failed');
 
 // Public chat / reviews / follow
 Route::get('/chat-buyer/{user_id}/{id}', [MessageController::class, 'chat_buyer'])->name('chat.buyer');

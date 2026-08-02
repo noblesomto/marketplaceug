@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AdvertController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\MessageController;
-use App\Http\Controllers\Api\PaystackController;
+use App\Http\Controllers\Api\FlutterwaveController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserManageAdverts;
@@ -21,7 +21,7 @@ use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\BoostController;
 use App\Http\Controllers\Api\CategoryUIController;
 use App\Http\Controllers\Api\AdvertisingController;
-use App\Http\Controllers\Api\PaystackWebhookController;
+use App\Http\Controllers\Api\FlutterwaveWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -191,21 +191,18 @@ Route::middleware(['auth:sanctum', 'user.not_disabled', 'throttle:60,1'])->group
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
-    Route::post('/payments/initialize', [PaystackController::class, 'initializePayment']);
-    Route::post('/payments/initialize-boost', [PaystackController::class, 'initializeBoost']);
-    Route::get('/payments/{paymentId}', [PaystackController::class, 'getPayment']);
-    Route::get('/payments/user/{userId}', [PaystackController::class, 'getUserPayments']);
-    Route::get('/boosts/user/{userId}', [PaystackController::class, 'getUserBoosts']);
+    Route::post('/payments/initialize', [FlutterwaveController::class, 'initializePayment']);
+    Route::post('/payments/initialize-boost', [FlutterwaveController::class, 'initializeBoost']);
+    Route::get('/payments/{paymentId}', [FlutterwaveController::class, 'getPayment']);
+    Route::get('/payments/user/{userId}', [FlutterwaveController::class, 'getUserPayments']);
+    Route::get('/boosts/user/{userId}', [FlutterwaveController::class, 'getUserBoosts']);
 });
 
 // Public callback route (no auth required)
-Route::post('/payments/callback', [PaystackController::class, 'handleCallback']);
-
-// Paystack webhook — server-to-server, no auth, signature verified inside the controller
-Route::post('/paystack/webhook', [PaystackWebhookController::class, 'handle']);
+Route::post('/payments/callback', [FlutterwaveController::class, 'handleCallback']);
 
 // Flutterwave webhook — server-to-server, no auth, signature verified inside the controller
-Route::post('/flutterwave/webhook', [\App\Http\Controllers\Api\FlutterwaveWebhookController::class, 'handle']);
+Route::post('/flutterwave/webhook', [FlutterwaveWebhookController::class, 'handle'])->name('flutterwave.webhook');
 
 /*
 |--------------------------------------------------------------------------

@@ -100,7 +100,7 @@
           </div>
 
            <!-- Purchase Form -->
-            <form method="POST" action="{{ route('paystack.pay') }}" id="paystack" class="mt-6">
+            <form method="POST" action="{{ route('flutterwave.pay') }}" id="paystack" class="mt-6">
                 @csrf
 
 

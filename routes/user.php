@@ -8,7 +8,7 @@ use App\Http\Controllers\User\UserManageAdverts;
 use App\Http\Controllers\User\UserManageBoost;
 use App\Http\Controllers\User\BlockUser;
 use App\Http\Controllers\User\MessageController;
-use App\Http\Controllers\User\PaystackController;
+use App\Http\Controllers\User\FlutterwaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Route::middleware('usersession')->group(function () {
     Route::get('/user/my-ads', [UserController::class, 'my_ads'])->name('user.my.ads');
     Route::get('/user/boosted', [UserController::class, 'boosted_ads'])->name('user.boosted');
     Route::get('/user/payment', [UserController::class, 'payments'])->name('user.payments');
-    Route::get('/user/resume-payment/{id}', [PaystackController::class, 'resumePayment'])->name('user.resume.payment');
+    Route::get('/user/resume-payment/{id}', [FlutterwaveController::class, 'resumePayment'])->name('user.resume.payment');
     Route::post('/user/confirm-delivery/{id}', [UserController::class, 'confirmDelivery'])->name('user.confirm.delivery');
     Route::post('/user/cancel-order/{id}', [UserController::class, 'cancelOrder'])->name('user.cancel.order');
     Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->name('user.ad.shipping');
@@ -94,11 +94,11 @@ Route::middleware('usersession')->group(function () {
     Route::post('/update-notifications', [UserProfile::class, 'updateNotifications'])->name('user.update-notifications');
     Route::get('/user/myads/load-more', [UserProfile::class, 'loadMoreUserAds'])->name('user.myads.loadMore');
 
-    // Paystack – boosts
-    Route::post('post-boost/pay', [PaystackController::class, 'initialize_post_boost'])->name('post-boost.pay');
-    Route::post('boost/pay', [PaystackController::class, 'initialize_boost'])->name('boost.pay');
-    Route::post('boost/make-payment', [PaystackController::class, 'retry_boost_payment'])->name('boost.retry-payment');
-    Route::get('/boost/callback', [PaystackController::class, 'callback_boost'])->name('boost.callback');
+    // Flutterwave – boosts
+    Route::post('post-boost/pay', [FlutterwaveController::class, 'initialize_post_boost'])->name('post-boost.pay');
+    Route::post('boost/pay', [FlutterwaveController::class, 'initialize_boost'])->name('boost.pay');
+    Route::post('boost/make-payment', [FlutterwaveController::class, 'retry_boost_payment'])->name('boost.retry-payment');
+    Route::get('/boost/callback', [FlutterwaveController::class, 'callback_boost'])->name('boost.callback');
 
     // Broadcasting auth
     Route::post('/broadcasting/auth', function (Illuminate\Http\Request $request) {
