@@ -26,7 +26,7 @@
                                 @foreach($banks as $bank)
                                     <option
                                         value="{{ $bank->name }}"
-                                        data-paystack-code="{{ $bank->paystack_bank_code }}"
+                                        data-paystack-code="{{ $bank->bank_code }}"
                                         @if($user->bank_name == $bank->name) selected @endif
                                     >
                                         {{ $bank->name }}
