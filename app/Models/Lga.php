@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lga extends Model
 {
-    protected $fillable = ['state_id', 'name', 'slug'];
+    protected $fillable = ['state_id', 'name', 'slug', 'shipping_fee'];
 
     public function state()
     {
