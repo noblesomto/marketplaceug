@@ -67,7 +67,7 @@
         @elseif($row->contact_price=="yes")
           Contact For Price
         @else
-          ₦ {{ number_format($row->price, 0, '.', ',') }} {{ Str::limit($row->price_type, 1) }}
+          {{ money($row->price, 0) }} {{ Str::limit($row->price_type, 1) }}
         @endif
       </div>
     </div>

@@ -49,7 +49,7 @@
                 data-name="{{ $type->name }}"
                 data-rate="{{ $type->daily_rate }}"
                 data-description="{{ $type->description }}">
-          {{ $type->name }} - ₦{{ number_format($type->daily_rate, 2) }}/day
+          {{ $type->name }} - {{ money($type->daily_rate, 2) }}/day
         </option>
       @endforeach
     </select>

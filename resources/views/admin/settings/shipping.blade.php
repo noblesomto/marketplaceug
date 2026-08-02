@@ -67,7 +67,7 @@
                                             </td>
                                             <td>
                                                 <div class="small">
-                                                    <div class="fw-bold text-success">₦{{ number_format($row->price, 2) }}</div>
+                                                    <div class="fw-bold text-success">{{ money($row->price, 2) }}</div>
                                                     <div class="text-muted">{{ $row->description }}</div>
                                                 </div>
                                             </td>

@@ -149,7 +149,7 @@ class SendFollowerPushNotification implements ShouldQueue
             return 'Contact for price';
         }
 
-        return '₦' . number_format($price, 0);
+        return money($price);
     }
 
     /**

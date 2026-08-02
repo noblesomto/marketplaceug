@@ -73,9 +73,9 @@
                           {{ $row->user->name }}
                         </a>
                       </td>
-                      <td>₦{{ number_format($row->advert->price, 2) }}</td>
-                      <td>₦{{ number_format($row->commission, 2) }}</td>
-                      <td>₦{{ number_format($row->amount_paid, 2) }}</td>
+                      <td>{{ money($row->advert->price, 2) }}</td>
+                      <td>{{ money($row->commission, 2) }}</td>
+                      <td>{{ money($row->amount_paid, 2) }}</td>
                       <td>{{ date('M j, Y', strtotime($row->created_at)) }}</td>
                       <td>
                         <span class="badge rounded-pill bg-{{ $row->payment_status == 'paid' ? 'success' : 'danger' }}">

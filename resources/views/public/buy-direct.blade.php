@@ -32,7 +32,7 @@
           <!-- Price Information -->
           <div class="mb-4">
             <div class="flex items-center space-x-4 mb-1">
-              <span class="text-2xl font-bold text-primary">₦{{ number_format($ad->price, 0, '.', ',') }}</span>
+              <span class="text-2xl font-bold text-primary">{{ money($ad->price, 0) }}</span>
               <span class="text-gray-600">{{ $ad->price_type }}</span>
             </div>
 

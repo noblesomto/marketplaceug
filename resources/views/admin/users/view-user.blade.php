@@ -83,7 +83,7 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <h6 class="text-muted mb-1">Total Revenue</h6>
-                                                <h4 class="mb-0 fw-bold">₦{{ number_format($totalRevenue ?? 0, 2) }}</h4>
+                                                <h4 class="mb-0 fw-bold">{{ money($totalRevenue ?? 0, 2) }}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label text-muted small mb-1">Pending Settlement</label>
-                                            <p class="fw-medium text-success">₦{{ number_format($pendingRevenue, 2) }}</p>
+                                            <p class="fw-medium text-success">{{ money($pendingRevenue, 2) }}</p>
                                         </div>
                                     </div>
                                 </div>

@@ -23,7 +23,7 @@
           <!-- Additional thumbnails can go here -->
           <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ $ad->ad_title }}</h1>
           <div class="flex items-center space-x-4 mb-1">
-              <span class="text-2xl font-bold text-primary">₦{{ number_format($ad->price, 0, '.', ',') }}</span>
+              <span class="text-2xl font-bold text-primary">{{ money($ad->price, 0) }}</span>
               <span class="text-gray-600">{{ $ad->price_type }}</span>
             </div>
         </div>
@@ -86,19 +86,19 @@
             <div class="bg-gray-50 p-3 rounded-lg mt-6 space-y-3">
                 <div class="flex justify-between mb-1">
                     <span class="text-gray-600">Item Price:</span>
-                    <span class="font-medium" >₦{{ number_format($shipping['ad']->price, 2, '.', ',') }}</span>
+                    <span class="font-medium" >{{ money($shipping['ad']->price, 2) }}</span>
                 </div>
                 <div class="flex justify-between mb-1">
                     <span class="text-gray-600">Shipping:</span>
-                    <span class="font-medium" >₦{{ number_format($shipping['shipping_cost'], 2, '.', ',') }}</span>
+                    <span class="font-medium" >{{ money($shipping['shipping_cost'], 2) }}</span>
                 </div>
               <div class="flex justify-between mb-1">
                 <span class="text-gray-600">Buyer protection:</span>
-                <span class="font-medium">₦{{ number_format($shipping['commission'], 2, '.', ',') }}</span>
+                <span class="font-medium">{{ money($shipping['commission'], 2) }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-gray-800 font-semibold">Total Price:</span>
-                <span class="text-xl font-bold ">₦{{ number_format($shipping['grand_total'], 2, '.', ',') }}</span>
+                <span class="text-xl font-bold ">{{ money($shipping['grand_total'], 2) }}</span>
               </div>
             </div>
           </div>

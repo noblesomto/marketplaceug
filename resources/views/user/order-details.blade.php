@@ -81,7 +81,7 @@
                 <a href="{{ $adLink }}" class="font-semibold text-gray-800 leading-snug line-clamp-2 block no-underline hover:text-dark_green">
                     {{ $productName }}
                 </a>
-                <div class="text-base font-black text-dark_green mt-1">₦{{ number_format($productPrice, 0, '.', ',') }}</div>
+                <div class="text-base font-black text-dark_green mt-1">{{ money($productPrice, 0) }}</div>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@
             <div class="border-t border-gray-50"></div>
             <div class="flex justify-between">
                 <span class="text-gray-400">Amount Paid</span>
-                <span class="font-black text-dark_green text-base">₦{{ number_format($productPrice, 0, '.', ',') }}</span>
+                <span class="font-black text-dark_green text-base">{{ money($productPrice, 0) }}</span>
             </div>
         </div>
     </div>

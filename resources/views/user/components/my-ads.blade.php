@@ -65,7 +65,7 @@
                     @elseif($row->contact_price === 'yes')
                         <span class="text-gray-500 font-medium">Contact for Price</span>
                     @else
-                        ₦{{ number_format($row->price, 0, '.', ',') }}
+                        {{ money($row->price, 0) }}
                         @if($row->price_type)
                             <span class="text-gray-400 text-[11px] font-normal">{{ $row->price_type }}</span>
                         @endif

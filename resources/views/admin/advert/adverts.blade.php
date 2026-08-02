@@ -98,7 +98,7 @@
                     @elseif($row->contact_price=="yes")
                         <td>Contact For Price</td>
                     @else
-                        <td>₦{{ number_format(floatval($row->price ?? 0), 2) }}</td>
+                        <td>{{ money(floatval($row->price ?? 0), 2) }}</td>
                     @endif
 
                     <td>{{ $row->state }}</td>

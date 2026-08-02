@@ -384,7 +384,7 @@
                 </a>
                 <div class="order-desc">{{ strip_tags($pending->advert->description ?? '') }}</div>
                 <div class="order-price">
-                    ₦{{ number_format($pending->amount_paid ?? 0, 0, '.', ',') }}
+                    {{ money($pending->amount_paid ?? 0, 0) }}
                 </div>
             </div>
         </div>

@@ -42,7 +42,7 @@
                             </div>
                             <div class="flex items-center bg-white p-3 rounded-md border md:col-span-2">
                                 <span class="text-gray-600 font-medium">Amount:</span>
-                                <span class="ml-2 text-xl font-bold text-dark_green">₦{{ number_format($ad->amount, 2) }}</span>
+                                <span class="ml-2 text-xl font-bold text-dark_green">{{ money($ad->amount, 2) }}</span>
                             </div>
                         </div>
                     </div>

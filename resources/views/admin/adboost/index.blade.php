@@ -89,7 +89,7 @@
                                                 </a>
                                             </td>
                                             <td class="fw-bold text-success">
-                                                ₦{{ number_format($row->amount, 2) }}
+                                                {{ money($row->amount, 2) }}
                                             </td>
                                             <td>
                                                 @if($daysRemaining >= 0)

@@ -31,7 +31,7 @@
                     <p class="text-sm text-gray-500 italic">Contact for price</p>
                 @elseif($advert->price)
                     <p class="text-dark_green font-bold text-xl">
-                        ₦{{ number_format((float) preg_replace('/[^\d.]/', '', $advert->price), 0) }}
+                        {{ money((float) preg_replace('/[^\d.]/', '', $advert->price), 0) }}
                         @if($advert->price_type && $advert->price_type !== 'Fixed')
                             <span class="text-xs font-normal text-gray-500 ml-1">· {{ $advert->price_type }}</span>
                         @endif

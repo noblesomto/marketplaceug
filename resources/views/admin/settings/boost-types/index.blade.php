@@ -52,7 +52,7 @@
                                         @foreach($boostTypes as $type)
                                         <tr data-id="{{ $type->id }}">
                                             <td class="fw-bold">{{ $type->name }}</td>
-                                            <td>₦{{ number_format($type->daily_rate, 2) }}</td>
+                                            <td>{{ money($type->daily_rate, 2) }}</td>
                                             <td>{{ $type->display_order }}</td>
                                             <td>
                                                 <span class="badge {{ $type->is_active ? 'bg-success' : 'bg-secondary' }}">

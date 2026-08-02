@@ -84,7 +84,7 @@
                                                 </a>
                                             </td>
                                             <td class="fw-bold text-success">
-                                                ₦{{ number_format($row->amount, 2) }}
+                                                {{ money($row->amount, 2) }}
                                             </td>
                                             <td>
                                                 <span class="badge bg-info text-white text-capitalize">
