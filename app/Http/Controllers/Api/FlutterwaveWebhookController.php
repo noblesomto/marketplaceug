@@ -20,8 +20,8 @@ class FlutterwaveWebhookController extends Controller
         $signature = $request->header('verif-hash');
         $expected  = config('services.flutterwave.webhookHash');
 
-        if (!hash_equals((string) $expected, (string) $signature)) {
-            Log::warning('Flutterwave webhook: invalid signature', ['ip' => $request->ip()]);
+        if (blank($expected) || !hash_equals((string) $expected, (string) $signature)) {
+            Log::error('Flutterwave webhook rejected: signature invalid or webhook secret unconfigured', ['ip' => $request->ip()]);
             return response()->json(['message' => 'Invalid signature'], 200);
         }
 
