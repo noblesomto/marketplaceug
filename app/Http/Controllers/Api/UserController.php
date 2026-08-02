@@ -1357,7 +1357,7 @@ class UserController extends Controller
     }
 
     // POST /api/user/payments/{paymentId}/resume
-    // Resume an abandoned pending payment — returns a fresh Paystack authorization_url
+    // Resume an abandoned pending payment — returns a fresh Flutterwave authorization_url
     public function resumePayment($paymentId)
     {
         $user = auth()->user();
@@ -1382,11 +1382,15 @@ class UserController extends Controller
             ], 409);
         }
 
-        $response = Http::withToken(config('services.paystack.secretKey'))
-            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
-                'email'        => $user->email,
-                'amount'       => round($payment->amount_paid) * 100, // kobo
-                'callback_url' => route('flutterwave.callback'),
+        $reference = (string) Str::uuid();
+
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->post(config('services.flutterwave.paymentUrl') . '/payments', [
+                'tx_ref'       => $reference,
+                'amount'       => $payment->amount_paid,
+                'currency'     => config('currency.code'),
+                'redirect_url' => config('app.url') . '/api/payments/callback',
+                'customer'     => ['email' => $user->email],
                 'metadata'     => [
                     'advert_id' => $payment->advert_id,
                     'user_id'   => $user->user_id,
@@ -1395,19 +1399,19 @@ class UserController extends Controller
 
         $data = $response->json();
 
-        if (!($data['status'] ?? false)) {
+        if (($data['status'] ?? null) !== 'success') {
             return response()->json([
                 'success' => false,
                 'message' => 'Could not initialize payment. Please try again.'
             ], 502);
         }
 
-        $payment->update(['payment_reference' => $data['data']['reference']]);
+        $payment->update(['payment_reference' => $reference]);
 
         return response()->json([
             'success'           => true,
-            'authorization_url' => $data['data']['authorization_url'],
-            'reference'         => $data['data']['reference'],
+            'authorization_url' => $data['data']['link'],
+            'reference'         => $reference,
             'amount'            => $payment->amount_paid,
             'payment_id'        => $payment->id,
         ]);

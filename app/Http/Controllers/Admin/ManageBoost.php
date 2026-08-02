@@ -175,17 +175,19 @@ class ManageBoost extends Controller
         }
 
         if (!$boost->payment_reference) {
-            return redirect()->back()->with('status', ['text' => 'No payment reference on record — cannot verify with Paystack.', 'type' => 'error']);
+            return redirect()->back()->with('status', ['text' => 'No payment reference on record — cannot verify with Flutterwave.', 'type' => 'error']);
         }
 
-        $response = Http::withToken(config('services.paystack.secretKey'))
-            ->get(config('services.paystack.paymentUrl') . "/transaction/verify/{$boost->payment_reference}")
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->get(config('services.flutterwave.paymentUrl') . '/transactions/verify_by_reference', [
+                'tx_ref' => $boost->payment_reference,
+            ])
             ->json();
 
-        if (!($response['status'] ?? false) || ($response['data']['status'] ?? '') !== 'success') {
-            $paystackMessage = $response['data']['gateway_response'] ?? ($response['message'] ?? 'Payment not confirmed');
+        if (($response['status'] ?? null) !== 'success' || ($response['data']['status'] ?? '') !== 'successful') {
+            $flwMessage = $response['data']['processor_response'] ?? ($response['message'] ?? 'Payment not confirmed');
             return redirect()->back()->with('status', [
-                'text' => "Paystack says: {$paystackMessage}. Boost not activated.",
+                'text' => "Flutterwave says: {$flwMessage}. Boost not activated.",
                 'type' => 'error',
             ]);
         }
@@ -209,7 +211,7 @@ class ManageBoost extends Controller
             'trans_id'  => $transactionId,
         ]);
 
-        return redirect()->back()->with('status', ['text' => 'Payment verified with Paystack — boost is now active.', 'type' => 'success']);
+        return redirect()->back()->with('status', ['text' => 'Payment verified with Flutterwave — boost is now active.', 'type' => 'success']);
     }
 
 }
