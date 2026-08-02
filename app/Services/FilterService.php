@@ -78,19 +78,19 @@ class FilterService
     {
         switch ($range) {
             case 'under_20k':
-                $query->where('price', '<', 20000);
+                $query->where('price', '<', 100000);
                 break;
             case '20k_120k':
-                $query->whereBetween('price', [20000, 120000]);
+                $query->whereBetween('price', [100000, 500000]);
                 break;
             case '120k_1m':
-                $query->whereBetween('price', [120000, 1000000]);
+                $query->whereBetween('price', [500000, 2000000]);
                 break;
             case '1m_10m':
-                $query->whereBetween('price', [1000000, 10000000]);
+                $query->whereBetween('price', [2000000, 20000000]);
                 break;
             case 'above_10m':
-                $query->where('price', '>', 10000000);
+                $query->where('price', '>', 20000000);
                 break;
         }
 

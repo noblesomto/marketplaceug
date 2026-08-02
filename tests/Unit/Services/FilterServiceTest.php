@@ -145,14 +145,17 @@ class FilterServiceTest extends TestCase
         $this->assertStringContainsString('price', $sql);
     }
 
-    public function test_apply_price_filters_range_under_20k(): void
+    public function test_apply_price_filters_range_under_20k_uses_ugx_threshold(): void
     {
         $request = Request::create('/', 'GET', ['range' => 'under_20k']);
         $query   = Advert::query();
 
         $this->service->applyPriceFilters($query, $request);
 
-        $this->assertStringContainsString('price', $query->toSql());
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        $this->assertStringContainsString('price', $sql);
+        $this->assertContains(100000, $bindings);
     }
 
     public function test_apply_price_filters_skips_when_empty(): void

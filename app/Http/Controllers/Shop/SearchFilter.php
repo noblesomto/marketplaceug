@@ -318,11 +318,11 @@ class SearchFilter extends Controller
      * buckets — see FilterService::applyPriceRange().
      */
     private const PRICE_RANGE_SLUGS = [
-        'under-20k' => ['key' => 'under_20k', 'label' => 'Under ₦20,000'],
-        '20k-120k'  => ['key' => '20k_120k',  'label' => '₦20,000 - ₦120,000'],
-        '120k-1m'   => ['key' => '120k_1m',   'label' => '₦120,000 - ₦1 Million'],
-        '1m-10m'    => ['key' => '1m_10m',    'label' => '₦1 Million - ₦10 Million'],
-        'above-10m' => ['key' => 'above_10m', 'label' => 'Above ₦10 Million'],
+        'under-100k' => ['key' => 'under_20k', 'label' => 'Under UGX 100,000'],
+        '100k-500k'  => ['key' => '20k_120k',  'label' => 'UGX 100,000 - UGX 500,000'],
+        '500k-2m'    => ['key' => '120k_1m',   'label' => 'UGX 500,000 - UGX 2 Million'],
+        '2m-20m'     => ['key' => '1m_10m',    'label' => 'UGX 2 Million - UGX 20 Million'],
+        'above-20m'  => ['key' => 'above_10m', 'label' => 'Above UGX 20 Million'],
     ];
 
     /**

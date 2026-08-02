@@ -602,11 +602,11 @@ class SearchController extends Controller
                 'categories' => Category::with('subCategories')->get(),
                 'states' => State::all(),
                 'price_ranges' => [
-                    ['value' => 'under_20k', 'label' => 'Under ₦20,000'],
-                    ['value' => '20k_120k', 'label' => '₦20,000 - ₦120,000'],
-                    ['value' => '120k_1m', 'label' => '₦120,000 - ₦1,000,000'],
-                    ['value' => '1m_10m', 'label' => '₦1,000,000 - ₦10,000,000'],
-                    ['value' => 'above_10m', 'label' => 'Above ₦10,000,000'],
+                    ['value' => 'under_20k', 'label' => 'Under UGX 100,000'],
+                    ['value' => '20k_120k', 'label' => 'UGX 100,000 - UGX 500,000'],
+                    ['value' => '120k_1m', 'label' => 'UGX 500,000 - UGX 2,000,000'],
+                    ['value' => '1m_10m', 'label' => 'UGX 2,000,000 - UGX 20,000,000'],
+                    ['value' => 'above_10m', 'label' => 'Above UGX 20,000,000'],
                 ],
                 'seller_types' => [
                     ['value' => 'all', 'label' => 'All Sellers'],
