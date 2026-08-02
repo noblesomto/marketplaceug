@@ -9,15 +9,15 @@ use App\Models\Bank;
 class SyncBanks extends Command
 {
     protected $signature = 'banks:sync';
-    protected $description = 'Sync Nigerian banks from Paystack API';
+    protected $description = 'Sync Ugandan banks from Flutterwave API';
 
     public function handle()
     {
-        $response = Http::withToken(config('services.paystack.secret'))
-            ->get('https://api.paystack.co/bank?currency=NGN');
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->get(config('services.flutterwave.paymentUrl') . '/banks/UG');
 
         if (!$response->ok()) {
-            $this->error('Failed to fetch banks from Paystack.');
+            $this->error('Failed to fetch banks from Flutterwave.');
             return 1;
         }
 
@@ -25,7 +25,7 @@ class SyncBanks extends Command
 
         foreach ($banks as $bank) {
             Bank::updateOrCreate(
-                ['paystack_bank_code' => $bank['code']],
+                ['bank_code' => $bank['code']],
                 ['name' => $bank['name']]
             );
         }
@@ -34,4 +34,3 @@ class SyncBanks extends Command
         return 0;
     }
 }
-
