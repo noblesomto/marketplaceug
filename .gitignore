@@ -21,3 +21,6 @@ yarn-error.log
 *.zip
 .env
 sync-db.sh
+/.vite
+/stats.html
+/storage/media-library/temp
