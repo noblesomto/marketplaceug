@@ -180,11 +180,11 @@
       const finalPrice = parseFloat(data.data.pricing.final_price);
       const discountPercentage = parseFloat(data.data.pricing.discount_percentage);
 
-      let priceText = '₦' + Math.round(finalPrice).toLocaleString();
+      let priceText = 'UGX ' + Math.round(finalPrice).toLocaleString();
 
       if (discountPercentage > 0) {
         const basePrice = parseFloat(data.data.pricing.base_price);
-        priceText += ' <span class="text-sm text-gray-600">(Save ₦' +
+        priceText += ' <span class="text-sm text-gray-600">(Save UGX ' +
                      Math.round(basePrice - finalPrice).toLocaleString() + ')</span>';
       }
 

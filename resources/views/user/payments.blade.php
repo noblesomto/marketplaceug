@@ -450,7 +450,7 @@
                         {{ strip_tags($row->advert->description ?? 'No description available') }}
                     </div>
                     <div class="order-price">
-                        ₦{{ isset($row->amount_paid) ? number_format($row->amount_paid, 0, '.', ',') : '0' }}
+                        {{ isset($row->amount_paid) ? money($row->amount_paid, 0) : money(0) }}
                     </div>
                 </div>
             </div>

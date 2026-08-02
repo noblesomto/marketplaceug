@@ -101,7 +101,7 @@ class ContentHelper
         $content = preg_replace('/&[a-zA-Z0-9#]+;/', ' ', $content);
 
         // Step 7: Remove special characters and symbols (keep letters, numbers, basic punctuation)
-        $content = preg_replace('/[^\p{L}\p{N}\s\-.,!?$€£¥₦&@()\'\"\/]/u', '', $content);
+        $content = preg_replace('/[^\p{L}\p{N}\s\-.,!?$€£¥&@()\'\"\/]/u', '', $content);
 
         // Step 8: Clean up spacing around punctuation
         $content = preg_replace('/\s*([.,!?;:])\s*/', '$1 ', $content);  // Add single space after punctuation

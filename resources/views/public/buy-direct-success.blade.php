@@ -23,7 +23,7 @@
         @endif
 
         @if(session('amount'))
-            <p class="text-gray-500 text-sm mb-1">Amount paid: <strong>₦{{ session('amount') }}</strong></p>
+            <p class="text-gray-500 text-sm mb-1">Amount paid: <strong>{{ money(session('amount')) }}</strong></p>
         @endif
 
         @if(session('ship_code'))
