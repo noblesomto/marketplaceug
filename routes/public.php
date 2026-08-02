@@ -78,7 +78,7 @@ Route::post('/filter/phone-details', [SearchFilter::class, 'filterByPhoneDetails
 // Location & shipping cost lookup
 Route::get('/states', [LocationController::class, 'index']);
 Route::get('/get-gig/{state_id}', [LocationController::class, 'getGIG']);
-Route::post('/shipping-cost', [LocationController::class, 'getAgilityShippingCost']);
+Route::post('/shipping-cost', [LocationController::class, 'getShippingCost']);
 
 // Paystack – Buy Direct
 Route::post('/pay', [PaystackController::class, 'initialize'])->name('paystack.pay')->middleware('usersession');

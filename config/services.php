@@ -36,15 +36,6 @@ return [
         'paymentUrl' => env('PAYSTACK_PAYMENT_URL'),
     ],
 
-    'agility' => [
-        'url' => env('AGILITY_URL', 'https://thirdpartynode.theagilitysystems.com/price'),
-        'email' => env('AGILITY_EMAIL'),
-        'password' => env('AGILITY_PASSWORD'),
-        'customer_code' => env('AGILITY_CUSTOMER_CODE', 'IND1875642'),
-        'vehicle_type' => env('AGILITY_VEHICLE_TYPE', 3),
-        'default_weight' => env('AGILITY_DEFAULT_WEIGHT', 5),
-    ],
-
     'google' => [
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
