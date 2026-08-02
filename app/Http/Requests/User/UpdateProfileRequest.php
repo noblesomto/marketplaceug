@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Rules\NigerianPhoneNumber;
+use App\Rules\UgandanPhoneNumber;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -25,7 +25,7 @@ class UpdateProfileRequest extends FormRequest
             'name'          => 'required|string|max:100',
             'phone'         => [
                 'required',
-                new NigerianPhoneNumber(),
+                new UgandanPhoneNumber(),
                 Rule::unique('users', 'phone')->ignore($userId, 'user_id'),
             ],
             'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:12048',

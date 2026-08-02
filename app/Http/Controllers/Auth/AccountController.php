@@ -20,7 +20,7 @@ use App\Models\AdminLoginAttempts;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use App\Rules\NigerianPhoneNumber;
+use App\Rules\UgandanPhoneNumber;
 use App\Rules\AllowedName;
 use Illuminate\Support\HtmlString;
 use App\Helpers\ContentHelper;
@@ -547,7 +547,7 @@ class AccountController extends Controller
                     'name' => ['required', 'string', 'max:100', new AllowedName],
                     'phone' => [
                         'required',
-                        new NigerianPhoneNumber(),
+                        new UgandanPhoneNumber(),
                     ],
                     'email' => 'required|email|unique:users,email',
                     'password' => 'required|min:6',

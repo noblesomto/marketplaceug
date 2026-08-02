@@ -19,7 +19,7 @@ use Carbon\Carbon;
 use Hash;
 use Mail;
 use App\Mail\VerificationRequestMail;
-use App\Rules\NigerianPhoneNumber;
+use App\Rules\UgandanPhoneNumber;
 use App\Services\ImageProcessingService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -189,7 +189,7 @@ class UserProfile extends Controller
         $request->validate([
             'phone' => [
                 'required',
-                new NigerianPhoneNumber(),
+                new UgandanPhoneNumber(),
                 Rule::unique('users', 'phone')->ignore($user_id, 'user_id'),
             ],
         ]);

@@ -14,7 +14,7 @@ use App\Models\Advert;
 use App\Models\Bank;
 use App\Models\UserVerification;
 use App\Mail\VerificationRequestMail;
-use App\Rules\NigerianPhoneNumber;
+use App\Rules\UgandanPhoneNumber;
 use Carbon\Carbon;
 
 /**
@@ -286,7 +286,7 @@ class UserProfile extends Controller
         $validator = Validator::make($request->all(), [
             'phone' => [
                 'required',
-                new NigerianPhoneNumber(),
+                new UgandanPhoneNumber(),
                 Rule::unique('users', 'phone')->ignore($user->user_id, 'user_id'),
             ],
         ]);

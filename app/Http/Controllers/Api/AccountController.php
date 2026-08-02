@@ -16,7 +16,7 @@ use App\Mail\RegisterMail;
 use App\Mail\OTPMail;
 use App\Mail\PasswordMail;
 use Illuminate\Validation\Rule;
-use App\Rules\NigerianPhoneNumber;
+use App\Rules\UgandanPhoneNumber;
 use App\Rules\AllowedName;
 use App\Helpers\ContentHelper;
 
@@ -339,7 +339,7 @@ class AccountController extends Controller
             'phone' => [
                 'required',
                 Rule::unique('users', 'phone'),
-                new NigerianPhoneNumber(),
+                new UgandanPhoneNumber(),
             ],
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
