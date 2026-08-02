@@ -371,3 +371,10 @@ if (!function_exists('getUserNotificationCount')) {
         return $query->count();
     }
 }
+
+if (! function_exists('money')) {
+    function money($amount, int $decimals = 0): string
+    {
+        return config('currency.symbol') . ' ' . number_format((float) $amount, $decimals, '.', ',');
+    }
+}
