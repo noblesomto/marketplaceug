@@ -178,8 +178,7 @@
             
             <div class="section">
                 <h4>Selected Delivery/Pickup Information</h4>
-                <p><span class="label">Address:</span> {{ $details['address'] }}</p>
-                <p><span class="label">City:</span> {{ $details['city'] }}</p>
+                <p><span class="label">District:</span> {{ $details['city'] }}</p>
                 <p><span class="label">State:</span> {{ $details['state'] }}</p>
             </div>
 

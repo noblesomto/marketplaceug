@@ -15,7 +15,7 @@ use Mail;
 use App\Mail\PayoutMail;
 use App\Mail\BuyDirectMail;
 use App\Mail\SellerMail;
-use App\Models\GigLogistic;
+use App\Models\Lga;
 use App\Services\ShippingStatusNotifier;
 use App\Services\SellerCancelNotifier;
 
@@ -127,7 +127,7 @@ class ManagePayments extends Controller
 
         ]);
         $user = User::where('user_id', $ship->user_id)->first();
-        $city = GigLogistic::where('id', $ship->city)->first();
+        $district = Lga::where('id', $ship->city)->first();
         $details = [
             'advert' => $ship->advert->ad_title,
             'buyer' => $user->name,
@@ -135,8 +135,7 @@ class ManagePayments extends Controller
             'phone' => $user->phone,
             'shipping' => $ship->shipping->company,
             'shipped_date' => Carbon::now(),
-            'address' => $city->address,
-            'city' => $city->city,
+            'city' => $district->name,
             'state' => $ship->stateRel->name,
             'ship_code' => $ship->ship_code,
         ];
