@@ -423,7 +423,7 @@
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Salary</label>
                      <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Salary--</option>
-                        @foreach(['Commission', 'Below ₦20,000', '₦20,000 - ₦40,000', 'Above ₦500,000'] as $sal)
+                        @foreach(['Commission', 'Below UGX 200,000', 'UGX 200,000 - UGX 400,000', 'Above UGX 5,000,000'] as $sal)
                             <option value="{{ $sal }}" {{ $advert->salary == $sal ? 'selected' : '' }}>{{ $sal }}</option>
                         @endforeach
                     </select>
@@ -432,7 +432,7 @@
                      <label class="block text-sm font-semibold text-gray-700 mb-2">Expected Salary</label>
                      <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Expected Salary--</option>
-                        @foreach(['Below ₦50,000', '₦50,000 - ₦75,000', 'Above ₦500,000'] as $expSal)
+                        @foreach(['Below UGX 500,000', 'UGX 500,000 - UGX 750,000', 'Above UGX 5,000,000'] as $expSal)
                             <option value="{{ $expSal }}" {{ $advert->expected_salary == $expSal ? 'selected' : '' }}>{{ $expSal }}</option>
                         @endforeach
                     </select>

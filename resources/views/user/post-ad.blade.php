@@ -514,7 +514,7 @@
                      <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Salary--</option>
                         @php
-                            $salaryRanges = ['Commission', 'Below ₦20,000', '₦20,000 - ₦40,000', '₦40,000 - ₦60,000', '₦60,000 - ₦80,000', '₦80,000 - ₦100,000', '₦100,000 - ₦120,000', '₦120,000 - ₦140,000', '₦140,000 - ₦160,000', '₦160,000 - ₦180,000', '₦180,000 - ₦200,000', '₦200,000 - ₦220,000', '₦220,000 - ₦250,000', '₦250,000 - ₦300,000', '₦300,000 - ₦350,000', '₦350,000 - ₦400,000', '₦400,000 - ₦450,000', '₦450,000 - ₦500,000', 'Above ₦500,000'];
+                            $salaryRanges = ['Commission', 'Below UGX 200,000', 'UGX 200,000 - UGX 400,000', 'UGX 400,000 - UGX 600,000', 'UGX 600,000 - UGX 800,000', 'UGX 800,000 - UGX 1,000,000', 'UGX 1,000,000 - UGX 1,200,000', 'UGX 1,200,000 - UGX 1,400,000', 'UGX 1,400,000 - UGX 1,600,000', 'UGX 1,600,000 - UGX 1,800,000', 'UGX 1,800,000 - UGX 2,000,000', 'UGX 2,000,000 - UGX 2,200,000', 'UGX 2,200,000 - UGX 2,500,000', 'UGX 2,500,000 - UGX 3,000,000', 'UGX 3,000,000 - UGX 3,500,000', 'UGX 3,500,000 - UGX 4,000,000', 'UGX 4,000,000 - UGX 4,500,000', 'UGX 4,500,000 - UGX 5,000,000', 'Above UGX 5,000,000'];
                         @endphp
                         @foreach($salaryRanges as $range)
                             <option value="{{ $range }}" {{ old('salary') == $range ? 'selected' : '' }}>{{ $range }}</option>
@@ -532,7 +532,7 @@
                      <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Expected Salary--</option>
                         @php
-                            $expectedSalaryRanges = ['Below ₦50,000', '₦50,000 - ₦75,000', '₦75,000 - ₦100,000', '₦100,000 - ₦120,000', '₦120,000 - ₦140,000', '₦140,000 - ₦160,000', '₦160,000 - ₦180,000', '₦180,000 - ₦200,000', '₦200,000 - ₦220,000', '₦220,000 - ₦250,000', '₦250,000 - ₦300,000', '₦300,000 - ₦350,000', '₦350,000 - ₦400,000', '₦400,000 - ₦450,000', '₦450,000 - ₦500,000', 'Above ₦500,000'];
+                            $expectedSalaryRanges = ['Below UGX 500,000', 'UGX 500,000 - UGX 750,000', 'UGX 750,000 - UGX 1,000,000', 'UGX 1,000,000 - UGX 1,200,000', 'UGX 1,200,000 - UGX 1,400,000', 'UGX 1,400,000 - UGX 1,600,000', 'UGX 1,600,000 - UGX 1,800,000', 'UGX 1,800,000 - UGX 2,000,000', 'UGX 2,000,000 - UGX 2,200,000', 'UGX 2,200,000 - UGX 2,500,000', 'UGX 2,500,000 - UGX 3,000,000', 'UGX 3,000,000 - UGX 3,500,000', 'UGX 3,500,000 - UGX 4,000,000', 'UGX 4,000,000 - UGX 4,500,000', 'UGX 4,500,000 - UGX 5,000,000', 'Above UGX 5,000,000'];
                         @endphp
                         @foreach($expectedSalaryRanges as $range)
                             <option value="{{ $range }}" {{ old('expected_salary') == $range ? 'selected' : '' }}>{{ $range }}</option>
