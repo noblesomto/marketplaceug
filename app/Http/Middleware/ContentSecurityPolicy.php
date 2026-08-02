@@ -50,11 +50,11 @@ class ContentSecurityPolicy
             // Fonts: self + Google Fonts + CDN
             "font-src {$self} {$googleFonts} {$cdn} cdnjs.cloudflare.com data:",
 
-            // Connects: self + Pusher websocket + Firebase + analytics + Paystack
-            "connect-src {$self} wss://*.pusher.com https://*.pusher.com {$firebase} {$analytics} {$gtm} https://api.paystack.co https://checkout.paystack.com",
+            // Connects: self + Pusher websocket + Firebase + analytics + Flutterwave
+            "connect-src {$self} wss://*.pusher.com https://*.pusher.com {$firebase} {$analytics} {$gtm} https://api.flutterwave.com https://checkout.flutterwave.com",
 
-            // Frames: Google reCAPTCHA, Paystack checkout
-            "frame-src {$self} {$recaptcha} https://checkout.paystack.com",
+            // Frames: Google reCAPTCHA, Flutterwave checkout
+            "frame-src {$self} {$recaptcha} https://checkout.flutterwave.com",
 
             // Workers: self + blob (Firebase SW uses blob worker)
             "worker-src {$self} blob:",
