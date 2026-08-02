@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Advert;
 use App\Models\AdvertBoost;
 use App\Models\State;
-use App\Models\GigLogistic;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -24,9 +23,9 @@ use Illuminate\Support\Facades\Log;
 /**
  * @group Payments
  *
- * APIs for payment processing, Paystack integration, and boost purchases
+ * APIs for payment processing, Flutterwave integration, and boost purchases
  */
-class PaystackController extends Controller
+class FlutterwaveController extends Controller
 {
     /**
      * @OA\Post(
@@ -101,12 +100,15 @@ class PaystackController extends Controller
         $user = auth()->user();
         $shippingData = $request->shipping_data;
         $price = round($shippingData['grand_total']);
+        $reference = (string) Str::uuid();
 
-        $response = Http::withToken(config('services.paystack.secretKey'))
-            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
-                'email' => $user->email,
-                'amount' => $price * 100,
-                'callback_url' => config('app.url') . '/api/payments/callback',
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->post(config('services.flutterwave.paymentUrl') . '/payments', [
+                'tx_ref' => $reference,
+                'amount' => $price,
+                'currency' => config('currency.code'),
+                'redirect_url' => config('app.url') . '/api/payments/callback',
+                'customer' => ['email' => $user->email],
                 'metadata' => [
                     'advert_id' => $shippingData['ad']['id'],
                     'user_id' => $user->user_id,
@@ -116,9 +118,7 @@ class PaystackController extends Controller
 
         $data = $response->json();
 
-        if ($data['status']) {
-            $reference = $data['data']['reference'];
-
+        if ($data['status'] === 'success') {
             $existingPayment = Payment::where('advert_id', $shippingData['ad']['id'])
                 ->where('user_id', $user->user_id)
                 ->where('payment_status', 'pending')
@@ -149,7 +149,7 @@ class PaystackController extends Controller
 
             return response()->json([
                 'success' => true,
-                'authorization_url' => $data['data']['authorization_url'],
+                'authorization_url' => $data['data']['link'],
                 'reference' => $reference,
                 'payment_id' => $payment->id
             ]);
@@ -164,13 +164,13 @@ class PaystackController extends Controller
     /**
      * @OA\Post(
      *     path="/api/payments/callback",
-     *     summary="Handle payment callback from Paystack",
+     *     summary="Handle payment callback from Flutterwave",
      *     tags={"Payments"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"reference"},
-     *             @OA\Property(property="reference", type="string")
+     *             required={"tx_ref"},
+     *             @OA\Property(property="tx_ref", type="string")
      *         )
      *     ),
      *     @OA\Response(
@@ -190,7 +190,7 @@ class PaystackController extends Controller
     public function handleCallback(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'reference' => 'required|string'
+            'tx_ref' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -200,14 +200,16 @@ class PaystackController extends Controller
             ], 422);
         }
 
-        $reference = $request->reference;
+        $reference = $request->tx_ref;
 
-        $response = Http::withToken(config('services.paystack.secretKey'))
-            ->get(config('services.paystack.paymentUrl') . "/transaction/verify/{$reference}");
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->get(config('services.flutterwave.paymentUrl') . "/transactions/verify_by_reference", [
+                'tx_ref' => $reference,
+            ]);
 
         $data = $response->json();
 
-        if ($data['status'] && $data['data']['status'] === 'success') {
+        if ($data['status'] === 'success' && $data['data']['status'] === 'successful') {
             $transactionId = $data['data']['id'];
             $amount = $data['data']['amount'];
             $metadata = $data['data']['metadata'];
@@ -248,7 +250,7 @@ class PaystackController extends Controller
             $payment->update([
                 'payment_status' => 'paid',
                 'trans_id' => $transactionId,
-                'amount_paid' => $amount / 100,
+                'amount_paid' => $amount,
                 'ship_code' => $shipCode,
             ]);
 
@@ -272,7 +274,7 @@ class PaystackController extends Controller
         $advert = Advert::find($payment->advert_id);
         $buyer = User::find($payment->user_id);
         $seller = User::find($advert->user_id);
-        $location = GigLogistic::with('state')->find($payment->city);
+        $location = \App\Models\Lga::with('state')->find($payment->city);
         $shipping = Shipping::find($payment->shipping_method);
 
         $details = [
@@ -281,10 +283,9 @@ class PaystackController extends Controller
             'seller' => $seller->name,
             'phone' => $payment->phone,
             'shipping' => $shipping->company,
-            'address' => $buyer->address,
             'state' => $location->state->name ?? 'N/A',
-            'city' => $location->city ?? 'N/A',
-            'address' => $location->address ?? 'N/A',
+            'city' => $location->name ?? 'N/A',
+            'address' => $buyer->address,
             'ship_code' => $shipCode,
         ];
 
@@ -341,12 +342,15 @@ class PaystackController extends Controller
 
         $user = auth()->user();
         $amount = (int) str_replace(',', '', $request->amount);
+        $reference = (string) Str::uuid();
 
-        $response = Http::withToken(config('services.paystack.secretKey'))
-            ->post(config('services.paystack.paymentUrl') . '/transaction/initialize', [
-                'email' => $user->email,
-                'amount' => $amount * 100,
-                'callback_url' => config('app.url') . '/api/payments/callback',
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->post(config('services.flutterwave.paymentUrl') . '/payments', [
+                'tx_ref' => $reference,
+                'amount' => $amount,
+                'currency' => config('currency.code'),
+                'redirect_url' => config('app.url') . '/api/payments/callback',
+                'customer' => ['email' => $user->email],
                 'metadata' => [
                     'advert_id' => $request->advert_id,
                     'user_id' => $user->user_id,
@@ -358,9 +362,7 @@ class PaystackController extends Controller
 
         $data = $response->json();
 
-        if ($data['status']) {
-            $reference = $data['data']['reference'];
-
+        if ($data['status'] === 'success') {
             $boost = AdvertBoost::create([
                 'advert_id' => $request->advert_id,
                 'user_id' => $user->user_id,
@@ -374,7 +376,7 @@ class PaystackController extends Controller
 
             return response()->json([
                 'success' => true,
-                'authorization_url' => $data['data']['authorization_url'],
+                'authorization_url' => $data['data']['link'],
                 'reference' => $reference,
                 'boost_id' => $boost->id
             ]);
