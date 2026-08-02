@@ -204,6 +204,9 @@ Route::post('/payments/callback', [PaystackController::class, 'handleCallback'])
 // Paystack webhook — server-to-server, no auth, signature verified inside the controller
 Route::post('/paystack/webhook', [PaystackWebhookController::class, 'handle']);
 
+// Flutterwave webhook — server-to-server, no auth, signature verified inside the controller
+Route::post('/flutterwave/webhook', [\App\Http\Controllers\Api\FlutterwaveWebhookController::class, 'handle']);
+
 /*
 |--------------------------------------------------------------------------
 | User Dashboard Routes (Protected)

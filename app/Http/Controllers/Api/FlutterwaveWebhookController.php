@@ -13,45 +13,48 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class PaystackWebhookController extends Controller
+class FlutterwaveWebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        $signature = $request->header('X-Paystack-Signature');
-        $computed  = hash_hmac('sha512', $request->getContent(), config('services.paystack.secretKey'));
+        $signature = $request->header('verif-hash');
+        $expected  = config('services.flutterwave.webhookHash');
 
-        if (!hash_equals($computed, $signature ?? '')) {
-            Log::warning('Paystack webhook: invalid signature', ['ip' => $request->ip()]);
-            return response()->json(['message' => 'Invalid signature'], 401);
+        if (!hash_equals((string) $expected, (string) $signature)) {
+            Log::warning('Flutterwave webhook: invalid signature', ['ip' => $request->ip()]);
+            return response()->json(['message' => 'Invalid signature'], 200);
         }
 
         $payload = $request->json()->all();
         $event   = $payload['event'] ?? '';
 
-        if ($event !== 'charge.success') {
+        if ($event !== 'charge.completed') {
             return response()->json(['message' => 'Event ignored'], 200);
         }
 
         $reference = $payload['data']['reference'] ?? null;
 
         if (!$reference) {
-            Log::error('Paystack webhook: missing reference in payload');
-            return response()->json(['message' => 'Bad payload'], 400);
+            Log::error('Flutterwave webhook: missing reference in payload');
+            return response()->json(['message' => 'Bad payload'], 200);
         }
 
-        // Always verify directly with Paystack — never trust webhook body alone
-        $verified = Http::withToken(config('services.paystack.secretKey'))
-            ->get(config('services.paystack.paymentUrl') . "/transaction/verify/{$reference}")
-            ->json();
+        // Always verify directly with Flutterwave — never trust webhook body alone
+        $response = Http::withToken(config('services.flutterwave.secretKey'))
+            ->get(config('services.flutterwave.paymentUrl') . '/transactions/verify_by_reference', [
+                'tx_ref' => $reference,
+            ]);
 
-        if (!($verified['status'] ?? false) || ($verified['data']['status'] ?? '') !== 'success') {
-            Log::warning('Paystack webhook: verification failed for reference', ['ref' => $reference]);
+        $data = $response->json();
+
+        if (!($data['status'] === 'success' && ($data['data']['status'] ?? '') === 'successful')) {
+            Log::warning('Flutterwave webhook: verification failed for reference', ['ref' => $reference]);
             return response()->json(['message' => 'Verification failed'], 200);
         }
 
-        $data        = $verified['data'];
-        $metadata    = $data['metadata'] ?? [];
-        $paymentType = $metadata['payment_type'] ?? null;
+        $verifiedData = $data['data'];
+        $metadata     = $verifiedData['metadata'] ?? [];
+        $paymentType  = $metadata['payment_type'] ?? null;
 
         // If payment_type is missing from metadata, infer from the reference —
         // web boost flows historically omitted this field.
@@ -60,17 +63,17 @@ class PaystackWebhookController extends Controller
                 ? 'boost'
                 : 'buy_direct';
 
-            Log::info('Paystack webhook: inferred payment_type from reference lookup', [
+            Log::info('Flutterwave webhook: inferred payment_type from reference lookup', [
                 'ref'  => $reference,
                 'type' => $paymentType,
             ]);
         }
 
         if ($paymentType === 'boost') {
-            $this->activateBoost($reference, (int) $data['id']);
+            $this->activateBoost($reference, (int) $verifiedData['id']);
         }
 
-        // Always return 200 — Paystack retries on non-200
+        // Always return 200 — Flutterwave retries on non-200
         return response()->json(['message' => 'OK'], 200);
     }
 
@@ -82,7 +85,7 @@ class PaystackWebhookController extends Controller
 
         if (!$boost) {
             // Already processed or record not found — log and move on
-            Log::info('Paystack webhook: boost already processed or not found', ['ref' => $reference]);
+            Log::info('Flutterwave webhook: boost already processed or not found', ['ref' => $reference]);
             return;
         }
 
@@ -97,7 +100,7 @@ class PaystackWebhookController extends Controller
             Advert::where('id', $boost->advert_id)->update(['featured' => 'Yes']);
         });
 
-        Log::info('Paystack webhook: boost activated', [
+        Log::info('Flutterwave webhook: boost activated', [
             'boost_id'  => $boost->id,
             'advert_id' => $boost->advert_id,
             'trans_id'  => $transactionId,
