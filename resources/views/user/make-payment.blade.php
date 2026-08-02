@@ -155,7 +155,7 @@
                         <div class="bg-gradient-to-br from-dark_green to-green-700 text-white p-6 rounded-lg shadow-md">
                             <label class="block text-sm font-medium mb-2 text-green-100">Total Amount</label>
                             <div class="flex items-baseline">
-                                <span class="text-3xl font-bold">₦</span>
+                                <span class="text-3xl font-bold">UGX</span>
                                 <input type="text" id="amount" name="amount" readonly value="{{ number_format($ad->amount, 0) }}"
                                        class="w-full bg-transparent border-none text-4xl font-bold focus:ring-0 pl-2 text-white">
                             </div>

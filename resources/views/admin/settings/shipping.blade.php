@@ -149,7 +149,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Price (₦)</label>
+                                <label class="col-sm-3 col-form-label">Price (UGX)</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="price" class="form-control"
                                            value="{{ old('price') }}" required>
@@ -246,7 +246,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">Price (₦)</label>
+                        <label class="col-sm-3 col-form-label">Price (UGX)</label>
                         <div class="col-sm-9">
                             <input type="number" name="price" class="form-control" required>
                         </div>

@@ -78,7 +78,7 @@
   <div class="bg-gray-50 p-4 rounded-md border">
     <label class="block text-sm font-medium text-gray-700 mb-1">Total Price</label>
     <div class="flex items-center">
-      <span class="text-2xl font-bold text-[#1a5276]">₦</span>
+      <span class="text-2xl font-bold text-[#1a5276]">UGX</span>
       <input type="text" id="amount" name="amount" readonly
         class="w-full bg-transparent border-none text-2xl font-bold focus:ring-0 pl-2">
     </div>

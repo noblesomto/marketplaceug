@@ -396,7 +396,7 @@
                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <span class="text-gray-500 sm:text-base">₦</span>
+                                <span class="text-gray-500 sm:text-base">UGX</span>
                             </div>
                              <input type="text" name="price_display" id="price_display" class="block w-full pl-8 pr-12 py-3 border border border-gray-300 rounded-lg focus:ring-dark_green focus:border-dark_green text-base" placeholder="0.00" value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : number_format($advert->price, 0, '.', ',') }}">
                              <input type="hidden" name="price" id="price_hidden" value="{{ old('price', $advert->price) }}">

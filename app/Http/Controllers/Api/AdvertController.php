@@ -1171,7 +1171,7 @@ class AdvertController extends Controller
                 ], 400);
             }
 
-            // Calculate commission (2% for items >= ₦300,000, 3% otherwise)
+            // Calculate commission (2% for items >= UGX 300,000, 3% otherwise)
             $commission = $responseData->data->DeclaredValue >= 300000
                 ? 0.02 * $responseData->data->DeclaredValue
                 : 0.03 * $responseData->data->DeclaredValue;

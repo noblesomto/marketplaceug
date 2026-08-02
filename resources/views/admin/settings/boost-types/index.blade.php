@@ -41,7 +41,7 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Name</th>
-                                            <th>Daily Rate (₦)</th>
+                                            <th>Daily Rate (UGX)</th>
                                             <th>Display Order</th>
                                             <th>Status</th>
                                             <th>Description</th>
@@ -108,7 +108,7 @@
                                 <input type="text" class="form-control" name="name" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Daily Rate (₦) <span class="text-danger">*</span></label>
+                                <label class="form-label">Daily Rate (UGX) <span class="text-danger">*</span></label>
                                 <input type="number" step="0.01" class="form-control" name="daily_rate" required>
                             </div>
                             <div class="mb-3">
@@ -151,7 +151,7 @@
                                 <input type="text" class="form-control" name="name" id="edit_name" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Daily Rate (₦) <span class="text-danger">*</span></label>
+                                <label class="form-label">Daily Rate (UGX) <span class="text-danger">*</span></label>
                                 <input type="number" step="0.01" class="form-control" name="daily_rate" id="edit_daily_rate" required>
                             </div>
                             <div class="mb-3">
