@@ -104,7 +104,7 @@
             <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
               <li>Google Analytics</li>
               <li>Meta (Facebook) Pixel</li>
-              <li>Payment processors (Paystack)</li>
+              <li>Payment processors (Flutterwave)</li>
               <li>Advertising cookies (Google AdSense)</li>
               <li>Live chat or customer support tools</li>
             </ul>

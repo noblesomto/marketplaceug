@@ -260,8 +260,8 @@
                     <li class="flex items-start">
                         <div class="flex-shrink-0 h-6 w-6 text-blue-500 mr-3">✓</div>
                         <div>
-                            <h4 class="font-medium text-gray-800">Secure Payments with Paystack</h4>
-                            <p class="text-gray-600">All payments are processed safely through Paystack, supporting cards, bank transfers, and other local methods.</p>
+                            <h4 class="font-medium text-gray-800">Secure Payments with Flutterwave</h4>
+                            <p class="text-gray-600">All payments are processed safely through Flutterwave, supporting cards, mobile money, and bank transfers.</p>
                         </div>
                     </li>
                     

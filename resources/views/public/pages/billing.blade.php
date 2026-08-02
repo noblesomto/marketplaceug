@@ -70,7 +70,7 @@
           We currently accept the following secure payment options:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
-          <li>Debit/Credit Cards (via Paystack or Flutterwave)</li>
+          <li>Debit/Credit Cards (via Flutterwave)</li>
           <li>Bank Transfers</li>
           <li>Wallet Balance (where applicable)</li>
         </ul>

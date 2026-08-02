@@ -103,8 +103,8 @@
                                                     @else
                                                         <a href="/admin/payout/{{ $row->id ?? '#' }}"
                                                            class="btn btn-sm btn-outline-primary"
-                                                           onclick="return confirm('Are you sure you want to settle this payment via Paystack?');">
-                                                            <i class="bi bi-send"></i> Paystack
+                                                           onclick="return confirm('Are you sure you want to settle this payment via Flutterwave?');">
+                                                            <i class="bi bi-send"></i> Flutterwave
                                                         </a>
                                                         <a href="/admin/confirm-settlement/{{ $row->id ?? '#' }}"
                                                            class="btn btn-sm btn-outline-success"

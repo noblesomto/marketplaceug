@@ -49,7 +49,7 @@
           <li>Debit/Credit Cards (Visa, Mastercard, Verve)</li>
           <li>Bank Transfers</li>
           <li>USSD Codes</li>
-          <li>Third-Party Payment Gateways (Paystack)</li>
+          <li>Third-Party Payment Gateways (Flutterwave)</li>
         </ul>
         <p class="text-gray-600">
           Your payment details are encrypted and securely processed by our licensed payment partners.
