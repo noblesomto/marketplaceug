@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AdSetting;
 use App\Models\Shipping;
 use App\Models\User;
 use App\Models\Admin;
 use Hash;
-use App\Models\State;
-use App\Models\GigLogistic;
 
 class SettingController extends Controller
 {
@@ -54,68 +51,6 @@ class SettingController extends Controller
 
             return redirect()->back()->with('status', ['text'=>'Company  Successfully published','type'=>'success']);
         }
-    }
-
-    public function gig_locations(Request $request)
-    {   
-        $title = "New Location | " . config('global.site_name');
-        $state = State::get();
-        $gig = GigLogistic::with('state')->paginate(10);
-
-        //dd($shippings);
-        if ($request->isMethod('GET')) {
-            return view('admin.settings.gig.locations', compact('title','state','gig'));
-        }
-
-         if ($request->isMethod('POST')) {
-
-            $request->validate([
-                'state' => 'required',
-                'city' => 'required',
-                'address' => 'required',
-
-            ]);
-
-                GigLogistic::create([
-                    'state_id'=> $request->input('state'),
-                    'city'=> $request->input('city'),
-                    'address'=> $request->input('address'),
-                    'slug' => Str::slug($request->input('city')),
-                ]);
-  
-
-            return redirect()->back()->with('status', ['text'=>'Location  Successfully published','type'=>'success']);
-        }
-    }
-
-    public function delete_gig_location($id) 
-    {
-        $gig = GigLogistic::where('id', $id)->first();
-        $gig->delete();
-
-        return redirect()->back()->with('status', ['text'=>'Location was deleted','type'=>'success']);
-
-    }
-
-    public function updateGigLocation(Request $request)
-    {
-        $request->validate([
-            'id' => 'required|exists:gig_logistics,id',
-            'state' => 'required|exists:states,id',
-            'city' => 'required|string|max:255',
-            'address' => 'required|string|max:255'
-        ]);
-
-        $gig = GigLogistic::findOrFail($request->id);
-
-        //dd($gig);
-        $gig->update([
-            'state_id' => $request->state,
-            'city' => $request->city,
-            'address' => $request->address
-        ]);
-
-        return response()->json(['success' => true]);
     }
 
     public function imageSettings(Request $request)

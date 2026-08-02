@@ -272,8 +272,8 @@
 
         @adminRole('super_admin')
         <li>
-          <a href="/settings/gig-locations">
-            <i class="bi bi-circle"></i><span>GIG Locations</span>
+          <a href="/settings/shipping-fees">
+            <i class="bi bi-circle"></i><span>District Shipping Fees</span>
           </a>
         </li>
 

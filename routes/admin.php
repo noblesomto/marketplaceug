@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AdminBoostTypeController;
 use App\Http\Controllers\Admin\AdminBoostDurationController;
 use App\Http\Controllers\Admin\CategoryUIAdminController;
 use App\Http\Controllers\Admin\Admin2FAController;
+use App\Http\Controllers\Admin\DistrictShippingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,9 +158,8 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
             Route::post('/admins/{admin}/assign', [RolePermissionController::class, 'assignRoleToAdmin'])->name('admin.admins.assign');
         });
 
-        Route::match(['GET', 'POST'], '/settings/gig-locations', [SettingController::class, 'gig_locations'])->name('admin.gig.locations');
-        Route::delete('/settings/delete-gig-location/{id}', [SettingController::class, 'delete_gig_location'])->name('admin.delete.gig.location');
-        Route::post('/settings/update-gig-location', [SettingController::class, 'updateGigLocation'])->name('update.gig.location');
+        Route::get('/settings/shipping-fees', [DistrictShippingController::class, 'index'])->name('admin.district-shipping.index');
+        Route::post('/settings/shipping-fees/{lga}', [DistrictShippingController::class, 'update'])->name('admin.district-shipping.update');
 
         Route::prefix('settings/manage-admins')->group(function () {
             Route::get('/', [ManageAdminUsers::class, 'index']);
