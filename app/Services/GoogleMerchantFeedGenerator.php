@@ -98,7 +98,7 @@ class GoogleMerchantFeedGenerator
                 : asset('frontend/images/default.png');
             $item->addChild('image_link', $imageUrl, 'http://base.google.com/ns/1.0');
 
-            $item->addChild('price', number_format($priceValue, 2, '.', '') . ' NGN', 'http://base.google.com/ns/1.0');
+            $item->addChild('price', number_format($priceValue, 2, '.', '') . ' UGX', 'http://base.google.com/ns/1.0');
 
             // All queried ads are unsold — always 'in stock'
             $item->addChild('availability', 'in stock', 'http://base.google.com/ns/1.0');
@@ -134,7 +134,7 @@ class GoogleMerchantFeedGenerator
 
             // Shipping
             $shipping = $item->addChild('shipping', null, 'http://base.google.com/ns/1.0');
-            $shipping->addChild('country', 'NG', 'http://base.google.com/ns/1.0');
+            $shipping->addChild('country', 'UG', 'http://base.google.com/ns/1.0');
 
             $shipment = strtolower(trim($ad->shipment ?? ''));
             if ($shipment === 'pickup') {
@@ -144,7 +144,7 @@ class GoogleMerchantFeedGenerator
             } else {
                 $shipping->addChild('service', 'Standard', 'http://base.google.com/ns/1.0');
             }
-            $shipping->addChild('price', '0.00 NGN', 'http://base.google.com/ns/1.0');
+            $shipping->addChild('price', '0.00 UGX', 'http://base.google.com/ns/1.0');
 
             $included++;
         }

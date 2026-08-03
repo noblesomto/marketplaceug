@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
              RolePermissionSeeder::class,
              BoostTypeSeeder::class,
              BoostDurationSeeder::class,
+             StateSeeder::class,
+             LgaSeeder::class,
          ]);
     }
 }

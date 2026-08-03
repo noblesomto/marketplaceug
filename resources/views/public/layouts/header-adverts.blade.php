@@ -76,7 +76,7 @@
         "offers" => [
             "@type" => "Offer",
             "url" => url()->current(),
-            "priceCurrency" => "NGN",
+            "priceCurrency" => config('currency.code'),
             "price" => $ad->price ?? '0.00',
             "availability" => $ad->sold == 'Yes' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition" => "https://schema.org/" . ($ad->item_condition == 'New' ? 'NewCondition' : 'UsedCondition')
@@ -120,7 +120,7 @@
 
     <!-- Additional Product Meta -->
     <meta property="product:price:amount" content="{{ $ad->price ?? '0.00' }}">
-    <meta property="product:price:currency" content="NGN">
+    <meta property="product:price:currency" content="{{ config('currency.code') }}">
     <meta property="product:availability" content="{{ $ad->sold == 'Yes' ? 'out of stock' : 'in stock' }}">
     @if($ad->item_condition)
     <meta property="product:condition" content="{{ strtolower($ad->item_condition) }}">

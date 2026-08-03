@@ -89,7 +89,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('frontend/images/favicon.png') }}">
 
   <script src='https://www.google.com/recaptcha/api.js' async defer></script>
-  <link rel="canonical" href="https://marketplace.ng/" />
+  <link rel="canonical" href="{{ config('app.url') }}" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
 <script type="text/javascript">
    (function(c,l,a,r,i,t,y){

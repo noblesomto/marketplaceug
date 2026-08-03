@@ -59,7 +59,7 @@
           Join thousands of users already buying and selling on <strong>Marketplace Uganda</strong>. We're not just a marketplace; we're a solution — connecting people, enabling entrepreneurship, and supporting local commerce across Uganda.
         </p>
         <p class="text-gray-600">
-          For questions or support, you can contact us directly at <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:underline">support@marketplace.ng</a> or via our <a href="/contact-us" class="text-blue-600 hover:underline">Contact Us</a> page.
+          For questions or support, you can contact us directly at <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:underline">support@marketplaceug.com</a> or via our <a href="/contact-us" class="text-blue-600 hover:underline">Contact Us</a> page.
         </p>
       </div>
     </section>

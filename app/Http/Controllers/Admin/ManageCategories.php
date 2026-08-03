@@ -328,7 +328,7 @@ class ManageCategories extends Controller
      * path of public_html/ on the server. Locally, falls back to public_path().
      *
      * Server .env example:
-     *   PUBLIC_ASSETS_PATH=/home/admin/domains/marketplace.ng/public_html
+     *   PUBLIC_ASSETS_PATH=/home/admin/domains/marketplaceug.com/public_html
      */
     private static function iconUploadPath(string $filename = ''): string
     {

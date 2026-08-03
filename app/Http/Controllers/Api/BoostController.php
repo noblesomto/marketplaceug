@@ -94,7 +94,7 @@ class BoostController extends Controller
      *       "discount_percentage": "0.00",
      *       "discount_amount": "0.00",
      *       "final_price": "1500.03",
-     *       "currency": "NGN"
+     *       "currency": "UGX"
      *     }
      *   }
      * }
@@ -171,7 +171,7 @@ class BoostController extends Controller
                     'discount_percentage' => number_format($duration->discount_percentage, 2, '.', ''),
                     'discount_amount' => number_format($discountAmount, 2, '.', ''),
                     'final_price' => number_format($finalPrice, 2, '.', ''),
-                    'currency' => 'NGN',
+                    'currency' => config('currency.code'),
                 ],
             ],
         ]);

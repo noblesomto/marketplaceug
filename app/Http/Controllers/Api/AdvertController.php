@@ -385,8 +385,8 @@ class AdvertController extends Controller
      *       "featured": "No",
      *       "sold": "No",
      *       "views": 80,
-     *       "image_thumb": "https://marketplace.ng/...",
-     *       "image_optimized": "https://marketplace.ng/..."
+     *       "image_thumb": "https://marketplaceug.com/...",
+     *       "image_optimized": "https://marketplaceug.com/..."
      *     }
      *   ],
      *   "meta": {
