@@ -100,7 +100,7 @@
         </form>
 
         <div class="mt-2 text-sm">
-            For direct support, email <a class="font-semibold" href="mailto:support@marketplace.ng">support@marketplace.ng</a> or <a href="https://wa.me/2348060615691" target="_blank" class="text-gray-700 hover:text-black rounded-md font-semibold">contact us on WhatsApp</a>
+            For direct support, email <a class="font-semibold" href="mailto:support@marketplaceug.com">support@marketplaceug.com</a> or <a href="https://wa.me/256700000000" target="_blank" class="text-gray-700 hover:text-black rounded-md font-semibold">contact us on WhatsApp</a>
         </div>
     </div>
 </section>
