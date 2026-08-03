@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Sell Online in Nigeria | Sell Phones, Property & Cars Fast | Marketplace.ng</title>
+    <title>Sell Online in Uganda | Sell Phones, Property & Cars Fast | Marketplace Uganda</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css'])
@@ -14,23 +14,23 @@
 
 
      <!-- SEO Meta Tags -->
-    <meta name="description" content="Start selling online in Nigeria for free. Reach millions of buyers instantly. The safest place to sell phones, property, cars, and electronics on Marketplace.ng.">
-    <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
-    <meta name="author" content="Marketplace Naija">
+    <meta name="description" content="Start selling online in Uganda for free. Reach millions of buyers instantly. The safest place to sell phones, property, cars, and electronics on Marketplace Uganda.">
+    <meta name="keywords" content="post free ads Uganda, buy and sell Uganda, online marketplace Uganda, classified ads Uganda, free classifieds Uganda, sell online Uganda, buy cars Uganda, jobs in Uganda, electronics for sale Uganda, property for sale Uganda, Marketplace UG, Marketplace Uganda, local marketplace Uganda, second hand items Uganda">
+    <meta name="author" content="Marketplace Uganda">
 
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Marketplace Naija">
-    <meta property="og:title" content="Sell Online in Nigeria | Sell Phones, Property & Cars Fast | Marketplace.ng">
-    <meta property="og:description" content="Start selling online in Nigeria for free. Reach millions of buyers instantly. The safest place to sell phones, property, cars, and electronics on Marketplace.ng.">
+    <meta property="og:site_name" content="Marketplace Uganda">
+    <meta property="og:title" content="Sell Online in Uganda | Sell Phones, Property & Cars Fast | Marketplace Uganda">
+    <meta property="og:description" content="Start selling online in Uganda for free. Reach millions of buyers instantly. The safest place to sell phones, property, cars, and electronics on Marketplace Uganda.">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_NG">
+    <meta property="og:locale" content="en_UG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Sell Online in Nigeria | Sell Phones, Property & Cars Fast | Marketplace.ng">
+    <meta name="twitter:title" content="Sell Online in Uganda | Sell Phones, Property & Cars Fast | Marketplace Uganda">
     <meta name="twitter:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
 
      <!-- Canonical URL -->
@@ -41,14 +41,14 @@
 $organizationSchema = [
     "@context" => "https://schema.org",
     "@type" => "Organization",
-    "name" => "Marketplace Naija",
-    "alternateName" => "Marketplace Nigeria",
+    "name" => "Marketplace Uganda",
+    "alternateName" => "Marketplace UG",
     "url" => config('app.url'),
     "logo" => asset('frontend/images/Marketplace-Naija.png'),
     "sameAs" => [
-        "https://www.facebook.com/marketplacenaija",
-        "https://twitter.com/marketplacenaija",
-        "https://www.instagram.com/marketplacenaija"
+        "https://www.facebook.com/marketplaceuganda",
+        "https://twitter.com/marketplaceuganda",
+        "https://www.instagram.com/marketplaceuganda"
     ]
 ];
 
@@ -57,7 +57,7 @@ if (config('global.site_phone')) {
         "@type" => "ContactPoint",
         "telephone" => config('global.site_phone'),
         "contactType" => "Customer Service",
-        "areaServed" => "NG",
+        "areaServed" => "UG",
         "availableLanguage" => "English"
     ];
 }
@@ -71,8 +71,8 @@ if (config('global.site_phone')) {
 $websiteSchema = [
     "@context" => "https://schema.org",
     "@type" => "WebSite",
-    "name" => "Marketplace Naija",
-    "alternateName" => "Marketplace Nigeria",
+    "name" => "Marketplace Uganda",
+    "alternateName" => "Marketplace UG",
     "url" => config('app.url'),
     "potentialAction" => [
         "@type" => "SearchAction",

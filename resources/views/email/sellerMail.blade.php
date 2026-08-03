@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace Naija –  Your Item Has Been Sold – Time to Ship!</title>
+    <title>Marketplace Uganda –  Your Item Has Been Sold – Time to Ship!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -157,7 +157,7 @@
         <div class="content">
             <div class="section">
                 <h2>Hello {{ $details['seller'] }},</h2>
-                <p>Great news — a buyer has successfully made payment for your item on <b>Marketplace Naija</b>. Please find the order and shipping details below.</p>
+                <p>Great news — a buyer has successfully made payment for your item on <b>Marketplace Uganda</b>. Please find the order and shipping details below.</p>
             </div>
 
             <div class="section">
@@ -204,7 +204,7 @@ confirms delivery.</p>
                 <p>If you have any questions or need assistance, feel free to contact our support team.</p>
                 <br>
                 <p>Best regards,</p>
-                <p><b>The Marketplace Naija Team</b></p>
+                <p><b>The Marketplace Uganda Team</b></p>
             </div>
         </div>
         

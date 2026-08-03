@@ -28,7 +28,7 @@ class PickupAdMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – Your Order Is Ready For Pickup!',
+            subject: 'Marketplace Uganda – Your Order Is Ready For Pickup!',
         );
     }
 

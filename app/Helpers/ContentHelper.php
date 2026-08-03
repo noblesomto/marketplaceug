@@ -23,10 +23,10 @@ class ContentHelper
         '/\b(call|contact|message|text|dm|inbox)\s+me\b/i'  => 'contact_phrase',
         '/\bphone\b/i'                                       => 'contact_phrase',
         '/\b\w+@\w+\.\w+\b/'                                 => 'email',
-        // Nigerian local format: 0 + 7/8/9 + 9 more digits (11 total), any spacing
-        '/\b0[\s\-.]?[789](?:[\s\-.]?\d){9}\b/'              => 'phone',
-        // Nigerian international format: (+)234 + 10 digits, any spacing
-        '/(?<!\w)\+?234(?:[\s\-.]?\d){10}\b/'                => 'phone',
+        // Ugandan local format: 07 + 8 more digits (10 total), any spacing
+        '/\b0[\s\-.]?7(?:[\s\-.]?\d){8}\b/'                  => 'phone',
+        // Ugandan international format: (+)256 + 9 digits, any spacing
+        '/(?<!\w)\+?256(?:[\s\-.]?\d){9}\b/'                 => 'phone',
         // Fallback: any remaining 11–15 consecutive digits (unformatted foreign numbers, etc.)
         '/\b\d{11,15}\b/'                                     => 'phone',
     ];
@@ -227,8 +227,8 @@ class ContentHelper
         $bannedNames = [
             'market',
             'marketplace',
-            'marketplace naija',
-            'marketplace ng',
+            'marketplace uganda',
+            'marketplace ug',
             'admin',
             'administrator',
             'moderator',

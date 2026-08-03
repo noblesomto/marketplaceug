@@ -9,7 +9,7 @@
     {{-- MOBILE VERSION --}}
     <div class="bg-white pt-3 ml-2">
       <div>
-        <span class="text-base"><strong>Marketplace Naija</strong> - Buy. Sell. Discover Deals.</span>
+        <span class="text-base"><strong>Marketplace Uganda</strong> - Buy. Sell. Discover Deals.</span>
       </div>
     </div>
 

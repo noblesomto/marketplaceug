@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
 
         <p class="text-gray-600 mb-8">
-          Welcome to Marketplace Naija ("Marketplace Naija", "Marketplace.ng", "we", "our", or "us"). This Privacy Policy explains how we collect, use, disclose, and protect personal information when you access or use our website and services at www.marketplace.ng.
+          Welcome to Marketplace Uganda ("Marketplace Uganda", "MarketplaceUG", "we", "our", or "us"). This Privacy Policy explains how we collect, use, disclose, and protect personal information when you access or use our website and services at www.marketplaceug.com.
         </p>
         <p class="text-gray-600 mb-8">
           By using our platform, you agree to the collection and use of information in accordance with this Privacy Policy.
@@ -32,7 +32,7 @@
           <li>Location (city and state)</li>
           <li>Account login credentials</li>
           <li>Payment or bank details (for sellers using Buy Direct)</li>
-          <li>Identity verification information where required (such as ID documents or BVN for fraud prevention)</li>
+          <li>Identity verification information where required (such as ID documents or National ID Number (NIN) for fraud prevention)</li>
         </ul>
 
         <h3 class="text-xl font-medium text-gray-900 mb-4">b. Automatically Collected Information</h3>
@@ -51,12 +51,12 @@
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Messages exchanged between buyers and sellers</li>
           <li>Customer support communications</li>
-          <li>Emails or messages sent to or from Marketplace Naija</li>
+          <li>Emails or messages sent to or from Marketplace Uganda</li>
         </ul>
 
         <h3 class="text-xl font-medium text-gray-900 mb-4">d. Social Login (Google and Facebook)</h3>
         <p class="text-gray-600 mb-4">
-          Marketplace Naija allows users to register and log in using third-party social login providers such as Google and Facebook.
+          Marketplace Uganda allows users to register and log in using third-party social login providers such as Google and Facebook.
         </p>
         <p class="text-gray-600 mb-4">
           When you choose to log in using a social account, we may receive certain information from that provider, depending on your privacy settings and the permissions you grant. This may include:
@@ -68,7 +68,7 @@
           <li>Unique account identifier</li>
         </ul>
         <p class="text-gray-600">
-          We use this information only to create and manage your Marketplace Naija account. We do not post to your social media accounts or access private data without your permission. Authentication through Google or Facebook is subject to the respective provider's privacy policies and terms.
+          We use this information only to create and manage your Marketplace Uganda account. We do not post to your social media accounts or access private data without your permission. Authentication through Google or Facebook is subject to the respective provider's privacy policies and terms.
         </p>
       </div>
     </section>
@@ -97,7 +97,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Buy Direct and Secure Transactions</h2>
         <p class="text-gray-600 mb-6">
-          Marketplace Naija provides a Buy Direct feature to help protect buyers and sellers:
+          Marketplace Uganda provides a Buy Direct feature to help protect buyers and sellers:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>Buyer payments are processed through our platform</li>
@@ -128,7 +128,7 @@
                 <h4 class="text-xl font-semibold text-gray-900 mt-2">
                 Analytics and Session Tools</h4>
             <p>
-                Marketplace Naija uses analytics and behavior analysis tools such as Google Analytics to understand how users interact with our website, improve performance, and enhance user experience.
+                Marketplace Uganda uses analytics and behavior analysis tools such as Google Analytics to understand how users interact with our website, improve performance, and enhance user experience.
             </p>
             <p>
                 These tools may collect information such as pages visited, interactions, device type, browser, and approximate location. Data collected through these tools is processed in aggregated form and used solely for analytical and improvement purposes.
@@ -142,19 +142,19 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Advertising and Google AdSense</h2>
         <p class="text-gray-600 mb-6">
-          We use Google AdSense, a third-party advertising service, to display advertisements on Marketplace.ng.
+          We use Google AdSense, a third-party advertising service, to display advertisements on Marketplace Uganda.
         </p>
         <p class="text-gray-600 mb-6">
           Google and other third-party vendors use cookies, including the DoubleClick cookie, to serve ads to users based on their visits to this and other websites. These cookies enable the display of advertisements that may be relevant to users' interests.
         </p>
         <p class="text-gray-600 mb-6">
-          Marketplace Naija does not control these third-party cookies or how they are used.
+          Marketplace Uganda does not control these third-party cookies or how they are used.
         </p>
         <p class="text-gray-600 mb-6">
           Users may opt out of personalized advertising by visiting Google Ads Settings. Users can also learn how Google manages data in advertising products through Google's advertising privacy resources.
         </p>
         <p class="text-gray-600">
-          Third-party ad servers or networks use technologies such as cookies, JavaScript, or web beacons that are used in their respective ads and links appearing on Marketplace.ng. Marketplace Naija has no control over these cookies.
+          Third-party ad servers or networks use technologies such as cookies, JavaScript, or web beacons that are used in their respective ads and links appearing on Marketplace Uganda. Marketplace Uganda has no control over these cookies.
         </p>
       </div>
     </section>
@@ -182,7 +182,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">7. User-Generated Content and Moderation</h2>
         <p class="text-gray-600 mb-6">
-          Marketplace Naija allows users to post listings and communicate directly. We actively monitor and moderate content to prevent:
+          Marketplace Uganda allows users to post listings and communicate directly. We actively monitor and moderate content to prevent:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Illegal or prohibited items</li>
@@ -234,17 +234,17 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Your Rights</h2>
         <p class="text-gray-600 mb-6">
-          In accordance with the Nigeria Data Protection Act (NDPA), users have the right to:
+          In accordance with the Uganda Data Protection and Privacy Act, 2019 (DPPA), users have the right to:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Access personal data held about them</li>
           <li>Request correction of inaccurate data</li>
           <li>Request deletion of personal data</li>
           <li>Withdraw consent where applicable</li>
-          <li>File a complaint with the Nigeria Data Protection Commission (NDPC)</li>
+          <li>File a complaint with the Personal Data Protection Office (PDPO) of Uganda</li>
         </ul>
         <p class="text-gray-600">
-          Requests may be sent to <a href="mailto:privacy@marketplace.ng" class="text-blue-600 hover:text-blue-800">privacy@marketplace.ng</a>.
+          Requests may be sent to <a href="mailto:privacy@marketplaceug.com" class="text-blue-600 hover:text-blue-800">privacy@marketplaceug.com</a>.
         </p>
       </div>
     </section>
@@ -253,7 +253,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">11. Children's Information</h2>
         <p class="text-gray-600">
-          Marketplace Naija is not intended for individuals under the age of 18. We do not knowingly collect personal information from minors. If such data is discovered, it will be deleted promptly.
+          Marketplace Uganda is not intended for individuals under the age of 18. We do not knowingly collect personal information from minors. If such data is discovered, it will be deleted promptly.
         </p>
       </div>
     </section>
@@ -278,10 +278,10 @@
           If you have any questions about this Privacy Policy or our data practices, please contact us at:
         </p>
         <div class="mt-4 space-y-2">
-          <p class="text-gray-600"><span class="font-medium">Marketplace Naija</span></p>
-          <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplace.ng" class="text-blue-600 hover:text-blue-800">privacy@marketplace.ng</a></p>
-          <p class="text-gray-600"><span class="font-medium">Customer Support:</span> <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a></p>
-          <p class="text-gray-600"><span class="font-medium">Phone:</span> +2349073729787</p>
+          <p class="text-gray-600"><span class="font-medium">Marketplace Uganda</span></p>
+          <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplaceug.com" class="text-blue-600 hover:text-blue-800">privacy@marketplaceug.com</a></p>
+          <p class="text-gray-600"><span class="font-medium">Customer Support:</span> <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:text-blue-800">support@marketplaceug.com</a></p>
+          <p class="text-gray-600"><span class="font-medium">Phone:</span> +256700000000</p>
 
         </div>
       </div>

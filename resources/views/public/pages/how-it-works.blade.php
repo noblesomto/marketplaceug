@@ -7,7 +7,7 @@
   <!-- Hero -->
   <section class="grid md:grid-cols-2 gap-8 items-center mb-16">
     <div>
-      <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">How Marketplace Naija works</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">How Marketplace Uganda works</h2>
       <p class="text-lg text-gray-600 mb-6">A simple, secure marketplace to buy and sell new and used items. Follow these easy steps and start earning or finding great deals today.</p>
       <div class="flex gap-3">
         <a href="/register" class="px-5 py-3 bg-[#B5E93F] hover:bg-[#AFD145] text-[#326916] rounded-md font-semibold transition-colors">Get started</a>
@@ -106,7 +106,7 @@
   <section id="buying" class="mb-16">
     <div class="text-center mb-10">
       <h3 class="text-2xl font-bold mb-2 text-gray-900">Shop safely and securely</h3>
-      <p class="text-gray-500 max-w-2xl mx-auto">How buying works on Marketplace Naija</p>
+      <p class="text-gray-500 max-w-2xl mx-auto">How buying works on Marketplace Uganda</p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-8">
@@ -149,7 +149,7 @@
   <section class="mb-12">
     <div class="max-w-4xl mx-auto bg-gradient-to-r from-[#326916] to-[#AFD145] text-white p-10 rounded-2xl shadow-lg text-center">
       <h4 class="text-2xl font-bold mb-3">Ready to start buying or selling?</h4>
-      <p class="mb-6 max-w-2xl mx-auto">Create your free account and join thousands of other users trading safely on Marketplace Naija.</p>
+      <p class="mb-6 max-w-2xl mx-auto">Create your free account and join thousands of other users trading safely on Marketplace Uganda.</p>
       <a href="/register" class="inline-block bg-white text-[#326916] px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition-colors">Sign up — it's free</a>
     </div>
   </section>

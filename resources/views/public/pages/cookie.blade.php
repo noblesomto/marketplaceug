@@ -9,7 +9,7 @@
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Cookies Policy</h1>
 
             <p class="text-gray-600 mb-8">
-              This Cookies Policy explains how Marketplace Naija ("we", "our", "us") uses cookies and similar tracking technologies when you visit or interact with our website www.marketplace.ng (the "platform").
+              This Cookies Policy explains how Marketplace Uganda ("we", "our", "us") uses cookies and similar tracking technologies when you visit or interact with our website www.marketplaceug.com (the "platform").
             </p>
             <p class="text-gray-600">
               By using our website, you consent to our use of cookies in accordance with this policy.
@@ -47,7 +47,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">3. Types of Cookies We Use</h2>
             <p class="text-gray-600 mb-6">
-              Here's a breakdown of the cookie categories used on Marketplace Naija:
+              Here's a breakdown of the cookie categories used on Marketplace Uganda:
             </p>
 
             <h3 class="text-xl font-medium text-gray-900 mb-4">a. Necessary Cookies</h3>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="ml-3">
                   <p class="text-sm text-yellow-700">
-                    <span class="font-medium">Warning:</span> Disabling certain cookies may affect the functionality of Marketplace Naija, including the ability to log in or complete secure purchases.
+                    <span class="font-medium">Warning:</span> Disabling certain cookies may affect the functionality of Marketplace Uganda, including the ability to log in or complete secure purchases.
                   </p>
                 </div>
               </div>
@@ -188,9 +188,9 @@
               If you have questions or concerns about our use of cookies or your data privacy rights, contact:
             </p>
             <div class="mt-4 space-y-2">
-              <p class="text-gray-600"><span class="font-medium">Marketplace Naija</span></p>
-              <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplace.ng" class="text-blue-600 hover:text-blue-800">privacy@marketplace.ng</a></p>
-              <p class="text-gray-600"><span class="font-medium">Phone:</span> +2349073729787</p>
+              <p class="text-gray-600"><span class="font-medium">Marketplace Uganda</span></p>
+              <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:privacy@marketplaceug.com" class="text-blue-600 hover:text-blue-800">privacy@marketplaceug.com</a></p>
+              <p class="text-gray-600"><span class="font-medium">Phone:</span> +256700000000</p>
 
             </div>
 

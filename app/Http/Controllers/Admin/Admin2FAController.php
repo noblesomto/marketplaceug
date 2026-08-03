@@ -38,7 +38,7 @@ class Admin2FAController extends Controller
         }
 
         $qrCodeSvg = $this->google2fa->getQRCodeInline(
-            config('global.site_name', 'Marketplace Naija'),
+            config('global.site_name', 'Marketplace Uganda'),
             $admin->email,
             $secret,
             250

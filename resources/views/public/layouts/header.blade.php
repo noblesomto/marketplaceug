@@ -11,29 +11,29 @@
 
 @php
     // Fallback values used on all pages that don't pass SEO variables (homepage, ad detail, blog, etc.)
-    $defaultDesc = "Marketplace Naija is Nigeria's trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.";
+    $defaultDesc = "Marketplace Uganda is Uganda's trusted classifieds site. Post free ads to sell online fast or find cars, jobs, electronics, property and more near you.";
     $metaDesc      = $seoDesc      ?? $defaultDesc;
-    $metaTitle     = $seoTitle     ?? $title ?? 'Marketplace Naija';
+    $metaTitle     = $seoTitle     ?? $title ?? 'Marketplace Uganda';
     $metaCanonical = $seoCanonical ?? url()->current();
 @endphp
 
      <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $metaDesc }}">
-    <meta name="keywords" content="post free ads Nigeria, buy and sell Nigeria, online marketplace Nigeria, classified ads Nigeria, free classifieds Nigeria, sell online Nigeria, buy cars Nigeria, jobs in Nigeria, electronics for sale Nigeria, property for sale Nigeria, Marketplace.ng, Marketplace Naija, local marketplace Nigeria, second hand items Nigeria">
-    <meta name="author" content="Marketplace Naija">
+    <meta name="keywords" content="post free ads Uganda, buy and sell Uganda, online marketplace Uganda, classified ads Uganda, free classifieds Uganda, sell online Uganda, buy cars Uganda, jobs in Uganda, electronics for sale Uganda, property for sale Uganda, Marketplace UG, Marketplace Uganda, local marketplace Uganda, second hand items Uganda">
+    <meta name="author" content="Marketplace Uganda">
     <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
 
     <!-- Canonical URL — always points to the clean URL (no query params/page numbers) -->
     <link rel="canonical" href="{{ $metaCanonical }}" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Marketplace Naija">
+    <meta property="og:site_name" content="Marketplace Uganda">
     <meta property="og:title" content="{{ $metaTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ $metaCanonical }}">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_NG">
+    <meta property="og:locale" content="en_UG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
@@ -46,14 +46,14 @@
 $organizationSchema = [
     "@context" => "https://schema.org",
     "@type" => "Organization",
-    "name" => "Marketplace Naija",
-    "alternateName" => "Marketplace Nigeria",
+    "name" => "Marketplace Uganda",
+    "alternateName" => "Marketplace UG",
     "url" => config('app.url'),
     "logo" => asset('frontend/images/Marketplace-Naija.png'),
     "sameAs" => [
-        "https://www.facebook.com/marketplacenaija",
-        "https://twitter.com/marketplacenaija",
-        "https://www.instagram.com/marketplacenaija"
+        "https://www.facebook.com/marketplaceuganda",
+        "https://twitter.com/marketplaceuganda",
+        "https://www.instagram.com/marketplaceuganda"
     ]
 ];
 
@@ -62,7 +62,7 @@ if (config('global.site_phone')) {
         "@type" => "ContactPoint",
         "telephone" => config('global.site_phone'),
         "contactType" => "Customer Service",
-        "areaServed" => "NG",
+        "areaServed" => "UG",
         "availableLanguage" => "English"
     ];
 }
@@ -76,8 +76,8 @@ if (config('global.site_phone')) {
 $websiteSchema = [
     "@context" => "https://schema.org",
     "@type" => "WebSite",
-    "name" => "Marketplace Naija",
-    "alternateName" => "Marketplace Nigeria",
+    "name" => "Marketplace Uganda",
+    "alternateName" => "Marketplace UG",
     "url" => config('app.url'),
     "potentialAction" => [
         "@type" => "SearchAction",

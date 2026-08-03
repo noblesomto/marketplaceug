@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{{ $title ?? ($blog->title ?? 'Marketplace Naija') }}</title>
+    <title>{{ $title ?? ($blog->title ?? 'Marketplace Uganda') }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css','resources/js/app.js'])
@@ -13,8 +13,8 @@
 
     <!-- SEO Meta -->
     <meta name="description" content="{{ $blog->meta_description ?? Str::limit(strip_tags($blog->content ?? ''), 160) }}">
-    <meta name="keywords" content="{{ $blog->keywords ?? '' }}, Marketplace Naija, Buy & Sell in Nigeria, Post free ads in Nigeria, Online marketplace Nigeria">
-    <meta name="author" content="Marketplace Naija">
+    <meta name="keywords" content="{{ $blog->keywords ?? '' }}, Marketplace Uganda, Buy & Sell in Uganda, Post free ads in Uganda, Online marketplace Uganda">
+    <meta name="author" content="Marketplace Uganda">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
@@ -42,16 +42,16 @@
     $schema = [
         "@context" => "https://schema.org",
         "@type" => "Article",
-        "headline" => $blog->title ?? 'Marketplace Naija',
+        "headline" => $blog->title ?? 'Marketplace Uganda',
         "image" => $images,
         "description" => Str::limit(strip_tags($blog->content ?? ''), 200),
         "author" => [
             "@type" => "Organization",
-            "name" => "Marketplace Naija"
+            "name" => "Marketplace Uganda"
         ],
         "publisher" => [
             "@type" => "Organization",
-            "name" => "Marketplace Naija",
+            "name" => "Marketplace Uganda",
             "logo" => [
                 "@type" => "ImageObject",
                 "url" => asset('frontend/images/Marketplace-Naija.png')
@@ -66,8 +66,8 @@
 
 
     <!-- Open Graph -->
-    <meta property="og:site_name" content="Marketplace Naija">
-    <meta property="og:title" content="{{ ($blog->title ?? 'Marketplace Naija') . ' | Marketplace Naija' }}">
+    <meta property="og:site_name" content="Marketplace Uganda">
+    <meta property="og:title" content="{{ ($blog->title ?? 'Marketplace Uganda') . ' | Marketplace Uganda' }}">
     <meta property="og:description" content="{{ $blog->meta_description ?? Str::limit(strip_tags($blog->contnet ?? ''), 160) }}">
     <meta property="og:image" content="{{ $featuredImage }}">
     <meta property="og:url" content="{{ url()->current() }}">
@@ -76,7 +76,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ ($blog->title ?? $blog->title ?? 'Marketplace Naija') . ' | Marketplace Naija' }}">
+    <meta name="twitter:title" content="{{ ($blog->title ?? $blog->title ?? 'Marketplace Uganda') . ' | Marketplace Uganda' }}">
     <meta name="twitter:description" content="{{ $blog->meta_description ?? $blog->meta_description ?? Str::limit(strip_tags($blog->content ?? $blog->content ?? ''), 160) }}">
     <meta name="twitter:image" content="{{ $featuredImage }}">
 

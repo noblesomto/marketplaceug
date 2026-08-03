@@ -7,8 +7,8 @@
         // H1). $subcat->meta_title is a static per-subcategory fallback only —
         // using it unconditionally here made every context (location, brand, etc.)
         // under this subcategory show the same bare title.
-        $metaTitle = $seoTitle ?? $title ?? ($subcat->meta_title ?? $subcat->sub_category . ' | Marketplace Naija');
-        $metaDesc  = $seoDesc  ?? ($subcat->meta_description ?? 'Buy and sell in ' . $subcat->sub_category . ' on Marketplace Naija – Nigeria’s trusted online marketplace. Post free ads and trade safely today.');
+        $metaTitle = $seoTitle ?? $title ?? ($subcat->meta_title ?? $subcat->sub_category . ' | Marketplace Uganda');
+        $metaDesc  = $seoDesc  ?? ($subcat->meta_description ?? 'Buy and sell in ' . $subcat->sub_category . ' on Marketplace Uganda – Uganda’s trusted online marketplace. Post free ads and trade safely today.');
     @endphp
     <title>{{ $metaTitle }}</title>
 
@@ -19,16 +19,16 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $metaDesc }}">
 
-    <meta name="keywords" content="{{ $subcat->keywords ?? 'Marketplace Naija, Buy & Sell Nigeria, ' . $subcat->sub_category . ', Nigeria classifieds, Online marketplace Nigeria' }}">
+    <meta name="keywords" content="{{ $subcat->keywords ?? 'Marketplace Uganda, Buy & Sell Uganda, ' . $subcat->sub_category . ', Uganda classifieds, Online marketplace Uganda' }}">
 
-    <meta name="author" content="Marketplace Naija">
+    <meta name="author" content="Marketplace Uganda">
     <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Marketplace Naija">
+    <meta property="og:site_name" content="Marketplace Uganda">
     <meta property="og:title" content="{{ $metaTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">

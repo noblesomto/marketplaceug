@@ -156,10 +156,10 @@
             <div class="section">
                 <p>The funds have been disbursed to your registered payout method. If you do not receive the payment within 1–2 working days, please contact our support team.</p>
                 <br>
-                <p>Thank you for selling with <b>Marketplace Naija</b>.</p>
+                <p>Thank you for selling with <b>Marketplace Uganda</b>.</p>
                 <br>
                 <p>Best regards,</p>
-                <p><b>The Marketplace Naija Team</b></p>
+                <p><b>The Marketplace Uganda Team</b></p>
             </div>
 
         </div>

@@ -12,19 +12,19 @@
             <p>Last Updated: January 4, 2026</p>
         </div>
         <p class="text-gray-600 mb-8">
-          At Marketplace Naija, we believe in transparency, fairness, and trust when it comes to payments and refunds. This Payment & Refund Policy explains how charges are processed on our platform, what services are billable, and under what conditions users may be eligible for refunds.
+          At Marketplace Uganda, we believe in transparency, fairness, and trust when it comes to payments and refunds. This Payment & Refund Policy explains how charges are processed on our platform, what services are billable, and under what conditions users may be eligible for refunds.
         </p>
         <p class="text-gray-600">
-          By using any paid service on www.marketplace.ng, you agree to the terms outlined in this policy.
+          By using any paid service on www.marketplaceug.com, you agree to the terms outlined in this policy.
         </p>
       </div>
     </section>
 
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Paid Services on Marketplace Naija</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Paid Services on Marketplace Uganda</h2>
         <p class="text-gray-600 mb-4">
-          Marketplace Naija offers both free and paid features for users. Paid services may include:
+          Marketplace Uganda offers both free and paid features for users. Paid services may include:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Boosted Listings (ad visibility promotion)</li>
@@ -46,7 +46,7 @@
           We accept the following payment methods:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
-          <li>Debit/Credit Cards (Visa, Mastercard, Verve)</li>
+          <li>Debit/Credit Cards (Visa, Mastercard) and Mobile Money (MTN, Airtel)</li>
           <li>Bank Transfers</li>
           <li>USSD Codes</li>
           <li>Third-Party Payment Gateways (Flutterwave)</li>
@@ -79,7 +79,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Buy Direct Payment Terms</h2>
         <p class="text-gray-600 mb-6">
-          The Buy Direct feature allows buyers to make safe purchases using Marketplace Naija's secure escrow service.
+          The Buy Direct feature allows buyers to make safe purchases using Marketplace Uganda's secure escrow service.
         </p>
 
         <h3 class="text-xl font-medium text-gray-900 mb-4">For Buyers:</h3>
@@ -170,13 +170,13 @@
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a>
+            <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:text-blue-800">support@marketplaceug.com</a>
           </p>
           <p class="text-gray-600 flex items-center">
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            +2348063229879
+            +256700000001
           </p>
           <p class="text-gray-600 flex items-center">
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,7 +205,7 @@
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Currency & Tax</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>All charges are in Ugandan Shillings (UGX)</li>
-          <li>Users outside Nigeria may incur exchange or processing fees based on their bank or card provider.</li>
+          <li>Users outside Uganda may incur exchange or processing fees based on their bank or card provider.</li>
         </ul>
       </div>
     </section>
@@ -226,19 +226,19 @@
           If you have any concerns about a payment, refund eligibility, or how our billing system works, don't hesitate to reach out.
         </p>
         <div class="bg-blue-50 rounded-lg p-6 inline-block text-left">
-          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Naija – Billing & Payments Support</p>
+          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Uganda – Billing & Payments Support</p>
           <div class="space-y-3">
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
               </svg>
-              <a href="https://www.marketplace.ng" class="text-blue-600 hover:text-blue-800">www.marketplace.ng</a>
+              <a href="https://www.marketplaceug.com" class="text-blue-600 hover:text-blue-800">www.marketplaceug.com</a>
             </p>
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a>
+              <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:text-blue-800">support@marketplaceug.com</a>
             </p>
           </div>
         </div>

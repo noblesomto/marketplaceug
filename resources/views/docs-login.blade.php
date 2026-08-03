@@ -138,7 +138,7 @@
     <div class="container">
         <div class="logo">
             <h1>🔒 API Documentation</h1>
-            <p>Marketplace Nigeria</p>
+            <p>Marketplace Uganda</p>
         </div>
 
         @if(isset($message))

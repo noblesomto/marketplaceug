@@ -230,7 +230,7 @@
     {{-- ── 6. Help note ── --}}
     <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-4 text-xs text-blue-800 leading-relaxed">
         <p><i class="bi bi-shield-lock-fill mr-1"></i>
-        <strong>Secured by Marketplace Naija.</strong> If you have any questions or require assistance,
+        <strong>Secured by Marketplace Uganda.</strong> If you have any questions or require assistance,
         please <a href="/contact-us" class="font-semibold underline">contact our support team</a>.</p>
     </div>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace Naija – Order Confirmation & Purchase Details</title>
+    <title>Marketplace Uganda – Order Confirmation & Purchase Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -142,7 +142,7 @@
 
             <div class="section">
                 <p>Hello {{ $details['buyer'] }},</p>
-                <p>Thank you for your purchase on Marketplace Naija. Below are the details of your order:</p>
+                <p>Thank you for your purchase on Marketplace Uganda. Below are the details of your order:</p>
             </div>
 
             <div class="section">
@@ -164,11 +164,11 @@
             <div class="section">
                 <p>If you have any questions or require assistance, please don't hesitate to contact our support team.</p>
                 <br>
-                <p>Thank you for choosing Marketplace Naija.</p>
+                <p>Thank you for choosing Marketplace Uganda.</p>
                 <p>We sincerely appreciate your trust in our platform.</p>
                 <br>
                 <p>Best regards,</p>
-                <p><b>The Marketplace Naija Team</b></p>
+                <p><b>The Marketplace Uganda Team</b></p>
             </div>
         </div>
 

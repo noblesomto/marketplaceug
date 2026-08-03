@@ -25,7 +25,7 @@
                 <!-- Account Type Selection -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-3 text-center">
-                        How would you like to use Marketplace Naija?
+                        How would you like to use Marketplace Uganda?
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Private Option -->
@@ -162,7 +162,7 @@
                     </button>
                 </div>
                 <div class="px-4 py-5 sm:p-6">
-                    <p class="text-sm text-gray-600 mb-6">In Marketplace Naija, we separate private from business: private and commercial users must meet different requirements.</p>
+                    <p class="text-sm text-gray-600 mb-6">In Marketplace Uganda, we separate private from business: private and commercial users must meet different requirements.</p>
                     <div class="space-y-2">
                         <div class="border rounded-lg overflow-hidden">
                             <button class="w-full px-4 py-3 bg-white hover:bg-gray-50 text-left flex justify-between items-center transition-colors" onclick="toggleAccordion('accordion1')">
@@ -173,7 +173,7 @@
                             </button>
                             <div id="accordion1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50">
                                 <div class="px-4 py-3 text-sm text-gray-600">
-                                    <p class="mb-2">You are trading commercially on Marketplace Naija if you:</p>
+                                    <p class="mb-2">You are trading commercially on Marketplace Uganda if you:</p>
                                     <ul class="list-disc pl-5 space-y-1">
                                         <li>Buy or create items to sell</li>
                                         <li>Offer services</li>
@@ -193,7 +193,7 @@
                             </button>
                             <div id="accordion2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50">
                                 <div class="px-4 py-3 text-sm text-gray-600">
-                                    <p>Posting Ad on Marketplace Naija is basically free. Both commercial and private users can place ads free of charge.</p>
+                                    <p>Posting Ad on Marketplace Uganda is basically free. Both commercial and private users can place ads free of charge.</p>
                                 </div>
                             </div>
                         </div>

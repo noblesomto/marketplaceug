@@ -19,11 +19,11 @@ trait GeneratesSeoMeta
      * @param  string $name      Display name (category, subcategory, or "Brand Subcat")
      * @param  string $group     seo_group value from the categories table
      * @param  string $canonical Clean URL without query parameters or location prefix
-     * @param  string $location  Filtered location — defaults to "Nigeria"
+     * @param  string $location  Filtered location — defaults to "Uganda"
      * @param  int    $count     Active listing count, used in on-page copy
      * @return array{seoTitle: string, seoDesc: string, seoCanonical: string, seoH1: string, seoIntro: string, seoFaqs: array, seoTips: array}
      */
-    private function buildSeoMeta(string $name, string $group, string $canonical, string $location = 'Nigeria', int $count = 0): array
+    private function buildSeoMeta(string $name, string $group, string $canonical, string $location = 'Uganda', int $count = 0): array
     {
         $site = config('global.site_name');
 
@@ -107,7 +107,7 @@ trait GeneratesSeoMeta
         $displayLocation = $this->resolveLocationDisplayName($locationSlug);
 
         $title = "Buy and Sell in {$displayLocation} | {$site}";
-        $desc  = "Discover {$count} active ads for cars, phones, property, jobs and more in {$displayLocation} on {$site} — Nigeria's trusted classifieds platform. Post free ads and connect with sellers near you.";
+        $desc  = "Discover {$count} active ads for cars, phones, property, jobs and more in {$displayLocation} on {$site} — Uganda's trusted classifieds platform. Post free ads and connect with sellers near you.";
         $h1    = "Ads For Sale in {$displayLocation}";
         $intro = "Browse {$count} active listings from sellers in {$displayLocation} on {$site}. Find great deals on vehicles, phones, electronics, property, and more — all in one place.";
 

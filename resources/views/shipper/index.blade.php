@@ -5,7 +5,7 @@
     {{-- Header --}}
     <header class="bg-white border-b border-gray-200 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Naija"></a>
+            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Uganda"></a>
             <a href="/shipper/logout"
                class="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1">
                 <i class="bi bi-box-arrow-right"></i> Log Out

@@ -80,7 +80,7 @@ class AdvertStatsController extends Controller
     /**
      * Get adverts grouped by state
      *
-     * Returns the count of active adverts grouped by Nigerian states.
+     * Returns the count of active adverts grouped by Ugandan states.
      * Results are ordered by state with the most adverts first.
      *
      * @authenticated

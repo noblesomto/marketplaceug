@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Terms of Use</h1>
 
         <p class="text-gray-600 mb-8">
-          Welcome to Marketplace Naija ("we", "our", or "the Platform"). These Terms of Use govern your access to and use of our website, services, features, and tools located at www.marketplace.ng. By accessing or using our platform, you agree to be bound by these terms. If you do not agree, please do not use our services.
+          Welcome to Marketplace Uganda ("we", "our", or "the Platform"). These Terms of Use govern your access to and use of our website, services, features, and tools located at www.marketplaceug.com. By accessing or using our platform, you agree to be bound by these terms. If you do not agree, please do not use our services.
         </p>
       </div>
     </section>
@@ -18,20 +18,20 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Acceptance of Terms</h2>
         <p class="text-gray-600">
-          By creating an account, browsing listings, posting ads, or using any part of Marketplace Naija, you agree to comply with and be legally bound by these Terms of Use and our Privacy Policy, Cookie Policy, and other related policies. These terms apply to all users, whether registered or not.
+          By creating an account, browsing listings, posting ads, or using any part of Marketplace Uganda, you agree to comply with and be legally bound by these Terms of Use and our Privacy Policy, Cookie Policy, and other related policies. These terms apply to all users, whether registered or not.
         </p>
       </div>
     </section>
 
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. About Marketplace Naija</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">2. About Marketplace Uganda</h2>
         <div class="text-gray-600 space-y-2">
             <p class="">
-              Marketplace Naija is a Nigerian online classifieds platform that allows users to buy and sell products or services through postings, promotions, and direct communication. The platform connects buyers and sellers but does not own, buy, or sell the items listed unless explicitly stated.
+              Marketplace Uganda is a Ugandan online classifieds platform that allows users to buy and sell products or services through postings, promotions, and direct communication. The platform connects buyers and sellers but does not own, buy, or sell the items listed unless explicitly stated.
             </p>
             <p>
-                Marketplace Naija may also display job and service listings submitted by users. For job listings, Marketplace Naija acts solely as a classified advertising platform and is not an employer, recruiter, or hiring agency, and does not verify, screen, or guarantee the legitimacy of job offers, employers, or applicants.
+                Marketplace Uganda may also display job and service listings submitted by users. For job listings, Marketplace Uganda acts solely as a classified advertising platform and is not an employer, recruiter, or hiring agency, and does not verify, screen, or guarantee the legitimacy of job offers, employers, or applicants.
             </p>
         </div>
       </div>
@@ -46,7 +46,7 @@
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Be at least 18 years old</li>
           <li>Have the legal capacity to enter a binding contract</li>
-          <li>Use the platform in accordance with Nigerian law and these Terms</li>
+          <li>Use the platform in accordance with Ugandan law and these Terms</li>
         </ul>
         <p class="text-gray-600">
           We may suspend or terminate accounts that violate these criteria.
@@ -85,7 +85,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. User Responsibilities</h2>
         <p class="text-gray-600 mb-4">
-          When using Marketplace Naija, you agree to:
+          When using Marketplace Uganda, you agree to:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>Post only lawful, accurate, and non-misleading content</li>
@@ -110,11 +110,11 @@
           <li>Stolen property or unlawfully acquired items</li>
           <li>Adult content, pornography, or sexually explicit material</li>
           <li>Services promoting scams, betting, pyramid schemes, or money doubling</li>
-          <li>Anything that violates Nigerian law or community standards</li>
+          <li>Anything that violates Ugandan law or community standards</li>
           <li>Fraudulent job postings, fake recruitment offers, or requests for upfront fees disguised as employment opportunities are prohibited.</li>
         </ul>
         <p class="text-gray-600">
-          Marketplace Naija reserves the right to remove any content that violates these rules, even without notice.
+          Marketplace Uganda reserves the right to remove any content that violates these rules, even without notice.
         </p>
       </div>
     </section>
@@ -141,7 +141,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Buy Direct: Payment & Delivery</h2>
         <p class="text-gray-600 mb-6">
-          The Buy Direct feature is a secure transaction method offered by Marketplace Naija.
+          The Buy Direct feature is a secure transaction method offered by Marketplace Uganda.
         </p>
 
         <h3 class="text-xl font-medium text-gray-900 mb-4">a. How it works:</h3>
@@ -149,7 +149,7 @@
           <li>Buyer pays through the platform</li>
           <li>Seller ships the item within 3 working days through our logistics partner</li>
           <li>Buyer confirms receipt</li>
-          <li>Marketplace Naija releases the funds to the seller</li>
+          <li>Marketplace Uganda releases the funds to the seller</li>
         </ol>
 
         <h3 class="text-xl font-medium text-gray-900 mb-4">b. Important Conditions:</h3>
@@ -160,7 +160,7 @@
           <li>Both parties must cooperate in case of disputes</li>
         </ul>
         <p class="text-gray-600 mt-6">
-          Marketplace Naija is not liable for delays, damaged goods, or misrepresentation unless the transaction was fully handled through Buy Direct which offers 100% buyer protection.
+          Marketplace Uganda is not liable for delays, damaged goods, or misrepresentation unless the transaction was fully handled through Buy Direct which offers 100% buyer protection.
         </p>
       </div>
     </section>
@@ -174,7 +174,7 @@
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>All payments are final once the ad goes live</li>
           <li>Refunds are only issued for verified technical errors (see Billing Policy)</li>
-          <li>Promotional content must comply with all ad rules and Nigerian law</li>
+          <li>Promotional content must comply with all ad rules and Ugandan law</li>
         </ul>
       </div>
     </section>
@@ -183,7 +183,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Intellectual Property</h2>
         <p class="text-gray-600 mb-6">
-          All content and materials on Marketplace Naija, including the logo, design, code, and interface, are protected by copyright and intellectual property laws.
+          All content and materials on Marketplace Uganda, including the logo, design, code, and interface, are protected by copyright and intellectual property laws.
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>You may not copy, distribute, or use our content without written permission</li>
@@ -199,7 +199,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">11. Privacy & Data Protection</h2>
         <p class="text-gray-600">
-          Your use of the platform is also governed by our Privacy Policy, which explains how we collect, store, and use your data in compliance with the Nigeria Data Protection Act (NDPA) 2023.
+          Your use of the platform is also governed by our Privacy Policy, which explains how we collect, store, and use your data in compliance with the Uganda Data Protection and Privacy Act, 2019 (DPPA).
         </p>
       </div>
     </section>
@@ -209,7 +209,7 @@
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">12. Disclaimers</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>We do not guarantee the accuracy, quality, legality, or safety of items posted by users.</li>
-          <li>Marketplace Naija is a platform provider, not a party to transactions (unless otherwise stated).</li>
+          <li>Marketplace Uganda is a platform provider, not a party to transactions (unless otherwise stated).</li>
           <li>We are not responsible for loss, theft, injury, or damages arising from in-person meetups or third-party services.</li>
           <li>Use the platform at your own risk and exercise reasonable caution.</li>
         </ul>
@@ -220,7 +220,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">13. Limitation of Liability</h2>
         <p class="text-gray-600 mb-6">
-          To the fullest extent permitted by law, Marketplace Naija shall not be liable for:
+          To the fullest extent permitted by law, Marketplace Uganda shall not be liable for:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2">
           <li>Any indirect, incidental, or consequential damages</li>
@@ -238,7 +238,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">14. Indemnification</h2>
         <p class="text-gray-600">
-          You agree to indemnify and hold harmless Marketplace Naija, its directors, employees, and partners from any claims, losses, or legal fees arising out of:
+          You agree to indemnify and hold harmless Marketplace Uganda, its directors, employees, and partners from any claims, losses, or legal fees arising out of:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-4">
           <li>Your use of the platform</li>
@@ -252,10 +252,10 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">15. Governing Law & Dispute Resolution</h2>
         <p class="text-gray-600 mb-6">
-          These Terms are governed by the laws of the Federal Republic of Nigeria.
+          These Terms are governed by the laws of the Republic of Uganda.
         </p>
         <p class="text-gray-600">
-          Any disputes shall be first resolved informally through our support team. If unresolved, they may be escalated to a competent court of jurisdiction in Nigeria, or resolved through arbitration if both parties agree.
+          Any disputes shall be first resolved informally through our support team. If unresolved, they may be escalated to a competent court of jurisdiction in Uganda, or resolved through arbitration if both parties agree.
         </p>
       </div>
     </section>
@@ -264,7 +264,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">16. Changes to Terms</h2>
         <p class="text-gray-600 mb-6">
-          Marketplace Naija reserves the right to modify these Terms at any time. When we do:
+          Marketplace Uganda reserves the right to modify these Terms at any time. When we do:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>The "Last Updated" date will be changed</li>
@@ -286,20 +286,20 @@
           If you have questions, concerns, or feedback regarding these Terms, please contact:
         </p>
         <div class="bg-gray-100 rounded-lg p-6">
-          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Naija – Legal & Compliance</p>
+          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Uganda – Legal & Compliance</p>
           <div class="space-y-3">
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <a href="mailto:legal@marketplace.ng" class="text-blue-600 hover:text-blue-800">legal@marketplace.ng</a>
+              <a href="mailto:legal@marketplaceug.com" class="text-blue-600 hover:text-blue-800">legal@marketplaceug.com</a>
             </p>
 
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              +2349073729787
+              +256700000000
             </p>
           </div>
         </div>

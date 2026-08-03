@@ -9,19 +9,19 @@
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Copyright Policy</h1>
 
             <p class="text-gray-600 mb-8">
-              Marketplace Naija ("we", "our", or "the Platform") respects the intellectual property rights of others and expects all users to do the same. This Copyright Policy outlines how we handle copyrighted materials, user-generated content, and copyright infringement claims.
+              Marketplace Uganda ("we", "our", or "the Platform") respects the intellectual property rights of others and expects all users to do the same. This Copyright Policy outlines how we handle copyrighted materials, user-generated content, and copyright infringement claims.
             </p>
             <p class="text-gray-600">
-              By using our services at www.marketplace.ng, you agree to comply with this policy.
+              By using our services at www.marketplaceug.com, you agree to comply with this policy.
             </p>
           </div>
         </section>
 
         <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Ownership of Content on Marketplace Naija</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Ownership of Content on Marketplace Uganda</h2>
             <p class="text-gray-600 mb-6">
-              All content on the platform — including, but not limited to, website design, logos, icons, graphics, text, layout, and software — is the intellectual property of Marketplace Naija or its licensors and is protected by Nigeria's Copyright Act (Cap C28 LFN 2004, as amended) and applicable international copyright treaties.
+              All content on the platform — including, but not limited to, website design, logos, icons, graphics, text, layout, and software — is the intellectual property of Marketplace Uganda or its licensors and is protected by Uganda's Copyright and Neighbouring Rights Act, 2006 (as amended) and applicable international copyright treaties.
             </p>
             <p class="text-gray-600">
               You may not copy, reproduce, republish, upload, post, transmit, distribute, or modify any part of the website without our prior written consent.
@@ -42,14 +42,14 @@
               <li>Videos or audio related to listings</li>
             </ul>
             <p class="text-gray-600 mb-4">
-              By uploading content to Marketplace Naija, you affirm that:
+              By uploading content to Marketplace Uganda, you affirm that:
             </p>
             <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
               <li>You own the rights to the content OR</li>
               <li>You have received explicit permission from the rightful owner to use the content for the purposes of listing</li>
             </ul>
             <p class="text-gray-600">
-              You grant Marketplace Naija a non-exclusive, worldwide, royalty-free license to use, host, display, and distribute your content in connection with the operation and promotion of the platform.
+              You grant Marketplace Uganda a non-exclusive, worldwide, royalty-free license to use, host, display, and distribute your content in connection with the operation and promotion of the platform.
             </p>
           </div>
         </section>
@@ -76,7 +76,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">4. Reporting Copyright Infringement</h2>
             <p class="text-gray-600 mb-6">
-              If you believe that content on Marketplace Naija infringes on your copyright or intellectual property rights, you may submit a Copyright Infringement Notification by emailing: <a href="mailto:copyright@marketplace.ng" class="text-blue-600 hover:text-blue-800">copyright@marketplace.ng</a>
+              If you believe that content on Marketplace Uganda infringes on your copyright or intellectual property rights, you may submit a Copyright Infringement Notification by emailing: <a href="mailto:copyright@marketplaceug.com" class="text-blue-600 hover:text-blue-800">copyright@marketplaceug.com</a>
             </p>
             <p class="text-gray-600 mb-4">
               Your notification should include:
@@ -104,7 +104,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Counter-Notification Process</h2>
             <p class="text-gray-600 mb-6">
-              If your content was removed and you believe it was a mistake or misidentification, you may submit a counter-notification to: <a href="mailto:copyright@marketplace.ng" class="text-blue-600 hover:text-blue-800">copyright@marketplace.ng</a>
+              If your content was removed and you believe it was a mistake or misidentification, you may submit a counter-notification to: <a href="mailto:copyright@marketplaceug.com" class="text-blue-600 hover:text-blue-800">copyright@marketplaceug.com</a>
             </p>
             <p class="text-gray-600 mb-4">
               Your counter-notification must include:
@@ -126,7 +126,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">6. Repeat Infringers Policy</h2>
             <p class="text-gray-600 mb-6">
-              Marketplace Naija maintains a zero-tolerance policy toward repeat copyright violators. Accounts that repeatedly post infringing material may be:
+              Marketplace Uganda maintains a zero-tolerance policy toward repeat copyright violators. Accounts that repeatedly post infringing material may be:
             </p>
             <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
               <li>Temporarily suspended</li>
@@ -153,17 +153,17 @@
 
         <section class="py-2 px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Use of Marketplace Naija Content</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">8. Use of Marketplace Uganda Content</h2>
             <p class="text-gray-600 mb-6">
               You may not:
             </p>
             <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
               <li>Copy listings or scrape data from the platform</li>
-              <li>Use bots to replicate or repost Marketplace Naija content</li>
+              <li>Use bots to replicate or repost Marketplace Uganda content</li>
               <li>Reproduce our logos, interface, or any part of the website without written permission</li>
             </ul>
             <p class="text-gray-600">
-              For partnerships, API use, or brand licensing, contact: <a href="mailto:legal@marketplace.ng" class="text-blue-600 hover:text-blue-800">legal@marketplace.ng</a>
+              For partnerships, API use, or brand licensing, contact: <a href="mailto:legal@marketplaceug.com" class="text-blue-600 hover:text-blue-800">legal@marketplaceug.com</a>
             </p>
           </div>
         </section>
@@ -172,7 +172,7 @@
           <div class="max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">9. Modifications to This Policy</h2>
             <p class="text-gray-600">
-              Marketplace Naija reserves the right to modify this Copyright Policy at any time. All changes will be posted on this page with a revised "Last Updated" date. Continued use of the platform constitutes acceptance of the revised policy.
+              Marketplace Uganda reserves the right to modify this Copyright Policy at any time. All changes will be posted on this page with a revised "Last Updated" date. Continued use of the platform constitutes acceptance of the revised policy.
             </p>
           </div>
           <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
@@ -187,20 +187,20 @@
               For all copyright-related concerns, contact:
             </p>
             <div class="bg-gray-100 rounded-lg p-6">
-              <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Naija – Legal & Compliance Team</p>
+              <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Uganda – Legal & Compliance Team</p>
               <div class="space-y-3">
                 <p class="text-gray-600 flex items-center">
                   <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  <a href="mailto:copyright@marketplace.ng" class="text-blue-600 hover:text-blue-800">copyright@marketplace.ng</a>
+                  <a href="mailto:copyright@marketplaceug.com" class="text-blue-600 hover:text-blue-800">copyright@marketplaceug.com</a>
                 </p>
 
                 <p class="text-gray-600 flex items-center">
                   <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  +2349073729787
+                  +256700000000
                 </p>
               </div>
             </div>

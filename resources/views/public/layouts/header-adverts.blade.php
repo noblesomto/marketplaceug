@@ -48,7 +48,7 @@
     }
 
     // Clean title
-    $cleanTitle = cleanMetaText($ad->ad_title ?? 'Marketplace Naija');
+    $cleanTitle = cleanMetaText($ad->ad_title ?? 'Marketplace Uganda');
 
     // Clean description (meta_description takes priority, falls back to description)
     $rawDescription = $ad->meta_description ?? $ad->description ?? '';
@@ -71,7 +71,7 @@
         "description" => Str::limit(cleanMetaText($rawDescription), 200),
         "brand" => [
             "@type" => "Brand",
-            "name" => $ad->brands->brand ?? "Marketplace Naija"
+            "name" => $ad->brands->brand ?? "Marketplace Uganda"
         ],
         "offers" => [
             "@type" => "Offer",
@@ -85,7 +85,7 @@
 @endphp
 
 <head>
-    <title>{{ $cleanTitle }} | Marketplace Naija</title>
+    <title>{{ $cleanTitle }} | Marketplace Uganda</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css','resources/js/app.js'])
@@ -93,14 +93,14 @@
     <!-- SEO Meta -->
     <meta name="description" content="{{ $cleanDescription }}">
     <meta name="keywords" content="{{ $cleanKeywords }}">
-    <meta name="author" content="Marketplace Naija">
+    <meta name="author" content="Marketplace Uganda">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:site_name" content="Marketplace Naija">
-    <meta property="og:title" content="{{ $cleanTitle }} | Marketplace Naija">
+    <meta property="og:site_name" content="Marketplace Uganda">
+    <meta property="og:title" content="{{ $cleanTitle }} | Marketplace Uganda">
     <meta property="og:description" content="{{ $cleanDescription }}">
     <meta property="og:image" content="{{ $featuredImage }}">
     <meta property="og:image:secure_url" content="{{ $featuredImage }}">
@@ -113,7 +113,7 @@
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $cleanTitle }} | Marketplace Naija">
+    <meta name="twitter:title" content="{{ $cleanTitle }} | Marketplace Uganda">
     <meta name="twitter:description" content="{{ $cleanDescription }}">
     <meta name="twitter:image" content="{{ $featuredImage }}">
     <meta name="twitter:image:alt" content="{{ $cleanTitle }}">

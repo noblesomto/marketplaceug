@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace Naija – Your Order Has Been Canceled</title>
+    <title>Marketplace Uganda – Your Order Has Been Canceled</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
         /* Base Styles */
@@ -157,10 +157,10 @@
             <div class="section">
                 <p>If you have any questions or need further assistance, please don’t hesitate to contact our support team.</p>
                 <br>
-                <p>Thank you for choosing <b>Marketplace Naija.</b> We appreciate your trust and look forward to serving you again.</p>
+                <p>Thank you for choosing <b>Marketplace Uganda.</b> We appreciate your trust and look forward to serving you again.</p>
                 <br>
                 <p>Best regards,</p>
-                <p><b>The Marketplace Naija Team</b></p>
+                <p><b>The Marketplace Uganda Team</b></p>
             </div>
         </div>
 

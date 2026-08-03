@@ -13,7 +13,7 @@
           Our Blog
         </h1>
         <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
-          Explore insights, tips, and updates from Marketplace Naija — your trusted source for e-commerce trends, business growth strategies, and digital innovation in Nigeria. Stay informed, get inspired, and discover how to make the most of the online marketplace economy.
+          Explore insights, tips, and updates from Marketplace Uganda — your trusted source for e-commerce trends, business growth strategies, and digital innovation in Uganda. Stay informed, get inspired, and discover how to make the most of the online marketplace economy.
         </p>
       </div>
     </section>

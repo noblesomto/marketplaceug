@@ -14,11 +14,11 @@
 
         <img
             src="{{ asset('frontend/images/favicon.png') }}"
-            alt="Marketplace Naija app icon"
+            alt="Marketplace Uganda app icon"
             class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
 
         <div class="flex flex-col min-w-0">
-            <span class="font-semibold text-gray-900 text-sm leading-tight">Marketplace Naija</span>
+            <span class="font-semibold text-gray-900 text-sm leading-tight">Marketplace Uganda</span>
             <span class="text-xs text-gray-500 leading-tight">Buy &amp; Sell Faster With Our App</span>
         </div>
 
@@ -48,8 +48,8 @@
 
 <script>
 (function () {
-    var IOS_URL     = 'https://apps.apple.com/us/app/marketplace-naija-buy-sell/id6753354778';
-    var ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.app.marketplacenaija';
+    var IOS_URL     = 'https://apps.apple.com/us/app/marketplace-uganda-buy-sell/id6753354778';
+    var ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.app.marketplaceuganda';
     var DISMISS_KEY = 'appBannerDismissedAt';
     var THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 

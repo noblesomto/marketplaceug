@@ -21,7 +21,7 @@
           <span class="text-green-700">1.</span> Introduction
         </h2>
         <p class="text-slate-600 leading-relaxed">
-          Marketplace Naija respects the intellectual property rights of others and expects users of the platform to do the same. We operate as an online classified advertising platform that allows independent users to post listings for goods and services.
+          Marketplace Uganda respects the intellectual property rights of others and expects users of the platform to do the same. We operate as an online classified advertising platform that allows independent users to post listings for goods and services.
         </p>
         <div class="mt-4 p-4 bg-slate-50 border-l-4 border-green-700 rounded-r-lg">
           <p class="text-sm text-slate-700 italic">
@@ -35,7 +35,7 @@
         <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
           <span class="text-green-700">2.</span> User Responsibility
         </h2>
-        <p class="text-slate-600 mb-4">By posting content on Marketplace Naija, users represent and warrant that:</p>
+        <p class="text-slate-600 mb-4">By posting content on Marketplace Uganda, users represent and warrant that:</p>
         <ul class="space-y-3">
           <li class="flex items-start gap-3 text-slate-600">
             <svg class="w-5 h-5 text-green-700 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
@@ -64,7 +64,7 @@
         </div>
         <div class="mt-8 pt-6 border-t border-slate-200">
           <p class="text-slate-900 font-bold mb-2">Submit notices to:</p>
-          <p class="text-green-700 font-medium">Email: info@marketplace.ng</p>
+          <p class="text-green-700 font-medium">Email: info@marketplaceug.com</p>
           <p class="text-slate-500 text-sm">Subject: Intellectual Property Complaint</p>
         </div>
       </section>
@@ -89,7 +89,7 @@
       <section class="mb-12 border-t border-slate-100 ">
         <h2 class="text-2xl font-bold text-slate-900 mb-4">6. Repeat Infringers</h2>
         <p class="text-slate-600 leading-relaxed">
-          Marketplace Naija maintains a strict policy of terminating accounts of users found to be repeat infringers. This includes permanent removal of listings, account suspension, and permanent termination.
+          Marketplace Uganda maintains a strict policy of terminating accounts of users found to be repeat infringers. This includes permanent removal of listings, account suspension, and permanent termination.
         </p>
       </section>
 
@@ -97,7 +97,7 @@
       <section class="mb-12">
         <h2 class="text-2xl font-bold text-slate-900 mb-4">7. Limitation of Liability</h2>
         <p class="text-slate-600 leading-relaxed">
-          Marketplace Naija acts as an intermediary platform. We do not pre-screen all listings. We are not liable for user-generated content posted by third parties.
+          Marketplace Uganda acts as an intermediary platform. We do not pre-screen all listings. We are not liable for user-generated content posted by third parties.
         </p>
       </section>
 
@@ -108,11 +108,11 @@
           <p class="text-green-800 text-sm">Our legal team is here to assist with intellectual property concerns.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-          <a href="mailto:info@marketplace.ng" class="bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-green-800 transition-colors">
+          <a href="mailto:info@marketplaceug.com" class="bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-green-800 transition-colors">
             Email Us
           </a>
-          <a href="tel:+2349073729787" class="bg-white text-green-700 border border-green-200 px-6 py-3 rounded-xl font-bold text-center hover:bg-green-50 transition-colors text-sm">
-            +234 907 372 9787
+          <a href="tel:+256700000000" class="bg-white text-green-700 border border-green-200 px-6 py-3 rounded-xl font-bold text-center hover:bg-green-50 transition-colors text-sm">
+            +256 700 000 000
           </a>
         </div>
       </section>

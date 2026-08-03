@@ -9,11 +9,11 @@
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Tips for Your Safety</h1>
         <p class="text-gray-600 mb-8">
-          At Marketplace Naija, your safety is our priority.
-          We are committed to providing a secure and trustworthy platform for buyers and sellers across Nigeria. While we implement safety measures and offer secure options like Buy Direct, it's also important that you take precautions when interacting with others on the platform.
+          At Marketplace Uganda, your safety is our priority.
+          We are committed to providing a secure and trustworthy platform for buyers and sellers across Uganda. While we implement safety measures and offer secure options like Buy Direct, it's also important that you take precautions when interacting with others on the platform.
         </p>
         <p class="text-gray-600 mb-8">
-          Here are some essential tips to protect yourself when using www.marketplace.ng:
+          Here are some essential tips to protect yourself when using www.marketplaceug.com:
         </p>
       </div>
     </section>
@@ -46,8 +46,8 @@
           <div>
             <h3 class="text-lg font-medium text-gray-900 mb-2">3. Do Not Share Sensitive Personal Information</h3>
             <ul class="list-[circle] pl-6 text-gray-600 space-y-2">
-              <li>Never share your BVN, ATM PINs, login credentials, or full bank account details with buyers or sellers.</li>
-              <li>Use only the communication tools available within Marketplace Naija or official channels.</li>
+              <li>Never share your National ID Number (NIN), ATM PINs, login credentials, or full bank account details with buyers or sellers.</li>
+              <li>Use only the communication tools available within Marketplace Uganda or official channels.</li>
             </ul>
           </div>
 
@@ -155,7 +155,7 @@
         <ul class="list-disc pl-6 text-gray-600 space-y-2 ml-9">
           <li><span class="font-medium">Fake Escrow Services:</span> Use only the official Buy Direct feature. Do not trust third-party escrow links sent via WhatsApp or SMS.</li>
           <li><span class="font-medium">Phishing Links:</span> Never click on suspicious links claiming to offer discounts or payment confirmations.</li>
-          <li><span class="font-medium">Fake Customer Support Calls:</span> Marketplace Naija will never call to ask for your password, PIN, or OTP.</li>
+          <li><span class="font-medium">Fake Customer Support Calls:</span> Marketplace Uganda will never call to ask for your password, PIN, or OTP.</li>
           <li><span class="font-medium">Quick Overpayment Trick:</span> Scammers may "overpay" and ask for a refund — only for the original payment to bounce later.</li>
         </ul>
       </div>
@@ -177,13 +177,13 @@
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <a href="mailto:fraud@marketplace.ng" class="text-blue-600 hover:text-blue-800">fraud@marketplace.ng</a>
+            <a href="mailto:fraud@marketplaceug.com" class="text-blue-600 hover:text-blue-800">fraud@marketplaceug.com</a>
           </p>
           <p class="text-gray-600 flex items-center">
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            +2349073729787
+            +256700000000
           </p>
           <p class="text-gray-600 flex items-center">
             <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,7 +209,7 @@
         <ul class="list-disc pl-6 text-gray-600 space-y-2 ml-9">
           <li>Visit our Help Center regularly for updated safety tips.</li>
           <li>Follow us on social media for alerts and scam warnings.</li>
-          <li>Enable two-factor authentication (2FA) on your Marketplace Naija account for added security.</li>
+          <li>Enable two-factor authentication (2FA) on your Marketplace Uganda account for added security.</li>
         </ul>
       </div>
     </section>
@@ -218,7 +218,7 @@
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Your Safety Is a Shared Responsibility</h2>
         <p class="text-gray-600 mb-8">
-          While Marketplace Naija provides tools and systems to keep you safe, your personal vigilance is key. Always trust your instincts — if something feels off, it probably is.
+          While Marketplace Uganda provides tools and systems to keep you safe, your personal vigilance is key. Always trust your instincts — if something feels off, it probably is.
         </p>
 
       </div>

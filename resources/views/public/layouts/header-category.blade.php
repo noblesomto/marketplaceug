@@ -10,8 +10,8 @@
         // category (including /related/{id} pages, which reuse this layout)
         // show the same generic category-wide title instead of anything
         // specific to the page's actual content.
-        $metaTitle = $seoTitle ?? $title ?? ($cat->meta_title ?? $cat->category . ' | Marketplace Naija');
-        $metaDesc  = $seoDesc  ?? ($cat->meta_description ?? 'Buy and sell in ' . $cat->category . ' on Marketplace Naija – Nigeria’s trusted online marketplace. Post free ads and trade safely today.');
+        $metaTitle = $seoTitle ?? $title ?? ($cat->meta_title ?? $cat->category . ' | Marketplace Uganda');
+        $metaDesc  = $seoDesc  ?? ($cat->meta_description ?? 'Buy and sell in ' . $cat->category . ' on Marketplace Uganda – Uganda’s trusted online marketplace. Post free ads and trade safely today.');
     @endphp
     <title>{{ $metaTitle }}</title>
 
@@ -22,16 +22,16 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $metaDesc }}">
 
-    <meta name="keywords" content="{{ $cat->keywords ?? 'Marketplace Naija, Buy & Sell Nigeria, ' . $cat->category . ', Nigeria classifieds, Online marketplace Nigeria' }}">
+    <meta name="keywords" content="{{ $cat->keywords ?? 'Marketplace Uganda, Buy & Sell Uganda, ' . $cat->category . ', Uganda classifieds, Online marketplace Uganda' }}">
 
-    <meta name="author" content="Marketplace Naija">
+    <meta name="author" content="Marketplace Uganda">
     <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Marketplace Naija">
+    <meta property="og:site_name" content="Marketplace Uganda">
     <meta property="og:title" content="{{ $metaTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">

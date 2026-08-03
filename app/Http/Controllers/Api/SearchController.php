@@ -677,7 +677,7 @@ class SearchController extends Controller
      *     @OA\RequestBody(
      *         required=false,
      *         @OA\JsonContent(
-     *             @OA\Property(property="condition", type="string", description="Car condition", example="Nigerian Used"),
+     *             @OA\Property(property="condition", type="string", description="Car condition", example="Foreign used"),
      *             @OA\Property(property="fuel_type", type="string", description="Fuel type", example="Petrol"),
      *             @OA\Property(property="transmission", type="string", description="Transmission type", example="Automatic"),
      *             @OA\Property(property="registration", type="string", description="Registration status", example="Registered"),

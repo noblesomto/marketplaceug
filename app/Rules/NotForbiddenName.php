@@ -9,8 +9,8 @@ class NotForbiddenName implements Rule
     protected $forbiddenNames = [
         'market',
         'marketplace',
-        'naija',
-        'marketplace naija'
+        'ug',
+        'marketplace uganda'
     ];
 
     public function passes($attribute, $value)

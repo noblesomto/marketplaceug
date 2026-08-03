@@ -303,7 +303,7 @@ class AccountController extends Controller
      *
      * @bodyParam acc_type string required Account type (Private or Business). Example: Private
      * @bodyParam name string required User's full name (maximum 100 characters, no special characters). Example: John Doe
-     * @bodyParam phone string required Nigerian phone number in format 080XXXXXXXX or 234XXXXXXXXXX. Example: 08012345678
+     * @bodyParam phone string required Ugandan phone number in format 07XXXXXXXX. Example: 0701234567
      * @bodyParam email string required User's email address (must be unique). Example: john@example.com
      * @bodyParam password string required Password (minimum 6 characters). Example: mypassword123
      * @bodyParam password_confirmation string required Password confirmation (must match password). Example: mypassword123

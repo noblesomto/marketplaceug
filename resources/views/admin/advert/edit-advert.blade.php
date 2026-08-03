@@ -771,7 +771,7 @@
                   @endif
                   <div class="d-flex align-items-center">
                     <input type="text" name="price" class="form-control w-50" value="{{ $advert->price }}">
-                    <span class="ms-2">Naira</span>
+                    <span class="ms-2">UGX</span>
                   </div>
                 </div>
                 <div id="services" class="col-md-2 mt-1">

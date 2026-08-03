@@ -28,7 +28,7 @@ class ShipAdMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – Your Order Has Been Shipped – Shipping & Tracking Info',
+            subject: 'Marketplace Uganda – Your Order Has Been Shipped – Shipping & Tracking Info',
         );
     }
 

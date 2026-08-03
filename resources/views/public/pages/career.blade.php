@@ -6,10 +6,10 @@
 <div class="max-w-4xl mx-auto bg-white my-10">
     <section class="py-2 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">Careers at Marketplace Naija</h1>
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Join Us. Build the Future of Online Commerce in Nigeria.</h2>
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Careers at Marketplace Uganda</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Join Us. Build the Future of Online Commerce in Uganda.</h2>
         <p class="text-lg text-gray-600 mb-8">
-          At Marketplace Naija, we're not just building a platform — we're creating a solution with impact. One that empowers Nigerians to trade safely, grow small businesses, and access opportunities through technology.
+          At Marketplace Uganda, we're not just building a platform — we're creating a solution with impact. One that empowers Ugandans to trade safely, grow small businesses, and access opportunities through technology.
         </p>
         <p class="text-lg text-gray-600 mb-8">
           If you're passionate about innovation, believe in the power of local enterprise, and want to be part of something meaningful, we'd love to work with you.
@@ -44,7 +44,7 @@
             <div class="ml-3">
               <h3 class="text-lg font-medium text-gray-900">Impact at Scale</h3>
               <p class="mt-1 text-gray-600">
-                Marketplace Naija is used by people across Nigeria — from major cities to remote towns. Your work reaches thousands, soon millions.
+                Marketplace Uganda is used by people across Uganda — from major cities to remote towns. Your work reaches thousands, soon millions.
               </p>
             </div>
           </div>
@@ -107,7 +107,7 @@
           <li>Eager to learn, adapt, and innovate</li>
         </ul>
         <p class="text-gray-600">
-          Whether you're a developer, designer, growth marketer, product manager, customer support lead, or data analyst — there may be a place for you at Marketplace Naija.
+          Whether you're a developer, designer, growth marketer, product manager, customer support lead, or data analyst — there may be a place for you at Marketplace Uganda.
         </p>
       </div>
     </section>

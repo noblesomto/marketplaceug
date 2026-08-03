@@ -5,7 +5,7 @@
       @php
           $totalCatAds = getAdvertCount(['sub_category' => $subcat->id]);
       @endphp
-      <h3 class="text-lg font-semibold"><a href="#" class="hover:underline">All Nigeria</a> <span class="bg-gray-100 py-1 px-3 rounded">{{ $totalCatAds }} ads</span> </h3>
+      <h3 class="text-lg font-semibold"><a href="#" class="hover:underline">All Uganda</a> <span class="bg-gray-100 py-1 px-3 rounded">{{ $totalCatAds }} ads</span> </h3>
       <button id="closelocationModal" class="text-gray-500 hover:text-gray-700 text-2xl font-light">
         &times;
       </button>

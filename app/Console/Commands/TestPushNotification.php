@@ -84,7 +84,7 @@ class TestPushNotification extends Command
         // Prepare test notification
         $notification = [
             'title' => 'Test Notification 🧪',
-            'body' => 'This is a test push notification from Marketplace Nigeria! If you see this, it works! 🎉',
+            'body' => 'This is a test push notification from Marketplace Uganda! If you see this, it works! 🎉',
         ];
 
         $data = [

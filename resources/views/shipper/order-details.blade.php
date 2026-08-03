@@ -21,7 +21,7 @@
     {{-- Header --}}
     <header class="bg-white border-b border-gray-200 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Naija"></a>
+            <a href="/"><img src="{{ asset('frontend/images/logo.png') }}" class="h-8" alt="Marketplace Uganda"></a>
             <div class="flex items-center gap-4">
                 <a href="/shipper/index"
                    class="text-sm text-green-700 hover:text-green-800 font-medium flex items-center gap-1">

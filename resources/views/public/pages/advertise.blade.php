@@ -9,10 +9,10 @@
     <!-- Hero -->
     <div class="text-center mb-12">
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-        Advertise With <span class="text-green-700">Marketplace.ng</span>
+        Advertise With <span class="text-green-700">Marketplace Uganda</span>
       </h1>
       <p class="text-lg text-gray-600 max-w-4xl mx-auto">
-        Put your brand in front of thousands of active buyers and sellers across Nigeria every day. From banner placements to boosted listings, we'll help you reach the right audience.
+        Put your brand in front of thousands of active buyers and sellers across Uganda every day. From banner placements to boosted listings, we'll help you reach the right audience.
       </p>
     </div>
 
@@ -64,7 +64,7 @@
     <!-- Why Advertise -->
     <div class="mb-16 bg-gray-50 rounded-2xl p-8 sm:p-12">
       <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-10">
-        Why Advertise on Marketplace.ng?
+        Why Advertise on Marketplace Uganda?
       </h2>
 
       <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -72,7 +72,7 @@
           <svg class="w-6 h-6 text-green-600 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <p class="ml-4 text-gray-700">Direct access to buyers already searching to spend, across every state in Nigeria.</p>
+          <p class="ml-4 text-gray-700">Direct access to buyers already searching to spend, across every state in Uganda.</p>
         </div>
         <div class="flex items-start">
           <svg class="w-6 h-6 text-green-600 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

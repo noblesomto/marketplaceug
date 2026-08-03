@@ -8,7 +8,7 @@
           <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 mb-6">Frequently Asked Questions (FAQ)</h1>
             <p class="text-gray-600 mb-8">
-              Welcome to the Marketplace Naija FAQ Page. Whether you're buying, selling, or just browsing, we've answered the most common questions to help you make the most of your experience on www.marketplace.ng.
+              Welcome to the Marketplace Uganda FAQ Page. Whether you're buying, selling, or just browsing, we've answered the most common questions to help you make the most of your experience on www.marketplaceug.com.
             </p>
           </div>
         </section>
@@ -21,17 +21,17 @@
               <div>
                 <div class="flex items-start">
 
-                  <h3 class="text-lg font-medium text-gray-900">What is Marketplace Naija?</h3>
+                  <h3 class="text-lg font-medium text-gray-900">What is Marketplace Uganda?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
-                  Marketplace Naija is a Nigerian online classifieds platform where individuals and businesses can buy, sell, or promote new and used goods and services across a wide range of categories—safely and easily.
+                  Marketplace Uganda is a Ugandan online classifieds platform where individuals and businesses can buy, sell, or promote new and used goods and services across a wide range of categories—safely and easily.
                 </p>
               </div>
 
               <div>
                 <div class="flex items-start">
 
-                  <h3 class="text-lg font-medium text-gray-900">Is Marketplace Naija free to use?</h3>
+                  <h3 class="text-lg font-medium text-gray-900">Is Marketplace Uganda free to use?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
                   Yes! Posting standard ads and browsing listings is free. However, optional paid features (like boosting or featuring your ad) are available for sellers who want more visibility.
@@ -49,7 +49,7 @@
               <div>
                 <div class="flex items-start">
 
-                  <h3 class="text-lg font-medium text-gray-900">Do I need an account to use Marketplace Naija?</h3>
+                  <h3 class="text-lg font-medium text-gray-900">Do I need an account to use Marketplace Uganda?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
                   You can browse ads without an account. But to post ads, use Buy Direct, or contact sellers, you must register for a free account.
@@ -87,7 +87,7 @@
               <div>
                 <div class="flex items-start">
 
-                  <h3 class="text-lg font-medium text-gray-900">How do I buy an item on Marketplace Naija?</h3>
+                  <h3 class="text-lg font-medium text-gray-900">How do I buy an item on Marketplace Uganda?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
                   You can:
@@ -104,7 +104,7 @@
                   <h3 class="text-lg font-medium text-gray-900">What is "Buy Direct"?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
-                  Buy Direct is our safe transaction method. You pay into Marketplace Naija's secure system. We release the funds to the seller only after you receive and confirm the item.
+                  Buy Direct is our safe transaction method. You pay into Marketplace Uganda's secure system. We release the funds to the seller only after you receive and confirm the item.
                 </p>
               </div>
 
@@ -155,7 +155,7 @@
                   <h3 class="text-lg font-medium text-gray-900">How do I get paid using Buy Direct?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
-                  Once a buyer pays through Buy Direct and confirms they've received the item, Marketplace Naija releases the funds to your payout bank account. Go to profile – Settings – Payments, to add your bank account details.
+                  Once a buyer pays through Buy Direct and confirms they've received the item, Marketplace Uganda releases the funds to your payout bank account. Go to profile – Settings – Payments, to add your bank account details.
                 </p>
               </div>
             </div>
@@ -176,12 +176,12 @@
                   We accept:
                 </p>
                 <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-2 ml-9">
-                  <li>Debit/Credit Cards (Visa, Mastercard, Verve)</li>
+                  <li>Debit/Credit Cards (Visa, Mastercard) and Mobile Money (MTN, Airtel)</li>
                   <li>Bank Transfers</li>
                   <li>USSD</li>
                 </ul>
                 <p class="text-gray-600 mt-2 ml-9">
-                  All payments are processed securely through trusted Nigerian payment gateways.
+                  All payments are processed securely through trusted Ugandan payment gateways.
                 </p>
               </div>
 
@@ -214,7 +214,7 @@
               <div>
                 <div class="flex items-start">
 
-                  <h3 class="text-lg font-medium text-gray-900">Is it safe to use Marketplace Naija?</h3>
+                  <h3 class="text-lg font-medium text-gray-900">Is it safe to use Marketplace Uganda?</h3>
                 </div>
                 <p class="text-gray-600 mt-2 ml-9">
                   Yes! We have safety tools like Buy Direct, verified seller badges, and content moderation. However, we always advise users to meet in public places and use our secure payment channels.
@@ -233,7 +233,7 @@
                   <li>Weapons, drugs, or stolen goods</li>
                   <li>Pornography or adult services</li>
                   <li>Counterfeit or illegal products</li>
-                  <li>Anything that violates Nigerian laws or our platform rules</li>
+                  <li>Anything that violates Ugandan laws or our platform rules</li>
                 </ul>
                 <p class="text-gray-600 mt-2 ml-9">
                   Full list here: <a href="#" class="text-blue-600 hover:text-blue-800">Prohibited Items</a>
@@ -269,9 +269,9 @@
                   Please contact support via:
                 </p>
                 <ul class="list-disc pl-6 text-gray-600 space-y-2 mt-2 ml-9">
-                  <li>Email: <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a></li>
+                  <li>Email: <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:text-blue-800">support@marketplaceug.com</a></li>
                   <li>Chat: Use the in-app support tool</li>
-                  <li>Phone: +2348063229879</li>
+                  <li>Phone: +256700000001</li>
                 </ul>
               </div>
             </div>
@@ -297,7 +297,7 @@
                   <li>Use our subscription plans</li>
                 </ul>
                 <p class="text-gray-600 mt-2 ml-9">
-                  Contact us at <a href="mailto:business@marketplace.ng" class="text-blue-600 hover:text-blue-800">business@marketplace.ng</a> to learn more.
+                  Contact us at <a href="mailto:business@marketplaceug.com" class="text-blue-600 hover:text-blue-800">business@marketplaceug.com</a> to learn more.
                 </p>
               </div>
             </div>
@@ -315,19 +315,19 @@
                 <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:support@marketplace.ng" class="text-blue-600 hover:text-blue-800">support@marketplace.ng</a>
+                <a href="mailto:support@marketplaceug.com" class="text-blue-600 hover:text-blue-800">support@marketplaceug.com</a>
               </p>
               <p class="text-gray-600 flex items-center">
                 <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                +2349073729787
+                +256700000000
               </p>
               <p class="text-gray-600 flex items-center">
                 <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Hours: Monday – Friday, 7:00 AM – 6:00 PM WAT
+                Hours: Monday – Friday, 7:00 AM – 6:00 PM EAT
               </p>
             </div>
           </div>

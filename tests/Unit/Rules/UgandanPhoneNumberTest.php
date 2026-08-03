@@ -37,7 +37,7 @@ class UgandanPhoneNumberTest extends TestCase
     public static function invalidNumbers(): array
     {
         return [
-            ['08034814561'],   // Nigerian format
+            ['08034814561'],   // wrong prefix (not a valid Ugandan format)
             ['070012345'],     // too short
             ['07001234567'],   // too long
             ['1234567890'],    // no leading 0

@@ -825,7 +825,7 @@ class AdvertController extends Controller
             ->where('category', $cat->id)
             ->count();
 
-        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'), $count_cat);
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Uganda'), $count_cat);
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
@@ -895,7 +895,7 @@ class AdvertController extends Controller
         public function category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}"), $request->get('location', 'Uganda'));
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
@@ -951,7 +951,7 @@ class AdvertController extends Controller
             ->where('sub_category', $subcat->id)
             ->count();
 
-        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}"), $request->get('location', 'Nigeria'), $count_subcat);
+        $seo   = $this->buildSeoMeta($subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}"), $request->get('location', 'Uganda'), $count_subcat);
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))
@@ -990,7 +990,7 @@ class AdvertController extends Controller
         $ads = $result['ads'];
         $hasMore = $result['hasMore'];
 
-        $seo   = $this->buildSeoMeta($brand->brand . ' ' . $subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}/{$brand->brand_slug}"), $request->get('location', 'Nigeria'), $result['total']);
+        $seo   = $this->buildSeoMeta($brand->brand . ' ' . $subcat->sub_category, $cat->seo_group ?? 'product', url("/category/{$cat->category_slug}/{$subcat->sub_cat_slug}/{$brand->brand_slug}"), $request->get('location', 'Uganda'), $result['total']);
         $title = $seo['seoTitle'];
 
         $user_id = $request->session()->get('user_id');
@@ -1098,7 +1098,7 @@ class AdvertController extends Controller
     public function all_category(Request $request, $category_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/all-{$cat->category_slug}"), $request->get('location', 'Nigeria'));
+        $seo   = $this->buildSeoMeta($cat->category, $cat->seo_group ?? 'product', url("/category/all-{$cat->category_slug}"), $request->get('location', 'Uganda'));
         $title = $seo['seoTitle'];
 
         $result = (new FeaturedAdPaginator(1))

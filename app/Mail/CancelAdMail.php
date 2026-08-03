@@ -28,7 +28,7 @@ class CancelAdMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija – Your Order has been Canceled!',
+            subject: 'Marketplace Uganda – Your Order has been Canceled!',
         );
     }
 

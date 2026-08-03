@@ -9,17 +9,17 @@
     <!-- Hero/Intro Section -->
     <div class="text-center mb-12">
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-        Welcome to <span class="text-green-700">Marketplace.ng</span>
+        Welcome to <span class="text-green-700">Marketplace Uganda</span>
       </h1>
       <p class="text-lg text-gray-600 max-w-4xl mx-auto">
-        Your premier digital destination to sell online in Nigeria. We've built more than just a listing site; we've created a robust ecosystem where local commerce thrives.
+        Your premier digital destination to sell online in Uganda. We've built more than just a listing site; we've created a robust ecosystem where local commerce thrives.
       </p>
     </div>
 
     <!-- Why Choose Us Section -->
     <div class="mb-16">
       <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-10">
-        Why Sell Online in Nigeria with Marketplace.ng?
+        Why Sell Online in Uganda with Marketplace Uganda?
       </h2>
 
       <div class="grid md:grid-cols-3 gap-8">
@@ -32,7 +32,7 @@
           </div>
           <h3 class="text-xl font-semibold text-gray-900 mb-3">Reach Real Buyers Instantly</h3>
           <p class="text-gray-600">
-            Your ads are placed directly in front of thousands of genuine, high-intent buyers across Nigeria daily.
+            Your ads are placed directly in front of thousands of genuine, high-intent buyers across Uganda daily.
           </p>
         </div>
 
@@ -67,7 +67,7 @@
     <!-- What You Can Sell Section -->
     <div class="mb-16">
       <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-10">
-        What Can You Sell Online in Nigeria?
+        What Can You Sell Online in Uganda?
       </h2>
 
       <div class="grid md:grid-cols-3 gap-6">
@@ -79,7 +79,7 @@
             </svg>
           </div>
           <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-900 mb-3">Sell Phone Online in Nigeria</h3>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Sell Phone Online in Uganda</h3>
             <p class="text-gray-600 mb-4">
               List your current device whether it's a "UK-used" iPhone, the latest Samsung Galaxy, or a reliable Transmission device.
             </p>
@@ -100,7 +100,7 @@
           <div class="p-6">
             <h3 class="text-xl font-bold text-gray-900 mb-3">Sell Property Online</h3>
             <p class="text-gray-600 mb-4">
-              Perfect for real estate agents, developers, or landlords. Sell property in Lekki, Ikeja, Maitama, or anywhere in Nigeria.
+              Perfect for real estate agents, developers, or landlords. Sell property in Kololo, Nakasero, Muyenga, or anywhere in Uganda.
             </p>
             <div class="bg-green-50 inline-block px-4 py-2 rounded-full">
               <span class="text-green-700 text-sm font-medium">Pro-Tip:</span>
@@ -119,7 +119,7 @@
           <div class="p-6">
             <h3 class="text-xl font-bold text-gray-900 mb-3">Sell Cars, Electronics & Fashion</h3>
             <p class="text-gray-600 mb-4">
-              From "Tokunbo" cars to electronics, appliances, Aso-Ebi fabrics, and modern street wear.
+              From imported "foreign used" cars to electronics, appliances, Kitenge fabrics, and modern street wear.
             </p>
             <div class="bg-purple-50 inline-block px-4 py-2 rounded-full">
               <span class="text-purple-700 text-sm font-medium">Pro-Tip:</span>
@@ -245,29 +245,29 @@
       <div class="max-w-3xl mx-auto space-y-6">
         <!-- FAQ 1 -->
         <div class="border border-gray-200 rounded-xl p-6">
-          <h3 class="font-bold text-gray-900 mb-2">Is it free to sell online in Nigeria on Marketplace.ng?</h3>
+          <h3 class="font-bold text-gray-900 mb-2">Is it free to sell online in Uganda on Marketplace Uganda?</h3>
           <p class="text-gray-600">Yes! Registering an account and posting ads for general items is completely free. We also offer premium "Boost" packages for those who want to reach even more buyers.</p>
         </div>
 
         <!-- FAQ 2 -->
         <div class="border border-gray-200 rounded-xl p-6">
-          <h3 class="font-bold text-gray-900 mb-2">How do I sell my phone online in Nigeria safely?</h3>
+          <h3 class="font-bold text-gray-900 mb-2">How do I sell my phone online in Uganda safely?</h3>
           <p class="text-gray-600">Back up your data, perform a factory reset, and list it with clear photos. Meet in a public place and verify payment before handing over the device.</p>
         </div>
 
         <!-- FAQ 3 -->
         <div class="border border-gray-200 rounded-xl p-6">
           <h3 class="font-bold text-gray-900 mb-2">Can I sell property online here?</h3>
-          <p class="text-gray-600">Absolutely. Marketplace.ng is a preferred platform for real estate agents and homeowners to reach serious tenants and buyers across Nigeria.</p>
+          <p class="text-gray-600">Absolutely. Marketplace Uganda is a preferred platform for real estate agents and homeowners to reach serious tenants and buyers across Uganda.</p>
         </div>
       </div>
     </div>
 
     <!-- CTA Section -->
     <div class="text-center bg-gradient-to-r bg-green-700 rounded-2xl p-12 text-white">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6">Join the Marketplace.ng Community Today</h2>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6">Join the Marketplace Uganda Community Today</h2>
       <p class="text-lg mb-8 max-w-2xl mx-auto text-blue-100">
-        Whether you want to sell phone online in Nigeria or sell property online to serious investors, we provide the tools you need to succeed.
+        Whether you want to sell phone online in Uganda or sell property online to serious investors, we provide the tools you need to succeed.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/register" class="bg-white text-green-700 hover:bg-gray-100 font-bold py-3 px-8 rounded-lg transition duration-300">
@@ -278,7 +278,7 @@
         </a>
       </div>
       <p class="mt-8 text-blue-100 font-medium">
-        Don't let your unused items gather dust. Choose Marketplace.ng where Nigeria buys and sells.
+        Don't let your unused items gather dust. Choose Marketplace Uganda where Uganda buys and sells.
       </p>
     </div>
 

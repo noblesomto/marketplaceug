@@ -29,9 +29,9 @@ class NewAdMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         $subject = match($this->details['type'] ?? 'New Ad') {
-            'Price Update' => 'Marketplace Naija – Price Updated!',
-            'New Ad'   => 'Marketplace Naija – New Ad Posted!',
-            default        => 'Marketplace Naija – Notification',
+            'Price Update' => 'Marketplace Uganda – Price Updated!',
+            'New Ad'   => 'Marketplace Uganda – New Ad Posted!',
+            default        => 'Marketplace Uganda – Notification',
         };
 
         return new Envelope(

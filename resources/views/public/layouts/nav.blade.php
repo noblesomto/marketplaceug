@@ -3,7 +3,7 @@
     <div class="text-sm">
         <div class="grid grid-cols-6 gap-1 md:gap-3">
           <div class="col-span-3 md:col-span-4 flex items-center">
-              <a href="/" aria-label="Go to homepage"><img src="{{ asset('frontend/images/logo.png') }}" alt="homepage Markeplace Naija" class="h-12"></a>
+              <a href="/" aria-label="Go to homepage"><img src="{{ asset('frontend/images/logo.png') }}" alt="homepage Marketplace Uganda" class="h-12"></a>
           </div>
           
           <div class="col-span-3 md:col-span-2 flex items-center justify-end space-x-4">

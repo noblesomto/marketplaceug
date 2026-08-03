@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>
-        {{ $details['type'] === 'Price Update' ? 'Marketplace Naija – Price Updated' : 'Marketplace Naija – New Ad Posted' }}
+        {{ $details['type'] === 'Price Update' ? 'Marketplace Uganda – Price Updated' : 'Marketplace Uganda – New Ad Posted' }}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
@@ -98,7 +98,7 @@
 
                 <br>
                 <p>Best regards,</p>
-                <p><b>The Marketplace Naija Team</b></p>
+                <p><b>The Marketplace Uganda Team</b></p>
             </div>
         </div>
 

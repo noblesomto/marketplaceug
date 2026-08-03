@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Billing Policy</h1>
 
         <p class="text-gray-600 mb-8">
-          This Billing Policy outlines how paid services on Marketplace Naija operate, particularly for users who choose to promote, boost, or sponsor their ad listings on our platform. By purchasing any promotional service on www.marketplace.ng, you agree to the terms described herein.
+          This Billing Policy outlines how paid services on Marketplace Uganda operate, particularly for users who choose to promote, boost, or sponsor their ad listings on our platform. By purchasing any promotional service on www.marketplaceug.com, you agree to the terms described herein.
         </p>
       </div>
     </section>
@@ -18,7 +18,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">1. Overview</h2>
         <p class="text-gray-600 mb-6">
-          While posting standard ads on Marketplace Naija is free, sellers may choose to upgrade their listings for improved visibility through:
+          While posting standard ads on Marketplace Uganda is free, sellers may choose to upgrade their listings for improved visibility through:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li><span class="font-medium">Boosted Ads</span> – Appear at the top of search results for selected categories or locations.</li>
@@ -99,7 +99,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">5. Invoices & Receipts</h2>
         <p class="text-gray-600 mb-6">
-          You can download invoices and view billing history by logging into your Marketplace Naija seller account:
+          You can download invoices and view billing history by logging into your Marketplace Uganda seller account:
         </p>
         <div class="bg-gray-100 p-4 rounded-md mb-6">
           <p class="text-gray-800 font-medium">Go to My Account > Payments</p>
@@ -126,7 +126,7 @@
           <li><span class="font-medium">Ineligible Content:</span> Your ad was rejected for violating our policies, and promotion had not yet started.</li>
         </ul>
         <p class="text-gray-600 mb-6">
-          Refund requests must be submitted within 72 hours of the payment via <a href="mailto:billing@marketplace.ng" class="text-blue-600 hover:text-blue-800">billing@marketplace.ng</a>.
+          Refund requests must be submitted within 72 hours of the payment via <a href="mailto:billing@marketplaceug.com" class="text-blue-600 hover:text-blue-800">billing@marketplaceug.com</a>.
         </p>
         <p class="text-gray-600">
           Refunds are issued to the original payment method or as wallet credit, depending on the situation.
@@ -172,8 +172,8 @@
           <li>Description of the issue</li>
         </ul>
         <div class="mt-4 space-y-2">
-          <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:billing@marketplace.ng" class="text-blue-600 hover:text-blue-800">billing@marketplace.ng</a></p>
-          <p class="text-gray-600"><span class="font-medium">Phone Support:</span> +2349073729787</p>
+          <p class="text-gray-600"><span class="font-medium">Email:</span> <a href="mailto:billing@marketplaceug.com" class="text-blue-600 hover:text-blue-800">billing@marketplaceug.com</a></p>
+          <p class="text-gray-600"><span class="font-medium">Phone Support:</span> +256700000000</p>
           <p class="text-gray-600"><span class="font-medium">Response Time:</span> Within 24–48 business hours</p>
         </div>
       </div>
@@ -183,7 +183,7 @@
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">10. Fraud & Abuse</h2>
         <p class="text-gray-600 mb-6">
-          Marketplace Naija reserves the right to:
+          Marketplace Uganda reserves the right to:
         </p>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
           <li>Refuse billing for suspicious or fraudulent accounts</li>
@@ -217,25 +217,25 @@
           If you have questions about billing, payments, or ad promotions, please contact:
         </p>
         <div class="bg-blue-50 rounded-lg p-6 inline-block text-left">
-          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Naija – Billing Team</p>
+          <p class="text-lg font-medium text-gray-900 mb-4">Marketplace Uganda – Billing Team</p>
           <div class="space-y-3">
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <a href="mailto:billing@marketplace.ng" class="text-blue-600 hover:text-blue-800">billing@marketplace.ng</a>
+              <a href="mailto:billing@marketplaceug.com" class="text-blue-600 hover:text-blue-800">billing@marketplaceug.com</a>
             </p>
             <p class="text-gray-600 flex items-center">
               <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              +2349073729787
+              +256700000000
             </p>
 
           </div>
         </div>
         <p class="text-gray-600 mt-8 font-semibold">
-          Thank you for promoting your business with Marketplace Naija. We're here to support your growth.
+          Thank you for promoting your business with Marketplace Uganda. We're here to support your growth.
         </p>
       </div>
     </section>

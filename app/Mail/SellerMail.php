@@ -28,7 +28,7 @@ class SellerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Marketplace Naija –  Your Item Has Been Sold – Time to Ship!',
+            subject: 'Marketplace Uganda –  Your Item Has Been Sold – Time to Ship!',
         );
     }
 

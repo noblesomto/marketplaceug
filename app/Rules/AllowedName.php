@@ -9,8 +9,8 @@ class AllowedName implements Rule
     protected $bannedNames = [
         'market',
         'marketplace',
-        'marketplace naija',
-        'marketplace ng',
+        'marketplace uganda',
+        'marketplace ug',
         'admin',
         'administrator',
         'moderator',
