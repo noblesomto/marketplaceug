@@ -192,6 +192,22 @@ class ManageBoost extends Controller
             ]);
         }
 
+        $verifiedAmount   = $response['data']['amount'] ?? null;
+        $verifiedCurrency = $response['data']['currency'] ?? null;
+
+        if ((float) $verifiedAmount < (float) $boost->amount || $verifiedCurrency !== config('currency.code')) {
+            Log::warning('Admin verify-and-activate: amount/currency mismatch', [
+                'boost_id' => $boost->id,
+                'expected' => $boost->amount,
+                'got'      => $verifiedAmount,
+                'currency' => $verifiedCurrency,
+            ]);
+            return redirect()->back()->with('status', [
+                'text' => "Flutterwave-verified amount ({$verifiedAmount} {$verifiedCurrency}) does not match the expected amount ({$boost->amount} " . config('currency.code') . "). Boost not activated.",
+                'type' => 'error',
+            ]);
+        }
+
         $transactionId = $response['data']['id'];
 
         DB::transaction(function () use ($boost, $transactionId) {

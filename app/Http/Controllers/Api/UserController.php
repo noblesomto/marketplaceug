@@ -844,9 +844,7 @@ class UserController extends Controller
         $sellerStatus = $payment->seller_status ?? 'pending';
         $buyerStatus  = $payment->buyer_status ?? 'pending';
         $shipCompany  = $ship->company ?? 'the shipping company';
-        $pickupAddress = $city->address
-            ?? trim(implode(', ', array_filter([$city->city ?? null, $city->state->name ?? null])))
-            ?: null;
+        $pickupAddress = trim(implode(', ', array_filter([$city->name ?? null, $city->state->name ?? null]))) ?: null;
 
         $badge  = ShippingStatusBadge::resolve($sellerStatus, $shipStatus, $buyerStatus, $shipCompany);
         $banner = ShippingStatusBadge::bannerFor($badge['stage'], $shipCompany, $payment->shipping_status_date, $payment->seller_status_date, $pickupAddress);
@@ -901,9 +899,8 @@ class UserController extends Controller
                         : null,
                 ],
                 'delivery_location' => [
-                    'address' => $city->address ?? null,
-                    'city'    => $city->city ?? null,
-                    'state'   => $city->state->name ?? null,
+                    'city'  => $city->name ?? null,
+                    'state' => $city->state->name ?? null,
                 ],
             ]
         ]);
@@ -999,9 +996,8 @@ class UserController extends Controller
                         : null,
                 ],
                 'delivery_location' => [
-                    'address' => $city->address ?? null,
-                    'city'    => $city->city ?? null,
-                    'state'   => $city->state->name ?? null,
+                    'city'  => $city->name ?? null,
+                    'state' => $city->state->name ?? null,
                 ],
                 'instructions' => [
                     'step_1' => "Ensure the item is well-packaged and clearly label it with the buyer's name, phone number, and delivery address.",

@@ -37,7 +37,7 @@
     <meta property="og:image" content="{{ asset('frontend/images/Marketplace-Naija.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_NG">
+    <meta property="og:locale" content="en_UG">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">

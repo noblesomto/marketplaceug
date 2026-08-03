@@ -208,6 +208,14 @@ class ManagePayments extends Controller
     {
         $payment = Payment::with('advert.owner', 'user')->where('id', $id)->first();
 
+        if (!$payment) {
+            return back()->with('status', ['type' => 'danger', 'text' => 'Payment not found.']);
+        }
+
+        if ($payment->seller_settlement === 'yes') {
+            return back()->with('status', ['type' => 'warning', 'text' => 'This payment has already been settled.']);
+        }
+
         $seller = $payment->advert->owner;
         $amount = $payment->amount; // no kobo conversion - UGX has no minor unit
 
@@ -215,7 +223,11 @@ class ManagePayments extends Controller
             'amount'    => $amount,
             'currency'  => config('currency.code'),
             'narration' => 'MarketplaceUG seller payout',
-            'reference' => 'payout_' . uniqid(),
+            // Deterministic, tied to the payment id — Flutterwave rejects a
+            // replayed/duplicate transfer for the same reference, guarding
+            // against double-payout from a back-navigation, double-click,
+            // retry, or link prefetch.
+            'reference' => 'payout_' . $payment->id,
         ];
 
         if ($seller->payout_method === 'mobile_money') {
@@ -246,6 +258,7 @@ class ManagePayments extends Controller
             $payment->update([
                 'seller_settlement' => 'yes',
                 'settlement_date'   => $settledAt,
+                'payout_trans_id'   => $data['data']['id'] ?? null,
             ]);
 
             Mail::to($seller->email)->send(new PayoutMail([

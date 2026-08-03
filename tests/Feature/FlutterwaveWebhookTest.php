@@ -44,7 +44,10 @@ class FlutterwaveWebhookTest extends TestCase
             'data' => ['reference' => 'some-ref'],
         ]);
 
-        $response->assertStatus(200);
+        // A misconfigured secret is a server error, not an attack — Flutterwave must
+        // see a 5xx so it retries the event once FLW_WEBHOOK_HASH is set, rather than
+        // treating a 200 as "delivered" and losing the event permanently.
+        $response->assertStatus(500);
         // Must fail closed: an empty expected secret must never make hash_equals('', '')
         // short-circuit acceptance. Proven by asserting the handler never reached the
         // server-side verification call — i.e. it was rejected at the signature check.

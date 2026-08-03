@@ -103,10 +103,22 @@ class FlutterwaveController extends Controller
         $reference = $request->tx_ref;
 
         // 🔍 Lookup the booking with the stored reference
-        $booking = Payment::where('payment_reference', $reference)->first();
+        $booking = Payment::with('advert')->where('payment_reference', $reference)->first();
 
         if (!$booking) {
             return redirect()->route('payment.failed')->with('error', 'Booking not found.');
+        }
+
+        // Idempotency: a browser refresh, back-navigation, or shared link hitting
+        // this callback again must not regenerate ship_code or re-send the
+        // confirmation emails/notification for an already-processed booking.
+        // Mirrors callback_boost()'s short-circuit below.
+        if ($booking->payment_status === 'paid') {
+            return redirect()->route('buy.direct.success')->with([
+                'ad_title'  => $booking->advert->ad_title ?? '',
+                'ship_code' => $booking->ship_code,
+                'amount'    => number_format($booking->amount_paid),
+            ]);
         }
 
         // ✅ Verify with Flutterwave
@@ -118,6 +130,21 @@ class FlutterwaveController extends Controller
         $data = $response->json();
 
         if ($data['status'] === 'success' && $data['data']['status'] === 'successful') {
+            // Trust nothing about the verified payload until the amount and
+            // currency actually match what we expect for this booking —
+            // guards against a tampered/replayed reference being accepted
+            // just because Flutterwave reports "successful".
+            $expectedAmount = $booking->amount_paid;
+            if ((float) $data['data']['amount'] < (float) $expectedAmount || ($data['data']['currency'] ?? null) !== config('currency.code')) {
+                Log::warning('Flutterwave callback: amount/currency mismatch', [
+                    'ref'      => $reference,
+                    'expected' => $expectedAmount,
+                    'got'      => $data['data']['amount'] ?? null,
+                    'currency' => $data['data']['currency'] ?? null,
+                ]);
+                return redirect()->route('payment.failed')->with('error', 'Payment not successful.');
+            }
+
             $transactionId = $data['data']['id'];
             $amount = $data['data']['amount'];
             $paidAt = $data['data']['paid_at'] ?? null;
@@ -140,46 +167,72 @@ class FlutterwaveController extends Controller
 
             ]);
 
-            $user_id = $request->session()->get('user_id');
-            $user = User::where('user_id', $user_id)->first();
-             $owner = User::where('user_id', $advert->user_id)->first();
+            // Resolve the buyer from the booking's own stored user_id rather
+            // than session('user_id') — the gateway redirect back to this
+            // callback is not guaranteed to land in the same session (it may
+            // be gone entirely), and by this point the DB has already been
+            // updated as paid, so a session-based lookup risks a fatal error
+            // on a purchase that actually succeeded. Mirrors how
+            // Api\FlutterwaveController::sendPaymentConfirmationEmails
+            // resolves the buyer via User::find($payment->user_id).
+            $user = User::where('user_id', $booking->user_id)->first();
+            $owner = User::where('user_id', $advert->user_id)->first();
 
             $location = \App\Models\Lga::with('state')->where('id', $booking->city)->first();
             $ship = Shipping::where('id', $booking->shipping_method)->first();
-            //dd($ship->company);
 
             $details = [
                 'advert' => $advert->ad_title,
                 'buyer' => $booking->first_name . " " .$booking->last_name,
-                'seller' => $owner->name,
+                'seller' => $owner->name ?? '—',
                 'phone' => $booking->phone,
-                'shipping' => $ship->company,
-                'state' => $location->state->name,
-                'city' => $location->name,
-                'address' => $user->address,
+                'shipping' => $ship->company ?? 'the shipping company',
+                'state' => $location->state->name ?? null,
+                'city' => $location->name ?? null,
+                'address' => $user->address ?? null,
                 'ship_code' => $ship_code,
             ];
 
+            if ($user && $user->email) {
+                try {
+                    Mail::to($user->email)->send(new BuyDirectMail($details));
+                } catch (\Exception $e) {
+                    Log::error('Buy-direct buyer confirmation email failed: ' . $e->getMessage());
+                }
+            }
 
-            Mail::to($user->email)->send(new BuyDirectMail($details));
-            Mail::to($owner->email)->send(new SellerMail($details));
+            if ($owner && $owner->email) {
+                try {
+                    Mail::to($owner->email)->send(new SellerMail($details));
+                } catch (\Exception $e) {
+                    Log::error('Buy-direct seller notification email failed: ' . $e->getMessage());
+                }
+            }
 
             // In-app notification for the seller
             $buyerName = $booking->first_name . ' ' . $booking->last_name;
-            Notification::create([
-                'user_id'   => $owner->id,
-                'seller_id' => $user->id,
-                'advert_id' => $advert->id,
-                'type'      => 'Item Sold',
-                'message'   => "Your advert \"{$advert->ad_title}\" has been purchased by {$buyerName}.",
-                'is_read'   => 0,
-            ]);
+            if ($owner) {
+                try {
+                    Notification::create([
+                        'user_id'   => $owner->id,
+                        'seller_id' => $user->id ?? $owner->id,
+                        'advert_id' => $advert->id,
+                        'type'      => 'Item Sold',
+                        'message'   => "Your advert \"{$advert->ad_title}\" has been purchased by {$buyerName}.",
+                        'is_read'   => 0,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Buy-direct in-app notification failed: ' . $e->getMessage());
+                }
+            }
 
             // Push notification to seller (queued)
-            try {
-                SendAdSoldPushNotification::dispatch($owner, $advert, $buyerName);
-            } catch (\Exception $e) {
-                Log::error('Failed to dispatch ad sold push notification: ' . $e->getMessage());
+            if ($owner) {
+                try {
+                    SendAdSoldPushNotification::dispatch($owner, $advert, $buyerName);
+                } catch (\Exception $e) {
+                    Log::error('Failed to dispatch ad sold push notification: ' . $e->getMessage());
+                }
             }
 
             return redirect()->route('buy.direct.success')->with([

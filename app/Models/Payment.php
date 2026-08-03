@@ -35,6 +35,7 @@ class Payment extends Model
         'tracking_id',
         'seller_settlement',
         'settlement_date',
+        'payout_trans_id',
         'source',
     ];
 
@@ -65,7 +66,7 @@ class Payment extends Model
 
     public function cityLocation()
     {
-        return $this->belongsTo(GigLogistic::class, 'city');
+        return $this->belongsTo(\App\Models\Lga::class, 'city');
     }
 
     public function stateLocation()

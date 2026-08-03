@@ -19,14 +19,22 @@ class State extends Model
         return $this->hasMany(Lga::class);
     }
 
+    /**
+     * @deprecated GIG Logistics integration was retired; the gig_logistics
+     * table is empty. Kept as an alias for lgas() so any remaining callers
+     * resolve to real district data instead of silently returning nothing.
+     */
     public function gigLogistics()
     {
-        return $this->hasMany(GigLogistic::class, 'state_id');
+        return $this->lgas();
     }
 
+    /**
+     * @deprecated Alias for lgas() — see gigLogistics() above.
+     */
     public function cities()
     {
-        return $this->hasMany(GigLogistic::class, 'state_id');
+        return $this->lgas();
     }
 
     /**

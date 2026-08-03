@@ -109,7 +109,7 @@
     <meta property="og:image:alt" content="{{ $cleanTitle }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="product">
-    <meta property="og:locale" content="en_NG">
+    <meta property="og:locale" content="en_UG">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">

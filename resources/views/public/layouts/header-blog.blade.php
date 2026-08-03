@@ -72,7 +72,7 @@
     <meta property="og:image" content="{{ $featuredImage }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="article">
-    <meta property="og:locale" content="en_NG">
+    <meta property="og:locale" content="en_UG">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">

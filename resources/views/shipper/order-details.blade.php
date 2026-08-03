@@ -151,12 +151,8 @@
                             </div>
                         @endif
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Address</span>
-                            <span class="font-medium text-gray-800 text-right max-w-[60%]">{{ $city->address ?? '—' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">City</span>
-                            <span class="font-medium text-gray-800">{{ $city->city ?? '—' }}</span>
+                            <span class="text-gray-500">District</span>
+                            <span class="font-medium text-gray-800">{{ $city->name ?? '—' }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-500">Region</span>

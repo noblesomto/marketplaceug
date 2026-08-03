@@ -20,10 +20,9 @@
     $buyerStatus  = $payment->buyer_status ?? 'pending';
     $trackingId   = $payment->tracking_id ?? null;
 
-    $pickupAddress = $payment->cityLocation->address ?? null;
-    $pickupCity    = $payment->cityLocation->city ?? null;
+    $pickupCity    = $payment->cityLocation->name ?? null;
     $pickupState   = $payment->cityLocation->state->name ?? null;
-    $bannerAddress = $pickupAddress ?: trim(implode(', ', array_filter([$pickupCity, $pickupState])));
+    $bannerAddress = trim(implode(', ', array_filter([$pickupCity, $pickupState])));
 
     $isPaid       = ($payment->payment_status ?? '') === 'paid';
     $isDelivered  = $buyerStatus === 'delivered';
@@ -119,23 +118,16 @@
     @endif
 
     {{-- ── 3. Delivery / Pickup Information ── --}}
-    @if($pickupAddress || $pickupCity || $pickupState)
+    @if($pickupCity || $pickupState)
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-3 overflow-hidden">
         <div class="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-100">
             <i class="bi bi-geo-alt-fill text-dark_green"></i>
             <span class="font-semibold text-gray-700 text-xs uppercase tracking-wide">Selected Delivery / Pickup Information</span>
         </div>
         <div class="px-4 py-3 space-y-2">
-            @if($pickupAddress)
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-400 flex-shrink-0">Address</span>
-                <span class="font-medium text-gray-800 text-right">{{ $pickupAddress }}</span>
-            </div>
-            @endif
             @if($pickupCity)
-            @if($pickupAddress)<div class="border-t border-gray-50"></div>@endif
             <div class="flex justify-between">
-                <span class="text-gray-400">City</span>
+                <span class="text-gray-400">District</span>
                 <span class="font-medium text-gray-800">{{ $pickupCity }}</span>
             </div>
             @endif

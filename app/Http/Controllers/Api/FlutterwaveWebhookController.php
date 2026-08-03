@@ -20,8 +20,16 @@ class FlutterwaveWebhookController extends Controller
         $signature = $request->header('verif-hash');
         $expected  = config('services.flutterwave.webhookHash');
 
-        if (blank($expected) || !hash_equals((string) $expected, (string) $signature)) {
-            Log::error('Flutterwave webhook rejected: signature invalid or webhook secret unconfigured', ['ip' => $request->ip()]);
+        if (blank($expected)) {
+            // Server misconfiguration, not an attack — returning 200 here
+            // would tell Flutterwave the event was delivered successfully,
+            // so it would never retry and the event would be lost for good.
+            Log::error('Flutterwave webhook rejected: webhook secret unconfigured');
+            return response()->json(['message' => 'Server misconfigured'], 500);
+        }
+
+        if (!hash_equals((string) $expected, (string) $signature)) {
+            Log::error('Flutterwave webhook rejected: invalid signature', ['ip' => $request->ip()]);
             return response()->json(['message' => 'Invalid signature'], 200);
         }
 
@@ -70,14 +78,19 @@ class FlutterwaveWebhookController extends Controller
         }
 
         if ($paymentType === 'boost') {
-            $this->activateBoost($reference, (int) $verifiedData['id']);
+            $this->activateBoost(
+                $reference,
+                (int) $verifiedData['id'],
+                $verifiedData['amount'] ?? null,
+                $verifiedData['currency'] ?? null
+            );
         }
 
         // Always return 200 — Flutterwave retries on non-200
         return response()->json(['message' => 'OK'], 200);
     }
 
-    private function activateBoost(string $reference, int $transactionId): void
+    private function activateBoost(string $reference, int $transactionId, $amount = null, $currency = null): void
     {
         $boost = AdvertBoost::where('payment_reference', $reference)
             ->where('payment_status', 'pending')
@@ -86,6 +99,22 @@ class FlutterwaveWebhookController extends Controller
         if (!$boost) {
             // Already processed or record not found — log and move on
             Log::info('Flutterwave webhook: boost already processed or not found', ['ref' => $reference]);
+            return;
+        }
+
+        if ((float) $amount < (float) $boost->amount || $currency !== config('currency.code')) {
+            // Verified as "successful" by Flutterwave but the amount/currency
+            // doesn't match what this boost expects — do not activate. Log
+            // and move on (same non-retriable treatment as "already
+            // processed or not found" above); a genuine payment for this
+            // reference would never fail this check.
+            Log::warning('Flutterwave webhook: boost amount/currency mismatch, not activating', [
+                'ref'      => $reference,
+                'boost_id' => $boost->id,
+                'expected' => $boost->amount,
+                'got'      => $amount,
+                'currency' => $currency,
+            ]);
             return;
         }
 

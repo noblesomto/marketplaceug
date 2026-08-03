@@ -457,10 +457,13 @@ class UserProfile extends Controller
                 'ads_count' => $count_ads,
                 'banks' => $banks,
                 'payment_info' => [
+                    'payout_method' => $user->payout_method,
                     'bank_name' => $user->bank_name,
                     'bank_code' => $user->bank_code,
                     'account_name' => $user->account_name,
                     'account_number' => $user->account_number,
+                    'mobile_network' => $user->mobile_network,
+                    'mobile_money_number' => $user->mobile_money_number,
                 ]
             ]
         ]);
@@ -475,11 +478,14 @@ class UserProfile extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"bank_name", "paystack_bank_code", "account_number", "account_name"},
+     *             required={"payout_method"},
+     *             @OA\Property(property="payout_method", type="string", enum={"bank", "mobile_money"}),
      *             @OA\Property(property="bank_name", type="string"),
      *             @OA\Property(property="paystack_bank_code", type="string"),
      *             @OA\Property(property="account_number", type="string"),
-     *             @OA\Property(property="account_name", type="string")
+     *             @OA\Property(property="account_name", type="string"),
+     *             @OA\Property(property="mobile_network", type="string", enum={"MTN", "AIRTEL"}),
+     *             @OA\Property(property="mobile_money_number", type="string")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Payment info updated")
@@ -490,10 +496,13 @@ class UserProfile extends Controller
         $user = auth()->user();
 
         $validator = Validator::make($request->all(), [
-            'bank_name' => 'required|string',
-            'paystack_bank_code' => 'required|string',
-            'account_number' => 'required|string',
-            'account_name' => 'required|string',
+            'payout_method' => 'required|in:bank,mobile_money',
+            'bank_name' => 'required_if:payout_method,bank|string',
+            'paystack_bank_code' => 'required_if:payout_method,bank|string',
+            'account_number' => 'required_if:payout_method,bank|string',
+            'account_name' => 'required_if:payout_method,bank|string',
+            'mobile_network' => 'required_if:payout_method,mobile_money|in:MTN,AIRTEL',
+            'mobile_money_number' => ['required_if:payout_method,mobile_money', new UgandanPhoneNumber()],
         ]);
 
         if ($validator->fails()) {
@@ -504,10 +513,13 @@ class UserProfile extends Controller
         }
 
         $user->update([
+            'payout_method' => $request->payout_method,
             'bank_name' => $request->bank_name,
             'bank_code' => $request->paystack_bank_code,
             'account_name' => $request->account_name,
             'account_number' => $request->account_number,
+            'mobile_network' => $request->mobile_network,
+            'mobile_money_number' => $request->mobile_money_number,
         ]);
 
         return response()->json([

@@ -212,13 +212,14 @@ class FlutterwaveController extends Controller
         if ($data['status'] === 'success' && $data['data']['status'] === 'successful') {
             $transactionId = $data['data']['id'];
             $amount = $data['data']['amount'];
+            $currency = $data['data']['currency'] ?? null;
             $metadata = $data['data']['metadata'];
             $paymentType = $metadata['payment_type'] ?? 'buy_direct';
 
             if ($paymentType === 'buy_direct') {
-                return $this->handleBuyDirectPayment($reference, $transactionId, $amount, $metadata);
+                return $this->handleBuyDirectPayment($reference, $transactionId, $amount, $metadata, $currency);
             } elseif ($paymentType === 'boost') {
-                return $this->handleBoostPayment($reference, $transactionId, $amount, $metadata);
+                return $this->handleBoostPayment($reference, $transactionId, $amount, $metadata, $currency);
             }
 
             return response()->json([
@@ -233,7 +234,7 @@ class FlutterwaveController extends Controller
         ], 400);
     }
 
-    private function handleBuyDirectPayment($reference, $transactionId, $amount, $metadata)
+    private function handleBuyDirectPayment($reference, $transactionId, $amount, $metadata, $currency = null)
     {
         $payment = Payment::where('payment_reference', $reference)->first();
 
@@ -242,6 +243,19 @@ class FlutterwaveController extends Controller
                 'success' => false,
                 'message' => 'Payment record not found'
             ], 404);
+        }
+
+        if ((float) $amount < (float) $payment->amount_paid || $currency !== config('currency.code')) {
+            Log::warning('Flutterwave API callback: amount/currency mismatch', [
+                'ref'      => $reference,
+                'expected' => $payment->amount_paid,
+                'got'      => $amount,
+                'currency' => $currency,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment verification failed'
+            ], 400);
         }
 
         $shipCode = Str::upper(Str::random(10));
@@ -388,7 +402,7 @@ class FlutterwaveController extends Controller
         ], 400);
     }
 
-    private function handleBoostPayment($reference, $transactionId, $amount, $metadata)
+    private function handleBoostPayment($reference, $transactionId, $amount, $metadata, $currency = null)
     {
         $boost = AdvertBoost::where('payment_reference', $reference)->first();
 
@@ -397,6 +411,19 @@ class FlutterwaveController extends Controller
                 'success' => false,
                 'message' => 'Boost record not found'
             ], 404);
+        }
+
+        if ((float) $amount < (float) $boost->amount || $currency !== config('currency.code')) {
+            Log::warning('Flutterwave API callback: boost amount/currency mismatch', [
+                'ref'      => $reference,
+                'expected' => $boost->amount,
+                'got'      => $amount,
+                'currency' => $currency,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment verification failed'
+            ], 400);
         }
 
         DB::transaction(function () use ($boost, $transactionId, $amount) {

@@ -39,8 +39,7 @@ class ShippingStatusNotifier
             'shipping'     => $company,
             'tracking_id'  => $payment->tracking_id,
             'shipped_date' => now(),
-            'address'      => $city->address ?? '—',
-            'city'         => $city->city ?? '—',
+            'city'         => $city->name ?? '—',
             'state'        => $city->state->name ?? '—',
         ];
 

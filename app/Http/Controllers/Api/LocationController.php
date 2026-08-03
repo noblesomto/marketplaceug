@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\State;
 use App\Models\Lga;
-use App\Models\GigLogistic;
 use App\Models\User;
 use App\Models\Advert;
 use Illuminate\Http\Request;
@@ -101,8 +100,9 @@ class LocationController extends Controller
             ], 404);
         }
 
-        $cities = GigLogistic::where('state_id', $state_id)
-            ->select('id', 'city', 'address')
+        $cities = Lga::where('state_id', $state_id)
+            ->select('id', 'name')
+            ->orderBy('name')
             ->get();
 
         return response()->json([
@@ -190,17 +190,17 @@ class LocationController extends Controller
             ], 422);
         }
 
-        $query = GigLogistic::with('state');
+        $query = Lga::with('state');
 
         if ($request->has('search')) {
-            $query->where('city', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         if ($request->has('state_id')) {
             $query->where('state_id', $request->state_id);
         }
 
-        $cities = $query->select('id', 'city', 'address', 'state_id')
+        $cities = $query->select('id', 'name', 'state_id')
             ->limit($request->limit ?? 10)
             ->get();
 
@@ -238,7 +238,7 @@ class LocationController extends Controller
      */
     public function getCity($city_id)
     {
-        $city = GigLogistic::with('state')->find($city_id);
+        $city = Lga::with('state')->find($city_id);
 
         if (!$city) {
             return response()->json([
@@ -281,8 +281,8 @@ class LocationController extends Controller
      */
     public function getStateWithCities($state_id)
     {
-        $state = State::with(['cities' => function($query) {
-            $query->select('id', 'city', 'address', 'state_id');
+        $state = State::with(['lgas' => function($query) {
+            $query->select('id', 'name', 'state_id');
         }])->find($state_id);
 
         if (!$state) {

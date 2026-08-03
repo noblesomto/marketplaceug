@@ -15,8 +15,7 @@
     $trackingId   = $ad->tracking_id ?? null;
     $shipStatus   = $ad->shipping_status ?? 'pending';
     $sellerStatus = $ad->seller_status ?? 'pending';
-    $city         = $ad->cityLocation->city ?? null;
-    $address      = $ad->cityLocation->address ?? null;
+    $city         = $ad->cityLocation->name ?? null;
     $stateName    = $ad->cityLocation->state->name ?? null;
     $isDelivered  = ($ad->buyer_status ?? '') === 'delivered';
 
@@ -110,23 +109,16 @@
     </div>
 
     {{-- ── 4. Delivery / Pickup Information ── --}}
-    @if($address || $city || $stateName)
+    @if($city || $stateName)
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-3 overflow-hidden">
         <div class="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-100">
             <i class="bi bi-geo-alt-fill text-dark_green"></i>
             <span class="font-semibold text-gray-700 text-xs uppercase tracking-wide">Selected Delivery / Pickup Location</span>
         </div>
         <div class="px-4 py-3 space-y-2">
-            @if($address)
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-400 flex-shrink-0">Address</span>
-                <span class="font-medium text-gray-800 text-right">{{ $address }}</span>
-            </div>
-            @endif
             @if($city)
-            <div class="border-t border-gray-50"></div>
             <div class="flex justify-between">
-                <span class="text-gray-400">City</span>
+                <span class="text-gray-400">District</span>
                 <span class="font-medium text-gray-800">{{ $city }}</span>
             </div>
             @endif
