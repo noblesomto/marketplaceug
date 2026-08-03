@@ -291,10 +291,13 @@ class UserProfile extends Controller
             $user = DB::table('users')
                 ->where('user_id', $user_id)
                 ->update([
+                    'payout_method'=> $request->input('payout_method'),
                     'bank_name'=> $request->input('bank_name'),
                     'bank_code'=> $request->input('paystack_bank_code'),
                     'account_name'=> $request->input('account_name'),
                     'account_number'=> $request->input('account_number'),
+                    'mobile_network'=> $request->input('mobile_network'),
+                    'mobile_money_number'=> $request->input('mobile_money_number'),
                 ]);
 
 
