@@ -102,7 +102,7 @@ class FlutterwaveWebhookController extends Controller
             return;
         }
 
-        if ((float) $amount < (float) $boost->amount || $currency !== config('currency.code')) {
+        if (round((float) $amount) < round((float) $boost->amount) || $currency !== config('currency.code')) {
             // Verified as "successful" by Flutterwave but the amount/currency
             // doesn't match what this boost expects — do not activate. Log
             // and move on (same non-retriable treatment as "already

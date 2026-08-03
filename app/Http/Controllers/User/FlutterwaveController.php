@@ -135,7 +135,7 @@ class FlutterwaveController extends Controller
             // guards against a tampered/replayed reference being accepted
             // just because Flutterwave reports "successful".
             $expectedAmount = $booking->amount_paid;
-            if ((float) $data['data']['amount'] < (float) $expectedAmount || ($data['data']['currency'] ?? null) !== config('currency.code')) {
+            if (round((float) $data['data']['amount']) < round((float) $expectedAmount) || ($data['data']['currency'] ?? null) !== config('currency.code')) {
                 Log::warning('Flutterwave callback: amount/currency mismatch', [
                     'ref'      => $reference,
                     'expected' => $expectedAmount,

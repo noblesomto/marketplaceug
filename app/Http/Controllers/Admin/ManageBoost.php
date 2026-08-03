@@ -195,7 +195,7 @@ class ManageBoost extends Controller
         $verifiedAmount   = $response['data']['amount'] ?? null;
         $verifiedCurrency = $response['data']['currency'] ?? null;
 
-        if ((float) $verifiedAmount < (float) $boost->amount || $verifiedCurrency !== config('currency.code')) {
+        if (round((float) $verifiedAmount) < round((float) $boost->amount) || $verifiedCurrency !== config('currency.code')) {
             Log::warning('Admin verify-and-activate: amount/currency mismatch', [
                 'boost_id' => $boost->id,
                 'expected' => $boost->amount,

@@ -245,7 +245,7 @@ class FlutterwaveController extends Controller
             ], 404);
         }
 
-        if ((float) $amount < (float) $payment->amount_paid || $currency !== config('currency.code')) {
+        if (round((float) $amount) < round((float) $payment->amount_paid) || $currency !== config('currency.code')) {
             Log::warning('Flutterwave API callback: amount/currency mismatch', [
                 'ref'      => $reference,
                 'expected' => $payment->amount_paid,
@@ -413,7 +413,7 @@ class FlutterwaveController extends Controller
             ], 404);
         }
 
-        if ((float) $amount < (float) $boost->amount || $currency !== config('currency.code')) {
+        if (round((float) $amount) < round((float) $boost->amount) || $currency !== config('currency.code')) {
             Log::warning('Flutterwave API callback: boost amount/currency mismatch', [
                 'ref'      => $reference,
                 'expected' => $boost->amount,
