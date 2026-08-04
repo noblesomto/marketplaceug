@@ -46,43 +46,10 @@
 				            @endif
 <select name="state" id="state" class="w-full bg-body-100 px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     <option value="" {{ old('state', $user->state ?? '') == '' ? 'selected' : '' }}>- Select Region -</option>
-    <option value="Abia" {{ old('state', $user->state ?? '') == 'Abia' ? 'selected' : '' }}>Abia</option>
-    <option value="Adamawa" {{ old('state', $user->state ?? '') == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>
-    <option value="Akwa Ibom" {{ old('state', $user->state ?? '') == 'Akwa Ibom' ? 'selected' : '' }}>Akwa Ibom</option>
-    <option value="Anambra" {{ old('state', $user->state ?? '') == 'Anambra' ? 'selected' : '' }}>Anambra</option>
-    <option value="Bauchi" {{ old('state', $user->state ?? '') == 'Bauchi' ? 'selected' : '' }}>Bauchi</option>
-    <option value="Bayelsa" {{ old('state', $user->state ?? '') == 'Bayelsa' ? 'selected' : '' }}>Bayelsa</option>
-    <option value="Benue" {{ old('state', $user->state ?? '') == 'Benue' ? 'selected' : '' }}>Benue</option>
-    <option value="Borno" {{ old('state', $user->state ?? '') == 'Borno' ? 'selected' : '' }}>Borno</option>
-    <option value="Cross River" {{ old('state', $user->state ?? '') == 'Cross River' ? 'selected' : '' }}>Cross River</option>
-    <option value="Delta" {{ old('state', $user->state ?? '') == 'Delta' ? 'selected' : '' }}>Delta</option>
-    <option value="Ebonyi" {{ old('state', $user->state ?? '') == 'Ebonyi' ? 'selected' : '' }}>Ebonyi</option>
-    <option value="Edo" {{ old('state', $user->state ?? '') == 'Edo' ? 'selected' : '' }}>Edo</option>
-    <option value="Ekiti" {{ old('state', $user->state ?? '') == 'Ekiti' ? 'selected' : '' }}>Ekiti</option>
-    <option value="Enugu" {{ old('state', $user->state ?? '') == 'Enugu' ? 'selected' : '' }}>Enugu</option>
-    <option value="FCT - Abuja" {{ old('state', $user->state ?? '') == 'FCT - Abuja' ? 'selected' : '' }}>FCT - Abuja</option>
-    <option value="Gombe" {{ old('state', $user->state ?? '') == 'Gombe' ? 'selected' : '' }}>Gombe</option>
-    <option value="Imo" {{ old('state', $user->state ?? '') == 'Imo' ? 'selected' : '' }}>Imo</option>
-    <option value="Jigawa" {{ old('state', $user->state ?? '') == 'Jigawa' ? 'selected' : '' }}>Jigawa</option>
-    <option value="Kaduna" {{ old('state', $user->state ?? '') == 'Kaduna' ? 'selected' : '' }}>Kaduna</option>
-    <option value="Kano" {{ old('state', $user->state ?? '') == 'Kano' ? 'selected' : '' }}>Kano</option>
-    <option value="Katsina" {{ old('state', $user->state ?? '') == 'Katsina' ? 'selected' : '' }}>Katsina</option>
-    <option value="Kebbi" {{ old('state', $user->state ?? '') == 'Kebbi' ? 'selected' : '' }}>Kebbi</option>
-    <option value="Kogi" {{ old('state', $user->state ?? '') == 'Kogi' ? 'selected' : '' }}>Kogi</option>
-    <option value="Kwara" {{ old('state', $user->state ?? '') == 'Kwara' ? 'selected' : '' }}>Kwara</option>
-    <option value="Lagos" {{ old('state', $user->state ?? '') == 'Lagos' ? 'selected' : '' }}>Lagos</option>
-    <option value="Nasarawa" {{ old('state', $user->state ?? '') == 'Nasarawa' ? 'selected' : '' }}>Nasarawa</option>
-    <option value="Niger" {{ old('state', $user->state ?? '') == 'Niger' ? 'selected' : '' }}>Niger</option>
-    <option value="Ogun" {{ old('state', $user->state ?? '') == 'Ogun' ? 'selected' : '' }}>Ogun</option>
-    <option value="Ondo" {{ old('state', $user->state ?? '') == 'Ondo' ? 'selected' : '' }}>Ondo</option>
-    <option value="Osun" {{ old('state', $user->state ?? '') == 'Osun' ? 'selected' : '' }}>Osun</option>
-    <option value="Oyo" {{ old('state', $user->state ?? '') == 'Oyo' ? 'selected' : '' }}>Oyo</option>
-    <option value="Plateau" {{ old('state', $user->state ?? '') == 'Plateau' ? 'selected' : '' }}>Plateau</option>
-    <option value="Rivers" {{ old('state', $user->state ?? '') == 'Rivers' ? 'selected' : '' }}>Rivers</option>
-    <option value="Sokoto" {{ old('state', $user->state ?? '') == 'Sokoto' ? 'selected' : '' }}>Sokoto</option>
-    <option value="Taraba" {{ old('state', $user->state ?? '') == 'Taraba' ? 'selected' : '' }}>Taraba</option>
-    <option value="Yobe" {{ old('state', $user->state ?? '') == 'Yobe' ? 'selected' : '' }}>Yobe</option>
-    <option value="Zamfara" {{ old('state', $user->state ?? '') == 'Zamfara' ? 'selected' : '' }}>Zamfara</option>
+    <option value="Central" {{ old('state', $user->state ?? '') == 'Central' ? 'selected' : '' }}>Central</option>
+    <option value="Eastern" {{ old('state', $user->state ?? '') == 'Eastern' ? 'selected' : '' }}>Eastern</option>
+    <option value="Northern" {{ old('state', $user->state ?? '') == 'Northern' ? 'selected' : '' }}>Northern</option>
+    <option value="Western" {{ old('state', $user->state ?? '') == 'Western' ? 'selected' : '' }}>Western</option>
 </select>
 				        </div>
 

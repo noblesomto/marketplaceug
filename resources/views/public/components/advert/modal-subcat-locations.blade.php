@@ -13,10 +13,7 @@
     <div class="space-y-4">
       @php
        $states = [
-           'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River',
-           'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT - Abuja', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
-           'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo',
-           'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
+           'Central', 'Eastern', 'Northern', 'Western'
        ];
 
        $advertsByState = collect(getAdvertsGroupedByState(['sub_category' => $subcat->id]))->keyBy('state');
