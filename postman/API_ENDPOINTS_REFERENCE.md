@@ -1,4 +1,4 @@
-# Marketplace Nigeria - Complete API Endpoints Reference
+# Marketplace Uganda - Complete API Endpoints Reference
 
 ## 📋 Quick Reference Guide
 
@@ -287,7 +287,7 @@ In Postman:
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "phone": "08012345678",
+  "phone": "0701234567",
   "password": "Password123!",
   "password_confirmation": "Password123!"
 }
@@ -312,8 +312,8 @@ In Postman:
   "price_type": "fixed",
   "description": "Brand new in box",
   "state": 25,
-  "lga": "Ikeja",
-  "phone": "08012345678",
+  "lga": "Kampala",
+  "phone": "0701234567",
   "item_condition": "new",
   "negotiable": true
 }
@@ -326,7 +326,7 @@ In Postman:
   "subcategory": 6,
   "min_price": 100000,
   "max_price": 500000,
-  "state": "lagos",
+  "state": "central",
   "condition": "new",
   "brand": 15
 }
@@ -448,6 +448,6 @@ In Postman:
 
 ---
 
-*Complete API Reference for Marketplace Nigeria*
+*Complete API Reference for Marketplace Uganda*
 *Version 1.0 - January 2026*
 *Total: 127 Endpoints*

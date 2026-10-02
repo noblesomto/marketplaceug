@@ -8,7 +8,7 @@
 
 2. **Import Collection:**
    - Click "Import" button (top left)
-   - Drag and drop `Marketplace_Nigeria_API_Complete.postman_collection.json`
+   - Drag and drop `Marketplace-API-Complete.postman_collection.json`
    - Or click "Upload Files" and select the file
    - Click "Import"
 
@@ -23,12 +23,12 @@
 
 1. Click the **environment dropdown** (top right, next to the eye icon)
 2. Select either:
-   - **"Marketplace Nigeria - Local"** for development
-   - **"Marketplace Nigeria - Production"** for live API
+   - **"Marketplace Uganda - Local"** for development
+   - **"Marketplace Uganda - Production"** for live API
 
 ### Step 3: First Request (Login)
 
-1. In Collections panel, expand **"Marketplace Nigeria - Complete API"**
+1. In Collections panel, expand **"Marketplace Uganda - Complete API"**
 2. Open folder **"1. Authentication"**
 3. Click on **"Login"** request
 4. In the **Body** tab, update:
@@ -91,7 +91,7 @@ The collection uses **automatic token management**:
 
 **Setup:**
 1. Ensure local server is running: `php artisan serve --port=8030`
-2. Select "Marketplace Nigeria - Local" environment
+2. Select "Marketplace Uganda - Local" environment
 3. Run Login request
 4. Start testing!
 
@@ -99,10 +99,10 @@ The collection uses **automatic token management**:
 
 **When to use:** Testing against live server
 
-**Base URL:** `https://www.marketplace.ng`
+**Base URL:** `https://www.marketplace.ug`
 
 **Setup:**
-1. Select "Marketplace Nigeria - Production" environment
+1. Select "Marketplace Uganda - Production" environment
 2. Use real account credentials
 3. Run Login request
 4. Start testing!
@@ -206,11 +206,11 @@ For multiple images:
 ### Basic Search
 
 ```
-GET /api/search?q=iphone&state=lagos
+GET /api/search?q=iphone&state=central
 ```
 
 Variables in URL:
-- `{{base_url}}/api/search?q=iphone&state=lagos`
+- `{{base_url}}/api/search?q=iphone&state=central`
 
 ### Advanced Filter
 
@@ -221,7 +221,7 @@ POST /api/search/filter
   "subcategory": 6,
   "min_price": 100000,
   "max_price": 500000,
-  "state": "lagos",
+  "state": "central",
   "condition": "new",
   "brand": 15
 }
@@ -311,7 +311,7 @@ POST /api/search/filter
    - Select environment
    - Choose folder or all requests
    - Set iterations (how many times to run)
-4. Click **"Run Marketplace Nigeria - Complete API"**
+4. Click **"Run Marketplace Uganda - Complete API"**
 5. Watch automated test execution!
 
 ### View Results
@@ -535,5 +535,5 @@ You now have:
 ---
 
 *Last Updated: January 2026*
-*Marketplace Nigeria*
+*Marketplace Uganda*
 *Postman Collection v1.0*

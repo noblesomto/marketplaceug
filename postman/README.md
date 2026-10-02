@@ -1,8 +1,8 @@
-# Marketplace Nigeria - Postman API Collection
+# Marketplace Uganda - Postman API Collection
 
 ## 📦 Complete API Documentation for Mobile App Integration
 
-This directory contains a production-ready Postman collection for the Marketplace Nigeria API, designed for seamless mobile app integration.
+This directory contains a production-ready Postman collection for the Marketplace Uganda API, designed for seamless mobile app integration.
 
 ---
 
@@ -12,13 +12,13 @@ This directory contains a production-ready Postman collection for the Marketplac
 
 1. **Open Postman**
 2. **Import Files:**
-   - `Marketplace_Nigeria_API_Complete.postman_collection.json`
+   - `Marketplace-API-Complete.postman_collection.json`
    - `environments/Local.postman_environment.json`
    - `environments/Production.postman_environment.json`
 
 3. **Select Environment:**
    - Click the environment dropdown (top right)
-   - Select "Marketplace Nigeria - Local" or "Production"
+   - Select "Marketplace Uganda - Local" or "Production"
 
 ### 2. Authenticate
 
@@ -213,5 +213,5 @@ headers: {
 
 ---
 
-*Marketplace Nigeria API v1.0*
+*Marketplace Uganda API v1.0*
 *Complete Documentation*

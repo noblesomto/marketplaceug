@@ -9,7 +9,7 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
 {
     "name": "John Doe",
     "email": "john.doe@example.com",
-    "phone": "+2348012345678",
+    "phone": "+256701234567",
     "password": "password123",
     "password_confirmation": "password123"
 }
@@ -108,8 +108,8 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
     "item_condition": "New",
     "quantity": 1,
     "buy_direct": "Yes",
-    "state": "Lagos",
-    "lga": "Ikeja",
+    "state": "Central",
+    "lga": "Kampala",
     "shipment": "Ship",
     "show_contact": "No"
 }
@@ -172,7 +172,7 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
 {
     "cover_letter": "I am interested in this position and would like to apply...",
     "cv": "base64_encoded_cv_or_file_path",
-    "phone": "+2348012345678"
+    "phone": "+256701234567"
 }
 ```
 
@@ -222,8 +222,8 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
     "amount": 50000,
     "shipping_cost": 5000,
     "total": 55000,
-    "delivery_address": "123 Main Street, Ikeja, Lagos",
-    "delivery_phone": "+2348012345678"
+    "delivery_address": "123 Main Street, Kampala, Central",
+    "delivery_phone": "+256701234567"
 }
 ```
 
@@ -263,7 +263,7 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
     "category": "4",
     "min_price": 10000,
     "max_price": 1000000,
-    "state": "Lagos",
+    "state": "Central",
     "condition": "New"
 }
 ```
@@ -285,8 +285,8 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
 ### Calculate Shipping Cost
 ```json
 {
-    "from_state": "Lagos",
-    "to_state": "Abuja",
+    "from_state": "Central",
+    "to_state": "Eastern",
     "weight": 5,
     "advert_id": "67890"
 }
@@ -301,16 +301,16 @@ All POST, PUT, and PATCH requests in the collection include ready-to-use sample 
 ### Update Address
 ```json
 {
-    "state": "Lagos",
-    "lga": "Ikeja",
-    "address": "123 Main Street, Ikeja, Lagos"
+    "state": "Central",
+    "lga": "Kampala",
+    "address": "123 Main Street, Kampala, Central"
 }
 ```
 
 ### Update Phone Number
 ```json
 {
-    "phone": "+2348012345678"
+    "phone": "+256701234567"
 }
 ```
 
@@ -445,7 +445,7 @@ Replace sample email and phone with your test account:
 ```json
 {
     "email": "your-test-email@example.com",
-    "phone": "+234XXXXXXXXXX"
+    "phone": "+256XXXXXXXXX"
 }
 ```
 
@@ -491,14 +491,11 @@ Pre-filled variables that auto-update:
 
 ## 🔄 Common Field Values
 
-### States (Nigeria)
-- `Lagos`
-- `Abuja`
-- `Rivers`
-- `Kano`
-- `Oyo`
-- `Delta`
-- etc.
+### Regions (Uganda)
+- `Central`
+- `Eastern`
+- `Northern`
+- `Western`
 
 ### Categories (Sample IDs)
 - `1` - Vehicles
@@ -511,8 +508,8 @@ Pre-filled variables that auto-update:
 - etc.
 
 ### Phone Format
-- Must include country code: `+234`
-- Example: `+2348012345678`
+- Must include country code: `+256`
+- Example: `+256701234567`
 
 ### Date Format
 - `YYYY-MM-DD`

@@ -1,6 +1,6 @@
 # 🚀 Quick Start Guide - Postman Collection
 
-Get started with the Marketplace Nigeria API in 3 minutes!
+Get started with the Marketplace Uganda API in 3 minutes!
 
 ## 📦 Files You Need
 
@@ -26,8 +26,8 @@ All files are in the `postman/` folder:
 ### Step 2: Select Environment (10 seconds)
 
 - Click the environment dropdown (top right)
-- Select **"Marketplace Nigeria - Local"** for local testing
-- OR **"Marketplace Nigeria - Production"** for production
+- Select **"Marketplace Uganda - Local"** for local testing
+- OR **"Marketplace Uganda - Production"** for production
 
 ### Step 3: Test Your First Request (2 minutes)
 
@@ -90,7 +90,7 @@ All files are in the `postman/` folder:
 
 ### 🌍 Dual Environment Support
 - **Local**: `http://127.0.0.1:8030`
-- **Production**: `https://www.marketplace.ng`
+- **Production**: `https://www.marketplace.ug`
 - Switch with one click
 
 ### 🔒 Authentication Indicators
@@ -183,7 +183,7 @@ All files are in the `postman/` folder:
 
 | Variable | Local | Production | Auto-Set? |
 |----------|-------|------------|-----------|
-| `base_url` | http://127.0.0.1:8030 | https://www.marketplace.ng | ✅ |
+| `base_url` | http://127.0.0.1:8030 | https://www.marketplace.ug | ✅ |
 | `auth_token` | (empty) | (empty) | ✅ After login |
 | `test_email` | test@example.com | your-email@example.com | ❌ Update |
 | `test_password` | password | your-password | ❌ Update |

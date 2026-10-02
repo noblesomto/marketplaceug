@@ -42,7 +42,7 @@ class AccountController extends Controller
      *       "name": "John Doe",
      *       "email": "john@example.com",
      *       "acc_type": "Private",
-     *       "phone": "08012345678"
+     *       "phone": "0701234567"
      *     },
      *     "token": "1|abcdefghijklmnopqrstuvwxyz1234567890"
      *   }
@@ -136,7 +136,7 @@ class AccountController extends Controller
      *       "name": "John Doe",
      *       "email": "john@example.com",
      *       "acc_type": "Private",
-     *       "phone": "08012345678"
+     *       "phone": "0701234567"
      *     },
      *     "token": "1|abcdefghijklmnopqrstuvwxyz1234567890"
      *   }
@@ -663,7 +663,7 @@ class AccountController extends Controller
      *     "user_id": "USR123456",
      *     "name": "John Doe",
      *     "email": "john@example.com",
-     *     "phone": "08012345678",
+     *     "phone": "0701234567",
      *     "acc_type": "Private",
      *     "acc_status": 1,
      *     "disable_account": "no",
