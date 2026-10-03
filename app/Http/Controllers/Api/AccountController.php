@@ -19,6 +19,7 @@ use Illuminate\Validation\Rule;
 use App\Rules\UgandanPhoneNumber;
 use App\Rules\AllowedName;
 use App\Helpers\ContentHelper;
+use App\Support\ActivityLog;
 
 class AccountController extends Controller
 {
@@ -81,11 +82,12 @@ class AccountController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // Validate user status
+        // Same message as a wrong password below — don't let a caller use this
+        // endpoint to discover which emails have accounts.
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Email address does not exist.'
+                'message' => 'Invalid email or password.'
             ], 401);
         }
 
@@ -106,9 +108,13 @@ class AccountController extends Controller
         }
 
         if (!Hash::check($request->password, $user->password)) {
+            ActivityLog::record('auth', 'Failed login attempt (wrong password)', $user, $user, [
+                'ip' => $request->ip(),
+                'source' => 'app',
+            ]);
             return response()->json([
                 'status' => false,
-                'message' => 'Incorrect password.'
+                'message' => 'Invalid email or password.'
             ], 401);
         }
 
@@ -355,6 +361,7 @@ class AccountController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'acc_type' => $request->acc_type,
+                'source' => 'app',
                 'token' => $token,
                 'acc_status' => 0,
                 'password' => Hash::make($request->password),
@@ -365,6 +372,8 @@ class AccountController extends Controller
                 'token' => $token,
                 'name' => $user->name,
             ]));
+
+            ActivityLog::record('auth', 'Registered via app', $user, $user, ['source' => 'app']);
 
             DB::commit();
 
@@ -414,9 +423,25 @@ class AccountController extends Controller
      */
     public function verifyAccount($email, $token)
     {
-        $user = User::where('email', $email)->where('token', $token)->first();
+        $user = User::where('email', $email)->first();
 
         if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid verification link.'
+            ], 400);
+        }
+
+        // Account already verified (e.g. via a newer link, or this one clicked twice) —
+        // treat as success instead of failing on the now-cleared token.
+        if ($user->acc_status == 1) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Email verified successfully. You can now login.'
+            ]);
+        }
+
+        if ($user->token !== $token) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid verification link.'
@@ -472,8 +497,12 @@ class AccountController extends Controller
             ], 400);
         }
 
-        $token = Str::random(40);
-        $user->update(['token' => $token]);
+        // Reuse the existing token when one is already pending so a resend doesn't
+        // invalidate a link the user already received in an earlier email.
+        $token = $user->token ?: Str::random(40);
+        if (!$user->token) {
+            $user->update(['token' => $token]);
+        }
 
         try {
             Mail::to($user->email)->queue(new RegisterMail([
@@ -638,6 +667,8 @@ class AccountController extends Controller
                 ->delete();
         }
 
+        ActivityLog::record('auth', 'Logged out (app)', $request->user(), $request->user());
+
         // Revoke the Sanctum API token
         $request->user()->currentAccessToken()->delete();
 
@@ -789,6 +820,12 @@ class AccountController extends Controller
 
             $user = $this->findOrCreateAppleUser($appleUser->sub, $email, $fullName);
 
+            // Apple sign-up never collects a phone number — flag any account still
+            // missing one (brand-new or returning) so the app prompts right after
+            // login, before the user reaches any phone-gated action. This is a UX
+            // hint only; the phone-complete guard still enforces it when posting an advert.
+            $requiresPhone = empty($user->phone);
+
             $user->update([
                 'last_login_ip' => $request->ip(),
                 'last_login_at' => now(),
@@ -800,6 +837,7 @@ class AccountController extends Controller
             return response()->json([
                 'status'  => true,
                 'message' => 'Apple login successful.',
+                'requires_phone' => $requiresPhone,
                 'data'    => [
                     'user'  => $user,
                     'token' => $token,
@@ -889,6 +927,12 @@ class AccountController extends Controller
             // Find or create user
             $user = $this->findOrCreateSocialUser($socialUser, $request->provider);
 
+            // Google/Facebook sign-up never collects a phone number — flag any account
+            // still missing one (brand-new or returning) so the app prompts right after
+            // login, before the user reaches any phone-gated action. This is a UX hint
+            // only; the phone-complete guard still enforces it when posting an advert.
+            $requiresPhone = empty($user->phone);
+
             // Update login activity
             $user->update([
                 'last_login_ip' => $request->ip(),
@@ -902,6 +946,7 @@ class AccountController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Social login successful.',
+                'requires_phone' => $requiresPhone,
                 'data' => [
                     'user' => $user,
                     'token' => $token,
@@ -1116,6 +1161,11 @@ class AccountController extends Controller
 
     protected function completeLogin($user, Request $request, $trustDevice = false)
     {
+        ActivityLog::record('auth', 'Logged in via app', $user, $user, [
+            'ip' => $request->ip(),
+            'source' => 'app',
+        ]);
+
         // Revoke old tokens (optional: keep only 3 most recent)
         $user->tokens()->where('created_at', '<', now()->subDays(30))->delete();
 

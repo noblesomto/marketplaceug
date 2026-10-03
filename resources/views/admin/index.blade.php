@@ -886,10 +886,10 @@
                             <i class="bi bi-flag"></i>
                         </div>
                         <div class="activity-body">
-                            <div class="activity-body-title">{{ Str::limit($report->reason ?? 'Report', 60) }}</div>
+                            <div class="activity-body-title">{{ Str::limit($report->subject ?? 'Report', 60) }}</div>
                             <div class="activity-body-meta">
                                 by {{ $report->user->name ?? 'Unknown' }} ·
-                                Ad: {{ Str::limit($report->adverts->title ?? 'N/A', 30) }} ·
+                                Ad: {{ Str::limit($report->display_ad_title, 30) }} ·
                                 {{ $report->created_at->diffForHumans() }}
                             </div>
                         </div>

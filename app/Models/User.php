@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasMedia
         'verified',
         'acc_status',
         'acc_type',
+        'source',
         'token',
         'otp',
         'profile_picture',

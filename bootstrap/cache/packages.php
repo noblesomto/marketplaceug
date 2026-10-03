@@ -149,4 +149,11 @@
       0 => 'Spatie\\Sitemap\\SitemapServiceProvider',
     ),
   ),
+  'spatie/laravel-activitylog' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    ),
+  ),
 );

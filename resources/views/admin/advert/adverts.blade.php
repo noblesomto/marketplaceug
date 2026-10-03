@@ -108,8 +108,10 @@
                         <span class="badge bg-success">Active</span>
                       @elseif($row->ad_status == 'disabled')
                         <span class="badge bg-warning text-dark">Disabled</span>
+                      @elseif($row->ad_status == 'pending_review')
+                        <span class="badge bg-info text-dark">Pending Review</span>
                       @else
-                        <span class="badge bg-danger text-dark">Banned</span>
+                        <span class="badge bg-danger">Banned</span>
                       @endif
                     </td>
                     <td>
@@ -122,8 +124,21 @@
                     <td>
                       <div class="btn-group" role="group">
                         @if($row->ad_status == 'active')
-                          <a href="/admin/advert-status/{{ $row->id }}/banned" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Disable/Ban">
+                          <button type="button" class="btn btn-sm btn-outline-warning"
+                                  onclick="showBanModal('{{ $row->id }}', {{ Js::from(Str::limit($row->ad_title, 40)) }})"
+                                  data-bs-toggle="tooltip" title="Disable/Ban">
                             <i class="bi bi-x-circle"></i>
+                          </button>
+                        @elseif($row->ad_status == 'banned')
+                          <button type="button" class="btn btn-sm btn-outline-success"
+                                  onclick="return confirm('Re-enable this advert? It will become visible to the public again.') && submitAdvertAction('{{ route('admin.advert.approve', $row->id) }}')"
+                                  data-bs-toggle="tooltip" title="Approve / Enable">
+                            <i class="bi bi-check-all"></i>
+                          </button>
+                        @elseif($row->ad_status == 'pending_review')
+                          <a href="{{ route('admin.pending.review.adverts') }}" class="btn btn-sm btn-outline-info"
+                             data-bs-toggle="tooltip" title="Review in Pending Review queue">
+                            <i class="bi bi-eye"></i>
                           </a>
                         @else
                           <a href="/admin/advert-status/{{ $row->id }}/active" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Enable">
@@ -220,6 +235,71 @@
       return new bootstrap.Tooltip(tooltipTriggerEl)
     });
   });
+
+  function showBanModal(advertId, advertTitle) {
+    document.getElementById('banModalAdvertTitle').textContent = advertTitle;
+    document.getElementById('banForm').action = '/admin/advert-ban/' + advertId;
+    document.getElementById('banReasonCategory').value = '';
+    document.getElementById('banReasonNote').value = '';
+    new bootstrap.Modal(document.getElementById('banModal')).show();
+  }
+
+  function validateBanForm() {
+    const category = document.getElementById('banReasonCategory').value;
+    const note = document.getElementById('banReasonNote');
+    if (category === 'other' && !note.value.trim()) {
+      note.focus();
+      alert('Please add a note describing the reason when selecting "Other".');
+      return false;
+    }
+    return true;
+  }
+
+  function submitAdvertAction(url) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
+    form.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
+    document.body.appendChild(form);
+    form.submit();
+    return false;
+  }
 </script>
+
+{{-- Ban/disable advert modal --}}
+<div class="modal fade" id="banModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" id="banForm" action="" onsubmit="return validateBanForm()">
+        @csrf
+        <div class="modal-header border-0">
+          <h6 class="modal-title text-danger"><i class="bi bi-x-circle me-2"></i>Disable / Ban Advert</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <p class="text-muted mb-3">Disabling <strong id="banModalAdvertTitle"></strong>. The seller will be emailed the reason below and can fix and resubmit it for review.</p>
+
+          <label class="form-label fw-semibold">Reason</label>
+          <select name="reason_category" id="banReasonCategory" class="form-select mb-3" required>
+            <option value="" disabled selected>Select a reason...</option>
+            @foreach(\App\Models\AdvertModerationLog::REASON_CATEGORIES as $key => $label)
+              <option value="{{ $key }}">{{ $label }}</option>
+            @endforeach
+          </select>
+
+          <label class="form-label fw-semibold">Note <span class="text-muted fw-normal">(shown to the seller)</span></label>
+          <textarea name="reason_note" id="banReasonNote" class="form-control" rows="3"
+                    placeholder="Add specific details to help the seller fix the issue..." maxlength="1000"></textarea>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-x-circle me-1"></i>Disable Advert
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 @include('admin.layouts.footer')

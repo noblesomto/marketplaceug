@@ -67,6 +67,11 @@
           </a>
         </li>
         <li>
+          <a href="/admin/pending-review-adverts">
+            <i class="bi bi-circle"></i><span>Pending Review</span>
+          </a>
+        </li>
+        <li>
           <a href="/admin/sold-adverts">
             <i class="bi bi-circle"></i><span>Sold Adverts</span>
           </a>
@@ -182,6 +187,13 @@
             <i class="bi bi-circle"></i><span>Paid Boosts</span>
           </a>
         </li>
+        @adminCan('manage_boost_payment')
+        <li>
+          <a href="/boost/unmatched-payments">
+            <i class="bi bi-circle"></i><span>Unmatched Payments</span>
+          </a>
+        </li>
+        @endadminCan
       </ul>
     </li>
     @endadminCan
@@ -266,6 +278,12 @@
         <li>
           <a href="/admin/boost-settings/durations">
             <i class="bi bi-circle"></i><span>Boost Durations</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/admin/sister-sites">
+            <i class="bi bi-circle"></i><span>Sister Sites</span>
           </a>
         </li>
         @endadminCan

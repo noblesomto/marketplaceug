@@ -8,6 +8,9 @@
         $imgCount   = $row->getMedia('images')->count();
         $adLink     = url($row->state_slug . '/' . $row->title_slug . '/' . $row->ad_id);
         $hasShipping = !in_array($row->category, [1, 3, 11, 18]) && $row->buy_direct == 'Yes';
+        $banReason  = $adStatus === 'banned'
+            ? $row->moderationLogs->first(fn($log) => in_array($log->action, ['banned', 'rejected']))
+            : null;
     @endphp
 
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden {{ $isSold ? 'opacity-70' : '' }}">
@@ -84,13 +87,25 @@
                         </span>
                     @elseif($adStatus === 'banned')
                         <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-600">
-                            <i class="bi bi-x-circle text-[10px]"></i> Banned
+                            <i class="bi bi-x-circle text-[10px]"></i> Disabled
+                        </span>
+                    @elseif($adStatus === 'pending_review')
+                        <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">
+                            <i class="bi bi-hourglass-split text-[10px]"></i> Under review
                         </span>
                     @endif
                     @if($isFeatured && !$isSold)
                         <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 ml-1">
                             <i class="bi bi-rocket-takeoff-fill text-[10px]"></i> Boosted
                         </span>
+                    @endif
+                    @if($banReason)
+                        <div class="mt-1.5 text-[11px] text-gray-500">
+                            <span class="font-semibold text-red-600">{{ $banReason->reason_category_label }}</span>
+                            @if($banReason->reason_note)
+                                — {{ Str::limit($banReason->reason_note, 80) }}
+                            @endif
+                        </div>
                     @endif
                 </div>
             </div>
@@ -175,6 +190,16 @@
                        title="Click to activate">
                         <i class="bi bi-toggle-off text-gray-400"></i> Activate
                     </a>
+                @elseif($adStatus === 'banned')
+                    <a href="javascript:void(0)"
+                       class="resubmit-ad-btn inline-flex items-center gap-1 px-2.5 py-1 md:px-4 md:py-2 rounded-md text-[11px] md:text-xs font-semibold bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors"
+                       data-resubmit-url="/user/resubmit-ad/{{ $row->id }}">
+                        <i class="bi bi-arrow-repeat"></i> Resubmit for review
+                    </a>
+                @elseif($adStatus === 'pending_review')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 md:px-4 md:py-2 rounded-md text-[11px] md:text-xs font-semibold bg-white border border-gray-100 text-gray-400 cursor-default">
+                        <i class="bi bi-hourglass-split"></i> Awaiting review
+                    </span>
                 @endif
             @endif
 
@@ -296,6 +321,25 @@
             cancelButtonText: 'Cancel'
         }).then(result => {
             if (result.isConfirmed) window.location.href = btn.getAttribute('data-status-url');
+        });
+    });
+
+    /* Resubmit for review */
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.resubmit-ad-btn');
+        if (!btn) return;
+        e.preventDefault();
+        Swal.fire({
+            title: 'Resubmit for review?',
+            text: 'Our team will review your changes before making this ad visible again.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#326916',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, resubmit',
+            cancelButtonText: 'Cancel'
+        }).then(result => {
+            if (result.isConfirmed) window.location.href = btn.getAttribute('data-resubmit-url');
         });
     });
 })();

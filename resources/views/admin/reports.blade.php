@@ -44,6 +44,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">Ad Title</th>
+                                        <th scope="col">Ad Owner</th>
                                         <th scope="col">Complainer</th>
                                         <th scope="col">Complaint</th>
                                         <th scope="col">Status</th>
@@ -54,16 +55,35 @@
                                     @forelse($adverts ?? [] as $row)
                                         <tr>
                                             <td>
-                                                @if($row->adverts && $row->adverts->state_slug && $row->adverts->title_slug && $row->adverts->ad_id)
+                                                @if($row->ad_is_live && $row->adverts->state_slug && $row->adverts->title_slug && $row->adverts->ad_id)
                                                     <a href="{{ url($row->adverts->state_slug . '/' . $row->adverts->title_slug . '/' . $row->adverts->ad_id) }}"
                                                        target="_blank" rel="noopener"
                                                        class="fw-semibold text-decoration-none">
-                                                        {{ $row->adverts->ad_title }}
+                                                        {{ $row->display_ad_title }}
                                                     </a>
                                                 @else
-                                                    <h6 class="mb-0 fw-semibold">{{ $row->adverts->ad_title ?? 'N/A' }}</h6>
+                                                    <h6 class="mb-0 fw-semibold {{ $row->ad_is_live ? '' : 'text-muted fst-italic' }}">
+                                                        {{ $row->display_ad_title }}
+                                                    </h6>
                                                 @endif
-                                                <small class="text-muted">ID: {{ $row->adverts->ad_id ?? ($row->adverts->id ?? 'N/A') }}</small>
+                                                <small class="text-muted">
+                                                    @if($row->display_ad_number)
+                                                        ID: {{ $row->display_ad_number }}
+                                                    @endif
+                                                    @unless($row->ad_is_live)
+                                                        <span class="badge bg-secondary ms-1">Ad deleted</span>
+                                                    @endunless
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span class="fw-medium">{{ $row->display_seller_name }}</span>
+                                                    <small class="text-muted">{{ $row->display_seller_phone ?? 'No phone' }}</small>
+                                                    <small class="text-muted">{{ $row->display_seller_email ?? 'No email' }}</small>
+                                                    @unless($row->ad_is_live)
+                                                        <small class="text-muted fst-italic">Ad deleted — identity on record{{ $row->display_seller_id ? ' for law enforcement if requested' : '' }}</small>
+                                                    @endunless
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column">
@@ -113,7 +133,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center py-5">
+                                            <td colspan="6" class="text-center py-5">
                                                 <div class="d-flex flex-column align-items-center">
                                                     <div class="bg-light rounded-circle p-4 mb-3">
                                                         <i class="bi bi-flag display-4 text-muted"></i>

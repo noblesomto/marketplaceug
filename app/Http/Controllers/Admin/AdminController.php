@@ -154,7 +154,7 @@ class AdminController extends Controller
         }
 
         if ($admin->can('view_reports')) {
-            $recentReports = Reports::with(['user', 'adverts'])
+            $recentReports = Reports::with(['user', 'adverts.owner', 'seller'])
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
@@ -245,7 +245,7 @@ class AdminController extends Controller
     {
         $title = "Ad Reports | " . config('global.site_name');
         $page_title = "Ad Reports";
-        $adverts = Reports::with(['user', 'adverts'])
+        $adverts = Reports::with(['user', 'adverts.owner', 'seller'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
         
@@ -253,15 +253,26 @@ class AdminController extends Controller
     }
 
     public function report_status($id, $status)
-    {   
+    {
         DB::table('reports')
                 ->where('id', $id)
                 ->update([
                     'status'=> $status,
                     'updated_at' => Carbon::now(),
                 ]);
-     
+
         return redirect()->back()->with('status', ['text'=>'Report Status Changed','type'=>'success']);
+    }
+
+    public function deleteComplaint($id)
+    {
+        $deleted = Reports::where('id', $id)->delete();
+
+        if (! $deleted) {
+            return redirect()->back()->with('status', ['text' => 'Complaint not found', 'type' => 'danger']);
+        }
+
+        return redirect()->back()->with('status', ['text' => 'Complaint deleted', 'type' => 'success']);
     }
 
 

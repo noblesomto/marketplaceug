@@ -37,7 +37,7 @@ class AdvertIdempotencyTest extends TestCase
         }
 
         if (empty($this->user->phone)) {
-            $this->user->phone = '08012345678';
+            $this->user->phone = '07' . random_int(10000000, 99999999);
             $this->user->save();
         }
 
@@ -166,7 +166,7 @@ class AdvertIdempotencyTest extends TestCase
     /** @test */
     public function different_users_can_reuse_the_same_idempotency_key()
     {
-        $otherUser = User::factory()->create(['phone' => '08099999999']);
+        $otherUser = User::factory()->create(['phone' => '07' . random_int(10000000, 99999999)]);
 
         $key = (string) Str::uuid();
 

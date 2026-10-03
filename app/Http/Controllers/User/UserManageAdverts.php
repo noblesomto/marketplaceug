@@ -34,6 +34,7 @@ use App\Services\AdvertValidationService;
 use App\Services\ImageQualityService;
 use App\Traits\ManagesImages;
 use App\Traits\HasUserSession;
+use App\Support\ActivityLog;
 
 class UserManageAdverts extends Controller
 {
@@ -188,15 +189,20 @@ class UserManageAdverts extends Controller
             // Use dynamic validation service based on Category UI Config
             $validationService = new AdvertValidationService();
             $rules = $validationService->getRules($category, $subcat, false, $hasTempImages, $user->acc_type);
+            $imageRequirements = \App\Services\AdvertImageRequirements::get();
 
             // Custom validation messages
             $messages = [
-                'images.required'             => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
-                'images.min'                  => 'Please upload at least ' . AdSetting::getValue('min_images', 3) . ' images.',
-                'images.max'                  => 'You may upload a maximum of ' . AdSetting::getValue('max_images', 8) . ' images.',
+                'images.required'             => "Please upload at least {$imageRequirements['min_images']} images.",
+                'images.min'                  => "Please upload at least {$imageRequirements['min_images']} images.",
+                'images.max'                  => "You may upload a maximum of {$imageRequirements['max_images']} images.",
                 'images.*.image'              => 'All files must be images.',
-                'images.*.mimes'              => 'Images must be jpeg, png, jpg, or gif format.',
-                'images.*.max'                => 'Each image must not exceed 20MB.',
+                'images.*.mimes'              => 'Images must be ' . implode(', ', $imageRequirements['allowed_formats']) . ' format.',
+                'images.*.max'                => 'Each image must not exceed ' . round($imageRequirements['max_file_size_bytes'] / (1024 * 1024)) . 'MB.',
+                // Price messages
+                'price.required_unless'       => 'Please enter a price, or select "Contact for Price".',
+                'price.gt'                    => 'Please enter a price greater than 0, or select "Contact for Price".',
+                'price_type.required_unless'  => 'Please select a price type.',
                 // Car-specific messages
                 'condition.required'          => 'Please select the vehicle condition.',
                 'registration.required'       => 'Please select the vehicle registration status.',
@@ -328,6 +334,10 @@ class UserManageAdverts extends Controller
 
             $advert->update(['ad_id' => (string) $advert->id]);
 
+            ActivityLog::record('advert', 'Posted advert "' . $advert->ad_title . '"', $user, $advert, [
+                'source' => 'web',
+            ]);
+
             $advert->shippings()->sync($request->input('shipping', []));
 
             // ✅ Handle image uploads - Priority: temp images > new uploads > default
@@ -378,6 +388,19 @@ class UserManageAdverts extends Controller
                 $advert->addDefaultImage('jobs.png');
             }
 
+            // Validate final image count - prevents ads going live with missing images
+            // (e.g. client-submitted temp_image_paths that expired/no longer exist on disk)
+            if (!in_array($request->input('category'), [3, 18])) {
+                $minImages = $imageRequirements['min_images'];
+                $finalImageCount = $advert->getMedia('images')->count();
+
+                if ($finalImageCount < $minImages) {
+                    DB::rollBack();
+                    return back()->withErrors([
+                        'images' => "Advert must have at least {$minImages} image" . ($minImages === 1 ? '' : 's') . ". Please upload more images."
+                    ])->withInput();
+                }
+            }
 
             // Store car-specific info
             if (in_array($subcat, [2, 21, 23])) {
@@ -535,9 +558,12 @@ class UserManageAdverts extends Controller
         $rules = $validationService->getRules($category, $subcat, true, false, $user->acc_type); // true = isUpdate
 
         $validatedData = $request->validate($rules, [
-            'phone_color.required'     => 'Please select the phone color.',
-            'phone_condition.required' => 'Please select the phone condition.',
-            'device.required'          => 'Please select the device type.',
+            'phone_color.required'       => 'Please select the phone color.',
+            'phone_condition.required'   => 'Please select the phone condition.',
+            'device.required'            => 'Please select the device type.',
+            'price.required_unless'      => 'Please enter a price, or select "Contact for Price".',
+            'price.gt'                   => 'Please enter a price greater than 0, or select "Contact for Price".',
+            'price_type.required_unless' => 'Please select a price type.',
         ]);
         if ($reason = ContentHelper::detectBannedContact($request->input('ad_title'))) {
             return back()->withErrors([
@@ -591,6 +617,8 @@ class UserManageAdverts extends Controller
             'show_contact'    => $request->input('show_contact'),
             'quantity'        => $request->input('quantity') ?? 1,
         ]);
+
+        ActivityLog::record('advert', 'Edited advert "' . $advert->ad_title . '"', $user, $advert);
 
         $messages = [];
 
@@ -792,20 +820,28 @@ class UserManageAdverts extends Controller
 
 
 
-       public function delete_ad($id)
+       public function delete_ad(Request $request, $id)
     {
         try {
             \DB::beginTransaction();
 
-            $advert = Advert::find($id);
+            $user_id = $request->session()->get('user_id');
+            // Scoped to the owner — without this any logged-in user could delete
+            // any other user's advert by guessing/incrementing the id.
+            $advert = Advert::where('id', $id)->where('user_id', $user_id)->first();
             if (!$advert) {
                 \DB::rollBack();
                 return redirect()->back()->with('error', 'Advert not found');
             }
 
+            $adTitle = $advert->ad_title;
+            $user = User::where('user_id', $user_id)->first();
+
             // Delete the advert - the model event will handle image deletion
             // based on category (Job category preserves default images)
             $advert->delete();
+
+            \App\Support\ActivityLog::record('advert', 'Deleted advert "' . $adTitle . '"', $user, $advert);
 
             \DB::commit();
             return redirect()->back()->with('success', 'Advert deleted successfully');

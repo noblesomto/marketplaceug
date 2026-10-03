@@ -59,9 +59,15 @@ class SettingController extends Controller
 
         if ($request->isMethod('POST')) {
             $request->validate([
-                'max_images'       => 'required|integer|min:1|max:20',
-                'min_images'       => 'required|integer|min:1',
-                'image_strictness' => 'required|integer|min:1|max:10',
+                'max_images'              => 'required|integer|min:1|max:20',
+                'min_images'              => 'required|integer|min:1',
+                'image_strictness'        => 'required|integer|min:1|max:10',
+                'image_min_width'         => 'required|integer|min:100|max:10000',
+                'image_min_height'        => 'required|integer|min:100|max:10000',
+                'image_recommended_width' => 'required|integer|min:100|max:10000',
+                'image_recommended_height'=> 'required|integer|min:100|max:10000',
+                'image_min_file_size_kb'  => 'required|integer|min:1',
+                'image_max_file_size_mb'  => 'required|integer|min:1|max:50',
             ]);
 
             // min_images cannot exceed max_images
@@ -72,17 +78,46 @@ class SettingController extends Controller
                 ]);
             }
 
-            AdSetting::setValue('max_images',       $request->max_images);
-            AdSetting::setValue('min_images',       $request->min_images);
-            AdSetting::setValue('image_strictness', $request->image_strictness);
+            // Minimum dimensions cannot exceed recommended dimensions
+            if ($request->image_min_width > $request->image_recommended_width
+                || $request->image_min_height > $request->image_recommended_height) {
+                return back()->withInput()->with('status', [
+                    'type' => 'danger',
+                    'text' => 'Minimum dimensions cannot be greater than recommended dimensions.',
+                ]);
+            }
+
+            // Minimum file size (KB) cannot exceed maximum file size (MB)
+            if ($request->image_min_file_size_kb > $request->image_max_file_size_mb * 1024) {
+                return back()->withInput()->with('status', [
+                    'type' => 'danger',
+                    'text' => 'Minimum file size cannot be greater than maximum file size.',
+                ]);
+            }
+
+            AdSetting::setValue('max_images',               $request->max_images);
+            AdSetting::setValue('min_images',                $request->min_images);
+            AdSetting::setValue('image_strictness',          $request->image_strictness);
+            AdSetting::setValue('image_min_width',            $request->image_min_width);
+            AdSetting::setValue('image_min_height',           $request->image_min_height);
+            AdSetting::setValue('image_recommended_width',    $request->image_recommended_width);
+            AdSetting::setValue('image_recommended_height',   $request->image_recommended_height);
+            AdSetting::setValue('image_min_file_size_kb',     $request->image_min_file_size_kb);
+            AdSetting::setValue('image_max_file_size_mb',     $request->image_max_file_size_mb);
 
             return back()->with('status', ['type' => 'success', 'text' => 'Image settings updated successfully.']);
         }
 
         $settings = [
-            'max_images'       => (int) AdSetting::getValue('max_images',       8),
-            'min_images'       => (int) AdSetting::getValue('min_images',       3),
-            'image_strictness' => (int) AdSetting::getValue('image_strictness', 7),
+            'max_images'               => (int) AdSetting::getValue('max_images',               8),
+            'min_images'               => (int) AdSetting::getValue('min_images',               3),
+            'image_strictness'         => (int) AdSetting::getValue('image_strictness',         7),
+            'image_min_width'          => (int) AdSetting::getValue('image_min_width',          800),
+            'image_min_height'         => (int) AdSetting::getValue('image_min_height',          600),
+            'image_recommended_width'  => (int) AdSetting::getValue('image_recommended_width',  1200),
+            'image_recommended_height' => (int) AdSetting::getValue('image_recommended_height',  900),
+            'image_min_file_size_kb'   => (int) AdSetting::getValue('image_min_file_size_kb',     50),
+            'image_max_file_size_mb'   => (int) AdSetting::getValue('image_max_file_size_mb',     20),
         ];
 
         return view('admin.settings.ad-image-settings', compact('title', 'settings'));

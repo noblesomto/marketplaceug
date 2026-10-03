@@ -951,7 +951,7 @@ class AdvertController extends Controller
             ], 422);
         }
 
-        $advert = Advert::find($id);
+        $advert = Advert::with('owner')->find($id);
 
         if (!$advert) {
             return response()->json([
@@ -970,6 +970,12 @@ class AdvertController extends Controller
             [
                 'subject' => $request->subject,
                 'message' => $request->message,
+                'reported_ad_title' => $advert->ad_title,
+                'reported_ad_number' => $advert->ad_id,
+                'reported_seller_id' => $advert->owner->user_id ?? null,
+                'reported_seller_name' => $advert->owner->name ?? null,
+                'reported_seller_phone' => $advert->owner->phone ?? null,
+                'reported_seller_email' => $advert->owner->email ?? null,
             ]
         );
 

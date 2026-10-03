@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Traits\HasUserSession;
 use App\Services\Auth\CookieSessionService;
+use App\Support\ActivityLog;
 
 
 class AccountController extends Controller
@@ -64,6 +65,10 @@ class AccountController extends Controller
         }
 
         if (!$this->isValidPassword($user, $request->password)) {
+            ActivityLog::record('auth', 'Failed login attempt (wrong password)', $user, $user, [
+                'ip' => $request->ip(),
+                'source' => 'web',
+            ]);
             return redirect('/login')->with('error', 'Sorry, the password does not match.');
         }
 
@@ -157,6 +162,11 @@ class AccountController extends Controller
                 'last_login_ip' => $this->getIp(),
                 'last_login_at' => now(),
             ]);
+
+        ActivityLog::record('auth', 'Logged in', $user, $user, [
+            'ip' => $this->getIp(),
+            'source' => 'web',
+        ]);
 
         // Redirect to intended URL or default profile page
         return redirect()->intended(action([UserProfile::class, 'profile']));
@@ -321,6 +331,7 @@ class AccountController extends Controller
 
         // Try to find user by email
         $user = User::where('email', $socialEmail)->first();
+        $isNewUser = false;
 
         if (!$user) {
             // If no user exists, create new one (status active by default)
@@ -330,8 +341,12 @@ class AccountController extends Controller
                 $provider . '_id' => $socialUser->getId(),
                 'acc_status' => 1, // mark verified
                 'acc_type'=> "Private",
+                'source' => $provider,
                 'password'   => bcrypt(Str::random(16)), // random password
             ]);
+            $isNewUser = true;
+
+            ActivityLog::record('auth', "Registered via {$provider}", $user, $user, ['source' => $provider]);
         } else {
             // Update provider ID if missing
             if (!$user->{$provider . '_id'}) {
@@ -342,10 +357,10 @@ class AccountController extends Controller
         }
 
         // Use your existing login process (skip password + OTP since provider is trusted)
-        return $this->loginSocialUser($user);
+        return $this->loginSocialUser($user, $isNewUser);
     }
 
-    protected function loginSocialUser($user)
+    protected function loginSocialUser($user, bool $isNewUser = false)
     {
         // Put the same session values as normal login
         session()->put('user_id', $user->user_id);
@@ -361,6 +376,18 @@ class AccountController extends Controller
                 'last_login_ip' => $this->getIp(),
                 'last_login_at' => now(),
             ]);
+
+        ActivityLog::record('auth', 'Logged in via social login', $user, $user, ['ip' => $this->getIp()]);
+
+        // Social sign-up never collects a phone number — force new accounts to add
+        // one before they can use the site (existing accounts are left alone here;
+        // they're caught later at checkout by the profile.complete middleware).
+        if ($isNewUser && empty($user->phone)) {
+            session()->put('must_complete_phone', true);
+
+            return redirect()->route('user.profile.update')
+                ->with('profile_required', 'Welcome! Please add your phone number to finish setting up your account.');
+        }
 
         return redirect()->intended(action([UserProfile::class, 'profile']));
     }
@@ -431,6 +458,8 @@ class AccountController extends Controller
                 $wantsRemember = $request->session()->get('remember_device', true);
                 $this->storeTrustedDevice($request, $login);
                 $this->cookieService->issueRememberCookies($request, $login, $wantsRemember);
+
+                ActivityLog::record('auth', 'Logged in (OTP verified)', $login, $login, ['ip' => $this->getIp($request)]);
 
                 return redirect()->intended(action([UserProfile::class, 'profile']));
             } else {
@@ -605,6 +634,7 @@ class AccountController extends Controller
                     'email' => $validatedData['email'],
                     'phone' => $validatedData['phone'],
                     'acc_type' => $validatedData['acc_type'],
+                    'source' => 'web',
                     'token' => $token,
                     'acc_status' => 0,
                     'password' => Hash::make($validatedData['password']),
@@ -617,6 +647,8 @@ class AccountController extends Controller
                 ];
 
                 Mail::to($email)->queue(new RegisterMail($details));
+
+                ActivityLog::record('auth', 'Registered via web', $user, $user, ['source' => 'web']);
 
                 DB::commit();
 
@@ -664,8 +696,12 @@ class AccountController extends Controller
             return redirect('login')->with('error', 'Invalid or already verified account.');
         }
 
-        $token = Str::random(40);
-        $user->update(['token' => $token]);
+        // Reuse the existing token when one is already pending so a resend doesn't
+        // invalidate a link the user already received in an earlier email.
+        $token = $user->token ?: Str::random(40);
+        if (!$user->token) {
+            $user->update(['token' => $token]);
+        }
 
         $details = [
             'user_id' => $user->email,
@@ -694,6 +730,12 @@ class AccountController extends Controller
 
         if (!$user) {
             return redirect("/login")->with('error','Invalid verification link');
+        }
+
+        // Account already verified (e.g. via a newer link, or this one clicked twice) —
+        // treat as success instead of failing on the now-cleared token.
+        if ($user->acc_status == 1) {
+            return redirect("/login")->with('success','Your Email Is verified, Please Login!');
         }
 
         $token2 = $user->token;

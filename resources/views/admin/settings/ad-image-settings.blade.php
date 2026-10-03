@@ -77,6 +77,77 @@
                                 @enderror
                             </div>
 
+                            {{-- Dimensions --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Minimum Resolution</label>
+                                <p class="text-muted small mb-2">
+                                    Images narrower or shorter than this are rejected outright.
+                                </p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" name="image_min_width" id="image_min_width"
+                                           class="form-control @error('image_min_width') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_min_width', $settings['image_min_width']) }}"
+                                           min="100" max="10000">
+                                    <span class="text-muted">×</span>
+                                    <input type="number" name="image_min_height" id="image_min_height"
+                                           class="form-control @error('image_min_height') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_min_height', $settings['image_min_height']) }}"
+                                           min="100" max="10000">
+                                    <span class="text-muted">px</span>
+                                </div>
+                                @error('image_min_width') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                @error('image_min_height') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Recommended Resolution</label>
+                                <p class="text-muted small mb-2">
+                                    Images below this (but above the minimum) are accepted with a quality warning.
+                                </p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" name="image_recommended_width" id="image_recommended_width"
+                                           class="form-control @error('image_recommended_width') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_recommended_width', $settings['image_recommended_width']) }}"
+                                           min="100" max="10000">
+                                    <span class="text-muted">×</span>
+                                    <input type="number" name="image_recommended_height" id="image_recommended_height"
+                                           class="form-control @error('image_recommended_height') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_recommended_height', $settings['image_recommended_height']) }}"
+                                           min="100" max="10000">
+                                    <span class="text-muted">px</span>
+                                </div>
+                                @error('image_recommended_width') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                @error('image_recommended_height') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
+                            {{-- File size --}}
+                            <div class="mb-5">
+                                <label class="form-label fw-semibold">File Size Limits</label>
+                                <p class="text-muted small mb-2">
+                                    Files outside this range are rejected — too small usually means a corrupted or low-quality image, too large slows down uploads.
+                                </p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" name="image_min_file_size_kb" id="image_min_file_size_kb"
+                                           class="form-control @error('image_min_file_size_kb') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_min_file_size_kb', $settings['image_min_file_size_kb']) }}"
+                                           min="1">
+                                    <span class="text-muted">KB &mdash; &nbsp;min</span>
+                                    <input type="number" name="image_max_file_size_mb" id="image_max_file_size_mb"
+                                           class="form-control @error('image_max_file_size_mb') is-invalid @enderror"
+                                           style="width: 120px;"
+                                           value="{{ old('image_max_file_size_mb', $settings['image_max_file_size_mb']) }}"
+                                           min="1" max="50">
+                                    <span class="text-muted">MB &mdash; max</span>
+                                </div>
+                                @error('image_min_file_size_kb') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                @error('image_max_file_size_mb') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
                             {{-- Strictness --}}
                             <div class="mb-5">
                                 <label class="form-label fw-semibold">
@@ -99,12 +170,14 @@
                                 </div>
 
                                 {{-- Strictness level descriptions --}}
-                                <div class="mt-3 p-3 rounded bg-light border" id="strictness-description">
+                                <div class="mt-3 p-3 rounded bg-light border" id="strictness-description"
+                                     data-min-res="{{ $settings['image_min_width'] }}×{{ $settings['image_min_height'] }}px">
                                     @php
                                         $level = $settings['image_strictness'];
+                                        $minRes = $settings['image_min_width'] . '×' . $settings['image_min_height'] . 'px';
                                         if ($level <= 1)       $desc = ['label' => 'Accept All', 'color' => 'success', 'text' => 'No quality checks run. Any image file is accepted.'];
-                                        elseif ($level <= 2)   $desc = ['label' => 'Minimal', 'color' => 'success', 'text' => 'Only checks file size (50KB – 20MB). No resolution or quality scoring.'];
-                                        elseif ($level <= 4)   $desc = ['label' => 'Basic', 'color' => 'info', 'text' => 'Checks file size and minimum resolution (800×600px).'];
+                                        elseif ($level <= 2)   $desc = ['label' => 'Minimal', 'color' => 'success', 'text' => "Only checks file size ({$settings['image_min_file_size_kb']}KB – {$settings['image_max_file_size_mb']}MB). No resolution or quality scoring."];
+                                        elseif ($level <= 4)   $desc = ['label' => 'Basic', 'color' => 'info', 'text' => "Checks file size and minimum resolution ({$minRes})."];
                                         elseif ($level <= 6)   $desc = ['label' => 'Moderate', 'color' => 'info', 'text' => 'File size, minimum resolution, and overall quality score (min 40/100).'];
                                         elseif ($level <= 8)   $desc = ['label' => 'Strict', 'color' => 'warning', 'text' => 'All of the above plus sharpness/blur detection. Blurry images are flagged.'];
                                         else                   $desc = ['label' => 'Very Strict', 'color' => 'danger', 'text' => 'Full validation: file size, resolution, quality score (min 60/100), sharpness, and brightness.'];
@@ -139,8 +212,8 @@
                             </thead>
                             <tbody>
                                 <tr><td>1</td><td><span class="badge bg-success">Accept All</span></td><td>None — all images pass</td></tr>
-                                <tr><td>2</td><td><span class="badge bg-success">Minimal</span></td><td>File size only (50KB–20MB)</td></tr>
-                                <tr><td>3–4</td><td><span class="badge bg-info text-dark">Basic</span></td><td>File size + minimum resolution (800×600px)</td></tr>
+                                <tr><td>2</td><td><span class="badge bg-success">Minimal</span></td><td>File size only ({{ $settings['image_min_file_size_kb'] }}KB–{{ $settings['image_max_file_size_mb'] }}MB)</td></tr>
+                                <tr><td>3–4</td><td><span class="badge bg-info text-dark">Basic</span></td><td>File size + minimum resolution ({{ $settings['image_min_width'] }}×{{ $settings['image_min_height'] }}px)</td></tr>
                                 <tr><td>5–6</td><td><span class="badge bg-info text-dark">Moderate</span></td><td>Above + quality score ≥ 40/100</td></tr>
                                 <tr><td>7–8</td><td><span class="badge bg-warning text-dark">Strict</span></td><td>Above + sharpness / blur detection</td></tr>
                                 <tr><td>9–10</td><td><span class="badge bg-danger">Very Strict</span></td><td>Above + brightness check + quality score ≥ 60/100</td></tr>
@@ -160,11 +233,15 @@
     const valueDisplay = document.getElementById('strictness-value');
     const descBox = document.getElementById('strictness-description');
 
+    const minFileKb = {{ $settings['image_min_file_size_kb'] }};
+    const maxFileMb = {{ $settings['image_max_file_size_mb'] }};
+    const minRes = '{{ $settings['image_min_width'] }}×{{ $settings['image_min_height'] }}px';
+
     const levels = {
         1:  { label: 'Accept All',  color: 'success', text: 'No quality checks run. Any image file is accepted.' },
-        2:  { label: 'Minimal',     color: 'success', text: 'Only checks file size (50KB – 20MB). No resolution or quality scoring.' },
-        3:  { label: 'Basic',       color: 'info',    text: 'Checks file size and minimum resolution (800×600px).' },
-        4:  { label: 'Basic',       color: 'info',    text: 'Checks file size and minimum resolution (800×600px).' },
+        2:  { label: 'Minimal',     color: 'success', text: `Only checks file size (${minFileKb}KB – ${maxFileMb}MB). No resolution or quality scoring.` },
+        3:  { label: 'Basic',       color: 'info',    text: `Checks file size and minimum resolution (${minRes}).` },
+        4:  { label: 'Basic',       color: 'info',    text: `Checks file size and minimum resolution (${minRes}).` },
         5:  { label: 'Moderate',    color: 'info',    text: 'File size, minimum resolution, and overall quality score (min 40/100).' },
         6:  { label: 'Moderate',    color: 'info',    text: 'File size, minimum resolution, and overall quality score (min 40/100).' },
         7:  { label: 'Strict',      color: 'warning', text: 'All of the above plus sharpness/blur detection. Blurry images are flagged.' },

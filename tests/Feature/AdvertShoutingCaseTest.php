@@ -41,7 +41,7 @@ class AdvertShoutingCaseTest extends TestCase
             $this->markTestSkipped('No users found in database.');
         }
         if (empty($this->user->phone)) {
-            $this->user->phone = '08012345670';
+            $this->user->phone = '07' . random_int(10000000, 99999999);
             $this->user->save();
         }
 

@@ -1280,7 +1280,7 @@ public function buy_direct_payment(Request $request, $id)
     public function report_advert(Request $request, $id)
     {
         $data['title'] = 'Report Advert | '.config('global.site_name');
-        $data['ad'] = $advert = Advert::with('images')->where('id', $id)->first();
+        $data['ad'] = $advert = Advert::with(['images', 'owner'])->where('id', $id)->first();
         $user_id = $request->session()->get('user_id');
         $data['user'] = $user = User::where('user_id', $user_id)->first();
 
@@ -1317,9 +1317,14 @@ public function buy_direct_payment(Request $request, $id)
                     'user_id' => $user_id,
                 ],
                 [
-                    'phone' => $request->phone,
                     'subject' => $request->subject,
                     'message' => $request->message,
+                    'reported_ad_title' => $advert->ad_title,
+                    'reported_ad_number' => $advert->ad_id,
+                    'reported_seller_id' => $advert->owner->user_id ?? null,
+                    'reported_seller_name' => $advert->owner->name ?? null,
+                    'reported_seller_phone' => $advert->owner->phone ?? null,
+                    'reported_seller_email' => $advert->owner->email ?? null,
                 ]
             );
             $details = [
