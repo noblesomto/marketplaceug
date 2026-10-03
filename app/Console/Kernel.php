@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('feed:google')->everySixHours();
         $schedule->command('sitemap:generate')->everySixHours();
         $schedule->command('cleanup:trusted-devices')->monthly();
+        $schedule->command('cleanup:device-tokens')->monthly();
         $schedule->command('temp:cleanup-images --hours=24')->daily()->at('02:00');
     }
 
