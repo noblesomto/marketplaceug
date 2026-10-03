@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\AdminHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Advert;
+use App\Models\BoostDuration;
+use App\Models\BoostType;
+use App\Models\UnmatchedPayment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -228,6 +233,138 @@ class ManageBoost extends Controller
         ]);
 
         return redirect()->back()->with('status', ['text' => 'Payment verified with Flutterwave — boost is now active.', 'type' => 'success']);
+    }
+
+    public function unmatchedPayments(Request $request)
+    {
+        $title = "Unmatched Payments | " . config('global.site_name');
+        $page_title = "Unmatched Payments";
+
+        $payments = UnmatchedPayment::where('status', 'unresolved')
+            ->orderBy('paid_at', 'desc')
+            ->paginate(20);
+
+        $boostTypes = BoostType::active()->ordered()->get();
+        $boostDurations = BoostDuration::active()->ordered()->get();
+
+        $advertsByPayment = [];
+        foreach ($payments as $payment) {
+            $user = User::where('email', $payment->customer_email)->first();
+            $advertsByPayment[$payment->id] = $user
+                ? Advert::where('user_id', $user->user_id)
+                    ->where('ad_status', 'active')
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                : collect();
+        }
+
+        return view('admin.adboost.unmatched-payments', compact(
+            'title', 'page_title', 'payments', 'boostTypes', 'boostDurations', 'advertsByPayment'
+        ));
+    }
+
+    public function completeUnmatchedPayment(Request $request, $id)
+    {
+        // Note: intentionally not pre-filtered by status='unresolved' here — the
+        // atomic claim inside the DB transaction below is the sole source of
+        // truth for "already resolved," closing the double-submit race.
+        $payment = UnmatchedPayment::findOrFail($id);
+
+        $request->validate([
+            'advert_id'      => 'required|integer|exists:adverts,id',
+            'boost_type_id'  => 'required|integer|exists:boost_types,id',
+            'duration_id'    => 'required|integer|exists:boost_durations,id',
+        ]);
+
+        $user = User::where('email', $payment->customer_email)->first();
+
+        if (!$user) {
+            return redirect()->back()->with('status', [
+                'text' => 'No account found for ' . $payment->customer_email . ' — cannot complete.',
+                'type' => 'danger',
+            ]);
+        }
+
+        $advert = Advert::where('id', $request->advert_id)
+            ->where('user_id', $user->user_id)
+            ->first();
+
+        if (!$advert) {
+            return redirect()->back()->with('status', [
+                'text' => 'That advert does not belong to ' . $payment->customer_email . ' — cannot complete.',
+                'type' => 'danger',
+            ]);
+        }
+
+        $boostType = BoostType::findOrFail($request->boost_type_id);
+        $duration  = BoostDuration::findOrFail($request->duration_id);
+        $amount    = $boostType->calculatePrice($duration->days, $duration->discount_percentage);
+
+        $amountPaid     = (float) $payment->amount;
+        $amountMismatch = abs($amount - $amountPaid) > max(5, $amountPaid * 0.02);
+
+        $boost = null;
+
+        try {
+            DB::transaction(function () use ($payment, $advert, $boostType, $duration, $amount, &$boost) {
+                $claimed = UnmatchedPayment::where('id', $payment->id)
+                    ->where('status', 'unresolved')
+                    ->update([
+                        'status'      => 'resolved',
+                        'resolved_by' => optional(AdminHelper::currentAdmin())->username,
+                        'resolved_at' => Carbon::now(),
+                    ]);
+
+                if (!$claimed) {
+                    throw new \RuntimeException('unmatched_payment_already_resolved');
+                }
+
+                $boost = AdvertBoost::create([
+                    'advert_id'         => $advert->id,
+                    'user_id'           => $advert->user_id,
+                    'trans_id'          => $payment->transaction_id,
+                    'payment_reference' => $payment->reference,
+                    'amount'            => $amount,
+                    'boost_type'        => strtolower($boostType->name),
+                    'duration'          => $duration->days,
+                    'boost_type_id'     => $boostType->id,
+                    'duration_id'       => $duration->id,
+                    'start_date'        => Carbon::now(),
+                    'payment_status'    => 'paid',
+                    'boost_status'      => 'active',
+                    'upload_proof'      => 'no',
+                ]);
+
+                Advert::where('id', $advert->id)->update(['featured' => 'Yes']);
+
+                $payment->update(['resolved_boost_id' => $boost->id]);
+            });
+        } catch (\RuntimeException $e) {
+            if ($e->getMessage() === 'unmatched_payment_already_resolved') {
+                return redirect()->back()->with('status', [
+                    'text' => 'This payment was already resolved by someone else — no duplicate boost was created.',
+                    'type' => 'info',
+                ]);
+            }
+            throw $e;
+        }
+
+        Log::info('Admin completed unmatched payment', [
+            'unmatched_payment_id' => $payment->id,
+            'advert_id'            => $advert->id,
+        ]);
+
+        if ($amountMismatch) {
+            return redirect()->back()->with('status', [
+                'text' => 'Boost activated on "' . $advert->ad_title . '", but the computed price (' . money($amount) . ') differs from the amount paid (' . money($amountPaid) . ') — please double-check this was intentional.',
+                'type' => 'warning',
+            ]);
+        }
+
+        return redirect()->back()->with('status', [
+            'text' => 'Payment matched to "' . $advert->ad_title . '" and boost activated.',
+            'type' => 'success',
+        ]);
     }
 
 }

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UnmatchedPaymentMail;
 use App\Models\Advert;
 use App\Models\AdvertBoost;
 use App\Models\Payment;
+use App\Models\UnmatchedPayment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class FlutterwaveWebhookController extends Controller
@@ -67,9 +70,19 @@ class FlutterwaveWebhookController extends Controller
         // If payment_type is missing from metadata, infer from the reference —
         // web boost flows historically omitted this field.
         if (!$paymentType) {
-            $paymentType = AdvertBoost::where('payment_reference', $reference)->exists()
-                ? 'boost'
-                : 'buy_direct';
+            if (AdvertBoost::where('payment_reference', $reference)->exists()) {
+                $paymentType = 'boost';
+            } elseif (Payment::where('payment_reference', $reference)->exists()) {
+                $paymentType = 'buy_direct';
+            } else {
+                // Flutterwave confirms money changed hands, but nothing in our DB
+                // references it (e.g. a client paid directly against Flutterwave
+                // without ever calling our initialize endpoint, so no
+                // AdvertBoost/Payment row was ever created). Don't guess — alert
+                // an admin so the customer can be manually credited.
+                $this->reportUnmatchedPayment($reference, $verifiedData);
+                return response()->json(['message' => 'OK'], 200);
+            }
 
             Log::info('Flutterwave webhook: inferred payment_type from reference lookup', [
                 'ref'  => $reference,
@@ -88,6 +101,39 @@ class FlutterwaveWebhookController extends Controller
 
         // Always return 200 — Flutterwave retries on non-200
         return response()->json(['message' => 'OK'], 200);
+    }
+
+    private function reportUnmatchedPayment(string $reference, array $data): void
+    {
+        Log::critical('Flutterwave webhook: paid transaction has no matching AdvertBoost or Payment record', [
+            'ref'    => $reference,
+            'amount' => $data['amount'] ?? null,
+            'email'  => $data['customer']['email'] ?? null,
+        ]);
+
+        $unmatched = UnmatchedPayment::firstOrCreate(
+            ['reference' => $reference],
+            [
+                'transaction_id' => $data['id'] ?? null,
+                'amount'         => $data['amount'] ?? 0,
+                'customer_email' => $data['customer']['email'] ?? 'unknown',
+                'paid_at'        => $data['paid_at'] ?? null,
+                'status'         => 'unresolved',
+            ]
+        );
+
+        if (!$unmatched->wasRecentlyCreated) {
+            // Already recorded (and already alerted) on a previous delivery of this event.
+            return;
+        }
+
+        Mail::to(config('global.admin_email'))->queue(new UnmatchedPaymentMail([
+            'reference'       => $reference,
+            'transaction_id'  => $data['id'] ?? null,
+            'amount'          => $data['amount'] ?? 0,
+            'customer_email'  => $data['customer']['email'] ?? 'unknown',
+            'paid_at'         => $data['paid_at'] ?? 'unknown',
+        ]));
     }
 
     private function activateBoost(string $reference, int $transactionId, $amount = null, $currency = null): void

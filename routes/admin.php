@@ -84,6 +84,12 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
         Route::post('/boost/verify-and-activate/{id}', [ManageBoost::class, 'verifyAndActivate'])->name('admin.boost.verify-activate');
     });
 
+    // Unmatched payments (own permission scope — write action, not covered by view-only boost permissions)
+    Route::middleware(['admin.permission:manage_boost_payment'])->group(function () {
+        Route::get('/boost/unmatched-payments', [ManageBoost::class, 'unmatchedPayments'])->name('admin.boost.unmatched-payments');
+        Route::post('/boost/unmatched-payments/{id}/complete', [ManageBoost::class, 'completeUnmatchedPayment'])->name('admin.boost.unmatched-payments.complete');
+    });
+
     // Boost settings
     Route::prefix('admin/boost-settings')->middleware(['admin.permission:manage_settings'])->group(function () {
         Route::get('/types', [AdminBoostTypeController::class, 'index'])->name('admin.boost-types.index');
