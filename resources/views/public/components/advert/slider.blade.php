@@ -1,17 +1,32 @@
 @php
     $mediaItems = $ad->getMedia('images');
     $imageUrls = $mediaItems->map(fn($media) => $media->getUrl('optimized'))->toArray();
+
+    // Only genuinely narrow/portrait images (taller than they are wide) get a blurred
+    // backdrop. Anything square or wider crops cleanly with a plain cover fit.
+    $coverAspectThreshold = 1;
 @endphp
 
 <div class="relative w-full group bg-black md:bg-gray-100 md:rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9]">
     <!-- Main Slider -->
     <div id="slider" class="flex h-full transition-transform duration-500 ease-out">
         @foreach($mediaItems as $index => $media)
+            @php
+                $dims = @getimagesize($media->getPath('large'));
+                $ratio = ($dims && $dims[1]) ? $dims[0] / $dims[1] : null;
+                $needsBackdrop = $ratio !== null && $ratio < $coverAspectThreshold;
+            @endphp
             <div class="flex-none w-full h-full flex items-center justify-center">
-                <img src="{{ $media->getUrl('large') }}"
-                     alt="{{ $ad->ad_title }} - Image {{ $index + 1 }}"
-                     class="w-full h-full object-cover md:object-cover"
-                     onclick="openLightbox({{ $index }})">
+                @if($needsBackdrop)
+                    <x-blurred-image src="{{ $media->getUrl('large') }}"
+                         alt="{{ $ad->ad_title }} - Image {{ $index + 1 }}"
+                         onclick="openLightbox({{ $index }})" />
+                @else
+                    <img src="{{ $media->getUrl('large') }}"
+                         alt="{{ $ad->ad_title }} - Image {{ $index + 1 }}"
+                         class="w-full h-full object-cover"
+                         onclick="openLightbox({{ $index }})">
+                @endif
             </div>
         @endforeach
     </div>

@@ -22,7 +22,7 @@
 
     @php
     // Default fallback image
-    $defaultImage = asset('frontend/images/Marketplace-Naija.png');
+    $defaultImage = asset('frontend/images/logo.png');
 
     // Use featured image if available, otherwise default
     $featuredImage = $blog->featured_image_webp ?? $defaultImage;
@@ -54,7 +54,7 @@
             "name" => "Marketplace Uganda",
             "logo" => [
                 "@type" => "ImageObject",
-                "url" => asset('frontend/images/Marketplace-Naija.png')
+                "url" => asset('frontend/images/logo.png')
             ]
         ],
         "mainEntityOfPage" => [
