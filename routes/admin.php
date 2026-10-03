@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ManageBlog;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\AdminBoostTypeController;
 use App\Http\Controllers\Admin\AdminBoostDurationController;
+use App\Http\Controllers\Admin\AdminSisterSiteController;
 use App\Http\Controllers\Admin\CategoryUIAdminController;
 use App\Http\Controllers\Admin\Admin2FAController;
 use App\Http\Controllers\Admin\DistrictShippingController;
@@ -102,6 +103,15 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
         Route::put('/durations/{id}', [AdminBoostDurationController::class, 'update'])->name('admin.boost-durations.update');
         Route::delete('/durations/{id}', [AdminBoostDurationController::class, 'destroy'])->name('admin.boost-durations.destroy');
         Route::post('/durations/{id}/toggle', [AdminBoostDurationController::class, 'toggleStatus'])->name('admin.boost-durations.toggle');
+    });
+
+    // Sister sites (other-country marketplace links shown in the footer)
+    Route::prefix('admin/sister-sites')->middleware(['admin.permission:manage_settings'])->group(function () {
+        Route::get('/', [AdminSisterSiteController::class, 'index'])->name('admin.sister-sites.index');
+        Route::post('/', [AdminSisterSiteController::class, 'store'])->name('admin.sister-sites.store');
+        Route::put('/{id}', [AdminSisterSiteController::class, 'update'])->name('admin.sister-sites.update');
+        Route::delete('/{id}', [AdminSisterSiteController::class, 'destroy'])->name('admin.sister-sites.destroy');
+        Route::post('/{id}/toggle', [AdminSisterSiteController::class, 'toggleStatus'])->name('admin.sister-sites.toggle');
     });
 
     // Category management

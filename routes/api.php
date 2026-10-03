@@ -101,6 +101,13 @@ Route::get('/categories/{category_slug}/{subcat_slug}', [AdvertController::class
 Route::get('/brands/{category_slug}/{subcat_slug}/{brand_slug}', [AdvertController::class, 'brandAdverts']);
 Route::get('/location/{state_slug}', [AdvertController::class, 'locationAdverts']);
 
+/*
+|--------------------------------------------------------------------------
+| Sister Sites (Public)
+|--------------------------------------------------------------------------
+*/
+Route::get('/sister-sites', [\App\Http\Controllers\Api\SisterSiteController::class, 'index']);
+
 // Protected Advert Routes
 Route::middleware(['auth:sanctum', 'user.not_disabled'])->group(function () {
     Route::post('/adverts/{id}/report', [AdvertController::class, 'reportAdvert']);

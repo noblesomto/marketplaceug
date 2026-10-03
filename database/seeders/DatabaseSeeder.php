@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
              BoostDurationSeeder::class,
              StateSeeder::class,
              LgaSeeder::class,
+             SisterSiteSeeder::class,
          ]);
     }
 }

@@ -59,17 +59,29 @@
             </div>
 
         </div>
-        
+
+
+    @php $sisterSites = \App\Models\SisterSite::activeOrdered(); @endphp
+    @if($sisterSites->isNotEmpty())
+    <!--Sister Sites -->
+    <div class="flex justify-center items-center gap-3 mt-5 pt-4 border-t-2 border-t-gray-300 flex-wrap">
+        @foreach($sisterSites as $site)
+            <a href="{{ $site->url }}" target="_blank" rel="noopener" title="{{ $site->country_name }}">
+                <img src="{{ asset($site->flag) }}" alt="{{ $site->country_name }}" class="w-8 h-8 rounded-full object-cover border border-gray-200 hover:opacity-80">
+            </a>
+        @endforeach
+    </div>
+    @endif
 
     <!--Copy Rights -->
-    <div class="flex justify-center gap-2 mt-5 pb-10 text-sm text-center border-t-2 border-t-gray-300 pt-4">
+    <div class="flex justify-center gap-2 mt-5 pb-10 text-sm text-center {{ $sisterSites->isEmpty() ? 'border-t-2 border-t-gray-300' : '' }} pt-4">
         <div class=" ">
             <span class="font-semibold px-2">Marketplace Uganda. {{ date('Y ') }}</span>
         </div>
         <div class="">
             All rights reserved
         </div>
-     
+
     </div>
    
     </div>
