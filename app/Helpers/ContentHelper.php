@@ -143,6 +143,8 @@ class ContentHelper
         // Remove any remaining newlines or tabs from titles
         $title = preg_replace('/[\r\n\t]+/', ' ', $title);
 
+        $title = self::normalizeShoutingCase($title);
+
         // Limit title length if needed (optional)
         $title = mb_substr($title, 0, 200);
 
@@ -159,7 +161,144 @@ class ContentHelper
         // Preserve paragraph breaks (convert multiple newlines to double space)
         $description = preg_replace('/[\r\n]{2,}/', "\n\n", $description);
 
+        $description = self::normalizeShoutingCase($description);
+
         return trim($description);
+    }
+
+    /**
+     * Public entry point for backfilling case on already-stored text
+     * (e.g. existing ads), without re-running the rest of sanitizeContent()
+     * against text that's already clean.
+     */
+    public static function normalizeCaseOnly(?string $text): string
+    {
+        return self::normalizeShoutingCase((string) $text);
+    }
+
+    /**
+     * Known product/brand names with non-standard internal capitalization
+     * that word-by-word title-casing can't derive on its own (e.g. "iphone"
+     * -> "Iphone" is wrong; it needs to become "iPhone"). Keyed lowercase.
+     */
+    protected static array $brandExceptions = [
+        'i'           => 'I',
+        'iphone'      => 'iPhone',
+        'ipad'        => 'iPad',
+        'ipod'        => 'iPod',
+        'imac'        => 'iMac',
+        'ios'         => 'iOS',
+        'macbook'     => 'MacBook',
+        'airpods'     => 'AirPods',
+        'whatsapp'    => 'WhatsApp',
+        'playstation' => 'PlayStation',
+        'youtube'     => 'YouTube',
+        'paypal'      => 'PayPal',
+        'ebay'        => 'eBay',
+        'tiktok'      => 'TikTok',
+    ];
+
+    /**
+     * Acronyms/units/initialisms that must stay fully uppercase rather than
+     * being sentence-cased like ordinary words. Deliberately explicit
+     * (rather than "any short word") — common short English words (THE, IS,
+     * ARE, NOT, WHY...) are exactly as short as real acronyms and must NOT
+     * be preserved uppercase, or the "fix" still reads as half-shouting.
+     */
+    protected static array $acronymWhitelist = [
+        'TV', 'UK', 'US', 'USA', 'ID', 'CV', 'AC', 'DC', 'PC', 'TB', 'GB', 'MB', 'KB', 'SD',
+        'SIM', 'POS', 'ATM', 'GPS', 'VIP', 'PDF', 'PNG', 'GIF', 'SUV', 'DIY', 'CEO', 'CFO', 'CTO',
+        'LED', 'LCD', 'USB', 'FM', 'AM', 'UGX', 'USD',
+        'HDTV', 'WIFI', 'HDMI', 'JPEG', 'OLED', 'QLED', 'DSLR',
+    ];
+
+    /**
+     * If $text is "shouting" (overwhelmingly uppercase), convert it to
+     * sentence case. Runs on title/description at save time so every
+     * surface that reads them back (cards, search, meta tags, SMS/email
+     * notifications) is consistently clean — a CSS text-transform only
+     * fixes one view and leaves the stored text (and everything else that
+     * reads it raw) still shouting.
+     *
+     * Word-by-word rather than a blanket lowercase, so meaningful ALL-CAPS
+     * content isn't destroyed along with the shouting: a letters-only token
+     * touching a digit (model/spec codes like "64GB", "RC350", "RJ45TF") is
+     * left completely untouched, and known brand names / acronyms are
+     * restored via the maps above regardless of length. Everything else
+     * gets normal sentence case: capitalized at the start of the text and
+     * after ./!/? or a line break, lowercase elsewhere — including short
+     * words that aren't real acronyms (THE, IS, ARE, SO...), since treating
+     * "short" as a proxy for "acronym" just leaves half the sentence
+     * shouting.
+     *
+     * Left alone entirely otherwise, since normal mixed-case text
+     * shouldn't be touched.
+     */
+    protected static function normalizeShoutingCase(string $text): string
+    {
+        if (! self::isShouting($text)) {
+            return $text;
+        }
+
+        preg_match_all('/\p{L}+/u', $text, $matches, PREG_OFFSET_CAPTURE);
+
+        $result = '';
+        $cursor = 0;
+        $sentenceStart = true;
+
+        foreach ($matches[0] as [$token, $byteOffset]) {
+            $gap = substr($text, $cursor, $byteOffset - $cursor);
+            $result .= $gap;
+
+            if (preg_match('/[.!?]\s*$/u', $gap) || str_contains($gap, "\n")) {
+                $sentenceStart = true;
+            }
+
+            $tokenEnd = $byteOffset + strlen($token);
+            $before = $byteOffset > 0 ? substr($text, $byteOffset - 1, 1) : '';
+            $after = substr($text, $tokenEnd, 1);
+            $touchesDigit = ($before !== '' && ctype_digit($before)) || ($after !== '' && ctype_digit($after));
+
+            $lower = mb_strtolower($token, 'UTF-8');
+            $upper = mb_strtoupper($token, 'UTF-8');
+
+            if ($touchesDigit) {
+                $result .= $token; // spec/model code, e.g. "64GB", "RC350" — leave untouched
+            } elseif (isset(self::$brandExceptions[$lower])) {
+                $result .= self::$brandExceptions[$lower];
+            } elseif (in_array($upper, self::$acronymWhitelist, true)) {
+                $result .= $upper;
+            } elseif ($sentenceStart) {
+                $result .= mb_strtoupper(mb_substr($lower, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($lower, 1, null, 'UTF-8');
+            } else {
+                $result .= $lower;
+            }
+
+            $sentenceStart = false;
+            $cursor = $byteOffset + strlen($token);
+        }
+
+        $result .= substr($text, $cursor);
+
+        return $result;
+    }
+
+    /**
+     * Whether $text is overwhelmingly uppercase (i.e. the user had caps
+     * lock on), as opposed to normal text with a few capitalized words.
+     */
+    protected static function isShouting(string $text): bool
+    {
+        $letters = preg_replace('/[^\p{L}]/u', '', $text);
+
+        // Too short to judge reliably (e.g. "TV", "PS5").
+        if (mb_strlen($letters, 'UTF-8') < 8) {
+            return false;
+        }
+
+        $upper = preg_replace('/[^\p{Lu}]/u', '', $text);
+
+        return (mb_strlen($upper, 'UTF-8') / mb_strlen($letters, 'UTF-8')) > 0.7;
     }
 
     /**

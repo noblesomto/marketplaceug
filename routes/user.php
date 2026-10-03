@@ -30,6 +30,7 @@ Route::middleware('usersession')->group(function () {
     Route::get('/user/ad-shipping/{id}', [UserController::class, 'ad_shipping'])->name('user.ad.shipping');
     Route::post('/user/update-shipping/{id}', [UserController::class, 'update_shipping'])->name('user.update.shipping');
     Route::get('/user/ad-status/{status}/{id}', [UserController::class, 'ad_status'])->name('user.ad.status');
+    Route::get('/user/resubmit-ad/{id}', [UserController::class, 'resubmitAd'])->name('user.ad.resubmit');
     Route::get('/user/category', [UserController::class, 'category'])->name('user.category');
     Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders');
     Route::get('/user/order-details/{id}', [UserController::class, 'order_details'])->name('user.order.details');

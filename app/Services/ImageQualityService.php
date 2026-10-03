@@ -14,23 +14,26 @@ use Intervention\Image\Laravel\Facades\Image;
  * - Quality scoring
  * - Blur/sharpness detection
  * - Brightness analysis
+ *
+ * Dimension/size thresholds are admin-configurable via AdvertImageRequirements (backed by AdSetting)
+ * — the constants below are only the fallback defaults used when no setting is stored.
  */
 class ImageQualityService
 {
     /**
-     * Minimum dimensions (industry standard)
+     * Minimum dimensions (industry standard) — fallback defaults
      */
     const MIN_WIDTH = 800;
     const MIN_HEIGHT = 600;
 
     /**
-     * Recommended dimensions for best quality
+     * Recommended dimensions for best quality — fallback defaults
      */
     const RECOMMENDED_WIDTH = 1200;
     const RECOMMENDED_HEIGHT = 900;
 
     /**
-     * File size limits
+     * File size limits — fallback defaults
      */
     const MIN_FILE_SIZE = 50 * 1024; // 50KB
     const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -42,6 +45,25 @@ class ImageQualityService
     const MIN_SHARPNESS = 25; // Below this = warn about blur
     const MIN_BRIGHTNESS = 30; // Below this = too dark
     const MAX_BRIGHTNESS = 220; // Above this = too bright
+
+    protected int $minWidth;
+    protected int $minHeight;
+    protected int $recommendedWidth;
+    protected int $recommendedHeight;
+    protected int $minFileSize;
+    protected int $maxFileSize;
+
+    public function __construct()
+    {
+        $requirements = AdvertImageRequirements::get();
+
+        $this->minWidth          = $requirements['min_width'];
+        $this->minHeight         = $requirements['min_height'];
+        $this->recommendedWidth  = $requirements['recommended_width'];
+        $this->recommendedHeight = $requirements['recommended_height'];
+        $this->minFileSize       = $requirements['min_file_size_bytes'];
+        $this->maxFileSize       = $requirements['max_file_size_bytes'];
+    }
 
     /**
      * Validate image quality.
@@ -69,21 +91,21 @@ class ImageQualityService
             // Check file size first (before loading image)
             $fileSize = $file->getSize();
 
-            if ($fileSize < self::MIN_FILE_SIZE) {
+            if ($fileSize < $this->minFileSize) {
                 $result['valid'] = false;
                 $result['errors'][] = sprintf(
                     'File too small (%s). Minimum is %s. This may indicate a low-quality or corrupted image.',
                     $this->formatFileSize($fileSize),
-                    $this->formatFileSize(self::MIN_FILE_SIZE)
+                    $this->formatFileSize($this->minFileSize)
                 );
             }
 
-            if ($fileSize > self::MAX_FILE_SIZE) {
+            if ($fileSize > $this->maxFileSize) {
                 $result['valid'] = false;
                 $result['errors'][] = sprintf(
                     'File too large (%s). Maximum is %s. Please compress or resize your image.',
                     $this->formatFileSize($fileSize),
-                    $this->formatFileSize(self::MAX_FILE_SIZE)
+                    $this->formatFileSize($this->maxFileSize)
                 );
             }
 
@@ -107,24 +129,24 @@ class ImageQualityService
             ];
 
             // Strictness 3+: minimum resolution check
-            if ($width < self::MIN_WIDTH || $height < self::MIN_HEIGHT) {
+            if ($width < $this->minWidth || $height < $this->minHeight) {
                 $result['valid'] = false;
                 $result['errors'][] = sprintf(
                     'Image too small (%dx%dpx). Minimum required is %dx%dpx. Please use a higher resolution image.',
                     $width,
                     $height,
-                    self::MIN_WIDTH,
-                    self::MIN_HEIGHT
+                    $this->minWidth,
+                    $this->minHeight
                 );
                 $result['score'] -= 50;
             }
 
             // Warn about recommended dimensions
-            if ($result['valid'] && ($width < self::RECOMMENDED_WIDTH || $height < self::RECOMMENDED_HEIGHT)) {
+            if ($result['valid'] && ($width < $this->recommendedWidth || $height < $this->recommendedHeight)) {
                 $result['warnings'][] = sprintf(
                     'For best results, use images at least %dx%dpx. Your image is %dx%dpx.',
-                    self::RECOMMENDED_WIDTH,
-                    self::RECOMMENDED_HEIGHT,
+                    $this->recommendedWidth,
+                    $this->recommendedHeight,
                     $width,
                     $height
                 );
@@ -227,7 +249,7 @@ class ImageQualityService
         $pixels = $width * $height;
 
         // Penalize low resolution
-        $recommendedPixels = self::RECOMMENDED_WIDTH * self::RECOMMENDED_HEIGHT;
+        $recommendedPixels = $this->recommendedWidth * $this->recommendedHeight;
         if ($pixels < $recommendedPixels) {
             $ratio = $pixels / $recommendedPixels;
             $score *= $ratio;
@@ -385,7 +407,7 @@ class ImageQualityService
         $details = $validationResult['details'] ?? [];
 
         // Resolution recommendations
-        if (isset($details['width']) && $details['width'] < self::RECOMMENDED_WIDTH) {
+        if (isset($details['width']) && $details['width'] < $this->recommendedWidth) {
             $recommendations[] = 'Take photos with your phone camera at the highest quality setting.';
         }
 

@@ -17,6 +17,7 @@ use App\Models\PhoneDetail;
 use App\Models\AdvertBoost;
 use App\Helpers\ContentHelper;
 use App\Helpers\FileUploadHelper;
+use App\Services\AdvertImageRequirements;
 use App\Services\AdvertValidationService;
 use App\Services\ImageQualityService;
 use App\Traits\ManagesImages;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Support\ActivityLog;
 
 /**
  * @group Advert Management
@@ -199,6 +201,7 @@ class UserManageAdverts extends Controller
                 'categories' => $categories,
                 'states'     => $states,
                 'shippings'  => $shippings,
+                'image_requirements' => AdvertImageRequirements::get(),
                 'car_options' => [
                     'conditions'    => ['Local used', 'Foreign used', 'Brand new'],
                     'fuels'         => ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Natural gas CNG', 'LPG'],
@@ -211,6 +214,30 @@ class UserManageAdverts extends Controller
                     'device_types' => ['Smartphone', 'Feature Phone', 'Tablet'],
                 ],
             ]
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/adverts/image-requirements",
+     *     summary="Get the current admin-configured advert image requirements",
+     *     description="Returns the same image count/dimension/size/format rules the server enforces, so the client can validate locally before upload. Cached ~1hr server-side (per AdSetting key); safe to poll or cache on the client too.",
+     *     tags={"Advert Management"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Current image requirements",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function imageRequirements()
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => AdvertImageRequirements::get(),
         ]);
     }
 
@@ -238,17 +265,19 @@ class UserManageAdverts extends Controller
     public function uploadImages(Request $request)
     {
         $user = auth()->user();
+        $requirements = AdvertImageRequirements::get();
+        $mimes = implode(',', $requirements['allowed_formats']);
 
         $validator = Validator::make($request->all(), [
-            'images'   => 'required|array|min:1|max:8',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:21000',
+            'images'   => "required|array|min:1|max:{$requirements['max_images']}",
+            'images.*' => "required|image|mimes:{$mimes}|max:{$requirements['max_file_size_kb']}",
         ], [
             'images.required' => 'Please provide at least one image.',
             'images.min'      => 'Please provide at least one image.',
-            'images.max'      => 'You may upload a maximum of 8 images at a time.',
+            'images.max'      => "You may upload a maximum of {$requirements['max_images']} images at a time.",
             'images.*.image'  => 'All files must be images.',
-            'images.*.mimes'  => 'Images must be jpeg, png, jpg, or gif format.',
-            'images.*.max'    => 'Each image must not exceed 20MB.',
+            'images.*.mimes'  => 'Images must be ' . implode(', ', $requirements['allowed_formats']) . ' format.',
+            'images.*.max'    => 'Each image must not exceed ' . round($requirements['max_file_size_bytes'] / (1024 * 1024)) . 'MB.',
         ]);
 
         if ($validator->fails()) {
@@ -260,7 +289,7 @@ class UserManageAdverts extends Controller
         $qualityErrors = [];
 
         foreach ($request->file('images') as $image) {
-            $result = $imageQualityService->validateImage($image);
+            $result = $imageQualityService->validateImage($image, $requirements['strictness']);
             if (!$result['valid']) {
                 $qualityErrors = array_merge($qualityErrors, $result['errors']);
             }
@@ -379,6 +408,43 @@ class UserManageAdverts extends Controller
     public function createAdvert(Request $request)
     {
         $user = auth()->user();
+
+        // Idempotency key: the app generates one UUID per "Post Ad" tap and
+        // resends the same one on any automatic retry (e.g. after a network
+        // error where it can't tell whether the original request succeeded).
+        // A repeat with the same key returns the advert already created
+        // instead of creating a duplicate. Optional — omit it and behavior
+        // falls back to the content-based duplicate check below.
+        $idempotencyKey = $request->header('Idempotency-Key') ?: $request->input('idempotency_key');
+        $idempotencyKey = is_string($idempotencyKey) ? trim($idempotencyKey) : null;
+
+        if ($idempotencyKey === '') {
+            $idempotencyKey = null;
+        }
+
+        if ($idempotencyKey !== null && !preg_match('/^[A-Za-z0-9\-_.]{8,64}$/', $idempotencyKey)) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['idempotency_key' => ['Idempotency key must be 8-64 characters: letters, numbers, - _ or .']],
+            ], 422);
+        }
+
+        if ($idempotencyKey !== null) {
+            $existing = Advert::where('user_id', $user->user_id)
+                ->where('idempotency_key', $idempotencyKey)
+                ->first();
+
+            if ($existing) {
+                $existing->load(['media', 'car', 'phone', 'shippings']);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Advert already created for this request.',
+                    'replayed' => true,
+                    'data' => $existing,
+                ], 200);
+            }
+        }
+
         $subcat = (int) $request->input('subcategory');
         $category = (int) $request->input('category');
 
@@ -388,12 +454,17 @@ class UserManageAdverts extends Controller
         $validationService = new AdvertValidationService();
         $hasTempImages = !empty($request->input('temp_image_paths', []));
         $rules = $validationService->getRules($category, $subcat, false, $hasTempImages, $user->acc_type);
+        $imageRequirements = AdvertImageRequirements::get();
 
         $messages = [
-            'images.required'             => 'Please upload at least 3 images.',
-            'images.min'                  => 'Please upload at least 3 images.',
+            'images.required'             => "Please upload at least {$imageRequirements['min_images']} images.",
+            'images.min'                  => "Please upload at least {$imageRequirements['min_images']} images.",
+            'images.max'                  => "You may upload a maximum of {$imageRequirements['max_images']} images.",
             'state.exists'                => 'Please select a valid state.',
             'lga.exists'                  => 'Please select a valid LGA.',
+            'price.required_unless'       => 'Please enter a price, or select "Contact for Price".',
+            'price.gt'                    => 'Please enter a price greater than 0, or select "Contact for Price".',
+            'price_type.required_unless'  => 'Please select a price type.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
@@ -484,6 +555,7 @@ class UserManageAdverts extends Controller
             $keywords = implode(', ', array_slice($uniqueWords, 0, 10));
 
             $advert = Advert::create([
+                'idempotency_key' => $idempotencyKey,
                 'ad_title'   => $adTitle,
                 'title_slug' => Str::slug($adTitle),
                 'ad_type'    => $request->input('ad_type', 'Private'),
@@ -500,7 +572,7 @@ class UserManageAdverts extends Controller
                 'state' => $request->input('state'),
                 'lga' => $request->input('lga'),
                 'state_slug' => Str::slug($request->input('lga')),
-                'description' => ContentHelper::sanitizeContent($request->input('description')),
+                'description' => ContentHelper::sanitizeDescription($request->input('description')),
                 'keyword' => $keywords,
                 'meta_description' => $metaDescription,
                 'featured' => "No",
@@ -515,6 +587,8 @@ class UserManageAdverts extends Controller
 
             $advert->update(['ad_id' => (string) $advert->id]);
 
+            ActivityLog::record('advert', 'Posted advert "' . $advert->ad_title . '"', $user, $advert, ['source' => 'app']);
+
             $advert->shippings()->sync($request->input('shipping', []));
 
             // ── Image handling ───────────────────────────────────────────────────
@@ -525,11 +599,11 @@ class UserManageAdverts extends Controller
 
             if (!empty($tempImagePaths)) {
                 // Path A — quality already validated at upload time, just attach
-                if (!in_array($category, [3, 18]) && count($tempImagePaths) < 3) {
+                if (!in_array($category, [3, 18]) && count($tempImagePaths) < $imageRequirements['min_images']) {
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'errors'  => ['images' => ['Please upload at least 3 images.']],
+                        'errors'  => ['images' => ["Please upload at least {$imageRequirements['min_images']} images."]],
                     ], 422);
                 }
 
@@ -577,7 +651,7 @@ class UserManageAdverts extends Controller
                 $imageCount = 0;
 
                 foreach ($request->file('images') as $image) {
-                    $result = $imageQualityService->validateImage($image);
+                    $result = $imageQualityService->validateImage($image, $imageRequirements['strictness']);
                     $imageCount++;
 
                     if (!$result['valid']) {
@@ -598,11 +672,11 @@ class UserManageAdverts extends Controller
                     ], 422);
                 }
 
-                if (!in_array($category, [3, 18]) && $imageCount < 3) {
+                if (!in_array($category, [3, 18]) && $imageCount < $imageRequirements['min_images']) {
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'errors'  => ['images' => ['Please upload at least 3 images.']],
+                        'errors'  => ['images' => ["Please upload at least {$imageRequirements['min_images']} images."]],
                     ], 422);
                 }
 
@@ -708,14 +782,42 @@ class UserManageAdverts extends Controller
                 'data' => $advert
             ], 201);
 
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
             DB::rollBack();
-            Log::error('Advert creation failed: ' . $e->getMessage());
+
+            // A concurrent request with the same idempotency key won the race and
+            // committed first — return the advert it created instead of erroring
+            // or leaving the client with a duplicate.
+            if ($idempotencyKey !== null) {
+                $existing = Advert::where('user_id', $user->user_id)
+                    ->where('idempotency_key', $idempotencyKey)
+                    ->first();
+
+                if ($existing) {
+                    $existing->load(['media', 'car', 'phone', 'shippings']);
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Advert already created for this request.',
+                        'replayed' => true,
+                        'data' => $existing,
+                    ], 200);
+                }
+            }
+
+            Log::error('Advert creation failed: unique constraint violation', ['message' => $e->getMessage()]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create advert',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong while creating your advert. Please try again.',
+            ], 500);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Advert creation failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while creating your advert. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -899,6 +1001,9 @@ class UserManageAdverts extends Controller
         $messages = [
             'state.exists'                => 'Please select a valid state.',
             'lga.exists'                  => 'Please select a valid LGA.',
+            'price.required_unless'       => 'Please enter a price, or select "Contact for Price".',
+            'price.gt'                    => 'Please enter a price greater than 0, or select "Contact for Price".',
+            'price_type.required_unless'  => 'Please select a price type.',
             'condition.required'          => 'Please select the vehicle condition.',
             'registration.required'       => 'Please select the vehicle registration status.',
             'fuel.required'               => 'Please select the fuel type.',
@@ -970,7 +1075,7 @@ class UserManageAdverts extends Controller
                 'state' => $request->input('state'),
                 'lga' => $request->input('lga'),
                 'state_slug' => Str::slug($request->input('lga')),
-                'description' => ContentHelper::sanitizeContent($request->input('description')),
+                'description' => ContentHelper::sanitizeDescription($request->input('description')),
                 'featured' => $advert->featured,
                 'keyword' => $keywords,
                 'meta_description' => $metaDescription,
@@ -978,6 +1083,8 @@ class UserManageAdverts extends Controller
                 'show_contact' => $request->input('show_contact'),
                 'quantity' => $request->input('quantity') ?? 1,
             ]);
+
+            ActivityLog::record('advert', 'Edited advert "' . $advert->ad_title . '"', $user, $advert, ['source' => 'app']);
 
             $advert->shippings()->sync($request->input('shipping', []));
 
@@ -1134,12 +1241,12 @@ class UserManageAdverts extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Advert update failed: ' . $e->getMessage());
+            Log::error('Advert update failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update advert',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong while updating your advert. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -1194,7 +1301,10 @@ class UserManageAdverts extends Controller
                 $advert->clearMediaCollection('images');
             }
 
+            $adTitle = $advert->ad_title;
             $advert->delete();
+
+            ActivityLog::record('advert', 'Deleted advert "' . $adTitle . '"', $user, $advert, ['source' => 'app']);
 
             DB::commit();
 

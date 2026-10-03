@@ -49,7 +49,7 @@ class UserController extends Controller
         $title = "My Ads | " . config('global.site_name');
         $user = $this->getUserFromSession();
         $user_id = $user->user_id;
-        $ads = Advert::with('firstImage')
+        $ads = Advert::with(['firstImage', 'moderationLogs'])
                     ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
                     ->paginate(20);
@@ -70,7 +70,7 @@ class UserController extends Controller
             ], 401);
         }
 
-        $ads = Advert::with('firstImage')
+        $ads = Advert::with(['firstImage', 'moderationLogs'])
                     ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
                     ->paginate(20);
@@ -234,15 +234,63 @@ class UserController extends Controller
 
 
     public function ad_status($status , $id)
-    {   
-        DB::table('adverts')
-            ->where('id', $id)
-            ->update([
-                'ad_status'=> $status,
-            ]);
- 
+    {
+        // Sellers may only toggle their own ad between active/disabled themselves —
+        // banned/pending_review are admin/resubmit-only transitions (see resubmitAd()).
+        if (!in_array($status, ['active', 'disabled'], true)) {
+            return redirect("user/my-ads")->with('error', 'Invalid status.');
+        }
+
+        $user = $this->getUserFromSession();
+
+        $advert = Advert::where('id', $id)
+            ->where('user_id', $user->user_id)
+            ->whereIn('ad_status', ['active', 'disabled'])
+            ->first();
+
+        if (!$advert) {
+            return redirect("user/my-ads")->with('error', 'Advert not found.');
+        }
+
+        $advert->update(['ad_status' => $status]);
+
+        \App\Support\ActivityLog::record(
+            'advert',
+            ($status === 'disabled' ? 'Disabled' : 'Activated') . ' advert "' . $advert->ad_title . '"',
+            $user,
+            $advert
+        );
+
         return redirect("user/my-ads")->with('success', 'Advert Status Updated');
-    
+    }
+
+    public function resubmitAd($id)
+    {
+        $user = $this->getUserFromSession();
+
+        $advert = Advert::where('id', $id)
+            ->where('user_id', $user->user_id)
+            ->where('ad_status', 'banned')
+            ->first();
+
+        if (!$advert) {
+            return redirect("user/my-ads")->with('error', 'Advert not found or not eligible for resubmission.');
+        }
+
+        $advert->update([
+            'ad_status' => 'pending_review',
+            'resubmitted_at' => now(),
+        ]);
+
+        \App\Models\AdvertModerationLog::create([
+            'advert_id' => $advert->id,
+            'admin_id' => null,
+            'action' => 'resubmitted',
+        ]);
+
+        \App\Support\ActivityLog::record('advert', 'Resubmitted advert "' . $advert->ad_title . '" for review', $user, $advert);
+
+        return redirect("user/my-ads")->with('success', 'Advert resubmitted for review.');
     }
 
     public function add_wishlist(Request $request, $id)

@@ -82,6 +82,7 @@ class Kernel extends HttpKernel
         // ✅ API Documentation Authentication
         'docs.auth' => \App\Http\Middleware\DocsAuthentication::class,
         'user.not_disabled' => \App\Http\Middleware\EnsureUserNotDisabled::class,
+        'user.phone_complete' => \App\Http\Middleware\EnsurePhoneComplete::class,
         'admin.2fa' => \App\Http\Middleware\Admin2FAVerified::class,
         'lowercase.url' => \App\Http\Middleware\LowercaseLocationUrl::class,
     ];

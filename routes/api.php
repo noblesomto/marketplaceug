@@ -91,6 +91,7 @@ Route::get('/adverts', [AdvertController::class, 'index']);
 Route::get('/adverts/featured', [AdvertController::class, 'featuredAdverts']);
 Route::get('/adverts/load-more', [AdvertController::class, 'loadMore']);
 Route::get('/adverts/seller/{seller_id}', [AdvertController::class, 'sellerAdverts']);
+Route::get('/adverts/image-requirements', [UserManageAdverts::class, 'imageRequirements']);
 Route::get('/adverts/{id}/related', [AdvertController::class, 'related']);
 Route::get('/adverts/{id}', [AdvertController::class, 'show']);
 Route::get('/categories', [AdvertController::class, 'categories']);
@@ -209,7 +210,7 @@ Route::post('/flutterwave/webhook', [FlutterwaveWebhookController::class, 'handl
 | User Dashboard Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->prefix('user')->group(function () {
     // Dashboard
     Route::get('/dashboard', [UserController::class, 'dashboard']);
     Route::get('/categories', [UserController::class, 'categories']);
@@ -220,6 +221,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     // Ads management
     Route::get('/ads', [UserController::class, 'myAds']);
     Route::patch('/ads/{adId}/status', [UserController::class, 'updateAdStatus']);
+    Route::patch('/ads/{adId}/resubmit', [UserController::class, 'resubmitAdvert']);
     Route::patch('/ads/{adId}/mark-sold', [UserController::class, 'markAsSold']);
 
     // Wishlist
@@ -252,7 +254,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 | User Manage Adverts Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:sanctum', 'throttle:20,1'])->prefix('adverts')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled', 'throttle:20,1'])->prefix('adverts')->group(function () {
     // Get data for creating adverts
     Route::get('/create/data', [UserManageAdverts::class, 'getCreateData']);
 
@@ -263,7 +265,7 @@ Route::middleware(['auth:sanctum', 'throttle:20,1'])->prefix('adverts')->group(f
     Route::get('/{advertId}/edit', [UserManageAdverts::class, 'getAdvertForEdit']);
 
     // CRUD routes
-    Route::post('/', [UserManageAdverts::class, 'createAdvert']);
+    Route::post('/', [UserManageAdverts::class, 'createAdvert'])->middleware('user.phone_complete');
     Route::put('/{advertId}', [UserManageAdverts::class, 'updateAdvert']);
     Route::delete('/{advertId}', [UserManageAdverts::class, 'deleteAdvert']);
 });
@@ -320,7 +322,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 | Block User Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+Route::middleware(['auth:sanctum', 'user.not_disabled'])->prefix('users')->group(function () {
     Route::post('/block', [BlockUserController::class, 'block']);
     Route::post('/unblock', [BlockUserController::class, 'unblock']);
     Route::get('/blocked', [BlockUserController::class, 'getBlockedUsers']);

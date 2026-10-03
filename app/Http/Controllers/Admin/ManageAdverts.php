@@ -22,6 +22,14 @@ use Illuminate\Support\Str;
 use App\Traits\ManagesImages;
 use Illuminate\Validation\ValidationException;
 use App\Models\AdSetting;
+use App\Models\AdvertModerationLog;
+use App\Models\Notification;
+use App\Mail\AdvertBannedMail;
+use App\Mail\AdvertApprovedMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Support\ActivityLog;
 
 class ManageAdverts extends Controller
 {
@@ -71,6 +79,7 @@ class ManageAdverts extends Controller
 
         $query = Advert::with(['user', 'firstImage'])
                 ->where("ad_status", '<>', 'active')
+                ->where("ad_status", '<>', 'pending_review')
                 ->where("sold", "No");
 
         // Apply search if present
@@ -81,6 +90,23 @@ class ManageAdverts extends Controller
         $adverts = $query->orderBy('created_at', 'desc')->paginate(20);
 
         return view('admin.advert.adverts', compact('title', 'page_title', 'adverts'));
+    }
+
+    public function pending_review_adverts(Request $request)
+    {
+        $title = "Pending Review | " . config('global.site_name');
+        $page_title = "Pending Review";
+
+        $query = Advert::with(['user', 'firstImage', 'moderationLogs.admin'])
+                ->where('ad_status', 'pending_review');
+
+        if ($request->filled('query')) {
+            $query = $this->applyAdvertSearch($query, $request->input('query'));
+        }
+
+        $adverts = $query->orderBy('resubmitted_at', 'desc')->paginate(20);
+
+        return view('admin.advert.pending-review', compact('title', 'page_title', 'adverts'));
     }
 
     // all adverts method
@@ -255,7 +281,7 @@ class ManageAdverts extends Controller
         //dd($keywords);
         // Update main advert
         $advert->update([
-            'ad_title'        => ContentHelper::sanitizeContent($request->input('ad_title')),
+            'ad_title'        => ContentHelper::sanitizeTitle($request->input('ad_title')),
             'ad_type'         => $request->input('ad_type'),
             'category'        => $request->input('category'),
             'sub_category'    => $request->input('subcategory'),
@@ -270,7 +296,7 @@ class ManageAdverts extends Controller
             'state'           => $request->input('state'),
             'lga'             => $request->input('lga'),
             'state_slug'      => Str::slug($request->input('lga')),
-            'description'       => ContentHelper::sanitizeContent($request->input('description')),
+            'description'       => ContentHelper::sanitizeDescription($request->input('description')),
             'featured'         => $advert->featured,
             'keyword'         => $keywords,
             'meta_description'=> $metaDescription,
@@ -441,6 +467,21 @@ class ManageAdverts extends Controller
 
     public function advert_status($id, $status)
     {
+        // Banning requires a reason (see banAdvert()) and approving a banned/pending
+        // review advert needs to be logged (see approveAdvert()) — this bare toggle
+        // stays for the harmless active<->disabled cases only.
+        if (!in_array($status, ['active', 'disabled'], true)) {
+            return redirect()->back()->with('status', [
+                'text' => 'Use the Ban or Approve action for that status change.',
+                'type' => 'error',
+            ]);
+        }
+
+        $advert = Advert::find($id);
+        if ($advert && in_array($advert->ad_status, ['banned', 'pending_review'], true) && $status === 'active') {
+            return $this->approveAdvert($id);
+        }
+
         DB::table('adverts')
                 ->where('id', $id)
                 ->update([
@@ -449,6 +490,136 @@ class ManageAdverts extends Controller
                 ]);
 
         return redirect()->back()->with('status', ['text'=>'Advert Status Changed','type'=>'success']);
+    }
+
+    public function banAdvert(Request $request, $id)
+    {
+        $request->validate([
+            'reason_category' => 'required|in:' . implode(',', array_keys(AdvertModerationLog::REASON_CATEGORIES)),
+            'reason_note' => 'nullable|string|max:1000|required_if:reason_category,other',
+        ]);
+
+        $advert = Advert::with('user')->findOrFail($id);
+        $admin = Auth::guard('admin')->user();
+        $categoryLabel = AdvertModerationLog::REASON_CATEGORIES[$request->reason_category];
+
+        $advert->update(['ad_status' => 'banned']);
+
+        AdvertModerationLog::create([
+            'advert_id' => $advert->id,
+            'admin_id' => $admin->id,
+            'action' => 'banned',
+            'reason_category' => $request->reason_category,
+            'reason_note' => $request->reason_note,
+        ]);
+
+        ActivityLog::record('advert', 'Banned advert "' . $advert->ad_title . '": ' . $categoryLabel, $admin, $advert, [
+            'reason_category' => $request->reason_category,
+            'reason_note' => $request->reason_note,
+        ]);
+
+        $this->notifySeller($advert, 'Advert Disabled', "Your advert \"{$advert->ad_title}\" was disabled: {$categoryLabel}.");
+        $this->emailBanned($advert, $categoryLabel, $request->reason_note, false);
+
+        return redirect()->back()->with('status', ['text' => 'Advert disabled and seller notified.', 'type' => 'success']);
+    }
+
+    public function approveAdvert($id)
+    {
+        $advert = Advert::with('user')->findOrFail($id);
+        $admin = Auth::guard('admin')->user();
+
+        $advert->update(['ad_status' => 'active']);
+
+        AdvertModerationLog::create([
+            'advert_id' => $advert->id,
+            'admin_id' => $admin->id,
+            'action' => 'approved',
+        ]);
+
+        ActivityLog::record('advert', 'Approved advert "' . $advert->ad_title . '"', $admin, $advert);
+
+        $this->notifySeller($advert, 'Advert Approved', "Your advert \"{$advert->ad_title}\" is live again.");
+
+        try {
+            Mail::to($advert->user->email)->queue(new AdvertApprovedMail([
+                'name' => $advert->user->name,
+                'ad_title' => $advert->ad_title,
+                'ad_link' => url($advert->state_slug . '/' . $advert->title_slug . '/' . $advert->ad_id),
+            ]));
+        } catch (\Throwable $e) {
+            Log::error('Advert approval email failed', ['advert_id' => $advert->id, 'error' => $e->getMessage()]);
+        }
+
+        return redirect()->back()->with('status', ['text' => 'Advert approved and is live again.', 'type' => 'success']);
+    }
+
+    public function rejectResubmission(Request $request, $id)
+    {
+        $request->validate([
+            'reason_category' => 'required|in:' . implode(',', array_keys(AdvertModerationLog::REASON_CATEGORIES)),
+            'reason_note' => 'nullable|string|max:1000|required_if:reason_category,other',
+        ]);
+
+        $advert = Advert::with('user')->findOrFail($id);
+        $admin = Auth::guard('admin')->user();
+        $categoryLabel = AdvertModerationLog::REASON_CATEGORIES[$request->reason_category];
+
+        $advert->update(['ad_status' => 'banned']);
+
+        AdvertModerationLog::create([
+            'advert_id' => $advert->id,
+            'admin_id' => $admin->id,
+            'action' => 'rejected',
+            'reason_category' => $request->reason_category,
+            'reason_note' => $request->reason_note,
+        ]);
+
+        ActivityLog::record('advert', 'Rejected resubmission of "' . $advert->ad_title . '": ' . $categoryLabel, $admin, $advert, [
+            'reason_category' => $request->reason_category,
+            'reason_note' => $request->reason_note,
+        ]);
+
+        $this->notifySeller($advert, 'Advert Disabled', "Your resubmitted advert \"{$advert->ad_title}\" was not approved: {$categoryLabel}.");
+        $this->emailBanned($advert, $categoryLabel, $request->reason_note, true);
+
+        return redirect()->back()->with('status', ['text' => 'Resubmission rejected and seller notified.', 'type' => 'success']);
+    }
+
+    private function emailBanned(Advert $advert, string $categoryLabel, ?string $note, bool $isResubmissionReject)
+    {
+        try {
+            Mail::to($advert->user->email)->queue(new AdvertBannedMail([
+                'name' => $advert->user->name,
+                'ad_title' => $advert->ad_title,
+                'reason_category' => $categoryLabel,
+                'reason_note' => $note,
+                'is_resubmission_reject' => $isResubmissionReject,
+            ]));
+        } catch (\Throwable $e) {
+            Log::error('Advert ban email failed', ['advert_id' => $advert->id, 'error' => $e->getMessage()]);
+        }
+    }
+
+    // Advert::user_id references users.user_id, NOT users.id — notifications.user_id
+    // has an FK to users.id, so it must be resolved through the relationship.
+    private function notifySeller(Advert $advert, string $type, string $message)
+    {
+        $ownerId = $advert->user->id ?? null;
+
+        if (!$ownerId) {
+            Log::warning("Could not resolve owner for advert {$advert->id}; no notification sent");
+            return;
+        }
+
+        Notification::create([
+            'user_id' => $ownerId,
+            'seller_id' => $ownerId,
+            'advert_id' => $advert->id,
+            'type' => $type,
+            'message' => $message,
+            'is_read' => 0,
+        ]);
     }
 
     public function sold_status($id, $status)
@@ -509,6 +680,13 @@ class ManageAdverts extends Controller
 
         // Delete the advert itself
         $advert->delete();
+
+        \App\Support\ActivityLog::record(
+            'advert',
+            'Advert "' . $advert->ad_title . '" deleted by admin',
+            Auth::guard('admin')->user(),
+            $advert
+        );
 
         \DB::commit();
 

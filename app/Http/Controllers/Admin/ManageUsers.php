@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use App\Models\Advert;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
+use App\Support\ActivityLog;
+use Spatie\Activitylog\Models\Activity;
 
 class ManageUsers extends Controller
 {
@@ -59,6 +61,7 @@ class ManageUsers extends Controller
         $isDisabling = $action === 'disable';
 
         $admin = Auth::guard('admin')->user();
+        $user = User::where('user_id', $id)->first();
 
         DB::table('users')
             ->where('user_id', $id)
@@ -70,6 +73,16 @@ class ManageUsers extends Controller
                 'updated_at'           => Carbon::now(),
             ]);
 
+        if ($user) {
+            ActivityLog::record(
+                'account',
+                $isDisabling ? 'Account disabled by admin' : 'Account re-enabled by admin',
+                $admin,
+                $user,
+                $isDisabling ? ['reason' => $request->input('reason')] : []
+            );
+        }
+
         $text = $isDisabling ? 'User account has been disabled.' : 'User account has been re-enabled.';
 
         return redirect()->back()->with('status', ['text' => $text, 'type' => 'success']);
@@ -77,12 +90,23 @@ class ManageUsers extends Controller
 
     public function user_status($id, $status)
     {
+        $user = User::where('user_id', $id)->first();
+
         DB::table('users')
                 ->where('user_id', $id)
                 ->update([
                     'acc_status'=> $status,
                     'updated_at' => Carbon::now(),
                 ]);
+
+        if ($user) {
+            ActivityLog::record(
+                'account',
+                $status == 1 ? 'Account activated by admin' : 'Account deactivated by admin',
+                Auth::guard('admin')->user(),
+                $user
+            );
+        }
 
         return redirect()->back()->with('status', ['text'=>'User Status Changed','type'=>'success']);
     }
@@ -164,6 +188,14 @@ class ManageUsers extends Controller
     {
         $user = User::where('user_id', $user_id)->first();
         if ($user) {
+            ActivityLog::record(
+                'account',
+                'Account deleted by admin',
+                Auth::guard('admin')->user(),
+                $user,
+                ['name' => $user->name, 'email' => $user->email]
+            );
+
             Advert::where('user_id', $user_id)->delete();
             $user->delete();
         }
@@ -182,6 +214,8 @@ class ManageUsers extends Controller
 
     public function verify_status($id, $status, $verify)
     {
+        $user = User::where('user_id', $id)->first();
+
         DB::table('user_verifications')
             ->where('user_id', $id)
             ->update([
@@ -196,7 +230,88 @@ class ManageUsers extends Controller
                     'updated_at' => Carbon::now(),
                 ]);
 
+        if ($user) {
+            ActivityLog::record(
+                'account',
+                'Identity verification ' . ($verify === 'yes' ? 'approved' : 'rejected') . ' by admin',
+                Auth::guard('admin')->user(),
+                $user
+            );
+        }
+
         return redirect()->back()->with('status', ['text'=>'Verification Status Changed','type'=>'success']);
+    }
+
+    public function user_activity(Request $request, $id)
+    {
+        $user = User::where('user_id', $id)->firstOrFail();
+        $title = "Activity - " . $user->name . " | " . config('global.site_name');
+
+        $advertIds = Advert::where('user_id', $user->user_id)->pluck('id');
+
+        $query = Activity::query()
+            ->where(function ($q) use ($user) {
+                $q->where('causer_type', User::class)->where('causer_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($user) {
+                $q->where('subject_type', User::class)->where('subject_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($advertIds) {
+                $q->where('subject_type', Advert::class)->whereIn('subject_id', $advertIds);
+            });
+
+        if ($request->filled('log_name')) {
+            $query->where('log_name', $request->input('log_name'));
+        }
+
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->input('from'));
+        }
+
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->input('to'));
+        }
+
+        $activities = $query->orderByDesc('created_at')->paginate(30)->withQueryString();
+
+        // Spatie's default causer/subject morphTo resolution assumes the related
+        // model's Eloquent primary key matches the morph id column — that's true
+        // for Advert/Admin, but User's declared key is 'user_id', not the 'id'
+        // this table stores (see App\Support\ActivityLog). Resolve manually.
+        $userCache = [$user->id => $user];
+        $advertCache = [];
+
+        $activities->getCollection()->transform(function (Activity $activity) use (&$userCache, &$advertCache) {
+            foreach (['causer', 'subject'] as $relation) {
+                $type = $activity->{$relation . '_type'};
+                $modelId = $activity->{$relation . '_id'};
+
+                if ($type === User::class && $modelId) {
+                    $userCache[$modelId] ??= User::where('id', $modelId)->first();
+                    $activity->setRelation($relation, $userCache[$modelId]);
+                } elseif ($type === Advert::class && $modelId) {
+                    $advertCache[$modelId] ??= Advert::find($modelId);
+                    $activity->setRelation($relation, $advertCache[$modelId]);
+                }
+            }
+
+            return $activity;
+        });
+
+        $logNames = Activity::query()
+            ->where(function ($q) use ($user) {
+                $q->where('causer_type', User::class)->where('causer_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($user) {
+                $q->where('subject_type', User::class)->where('subject_id', $user->id);
+            })
+            ->orWhere(function ($q) use ($advertIds) {
+                $q->where('subject_type', Advert::class)->whereIn('subject_id', $advertIds);
+            })
+            ->distinct()
+            ->pluck('log_name');
+
+        return view('admin.users.user-activity', compact('title', 'user', 'activities', 'logNames'));
     }
 
     private function globalUserStats(): array

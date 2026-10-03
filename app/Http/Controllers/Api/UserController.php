@@ -230,8 +230,10 @@ class UserController extends Controller
      */
     public function updateAdStatus($adId, Request $request)
     {
+        // Sellers may only toggle active<->disabled themselves. banned/pending_review
+        // are admin/resubmit-only transitions — see resubmitAdvert().
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:active,disabled,banned'
+            'status' => 'required|string|in:active,disabled'
         ]);
 
         if ($validator->fails()) {
@@ -244,12 +246,13 @@ class UserController extends Controller
         $user = auth()->user();
         $advert = Advert::where('id', $adId)
             ->where('user_id', $user->user_id)
+            ->whereIn('ad_status', ['active', 'disabled'])
             ->first();
 
         if (!$advert) {
             return response()->json([
                 'success' => false,
-                'message' => 'Advert not found'
+                'message' => 'Advert not found or not eligible for this status change'
             ], 404);
         }
 
@@ -258,6 +261,60 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Advert status updated successfully'
+        ]);
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/ads/{adId}/resubmit",
+     *     summary="Resubmit a banned ad for admin review",
+     *     tags={"User Ads"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="adId",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Advert resubmitted for review"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ad not found or not eligible for resubmission"
+     *     )
+     * )
+     */
+    public function resubmitAdvert($adId)
+    {
+        $user = auth()->user();
+        $advert = Advert::where('id', $adId)
+            ->where('user_id', $user->user_id)
+            ->where('ad_status', 'banned')
+            ->first();
+
+        if (!$advert) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Advert not found or not eligible for resubmission'
+            ], 404);
+        }
+
+        $advert->update([
+            'ad_status' => 'pending_review',
+            'resubmitted_at' => now(),
+        ]);
+
+        \App\Models\AdvertModerationLog::create([
+            'advert_id' => $advert->id,
+            'admin_id' => null,
+            'action' => 'resubmitted',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Advert resubmitted for review'
         ]);
     }
 

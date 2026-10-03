@@ -61,7 +61,11 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
         Route::get('/admin/active-adverts', [ManageAdverts::class, 'active_adverts'])->name('admin.active.adverts');
         Route::get('/admin/disabled-adverts', [ManageAdverts::class, 'disabled_adverts'])->name('admin.disabled.adverts');
         Route::get('/admin/sold-adverts', [ManageAdverts::class, 'sold_adverts'])->name('admin.sold.adverts');
+        Route::get('/admin/pending-review-adverts', [ManageAdverts::class, 'pending_review_adverts'])->name('admin.pending.review.adverts');
         Route::get('/admin/advert-status/{id}/{status}', [ManageAdverts::class, 'advert_status'])->name('admin.advert.status');
+        Route::post('/admin/advert-ban/{id}', [ManageAdverts::class, 'banAdvert'])->name('admin.advert.ban');
+        Route::post('/admin/advert-approve/{id}', [ManageAdverts::class, 'approveAdvert'])->name('admin.advert.approve');
+        Route::post('/admin/advert-reject/{id}', [ManageAdverts::class, 'rejectResubmission'])->name('admin.advert.reject');
         Route::get('/admin/sold-status/{id}/{status}', [ManageAdverts::class, 'sold_status'])->name('admin.sold.status');
         Route::get('/admin/redirect-status/{id}/{status}', [ManageAdverts::class, 'redirect_status'])->name('admin.redirect.status');
         Route::match(['GET', 'POST'], '/admin/edit-ad/{id}', [ManageAdverts::class, 'edit_advert'])->name('admin.edit.advert');
@@ -136,6 +140,7 @@ Route::middleware(['adminsession', 'admin.2fa'])->group(function () {
         Route::get('/admin/unverified-users', [ManageUsers::class, 'unverified_users'])->name('admin.unverified.users');
         Route::get('/admin/disabled-users', [ManageUsers::class, 'disabled_users'])->name('admin.disabled.users');
         Route::get('/admin/view-user/{id}', [ManageUsers::class, 'view_user'])->name('admin.view.user');
+        Route::get('/admin/user-activity/{id}', [ManageUsers::class, 'user_activity'])->name('admin.user.activity');
         Route::get('/admin/user-verification', [ManageUsers::class, 'user_verification'])->name('admin.user.verification');
         Route::get('/admin/verify-status/{id}/{status}/{verify}', [ManageUsers::class, 'verify_status'])->name('admin.verify.status');
         Route::get('/admin/users/search', [ManageUsers::class, 'search'])->name('admin.users.search');

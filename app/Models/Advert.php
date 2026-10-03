@@ -18,6 +18,7 @@ class Advert extends Model implements HasMedia
 
     protected $fillable = [
         'user_id',
+        'idempotency_key',
         'ad_id',
         'ad_type',
         'ad_title',
@@ -46,10 +47,17 @@ class Advert extends Model implements HasMedia
         'featured',
         'sold',
         'sold_date',
+        'resubmitted_at',
         'show_contact',
         'source',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'resubmitted_at' => 'datetime',
+        ];
+    }
 
     public function sluggable(): array
     {
@@ -115,6 +123,20 @@ class Advert extends Model implements HasMedia
     public function reports()
     {
         return $this->hasMany(Reports::class, 'advert_id');
+    }
+
+    public function moderationLogs()
+    {
+        return $this->hasMany(AdvertModerationLog::class)->latest();
+    }
+
+    // Most recent ban/rejection reason — null once the advert has never been
+    // banned, or after it's been through a rejection cycle with no new ban since.
+    public function latestModerationReason()
+    {
+        return $this->moderationLogs()
+            ->whereIn('action', ['banned', 'rejected'])
+            ->first();
     }
 
     public function shippings()
@@ -325,6 +347,7 @@ class Advert extends Model implements HasMedia
 
         if (file_exists($imagePath)) {
             $this->addMedia($imagePath)
+                ->preservingOriginal()
                 ->withCustomProperties(['position' => 1])
                 ->usingName($imageName)
                 ->usingFileName($imageName)

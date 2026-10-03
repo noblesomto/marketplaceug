@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\AdSetting;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Services\AdvertImageRequirements;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +31,9 @@ class AdvertValidationService
         // Get UI config
         $uiConfig = $this->getUIConfig($categoryId, $subcategoryId);
 
+        $requirements = AdvertImageRequirements::get();
+        $mimes = implode(',', $requirements['allowed_formats']);
+
         // Base rules (always required)
         $rules = [
             'ad_title'    => 'required|max:75',
@@ -40,15 +43,13 @@ class AdvertValidationService
             'state' => 'required|exists:states,name',
             'lga'   => 'required|exists:lgas,name',
             'description' => ['required', 'max:3500'],
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:21000',
+            'images.*' => "image|mimes:{$mimes}|max:{$requirements['max_file_size_kb']}",
         ];
 
         // ✅ Images required only for create (not for jobs category)
         // Skip image requirement if temp images exist (from previous validation error)
         if (!$isUpdate && !in_array($categoryId, [3, 18]) && !$hasTempImages) {
-            $minImages = (int) AdSetting::getValue('min_images', 3);
-            $maxImages = (int) AdSetting::getValue('max_images', 8);
-            $rules['images'] = "required|array|min:{$minImages}|max:{$maxImages}";
+            $rules['images'] = "required|array|min:{$requirements['min_images']}|max:{$requirements['max_images']}";
         }
 
         // Add conditional rules based on UI config
@@ -116,7 +117,11 @@ class AdvertValidationService
                 $rules['price'] = 'nullable|numeric';
             } else {
                 // Price is required unless user selected "Contact for Price"
-                $rules['price']      = 'required_unless:contact_price,yes|nullable|numeric';
+                // Price is required unless user selected "Contact for Price".
+                // `gt:0` matters because Laravel's required/required_unless treat 0 as
+                // "present" (only null/''/[] count as empty), so a bare `required_unless`
+                // was letting price=0 through despite price_type being "Fixed Price".
+                $rules['price']      = 'required_unless:contact_price,yes|numeric|gt:0';
                 $rules['price_type'] = 'required_unless:contact_price,yes';
             }
         }
