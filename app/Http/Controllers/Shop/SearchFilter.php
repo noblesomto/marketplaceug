@@ -18,6 +18,7 @@ use App\Traits\HasUserSession;
 use App\Traits\GeneratesSeoMeta;
 use App\Services\FilterService;
 use App\Services\AdvertQueryService;
+use App\Services\SlugRedirectResolver;
 
 class SearchFilter extends Controller
 {
@@ -26,6 +27,7 @@ class SearchFilter extends Controller
     public function __construct(
         private FilterService $filterService,
         private AdvertQueryService $advertQueryService,
+        private SlugRedirectResolver $slugRedirects,
     ) {}
 
     public function search(Request $request)
@@ -107,6 +109,14 @@ class SearchFilter extends Controller
             return $this->location_subcat(request(), $location, $slug);
         } elseif (Brands::where('brand_slug', $slug)->exists()) {
             return $this->location_brand(request(), $location, $slug);
+        }
+
+        if (($newSlug = $this->slugRedirects->resolve('subcategory', $slug)) && SubCategory::where('sub_cat_slug', $newSlug)->exists()) {
+            return redirect("/{$location}/{$newSlug}", 301);
+        }
+
+        if (($newSlug = $this->slugRedirects->resolve('brand', $slug)) && Brands::where('brand_slug', $newSlug)->exists()) {
+            return redirect("/{$location}/{$newSlug}", 301);
         }
 
         abort(404);
@@ -385,6 +395,28 @@ class SearchFilter extends Controller
         $conditionMap = $this->conditionSlugsForCategory($cat->id);
         if ($conditionMap && isset($conditionMap[$slug])) {
             return $this->renderLocationCategoryCondition($request, $location, $category_slug, $cat, $slug, $conditionMap[$slug]);
+        }
+
+        if ($newSlug = $this->slugRedirects->resolve('brand', $slug)) {
+            $redirectBrand = Brands::where('brand_slug', $newSlug)
+                ->whereHas('subCategory', fn ($q) => $q->where('cat_id', $cat->id))
+                ->first();
+
+            if ($redirectBrand) {
+                return redirect("/{$location}/{$category_slug}/{$newSlug}", 301);
+            }
+        }
+
+        if (isset(self::MODEL_CATEGORY_DETAIL_RELATIONS[$cat->id])) {
+            if ($newSlug = $this->slugRedirects->resolve('model', $slug)) {
+                $redirectModel = VehicleModel::where('model_slug', $newSlug)
+                    ->whereHas('brand.subCategory', fn ($q) => $q->where('cat_id', $cat->id))
+                    ->first();
+
+                if ($redirectModel) {
+                    return redirect("/{$location}/{$category_slug}/{$newSlug}", 301);
+                }
+            }
         }
 
         abort(404);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use App\Support\TaxonomySlugDisambiguator;
 
 class SubCategory extends Model
 {
@@ -24,8 +25,10 @@ class SubCategory extends Model
     {
         return [
             'sub_cat_slug' => [
-                'source' => 'sub_category'
-            ]
+                'source' => 'sub_category',
+                'uniqueSuffix' => fn ($slug, $separator, $list, $firstSuffix) =>
+                    TaxonomySlugDisambiguator::suffix($slug, $separator, $list, $firstSuffix, $this->category?->category_slug),
+            ],
         ];
     }
 

@@ -26,6 +26,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\FeaturedAdPaginator;
 use App\Services\AdvertQueryService;
 use App\Services\FilterService;
+use App\Services\SlugRedirectResolver;
 use App\Support\AdvertVisibility;
 use App\Mail\ReportMail;
 use Mail;
@@ -41,6 +42,7 @@ class AdvertController extends Controller
     public function __construct(
         private AdvertQueryService $advertQueryService,
         private FilterService $filterService,
+        private SlugRedirectResolver $slugRedirects,
     ) {}
     public function index(Request $request)
     {
@@ -945,7 +947,20 @@ class AdvertController extends Controller
     public function sub_category(Request $request, $category_slug, $subcat_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->first();
+
+        if (!$subcat) {
+            $newSlug = $this->slugRedirects->resolve('subcategory', $subcat_slug);
+            $redirectTarget = $newSlug
+                ? SubCategory::where('sub_cat_slug', $newSlug)->where('cat_id', $cat->id)->first()
+                : null;
+
+            if ($redirectTarget) {
+                return redirect("/category/{$category_slug}/{$newSlug}", 301);
+            }
+
+            abort(404);
+        }
 
         $count_subcat = Advert::activeNotRecentlySold()
             ->where('sub_category', $subcat->id)
@@ -980,8 +995,35 @@ class AdvertController extends Controller
     public function brand(Request $request, $category_slug, $subcat_slug, $brand_slug)
     {
         $cat = Category::where('category_slug', $category_slug)->firstOrFail();
-        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->firstOrFail();
-        $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->firstOrFail();
+        $subcat = SubCategory::where('sub_cat_slug', $subcat_slug)->where('cat_id', $cat->id)->first();
+
+        if (!$subcat) {
+            $newSubcatSlug = $this->slugRedirects->resolve('subcategory', $subcat_slug);
+            $redirectSubcat = $newSubcatSlug
+                ? SubCategory::where('sub_cat_slug', $newSubcatSlug)->where('cat_id', $cat->id)->first()
+                : null;
+
+            if ($redirectSubcat) {
+                return redirect("/category/{$category_slug}/{$newSubcatSlug}/{$brand_slug}", 301);
+            }
+
+            abort(404);
+        }
+
+        $brand = Brands::where('brand_slug', $brand_slug)->where('subcat_id', $subcat->id)->first();
+
+        if (!$brand) {
+            $newBrandSlug = $this->slugRedirects->resolve('brand', $brand_slug);
+            $redirectBrand = $newBrandSlug
+                ? Brands::where('brand_slug', $newBrandSlug)->where('subcat_id', $subcat->id)->first()
+                : null;
+
+            if ($redirectBrand) {
+                return redirect("/category/{$category_slug}/{$subcat_slug}/{$newBrandSlug}", 301);
+            }
+
+            abort(404);
+        }
 
         $result = (new FeaturedAdPaginator(1))
             ->filters(['brand' => $brand->id])

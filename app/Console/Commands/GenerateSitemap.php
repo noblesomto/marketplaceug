@@ -23,17 +23,33 @@ class GenerateSitemap extends Command
     private string $outputDir;  // filesystem directory to write files into
     private string $publicUrl;  // public-facing URL prefix for sitemap index entries
 
+    /**
+     * Generic catch-all brand/model values (e.g. a seller who couldn't find
+     * their real brand or model in the list) — thin, non-specific content
+     * that shouldn't be indexed regardless of how many ads pile up under
+     * them, mirroring the exclusion writeCategories() already applies to
+     * catch-all subcategories. Checked against both brands.brand_slug and
+     * models.model_slug.
+     */
+    private const EXCLUDED_CATCHALL_SLUGS = ['other', 'no-name'];
+
     public function handle(): void
     {
         $this->baseUrl = rtrim(config('app.url'), '/');
 
         if (app()->environment('production')) {
             $this->outputDir = dirname(base_path()) . '/public_html/';
-            $this->publicUrl = $this->baseUrl;
+        } elseif (app()->environment('testing')) {
+            // Never overwrite the tracked public/sitemap-*.xml files with
+            // whatever transient data a test run happens to seed.
+            $this->outputDir = storage_path('framework/testing/sitemap') . '/';
+            if (!is_dir($this->outputDir)) {
+                mkdir($this->outputDir, 0755, true);
+            }
         } else {
             $this->outputDir = public_path() . '/';
-            $this->publicUrl = $this->baseUrl;
         }
+        $this->publicUrl = $this->baseUrl;
 
         $index = SitemapIndex::create();
 
@@ -109,21 +125,31 @@ class GenerateSitemap extends Command
             }
         });
 
-        // Subcategories
-        SubCategory::with('category')->orderBy('updated_at', 'desc')->chunk(500, function ($subcats) use ($sitemap, &$count) {
-            foreach ($subcats as $sub) {
-                if (!$sub->category) {
-                    continue;
+        // Subcategories — only those with at least one live ad, so empty/unused
+        // catch-all facets (e.g. "Other") don't get an indexable page.
+        $activeSubCategoryIds = DB::table('adverts')
+            ->where('ad_status', 1)
+            ->whereNotNull('sub_category')
+            ->distinct()
+            ->pluck('sub_category');
+
+        SubCategory::with('category')
+            ->whereIn('id', $activeSubCategoryIds)
+            ->orderBy('updated_at', 'desc')
+            ->chunk(500, function ($subcats) use ($sitemap, &$count) {
+                foreach ($subcats as $sub) {
+                    if (!$sub->category) {
+                        continue;
+                    }
+                    $sitemap->add(
+                        Url::create("{$this->baseUrl}/category/{$sub->category->category_slug}/{$sub->sub_cat_slug}")
+                            ->setLastModificationDate($sub->updated_at ?? now())
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                    $count++;
                 }
-                $sitemap->add(
-                    Url::create("{$this->baseUrl}/category/{$sub->category->category_slug}/{$sub->sub_cat_slug}")
-                        ->setLastModificationDate($sub->updated_at ?? now())
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                        ->setPriority(0.8)
-                );
-                $count++;
-            }
-        });
+            });
 
         $this->write($sitemap, 'sitemap-categories.xml', $index);
         $this->info("  → sitemap-categories.xml ({$count} URLs)");
@@ -178,17 +204,22 @@ class GenerateSitemap extends Command
             });
 
         // ── State + SubCategory ───────────────────────────────────────────────
+        // Same >=5 noindex threshold as the Category+Brand combo below —
+        // avoids indexing thin single-ad combos, especially generic
+        // "Other"/catch-all subcategories.
         DB::table('adverts')
             ->join('sub_categories', 'adverts.sub_category', '=', 'sub_categories.id')
             ->select(
                 'adverts.state_slug',
                 'sub_categories.sub_cat_slug',
-                DB::raw('MAX(adverts.updated_at) as last_updated')
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
             )
             ->where('adverts.ad_status', 1)
             ->whereNotNull('adverts.state_slug')
             ->where('adverts.state_slug', '!=', '')
             ->groupBy('adverts.state_slug', 'sub_categories.sub_cat_slug')
+            ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
             ->chunk(500, function ($rows) use ($sitemap, &$count) {
                 foreach ($rows as $row) {
@@ -203,18 +234,22 @@ class GenerateSitemap extends Command
             });
 
         // ── State + Brand ─────────────────────────────────────────────────────
+        // Same >=5 noindex threshold as the Category+Brand combo below.
         DB::table('adverts')
             ->join('brands', 'adverts.brand', '=', 'brands.id')
             ->select(
                 'adverts.state_slug',
                 'brands.brand_slug',
-                DB::raw('MAX(adverts.updated_at) as last_updated')
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
             )
             ->where('adverts.ad_status', 1)
             ->whereNotNull('adverts.state_slug')
             ->where('adverts.state_slug', '!=', '')
             ->whereNotNull('adverts.brand')
+            ->whereNotIn('brands.brand_slug', self::EXCLUDED_CATCHALL_SLUGS)
             ->groupBy('adverts.state_slug', 'brands.brand_slug')
+            ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
             ->chunk(500, function ($rows) use ($sitemap, &$count) {
                 foreach ($rows as $row) {
@@ -245,6 +280,7 @@ class GenerateSitemap extends Command
             ->whereNotNull('adverts.state_slug')
             ->where('adverts.state_slug', '!=', '')
             ->whereNotNull('adverts.brand')
+            ->whereNotIn('brands.brand_slug', self::EXCLUDED_CATCHALL_SLUGS)
             ->groupBy('adverts.state_slug', 'categories.category_slug', 'brands.brand_slug')
             ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
@@ -279,6 +315,7 @@ class GenerateSitemap extends Command
                 ->where('adverts.ad_status', 1)
                 ->whereNotNull('adverts.state_slug')
                 ->where('adverts.state_slug', '!=', '')
+                ->whereNotIn('models.model_slug', self::EXCLUDED_CATCHALL_SLUGS)
                 ->groupBy('adverts.state_slug', 'categories.category_slug', 'models.model_slug')
                 ->having('ad_count', '>=', 5)
                 ->orderBy('last_updated', 'desc')
@@ -385,19 +422,23 @@ class GenerateSitemap extends Command
             });
 
         // ── State + Brand ────────────────────────────────────────────────────
+        // Same >=5 noindex threshold as the Category+Brand combo below.
         DB::table('adverts')
             ->join('states', DB::raw('LOWER(states.name)'), '=', DB::raw('LOWER(adverts.state)'))
             ->join('brands', 'adverts.brand', '=', 'brands.id')
             ->select(
                 'states.slug',
                 'brands.brand_slug',
-                DB::raw('MAX(adverts.updated_at) as last_updated')
+                DB::raw('MAX(adverts.updated_at) as last_updated'),
+                DB::raw('COUNT(*) as ad_count')
             )
             ->where('adverts.ad_status', 1)
             ->whereNotNull('adverts.state')
             ->where('adverts.state', '!=', '')
             ->whereNotNull('adverts.brand')
+            ->whereNotIn('brands.brand_slug', self::EXCLUDED_CATCHALL_SLUGS)
             ->groupBy('states.slug', 'brands.brand_slug')
+            ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
             ->chunk(500, function ($rows) use ($sitemap, &$count) {
                 foreach ($rows as $row) {
@@ -428,6 +469,7 @@ class GenerateSitemap extends Command
             ->whereNotNull('adverts.state')
             ->where('adverts.state', '!=', '')
             ->whereNotNull('adverts.brand')
+            ->whereNotIn('brands.brand_slug', self::EXCLUDED_CATCHALL_SLUGS)
             ->groupBy('states.slug', 'categories.category_slug', 'brands.brand_slug')
             ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
@@ -460,6 +502,7 @@ class GenerateSitemap extends Command
                 ->where('adverts.ad_status', 1)
                 ->whereNotNull('adverts.state')
                 ->where('adverts.state', '!=', '')
+                ->whereNotIn('models.model_slug', self::EXCLUDED_CATCHALL_SLUGS)
                 ->groupBy('states.slug', 'categories.category_slug', 'models.model_slug')
                 ->having('ad_count', '>=', 5)
                 ->orderBy('last_updated', 'desc')
@@ -500,6 +543,7 @@ class GenerateSitemap extends Command
                 DB::raw('COUNT(*) as ad_count')
             )
             ->where('adverts.ad_status', 1)
+            ->whereNotIn('brands.brand_slug', self::EXCLUDED_CATCHALL_SLUGS)
             ->groupBy('brands.id', 'categories.category_slug', 'sub_categories.sub_cat_slug', 'brands.brand_slug')
             ->having('ad_count', '>=', 5)
             ->orderBy('last_updated', 'desc')
