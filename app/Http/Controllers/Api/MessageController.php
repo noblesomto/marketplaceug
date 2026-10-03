@@ -17,6 +17,7 @@ use App\Events\NewMessageNotification;
 use Carbon\Carbon;
 use App\Jobs\SendPushNotification;
 use App\Helpers\ContentHelper;
+use App\Support\ActivityLog;
 
 /**
  * @group Messages
@@ -129,6 +130,14 @@ class MessageController extends Controller
         } catch (\Exception $e) {
             \Log::error('Failed to dispatch push notification: ' . $e->getMessage());
         }
+
+        // Intentionally not logging the message body — this is an audit trail,
+        // not a second copy of private chats.
+        ActivityLog::record('message', 'Sent a message', $user, null, [
+            'advert_id' => $request->advert_id,
+            'receiver_id' => $request->receiver_id,
+            'source' => 'app',
+        ]);
 
         return response()->json([
             'success' => true,
