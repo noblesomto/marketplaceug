@@ -24,6 +24,7 @@ use App\Services\ImageProcessingService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Traits\HasUserSession;
+use App\Support\ActivityLog;
 
 
 class UserProfile extends Controller
@@ -52,10 +53,21 @@ class UserProfile extends Controller
             return view('user.settings.profile-update', compact('title', 'user', 'count_ads'));
         }
 
+        $changes = array_filter([
+            'name'  => $request->input('name') !== $user->name ? [$user->name, $request->input('name')] : null,
+            'phone' => $request->input('phone') !== $user->phone ? [$user->phone, $request->input('phone')] : null,
+        ]);
+
         DB::table('users')->where('user_id', $user_id)->update([
             'name'  => $request->input('name'),
             'phone' => $request->input('phone'),
         ]);
+
+        if (!empty($changes)) {
+            ActivityLog::record('profile', 'Updated profile', $user, $user, ['changed' => $changes]);
+        }
+
+        $request->session()->forget('must_complete_phone');
 
         if ($request->hasFile('profile_image')) {
             $user->clearMediaCollection('profile_image');
@@ -162,7 +174,12 @@ class UserProfile extends Controller
                     ->with('error', 'Profile image upload failed. Please try again.');
             }
 
+            $before = $user->only(array_keys($updateData));
             $user->update($updateData);
+
+            ActivityLog::record('profile', 'Updated profile', $user, $user, [
+                'changed' => array_diff_assoc($updateData, $before),
+            ]);
 
             return redirect()->back()->with('success', 'Profile information updated successfully!');
         }
@@ -194,11 +211,17 @@ class UserProfile extends Controller
             ],
         ]);
 
+        $oldPhone = $user->phone;
+
         DB::table('users')
             ->where('user_id', $user_id)
             ->update([
                 'phone' => $request->input('phone'),
             ]);
+
+        ActivityLog::record('profile', 'Updated phone number', $user, $user, [
+            'changed' => ['phone' => [$oldPhone, $request->input('phone')]],
+        ]);
 
         return redirect()->back()->with('success', 'Profile Information updated successfully!');
     }
@@ -269,6 +292,10 @@ class UserProfile extends Controller
             \Log::error('Verification email failed: ' . $e->getMessage());
         }
 
+        ActivityLog::record('profile', 'Submitted identity verification documents', $user, $user, [
+            'document_type' => $request->document_type,
+        ]);
+
         return redirect()->back()->with('success', 'Verification information submitted successfully!');
     }
 
@@ -288,7 +315,7 @@ class UserProfile extends Controller
          if ($request->isMethod('POST')) {
 
 
-            $user = DB::table('users')
+            DB::table('users')
                 ->where('user_id', $user_id)
                 ->update([
                     'payout_method'=> $request->input('payout_method'),
@@ -300,6 +327,11 @@ class UserProfile extends Controller
                     'mobile_money_number'=> $request->input('mobile_money_number'),
                 ]);
 
+            $userModel = User::where('user_id', $user_id)->first();
+            ActivityLog::record('profile', 'Updated bank/payout details', $userModel, $userModel, [
+                'bank_name' => $request->input('bank_name'),
+                'account_number_last4' => substr((string) $request->input('account_number'), -4),
+            ]);
 
              return redirect()->back()->with('success', 'Payment Information updated successfully!');
         }
@@ -316,11 +348,13 @@ class UserProfile extends Controller
 
         if (Hash::check($password, $user->password)) {
 
-            $user = DB::table('users')
+            DB::table('users')
                 ->where('user_id', $user_id)
                 ->update([
                     'password'=> Hash::make($request->input('password')),
                 ]);
+
+            ActivityLog::record('auth', 'Changed password', $user, $user);
 
             return redirect()->back()->with('success', 'Password Changed successfully!');
         }else{
@@ -345,6 +379,8 @@ class UserProfile extends Controller
             'disable_account_date'=> Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+
+    ActivityLog::record('auth', 'Deactivated own account', $user, $user);
 
     // Invalidate the entire session (this clears all session data)
     $request->session()->invalidate();
@@ -400,6 +436,7 @@ class UserProfile extends Controller
             // Clear remember token
             $user->update(['remember_token' => null]);
 
+            ActivityLog::record('auth', 'Logged out', $user, $user);
         }
     }
 

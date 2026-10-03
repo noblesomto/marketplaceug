@@ -15,6 +15,7 @@ use App\Models\Bank;
 use App\Models\UserVerification;
 use App\Mail\VerificationRequestMail;
 use App\Rules\UgandanPhoneNumber;
+use App\Support\ActivityLog;
 use Carbon\Carbon;
 
 /**
@@ -217,6 +218,7 @@ class UserProfile extends Controller
         }
 
         $updateData = $request->only(['name', 'address', 'city', 'state']);
+        $before = $user->only(array_keys($updateData));
 
         try {
             if ($request->hasFile('profile_image')) {
@@ -239,6 +241,11 @@ class UserProfile extends Controller
             }
 
             $user->update($updateData);
+
+            ActivityLog::record('profile', 'Updated profile', $user, $user, [
+                'changed' => array_diff_assoc($updateData, $before),
+                'source' => 'app',
+            ]);
 
             // Get updated profile image URLs
             $profileImageUrl = $user->getFirstMediaUrl('profile_image', 'optimized')
@@ -298,7 +305,13 @@ class UserProfile extends Controller
             ], 422);
         }
 
+        $oldPhone = $user->phone;
         $user->update(['phone' => $request->phone]);
+
+        ActivityLog::record('profile', 'Updated phone number', $user, $user, [
+            'changed' => ['phone' => [$oldPhone, $request->phone]],
+            'source' => 'app',
+        ]);
 
         return response()->json([
             'success' => true,
