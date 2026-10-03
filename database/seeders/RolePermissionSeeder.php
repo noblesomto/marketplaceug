@@ -19,7 +19,7 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permName) {
-            Permission::firstOrCreate(['name' => $permName]);
+            Permission::firstOrCreate(['name' => $permName], ['guard_name' => 'web']);
         }
 
         // Roles & their permissions
@@ -45,7 +45,7 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($roles as $roleName => $perms) {
-            $role = Role::firstOrCreate(['name' => $roleName]);
+            $role = Role::firstOrCreate(['name' => $roleName], ['guard_name' => 'web']);
             $permissionModels = Permission::whereIn('name', $perms)->get();
             $role->permissions()->sync($permissionModels->pluck('id'));
         }
