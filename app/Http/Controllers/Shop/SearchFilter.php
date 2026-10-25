@@ -328,11 +328,11 @@ class SearchFilter extends Controller
      * buckets — see FilterService::applyPriceRange().
      */
     private const PRICE_RANGE_SLUGS = [
-        'under-100k' => ['key' => 'under_20k', 'label' => 'Under UGX 100,000'],
-        '100k-500k'  => ['key' => '20k_120k',  'label' => 'UGX 100,000 - UGX 500,000'],
-        '500k-2m'    => ['key' => '120k_1m',   'label' => 'UGX 500,000 - UGX 2 Million'],
-        '2m-20m'     => ['key' => '1m_10m',    'label' => 'UGX 2 Million - UGX 20 Million'],
-        'above-20m'  => ['key' => 'above_10m', 'label' => 'Above UGX 20 Million'],
+        'under-100k' => ['key' => 'under_20k', 'label' => 'Under USh 100,000'],
+        '100k-500k'  => ['key' => '20k_120k',  'label' => 'USh 100,000 - USh 500,000'],
+        '500k-2m'    => ['key' => '120k_1m',   'label' => 'USh 500,000 - USh 2 Million'],
+        '2m-20m'     => ['key' => '1m_10m',    'label' => 'USh 2 Million - USh 20 Million'],
+        'above-20m'  => ['key' => 'above_10m', 'label' => 'Above USh 20 Million'],
     ];
 
     /**

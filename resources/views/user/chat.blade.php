@@ -264,7 +264,7 @@
                     <div id="extraInputWrapper" class="hidden">
                         <label for="extraInput" class="block text-sm font-medium text-gray-700 mb-1">Offer Amount</label>
                         <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:border-dark_green focus-within:ring-1 focus-within:ring-dark_green">
-                            <span class="px-3 py-2 bg-gray-50 text-gray-500 border-r border-gray-300 text-sm">UGX</span>
+                            <span class="px-3 py-2 bg-gray-50 text-gray-500 border-r border-gray-300 text-sm">USh</span>
                             <input type="text"
                                    id="extraInput"
                                    name="amount"
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 amountInput.removeAttribute('disabled');
                 amountInput.setAttribute('required', 'required');
                 if (amountInput.value) {
-                    chatInput.value = `I'd like to offer UGX ${fmtMoney(amountInput.value)}`;
+                    chatInput.value = `I'd like to offer USh ${fmtMoney(amountInput.value)}`;
                 }
             } else {
                 wrapper.classList.add('hidden');
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update chat input on amount change
         amountInput.addEventListener('input', function() {
             if (toggle.checked && amountInput.value) {
-                chatInput.value = `I'd like to offer UGX ${fmtMoney(amountInput.value)}`;
+                chatInput.value = `I'd like to offer USh ${fmtMoney(amountInput.value)}`;
             }
         });
 
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
             amountInput.removeAttribute('disabled');
             amountInput.setAttribute('required', 'required');
             if (amountInput.value) {
-                chatInput.value = `I'd like to offer UGX ${fmtMoney(amountInput.value)}`;
+                chatInput.value = `I'd like to offer USh ${fmtMoney(amountInput.value)}`;
             }
         } else {
             wrapper.classList.add('hidden');
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             // Update message for offer
             if (toggle && toggle.checked && amountInput.value && !message.includes(fmtMoney(amountInput.value))) {
-                message = `I'd like to offer UGX ${fmtMoney(amountInput.value)}`;
+                message = `I'd like to offer USh ${fmtMoney(amountInput.value)}`;
                 chatInput.value = message;
             }
             // Disable button + show loading

@@ -36,7 +36,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">District</th>
-                                    <th scope="col">Shipping Fee (UGX)</th>
+                                    <th scope="col">Shipping Fee (USh)</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>

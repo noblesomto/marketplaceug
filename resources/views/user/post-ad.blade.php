@@ -481,7 +481,7 @@
                         <!-- Amount Input -->
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <span class="text-gray-500 sm:text-base">UGX</span>
+                                <span class="text-gray-500 sm:text-base">USh</span>
                             </div>
                             <input type="text" name="price_display" id="price_display" class="block w-full pl-8 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-dark_green focus:border-dark_green text-base" placeholder="0.00" value="{{ old('price') ? number_format(old('price'), 0, '.', ',') : '' }}">
                             <input type="hidden" name="price" id="price_hidden" value="{{ old('price') }}">
@@ -514,7 +514,7 @@
                      <select name="salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Salary--</option>
                         @php
-                            $salaryRanges = ['Commission', 'Below UGX 200,000', 'UGX 200,000 - UGX 400,000', 'UGX 400,000 - UGX 600,000', 'UGX 600,000 - UGX 800,000', 'UGX 800,000 - UGX 1,000,000', 'UGX 1,000,000 - UGX 1,200,000', 'UGX 1,200,000 - UGX 1,400,000', 'UGX 1,400,000 - UGX 1,600,000', 'UGX 1,600,000 - UGX 1,800,000', 'UGX 1,800,000 - UGX 2,000,000', 'UGX 2,000,000 - UGX 2,200,000', 'UGX 2,200,000 - UGX 2,500,000', 'UGX 2,500,000 - UGX 3,000,000', 'UGX 3,000,000 - UGX 3,500,000', 'UGX 3,500,000 - UGX 4,000,000', 'UGX 4,000,000 - UGX 4,500,000', 'UGX 4,500,000 - UGX 5,000,000', 'Above UGX 5,000,000'];
+                            $salaryRanges = ['Commission', 'Below USh 200,000', 'USh 200,000 - USh 400,000', 'USh 400,000 - USh 600,000', 'USh 600,000 - USh 800,000', 'USh 800,000 - USh 1,000,000', 'USh 1,000,000 - USh 1,200,000', 'USh 1,200,000 - USh 1,400,000', 'USh 1,400,000 - USh 1,600,000', 'USh 1,600,000 - USh 1,800,000', 'USh 1,800,000 - USh 2,000,000', 'USh 2,000,000 - USh 2,200,000', 'USh 2,200,000 - USh 2,500,000', 'USh 2,500,000 - USh 3,000,000', 'USh 3,000,000 - USh 3,500,000', 'USh 3,500,000 - USh 4,000,000', 'USh 4,000,000 - USh 4,500,000', 'USh 4,500,000 - USh 5,000,000', 'Above USh 5,000,000'];
                         @endphp
                         @foreach($salaryRanges as $range)
                             <option value="{{ $range }}" {{ old('salary') == $range ? 'selected' : '' }}>{{ $range }}</option>
@@ -532,7 +532,7 @@
                      <select name="expected_salary" class="custom-select block w-full md:w-1/2 px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-dark_green focus:border-transparent text-base">
                         <option value="">--Select Expected Salary--</option>
                         @php
-                            $expectedSalaryRanges = ['Below UGX 500,000', 'UGX 500,000 - UGX 750,000', 'UGX 750,000 - UGX 1,000,000', 'UGX 1,000,000 - UGX 1,200,000', 'UGX 1,200,000 - UGX 1,400,000', 'UGX 1,400,000 - UGX 1,600,000', 'UGX 1,600,000 - UGX 1,800,000', 'UGX 1,800,000 - UGX 2,000,000', 'UGX 2,000,000 - UGX 2,200,000', 'UGX 2,200,000 - UGX 2,500,000', 'UGX 2,500,000 - UGX 3,000,000', 'UGX 3,000,000 - UGX 3,500,000', 'UGX 3,500,000 - UGX 4,000,000', 'UGX 4,000,000 - UGX 4,500,000', 'UGX 4,500,000 - UGX 5,000,000', 'Above UGX 5,000,000'];
+                            $expectedSalaryRanges = ['Below USh 500,000', 'USh 500,000 - USh 750,000', 'USh 750,000 - USh 1,000,000', 'USh 1,000,000 - USh 1,200,000', 'USh 1,200,000 - USh 1,400,000', 'USh 1,400,000 - USh 1,600,000', 'USh 1,600,000 - USh 1,800,000', 'USh 1,800,000 - USh 2,000,000', 'USh 2,000,000 - USh 2,200,000', 'USh 2,200,000 - USh 2,500,000', 'USh 2,500,000 - USh 3,000,000', 'USh 3,000,000 - USh 3,500,000', 'USh 3,500,000 - USh 4,000,000', 'USh 4,000,000 - USh 4,500,000', 'USh 4,500,000 - USh 5,000,000', 'Above USh 5,000,000'];
                         @endphp
                         @foreach($expectedSalaryRanges as $range)
                             <option value="{{ $range }}" {{ old('expected_salary') == $range ? 'selected' : '' }}>{{ $range }}</option>

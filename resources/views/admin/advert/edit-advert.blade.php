@@ -771,7 +771,7 @@
                   @endif
                   <div class="d-flex align-items-center">
                     <input type="text" name="price" class="form-control w-50" value="{{ $advert->price }}">
-                    <span class="ms-2">UGX</span>
+                    <span class="ms-2">USh</span>
                   </div>
                 </div>
                 <div id="services" class="col-md-2 mt-1">
@@ -801,7 +801,7 @@
                   @endif
                   <select id="salary" name="salary" class="form-select w-50">
                     <option value="">--Select Salary--</option>
-                    @foreach(['Commission','Below UGX 200,000','UGX 200,000 - UGX 400,000','UGX 400,000 - UGX 600,000','UGX 600,000 - UGX 800,000','UGX 800,000 - UGX 1,000,000','UGX 1,000,000 - UGX 1,200,000','UGX 1,200,000 - UGX 1,400,000','UGX 1,400,000 - UGX 1,600,000','UGX 1,600,000 - UGX 1,800,000','UGX 1,800,000 - UGX 2,000,000','UGX 2,000,000 - UGX 2,200,000','UGX 2,200,000 - UGX 2,500,000','UGX 2,500,000 - UGX 3,000,000','UGX 3,000,000 - UGX 3,500,000','UGX 3,500,000 - UGX 4,000,000','UGX 4,000,000 - UGX 4,500,000','UGX 4,500,000 - UGX 5,000,000','Above UGX 5,000,000'] as $sal)
+                    @foreach(['Commission','Below USh 200,000','USh 200,000 - USh 400,000','USh 400,000 - USh 600,000','USh 600,000 - USh 800,000','USh 800,000 - USh 1,000,000','USh 1,000,000 - USh 1,200,000','USh 1,200,000 - USh 1,400,000','USh 1,400,000 - USh 1,600,000','USh 1,600,000 - USh 1,800,000','USh 1,800,000 - USh 2,000,000','USh 2,000,000 - USh 2,200,000','USh 2,200,000 - USh 2,500,000','USh 2,500,000 - USh 3,000,000','USh 3,000,000 - USh 3,500,000','USh 3,500,000 - USh 4,000,000','USh 4,000,000 - USh 4,500,000','USh 4,500,000 - USh 5,000,000','Above USh 5,000,000'] as $sal)
                       <option value="{{ $sal }}" {{ $advert->salary == $sal ? 'selected' : '' }}>{{ $sal }}</option>
                     @endforeach
                   </select>
@@ -819,7 +819,7 @@
                   @endif
                   <select id="expected_salary" name="expected_salary" class="form-select w-50">
                     <option value="">--Select Expected Salary--</option>
-                    @foreach(['Below UGX 500,000','UGX 500,000 - UGX 750,000','UGX 750,000 - UGX 1,000,000','UGX 1,000,000 - UGX 1,200,000','UGX 1,200,000 - UGX 1,400,000','UGX 1,400,000 - UGX 1,600,000','UGX 1,600,000 - UGX 1,800,000','UGX 1,800,000 - UGX 2,000,000','UGX 2,000,000 - UGX 2,200,000','UGX 2,200,000 - UGX 2,500,000','UGX 2,500,000 - UGX 3,000,000','UGX 3,000,000 - UGX 3,500,000','UGX 3,500,000 - UGX 4,000,000','UGX 4,000,000 - UGX 4,500,000','UGX 4,500,000 - UGX 5,000,000','Above UGX 5,000,000'] as $expSal)
+                    @foreach(['Below USh 500,000','USh 500,000 - USh 750,000','USh 750,000 - USh 1,000,000','USh 1,000,000 - USh 1,200,000','USh 1,200,000 - USh 1,400,000','USh 1,400,000 - USh 1,600,000','USh 1,600,000 - USh 1,800,000','USh 1,800,000 - USh 2,000,000','USh 2,000,000 - USh 2,200,000','USh 2,200,000 - USh 2,500,000','USh 2,500,000 - USh 3,000,000','USh 3,000,000 - USh 3,500,000','USh 3,500,000 - USh 4,000,000','USh 4,000,000 - USh 4,500,000','USh 4,500,000 - USh 5,000,000','Above USh 5,000,000'] as $expSal)
                       <option value="{{ $expSal }}" {{ $advert->expected_salary == $expSal ? 'selected' : '' }}>{{ $expSal }}</option>
                     @endforeach
                   </select>
